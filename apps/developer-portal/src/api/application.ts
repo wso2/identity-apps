@@ -16,6 +16,7 @@
  * under the License.
  */
 
+ import { OAuth } from "@wso2is/oauth-web-worker";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosHttpClient } from "@wso2is/http";
@@ -43,9 +44,8 @@ import { ApplicationManagementUtils } from "../utils";
 /**
  * Get an axios instance.
  *
- * @type {AxiosHttpClientInstance}.
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Gets the basic information about the application.
@@ -65,7 +65,7 @@ export const getApplicationDetails = (id: string): Promise<any> => {
         url: store.getState().config.endpoints.applications + "/" + id
     };
 
-    return httpClient.get(requestConfig.url, { headers: requestConfig.headers })
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get app from: "));
@@ -93,7 +93,7 @@ export const deleteApplication = (id: string): Promise<any> => {
         url: store.getState().config.endpoints.applications + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(new Error("Failed to delete the application."));
@@ -126,7 +126,7 @@ export const updateApplicationDetails = (app: ApplicationInterface): Promise<any
         url: store.getState().config.endpoints.applications + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update application from: "));
@@ -163,7 +163,7 @@ export const getApplicationList = (limit: number, offset: number,
         url: store.getState().config.endpoints.applications
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get application list from: "));
@@ -190,7 +190,7 @@ export const getAvailableInboundProtocols = (customOnly: boolean): Promise<AuthP
         url: store.getState().config.endpoints.applications + "/meta/inbound-protocols?customOnly=" + customOnly
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to get Inbound protocols from: "));
@@ -219,7 +219,7 @@ export const getAuthProtocolMetadata = <T>(protocol: string): Promise<T> => {
         url: `${ store.getState().config.endpoints.applications}/meta/inbound-protocols/${ protocol }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -259,7 +259,7 @@ export const getOIDCData = (id: string): Promise<any> => {
         url: store.getState().config.endpoints.applications + "/" + id + "/inbound-protocols/oidc"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to retrieve OIDC data from: "));
@@ -292,7 +292,7 @@ export const getInboundProtocolConfig = (applicationId: string, inboundProtocolI
             inboundProtocolId }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to retrieve the inbound protocol config."));
@@ -322,7 +322,7 @@ export const updateOIDCData = (id: string, OIDC: object): Promise<any> => {
         url: store.getState().config.endpoints.applications + "/" + id + "/inbound-protocols/oidc"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update inbound configuration"));
@@ -355,7 +355,7 @@ export const updateAuthProtocolConfig = <T>(id: string, config: any,
         url: `${ store.getState().config.endpoints.applications}/${ id }/inbound-protocols/${ protocol }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -399,7 +399,7 @@ export const deleteProtocol = <T>(id: string, protocol: string): Promise<T> => {
         url: `${ store.getState().config.endpoints.applications}/${ id }/inbound-protocols/${ protocol }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 204) {
                 throw new IdentityAppsApiException(
@@ -441,7 +441,7 @@ export const updateApplicationConfigurations = (id: string, configs: object): Pr
         url: store.getState().config.endpoints.applications + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update advance configuration"));
@@ -469,7 +469,7 @@ export const createApplication = (application: object): Promise<any> => {
         url: store.getState().config.endpoints.applications
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if ((response.status !== 201)) {
                 return Promise.reject(new Error("Failed to create the application."));
@@ -497,7 +497,7 @@ export const updateAuthenticationSequence = (id: string, data: object): Promise<
         url: store.getState().config.endpoints.applications + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update authentication sequence"));
@@ -525,7 +525,7 @@ export const updateClaimConfiguration = (id: string, data: object): Promise<any>
         url: store.getState().config.endpoints.applications + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(new Error("Failed to update claim configuration"));
@@ -554,7 +554,7 @@ export const regenerateClientSecret = (appId: string): Promise<any> => {
             "/inbound-protocols/oidc/regenerate-secret"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to regenerate the application secret."));
@@ -582,7 +582,7 @@ export const revokeClientSecret = (appId: string): Promise<any> => {
         url: store.getState().config.endpoints.applications + "/" + appId + "/inbound-protocols/oidc/revoke"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if ((response.status !== 200)) {
                 return Promise.reject(new Error("Failed to revoke the application secret."));
@@ -609,7 +609,7 @@ export const getAdaptiveAuthTemplates = (): Promise<AdaptiveAuthTemplatesListInt
         url: `${ store.getState().config.endpoints.applications }/meta/adaptive-auth-templates`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -653,7 +653,7 @@ export const getApplicationTemplateData = (templateId: string): Promise<Applicat
         url: store.getState().config.endpoints.applications + "/templates/" + templateId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -703,7 +703,7 @@ export const getApplicationTemplateList = (limit?: number, offset?: number,
         url: store.getState().config.endpoints.applications + "/templates"
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -743,7 +743,7 @@ export const getOIDCApplicationConfigurations = (): Promise<OIDCApplicationConfi
         url: store.getState().config.endpoints.wellKnown
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -790,7 +790,7 @@ export const getSAMLApplicationConfigurations = (): Promise<SAMLApplicationConfi
         url: store.getState().config.endpoints.saml2Meta
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -831,7 +831,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
         url: store.getState().config.endpoints.requestPathAuthenticators
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
