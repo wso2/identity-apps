@@ -26,6 +26,12 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPl
 const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
+// Flag to enable source maps in production.
+const isSourceMapsEnabledInProduction = false;
+
+// Enable/Disable profiling in Production.
+const isProfilingEnabledInProduction = false;
+
 module.exports = (env) => {
 
     // Build Environments.
@@ -92,7 +98,11 @@ module.exports = (env) => {
             inline: true,
             port: devServerPort
         },
-        devtool: "eval",
+        devtool: isProduction
+            ? isSourceMapsEnabledInProduction
+                ? "source-map"
+                : false
+            : isDevelopment && "cheap-module-source-map",
         entry: ["./src/index.tsx"],
         mode: isProduction ? "production" : "development",
         module: {
@@ -179,16 +189,45 @@ module.exports = (env) => {
             fs: "empty"
         },
         optimization: {
-            minimize: true,
+            minimize: isProduction,
             minimizer: [
                 new TerserPlugin({
                     cache: path.resolve(__dirname, "cache"),
                     extractComments: true,
+                    sourceMap: isSourceMapsEnabledInProduction,
                     terserOptions: {
-                        keep_fnames: true
+                        compress: {
+                            // Disabled because of an issue with Uglify breaking seemingly valid code:
+                            // https://github.com/mishoo/UglifyJS2/issues/2011
+                            comparisons: false,
+                            ecma: 5,
+                            // Disabled because of an issue with Terser breaking valid code:
+                            // https://github.com/terser-js/terser/issues/120
+                            inline: 2,
+                            warnings: false
+                        },
+                        // prevent the compressor from discarding class names.
+                        keep_classnames: isProfilingEnabledInProduction,
+                        // Prevent discarding or mangling of function names.
+                        keep_fnames: isProfilingEnabledInProduction,
+                        output: {
+                            // Regex is not minified properly using default.
+                            // https://github.com/mishoo/UglifyJS/issues/171
+                            ascii_only: true,
+                            comments: false,
+                            ecma: 5
+                        },
+                        parse: {
+                            ecma: 8
+                        }
                     }
                 })
             ].filter(Boolean),
+            // Keep the runtime chunk separated to enable long term caching
+            // https://twitter.com/wSokra/status/969679223278505985
+            runtimeChunk: {
+                name: entryPoint => `runtime-${entryPoint.name}`
+            },
             splitChunks: {
                 chunks: "all"
             }
