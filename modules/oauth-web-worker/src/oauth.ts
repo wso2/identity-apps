@@ -26,9 +26,9 @@ import {
 	INIT,
 	LOGOUT,
 	PKCE_CODE_VERIFIER,
+	REVOKE_TOKEN,
 	SIGNED_IN,
-	SIGN_IN,
-	REVOKE_TOKEN
+	SIGN_IN
 } from "./constants";
 import {
 	AuthCode,
@@ -55,6 +55,7 @@ import WorkerFile from "./oauth.worker";
  * 		callback URL.
  * 	2. Kick off the authentication flow by calling the `signIn()` method.
  *
+ * @example
  * Example:
  *
  * ```
@@ -218,7 +219,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 	 *
 	 * @returns {Promise<AxiosResponse>} A promise that resolves with the response data.
 	 */
-	const httpRequest = (config: AxiosRequestConfig): Promise<AxiosResponse> => {
+	const httpRequest = <T = void>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
 		if (!initialized) {
 			return Promise.reject("The object has not been initialized yet ");
 		}
@@ -232,7 +233,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 			type: API_CALL
 		};
 
-		return communicate<AxiosRequestConfig, AxiosResponse>(message)
+		return communicate<AxiosRequestConfig, AxiosResponse<T>>(message)
 			.then((response) => {
 				return Promise.resolve(response);
 			})
