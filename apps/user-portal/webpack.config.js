@@ -272,7 +272,11 @@ module.exports = (env) => {
                     NODE_ENV: JSON.stringify(env.NODE_ENV)
                 },
                 "typeof window": JSON.stringify("object")
-            })
+            }),
+            // Moment locales take up ~160KB. Since this portal currently doesn't require all the moment locales,
+            // temporarily require only the ones for the languages supported by default.
+            // TODO: Remove this when dynamic runtime localization support is announced.
+            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt|si|ta/)
         ].filter(Boolean),
         resolve: {
             extensions: [".tsx", ".ts", ".js", ".json"]
