@@ -31,7 +31,7 @@ import { handleSignIn } from "../../store/actions";
  * @param props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const SignIn: FunctionComponent<RouteComponentProps> = (
+const SignIn: FunctionComponent<RouteComponentProps> = (
     props: RouteComponentProps
 ): ReactElement => {
 
@@ -79,3 +79,5 @@ export const SignIn: FunctionComponent<RouteComponentProps> = (
 
     return null;
 };
+
+export default SignIn;
