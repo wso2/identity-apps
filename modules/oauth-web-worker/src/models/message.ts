@@ -18,6 +18,7 @@
 
 import {
     API_CALL,
+    API_CALL_ALL,
     AUTH_CODE,
     AUTH_REQUIRED,
     CUSTOM_GRANT,
@@ -64,5 +65,6 @@ export type MessageType =
     | typeof AUTH_CODE
     | typeof LOGOUT
     | typeof API_CALL
+    | typeof API_CALL_ALL
     | typeof CUSTOM_GRANT
     | typeof REVOKE_TOKEN;

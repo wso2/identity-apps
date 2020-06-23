@@ -19,6 +19,7 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     API_CALL,
+    API_CALL_ALL,
     AUTHORIZATION_CODE,
     AUTH_CODE,
     AUTH_REQUIRED,
@@ -154,7 +155,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
      * R - response data type.
      *
      * @param {Message} message - The message object
-     * @param {number} timeout The number seconds to wait before timing the request out. - optional
+     * @param {number} timeout The number of seconds to wait before timing the request out. - optional
      *
      * @returns {Promise<R>} A promise that resolves with the obtained data.
      */
@@ -221,7 +222,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
      */
     const httpRequest = <T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
         if (!initialized) {
-            return Promise.reject("The object has not been initialized yet ");
+            return Promise.reject("The object has not been initialized yet");
         }
 
         if (!signedIn) {
@@ -234,6 +235,37 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
         };
 
         return communicate<AxiosRequestConfig, AxiosResponse<T>>(message)
+            .then((response) => {
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    };
+
+    /**
+     *
+     * Send the API request to the web worker and returns the response.
+     *
+     * @param {AxiosRequestConfig} config The Axios Request Config object
+     *
+     * @returns {Promise<AxiosResponse>} A promise that resolves with the response data.
+     */
+    const httpRequestAll = <T = any>(configs: AxiosRequestConfig[]): Promise<AxiosResponse<T>[]> => {
+        if (!initialized) {
+            return Promise.reject("The object has not been initialized yet");
+        }
+
+        if (!signedIn) {
+            return Promise.reject("You have not signed in yet");
+        }
+
+        const message: Message<AxiosRequestConfig[]> = {
+            data: configs,
+            type: API_CALL_ALL
+        };
+
+        return communicate<AxiosRequestConfig[], AxiosResponse<T>[]>(message)
             .then((response) => {
                 return Promise.resolve(response);
             })
@@ -505,6 +537,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
         return {
             customGrant,
             httpRequest,
+            httpRequestAll,
             initialize,
             listenForAuthCode,
             revokeToken,
