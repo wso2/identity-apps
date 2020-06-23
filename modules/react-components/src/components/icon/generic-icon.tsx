@@ -159,7 +159,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         fill,
         floated,
         hoverable,
-        icon,
+        icon: Icon,
         inline,
         link,
         linkType,
@@ -208,38 +208,38 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      *
      * @return {HTMLElement | SVGElement | React.ReactElement}
      */
-    const constructContent = (): HTMLElement | SVGElement | ReactElement => {
-        if (!icon) {
+    const constructContent = (): HTMLElement | SVGElement | ReactElement | JSX.Element => {
+        if (!Icon) {
             return null;
         }
 
         try {
             // Check if the icon is an SVG element
-            if (icon instanceof SVGElement) {
-                return icon;
+            if (Icon instanceof SVGElement) {
+                return Icon;
             }
 
             // Check if the icon is a module and has `ReactComponent` property.
             // Important when used with SVG's imported with `@svgr/webpack`.
-            if (Object.prototype.hasOwnProperty.call(icon,"ReactComponent")
-                && typeof icon.ReactComponent === "function") {
+            if (Object.prototype.hasOwnProperty.call(Icon,"ReactComponent")
+                && typeof Icon.ReactComponent === "function") {
 
-                return <icon.ReactComponent/>;
+                return <Icon.ReactComponent/>;
             }
 
             // Check is icon is a component.
-            if (typeof icon === "function") {
-                return icon;
+            if (typeof Icon === "function") {
+                return <Icon />;
             }
 
             // Check is icon is a component.
-            if (typeof icon === "object") {
-                return icon;
+            if (typeof Icon === "object") {
+                return Icon;
             }
 
             // Check if icon passed in is a string. Can be a URL or a base64 encoded.
-            if (typeof icon === "string") {
-                return <img src={ icon } className="icon" alt="icon"/>;
+            if (typeof Icon === "string") {
+                return <img src={ Icon } className="icon" alt="icon"/>;
             }
         } catch (e) {
             return null;

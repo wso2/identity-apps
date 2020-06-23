@@ -1,0 +1,27 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="code-icon" height="14px" viewBox="0 -30 512 511" width="14px" xmlns="http://www.w3.org/2000/svg">
+	<path class="path fill primary" fill="#fff" d="m60.035156 60.546875h30.023438v30h-30.023438zm0 0"/>
+	<path class="path fill primary" fill="#fff" d="m120.085938 60.546875h30.023437v30h-30.023437zm0 0"/>
+	<path class="path fill primary" fill="#fff" d="m180.132812 60.546875h30.023438v30h-30.023438zm0 0"/>
+	<path class="path fill secondary" fill="#fff" d="m0 .5v451.953125h512v-451.953125zm482 30v90.097656h-452v-90.097656zm-452 391.953125v-271.855469h452v271.855469zm0 0"/>
+	<path class="path fill primary" fill="#fff" d="m187.644531 196.867188-70.550781 89.65625 70.550781 89.65625 23.574219-18.550782-55.949219-71.105468 55.949219-71.105469zm0 0"/>
+	<path class="path fill primary" fill="#fff" d="m300.78125 215.417969 55.949219 71.105469-55.949219 71.105468 23.574219 18.550782 70.550781-89.65625-70.550781-89.65625zm0 0"/>
+	<path class="path fill secondary" fill="#fff" d="m241 196.46875h30v180.109375h-30zm0 0"/>
+</svg>
