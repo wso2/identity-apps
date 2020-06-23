@@ -21,9 +21,9 @@ const { execSync } = require("child_process");
 // eslint-disable-next-line no-console
 const log = console.log;
 
-log("Post build script started.....");
+log("Post install script started.....");
 
 // Run theme folder copying script.
 execSync("npm run copy:themes");
 
-log("\nFinishing up the post build script.....");
+log("\nFinishing up the post install script.....");
