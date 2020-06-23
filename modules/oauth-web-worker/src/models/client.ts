@@ -22,16 +22,16 @@ import { ResponseModeTypes } from "./oidc-request-params";
  * SDK Client config parameters.
  */
 export interface ConfigInterface {
-	authorizationType?: string;
-	clientHost: string;
-	clientID: string;
-	clientSecret?: string;
-	consentDenied?: boolean;
-	enablePKCE?: boolean;
-	prompt?: string;
-	responseMode?: ResponseModeTypes;
-	scope?: string[];
-	serverOrigin: string;
-	baseUrls: string[];
-	callbackURL: string;
+    authorizationType?: string;
+    clientHost: string;
+    clientID: string;
+    clientSecret?: string;
+    consentDenied?: boolean;
+    enablePKCE?: boolean;
+    prompt?: string;
+    responseMode?: ResponseModeTypes;
+    scope?: string[];
+    serverOrigin: string;
+    baseUrls: string[];
+    callbackURL: string;
 }

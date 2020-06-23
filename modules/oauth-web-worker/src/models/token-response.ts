@@ -20,16 +20,16 @@
  * Interface of the OAuth2/OIDC tokens.
  */
 export interface TokenResponseInterface {
-	accessToken: string;
-	idToken: string;
-	expiresIn: string;
-	scope: string;
-	refreshToken: string;
-	tokenType: string;
+    accessToken: string;
+    idToken: string;
+    expiresIn: string;
+    scope: string;
+    refreshToken: string;
+    tokenType: string;
 }
 
 export interface TokenRequestHeader {
-	Accept: string;
-	"Access-Control-Allow-Origin": string;
-	"Content-Type": string;
+    Accept: string;
+    "Access-Control-Allow-Origin": string;
+    "Content-Type": string;
 }

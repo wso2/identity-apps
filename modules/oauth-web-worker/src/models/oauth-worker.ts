@@ -22,30 +22,30 @@ import { Message, SignInResponse, UserInfo } from "./message";
 import { CustomGrantRequestParams } from "./oauth";
 
 export interface OAuthWorkerInterface {
-	setIsOpConfigInitiated(status: boolean): void;
-	isSignedIn(): boolean;
-	doesTokenExist(): boolean;
-	setAuthorizationCode(authCode: string): void;
-	initOPConfiguration(forceInit?: boolean): Promise<any>;
-	setPkceCodeVerifier(pkce: string): void;
-	generateAuthorizationCodeRequestURL(): string;
-	sendSignInRequest(): Promise<SignInResponse>;
-	refreshAccessToken(): Promise<boolean>;
-	signOut(): Promise<string>;
-	httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse>;
-	customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
-	getUserInfo(): UserInfo;
-	revokeToken(): Promise<boolean>;
+    setIsOpConfigInitiated(status: boolean): void;
+    isSignedIn(): boolean;
+    doesTokenExist(): boolean;
+    setAuthorizationCode(authCode: string): void;
+    initOPConfiguration(forceInit?: boolean): Promise<any>;
+    setPkceCodeVerifier(pkce: string): void;
+    generateAuthorizationCodeRequestURL(): string;
+    sendSignInRequest(): Promise<SignInResponse>;
+    refreshAccessToken(): Promise<boolean>;
+    signOut(): Promise<string>;
+    httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse>;
+    customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
+    getUserInfo(): UserInfo;
+    revokeToken(): Promise<boolean>;
 }
 
 export interface OAuthWorkerSingletonInterface {
-	getInstance(config: ConfigInterface): OAuthWorkerInterface;
+    getInstance(config: ConfigInterface): OAuthWorkerInterface;
 }
 
 interface OAuthEvent<T> extends MessageEvent {
-	data: Message<T>;
+    data: Message<T>;
 }
 
 export class OAuthWorker<T> extends Worker {
-	public onmessage: (this: OAuthWorker<T>, event: OAuthEvent<T>) => void;
+    public onmessage: (this: OAuthWorker<T>, event: OAuthEvent<T>) => void;
 }

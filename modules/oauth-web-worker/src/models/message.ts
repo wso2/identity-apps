@@ -17,52 +17,52 @@
  */
 
 import {
-	API_CALL,
-	AUTH_CODE,
-	AUTH_REQUIRED,
-	CUSTOM_GRANT,
-	INIT,
-	LOGOUT,
-	REVOKE_TOKEN,
-	SIGNED_IN,
-	SIGN_IN
+    API_CALL,
+    AUTH_CODE,
+    AUTH_REQUIRED,
+    CUSTOM_GRANT,
+    INIT,
+    LOGOUT,
+    REVOKE_TOKEN,
+    SIGNED_IN,
+    SIGN_IN
 } from "../constants";
 
 export interface ResponseMessage<T> {
-	success: boolean;
-	error?: string;
-	data?: T;
+    success: boolean;
+    error?: string;
+    data?: T;
 }
 
 export interface Message<T> {
-	type: MessageType;
-	data?: T;
+    type: MessageType;
+    data?: T;
 }
 
 export interface SignInResponse {
-	type: typeof SIGNED_IN | typeof AUTH_REQUIRED;
-	code?: string;
-	pkce?: string;
-	data?: UserInfo;
+    type: typeof SIGNED_IN | typeof AUTH_REQUIRED;
+    code?: string;
+    pkce?: string;
+    data?: UserInfo;
 }
 
 export interface UserInfo {
-	email: string;
-	username: string;
-	displayName: string;
-	allowedScopes: string;
+    email: string;
+    username: string;
+    displayName: string;
+    allowedScopes: string;
 }
 
 export interface AuthCode {
-	code: string;
-	pkce?: string;
+    code: string;
+    pkce?: string;
 }
 
 export type MessageType =
-	| typeof INIT
-	| typeof SIGN_IN
-	| typeof AUTH_CODE
-	| typeof LOGOUT
-	| typeof API_CALL
-	| typeof CUSTOM_GRANT
-	| typeof REVOKE_TOKEN;
+    | typeof INIT
+    | typeof SIGN_IN
+    | typeof AUTH_CODE
+    | typeof LOGOUT
+    | typeof API_CALL
+    | typeof CUSTOM_GRANT
+    | typeof REVOKE_TOKEN;

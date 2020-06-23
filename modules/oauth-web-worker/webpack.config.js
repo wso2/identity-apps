@@ -19,46 +19,46 @@
 const path = require("path");
 
 module.exports = {
-	entry: "./src/index.ts",
-	module: {
-		rules: [
-			{
-				test: /\.worker\.ts$/,
-				use: {
-					loader: "worker-loader",
-					options: {
-						inline: true
-					}
-				}
-			},
-			{
-				exclude: /(node_modules|dist)/,
-				test: /\.ts?$/,
-				use: "ts-loader"
-			},
-			{
-				exclude: /(node_modules|dist)/,
-				test: /\.(ts?|js)$/,
-				use: [
-					{
-						loader: "eslint-loader",
-						options: {
-							happyPackMode: true,
-							transpileOnly: true
-						}
-					}
-				]
-			}
-		]
-	},
-	output: {
-		filename: "main.js",
-		globalObject: "this",
-		library: "Wso2OAuth",
-		libraryTarget: "umd",
-		path: path.resolve(__dirname, "dist")
-	},
-	resolve: {
-		extensions: [".tsx", ".ts", ".js"]
-	}
+    entry: "./src/index.ts",
+    module: {
+        rules: [
+            {
+                test: /\.worker\.ts$/,
+                use: {
+                    loader: "worker-loader",
+                    options: {
+                        inline: true
+                    }
+                }
+            },
+            {
+                exclude: /(node_modules|dist)/,
+                test: /\.ts?$/,
+                use: "ts-loader"
+            },
+            {
+                exclude: /(node_modules|dist)/,
+                test: /\.(ts?|js)$/,
+                use: [
+                    {
+                        loader: "eslint-loader",
+                        options: {
+                            happyPackMode: true,
+                            transpileOnly: true
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    output: {
+        filename: "main.js",
+        globalObject: "this",
+        library: "Wso2OAuth",
+        libraryTarget: "umd",
+        path: path.resolve(__dirname, "dist")
+    },
+    resolve: {
+        extensions: [".tsx", ".ts", ".js"]
+    }
 };

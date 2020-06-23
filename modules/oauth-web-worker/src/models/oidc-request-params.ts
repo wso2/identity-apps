@@ -16,7 +16,6 @@
  * under the License.
  */
 
-// TODO: Remove this when the authenticate component removes/refactor from the core module 
 /**
  * OIDC request parameters.
  */
