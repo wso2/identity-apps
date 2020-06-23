@@ -319,4 +319,4 @@ UserStores.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default Userstores;
+export default UserStores;
