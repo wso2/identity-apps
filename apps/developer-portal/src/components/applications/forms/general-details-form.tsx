@@ -18,6 +18,7 @@
 
 import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { Certificate as CertificateDisplay, Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -31,7 +32,6 @@ import {
     CertificateInterface,
     CertificateTypeInterface
 } from "../../../models";
-import { CertificateManagementUtils } from "@wso2is/core/utils";
 
 /**
  * Proptypes for the applications general details form component.
@@ -161,7 +161,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon.ReactComponent />
+                        <CertificateIllustrations.ribbon />
                         <div className="certificate-alias">
                             View Certificate - {
                             certificateDisplay?.alias

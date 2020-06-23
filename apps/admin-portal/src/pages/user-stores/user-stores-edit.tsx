@@ -186,7 +186,7 @@ export const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> 
                     centered
                     size="tiny"
                 >
-                    <DatabaseAvatarGraphic.ReactComponent />
+                    <DatabaseAvatarGraphic />
                 </Image>
             }
             title={ userStore?.name }

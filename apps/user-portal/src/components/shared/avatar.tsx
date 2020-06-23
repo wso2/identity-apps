@@ -190,7 +190,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
     return (
         <Image
             className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-            src={ avatarType === "user" ? UserImage : DefaultAppIcon.default }
+            src={ avatarType === "user" ? UserImage : DefaultAppIcon }
             bordered={ bordered }
             floated={ floated }
             verticalAlign="middle"

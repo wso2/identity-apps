@@ -17,7 +17,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import React, { ReactElement } from "react";
 
 /**
  * Proptypes for the Icon component.
@@ -66,7 +66,7 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
         colored,
         defaultIcon,
         floated,
-        icon,
+        icon: Icon,
         inline,
         relaxed,
         rounded,
@@ -95,34 +95,42 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
         [`${relaxLevel}`]: relaxLevel,
     }, className);
 
-    const constructContent = (): HTMLElement | SVGElement | JSX.Element => {
-        // Check if the icon is an SVG element
-        if (icon instanceof SVGElement) {
-            return icon;
+    const constructContent = (): HTMLElement | SVGElement | ReactElement | JSX.Element => {
+        if (!Icon) {
+            return null;
         }
 
-        // Check if the icon is a module and has `ReactComponent` property.
-        // Important when used with SVG's imported with `@svgr/webpack`.
-        if (icon.ReactComponent && typeof icon.ReactComponent === "function") {
-            return <icon.ReactComponent />;
-        }
+        try {
+            // Check if the icon is an SVG element
+            if (Icon instanceof SVGElement) {
+                return Icon;
+            }
 
-        // Check is icon is a component.
-        if (typeof icon === "function") {
-            return icon;
-        }
+            // Check if the icon is a module and has `ReactComponent` property.
+            // Important when used with SVG's imported with `@svgr/webpack`.
+            if (Object.prototype.hasOwnProperty.call(Icon,"ReactComponent")
+                && typeof Icon.ReactComponent === "function") {
 
-        // Check is icon is a component.
-        if (typeof icon === "object") {
-            return icon;
-        }
+                return <Icon.ReactComponent/>;
+            }
 
-        // Check if icon passed in is a string. Can be a URL or a base64 encoded.
-        if (typeof icon === "string") {
-            return <img src={ icon } className="icon" alt="icon" />;
-        }
+            // Check is icon is a component.
+            if (typeof Icon === "function") {
+                return <Icon />;
+            }
 
-        throw new Error("The provided icon type is not supported.");
+            // Check is icon is a component.
+            if (typeof Icon === "object") {
+                return Icon;
+            }
+
+            // Check if icon passed in is a string. Can be a URL or a base64 encoded.
+            if (typeof Icon === "string") {
+                return <img src={ Icon } className="icon" alt="icon"/>;
+            }
+        } catch (e) {
+            return null;
+        }
     };
 
     return (

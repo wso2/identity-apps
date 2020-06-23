@@ -436,7 +436,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                         >
                             <Segment placeholder className={ `drop-zone ${dragOver ? "drag-over" : ""}` }>
                                 <div className="certificate-upload-placeholder">
-                                    <CertificateIllustrations.uploadPlaceholder.ReactComponent />
+                                    <CertificateIllustrations.uploadPlaceholder />
                                     <p className="description">
                                         { t("devPortal:components.certificates." +
                                             "keystore.wizard.dropZone.description") }
@@ -454,7 +454,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     : (
                         <Segment placeholder>
                             <Segment textAlign="center" basic>
-                                <CertificateIllustrations.file.ReactComponent />
+                                <CertificateIllustrations.file />
                                 <p className="file-name">{ file.name }</p>
                                 <Icon name="trash alternate" link onClick={ () => {
                                     setFile(null);

@@ -106,7 +106,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/identity-providers/identity-providers")),
         exact: true,
-        icon: "connections",
+        icon: "identityProviders",
         id: "identityProviders",
         name: "common:identityProviders",
         path: AppConstants.PATHS.get("IDP"),
