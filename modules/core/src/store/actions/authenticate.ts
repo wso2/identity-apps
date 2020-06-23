@@ -46,9 +46,9 @@ import { ContextUtils } from "../../utils";
  * @return {SetSignInActionInterface} An action of type `SET_SIGN_IN`
  */
 export const setSignIn = (userInfo: AuthenticatedUserInterface): SetSignInActionInterface => ({
-            payload: userInfo,
-            type: CommonAuthenticateActionTypes.SET_SIGN_IN
-        });
+    payload: userInfo,
+    type: CommonAuthenticateActionTypes.SET_SIGN_IN
+});
 
 /**
  * Redux action to set sign out.
