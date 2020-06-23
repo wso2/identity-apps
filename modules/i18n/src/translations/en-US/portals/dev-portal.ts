@@ -1180,13 +1180,9 @@ export const devPortal: DevPortalNS = {
                         content: {
                             sample: {
                                 goBack: "Go back",
-                                hint: "Quickly start prototyping by downloading our preconfigured sample application.",
-                                title: "HTML Sample"
-                            },
-                            sdks: {
-                                subTitle: "Following software development kits can be used to jump start your " +
-                                    "application development.",
-                                title: "Software Development Kits (SDKs)"
+                                subTitle: "Quickly start prototyping by downloading our preconfigured sample " +
+                                    "application.",
+                                title: "Sample Applications"
                             },
                             technology: {
                                 subTitle: "Sample and required SDKs along with useful information will be provided " +
@@ -1195,6 +1191,17 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         heading: "Samples"
+                    },
+                    sdks: {
+                        content: {
+                            sdk: {
+                                goBack: "Go back",
+                                subTitle: "Following software development kits can be used to jump start your " +
+                                    "application development.",
+                                title: "Software Development Kits (SDKs)"
+                            }
+                        },
+                        heading: "SDKs"
                     }
                 }
             },
