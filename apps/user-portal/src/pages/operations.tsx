@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -28,9 +28,9 @@ import { addAlert } from "../store/actions";
 /**
  * Operations page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const OperationsPage = (): JSX.Element => {
+const OperationsPage = (): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -58,3 +58,10 @@ export const OperationsPage = (): JSX.Element => {
         </InnerPageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default OperationsPage;

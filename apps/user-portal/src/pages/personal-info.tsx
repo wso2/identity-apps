@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import React from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -31,9 +31,9 @@ import { addAlert } from "../store/actions";
 /**
  * Personal Info page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const PersonalInfoPage = (): JSX.Element => {
+const PersonalInfoPage = (): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
@@ -125,3 +125,10 @@ export const PersonalInfoPage = (): JSX.Element => {
         </InnerPageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default PersonalInfoPage;

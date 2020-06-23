@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
@@ -27,9 +27,9 @@ import { ErrorPageLayout } from "../../layouts";
 /**
  * Login error page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const LoginErrorPage = (): JSX.Element => {
+const LoginErrorPage = (): ReactElement => {
     const { t } = useTranslation();
     return (
         <ErrorPageLayout>
@@ -54,3 +54,10 @@ export const LoginErrorPage = (): JSX.Element => {
         </ErrorPageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default LoginErrorPage;
