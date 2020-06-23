@@ -57,7 +57,7 @@ export const getConfigurations = (url: string): Promise<any> => {
                 ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
-                error,
+                error.request,
                 error.response,
                 error.config);
         });
@@ -189,7 +189,7 @@ export const updateAllPasswordPolicies = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const getRequestPathAuthenticators = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpointsPathAuthenticators);
+    return getConfigurations(store.getState().config.endpoints.requestPathAuthenticators);
 };
 
 /**
