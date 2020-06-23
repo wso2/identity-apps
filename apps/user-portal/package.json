@@ -12,7 +12,7 @@
         "build:analyze": "run-script-os",
         "build:analyze:win32": "npm run webpack -- -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true",
         "build:analyze:default": "npm run webpack -- -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true",
-        "clean": "rm -rf build",
+        "clean": "rm -rf build && npm run clean:themes",
         "clean:themes": "npm run rimraf src/themes",
         "copy:themes": "node scripts/copy-themes.js",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
