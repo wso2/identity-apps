@@ -154,25 +154,25 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
 
     return oAuth
-		.customGrant({
-			attachToken: false,
-			data: {
-				"client_id": "{{clientId}}",
-				"grant_type": "account_switch",
-				scope: "{{scope}}",
-				"tenant-domain": account.tenantDomain,
-				token: "{{token}}",
-				username: account.username,
-				"userstore-domain": account.userStoreDomain
-			},
-			returnResponse: true,
-			returnsSession: true,
-			signInRequired: true
-		})
-		.then((response: SignInResponse) => {
-			return Promise.resolve(response?.data);
-		})
-		.catch((error) => {
-			return Promise.reject(error);
-		});
+        .customGrant({
+            attachToken: false,
+            data: {
+                "client_id": "{{clientId}}",
+                "grant_type": "account_switch",
+                scope: "{{scope}}",
+                "tenant-domain": account.tenantDomain,
+                token: "{{token}}",
+                username: account.username,
+                "userstore-domain": account.userStoreDomain
+            },
+            returnResponse: true,
+            returnsSession: true,
+            signInRequired: true
+        })
+        .then((response: SignInResponse) => {
+            return Promise.resolve(response?.data);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
 };

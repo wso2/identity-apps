@@ -56,8 +56,8 @@ interface CommonAuthenticateBaseActionInterface {
  * Set sign in action interface.
  */
 export interface SetSignInActionInterface extends CommonAuthenticateBaseActionInterface {
-	type: CommonAuthenticateActionTypes.SET_SIGN_IN;
-	payload: AuthenticatedUserInterface;
+    type: CommonAuthenticateActionTypes.SET_SIGN_IN;
+    payload: AuthenticatedUserInterface;
 }
 
 /**

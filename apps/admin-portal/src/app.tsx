@@ -113,7 +113,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
             return;
         }
 
-        if (isPortalAccessGranted<FeatureConfigInterface>(config.features, allowedScopes)) {
+        if (isPortalAccessGranted<FeatureConfigInterface>(config?.ui?.features, allowedScopes)) {
             return;
         }
 

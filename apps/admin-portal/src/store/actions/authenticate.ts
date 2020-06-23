@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
@@ -27,7 +28,6 @@ import {
     setSignIn,
     setSignOut
 } from "@wso2is/core/store";
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import { OAuth } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
@@ -133,53 +133,53 @@ export const getProfileInformation = () => (dispatch): void => {
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-	const oAuth = OAuth.getInstance();
-	oAuth
-		.initialize({
-			baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-			callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
-			clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-			clientID: window["AppUtils"].getConfig().clientID,
-			enablePKCE: true,
-			scope: ["SYSTEM", "openid"],
-			serverOrigin: window["AppUtils"].getConfig().serverOrigin
-		})
-		.then(() => {
-			oAuth
-				.signIn()
-				.then((response) => {
-					dispatch(
-						setSignIn({
-							// eslint-disable-next-line @typescript-eslint/camelcase
-							display_name: response.displayName,
-							email: response.email,
-							scope: response.allowedScopes,
-							username: response.username
-						})
-					);
+    const oAuth = OAuth.getInstance();
+    oAuth
+        .initialize({
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
+            enablePKCE: true,
+            scope: ["SYSTEM", "openid"],
+            serverOrigin: window["AppUtils"].getConfig().serverOrigin
+        })
+        .then(() => {
+            oAuth
+                .signIn()
+                .then((response) => {
+                    dispatch(
+                        setSignIn({
+                            // eslint-disable-next-line @typescript-eslint/camelcase
+                            display_name: response.displayName,
+                            email: response.email,
+                            scope: response.allowedScopes,
+                            username: response.username
+                        })
+                    );
 
-					dispatch(getProfileInformation());
-				})
-				.catch((error) => {
-					throw error;
-				});
-		})
-		.catch((error) => {
-			throw error;
-		});
+                    dispatch(getProfileInformation());
+                })
+                .catch((error) => {
+                    throw error;
+                });
+        })
+        .catch((error) => {
+            throw error;
+        });
 };
 
 /**
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-	const oAuth = OAuth.getInstance();
-	oAuth
-		.signOut()
-		.then(() => {
-			dispatch(setSignOut());
-		})
-		.catch(() => {
-			history.push(store?.getState()?.config?.deployment?.appLoginPath);
-		});
+    const oAuth = OAuth.getInstance();
+    oAuth
+        .signOut()
+        .then(() => {
+            dispatch(setSignOut());
+        })
+        .catch(() => {
+            history.push(store?.getState()?.config?.deployment?.appLoginPath);
+        });
 };

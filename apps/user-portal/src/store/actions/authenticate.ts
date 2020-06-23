@@ -26,11 +26,11 @@ import { getProfileInfo, getProfileSchemas, switchAccount } from "../../api";
 import { i18n } from "../../configs";
 import { history } from "../../helpers";
 import {
-	AlertLevels,
-	AuthenticatedUserInterface,
-	BasicProfileInterface,
-	LinkedAccountInterface,
-	ProfileSchema
+    AlertLevels,
+    AuthenticatedUserInterface,
+    BasicProfileInterface,
+    LinkedAccountInterface,
+    ProfileSchema
 } from "../../models";
 import { getProfileCompletion } from "../../utils";
 import { store } from "../index";
@@ -39,8 +39,8 @@ import { store } from "../index";
  * Dispatches an action of type `SET_SIGN_IN`.
  */
 export const setSignIn = (userInfo: AuthenticatedUserInterface): AuthAction => ({
-	payload: userInfo,
-	type: authenticateActionTypes.SET_SIGN_IN
+    payload: userInfo,
+    type: authenticateActionTypes.SET_SIGN_IN
 });
 
 /**
@@ -179,55 +179,55 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-	const oAuth = OAuth.getInstance();
-	oAuth
-		.initialize({
-			baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-			callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
-			clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-			clientID: window["AppUtils"].getConfig().clientID,
-			enablePKCE: true,
-			scope: ["SYSTEM", "openid"],
-			serverOrigin: window["AppUtils"].getConfig().serverOrigin
-		})
-		.then(() => {
-			oAuth
-				.signIn()
-				.then((response) => {
-					dispatch(
-						setSignIn({
-							// eslint-disable-next-line @typescript-eslint/camelcase
-							display_name: response.displayName,
-							email: response.email,
-							scope: response.allowedScopes,
-							username: response.username
-						})
-					);
+    const oAuth = OAuth.getInstance();
+    oAuth
+        .initialize({
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
+            enablePKCE: true,
+            scope: ["SYSTEM", "openid"],
+            serverOrigin: window["AppUtils"].getConfig().serverOrigin
+        })
+        .then(() => {
+            oAuth
+                .signIn()
+                .then((response) => {
+                    dispatch(
+                        setSignIn({
+                            // eslint-disable-next-line @typescript-eslint/camelcase
+                            display_name: response.displayName,
+                            email: response.email,
+                            scope: response.allowedScopes,
+                            username: response.username
+                        })
+                    );
 
-					dispatch(getProfileInformation());
-				})
-				.catch((error) => {
-					throw error;
-				});
-		})
-		.catch((error) => {
-			throw error;
-		});
+                    dispatch(getProfileInformation());
+                })
+                .catch((error) => {
+                    throw error;
+                });
+        })
+        .catch((error) => {
+            throw error;
+        });
 };
 
 /**
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-	const oAuth = OAuth.getInstance();
-	oAuth
-		.signOut()
-		.then(() => {
-			dispatch(setSignOut());
-		})
-		.catch(() => {
-			history.push(store?.getState()?.config?.deployment?.appLoginPath);
-		});
+    const oAuth = OAuth.getInstance();
+    oAuth
+        .signOut()
+        .then(() => {
+            dispatch(setSignOut());
+        })
+        .catch(() => {
+            history.push(store?.getState()?.config?.deployment?.appLoginPath);
+        });
 };
 
 /**
@@ -238,22 +238,22 @@ export const handleSignOut = () => (dispatch) => {
  * @returns {(dispatch)=>void} A function that accepts dispatch as an argument.
  */
 export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch) => {
-	switchAccount(account)
-		.then((response) => {
-			dispatch(
-				setSignIn({
-					// eslint-disable-next-line @typescript-eslint/camelcase
-					display_name: response.displayName,
-					email: response.email,
-					scope: response.allowedScopes,
-					username: response.username
-				})
-			);
+    switchAccount(account)
+        .then((response) => {
+            dispatch(
+                setSignIn({
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    display_name: response.displayName,
+                    email: response.email,
+                    scope: response.allowedScopes,
+                    username: response.username
+                })
+            );
 
-			dispatch(getProfileInformation());
-			dispatch(getProfileLinkedAccounts());
-		})
-		.catch((error) => {
-			throw error;
-		});
+            dispatch(getProfileInformation());
+            dispatch(getProfileLinkedAccounts());
+        })
+        .catch((error) => {
+            throw error;
+        });
 };

@@ -262,32 +262,32 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
  */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
     return oAuth
-		.customGrant({
-			attachToken: false,
-			data: {
-				"client_id": "{{clientId}}",
-				"grant_type": "account_switch",
-				scope: "{{scope}}",
-				"tenant-domain": account.tenantDomain,
-				token: "{{token}}",
-				username: account.username,
-				"userstore-domain": account.userStoreDomain
-			},
-			returnResponse: true,
-			returnsSession: true,
-			signInRequired: true
-		})
-		.then((response: SignInResponse) => {
-			return Promise.resolve(response?.data);
-		})
-		.catch((error: AxiosError) => {
-			throw new IdentityAppsApiException(
-				ProfileConstants.ACCOUNT_SWITCH_REQUEST_ERROR,
-				error.stack,
-				error.code,
-				error.request,
-				error.response,
-				error.config
-			);
-		});
+        .customGrant({
+            attachToken: false,
+            data: {
+                "client_id": "{{clientId}}",
+                "grant_type": "account_switch",
+                scope: "{{scope}}",
+                "tenant-domain": account.tenantDomain,
+                token: "{{token}}",
+                username: account.username,
+                "userstore-domain": account.userStoreDomain
+            },
+            returnResponse: true,
+            returnsSession: true,
+            signInRequired: true
+        })
+        .then((response: SignInResponse) => {
+            return Promise.resolve(response?.data);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                ProfileConstants.ACCOUNT_SWITCH_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config
+            );
+        });
 };

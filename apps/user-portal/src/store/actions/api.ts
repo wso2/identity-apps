@@ -60,16 +60,16 @@ export const apiRequestEnd = (actionType: string): ApiRequestEndAction => ({
 export const apiRequest = (config: HttpRequestConfig): ApiRequestAction => {
     const { auth, data, dispatcher, headers, method, onSuccess, onError, url  } = config;
     return {
-		meta: {
-			auth,
-			dispatcher,
-			headers,
-			method,
-			onError,
-			onSuccess,
-			url
-		},
-		payload: data,
-		type: API_REQUEST
-	};
+        meta: {
+            auth,
+            dispatcher,
+            headers,
+            method,
+            onError,
+            onSuccess,
+            url
+        },
+        payload: data,
+        type: API_REQUEST
+    };
 };
