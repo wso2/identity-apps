@@ -52,7 +52,7 @@ interface RouteParams {
  *
  * @return {React.ReactElement}
  */
-export const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
+const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
     props: LocalClaimsEditPageInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
@@ -185,3 +185,10 @@ export const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface
 LocalClaimsEditPage.defaultProps = {
     "data-testid": "edit-local-claims"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default LocalClaimsEditPage;

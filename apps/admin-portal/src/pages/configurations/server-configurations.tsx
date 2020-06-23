@@ -39,7 +39,7 @@ type ServerConfigurationsPageInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-export const ServerConfigurationsPage: FunctionComponent<ServerConfigurationsPageInterface> = (
+const ServerConfigurationsPage: FunctionComponent<ServerConfigurationsPageInterface> = (
     props: ServerConfigurationsPageInterface
 ): ReactElement => {
 
@@ -106,3 +106,10 @@ export const ServerConfigurationsPage: FunctionComponent<ServerConfigurationsPag
 ServerConfigurationsPage.defaultProps = {
     "data-testid": "server-configurations"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default ServerConfigurationsPage;

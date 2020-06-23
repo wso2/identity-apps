@@ -50,7 +50,7 @@ type ClaimDialectsPageInterface = TestableComponentInterface
  *
  * @return {ReactElement}
  */
-export const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
+const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
     props: ClaimDialectsPageInterface
 ): ReactElement => {
 
@@ -383,3 +383,10 @@ export const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = 
 ClaimDialectsPage.defaultProps = {
     "data-testid": "claim-dialects"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default ClaimDialectsPage;

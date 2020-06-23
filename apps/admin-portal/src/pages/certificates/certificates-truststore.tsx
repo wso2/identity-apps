@@ -40,7 +40,7 @@ type CertificatesTruststorePageInterface = TestableComponentInterface
  *
  * @return {React.ReactElement}
  */
-export const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterface> = (
+const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterface> = (
     props: CertificatesTruststorePageInterface
 ): ReactElement => {
 
@@ -247,3 +247,10 @@ export const CertificatesTruststore: FunctionComponent<CertificatesTruststorePag
 CertificatesTruststore.defaultProps = {
     "data-testid": "certificate-truststore"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default CertificatesTruststore;
