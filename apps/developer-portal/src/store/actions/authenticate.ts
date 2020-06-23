@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { OAuth } from "@wso2is/oauth-web-worker";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
@@ -29,8 +28,8 @@ import {
     setSignIn,
     setSignOut
 } from "@wso2is/core/store";
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
 import { history } from "../../helpers";
 import { store } from "../index";
@@ -142,6 +141,7 @@ export const handleSignIn = () => (dispatch) => {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: ["SYSTEM", "openid"],
             serverOrigin: window["AppUtils"].getConfig().serverOrigin
         })
