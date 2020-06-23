@@ -16,87 +16,14 @@
  * under the License.
  */
 
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import { initReactI18next } from "react-i18next";
-import * as locales from "../locales";
+import { I18n } from "@wso2is/i18n";
 import * as moment from "moment";
-
-/**
- * Supported language list.
- */
-const SupportedLanguages = {
-    en: {
-        flag: "us",
-        name: "English (US)"
-    },
-    pt: {
-        flag: "pt",
-        name: "Português"
-    },
-    si: {
-        flag: "lk",
-        name: "සිංහල (LK)"
-    },
-    ta: {
-        flag: "lk",
-        name: "தமிழ் (LK)"
-    }
-};
-
-/*
- * i18n initialization options
- */
-const initOptions = {
-    contextSeparator: "_",
-    debug: false,
-    defaultNS: "common",
-    fallbackLng: "en",
-    interpolation: {
-        escapeValue: false // not needed for react
-    },
-    keySeparator: ".",
-    ns: ["common, views"],
-    nsSeparator: ":",
-    pluralSeparator: "_",
-    resources: locales
-};
-
-/*
- * initialize i18n
- */
-i18n.use(LanguageDetector)
-    .use(initReactI18next)
-    .init(initOptions);
-
-/*
- * If detected language is not a supported language fallback to default
- */
-const defaultLanguageFallback = (): void => {
-    let unSupportedLanguage = true;
-
-    Object.keys(SupportedLanguages).forEach((elem) => {
-        if (elem === i18n.language) {
-            unSupportedLanguage = false;
-            return;
-        }
-    });
-
-    if (unSupportedLanguage) {
-        i18n.changeLanguage("en");
-    }
-};
 
 /**
  * Sets the moment JS locale.
  *
  * @param {string} localeCode - Locale code.
  */
-export const setMomentJSLocale = (localeCode = i18n.language): void => {
+export const setMomentJSLocale = (localeCode = I18n.instance.language): void => {
     moment.locale(localeCode);
 };
-
-defaultLanguageFallback();
-setMomentJSLocale();
-
-export { i18n, SupportedLanguages };

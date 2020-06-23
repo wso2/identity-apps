@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { getAssociations } from "../../api";
-import { i18n } from "../../configs/i18n";
-import { AlertLevels, LinkedAccountInterface, ProfileCompletion } from "../../models";
+import { I18n } from "@wso2is/i18n";
 import { addAlert } from "./global";
-import { ProfileActionTypes, ToggleSCIMEnabledAction, ProfileBaseActionWithCommonPayload } from "./types/profile";
+import { ProfileActionTypes, ProfileBaseActionWithCommonPayload, ToggleSCIMEnabledAction } from "./types/profile";
+import { getAssociations } from "../../api";
+import { AlertLevels, LinkedAccountInterface, ProfileCompletion } from "../../models";
 
 /**
  * Dispatches an action of type `SET_PROFILE_COMPLETION`.
@@ -62,14 +62,14 @@ export const getProfileLinkedAccounts = () => (dispatch): void => {
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: i18n.t(
-                            "views:components.linkedAccounts.notifications.getAssociations." +
+                        description: I18n.instance.t(
+                            "userPortal:components.linkedAccounts.notifications.getAssociations." +
                             "error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: i18n.t(
-                            "views:components.linkedAccounts.notifications.getAssociations." +
+                        message: I18n.instance.t(
+                            "userPortal:components.linkedAccounts.notifications.getAssociations." +
                             "error.message"
                         )
                     })
@@ -80,13 +80,13 @@ export const getProfileLinkedAccounts = () => (dispatch): void => {
 
             dispatch(
                 addAlert({
-                    description: i18n.t(
-                        "views:components.linkedAccounts.notifications.getAssociations." +
+                    description: I18n.instance.t(
+                        "userPortal:components.linkedAccounts.notifications.getAssociations." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: i18n.t(
-                        "views:components.linkedAccounts.notifications.getAssociations." +
+                    message: I18n.instance.t(
+                        "userPortal:components.linkedAccounts.notifications.getAssociations." +
                         "genericError.message"
                     )
                 })

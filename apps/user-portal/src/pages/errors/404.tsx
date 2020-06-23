@@ -40,16 +40,16 @@ const PageNotFound = (): ReactElement => {
                         as={ Link }
                         to={ GlobalConfig.appHomePath }
                     >
-                        { t("views:placeholders.404.action") }
+                        { t("userPortal:placeholders.404.action") }
                     </Button>
                 ) }
                 image={ EmptyPlaceholderIllustrations.pageNotFound }
                 imageSize="tiny"
                 subtitle={ [
-                    t("views:placeholders.404.subtitles.0"),
-                    t("views:placeholders.404.subtitles.1")
+                    t("userPortal:placeholders.404.subtitles.0"),
+                    t("userPortal:placeholders.404.subtitles.1")
                 ] }
-                title={ t("views:placeholders.404.title") }
+                title={ t("userPortal:placeholders.404.title") }
             />
         </ErrorPageLayout>
     );

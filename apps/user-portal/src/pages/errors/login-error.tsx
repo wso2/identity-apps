@@ -40,16 +40,16 @@ const LoginErrorPage = (): ReactElement => {
                         as={ Link }
                         to={ window["AppUtils"].getConfig().routes.logout }
                     >
-                        { t("views:placeholders.loginError.action") }
+                        { t("userPortal:placeholders.loginError.action") }
                     </Button>
                 ) }
                 image={ EmptyPlaceholderIllustrations.loginError }
                 imageSize="tiny"
                 subtitle={ [
-                    t("views:placeholders.loginError.subtitles.0"),
-                    t("views:placeholders.loginError.subtitles.1")
+                    t("userPortal:placeholders.loginError.subtitles.0"),
+                    t("userPortal:placeholders.loginError.subtitles.1")
                 ] }
-                title={ t("views:placeholders.loginError.title") }
+                title={ t("userPortal:placeholders.loginError.title") }
             />
         </ErrorPageLayout>
     );
