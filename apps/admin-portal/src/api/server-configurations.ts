@@ -46,7 +46,7 @@ export const getConfigurations = (url: string): Promise<any> => {
                     ServerConfigurationsConstants.CONFIGS_FETCH_REQUEST_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
-                    response,
+                    response.request,
                     response,
                     response.config);
             }
@@ -81,7 +81,7 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
                     ServerConfigurationsConstants.CONFIGS_UPDATE_REQUEST_INVALID_STATUS_CODE_ERROR,
                     null,
                     response.status,
-                    response,
+                    response.request,
                     response,
                     response.config);
             }
@@ -93,7 +93,7 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
                 ServerConfigurationsConstants.CONFIGS_UPDATE_REQUEST_ERROR,
                 error.stack,
                 error.code,
-                error,
+                error.request,
                 error.response,
                 error.config);
         });
