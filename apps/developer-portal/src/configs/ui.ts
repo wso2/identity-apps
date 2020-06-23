@@ -254,7 +254,8 @@ export const TechnologyLogos = {
     openidconnect: OIDCLogo,
     react: ReactLogo,
     saml: SamlLogo,
-    vue: VueLogo
+    vue: VueLogo,
+    windows: DotNetLogo
 };
 
 export const ApplicationWizardStepIcons = {

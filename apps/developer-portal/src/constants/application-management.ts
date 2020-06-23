@@ -79,6 +79,20 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_SAMPLES_DOCS_KEY = "Quick Starts[\"Choose a Sample Type\"]";
 
     /**
+     * Key for the application docs tag in the docs structure object.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APPLICATION_DOCS_KEY = "[\"Developer Portal\"].Applications[\"Edit Application\"]";
+
+    /**
+     * Key for the overview tag in the docs structure object.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APPLICATION_DOCS_OVERVIEW = "Overview";
+
+    /**
      * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
      * @remarks
      * If the template name is changed, this map has to be changed.
@@ -88,8 +102,9 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
         .set("SAML web application", "SAML Web Application")
         .set("OIDC web application", "OIDC Web Application")
-        .set("Single page application", "Single Page Aplication")
-        .set("Mobile application", "OIDC Mobile Application");
+        .set("Single page application", "Single Page Application")
+        .set("Mobile application", "OIDC Mobile Application")
+        .set("Windows desktop application", "Windows Desktop Application");
 
     // API errors
     public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
