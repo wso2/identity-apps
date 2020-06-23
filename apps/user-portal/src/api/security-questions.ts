@@ -28,6 +28,11 @@ import { store } from "../store";
 const httpClient = OAuth.getInstance().httpRequest;
 
 /**
+ * Method that sends multiple api requests at once.
+ */
+const httpRequestAll = OAuth.getInstance().httpRequestAll;
+
+/**
  * Fetch the configured security questions of the user.
  *
  * @return {Promise<any>} a promise containing the response.
@@ -41,27 +46,23 @@ export const getSecurityQs = (): Promise<any> => {
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const getQuestions = (): any => {
-        const requestConfig = {
+        return {
             headers,
             method: HttpMethods.GET,
             url: store.getState().config.endpoints.challenges
         };
-
-        return httpClient(requestConfig);
     };
 
     /* eslint-disable @typescript-eslint/no-explicit-any */
     const getAnswers = (): any => {
-        const requestConfig = {
+        return {
             headers,
             method: HttpMethods.GET,
             url: store.getState().config.endpoints.challengeAnswers
         };
-
-        return httpClient(requestConfig);
     };
 
-    return Promise.all([ getQuestions(), getAnswers() ])
+    return httpRequestAll([ getQuestions(), getAnswers() ])
         .then(([questions, answers]) => {
             if (questions.status !== 200 && answers.status !== 200) {
                 return Promise.reject(new Error("Failed to get security questions and answers"));
