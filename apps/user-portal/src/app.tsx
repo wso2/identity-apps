@@ -68,7 +68,7 @@ export const App = (): ReactElement => {
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
-    }, [dispatch]);
+    }, []);
 
     /**
      * Checks if the portal access should be granted based on the feature config.
