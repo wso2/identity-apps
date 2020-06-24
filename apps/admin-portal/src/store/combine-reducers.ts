@@ -45,6 +45,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "../models";
+import { governanceConnectorReducer } from "./reducers/governance-connector";
 
 /**
  * Combines all the reducers.
@@ -61,6 +62,7 @@ export const reducers = combineReducers({
         UIConfigInterface
         >(commonConfigReducerInitialState),
     global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),
+    governanceConnector: governanceConnectorReducer,
     loaders: commonRequestLoadersReducer(commonRequestLoadersInitialState),
     profile: commonProfileReducer<
         ProfileInfoInterface,

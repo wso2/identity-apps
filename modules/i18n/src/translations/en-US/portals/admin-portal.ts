@@ -17,6 +17,7 @@
  */
 
 import { AdminPortalNS } from "../../../models";
+import { Notification } from "../../../models/common";
 
 export const adminPortal: AdminPortalNS = {
     components: {
@@ -921,6 +922,24 @@ export const adminPortal: AdminPortalNS = {
         },
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
+        },
+        governanceConnectors: {
+            notifications: {
+                getConnectorCategories: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving governance connector categories.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                }
+            }
         },
         groups: {
             advancedSearch: {

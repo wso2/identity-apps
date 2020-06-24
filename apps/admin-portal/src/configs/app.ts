@@ -101,6 +101,7 @@ export class Config {
             clientCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/client-certs`,
             emailTemplateType: `${this.getDeploymentConfig().serverHost}/api/server/v1/email/template-types`,
             externalClaims:`${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
+            governanceConnectorCategories: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance`,
             groups: `${this.getDeploymentConfig().serverHost}/scim2/Groups`,
             localClaims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
             loginPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${

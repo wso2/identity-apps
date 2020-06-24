@@ -16,10 +16,4 @@
  * under the License.
  */
 
-export * from "./certificates";
-export * from "./claims";
-export * from "./email-templates";
-export * from "./roles";
-export * from "./governance-connectors";
-export * from "./user-stores";
-export * from "./users";
+export * from "./governance-connector";

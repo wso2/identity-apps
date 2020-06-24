@@ -29,7 +29,7 @@ import { store } from "../store";
  */
 const httpClient = OAuth.getInstance().httpRequest;
 
-export const getConfigurations = (url: string): Promise<any> => {
+export const getData = (url: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -100,12 +100,21 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
 };
 
 /**
+ * Retrieve governance connector categories.
+ *
+ * @returns {Promise<any>} a promise containing the data.
+ */
+export const getConnectorCategories = (): Promise<any> => {
+    return getData(store.getState().config.endpoints.governanceConnectorCategories);
+};
+
+/**
  * Retrieve self sign up configurations.
  *
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getSelfSignUpConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.selfSignUp);
+    return getData(store.getState().config.endpoints.selfSignUp);
 };
 
 /**
@@ -125,7 +134,7 @@ export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getAccountRecoveryConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.accountRecovery);
+    return getData(store.getState().config.endpoints.accountRecovery);
 };
 
 /**
@@ -145,7 +154,7 @@ export const updateAccountRecoveryConfigurations = (data: object): Promise<any> 
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getAllLoginPolicies = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.loginPolicies);
+    return getData(store.getState().config.endpoints.loginPolicies);
 };
 
 /**
@@ -167,7 +176,7 @@ export const updateAllLoginPolicies = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the configurations.
  */
 export const getAllPasswordPolicies = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.passwordPolicies);
+    return getData(store.getState().config.endpoints.passwordPolicies);
 };
 
 /**
@@ -189,7 +198,7 @@ export const updateAllPasswordPolicies = (data: object): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const getRequestPathAuthenticators = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.requestPathAuthenticators);
+    return getData(store.getState().config.endpoints.requestPathAuthenticators);
 };
 
 /**
@@ -198,7 +207,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const getServerConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.serverConfigurations);
+    return getData(store.getState().config.endpoints.serverConfigurations);
 };
 
 /**

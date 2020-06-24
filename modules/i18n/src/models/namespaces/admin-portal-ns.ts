@@ -569,6 +569,11 @@ export interface AdminPortalNS {
                 userPortalNav: string;
             };
         };
+        governanceConnectors: {
+            notifications: {
+                getConnectorCategories: Notification;
+            };
+        };
         helpPanel: {
             notifications: {
                 pin: Notification;

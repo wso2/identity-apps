@@ -15,11 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import {
+    GovernanceConnectorActionTypes,
+    GovernanceConnectorsInterface,
+    SetGovernanceConnectorCategoryInterface
+} from "./types";
 
-export * from "./certificates";
-export * from "./claims";
-export * from "./email-templates";
-export * from "./roles";
-export * from "./governance-connectors";
-export * from "./user-stores";
-export * from "./users";
+export const SetGovernanceConnectorCategory = (
+    payload: GovernanceConnectorsInterface
+): SetGovernanceConnectorCategoryInterface => ({
+    payload: payload,
+    type: GovernanceConnectorActionTypes.SET_GOVERNANCE_CONNECTOR_CATEGORY
+});

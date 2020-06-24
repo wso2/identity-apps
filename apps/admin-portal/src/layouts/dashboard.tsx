@@ -50,11 +50,14 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
-import { UIConstants } from "../constants";
+import { AppConstants, UIConstants } from "../constants";
 import { ComponentPlaceholder } from "../extensions";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
+import { EmailTemplates } from "../pages/email-templates";
 import { AppState, store } from "../store";
+import { GovernanceConnectorCategoryInterface } from "../store/actions/types";
+import { GovernanceConnectorUtils } from "../utils/governance-connector";
 
 /**
  * Dashboard layout Prop types.
@@ -93,6 +96,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const governanceConnectors: GovernanceConnectorCategoryInterface[] = useSelector(
+        (state: AppState) => state.governanceConnector.categories);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[ 0 ]);
@@ -268,6 +273,27 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 
         return resolvedRoutes;
     };
+
+    useEffect(() => {
+        if (governanceConnectors !== undefined && governanceConnectors.length > 0) {
+            const serverConfigsRoute = routes.find(route => route.id === "serverConfigurations");
+            governanceConnectors.map(category => {
+                serverConfigsRoute.children.push({
+                    component: EmailTemplates,
+                    exact: true,
+                    icon: "childIcon",
+                    id: category.id,
+                    level: 2,
+                    name: category.displayName,
+                    path: AppConstants.PATHS.get("SERVER_CONFIGS").replace(":id", category.id),
+                    protected: true,
+                    showOnSidePanel: true
+                });
+            })
+        } else {
+            GovernanceConnectorUtils.getGovernanceConnectors();
+        }
+    }, [ governanceConnectors ]);
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
