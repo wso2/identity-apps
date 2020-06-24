@@ -68,6 +68,8 @@ export const getSecurityQs = (): Promise<any> => {
                 return Promise.reject(new Error("Failed to get security questions and answers"));
             }
             return Promise.resolve([ questions.data, answers.data ]);
+        }).catch(error => {
+            return Promise.reject(error);
         });
 };
 
