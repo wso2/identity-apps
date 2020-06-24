@@ -116,6 +116,10 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
             return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
         }
 
+        if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+			return window.sessionStorage.getItem(AUTHORIZATION_CODE);
+        }
+        
         return null;
     };
 
