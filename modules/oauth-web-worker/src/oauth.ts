@@ -400,6 +400,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
 
         history.pushState({}, document.title, removeAuthorizationCode());
         sessionStorage.removeItem(PKCE_CODE_VERIFIER);
+        sessionStorage.removeItem(AUTHORIZATION_CODE);
 
         return communicate<AuthCode, SignInResponse>(message)
             .then((response) => {
