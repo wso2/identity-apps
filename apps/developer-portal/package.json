@@ -17,7 +17,7 @@
         "copy:themes": "node scripts/copy-themes.js",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
         "postinstall": "node scripts/post-install.js",
-        "prebuild": "npm run clean",
+        "prebuild": "node scripts/pre-build.js",
         "rimraf": "run-script-os",
         "rimraf:default": "../../node_modules/rimraf/bin.js",
         "rimraf:win32": "..\\..\\node_modules\\rimraf\\bin.js",
