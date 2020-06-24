@@ -32,7 +32,6 @@ const dist = path.join(__dirname, "..", "dist");
 
 // Path for the translations after the build.
 const translationsPath = path.join(dist, "src", TRANSLATIONS_FOLDER_NAME);
-const translationsTypingsPath = path.join(dist, "types", TRANSLATIONS_FOLDER_NAME);
 
 // Path for the directory to store final transpiled JSON files.
 const outputPath = path.join(dist, OUTPUT_DIR_NAME);
@@ -128,7 +127,7 @@ log("\nSuccessfully generated the locale bundle.");
 
 log("\nRunning cleanup task......");
 
-cleanup();
+execSync("npm run clean:translations");
 
 log("\nClean up task finished successfully......");
 
@@ -158,29 +157,4 @@ function createFile(filePath, data, options, checkIfExists) {
     if (!fs.existsSync(filePath)) {
         fs.writeFileSync(filePath, data, options);
     }
-}
-
-/**
- * Function to delete directories.
- * @param dirPath - Path to the directory.
- */
-function deleteDirectory(dirPath) {
-
-    if (!fs.existsSync(dirPath)) {
-        log("\nDirectory does not exist - ", dirPath);
-
-        return;
-    }
-
-    fs.rmdirSync(dirPath, { recursive: true });
-    log("\nDirectory deleted - ", dirPath);
-}
-
-/**
- * Function to run the clean up tasks.
- */
-function cleanup() {
-    // Original Translation files are no longer needed after they are compiled to JSON.
-    deleteDirectory(translationsPath);
-    deleteDirectory(translationsTypingsPath);
 }
