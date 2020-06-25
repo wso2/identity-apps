@@ -9,6 +9,13 @@
     "appBaseName": "{{ admin_portal.app_base_name }}",
     "clientID": "{{ admin_portal.client_id }}",
     "debug": {{ admin_portal.debug.enable }},
+    "developerApp": {
+        {% if admin_portal.applications.developer_app.configs is defined %}
+        {% for key, value in admin_portal.applications.developer_app.configs.items() %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
     "documentation": {
         "baseURL": "{{ admin_portal.documentation.base_url }}",
         "contentBaseURL": "{{ admin_portal.documentation.content_base_url }}",
