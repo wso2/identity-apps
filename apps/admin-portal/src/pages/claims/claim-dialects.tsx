@@ -87,6 +87,8 @@ export const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = 
 
     const [ resetPagination, setResetPagination ] = useTrigger();
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
     const dispatch = useDispatch();
 
     /**
@@ -246,7 +248,8 @@ export const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = 
                 {
                     hasRequiredScopes(
                         featureConfig?.attributeDialects,
-                        featureConfig?.attributeDialects?.scopes?.read) && (
+                        featureConfig?.attributeDialects?.scopes?.read,
+                        allowedScopes) && (
                         <Segment data-testid={ `${ testId }-local-dialect-container` } >
                             <List>
                                 <List.Item>

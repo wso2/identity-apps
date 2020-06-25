@@ -52,8 +52,8 @@ export class AuthenticateUtils {
      *
      * @return {boolean} True or false.
      */
-    public static hasScope(scope: string): boolean {
-        const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
+    public static hasScope(scope: string, allowedScopes: string): boolean {
+        const scopes = allowedScopes.split(" ");
         return scopes.includes(scope);
     }
 

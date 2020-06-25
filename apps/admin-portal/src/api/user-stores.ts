@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
 import { store } from "../store";
 
@@ -31,7 +31,7 @@ const RESOURCE_NOT_FOUND_ERROR_MESSAGE = "Resource not found.";
  *
  * @type { AxiosHttpClientInstance }
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Fetches all userstores.
@@ -51,8 +51,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
         params,
         url: store.getState().config.endpoints.userStores
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -81,8 +80,7 @@ export const getUserstoreTypes = (): Promise<any> => {
         method: HttpMethods.GET,
         url: `${store.getState().config.endpoints.userStores}/meta/types`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -114,8 +112,7 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
         params,
         url: `${store.getState().config.endpoints.userStores}/meta/types/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -145,8 +142,7 @@ export const getAUserStore = (id: string): Promise<any> => {
         url: `${store.getState().config.endpoints.userStores}/${id}`
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -175,8 +171,7 @@ export const deleteUserStore = (id: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.userStores}/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -208,8 +203,7 @@ export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {
         method: HttpMethods.PATCH,
         url: `${store.getState().config.endpoints.userStores}/${id}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -239,8 +233,7 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
         method: HttpMethods.POST,
         url: `${store.getState().config.endpoints.userStores}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -272,8 +265,7 @@ export const updateUserStore = (id: string,data: UserStorePostData): Promise<any
         url: `${store.getState().config.endpoints.userStores}/${id}`
         
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -303,8 +295,7 @@ export const testConnection = (data: TestConnection): Promise<any> => {
         method: HttpMethods.POST,
         url: `${store.getState().config.endpoints.userStores}/test-connection`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AuthStateInterface, createEmptyProfile } from "../../models";
 import { authenticateActionTypes } from "../actions/types";
 
@@ -32,6 +31,7 @@ const authenticateInitialState: AuthStateInterface = {
     logoutInit: false,
     profileInfo: createEmptyProfile(),
     profileSchemas: [],
+    scope: "",
     username: ""
 };
 
@@ -45,15 +45,16 @@ const authenticateInitialState: AuthStateInterface = {
 const authenticateReducer = (state: AuthStateInterface = authenticateInitialState, action): AuthStateInterface => {
     switch (action.type) {
         case authenticateActionTypes.SET_SIGN_IN:
-            if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+            if (action.payload) {
                 return {
                     ...state,
-                    displayName: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.DISPLAY_NAME),
-                    emails: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.EMAIL),
+                    displayName: action.payload.display_name,
+                    emails: action.payload.email,
                     isAuth: true,
                     loginInit: true,
                     logoutInit: false,
-                    username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
+                    scope:action.payload.scope,
+                    username: action.payload.username
                 };
             }
             break;

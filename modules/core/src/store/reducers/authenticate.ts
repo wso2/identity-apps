@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateTokenKeys, AuthenticateUserKeys } from "@wso2is/authentication";
 import { CommonAuthReducerStateInterface } from "../../models";
 import { CommonAuthenticateActionTypes, CommonAuthenticateActions } from "../actions/types";
 
@@ -33,15 +32,16 @@ export const commonAuthenticateReducer = (initialState: CommonAuthReducerStateIn
 
     switch (action.type) {
         case CommonAuthenticateActionTypes.SET_SIGN_IN:
-            if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
+            if (action.payload) {
                 return {
                     ...state,
-                    displayName: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.DISPLAY_NAME),
-                    emails: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.EMAIL),
+                    displayName: action.payload.display_name,
+                    emails: action.payload.email,
                     isAuthenticated: true,
                     loginInit: true,
                     logoutInit: false,
-                    username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME),
+                    scope: action.payload.scope,
+                    username: action.payload.username
                 };
             }
             break;

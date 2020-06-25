@@ -79,7 +79,8 @@ export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInt
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    
     const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
@@ -273,7 +274,8 @@ export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInt
                     resetPagination={ resetPagination }
                     rightActionPanel={
                         (hasRequiredScopes(featureConfig?.certificates,
-                            featureConfig?.certificates?.scopes?.create)
+                            featureConfig?.certificates?.scopes?.create,
+                            allowedScopes)
                             && !isSuper) && (
                             <PrimaryButton
                                 onClick={ () => {

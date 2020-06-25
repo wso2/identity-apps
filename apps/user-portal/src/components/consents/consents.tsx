@@ -19,6 +19,7 @@
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
 import {
@@ -36,6 +37,7 @@ import {
     RevokedClaimInterface,
     ServiceInterface
 } from "../../models";
+import { AppState } from "../../store";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
 
@@ -58,6 +60,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
 
+    const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
+
     const { onAlertFired } = props;
     const { t } = useTranslation();
 
@@ -65,7 +69,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * Retrieves the consented applications of the user.
      */
     const getConsentedApps = (): void => {
-        fetchConsentedApps(ConsentState.ACTIVE)
+        fetchConsentedApps(ConsentState.ACTIVE, userName)
             .then((response) => {
                 setConsentedApps(response);
             })
@@ -80,7 +84,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.consentManagement.notifications.consentedAppsFetch.error.message"
-                        ),
+                        )
                     });
 
                     return;
@@ -132,7 +136,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         message: t(
                             "userPortal:components.consentManagement.notifications.consentReceiptFetch.error" +
                             ".message"
-                        ),
+                        )
                     });
 
                     return;
@@ -337,7 +341,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         message: t(
                             "userPortal:components.consentManagement.notifications.updateConsentedClaims" +
                             ".error.message"
-                        ),
+                        )
                     });
 
                     return;

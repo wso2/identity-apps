@@ -18,6 +18,7 @@
 
 import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -27,6 +28,8 @@ import { store } from "../store";
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = AxiosHttpClient.getInstance();
+
+const httpRequest = OAuth.getInstance().httpRequest;
 
 /**
  * Updates the user's password.
@@ -66,7 +69,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
         url: store.getState().config.endpoints.me
     };
 
-    return httpClient.request(requestConfig)
+    return httpRequest(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to update password.");

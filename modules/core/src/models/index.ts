@@ -29,3 +29,4 @@ export * from "./roles";
 export * from "./route";
 export * from "./storage";
 export * from "./userstores";
+export * from "./authenticated-user";

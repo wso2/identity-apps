@@ -18,7 +18,7 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosResponse } from "axios";
 import { ServerConfigurationsConstants } from "../constants";
 import { store } from "../store";
@@ -26,9 +26,8 @@ import { store } from "../store";
 /**
  * Initialize an axios Http client.
  *
- * @type { AxiosHttpClientInstance }
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 export const getConfigurations = (url: string): Promise<any> => {
     const requestConfig = {
@@ -40,7 +39,7 @@ export const getConfigurations = (url: string): Promise<any> => {
         url: url
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -75,7 +74,7 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
         url: url
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(

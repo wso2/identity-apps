@@ -34,13 +34,14 @@ import {
     Placeholder,
     Responsive
 } from "semantic-ui-react";
-import { getGravatarImage, switchAccount } from "../../api";
+import { getGravatarImage } from "../../api";
 import { GlobalConfig } from "../../configs";
 import { resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
 import { AppState } from "../../store";
-import { addAlert, getProfileInformation, getProfileLinkedAccounts } from "../../store/actions";
+import { addAlert, getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { UserAvatar } from "../shared";
+import { refreshPage } from "../../utils";
 
 /**
  * Header component prop types.
@@ -104,41 +105,39 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
      * @param { LinkedAccountInterface } account - Target account.
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
-        switchAccount(account)
-            .then(() => {
-                // reload the page on successful account switch.
-                window.location.reload();
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.detail) {
-                    dispatch(
-                        addAlert({
-                            description: t(
-                                "userPortal:components.linkedAccounts.notifications.switchAccount.error.description",
-                                { description: error.response.data.detail }
-                            ),
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "userPortal:components.linkedAccounts.notifications.switchAccount.error.message"
-                            )
-                        })
-                    );
-
-                    return;
-                }
-
+        try {
+            dispatch(handleAccountSwitching(account));
+            refreshPage();
+        } catch (error) {
+            if (error.response && error.response.data && error.response.detail) {
                 dispatch(
                     addAlert({
                         description: t(
-                            "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                            "userPortal:components.linkedAccounts.notifications.switchAccount.error.description",
+                            { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                            "userPortal:components.linkedAccounts.notifications.switchAccount.error.message"
                         )
                     })
                 );
-            });
+
+                return;
+            }
+
+            dispatch(
+                addAlert({
+                    description: t(
+                        "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                    )
+                })
+            );
+        }
     };
 
     return (

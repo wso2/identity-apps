@@ -88,7 +88,8 @@ export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
@@ -247,7 +248,8 @@ export const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 rightActionPanel={
-                    (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create))
+                    (hasRequiredScopes(
+                        featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))
                         ? (
                             <PrimaryButton
                                 onClick={ (): void => {

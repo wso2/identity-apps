@@ -137,6 +137,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
     /**
      * Fetch the application templates if list is not available in redux.
      */
@@ -229,7 +231,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         actions.push({
             hidden: !hasRequiredScopes(
                 featureConfig?.applications,
-                featureConfig?.applications?.scopes?.delete)
+                featureConfig?.applications?.scopes?.delete, allowedScopes)
                 || config.ui.doNotDeleteApplications.includes(app.name),
             icon: "trash alternate",
             onClick: (): void => {

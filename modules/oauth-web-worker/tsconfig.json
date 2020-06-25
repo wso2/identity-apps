@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "experimentalDecorators": true,
+        "target": "es6",
+        "module": "esnext",
+        "strict": true,
+        "moduleResolution": "node",
+        "rootDir": ".",
+        "outDir": "./dist",
+        "composite": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "forceConsistentCasingInFileNames": true,
+        "importHelpers": true,
+        "removeComments": true,
+        "lib": ["es6", "dom", "ES2017"],
+        "strictNullChecks": false,
+        "declarationDir": "dist/typings",
+        "allowSyntheticDefaultImports": true,
+        "esModuleInterop": true,
+        "noImplicitAny": false,
+        "resolveJsonModule": true,
+        "noLib": false,
+        "suppressImplicitAnyIndexErrors": true
+    }
+}

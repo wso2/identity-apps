@@ -37,7 +37,7 @@ export const PersonalInfoPage = (): JSX.Element => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
@@ -56,7 +56,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE")
@@ -71,7 +73,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")
@@ -86,7 +90,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS")
@@ -101,7 +107,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")

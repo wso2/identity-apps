@@ -21,9 +21,10 @@ import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/
 import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateApplicationConfigurations } from "../../../api";
 import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../../models";
+import { AppState } from "../../../store";
 import { AdvancedConfigurationsForm } from "../forms";
 
 /**
@@ -66,6 +67,8 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Handles the advanced config form submit action.
@@ -112,7 +115,8 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 readOnly={
-                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    !hasRequiredScopes(
+                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
                 }
                 data-testid={ `${ testId }-form` }
             />

@@ -23,7 +23,7 @@ import { Field, Forms } from "@wso2is/forms";
 import { Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { ScriptBasedFlow } from "./script-based-flow";
 import { StepBasedFlow } from "./step-based-flow";
@@ -34,6 +34,7 @@ import {
     AuthenticationStepInterface,
     FeatureConfigInterface
 } from "../../../../models";
+import { AppState } from "../../../../store";
 
 /**
  * Proptypes for the sign on methods component.
@@ -87,6 +88,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
     const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    
     /**
      * Toggles the update trigger.
      */
@@ -291,7 +294,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 onUpdate={ handleSequenceUpdate }
                 triggerUpdate={ updateTrigger }
                 readOnly={
-                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    !hasRequiredScopes(
+                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes
+                    )
                 }
                 data-testid={ `${ testId }-step-based-flow` }
             />
@@ -302,13 +307,19 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 onTemplateSelect={ handleLoadingDataFromTemplate }
                 onScriptChange={ handleAdaptiveScriptChange }
                 readOnly={
-                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    !hasRequiredScopes(
+                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes
+                    )
                 }
                 data-testid={ `${ testId }-script-based-flow` }
             />
             { requestPathAuthenticators && showRequestPathAuthenticators }
             {
-                hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update) && (
+                hasRequiredScopes(
+                    featureConfig?.applications,
+                    featureConfig?.applications?.scopes?.update,
+                    allowedScopes
+                ) && (
                     <>
                         <Divider hidden />
                         <PrimaryButton

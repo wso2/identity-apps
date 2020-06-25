@@ -73,6 +73,7 @@ export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ claims, setClaims ] = useState<Claim[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -303,7 +304,8 @@ export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     rightActionPanel={
                         hasRequiredScopes(
                             featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.create) && (
+                            featureConfig?.attributeDialects?.scopes?.create,
+                            allowedScopes) && (
                             <PrimaryButton
                                 onClick={ () => {
                                     setOpenModal(true);
