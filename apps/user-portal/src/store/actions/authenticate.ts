@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { I18n } from "@wso2is/i18n";
 import { OAuth } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
 import { getProfileLinkedAccounts } from ".";
@@ -23,7 +24,6 @@ import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
 import { getProfileInfo, getProfileSchemas, switchAccount } from "../../api";
-import { i18n } from "../../configs";
 import { history } from "../../helpers";
 import {
     AlertLevels,
@@ -130,11 +130,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
             dispatch(
                 addAlert({
-                    description: i18n.t(
+                    description: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: i18n.t(
+                    message: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
@@ -144,12 +144,12 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: i18n.t(
+                        description: I18n.instance.t(
                             "views:components.profile.notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: i18n.t(
+                        message: I18n.instance.t(
                             "views:components.profile.notifications.getProfileInfo.error.message"
                         )
                     })
@@ -160,11 +160,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
             dispatch(
                 addAlert({
-                    description: i18n.t(
+                    description: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: i18n.t(
+                    message: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
