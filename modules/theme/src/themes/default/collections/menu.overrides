@@ -33,7 +33,7 @@
         box-shadow: none;
 
         .user-dropdown {
-            &:hover {
+            &:hover, &:active, &:focus {
                 background: transparent;
             }
             .divider {
@@ -47,59 +47,86 @@
                     text-align: right;
                 }
             }
-            .header {
-                .name {
-                    font-weight: bold;
-                    min-width: 100px;
-                }
-                .email {
-                    color: @nobel;
-                    min-width: 100px;
-                }
-            }
-            .linked-accounts-list {
-                max-height: 200px;
-                overflow: auto;
-            }
-            .linked-account {
-                background: @whiteSmoke;
-                border-top: 1px solid #ccc;
-                border-top-color: rgba(0,0,0,.2);
-                margin-top: 0;
-                margin-bottom: 0;
+            .menu {
+                min-width: @userDropdownMinWidth;
+                padding: @userDropdownPadding;
 
-                &:hover {
-                    cursor: pointer;
-                    background: darken(@whiteSmoke, 2);
-                }
-                &:first-child {
-                    border-top: 0;
-                }
-                .name {
-                    font-weight: 400;
-                }
-                .email {
-                    color: @nobel;
-                }
-            }
-            .action-panel {
-                border-top: 1px solid #ccc;
-                border-color: rgba(0,0,0,.2);
-                padding: 10px 5px;
+                .header {
+                    border-bottom: 1px solid @defaultBorderColor;
 
-                &:hover {
-                    background: transparent !important;
+                    .content{
+                        padding-left: 15px;
+
+                        .description {
+                            margin-top: 0;
+
+                            .name {
+                                font-weight: bold;
+                                min-width: 100px;
+                            }
+                            .email {
+                                color: @nobel;
+                                min-width: 100px;
+                            }
+                        }
+                    }
                 }
+                .linked-accounts-list {
+                    max-height: 200px;
+                    overflow: auto;
+                }
+                .linked-account {
+                    background: @whiteSmoke;
+                    border-top: 1px solid #ccc;
+                    border-top-color: rgba(0,0,0,.2);
+                    margin-top: 0;
+                    margin-bottom: 0;
 
-                .action-button {
-                    background: #f8f8f8;
-                    border: 1px solid #c6c6c6;
-                    line-height: 28px;
-                    padding: 6px 20px;
-                    color: #666;
+                    &:hover {
+                        cursor: pointer;
+                        background: darken(@whiteSmoke, 2);
+                    }
+                    &:first-child {
+                        border-top: 0;
+                    }
+                    .name {
+                        font-weight: 400;
+                    }
+                    .email {
+                        color: @nobel;
+                    }
+                }
+                .action-panel {
+                    border: none;
+                    margin: @userDropdownLinkMargin;
+                    padding: 1.2em 1em!important;
+                    border-radius: @defaultBorderRadius;
 
-                    &, &:hover {
+                    &:last-child {
+                        margin-bottom: 0 !important;
+                    }
+                    &.no-hover {
+                        &:hover {
+                            background: transparent !important;
+                        }
+                    }
+                    .link-icon {
+                        color: @textColor;
+                    }
+                    .link-text {
+                        color: @textColor;
                         text-decoration: none;
+                    }
+                    .action-button {
+                        background: #f8f8f8;
+                        border: 1px solid #c6c6c6;
+                        line-height: 28px;
+                        padding: 6px 20px;
+                        color: #666;
+
+                        &, &:hover {
+                            text-decoration: none;
+                        }
                     }
                 }
             }
