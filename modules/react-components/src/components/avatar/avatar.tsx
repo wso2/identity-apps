@@ -110,7 +110,7 @@ export interface AvatarPropsInterface extends TestableComponentInterface {
 /**
  * Type to handle Avatar sizes.
  */
-export type AvatarSizes = SemanticSIZES | "little";
+export type AvatarSizes = SemanticSIZES | "x60" | "little";
 
 /**
  * Avatar component.
