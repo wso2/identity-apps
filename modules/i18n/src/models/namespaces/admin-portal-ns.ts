@@ -563,6 +563,12 @@ export interface AdminPortalNS {
                 createPermission: Notification;
             };
         };
+        header: {
+            links: {
+                devPortalNav: string;
+                userPortalNav: string;
+            };
+        };
         helpPanel: {
             notifications: {
                 pin: Notification;

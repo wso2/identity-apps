@@ -588,6 +588,12 @@ export interface DevPortalNS {
         footer: {
             copyright: string;
         };
+        header: {
+            links: {
+                adminPortalNav: string;
+                userPortalNav: string;
+            };
+        };
         helpPanel: {
             notifications: {
                 pin: Notification;

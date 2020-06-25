@@ -362,21 +362,23 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     basicProfileInfo={ profileInfo }
                     fluid={ !isMobileViewport ? fluid : false }
                     isProfileInfoLoading={ isProfileInfoLoading }
-                    userDropdownInfoAction={ (
-                        <Button
-                            size="tiny"
-                            primary
-                            onClick={
-                                (): void => {
-                                    window.open(window[ "AppUtils" ].getConfig().accountApp.path);
-                                }
-                            }
-                        >
-                            { t("common:myAccount") }
-                        </Button>
-                    ) }
                     userDropdownLinks={ [
                         {
+                            icon: "arrow right",
+                            name: t("adminPortal:components.header.links.userPortalNav"),
+                            target: "_blank",
+                            to: window[ "AppUtils" ].getConfig().accountApp.path,
+                            useWindowOpen: true
+                        },
+                        {
+                            icon: "arrow right",
+                            name: t("adminPortal:components.header.links.devPortalNav"),
+                            target: "_blank",
+                            to: window[ "AppUtils" ].getConfig().developerApp.path,
+                            useWindowOpen: true
+                        },
+                        {
+                            icon: "power off",
                             name: t("common:logout"),
                             to: window[ "AppUtils" ].getConfig().routes.logout
                         }
