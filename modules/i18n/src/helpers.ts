@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import * as translations from "./translations";
-import { I18nModuleOptionsInterface, SupportedLanguagesMeta } from "./models";
+import { StringUtils } from "@wso2is/core/utils";
 import { InitOptions, Resource } from "i18next";
 import { I18nModuleConstants } from "./constants";
-import { StringUtils } from "@wso2is/core/utils";
+import { I18nModuleOptionsInterface, LocaleBundles, SupportedLanguagesMeta } from "./models";
 
 /**
  * Generate the i18n options.
@@ -29,10 +28,14 @@ import { StringUtils } from "@wso2is/core/utils";
  * @param {boolean} override - Should the passed in options replace the default.
  * @param {boolean} useBackend - XHR back end plugin is used or not. If false, static resources will be loaded.
  * @param {boolean} debug - Debug enabled flag.
+ * @param {LocaleBundles} defaultTranslations - Set of translations packed by default.
  * @return {InitOptions} Init options config.
  */
-export const generateI18nOptions = (options: InitOptions, override: boolean, useBackend: boolean,
-                                    debug: boolean): InitOptions => {
+export const generateI18nOptions = (options: InitOptions,
+                                    override: boolean,
+                                    useBackend: boolean,
+                                    debug: boolean,
+                                    defaultTranslations?: LocaleBundles): InitOptions => {
 
     const DEFAULT_INIT_OPTIONS: InitOptions = {
         contextSeparator: "_",
@@ -43,10 +46,12 @@ export const generateI18nOptions = (options: InitOptions, override: boolean, use
             escapeValue: false
         },
         keySeparator: ".",
-        ns: getNamespacesSupportedByDefault(),
+        ns: defaultTranslations && getNamespacesSupportedByDefault(defaultTranslations),
         nsSeparator: ":",
         pluralSeparator: "_",
-        resources: !useBackend ? getResourcesSupportedByDefault() : undefined
+        resources: !useBackend
+            ? defaultTranslations && getResourcesSupportedByDefault(defaultTranslations)
+            : undefined
     };
 
     if (override) {
@@ -66,13 +71,14 @@ export const generateI18nOptions = (options: InitOptions, override: boolean, use
 /**
  * Load the namespaces from the default bundle which is inside the module.
  *
+ * @param {LocaleBundles} defaultTranslations - Set of translations packed by default.
  * @return {string[]} Namespace array.
  */
-export const getNamespacesSupportedByDefault = (): string[] => {
+export const getNamespacesSupportedByDefault = (defaultTranslations: LocaleBundles): string[] => {
 
     const namespaces: string[] = [];
 
-    for (const value of Object.values(translations)) {
+    for (const value of Object.values(defaultTranslations)) {
         for (const namespace of value.meta.namespaces) {
             if (!namespaces.includes(namespace)) {
                 namespaces.push(namespace);
@@ -86,13 +92,14 @@ export const getNamespacesSupportedByDefault = (): string[] => {
 /**
  * Load the default resource bundle available inside the module.
  *
+ * @param {LocaleBundles} defaultTranslations - Set of translations packed by default.
  * @return {i18next.Resource} Resource bundle.
  */
-export const getResourcesSupportedByDefault = (): Resource => {
+export const getResourcesSupportedByDefault = (defaultTranslations: LocaleBundles): Resource => {
 
     let resources: Resource = {};
 
-    for (const locale of Object.values(translations)) {
+    for (const locale of Object.values(defaultTranslations)) {
         // Try to find the namespace resource file based on the namespaces array declared in meta.
         for(const resource of Object.values(locale.resources)) {
             resources = {
@@ -112,13 +119,14 @@ export const getResourcesSupportedByDefault = (): Resource => {
  * Get the supported list of languages that are supported by default.
  * i.e. The languages that are packed by default.
  *
+ * @param {LocaleBundles} defaultTranslations - Set of translations packed by default.
  * @return {string[]} Supported languages.
  */
-export const getLanguagesSupportedByDefault = (): string[] => {
+export const getLanguagesSupportedByDefault = (defaultTranslations: LocaleBundles): string[] => {
 
     const languages: string[] = [];
 
-    for (const value of Object.values(translations)) {
+    for (const value of Object.values(defaultTranslations)) {
         languages.push(value.meta.code);
     }
 
@@ -131,12 +139,17 @@ export const getLanguagesSupportedByDefault = (): string[] => {
  * @param {string} detectedLanguage - Detected language.
  * @param {string[]} supportedLanguages - Supported languages.
  * @param {SupportedLanguagesMeta} meta - Meta file.
+ * @param {LocaleBundles} defaultTranslations - Set of translations packed by default.
  * @return {boolean} Returns true if supported, else returns false.
  */
-export const isLanguageSupported = (detectedLanguage: string, supportedLanguages?: string[],
-                                    meta?: SupportedLanguagesMeta): boolean => {
+export const isLanguageSupported = (detectedLanguage: string,
+                                    supportedLanguages?: string[],
+                                    meta?: SupportedLanguagesMeta,
+                                    defaultTranslations?: LocaleBundles): boolean => {
 
-    let languages: string[] = getLanguagesSupportedByDefault();
+    let languages: string[] = defaultTranslations
+        ? getLanguagesSupportedByDefault(defaultTranslations)
+        : [];
 
     if (supportedLanguages && supportedLanguages instanceof Array && supportedLanguages.length > 0) {
         languages = supportedLanguages;
@@ -166,7 +179,9 @@ export const isLanguageSupported = (detectedLanguage: string, supportedLanguages
  * @param {I18nModuleOptionsInterface} i18nBundleOptions - I18n module options.
  * @return {string} Resolved path.
  */
-export const generateBackendPaths = (language: string[], namespace: string[], appBaseName: string,
+export const generateBackendPaths = (language: string[],
+                                     namespace: string[],
+                                     appBaseName: string,
                                      i18nBundleOptions: I18nModuleOptionsInterface): string => {
 
     const fullResourcePath = `${ StringUtils.removeSlashesFromPath(appBaseName) }/${

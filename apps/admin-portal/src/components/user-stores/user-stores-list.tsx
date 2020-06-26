@@ -279,7 +279,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         size="mini"
                                         data-testid={ `${ testId }-item-image` }
                                     >
-                                        <DatabaseAvatarGraphic.ReactComponent />
+                                        <DatabaseAvatarGraphic />
                                     </Image>
                                 }
                                 key={ index }

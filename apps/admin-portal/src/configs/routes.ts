@@ -17,32 +17,9 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { SignIn, SignOut } from "../components";
+import { lazy } from "react";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
-import {
-    AddTemplateLocale,
-    CertificatesKeystore,
-    ClaimDialectsPage,
-    EmailTemplateTypes,
-    EmailTemplates,
-    ExternalDialectEditPage,
-    GroupsPage,
-    LocalClaimsEditPage,
-    LocalClaimsPage,
-    OverviewPage,
-    PageNotFound,
-    PrivacyPage,
-    RoleEditPage,
-    RolesPage,
-    ServerConfigurationsPage,
-    UnauthorizedErrorPage,
-    UserEditPage,
-    UserStores,
-    UserStoresEditPage,
-    UsersPage,
-    UserstoresTemplates
-} from "../pages";
 
 /**
  * Dashboard Layout Routes array.
@@ -64,7 +41,7 @@ import {
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: OverviewPage,
+        component: lazy(() => import("../pages/overview")),
         icon: "overview",
         id: "overview",
         name: "adminPortal:components.sidePanel.overview",
@@ -75,7 +52,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: UserEditPage,
+                component: lazy(() => import("../pages/users/user-edit")),
                 exact: true,
                 icon: "childIcon",
                 id: "usersEdit",
@@ -85,7 +62,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: UsersPage,
+        component: lazy(() => import("../pages/users/users")),
         exact: true,
         icon: "users",
         id: "users",
@@ -97,7 +74,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: RoleEditPage,
+                component: lazy(() => import("../pages/roles/role-edit")),
                 exact: true,
                 icon: "childIcon",
                 id: "groupsEdit",
@@ -107,7 +84,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: GroupsPage,
+        component: lazy(() => import("../pages/groups/groups")),
         exact: true,
         icon: "groups",
         id: "groups",
@@ -119,7 +96,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: RoleEditPage,
+                component: lazy(() => import("../pages/roles/role-edit")),
                 exact: true,
                 icon: "childIcon",
                 id: "rolesEdit",
@@ -129,7 +106,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: RolesPage,
+        component: lazy(() => import("../pages/roles/role")),
         exact: true,
         icon: "roles",
         id: "roles",
@@ -141,7 +118,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: LocalClaimsEditPage,
+                component: lazy(() => import("../pages/claims/local-claims-edit")),
                 exact: true,
                 icon: "childIcon",
                 id: "editLocalClaims",
@@ -152,7 +129,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: LocalClaimsPage,
+                component: lazy(() => import("../pages/claims/local-claims")),
                 exact: true,
                 icon: "childIcon",
                 id: "localDialect",
@@ -163,7 +140,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: ExternalDialectEditPage,
+                component: lazy(() => import("../pages/claims/external-dialect-edit")),
                 exact: true,
                 icon: "childIcon",
                 id: "editExternalDialect",
@@ -174,7 +151,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: ClaimDialectsPage,
+        component: lazy(() => import("../pages/claims/claim-dialects")),
         exact: true,
         icon: "claims",
         id: "attributeDialects",
@@ -187,7 +164,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: UserStoresEditPage,
+                component: lazy(() => import("../pages/user-stores/user-stores-edit")),
                 icon: "childIcon",
                 id: "edit-user-store",
                 name: "adminPortal:components.sidePanel.editUserstore",
@@ -196,7 +173,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: UserstoresTemplates,
+                component: lazy(() => import("../pages/user-stores/userstores-templates")),
                 icon: "childIcon",
                 id: "userstore-templates",
                 name: "adminPortal:components.sidePanel.userstoreTemplates",
@@ -205,7 +182,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: UserStores,
+        component: lazy(() => import("../pages/user-stores/user-stores")),
         icon: "userStore",
         id: "userStores",
         name: "adminPortal:components.sidePanel.userstores",
@@ -214,7 +191,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
-        component: CertificatesKeystore,
+        component: lazy(() => import("../pages/certificates/certificates-keystore")),
         icon: "certificate",
         id: "certificates",
         name: "adminPortal:components.sidePanel.certificates",
@@ -225,7 +202,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: ServerConfigurationsPage,
+                component: lazy(() => import("../pages/configurations/server-configurations")),
                 exact: true,
                 icon: "childIcon",
                 id: "generalConfigurations",
@@ -236,7 +213,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: true
             },
             {
-                component: EmailTemplateTypes,
+                component: lazy(() => import("../pages/email-templates/email-template-types")),
                 exact: true,
                 icon: "childIcon",
                 id: "emailTemplates",
@@ -247,7 +224,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: true
             },
             {
-                component: EmailTemplates,
+                component: lazy(() => import("../pages/email-templates/email-templates")),
                 exact: true,
                 icon: "childIcon",
                 id: "emailTemplates",
@@ -257,7 +234,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: AddTemplateLocale,
+                component: lazy(() => import("../pages/email-templates/email-locale-add")),
                 exact: true,
                 icon: "childIcon",
                 id: "emailTemplates",
@@ -267,7 +244,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: AddTemplateLocale,
+                component: lazy(() => import("../pages/email-templates/email-locale-add")),
                 exact: true,
                 icon: "childIcon",
                 id: "emailTemplates",
@@ -301,7 +278,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: PrivacyPage,
+        component: lazy(() => import("../pages/privacy")),
         icon: null,
         id: "privacy",
         name: "adminPortal:components.sidePanel.privacy",
@@ -316,7 +293,7 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: UnauthorizedErrorPage,
+        component: lazy(() => import("../pages/errors/unauthorized")),
         icon: null,
         id: "unauthorized",
         name: "Unauthorized",
@@ -325,7 +302,7 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: PageNotFound,
+        component: lazy(() => import("../pages/errors/404")),
         icon: null,
         id: "pageNotFound",
         name: "404",
@@ -340,7 +317,7 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: SignIn,
+        component: lazy(() => import("../pages/authentication/sign-in")),
         icon: null,
         id: "authLayoutLogin",
         name: "Login",
@@ -349,7 +326,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: SignOut,
+        component: lazy(() => import("../pages/authentication/sign-out")),
         icon: null,
         id: "authLayoutLogout",
         name: "Logout",

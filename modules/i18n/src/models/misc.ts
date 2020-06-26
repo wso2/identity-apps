@@ -66,6 +66,13 @@ export interface LocaleBundle {
 }
 
 /**
+ * Model for set of locale bundle.
+ */
+export interface LocaleBundles {
+    [ language: string ]: LocaleBundle;
+}
+
+/**
  * Model for supported languages metadata.
  */
 export interface SupportedLanguagesMeta {

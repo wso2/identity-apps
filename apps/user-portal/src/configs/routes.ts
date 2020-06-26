@@ -18,18 +18,9 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { AppLayout } from "@wso2is/react-components";
+import { lazy } from "react";
 import { ApplicationConstants } from "../constants";
 import * as TokenConstants from "../constants/token-constants";
-import {
-    AccountSecurityPage,
-    ApplicationsPage,
-    LoginErrorPage,
-    OperationsPage,
-    OverviewPage,
-    PageNotFound,
-    PersonalInfoPage,
-    PrivacyPage
-} from "../pages";
 
 /**
  * Interface to handle route types.
@@ -51,7 +42,7 @@ export interface Route {
  */
 const ROUTES: Route[] = [
     {
-        component: OverviewPage,
+        component: lazy(() => import("../pages/overview")),
         icon: "overview",
         id: "overview",
         name: "common:overview",
@@ -60,7 +51,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: true
     },
     {
-        component: ApplicationsPage,
+        component: lazy(() => import("../pages/applications")),
         icon: "apps",
         id: "applications",
         name: "common:applications",
@@ -69,7 +60,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: true
     },
     {
-        component: PersonalInfoPage,
+        component: lazy(() => import("../pages/personal-info")),
         icon: "personal",
         id: "personalInfo",
         name: "common:personalInfo",
@@ -78,7 +69,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: true
     },
     {
-        component: AccountSecurityPage,
+        component: lazy(() => import("../pages/account-security")),
         icon: "security",
         id: "security",
         name: "common:security",
@@ -87,7 +78,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: true
     },
     {
-        component: OperationsPage,
+        component: lazy(() => import("../pages/operations")),
         icon: "operations",
         id: "operations",
         name: "common:operations",
@@ -97,7 +88,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: true
     },
     {
-        component: PrivacyPage,
+        component: lazy(() => import("../pages/privacy")),
         icon: "security",
         id: "privacy",
         name: "common:privacy",
@@ -106,7 +97,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: false
     },
     {
-        component: LoginErrorPage,
+        component: lazy(() => import("../pages/errors/login-error")),
         id: "loginError",
         name: "Login error",
         path: ApplicationConstants.LOGIN_ERROR_PAGE_PATH,
@@ -114,7 +105,7 @@ const ROUTES: Route[] = [
         showOnSidePanel: false
     },
     {
-        component: PageNotFound,
+        component: lazy(() => import("../pages/errors/404")),
         id: "404",
         name: "404",
         path: "*",

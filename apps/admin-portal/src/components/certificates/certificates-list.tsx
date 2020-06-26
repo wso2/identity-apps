@@ -412,7 +412,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon.ReactComponent />
+                        <CertificateIllustrations.ribbon />
                         <div className="certificate-alias">
                             View Certificate - {
                             certificateDisplay?.alias
@@ -529,7 +529,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                     <ResourceList.Item
                                         avatar={
                                             <Avatar
-                                                image={ <CertificateIllustrations.avatar.ReactComponent /> }
+                                                image={ <CertificateIllustrations.avatar /> }
                                                 transparent={ true }
                                                 avatarType="app"
                                                 spaced="right"

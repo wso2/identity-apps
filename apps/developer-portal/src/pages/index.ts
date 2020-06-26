@@ -17,6 +17,7 @@
  */
 
 export * from "./applications";
+export * from "./authentication";
 export * from "./errors";
 export * from "./identity-providers";
 export * from "./customize";

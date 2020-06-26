@@ -102,6 +102,9 @@ apps/user-portal/src/main/
 apps/developer-portal/src/main/
 apps/admin-portal/src/main/
 apps/*/cache
+apps/user-portal/src/themes/
+apps/developer-portal/src/themes/
+apps/admin-portal/src/themes/
 
 .classpath
 .settings

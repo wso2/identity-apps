@@ -46,7 +46,7 @@ type LocalClaimsPageInterface = TestableComponentInterface
  *
  * @return {React.ReactElement}
  */
-export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
+const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     props: LocalClaimsPageInterface
 ): ReactElement => {
 
@@ -349,3 +349,10 @@ export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
 LocalClaimsPage.defaultProps = {
     "data-testid": "local-claims"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default LocalClaimsPage;

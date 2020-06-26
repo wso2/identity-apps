@@ -73,7 +73,7 @@ const filterOptions: DropdownItemProps[] = [
  *
  * @return {ReactElement}
  */
-export const RolesPage = (): ReactElement => {
+const RolesPage = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -400,3 +400,10 @@ export const RolesPage = (): ReactElement => {
         </PageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default RolesPage;

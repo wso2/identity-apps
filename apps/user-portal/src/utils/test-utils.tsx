@@ -17,11 +17,11 @@
  */
 
 import { render, RenderOptions, RenderResult } from "@testing-library/react";
+import { I18n } from "@wso2is/i18n";
 import React from "react";
 import { I18nextProvider } from "react-i18next";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
-import { i18n } from "../configs";
 import { history } from "../helpers";
 import { store } from "../store";
 
@@ -33,7 +33,7 @@ const AllTheProviders: React.FunctionComponent = ({ children }): JSX.Element => 
     return (
         <Router history={ history }>
             <div className="container-fluid">
-                <I18nextProvider i18n={ i18n }>
+                <I18nextProvider i18n={ I18n.instance }>
                     <Provider store={ store }>
                             { children }
                     </Provider>

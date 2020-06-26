@@ -25,7 +25,7 @@ import { EditRole } from "../../components/roles/edit-role";
 import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../../constants";
 import { history } from "../../helpers";
 
-export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
+const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -103,3 +103,10 @@ export const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
         </PageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default RoleEditPage;

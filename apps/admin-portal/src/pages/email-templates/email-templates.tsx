@@ -43,7 +43,7 @@ type EmailTemplatesPageInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-export const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
+const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
     props: EmailTemplatesPageInterface
 ): ReactElement => {
 
@@ -241,3 +241,10 @@ export const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
 EmailTemplates.defaultProps = {
     "data-testid": "email-templates"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default EmailTemplates;

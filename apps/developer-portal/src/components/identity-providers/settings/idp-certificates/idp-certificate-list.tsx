@@ -115,7 +115,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon.ReactComponent />
+                        <CertificateIllustrations.ribbon />
                         <div className="certificate-alias">
                                 View Certificate - {
                                 certificateDisplay?.alias

@@ -25,7 +25,7 @@ import { Grid, Header, List } from "semantic-ui-react";
  *
  * @return {React.ReactElement}
  */
-export const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
+const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
 
     const { t } = useTranslation();
 
@@ -352,3 +352,10 @@ export const PrivacyPage: FunctionComponent<{}> = (): ReactElement => {
         </Grid>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default PrivacyPage;

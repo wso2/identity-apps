@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./authentication";
 export * from "./certificates";
 export * from "./claims";
 export * from "./configurations";

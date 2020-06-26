@@ -16,20 +16,33 @@
  * under the License.
  */
 
-import React from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid, Header, List } from "semantic-ui-react";
 
 /**
+ * Proptypes for the privacy page component.
+ */
+type OverviewPageInterface = TestableComponentInterface;
+
+/**
  * Privacy page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const PrivacyPage = (): JSX.Element => {
+const PrivacyPage: FunctionComponent<OverviewPageInterface> = (
+    props: OverviewPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
     const { t } = useTranslation();
 
     return (
-        <Grid>
+        <Grid data-testid={ testId }>
             { /* About WSO2 Identity Server */ }
             <Grid.Row columns={ 1 }>
                 <Grid.Column width={ 16 }>
@@ -348,3 +361,17 @@ export const PrivacyPage = (): JSX.Element => {
         </Grid>
     );
 };
+
+/**
+ * Default props for the component.
+ */
+PrivacyPage.defaultProps = {
+    "data-testid": "privacy-policy"
+};
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default PrivacyPage;

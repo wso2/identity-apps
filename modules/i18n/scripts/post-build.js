@@ -125,6 +125,12 @@ log("\nCreated the locale meta file.");
 
 log("\nSuccessfully generated the locale bundle.");
 
+log("\nRunning cleanup task......");
+
+execSync("npm run clean:translations");
+
+log("\nClean up task finished successfully......");
+
 // Function to create directories.
 function createDirectory(dirPath, checkIfExists) {
 

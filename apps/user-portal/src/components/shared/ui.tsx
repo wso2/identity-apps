@@ -21,7 +21,7 @@ import { Logo } from "@wso2is/react-components";
 import classNames from "classnames";
 import * as React from "react";
 import { Image } from "semantic-ui-react";
-import { HomeTileIconImages, UserImage } from "../../configs";
+import { UserImage } from "../../configs";
 import { store } from "../../store";
 
 interface ImageProps {
@@ -29,12 +29,6 @@ interface ImageProps {
     size?: any;
     style?: any;
     floated?: "left" | "right";
-}
-
-type HomeTileIconImagePropInputs = "Profile" | "Security" | "Consent";
-
-interface HomeTileIconImageProps extends ImageProps {
-    icon: HomeTileIconImagePropInputs;
 }
 
 interface TitleProps {
@@ -78,35 +72,6 @@ export const UserImagePlaceHolder = (props: ImageProps) => {
             size={ size }
             floated={ floated }
             circular
-            centered
-        />
-    );
-};
-
-export const HomeTileIcon = (props: HomeTileIconImageProps) => {
-    const { classes, size, icon } = props;
-
-    const src = () => {
-        switch (icon) {
-            case "Profile": {
-                return HomeTileIconImages.profile;
-            }
-            case "Security": {
-                return HomeTileIconImages.security;
-            }
-            case "Consent": {
-                return HomeTileIconImages.consent;
-            }
-            default:
-                return "";
-        }
-    };
-
-    return (
-        <Image
-            className={ classNames(classes, "home-tile-icon") }
-            src={ src() }
-            size={ size }
             centered
         />
     );

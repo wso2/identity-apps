@@ -17,22 +17,9 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { SignIn, SignOut } from "../components/authentication";
+import { lazy } from "react";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
-import {
-    ApplicationEditPage,
-    ApplicationTemplateSelectPage,
-    ApplicationsPage,
-    CustomizePage,
-    IdentityProviderEditPage,
-    IdentityProviderTemplateSelectPage,
-    IdentityProvidersPage,
-    OverviewPage,
-    PageNotFound,
-    PrivacyPage,
-    UnauthorizedErrorPage
-} from "../pages";
 
 /**
  * Dashboard Layout Routes array.
@@ -54,7 +41,7 @@ import {
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: OverviewPage,
+        component: lazy(() => import("../pages/overview")),
         icon: "overview",
         id: "overview",
         name: "common:overview",
@@ -65,7 +52,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: ApplicationTemplateSelectPage,
+                component: lazy(() => import("../pages/applications/application-template")),
                 exact: true,
                 icon: null,
                 id: "applicationTemplate",
@@ -75,7 +62,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: ApplicationEditPage,
+                component: lazy(() => import("../pages/applications/application-edit")),
                 exact: true,
                 icon: "applications",
                 id: "applicationsEdit",
@@ -85,7 +72,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: ApplicationsPage,
+        component: lazy(() => import("../pages/applications/applications")),
         exact: true,
         icon: "applications",
         id: "applications",
@@ -97,7 +84,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: IdentityProviderTemplateSelectPage,
+                component: lazy(() => import("../pages/identity-providers/identity-provider-template")),
                 exact: true,
                 icon: null,
                 id: "identityProviderTemplate",
@@ -107,7 +94,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: IdentityProviderEditPage,
+                component: lazy(() => import("../pages/identity-providers/identity-provider-edit")),
                 exact: true,
                 icon: "applications",
                 id: "identityProvidersEdit",
@@ -117,9 +104,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: IdentityProvidersPage,
+        component: lazy(() => import("../pages/identity-providers/identity-providers")),
         exact: true,
-        icon: "connections",
+        icon: "identityProviders",
         id: "identityProviders",
         name: "common:identityProviders",
         path: AppConstants.PATHS.get("IDP"),
@@ -127,7 +114,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
-        component: CustomizePage,
+        component: lazy(() => import("../pages/customize")),
         icon: "overview",
         id: "customize",
         name: "Customize",
@@ -136,7 +123,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: PrivacyPage,
+        component: lazy(() => import("../pages/privacy")),
         icon: null,
         id: "privacy",
         name: "common:privacy",
@@ -161,7 +148,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: PrivacyPage,
+        component: lazy(() => import("../pages/privacy")),
         icon: null,
         id: "privacy",
         name: "Privacy",
@@ -176,7 +163,7 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: UnauthorizedErrorPage,
+        component: lazy(() => import("../pages/errors/unauthorized")),
         icon: null,
         id: "unauthorized",
         name: "Unauthorized",
@@ -185,7 +172,7 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: PageNotFound,
+        component: lazy(() => import("../pages/errors/404")),
         icon: null,
         id: "pageNotFound",
         name: "404",
@@ -200,7 +187,7 @@ const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: SignIn,
+        component: lazy(() => import("../pages/authentication/sign-in")),
         icon: null,
         id: "authLayoutLogin",
         name: "Login",
@@ -209,7 +196,7 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     },
     {
-        component: SignOut,
+        component: lazy(() => import("../pages/authentication/sign-out")),
         icon: null,
         id: "authLayoutLogout",
         name: "Logout",

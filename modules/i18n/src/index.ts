@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./translations";
 export * from "./exceptions";
 export * from "./models";
 export * from "./constants";

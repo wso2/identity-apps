@@ -19,11 +19,11 @@
 import { UIConstants } from "@wso2is/core/constants";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AuthReducerStateInterface, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { GravatarLogo } from "@wso2is/theme";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Icon, Popup } from "semantic-ui-react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
+import GravatarLogo from "../../assets/images/gravatar-logo.png";
 
 /**
  * Prop types for the user avatar component.

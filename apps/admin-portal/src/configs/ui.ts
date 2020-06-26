@@ -16,63 +16,91 @@
  * under the License.
  */
 
+import { ReactComponent as AlertIcon } from "../themes/default/assets/images/icons/alert-icon.svg";
+import { ReactComponent as ArrowRight } from "../themes/default/assets/images/icons/arrow-right-icon.svg";
 import {
-    ActiveDirectoryUserstoreIllustration,
-    AlertIcon,
-    ArrowRight,
-    BlockedMagnifierIcon,
-    BoxIcon,
-    BriefcaseIcon,
-    CaretRightIcon,
-    CertificateAvatar,
-    CertificateBadge,
-    CertificateIcon,
-    CertificateIllustration,
-    CertificateRibbon,
-    ClaimsIcon,
-    CloseIcon,
-    CodeIcon,
-    CogwheelIcon,
-    CrossIcon,
-    CustomApplicationTemplateIllustration,
-    DashboardIcon,
-    DatabaseAvatar,
-    DatabaseIcon,
-    DocumentIcon,
-    DragIcon,
-    DragSquaresIcon,
-    EmailIcon,
-    EmptySearchResultsIllustration,
-    ErrorIcon,
-    FileUploadIllustration,
-    ForbiddenIcon,
-    GearsIcon,
-    InfoIcon,
-    JDBCUserstoreIllustration,
-    KeyIcon,
-    LDAPUserstoreIllustration,
-    LaunchIcon,
-    Logo,
-    MFAIconSet,
-    MagnifierIcon,
-    MaximizeIcon,
-    MinimizeIcon,
-    PaperRocketIcon,
-    PinIcon,
-    PlugIcon,
-    ReportIcon,
-    SecurityIllustration,
-    SettigsSectionIconSet,
-    SpinWheelIcon,
-    SuccessIcon,
-    UserGroupIcon,
-    UserIcon,
-    WarningIcon
-} from "@wso2is/theme";
+    ReactComponent as BlockedMagnifierIcon
+} from "../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
+import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
+import { ReactComponent as BriefcaseIcon } from "../themes/default/assets/images/icons/briefcase-icon.svg";
+import { ReactComponent as CaretRightIcon } from "../themes/default/assets/images/icons/caret-right-icon.svg";
+import { ReactComponent as CertificateAvatar } from "../themes/default/assets/images/icons/certificate-avatar.svg";
+import { ReactComponent as CertificateIcon } from "../themes/default/assets/images/icons/certificate-icon.svg";
+import { ReactComponent as ClaimsIcon } from "../themes/default/assets/images/icons/claims-icon.svg";
+import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
+import { ReactComponent as CogwheelIcon } from "../themes/default/assets/images/icons/cog-wheel-icon.svg";
+import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
+import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
+import { ReactComponent as DatabaseAvatar } from "../themes/default/assets/images/icons/database-avatar.svg";
+import { ReactComponent as DatabaseIcon } from "../themes/default/assets/images/icons/database-icon.svg";
+import { ReactComponent as DocumentIcon } from "../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as DragSquaresIcon } from "../themes/default/assets/images/icons/drag-squares-icon.svg";
+import { ReactComponent as EmailIcon } from "../themes/default/assets/images/icons/email-icon.svg";
+import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images/icons/forbidden-icon.svg";
+import { ReactComponent as GearsIcon } from "../themes/default/assets/images/icons/gears-icon.svg";
+import { ReactComponent as KeyIcon } from "../themes/default/assets/images/icons/key-icon.svg";
+import { ReactComponent as LaunchIcon } from "../themes/default/assets/images/icons/launch-icon.svg";
+import { ReactComponent as MagnifierIcon } from "../themes/default/assets/images/icons/magnifier-icon.svg";
+import { ReactComponent as MaximizeIcon } from "../themes/default/assets/images/icons/maximize-icon.svg";
+import { ReactComponent as MinimizeIcon } from "../themes/default/assets/images/icons/minimize-icon.svg";
+import { ReactComponent as PaperRocketIcon } from "../themes/default/assets/images/icons/paper-rocket-icon.svg";
+import { ReactComponent as PinIcon } from "../themes/default/assets/images/icons/pin-icon.svg";
+import { ReactComponent as PlugIcon } from "../themes/default/assets/images/icons/plug-icon.svg";
+import { ReactComponent as ReportIcon } from "../themes/default/assets/images/icons/report-icon.svg";
+import { ReactComponent as SpinWheelIcon } from "../themes/default/assets/images/icons/spin-wheel-icon.svg";
+import { ReactComponent as FileUploadIllustration } from "../themes/default/assets/images/icons/upload.svg";
+import { ReactComponent as UserGroupIcon } from "../themes/default/assets/images/icons/user-group-icon.svg";
+import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
+import {
+    ReactComponent as ActiveDirectoryUserstoreIllustration
+} from "../themes/default/assets/images/illustrations/ad-illustration.svg";
+import {
+    ReactComponent as AssociatedAccountsMini
+} from "../themes/default/assets/images/illustrations/associated-accounts-mini.svg";
+import {
+    ReactComponent as AssociatedAccounts
+} from "../themes/default/assets/images/illustrations/associated-accounts.svg";
+import { ReactComponent as CertificateBadge } from "../themes/default/assets/images/illustrations/badge.svg";
+import {
+    ReactComponent as CertificateIllustration
+} from "../themes/default/assets/images/illustrations/certificate.svg";
+import {
+    ReactComponent as ChangePasswordMini
+} from "../themes/default/assets/images/illustrations/change-password-mini.svg";
+import { ReactComponent as ChangePassword } from "../themes/default/assets/images/illustrations/change-password.svg";
+import {
+    ReactComponent as CustomApplicationTemplateIllustration
+} from "../themes/default/assets/images/illustrations/custom-app-illustration.svg";
+import {
+    ReactComponent as FederatedAssociationsMini
+} from "../themes/default/assets/images/illustrations/federated-associations-mini.svg";
+import {
+    ReactComponent as FederatedAssociations
+} from "../themes/default/assets/images/illustrations/federated-associations.svg";
+import {
+    ReactComponent as JDBCUserstoreIllustration
+} from "../themes/default/assets/images/illustrations/jdbc-illustration.svg";
+import {
+    ReactComponent as LDAPUserstoreIllustration
+} from "../themes/default/assets/images/illustrations/ldap-illustration.svg";
+import {
+    ReactComponent as EmptySearchResultsIllustration
+} from "../themes/default/assets/images/illustrations/no-search-results.svg";
+import {
+    ReactComponent as ProfileExportMini
+} from "../themes/default/assets/images/illustrations/profile-export-mini.svg";
+import { ReactComponent as ProfileExport } from "../themes/default/assets/images/illustrations/profile-export.svg";
+import { ReactComponent as CertificateRibbon } from "../themes/default/assets/images/illustrations/ribbon.svg";
+import {
+    ReactComponent as SecurityIllustration
+} from "../themes/default/assets/images/illustrations/security-illustration.svg";
+import {
+    ReactComponent as SecurityQuestionsMini
+} from "../themes/default/assets/images/illustrations/security-questions-mini.svg";
+import {
+    ReactComponent as SecurityQuestions
+} from "../themes/default/assets/images/illustrations/security-questions.svg";
 
-export const LogoImage = Logo;
-
-// Icon set for the side panel.
 export const SidePanelIcons = {
     certificate: CertificateIcon,
     childIcon: ArrowRight,
@@ -90,19 +118,21 @@ export const SidePanelMiscIcons = {
     caretRight: CaretRightIcon
 };
 
-export const GenericAppIcon = CodeIcon;
-export const SettingsSectionIcons = SettigsSectionIconSet;
-export const MFAIcons = MFAIconSet;
+export const SettingsSectionIcons = {
+    associatedAccounts: AssociatedAccounts,
+    associatedAccountsMini: AssociatedAccountsMini,
+    changePassword: ChangePassword,
+    changePasswordMini: ChangePasswordMini,
+    federatedAssociations: FederatedAssociations,
+    federatedAssociationsMini: FederatedAssociationsMini,
+    profileExport: ProfileExport,
+    profileExportMini: ProfileExportMini,
+    securityQuestions: SecurityQuestions,
+    securityQuestionsMini: SecurityQuestionsMini
+};
 
 export const AdvancedSearchIcons = {
     clear: CrossIcon
-};
-
-export const AlertIcons = {
-    error: ErrorIcon,
-    info: InfoIcon,
-    success: SuccessIcon,
-    warning: WarningIcon
 };
 
 export const EmptyPlaceholderIllustrations = {
@@ -125,18 +155,14 @@ export const UserWizardStepIcons = {
 };
 
 export const RolesWizardStepIcons = {
+    assignUser: UserIcon,
     general: DocumentIcon,
     permissions: KeyIcon,
-    assignUser: UserIcon,
     summary: ReportIcon
 };
 
 export const EmailTemplateIllustrations = {
     emptyEmailListing: EmailIcon
-};
-
-export const PlaceHolderIcons = {
-    drag: DragIcon
 };
 
 export const OperationIcons = {
@@ -156,35 +182,13 @@ export const HelpSidebarIcons = {
     }
 };
 
-/**
- * The userstore avatar.
- */
 export const DatabaseAvatarGraphic = DatabaseAvatar;
 
 export const CertificateIllustrations = {
-    /**
-     * Certificate avatar.
-     */
     avatar: CertificateAvatar,
-
-    /**
-     * Certificate Badge Illustration.
-     */
     badge: CertificateBadge,
-
-    /**
-     * Certificate illustration.
-     */
     file: CertificateIllustration,
-
-    /**
-     * Certificate Ribbon.
-     */
     ribbon: CertificateRibbon,
-
-    /**
-     * File upload placeholder.
-     */
     uploadPlaceholder: FileUploadIllustration
 };
 
