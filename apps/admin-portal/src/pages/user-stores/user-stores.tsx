@@ -45,7 +45,7 @@ type UserStoresPageInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-export const UserStores: FunctionComponent<UserStoresPageInterface> = (
+const UserStores: FunctionComponent<UserStoresPageInterface> = (
     props: UserStoresPageInterface
 ): ReactElement => {
 
@@ -72,6 +72,7 @@ export const UserStores: FunctionComponent<UserStoresPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ offset, setOffset ] = useState(0);
@@ -267,7 +268,8 @@ export const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 rightActionPanel={
                     hasRequiredScopes(
                         featureConfig?.userStores,
-                        featureConfig?.userStores?.scopes?.create) && (
+                        featureConfig?.userStores?.scopes?.create,
+                        allowedScopes) && (
                         <PrimaryButton
                             onClick={ () => {
                                 history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));
@@ -311,3 +313,10 @@ export const UserStores: FunctionComponent<UserStoresPageInterface> = (
 UserStores.defaultProps = {
     "data-testid": "userstores"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default UserStores;

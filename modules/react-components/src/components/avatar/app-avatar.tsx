@@ -17,10 +17,10 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { OrangeAppIconBackground } from "@wso2is/theme";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
+import OrangeAppIconBackground from "../../assets/images/app-icon-background.png";
 
 /**
  * Prop types for the App Avatar component.

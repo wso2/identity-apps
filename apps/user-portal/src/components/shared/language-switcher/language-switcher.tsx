@@ -16,9 +16,12 @@
  * under the License.
  */
 
+import { I18n, SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { SyntheticEvent } from "react";
-import { i18n, setMomentJSLocale, SupportedLanguages } from "../../../configs";
+import { useSelector } from "react-redux";
 import { LanguageSwitcherDropdown } from "./language-switcher-dropdown";
+import { setMomentJSLocale } from "../../../configs";
+import { AppState } from "../../../store";
 
 /**
  * Proptypes for the language switcher component.
@@ -38,8 +41,13 @@ interface LanguageSwitcherProps {
 export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = (
     props: LanguageSwitcherProps
 ): JSX.Element => {
+
     const { direction, className, upward } = props;
-    const currentLang = i18n.languages[0];
+
+    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
+        (state: AppState) => state.global.supportedI18nLanguages);
+
+    const currentLang = I18n.instance.languages[0];
 
     /**
      * Handles the language change.
@@ -49,7 +57,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
      */
     const handleLanguageChange = (event: SyntheticEvent, data: any) => {
         setMomentJSLocale(data.value);
-        i18n.changeLanguage(data.value);
+        I18n.instance.changeLanguage(data.value);
     };
 
     return (
@@ -59,7 +67,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
             upward={ upward }
             language={ currentLang }
             changeLanguage={ handleLanguageChange }
-            supportedLanguages={ SupportedLanguages }
+            supportedLanguages={ supportedI18nLanguages }
         />
     );
 };

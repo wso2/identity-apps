@@ -49,7 +49,7 @@ interface RouteParams {
  *
  * @return {React.ReactElement}
  */
-export const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
+const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterface> = (
     props: ExternalDialectEditPageInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
@@ -311,3 +311,10 @@ export const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageI
 ExternalDialectEditPage.defaultProps = {
     "data-testid": "external-dialect-edit"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default ExternalDialectEditPage;

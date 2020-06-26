@@ -37,6 +37,7 @@ import {
     SetSignOutActionInterface
 } from "./types";
 import { CommonServiceResourcesEndpoints } from "../../configs";
+import { AuthenticatedUserInterface } from "../../models";
 import { ContextUtils } from "../../utils";
 
 /**
@@ -44,7 +45,8 @@ import { ContextUtils } from "../../utils";
  *
  * @return {SetSignInActionInterface} An action of type `SET_SIGN_IN`
  */
-export const setSignIn = (): SetSignInActionInterface => ({
+export const setSignIn = (userInfo: AuthenticatedUserInterface): SetSignInActionInterface => ({
+    payload: userInfo,
     type: CommonAuthenticateActionTypes.SET_SIGN_IN
 });
 
@@ -109,7 +111,7 @@ export const handleSignIn = (clientID: string,
                         response,
                         SignInUtil.getAuthenticatedUser(response.idToken)
                     );
-                    dispatch(setSignIn());
+                    dispatch(setSignIn(null));
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
@@ -124,7 +126,7 @@ export const handleSignIn = (clientID: string,
     };
 
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
-        dispatch(setSignIn());
+        dispatch(setSignIn(null));
         dispatch(getProfileInformation());
     } else {
         OPConfigurationUtil.initOPConfiguration(CommonServiceResourcesEndpoints(serverHost).wellKnown, false)

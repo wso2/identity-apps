@@ -16,18 +16,23 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
-import * as TokenConstants from "../constants";
+import { OAuth, SignInResponse } from "@wso2is/oauth-web-worker";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
+
+/**
+ * OAuth object.
+ * 
+ * @type {OAuthSingletonInterface}
+ */
+const oAuth = OAuth.getInstance();
 
 /**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = oAuth.httpRequest;
 
 /**
  * Retrieve the user account associations of the currently authenticated user.
@@ -45,10 +50,10 @@ export const getAssociations = (): Promise<any> => {
         url: store.getState().config.endpoints.associations
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(`Failed to retrieve the linked accounts`);
+                return Promise.reject("Failed to retrieve the linked accounts");
             }
             return Promise.resolve(response.data);
         })
@@ -74,7 +79,7 @@ export const addAccountAssociation = (data: object): Promise<any> => {
         url: store.getState().config.endpoints.associations
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })
@@ -99,7 +104,7 @@ export const removeLinkedAccount = (id: string): Promise<any> => {
         url: `${ store.getState().config.endpoints.associations }/${ id }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })
@@ -129,7 +134,7 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
         url: store.getState().config.endpoints.associations
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data);
         })
@@ -147,21 +152,25 @@ export const removeAllLinkedAccounts = (): Promise<any> => {
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
-    const requestParams = {
-        "clientHost": store.getState().config.deployment.clientHost,
-        "client_id": store.getState().config.deployment.clientID,
-        "scope": [ TokenConstants.LOGIN_SCOPE, TokenConstants.HUMAN_TASK_SCOPE ],
-        "serverOrigin": store.getState().config.deployment.serverOrigin,
-        "tenant-domain": account.tenantDomain,
-        "username": account.username,
-        "userstore-domain": account.userStoreDomain
-    };
 
-    return SignInUtil.sendAccountSwitchRequest(requestParams)
-        .then((response) => {
-            AuthenticateSessionUtil.initUserSession(response,
-                SignInUtil.getAuthenticatedUser(response.idToken));
-            return Promise.resolve(response);
+    return oAuth
+        .customGrant({
+            attachToken: false,
+            data: {
+                "client_id": "{{clientId}}",
+                "grant_type": "account_switch",
+                scope: "{{scope}}",
+                "tenant-domain": account.tenantDomain,
+                token: "{{token}}",
+                username: account.username,
+                "userstore-domain": account.userStoreDomain
+            },
+            returnResponse: true,
+            returnsSession: true,
+            signInRequired: true
+        })
+        .then((response: SignInResponse) => {
+            return Promise.resolve(response?.data);
         })
         .catch((error) => {
             return Promise.reject(error);

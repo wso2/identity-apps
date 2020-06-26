@@ -34,6 +34,10 @@ export interface SidePanelItemsPropsInterface extends CommonSidePanelPropsInterf
      * Panel type.
      */
     type?: "desktop" | "mobile";
+    /**
+     * Scopes allowed for a user.
+     */
+    allowedScopes: string;
 }
 
 /**
@@ -48,6 +52,7 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
 ): ReactElement => {
 
     const {
+        allowedScopes,
         desktopContentTopSpacing,
         headerHeight,
         routes,
@@ -86,7 +91,8 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
                         <SidePanelItem
                             key={ route.level ? `level-${route.level}-${index}` : `level-${0}-${index}` }
                             route={ route }
-                            data-testid={ `${ testId }-item` }
+                            data-testid={ `${testId}-item` }
+                            allowedScopes={ allowedScopes }
                             { ...props }
                         />
                     ))

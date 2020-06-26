@@ -16,195 +16,156 @@
  * under the License.
  */
 
-import {
-    ActiveDirectoryUserstoreIllustration,
-    AlertIcon,
-    AndroidLogo,
-    AngularLogo,
-    AppIcon,
-    AppleLogo,
-    ArrowRight,
-    AuthenticationCapabilityIcon,
-    AuthorizeIcon,
-    BasicAuthIcon,
-    BlockedMagnifierIcon,
-    BoxIcon,
-    BriefcaseIcon,
-    BuildingIcon,
-    CSharpLogo,
-    CaretRightIcon,
-    CertificateAvatar,
-    CertificateBadge,
-    CertificateColoredIcon,
-    CertificateIcon,
-    CertificateIllustration,
-    CertificateRibbon,
-    ClaimsIcon,
-    ClockColoredIcon,
-    CloseIcon,
-    CodeIcon,
-    CogwheelIcon,
-    CordovaLogo,
-    CrossIcon,
-    CustomApplicationTemplateIllustration,
-    DashboardIcon,
-    DatabaseAvatar,
-    DatabaseIcon,
-    DocumentIcon,
-    DotNetLogo,
-    DragIcon,
-    DragSquaresIcon,
-    DummyUser,
-    EmailIcon,
-    EmailOTPIcon,
-    EmptySearchResultsIllustration,
-    ErrorIcon,
-    ExpertModeIdPIcon,
-    FIDOLogo,
-    FacebookIdPIcon,
-    FacebookLogo,
-    FileUploadIllustration,
-    ForbiddenIcon,
-    GearsIcon,
-    GithubIdPIcon,
-    GoogleIdPIcon,
-    GoogleLogo,
-    HTMLLogo,
-    HomeTileIcons,
-    IDPCertificateIcon,
-    IDPMetadataIcon,
-    InfoIcon,
-    IntrospectIcon,
-    IssuerIcon,
-    JDBCUserstoreIllustration,
-    JWKSIcon,
-    JWTLogo,
-    JavaLogo,
-    JavaScriptLogo,
-    KeyIcon,
-    LDAPUserstoreIllustration,
-    LaunchIcon,
-    LockShieldIcon,
-    Logo,
-    MFAIconSet,
-    MagnifierColoredIcon,
-    MagnifierIcon,
-    MaximizeIcon,
-    MicrosoftLogo,
-    MinimizeIcon,
-    NodeJSLogo,
-    OIDCLogo,
-    OIDCMobileTemplateIllustration,
-    OIDCWebAppTemplateIllustration,
-    Office365Logo,
-    OpenIDLogo,
-    PaperRocketIcon,
-    PassiveSTSTemplateIllustration,
-    PinIcon,
-    PlugIcon,
-    ProvisionCapabilityIcon,
-    ReactLogo,
-    ReportIcon,
-    SAMLWebAppTemplateIllustration,
-    SCIMLogo,
-    SLOIcon,
-    SMSOTPIcon,
-    SPATemplateIllustration,
-    SPMLLogo,
-    SSOIcon,
-    SalesforceLogo,
-    SamlLogo,
-    SecurityIllustration,
-    SettigsSectionIconSet,
-    SpinWheelIcon,
-    SuccessIcon,
-    TOTPIcon,
-    TokenIcon,
-    TwitterIdPIcon,
-    TwitterLogo,
-    UserGroupIcon,
-    UserIcon,
-    UserInfoIcon,
-    VueLogo,
-    WSFedLogo,
-    WSTrustLogo,
-    WSTrustTemplateIllustration,
-    WarningIcon,
-    WindowsTemplateIllustration,
-    YahooLogo
-} from "@wso2is/theme";
-
 import { SupportedServices } from "../models";
+import { ReactComponent as AppIcon } from "../themes/dark/assets/images/icons/app-icon.svg";
+import BasicAuthIcon from "../themes/default/assets/images/authenticators/basic-auth.png";
+import { ReactComponent as EmailOTPIcon } from "../themes/default/assets/images/authenticators/email-otp.svg";
+import FIDOLogo from "../themes/default/assets/images/authenticators/fido.png";
+import { ReactComponent as SMSOTPIcon } from "../themes/default/assets/images/authenticators/sms-otp.svg";
+import TOTPIcon from "../themes/default/assets/images/authenticators/totp.png";
+import SalesforceLogo from "../themes/default/assets/images/connectors/salesforce.png";
+import SCIMLogo from "../themes/default/assets/images/connectors/scim.png";
+import SPMLLogo from "../themes/default/assets/images/connectors/spml.png";
+import { ReactComponent as AlertIcon } from "../themes/default/assets/images/icons/alert-icon.svg";
+import { ReactComponent as ArrowRight } from "../themes/default/assets/images/icons/arrow-right-icon.svg";
+import { ReactComponent as AuthorizeIcon } from "../themes/default/assets/images/icons/authorize.svg";
+import {
+    ReactComponent as BlockedMagnifierIcon
+} from "../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
+import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
+import { ReactComponent as BuildingIcon } from "../themes/default/assets/images/icons/building-icon.svg";
+import { ReactComponent as CaretRightIcon } from "../themes/default/assets/images/icons/caret-right-icon.svg";
+import { ReactComponent as CertificateAvatar } from "../themes/default/assets/images/icons/certificate-avatar.svg";
+import {
+    ReactComponent as CertificateColoredIcon
+} from "../themes/default/assets/images/icons/certificate-colored-icon.svg";
+import { ReactComponent as ClockColoredIcon } from "../themes/default/assets/images/icons/clock-colored-icon.svg";
+import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
+import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
+import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
+import { ReactComponent as DocumentIcon } from "../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as DragSquaresIcon } from "../themes/default/assets/images/icons/drag-squares-icon.svg";
+import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images/icons/forbidden-icon.svg";
+import { ReactComponent as GearsIcon } from "../themes/default/assets/images/icons/gears-icon.svg";
+import {
+    ReactComponent as IDPCertificateIcon
+} from "../themes/default/assets/images/icons/idpCertificate.svg";
+import { ReactComponent as IntrospectIcon } from "../themes/default/assets/images/icons/introspect.svg";
+import { ReactComponent as IssuerIcon } from "../themes/default/assets/images/icons/issuer.svg";
+import { ReactComponent as JWKSIcon } from "../themes/default/assets/images/icons/jwks.svg";
+import { ReactComponent as LaunchIcon } from "../themes/default/assets/images/icons/launch-icon.svg";
+import { ReactComponent as LockShieldIcon } from "../themes/default/assets/images/icons/lock-shield.svg";
+import {
+    ReactComponent as MagnifierColoredIcon
+} from "../themes/default/assets/images/icons/magnifier-colored-icon.svg";
+import { ReactComponent as MagnifierIcon } from "../themes/default/assets/images/icons/magnifier-icon.svg";
+import { ReactComponent as MaximizeIcon } from "../themes/default/assets/images/icons/maximize-icon.svg";
+import { ReactComponent as IDPMetadataIcon } from "../themes/default/assets/images/icons/metadata.svg";
+import { ReactComponent as MinimizeIcon } from "../themes/default/assets/images/icons/minimize-icon.svg";
+import { ReactComponent as PinIcon } from "../themes/default/assets/images/icons/pin-icon.svg";
+import { ReactComponent as PlugIcon } from "../themes/default/assets/images/icons/plug-icon.svg";
+import { ReactComponent as ReportIcon } from "../themes/default/assets/images/icons/report-icon.svg";
+import { ReactComponent as SLOIcon } from "../themes/default/assets/images/icons/slo.svg";
+import { ReactComponent as SpinWheelIcon } from "../themes/default/assets/images/icons/spin-wheel-icon.svg";
+import { ReactComponent as SSOIcon } from "../themes/default/assets/images/icons/sso.svg";
+import { ReactComponent as TokenIcon } from "../themes/default/assets/images/icons/token.svg";
+import { ReactComponent as FileUploadIllustration } from "../themes/default/assets/images/icons/upload.svg";
+import { ReactComponent as UserInfoIcon } from "../themes/default/assets/images/icons/userInfo.svg";
+import {
+    ReactComponent as AuthenticationCapabilityIcon
+} from "../themes/default/assets/images/identity-provider-capabilities/authentication.svg";
+import {
+    ReactComponent as ProvisionCapabilityIcon
+} from "../themes/default/assets/images/identity-provider-capabilities/provision.svg";
+import {
+    ReactComponent as ExpertModeIdPIcon
+} from "../themes/default/assets/images/identity-providers/expert-idp-illustration.svg";
+import {
+    ReactComponent as FacebookIdPIcon
+} from "../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
+import {
+    ReactComponent as GithubIdPIcon
+} from "../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import {
+    ReactComponent as GoogleIdPIcon
+} from "../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import {
+    ReactComponent as TwitterIdPIcon
+} from "../themes/default/assets/images/identity-providers/twitter-idp-illustration.svg";
+import { ReactComponent as CertificateBadge } from "../themes/default/assets/images/illustrations/badge.svg";
+import {
+    ReactComponent as CertificateIllustration
+} from "../themes/default/assets/images/illustrations/certificate.svg";
+import {
+    ReactComponent as CustomApplicationTemplateIllustration
+} from "../themes/default/assets/images/illustrations/custom-app-illustration.svg";
+import {
+    ReactComponent as EmptySearchResultsIllustration
+} from "../themes/default/assets/images/illustrations/no-search-results.svg";
+import {
+    ReactComponent as OIDCMobileTemplateIllustration
+} from "../themes/default/assets/images/illustrations/oidc-mobile-template-illustration.svg";
+import {
+    ReactComponent as OIDCWebAppTemplateIllustration
+} from "../themes/default/assets/images/illustrations/oidc-web-app-template-illustration.svg";
+import {
+    ReactComponent as PassiveSTSTemplateIllustration
+} from "../themes/default/assets/images/illustrations/passive-sts-template-illustration.svg";
+import { ReactComponent as CertificateRibbon } from "../themes/default/assets/images/illustrations/ribbon.svg";
+import {
+    ReactComponent as SAMLWebAppTemplateIllustration
+} from "../themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg";
+import {
+    ReactComponent as SecurityIllustration
+} from "../themes/default/assets/images/illustrations/security-illustration.svg";
+import {
+    ReactComponent as SPATemplateIllustration
+} from "../themes/default/assets/images/illustrations/spa-template-illustration.svg";
+import {
+    ReactComponent as WindowsTemplateIllustration
+} from "../themes/default/assets/images/illustrations/windows-template-illustration.svg";
+import {
+    ReactComponent as WSTrustTemplateIllustration
+} from "../themes/default/assets/images/illustrations/ws-trust-template-illustration.svg";
+import OIDCLogo from "../themes/default/assets/images/protocols/oidc.png";
+import OpenIDLogo from "../themes/default/assets/images/protocols/openid.png";
+import SamlLogo from "../themes/default/assets/images/protocols/saml.png";
+import WSFedLogo from "../themes/default/assets/images/protocols/ws-fed.png";
+import WSTrustLogo from "../themes/default/assets/images/protocols/ws-trust.png";
+import { ReactComponent as FacebookLogo } from "../themes/default/assets/images/social/facebook.svg";
+import { ReactComponent as GoogleLogo } from "../themes/default/assets/images/social/google.svg";
+import { ReactComponent as TwitterLogo } from "../themes/default/assets/images/social/twitter.svg";
+import { ReactComponent as AndroidLogo } from "../themes/default/assets/images/technologies/android-logo.svg";
+import { ReactComponent as AngularLogo } from "../themes/default/assets/images/technologies/angular-logo.svg";
+import { ReactComponent as AppleLogo } from "../themes/default/assets/images/technologies/apple-logo.svg";
+import { ReactComponent as CSharpLogo } from "../themes/default/assets/images/technologies/c-sharp-logo.svg";
+import { ReactComponent as CordovaLogo } from "../themes/default/assets/images/technologies/cordova-logo.svg";
+import { ReactComponent as DotNetLogo } from "../themes/default/assets/images/technologies/dotnet-logo.svg";
+import { ReactComponent as HTMLLogo } from "../themes/default/assets/images/technologies/html-logo.svg";
+import { ReactComponent as JavaLogo } from "../themes/default/assets/images/technologies/java-logo.svg";
+import { ReactComponent as JavaScriptLogo } from "../themes/default/assets/images/technologies/javascript-logo.svg";
+import { ReactComponent as JWTLogo } from "../themes/default/assets/images/technologies/jwt-logo.svg";
+import { ReactComponent as NodeJSLogo } from "../themes/default/assets/images/technologies/nodejs-logo.svg";
+import { ReactComponent as ReactLogo } from "../themes/default/assets/images/technologies/react-logo.svg";
+import { ReactComponent as VueLogo } from "../themes/default/assets/images/technologies/vue-logo.svg";
+import { ReactComponent as MicrosoftLogo } from "../themes/default/assets/images/third-party/microsoft-logo.svg";
+import { ReactComponent as Office365Logo } from "../themes/default/assets/images/third-party/office-365-logo.svg";
+import { ReactComponent as YahooLogo } from "../themes/default/assets/images/third-party/yahoo-logo.svg";
 
-type ImageType = string;
-
-interface StylesType {
-    appPrimaryColor?: string;
-    appBackgroundColor?: string;
-}
-
-interface CustomCSSType {
-    dark?: StylesType;
-    light?: StylesType;
-}
-
-export const LogoImage = Logo;
-export const UserImage: ImageType = DummyUser;
-export const HomeTileIconImages = HomeTileIcons;
-
-// Icon set for the side panel.
 export const SidePanelIcons = {
     applications: AppIcon,
-    certificate: CertificateIcon,
     childIcon: ArrowRight,
-    claims: ClaimsIcon,
-    connections: PlugIcon,
-    overview: DashboardIcon,
-    serverConfigurations: GearsIcon,
-    userStore: DatabaseIcon,
-    usersAndRoles: UserIcon
+    identityProviders: PlugIcon,
+    overview: DashboardIcon
 };
 
 export const SidePanelMiscIcons = {
     caretRight: CaretRightIcon
 };
 
-export const GenericAppIcon = CodeIcon;
-export const SettingsSectionIcons = SettigsSectionIconSet;
-export const MFAIcons = MFAIconSet;
-
 export const AdvancedSearchIcons = {
     clear: CrossIcon
 };
-
-export const TitleText = "Identity Server";
-export const customCSS: CustomCSSType = {
-    dark: {
-        appPrimaryColor: "#ff5000"
-    },
-    light: {
-        appPrimaryColor: "#ff5000"
-    }
-};
-
-export const AlertIcons = {
-    error: ErrorIcon,
-    info: InfoIcon,
-    success: SuccessIcon,
-    warning: WarningIcon
-};
-
-/**
- * Constant to handle desktop layout content top padding.
- * @type {number}
- */
-export const DESKTOP_CONTENT_TOP_PADDING = 50;
-
-/**
- * Constant to handle mobile layout content padding.
- * @type {string}
- */
-export const MOBILE_CONTENT_PADDING = "2rem 1rem";
 
 export const EmptyPlaceholderIllustrations = {
     alert: AlertIcon,
@@ -254,7 +215,8 @@ export const TechnologyLogos = {
     openidconnect: OIDCLogo,
     react: ReactLogo,
     saml: SamlLogo,
-    vue: VueLogo
+    vue: VueLogo,
+    windows: DotNetLogo
 };
 
 export const ApplicationWizardStepIcons = {
@@ -262,24 +224,6 @@ export const ApplicationWizardStepIcons = {
     protocolConfig: GearsIcon,
     protocolSelection: SpinWheelIcon,
     summary: ReportIcon
-};
-
-export const UserWizardStepIcons = {
-    general: DocumentIcon,
-    groups: GearsIcon,
-    roles: SpinWheelIcon,
-    summary: ReportIcon
-};
-
-export const RolesWizardStepIcons = {
-    general: DocumentIcon,
-    permissions: KeyIcon,
-    assignUser: UserIcon,
-    summary: ReportIcon
-};
-
-export const EmailTemplateIllustrations = {
-    emptyEmailListing: EmailIcon
 };
 
 export const IdentityProviderWizardStepIcons = {
@@ -315,10 +259,6 @@ export const ConnectorIcons = {
     spml: SPMLLogo
 };
 
-export const PlaceHolderIcons = {
-    drag: DragIcon
-};
-
 export const IdPIcons = {
     emailOTP: EmailOTPIcon,
     expert: ExpertModeIdPIcon,
@@ -339,8 +279,8 @@ export const IdPIcons = {
 export const IdPTemplateDocsIcons = {
     facebook: FacebookIdPIcon,
     google: GoogleIdPIcon,
-    openidconnect: OpenIDLogo,
-    manualsetup: ExpertModeIdPIcon
+    manualsetup: ExpertModeIdPIcon,
+    openidconnect: OpenIDLogo
 };
 
 export const IdPCapabilityIcons = {
@@ -365,35 +305,11 @@ export const HelpSidebarIcons = {
     }
 };
 
-/**
- * The userstore avatar.
- */
-export const DatabaseAvatarGraphic = DatabaseAvatar;
-
 export const CertificateIllustrations = {
-    /**
-     * Certificate avatar.
-     */
     avatar: CertificateAvatar,
-
-    /**
-     * Certificate Badge Illustration.
-     */
     badge: CertificateBadge,
-
-    /**
-     * Certificate illustration.
-     */
     file: CertificateIllustration,
-
-    /**
-     * Certificate Ribbon.
-     */
     ribbon: CertificateRibbon,
-
-    /**
-     * File upload placeholder.
-     */
     uploadPlaceholder: FileUploadIllustration
 };
 
@@ -403,27 +319,11 @@ export const OutboundProvisioningConnectorWizard = {
     summary: ReportIcon
 };
 
-export const UserstoreTemplateIllustrations = {
-    ad: ActiveDirectoryUserstoreIllustration,
-    default: CustomApplicationTemplateIllustration,
-    jdbc: JDBCUserstoreIllustration,
-    ldap: LDAPUserstoreIllustration
-};
-
 export const OverviewPageIllustrations = {
     jumbotronIllustration: SecurityIllustration,
-    quickLinks: {
-        certificates: CertificateIcon,
-        dialects: ClaimsIcon,
-        emailTemplates: PaperRocketIcon,
-        generalConfigs: CogwheelIcon,
-        groups: UserGroupIcon,
-        roles: BriefcaseIcon
-    },
     statsOverview: {
         application: AppIcon,
-        idp: BuildingIcon,
-        userstores: DatabaseIcon
+        idp: BuildingIcon
     }
 };
 

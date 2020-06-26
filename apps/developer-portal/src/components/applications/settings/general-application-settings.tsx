@@ -119,6 +119,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     const { t } = useTranslation();
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
 
@@ -205,7 +206,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @return {React.ReactElement} DangerZoneGroup element.
      */
     const resolveDangerActions = (): ReactElement => {
-        if (!hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)) {
+        if (!hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)) {
             return null;
         }
 
@@ -213,11 +215,13 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete)) {
+        if (hasRequiredScopes(
+            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes)) {
             return (
                 <DangerZoneGroup sectionHeader={ t("devPortal:components.applications.dangerZoneGroup.header") }>
                     {
-                        hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.delete) &&
+                        hasRequiredScopes(
+                            featureConfig?.applications, featureConfig?.applications?.scopes?.delete, allowedScopes) &&
                         (
                             <DangerZone
                                 actionTitle={
@@ -258,7 +262,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         accessUrl={ accessUrl }
                         readOnly={
                             !hasRequiredScopes(
-                                featureConfig?.applications, featureConfig?.applications?.scopes?.update
+                                featureConfig?.applications, featureConfig?.applications?.scopes?.update,
+                                allowedScopes
                             )
                         }
                         data-testid={ `${ testId }-form` }

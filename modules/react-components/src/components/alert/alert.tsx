@@ -17,10 +17,13 @@
  */
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { ErrorIcon, InfoIcon, SuccessIcon, WarningIcon } from "@wso2is/theme";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useRef } from "react";
 import NotificationSystem from "react-notification-system";
+import { ReactComponent as ErrorIcon } from "../../assets/images/error-icon.svg";
+import { ReactComponent as InfoIcon } from "../../assets/images/info-icon.svg";
+import { ReactComponent as SuccessIcon } from "../../assets/images/success-icon.svg";
+import { ReactComponent as WarningIcon } from "../../assets/images/warning-icon.svg";
 import { GenericIcon } from "../icon";
 
 /**

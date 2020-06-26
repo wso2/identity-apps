@@ -17,7 +17,6 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { CrossIcon } from "@wso2is/theme";
 import classNames from "classnames";
 import React, {
     ChangeEvent,
@@ -30,6 +29,7 @@ import React, {
     useState
 } from "react";
 import { Button, Divider, Icon, Input, InputProps, Popup, PopupProps } from "semantic-ui-react";
+import { ReactComponent as CrossIcon } from "../../assets/images/cross-icon.svg";
 import { GenericIcon } from "../icon";
 import { Heading } from "../typography";
 

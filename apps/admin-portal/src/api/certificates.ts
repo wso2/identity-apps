@@ -18,14 +18,13 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Certificate, HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
- * @type { AxiosHttpClientInstance }
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * This returns the list of certificate aliases.
@@ -48,8 +47,7 @@ export const listCertificateAliases = (filter?: string): Promise<any> => {
         url: store.getState().config.endpoints.certificates
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -89,8 +87,7 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
         },
         url: `${store.getState().config.endpoints.certificates}/${alias}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -129,8 +126,7 @@ export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
         },
         url: store.getState().config.endpoints.publicCertificates
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -169,8 +165,7 @@ export const listClientCertificates = (filter?: string): Promise<any> => {
         },
         url: store.getState().config.endpoints.clientCertificates
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -210,8 +205,7 @@ export const retrieveClientCertificate = (alias: string, encode?: boolean): Prom
         },
         url: `${store.getState().config.endpoints.clientCertificates}/${alias}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -247,8 +241,7 @@ export const deleteKeystoreCertificate = (alias: string): Promise<any> => {
         method: HttpMethods.DELETE,
         url: `${store.getState().config.endpoints.certificates}/${alias}`
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 204) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);
@@ -285,8 +278,7 @@ export const createKeystoreCertificate = (data: Certificate): Promise<any> => {
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.certificates
     };
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 201) {
                 return Promise.reject(`An error occurred. The server returned ${response.status}`);

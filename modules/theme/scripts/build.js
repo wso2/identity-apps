@@ -80,7 +80,7 @@ const createVariablesLessJson = async () => {
 const writeFile = (theme, file, content) => {
     fs.ensureDirSync(path.join(distDir, "lib", "themes", theme));
 
-    fs.writeFileSync(path.join(distDir, "lib", "themes", theme, "theme" + file), content, (error) => {
+    fs.writeFileSync(path.join(distDir, "lib", "themes", theme, "theme" + file), content || "", (error) => {
         console.error(theme + "/" + "theme" + file + " generation failed.");
         console.error(error);
     });

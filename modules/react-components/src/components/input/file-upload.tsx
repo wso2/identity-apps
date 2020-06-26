@@ -299,7 +299,7 @@ export const FileUpload: FunctionComponent<FileUploadPropsInterface> = (
                         >
                             <Segment placeholder className={ `drop-zone ${ dragOver ? "drag-over" : "" }` }>
                                 <div className="certificate-upload-placeholder">
-                                    <DropzoneIcon.ReactComponent/>
+                                    <DropzoneIcon />
                                     <p className="description">Drag and drop file here</p>
                                     <p className="description">– or –</p>
                                 </div>

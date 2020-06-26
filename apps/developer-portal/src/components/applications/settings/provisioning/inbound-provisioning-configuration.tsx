@@ -23,7 +23,7 @@ import { addAlert } from "@wso2is/core/store";
 import { Heading } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { updateApplicationConfigurations } from "../../../../api";
 import {
@@ -31,6 +31,7 @@ import {
     ProvisioningConfigurationInterface,
     SimpleUserStoreListItemInterface
 } from "../../../../models";
+import { AppState } from "../../../../store";
 import { AuthenticatorAccordion } from "../../../shared";
 import { ProvisioningConfigurationsForm } from "../../forms";
 
@@ -80,7 +81,9 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
 
     const dispatch = useDispatch();
 
-    const [userStore, setUserStore] = useState<SimpleUserStoreListItemInterface[]>([]);
+    const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
+    
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Handles the provisioning config form submit action.
@@ -150,7 +153,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                                 useStoreList={ userStore }
                                                 readOnly={
                                                     !hasRequiredScopes(featureConfig?.applications,
-                                                        featureConfig?.applications?.scopes?.update)
+                                                        featureConfig?.applications?.scopes?.update,
+                                                        allowedScopes)
                                                 }
                                                 data-testid={ `${ testId }-form` }
                                             />

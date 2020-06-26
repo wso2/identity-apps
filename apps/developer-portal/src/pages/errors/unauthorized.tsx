@@ -29,7 +29,7 @@ import { AppConstants } from "../../constants";
  * @param {RouteComponentProps} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
+const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
     props: RouteComponentProps
 ): ReactElement => {
 
@@ -131,3 +131,10 @@ export const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
         />
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default UnauthorizedErrorPage;

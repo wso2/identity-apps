@@ -46,7 +46,7 @@ type LocalClaimsPageInterface = TestableComponentInterface
  *
  * @return {React.ReactElement}
  */
-export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
+const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     props: LocalClaimsPageInterface
 ): ReactElement => {
 
@@ -73,6 +73,7 @@ export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
     ];
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ claims, setClaims ] = useState<Claim[]>(null);
     const [ offset, setOffset ] = useState(0);
@@ -303,7 +304,8 @@ export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     rightActionPanel={
                         hasRequiredScopes(
                             featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.create) && (
+                            featureConfig?.attributeDialects?.scopes?.create,
+                            allowedScopes) && (
                             <PrimaryButton
                                 onClick={ () => {
                                     setOpenModal(true);
@@ -347,3 +349,10 @@ export const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
 LocalClaimsPage.defaultProps = {
     "data-testid": "local-claims"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default LocalClaimsPage;

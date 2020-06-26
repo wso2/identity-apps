@@ -35,6 +35,10 @@ export interface SidePanelItemGroupPropsInterface extends CommonSidePanelPropsIn
      * Is opened.
      */
     open?: boolean;
+    /**
+     * Scopes allowed for the user.
+     */
+    allowedScopes: string;
 }
 
 /**
@@ -49,6 +53,7 @@ export const SidePanelItemGroup: FunctionComponent<SidePanelItemGroupPropsInterf
 ): ReactElement => {
 
     const {
+        allowedScopes,
         childRoutes,
         open,
         sidePanelItemHeight,
@@ -74,6 +79,7 @@ export const SidePanelItemGroup: FunctionComponent<SidePanelItemGroupPropsInterf
                         key={ route.level ? `level-${ route.level }-${index}` : `level-${ 0 }-${index}` }
                         route={ route }
                         iconSize="nano"
+                        allowedScopes={ allowedScopes }
                         data-testid={ `${ testId }-child-item` }
                         { ...props }
                     />

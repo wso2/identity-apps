@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AuthenticatedUserInterface } from "../../../models";
+
 /**
  * Enum for common authenticate action types.
  *
@@ -55,6 +57,7 @@ interface CommonAuthenticateBaseActionInterface {
  */
 export interface SetSignInActionInterface extends CommonAuthenticateBaseActionInterface {
     type: CommonAuthenticateActionTypes.SET_SIGN_IN;
+    payload: AuthenticatedUserInterface;
 }
 
 /**

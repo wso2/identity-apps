@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ClaimConstants } from "../constants";
@@ -33,9 +33,8 @@ const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
 /**
  * Get an axios instance.
  *
- * @type {AxiosHttpClientInstance}.
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Fetch all local claims.
@@ -53,7 +52,7 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).localClaims
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -94,7 +93,7 @@ export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> =>
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).claims
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -137,7 +136,7 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
             .replace("{0}", dialectID)
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(

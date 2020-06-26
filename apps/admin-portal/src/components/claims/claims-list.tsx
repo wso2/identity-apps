@@ -39,7 +39,7 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon, Image, List, Popup } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim, getUserStores } from "../../api";
@@ -51,6 +51,7 @@ import {
     FeatureConfigInterface,
     UserStoreListItem
 } from "../../models";
+import { AppState } from "../../store";
 
 /**
  * The model of the object containing info specific to the list type.
@@ -148,6 +149,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const [ userStores, setUserStores ] = useState<UserStoreListItem[]>([]);
     const [ editClaim, setEditClaim ] = useState("");
     const [ editExternalClaim, setEditExternalClaim ] = useState(-1);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const dispatch = useDispatch();
 
@@ -572,7 +575,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                             {
                                                 hidden: !hasRequiredScopes(
                                                     featureConfig?.attributeDialects,
-                                                    featureConfig?.attributeDialects?.scopes?.delete),
+                                                    featureConfig?.attributeDialects?.scopes?.delete,
+                                                    allowedScopes),
                                                 icon: "trash alternate",
                                                 onClick: () => { initDelete(ListType.LOCAL, claim) },
                                                 popupText: t("common:delete"),
@@ -675,7 +679,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                 {
                                                     hidden: !hasRequiredScopes(
                                                         featureConfig?.attributeDialects,
-                                                        featureConfig?.attributeDialects?.scopes?.delete),
+                                                        featureConfig?.attributeDialects?.scopes?.delete,
+                                                        allowedScopes),
                                                     icon: "trash alternate",
                                                     onClick: () => { initDelete(ListType.DIALECT, dialect) },
                                                     popupText: t("common:delete"),
@@ -714,7 +719,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                     {
                                                         hidden: !hasRequiredScopes(
                                                             featureConfig?.attributeDialects,
-                                                            featureConfig?.attributeDialects?.scopes?.delete),
+                                                            featureConfig?.attributeDialects?.scopes?.delete,
+                                                            allowedScopes),
                                                         icon: "trash alternate",
                                                         onClick: () => { initDelete(ListType.EXTERNAL, claim) },
                                                         popupText: t("common:delete"),

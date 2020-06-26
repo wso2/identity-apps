@@ -37,6 +37,10 @@ export interface SidePanelItemPropsInterface extends CommonSidePanelPropsInterfa
      * Route of the item.
      */
     route: RouteInterface | ChildRouteInterface;
+    /**
+     * Scopes allowed for the user.
+     */
+    allowedScopes: string;
 }
 
 /**
@@ -51,6 +55,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
 ): ReactElement => {
 
     const {
+        allowedScopes,
         caretIcon,
         footerHeight,
         headerHeight,
@@ -133,7 +138,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
     return (
         <>
             {
-                (route.showOnSidePanel && (route.scope ? AuthenticateUtils.hasScope(route.scope) : true))
+                (route.showOnSidePanel && (route.scope ? AuthenticateUtils.hasScope(route.scope, allowedScopes) : true))
                     ? (
                         <Menu.Item
                             name={ route.name }
@@ -200,6 +205,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             open={ validateOpenState(route.open, selected, route.children) }
                             sidePanelItemHeight={ sidePanelItemHeight }
                             translationHook={ translationHook }
+                            allowedScopes={ allowedScopes } 
                         />
                     )
                     : null

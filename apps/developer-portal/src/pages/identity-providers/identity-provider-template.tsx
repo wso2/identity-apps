@@ -67,7 +67,7 @@ import {
     SupportedServicesInterface
 } from "../../models";
 import { AppState } from "../../store";
-import { setAvailableAuthenticatorsMeta } from "../../store/actions/identity-provider";
+import { setAvailableAuthenticatorsMeta } from "../../store/actions";
 import { HelpPanelUtils, IdentityProviderManagementUtils } from "../../utils";
 
 /**
@@ -82,7 +82,7 @@ type IdentityProviderTemplateSelectPagePropsInterface = TestableComponentInterfa
  *
  * @return {React.ReactElement}
  */
-export const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemplateSelectPagePropsInterface> = (
+const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemplateSelectPagePropsInterface> = (
     props: IdentityProviderTemplateSelectPagePropsInterface
 ): ReactElement => {
 
@@ -527,3 +527,10 @@ export const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProvi
 IdentityProviderTemplateSelectPage.defaultProps = {
     "data-testid": "idp-templates"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default IdentityProviderTemplateSelectPage;

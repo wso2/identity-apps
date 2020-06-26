@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import {
     HttpMethods,
     UserSessions
@@ -28,7 +28,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Fetches the list of user sessions from the API.
@@ -45,7 +45,7 @@ export const fetchUserSessions = (): Promise<any> => {
         url: store.getState().config.endpoints.sessions
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return response.data as UserSessions;
         })
@@ -70,7 +70,7 @@ export const terminateUserSession = (id: string): Promise<any> => {
         url: `${ store.getState().config.endpoints.sessions }/${ id }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return response.data;
         })
@@ -94,7 +94,7 @@ export const terminateAllUserSessions = (): Promise<any> => {
         url: store.getState().config.endpoints.sessions
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return response.data;
         })

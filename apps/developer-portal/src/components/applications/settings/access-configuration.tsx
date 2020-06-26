@@ -108,6 +108,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const dispatch = useDispatch();
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
@@ -323,7 +325,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             readOnly={
                                                 !hasRequiredScopes(
                                                     featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes
                                                 )
                                             }
                                             data-testid={ `${ testId }-inbound-${ protocol }-form` }
@@ -351,7 +354,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             readOnly={
                                                 !hasRequiredScopes(
                                                     featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes
                                                 )
                                             }
                                             data-testid={ `${ testId }-inbound-custom-form` }
@@ -434,8 +438,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                             {
                                 inboundProtocols.length > 0
                                     ? hasRequiredScopes(
-                                    featureConfig?.applications,
-                                    featureConfig?.applications?.scopes?.update) && (
+                                        featureConfig?.applications,
+                                        featureConfig?.applications?.scopes?.update,
+                                        allowedScopes) && (
                                     <Button
                                         floated="right"
                                         primary
@@ -450,7 +455,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             action={
                                                 hasRequiredScopes(
                                                     featureConfig?.applications,
-                                                    featureConfig?.applications?.scopes?.update) && (
+                                                    featureConfig?.applications?.scopes?.update,
+                                                    allowedScopes) && (
                                                     <PrimaryButton onClick={ () => setShowWizard(true) }>
                                                         <Icon name="add"/>
                                                         { t("devPortal:components.applications.placeholders" +

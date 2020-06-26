@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, SignInUtil } from "@wso2is/authentication";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth, SignInResponse } from "@wso2is/oauth-web-worker";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import _ from "lodash";
 import { CommonServiceResourcesEndpoints } from "../configs";
@@ -37,11 +36,14 @@ import {
 import { ContextUtils, ProfileUtils } from "../utils";
 
 /**
+ * OAuth instance.
+ */
+const oAuth = OAuth.getInstance();
+/**
  * Get an http client instance.
  *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = oAuth.httpRequest;
 
 /**
  * Get Gravatar image using the email address.
@@ -98,7 +100,7 @@ export const getProfileInfo = (onSCIMDisabled: () => void,
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).me
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then(async (response: AxiosResponse) => {
             let gravatar = "";
 
@@ -183,7 +185,7 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).me
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -222,7 +224,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).profileSchemas
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -258,24 +260,25 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
  * @return {Promise<any>}
  * @throws {IdentityAppsApiException}
  */
-export const switchAccount = (account: LinkedAccountInterface,
-                              scopes: string[],
-                              clientID: string,
-                              clientHost: string): Promise<any> => {
-
-    const requestParams = {
-        "client_id": clientID,
-        "scope": scopes,
-        "tenant-domain": account.tenantDomain,
-        "username": account.username,
-        "userstore-domain": account.userStoreDomain
-    };
-
-    return SignInUtil.sendAccountSwitchRequest(requestParams, clientHost)
-        .then((response) => {
-            AuthenticateSessionUtil.initUserSession(response,
-                SignInUtil.getAuthenticatedUser(response.idToken));
-            return Promise.resolve(response);
+export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
+    return oAuth
+        .customGrant({
+            attachToken: false,
+            data: {
+                "client_id": "{{clientId}}",
+                "grant_type": "account_switch",
+                scope: "{{scope}}",
+                "tenant-domain": account.tenantDomain,
+                token: "{{token}}",
+                username: account.username,
+                "userstore-domain": account.userStoreDomain
+            },
+            returnResponse: true,
+            returnsSession: true,
+            signInRequired: true
+        })
+        .then((response: SignInResponse) => {
+            return Promise.resolve(response?.data);
         })
         .catch((error: AxiosError) => {
             throw new IdentityAppsApiException(
@@ -284,6 +287,7 @@ export const switchAccount = (account: LinkedAccountInterface,
                 error.code,
                 error.request,
                 error.response,
-                error.config);
+                error.config
+            );
         });
 };

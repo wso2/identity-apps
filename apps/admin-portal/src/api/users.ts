@@ -17,16 +17,15 @@
  */
 
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { UserListInterface } from "../models";
 import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
  *
- * @type { AxiosHttpClientInstance }
  */
-const httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Retrieve the list of users that are currently in the system.
@@ -51,7 +50,7 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
         url: store.getState().config.endpoints.users
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data as UserListInterface);
         })
@@ -76,7 +75,7 @@ export const getUserStoreList = (): Promise<any> => {
         url: store.getState().config.endpoints.userStores
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
         })
@@ -104,7 +103,7 @@ export const addUser = (data: object): Promise<any> => {
         url: store.getState().config.endpoints.users
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
         })
@@ -131,7 +130,7 @@ export const deleteUser = (userId: string): Promise<any> => {
         url: store.getState().config.endpoints.users + "/" + userId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
         })
@@ -158,7 +157,7 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
         url: store.getState().config.endpoints.groups + "/" + groupId
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
         })
@@ -184,7 +183,7 @@ export const updateUserRoles = (data: object): Promise<any> => {
         url: store.getState().config.endpoints.bulk
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
         })
@@ -209,8 +208,7 @@ export const getUserDetails = (id: string): Promise<any> => {
         url: store.getState().config.endpoints.users + "/" + id
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data as ProfileInfoInterface);
         })
@@ -238,8 +236,7 @@ export const updateUserInfo = (userId: string, data: object): Promise<ProfileInf
         url: store.getState().config.endpoints.users + "/" + userId
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data as ProfileInfoInterface);
         })

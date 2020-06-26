@@ -16,23 +16,30 @@
  * under the License.
  */
 
-import { ConfigInterface, IdentityClient } from "@wso2is/authentication";
-import { AuthenticateUtils } from "@wso2is/core/utils";
+import { I18n } from "@wso2is/i18n";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
+import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
-import { getProfileInfo, getProfileSchemas } from "../../api";
-import { i18n } from "../../configs";
+import { getProfileInfo, getProfileSchemas, switchAccount } from "../../api";
 import { history } from "../../helpers";
-import { AlertLevels, BasicProfileInterface, ProfileSchema } from "../../models";
+import {
+    AlertLevels,
+    AuthenticatedUserInterface,
+    BasicProfileInterface,
+    LinkedAccountInterface,
+    ProfileSchema
+} from "../../models";
 import { getProfileCompletion } from "../../utils";
 import { store } from "../index";
 
 /**
  * Dispatches an action of type `SET_SIGN_IN`.
  */
-export const setSignIn = (): AuthAction => ({
+export const setSignIn = (userInfo: AuthenticatedUserInterface): AuthAction => ({
+    payload: userInfo,
     type: authenticateActionTypes.SET_SIGN_IN
 });
 
@@ -123,11 +130,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
             dispatch(
                 addAlert({
-                    description: i18n.t(
+                    description: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: i18n.t(
+                    message: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
@@ -137,12 +144,12 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: i18n.t(
+                        description: I18n.instance.t(
                             "views:components.profile.notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: i18n.t(
+                        message: I18n.instance.t(
                             "views:components.profile.notifications.getProfileInfo.error.message"
                         )
                     })
@@ -153,11 +160,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
             dispatch(
                 addAlert({
-                    description: i18n.t(
+                    description: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: i18n.t(
+                    message: I18n.instance.t(
                         "views:components.profile.notifications.getProfileInfo.genericError.message"
                     )
                 })
@@ -169,59 +176,85 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 };
 
 /**
- * Initialize identityManager client
- */
-const identityManager = (() => {
-    let instance: ConfigInterface;
-
-    const createInstance = () => {
-        return new IdentityClient({
-            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
-            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-            clientID: window["AppUtils"].getConfig().clientID,
-            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            serverOrigin: window["AppUtils"].getConfig().serverOrigin,
-            tenant: window["AppUtils"].getConfig().tenant,
-            tenantPath: window["AppUtils"].getConfig().tenantPath
-        });
-    };
- 
-    return {
-        getInstance: () => {
-            if (!instance) {
-                instance = createInstance();
-            }
-
-            return instance;
-        }
-    };
-})();
-
-/**
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-    identityManager.getInstance().signIn(
-        () => {
-            dispatch(setSignIn());
-            dispatch(getProfileInformation());
+    const oAuth = OAuth.getInstance();
+    oAuth
+		.initialize({
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
+            enablePKCE: true,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
+            scope: ["SYSTEM", "openid"],
+            serverOrigin: window["AppUtils"].getConfig().serverOrigin
         })
-        .catch((error) => {
-            // TODO: Show error page
-            throw error;
-        });
+		.then(() => {
+			oAuth
+				.signIn()
+				.then((response) => {
+					dispatch(
+						setSignIn({
+							// eslint-disable-next-line @typescript-eslint/camelcase
+							display_name: response.displayName,
+							email: response.email,
+							scope: response.allowedScopes,
+							username: response.username
+						})
+					);
+
+					dispatch(getProfileInformation());
+				})
+				.catch((error) => {
+					throw error;
+				});
+		})
+		.catch((error) => {
+			throw error;
+		});
 };
 
 /**
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    identityManager.getInstance().signOut(
-        () => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl();
+    const oAuth = OAuth.getInstance();
+    oAuth
+        .signOut()
+        .then(() => {
             dispatch(setSignOut());
         })
         .catch(() => {
             history.push(store?.getState()?.config?.deployment?.appLoginPath);
+        });
+};
+
+/**
+ * Handles account switching.
+ *
+ * @param {LinkedAccountInterface} account Info about the the account to switch to.
+ *
+ * @returns {(dispatch)=>void} A function that accepts dispatch as an argument.
+ */
+export const handleAccountSwitching = (account: LinkedAccountInterface) => (dispatch) => {
+    switchAccount(account)
+        .then((response) => {
+            dispatch(
+                setSignIn({
+                    // eslint-disable-next-line @typescript-eslint/camelcase
+                    display_name: response.displayName,
+                    email: response.email,
+                    scope: response.allowedScopes,
+                    username: response.username
+                })
+            );
+
+            dispatch(getProfileInformation());
+            dispatch(getProfileLinkedAccounts());
+        })
+        .catch((error) => {
+            throw error;
         });
 };

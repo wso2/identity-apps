@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import React  from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
@@ -37,12 +37,13 @@ import { addAlert } from "../store/actions";
 /**
  * Account security page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const AccountSecurityPage = (): JSX.Element => {
+const AccountSecurityPage = (): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -61,7 +62,10 @@ export const AccountSecurityPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.security, accessConfig?.security?.scopes?.read,
+                                allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.security,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
@@ -76,7 +80,10 @@ export const AccountSecurityPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.security, accessConfig?.security?.scopes?.read,
+                                allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.security,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
@@ -94,7 +101,10 @@ export const AccountSecurityPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.security, accessConfig?.security?.scopes?.read,
+                                allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.security,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
@@ -112,7 +122,10 @@ export const AccountSecurityPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.security, accessConfig?.security?.scopes?.read,
+                                allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.security,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACTIVE_SESSIONS")
@@ -127,7 +140,10 @@ export const AccountSecurityPage = (): JSX.Element => {
                 <Grid.Row>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.security, accessConfig?.security?.scopes?.read,
+                                allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.security,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
@@ -143,3 +159,10 @@ export const AccountSecurityPage = (): JSX.Element => {
         </InnerPageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default AccountSecurityPage;

@@ -33,13 +33,14 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Icon, Image } from "semantic-ui-react";
 import { deleteUserStore } from "../../api";
 import { DatabaseAvatarGraphic, EmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { FeatureConfigInterface, UserStoreListItem } from "../../models";
+import { AppState } from "../../store";
 
 /**
  * Prop types of the `UserStoresList` component
@@ -94,6 +95,8 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     const [ deleteConfirm, setDeleteConfirm ] = useState(false);
     const [ deleteID, setDeleteID ] = useState<string>(null);
     const [ deleteName, setDeleteName ] = useState<string>("");
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const dispatch = useDispatch();
 
@@ -276,7 +279,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                         size="mini"
                                         data-testid={ `${ testId }-item-image` }
                                     >
-                                        <DatabaseAvatarGraphic.ReactComponent />
+                                        <DatabaseAvatarGraphic />
                                     </Image>
                                 }
                                 key={ index }
@@ -293,7 +296,8 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                                     {
                                         hidden: !hasRequiredScopes(
                                             featureConfig?.userStores,
-                                            featureConfig?.userStores?.scopes?.delete),
+                                            featureConfig?.userStores?.scopes?.delete,
+                                            allowedScopes),
                                         icon: "trash alternate",
                                         onClick: () => {
                                             initDelete(userStore?.id, userStore?.name)

@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.0.302",
+    "version": "1.0.305",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -17,16 +17,23 @@
     "scripts": {
         "build": "npm run clean && npm run compile",
         "postbuild": "node scripts/post-build.js",
-        "clean": "rimraf ./dist",
-        "clean:bundle": "rimraf ./dist/bundle",
+        "clean": "npm run rimraf ./dist",
+        "clean:bundle": "npm run rimraf ./dist/bundle",
+        "clean:translations": "npm run rimraf ./dist/src/translations && npm run rimraf ./dist/types/translations",
         "compile": "tsc -p tsconfig.json",
         "lint": "eslint --ext .js,.ts .",
+        "rimraf": "run-script-os",
+        "rimraf:default": "../../node_modules/rimraf/bin.js",
+        "rimraf:win32": "..\\..\\node_modules\\rimraf\\bin.js",
         "test": "jest --passWithNoTests"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.0.302"
+        "@wso2is/core": "^1.0.305"
+    },
+    "devDependencies": {
+        "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
         "@types/i18next": "*",

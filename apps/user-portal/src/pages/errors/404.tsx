@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import * as React from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
@@ -27,9 +27,9 @@ import { ErrorPageLayout } from "../../layouts";
 /**
  * 404 error page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const PageNotFound = (): JSX.Element => {
+const PageNotFound = (): ReactElement => {
     const { t } = useTranslation();
     return (
         <ErrorPageLayout>
@@ -40,17 +40,24 @@ export const PageNotFound = (): JSX.Element => {
                         as={ Link }
                         to={ GlobalConfig.appHomePath }
                     >
-                        { t("views:placeholders.404.action") }
+                        { t("userPortal:placeholders.404.action") }
                     </Button>
                 ) }
                 image={ EmptyPlaceholderIllustrations.pageNotFound }
                 imageSize="tiny"
                 subtitle={ [
-                    t("views:placeholders.404.subtitles.0"),
-                    t("views:placeholders.404.subtitles.1")
+                    t("userPortal:placeholders.404.subtitles.0"),
+                    t("userPortal:placeholders.404.subtitles.1")
                 ] }
-                title={ t("views:placeholders.404.title") }
+                title={ t("userPortal:placeholders.404.title") }
             />
         </ErrorPageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default PageNotFound;

@@ -105,16 +105,16 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                                         className="link-button"
                                         onClick={ handlePageRefresh }
                                     >
-                                        { t("views:placeholders.genericError.action") }
+                                        { t("userPortal:placeholders.genericError.action") }
                                     </Button>
                                 ) }
                                 image={ EmptyPlaceholderIllustrations.genericError }
                                 imageSize="tiny"
                                 subtitle={ [
-                                    t("views:placeholders.genericError.subtitles.0"),
-                                    t("views:placeholders.genericError.subtitles.1")
+                                    t("userPortal:placeholders.genericError.subtitles.0"),
+                                    t("userPortal:placeholders.genericError.subtitles.1")
                                 ] }
-                                title={ t("views:placeholders.genericError.title") }
+                                title={ t("userPortal:placeholders.genericError.title") }
                             />
                         ) }
                     >

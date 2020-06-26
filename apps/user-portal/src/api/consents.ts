@@ -16,8 +16,7 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { ConsentReceiptInterface, ConsentState, HttpMethods, UpdateReceiptInterface } from "../models";
 import { store } from "../store";
 
@@ -25,7 +24,7 @@ import { store } from "../store";
  * Initialize an axios Http client.
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Fetches a list of consented applications of the currently authenticated user.
@@ -33,9 +32,10 @@ const httpClient = AxiosHttpClient.getInstance();
  * @return {Promise<any>} A promise containing the response.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
-    const userName = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME).split("@");
+export const fetchConsentedApps = (state: ConsentState, username): Promise<any> => {
 
+    const userName = username.split("@");
+    
     if (userName.length > 1) {
         userName.pop();
     }
@@ -54,8 +54,7 @@ export const fetchConsentedApps = (state: ConsentState): Promise<any> => {
         url: store.getState().config.endpoints.consents
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return response.data;
         })
@@ -81,8 +80,7 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
         url: store.getState().config.endpoints.receipts + `/${receiptId}`
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return response.data as ConsentReceiptInterface;
         })
@@ -106,8 +104,7 @@ export const revokeConsentedApp = (appId: string): Promise<any> => {
         url: store.getState().config.endpoints.receipts + `/${appId}`
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             // TODO: change the return type
             return response.data as ConsentReceiptInterface;
@@ -161,8 +158,7 @@ export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise
         url: store.getState().config.endpoints.consents
     };
 
-    return httpClient
-        .request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return response.data as ConsentReceiptInterface;
         })

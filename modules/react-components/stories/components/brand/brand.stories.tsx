@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { select, text, withKnobs } from "@storybook/addon-knobs";
+import { text, withKnobs } from "@storybook/addon-knobs";
 import { Logo as LogoImage } from "@wso2is/theme";
 import * as React from "react";
 import { meta } from "./brand.stories.meta";
@@ -42,49 +42,7 @@ export const DefaultProductBrand = (): React.ReactElement => (
         logo={
             <Logo image={ text("Logo URL", null) ? text("Logo URL", null) : LogoImage }/>
         }
-        version={ {
-            labelColor: select(
-                "Version label color",
-                {
-                    BLACK: "black",
-                    BLUE: "blue",
-                    BROWN: "brown",
-                    GREEN: "green",
-                    GREY: "grey",
-                    OLIVE: "olive",
-                    ORANGE: "orange",
-                    PINK: "pink",
-                    PRIMARY: "primary",
-                    PURPLE: "purple",
-                    RED: "red",
-                    SECONDARY: "secondary",
-                    TEAL: "teal",
-                    VIOLET: "violet",
-                    YELLOW: "yellow"
-                },
-                null
-            ),
-            milestoneNumber: text("Milestone number", undefined),
-            releaseType: select(
-                "Release type",
-                {
-                    ALPHA: "alpha",
-                    BETA: "beta",
-                    MILESTONE: "milestone",
-                    RC: "rc"
-                },
-                "alpha"
-            ),
-            textCase: select(
-                "Version Text Case",
-                {
-                    Lowercase: "lowercase",
-                    Uppercase: "uppercase"
-                },
-                null
-            ),
-            versionNumber: text("Version number", "5.11.0")
-        } }
+        version={ text("version", "5.11.0-M24-SNAPSHOT") }
     />
 );
 

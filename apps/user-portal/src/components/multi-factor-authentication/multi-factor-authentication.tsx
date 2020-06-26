@@ -20,10 +20,12 @@ import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
 import { ApplicationConstants } from "../../constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
+import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
 
 /**
@@ -37,6 +39,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const { t } = useTranslation();
     const { onAlertFired, featureConfig } = props;
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+
     return (
         <SettingsSection
             description={ t("userPortal:sections.mfa.description") }
@@ -45,7 +49,10 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 <List.Item className="inner-list-item">
                     {
-                        hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read) &&
+                        hasRequiredScopes(
+                            featureConfig?.security, featureConfig?.security?.scopes?.read,
+                            allowedScopes
+                        ) &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_SMS")
@@ -58,7 +65,10 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 </List.Item>
                 <List.Item className="inner-list-item">
                     {
-                        hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read) &&
+                        hasRequiredScopes(
+                            featureConfig?.security, featureConfig?.security?.scopes?.read,
+                            allowedScopes
+                        ) &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_FIDO")
@@ -71,7 +81,10 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 </List.Item>
                 <List.Item className="inner-list-item">
                     {
-                        hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read) &&
+                        hasRequiredScopes(
+                            featureConfig?.security, featureConfig?.security?.scopes?.read,
+                            allowedScopes
+                        ) &&
                         isFeatureEnabled(
                             featureConfig?.security,
                             ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_TOTP")

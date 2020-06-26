@@ -92,6 +92,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[ 0 ]);
@@ -270,7 +271,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig));
+        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig, allowedScopes));
 
         if (_.isEmpty(profileInfo)) {
             dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
@@ -402,6 +403,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     routes={ filteredRoutes }
                     selected={ selectedRoute }
                     translationHook={ t }
+                    allowedScopes={ allowedScopes }
                 />
             ) }
             footer={ (

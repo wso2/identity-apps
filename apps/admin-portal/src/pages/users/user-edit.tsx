@@ -31,7 +31,7 @@ import { history } from "../../helpers";
  *
  * @return {React.ReactElement}
  */
-export const UserEditPage = (): ReactElement => {
+const UserEditPage = (): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -105,3 +105,10 @@ export const UserEditPage = (): ReactElement => {
         </PageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default UserEditPage;

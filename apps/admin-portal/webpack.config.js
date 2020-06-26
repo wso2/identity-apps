@@ -17,64 +17,41 @@
  */
 
 const path = require("path");
+const BrotliPlugin = require("brotli-webpack-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const webpack = require("webpack");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
+// Flag to enable source maps in production.
+const isSourceMapsEnabledInProduction = false;
+
+// Enable/Disable profiling in Production.
+const isProfilingEnabledInProduction = false;
+
 module.exports = (env) => {
+
+    // Build Environments.
+    const isProduction = env.NODE_ENV === "production";
+    const isDevelopment = env.NODE_ENV === "development";
+
+    // Checks if analyzing mode enabled.
+    const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
+
     const basename = deploymentConfig.appBaseName;
     const devServerPort = 9002;
     const publicPath = `/${ basename }`;
 
-    const isProd = env.NODE_ENV === "production";
-
-    /**
-     * Build configurations
-     */
+    // Build configurations.
     const distFolder = path.resolve(__dirname, "build", basename);
     const faviconImage = path.resolve(__dirname, "node_modules",
         "@wso2is/theme/dist/lib/themes/default/assets/images/favicon.ico");
     const titleText = deploymentConfig.ui.appTitle;
-
-    const compileAppIndex = () => {
-        if (isProd) {
-            return new HtmlWebpackPlugin({
-                authorizationCode: "<%=request.getParameter(\"code\")%>",
-                contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
-                    "pageEncoding=\"UTF-8\" %>",
-                favicon: faviconImage,
-                filename: path.join(distFolder, "index.jsp"),
-                hash: true,
-                importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                    "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
-                importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                    "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
-                importUtil: "<%@ page import=\"" +
-                    "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
-                publicPath: publicPath,
-                serverUrl: "<%=getServerURL(\"\", true, true)%>",
-                sessionState: "<%=request.getParameter(\"session_state\")%>",
-                superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
-                template: path.join(__dirname, "src", "index.jsp"),
-                tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
-                tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
-                title: titleText
-            });
-        } else {
-            return new HtmlWebpackPlugin({
-                favicon: faviconImage,
-                filename: path.join(distFolder, "index.html"),
-                hash: true,
-                publicPath: publicPath,
-                template: path.join(__dirname, "src", "index.html"),
-                title: titleText
-            });
-        }
-    };
 
     return {
         devServer: {
@@ -91,8 +68,13 @@ module.exports = (env) => {
             openPage: basename,
             port: devServerPort
         },
-        devtool: "eval",
+        devtool: isProduction
+            ? isSourceMapsEnabledInProduction
+                ? "source-map"
+                : false
+            : isDevelopment && "cheap-module-source-map",
         entry: ["./src/index.tsx"],
+        mode: isProduction ? "production" : "development",
         module: {
             rules: [
                 {
@@ -142,6 +124,11 @@ module.exports = (env) => {
                 },
                 {
                     enforce: "pre",
+                    test: /\.js$/,
+                    use: ["source-map-loader"]
+                },
+                {
+                    enforce: "pre",
                     exclude: /(node_modules|dist|build|target|plugins)/,
                     test: /\.(ts|tsx|js|jsx)$/,
                     use: [
@@ -161,39 +148,85 @@ module.exports = (env) => {
                             }
                         }
                     ]
-                },
-                {
-                    enforce: "pre",
-                    test: /\.js$/,
-                    use: ["source-map-loader"]
                 }
-            ]
+            ],
+            // Makes missing exports an error instead of warning.
+            strictExportPresence: true
         },
         node: {
             fs: "empty"
         },
         optimization: {
-            minimize: true,
+            minimize: isProduction,
             minimizer: [
                 new TerserPlugin({
                     cache: path.resolve(__dirname, "cache"),
                     extractComments: true,
+                    sourceMap: isSourceMapsEnabledInProduction,
                     terserOptions: {
-                        keep_fnames: true
+                        compress: {
+                            // Disabled because of an issue with Uglify breaking seemingly valid code:
+                            // https://github.com/mishoo/UglifyJS2/issues/2011
+                            comparisons: false,
+                            ecma: 5,
+                            // Disabled because of an issue with Terser breaking valid code:
+                            // https://github.com/terser-js/terser/issues/120
+                            inline: 2,
+                            warnings: false
+                        },
+                        // prevent the compressor from discarding class names.
+                        keep_classnames: isProfilingEnabledInProduction,
+                        // Prevent discarding or mangling of function names.
+                        keep_fnames: isProfilingEnabledInProduction,
+                        output: {
+                            // Regex is not minified properly using default.
+                            // https://github.com/mishoo/UglifyJS/issues/171
+                            ascii_only: true,
+                            comments: false,
+                            ecma: 5
+                        },
+                        parse: {
+                            ecma: 8
+                        }
                     }
                 })
             ].filter(Boolean),
+            // Keep the runtime chunk separated to enable long term caching
+            // https://twitter.com/wSokra/status/969679223278505985
+            runtimeChunk: {
+                name: entryPoint => `runtime-${entryPoint.name}`
+            },
             splitChunks: {
                 chunks: "all"
             }
         },
         output: {
-            filename: "[name].js",
+            chunkFilename: isProduction
+                ? "static/js/[name].[contenthash:8].chunk.js"
+                : "static/js/[name].chunk.js",
+            filename: isProduction
+                ? "static/js/[name].[contenthash:8].js"
+                : "static/js/[name].js",
             path: distFolder,
             publicPath: `${ publicPath }/`
         },
         plugins: [
-            new ForkTsCheckerWebpackPlugin({ checkSyntacticErrors: true }),
+            isAnalyzeMode && new BundleAnalyzerPlugin(),
+            new ForkTsCheckerWebpackPlugin({
+                async: isDevelopment,
+                checkSyntacticErrors: true,
+                eslint: true,
+                measureCompilationTime: true,
+                reportFiles: [
+                    "**",
+                    "!**/__tests__/**",
+                    "!**/?(*.)(spec|test).*"
+                ],
+                silent: true,
+                tsconfig: path.resolve(__dirname, "./tsconfig.json"),
+                useTypescriptIncrementalApi: true,
+                workers: 1
+            }),
             new WriteFilePlugin({
                 // Exclude hot-update files
                 test: /^(?!.*(hot-update)).*/
@@ -221,14 +254,61 @@ module.exports = (env) => {
                     to: "."
                 }
             ]),
-            compileAppIndex(),
+            isProduction
+                ? new HtmlWebpackPlugin({
+                    authorizationCode: "<%=request.getParameter(\"code\")%>",
+                    contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
+                        "pageEncoding=\"UTF-8\" %>",
+                    favicon: faviconImage,
+                    filename: path.join(distFolder, "index.jsp"),
+                    hash: true,
+                    importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
+                    importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
+                    importUtil: "<%@ page import=\"" +
+                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                    publicPath: publicPath,
+                    serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                    sessionState: "<%=request.getParameter(\"session_state\")%>",
+                    superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
+                    template: path.join(__dirname, "src", "index.jsp"),
+                    tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
+                    tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
+                    title: titleText
+                })
+                : new HtmlWebpackPlugin({
+                    favicon: faviconImage,
+                    filename: path.join(distFolder, "index.html"),
+                    hash: true,
+                    publicPath: publicPath,
+                    template: path.join(__dirname, "src", "index.html"),
+                    title: titleText
+                }),
             new webpack.DefinePlugin({
                 "process.env": {
                     NODE_ENV: JSON.stringify(env.NODE_ENV)
                 },
                 "typeof window": JSON.stringify("object")
+            }),
+            // Moment locales take up ~160KB. Since this portal currently doesn't require all the moment locales,
+            // temporarily require only the ones for the languages supported by default.
+            // TODO: Remove this when dynamic runtime localization support is announced.
+            new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt|si|ta/),
+            new CompressionPlugin({
+                algorithm: "gzip",
+                filename: "[path].gz[query]",
+                minRatio: 0.8,
+                test: /\.(js|css|html|svg)$/,
+                threshold: 10240
+            }),
+            new BrotliPlugin({
+                asset: "[path].br[query]",
+                minRatio: 0.8,
+                test: /\.(js|css|html|svg)$/,
+                threshold: 10240
             })
-        ],
+        ].filter(Boolean),
         resolve: {
             extensions: [".tsx", ".ts", ".js", ".json"]
         },

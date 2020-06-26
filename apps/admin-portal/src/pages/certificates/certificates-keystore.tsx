@@ -44,7 +44,7 @@ type CertificatesKeystorePageInterface = TestableComponentInterface
  *
  * @return {React.ReactElement}
  */
-export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface> = (
+const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface> = (
     props: CertificatesKeystorePageInterface
 ): ReactElement => {
 
@@ -79,7 +79,8 @@ export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInt
 
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    
     const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
@@ -273,7 +274,8 @@ export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInt
                     resetPagination={ resetPagination }
                     rightActionPanel={
                         (hasRequiredScopes(featureConfig?.certificates,
-                            featureConfig?.certificates?.scopes?.create)
+                            featureConfig?.certificates?.scopes?.create,
+                            allowedScopes)
                             && !isSuper) && (
                             <PrimaryButton
                                 onClick={ () => {
@@ -318,3 +320,10 @@ export const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInt
 CertificatesKeystore.defaultProps = {
     "data-testid": "certificate-keystore"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default CertificatesKeystore;

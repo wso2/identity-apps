@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import React from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
@@ -31,13 +31,13 @@ import { addAlert } from "../store/actions";
 /**
  * Personal Info page.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const PersonalInfoPage = (): JSX.Element => {
+const PersonalInfoPage = (): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
-
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     /**
      * Dispatches the alert object to the redux store.
      * @param {AlertInterface} alert - Alert object.
@@ -56,7 +56,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE")
@@ -71,7 +73,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")
@@ -86,7 +90,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS")
@@ -101,7 +107,9 @@ export const PersonalInfoPage = (): JSX.Element => {
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
                         {
-                            hasRequiredScopes(accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read) &&
+                            hasRequiredScopes(
+                                accessConfig?.personalInfo, accessConfig?.personalInfo?.scopes?.read, allowedScopes
+                            ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
                                 ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")
@@ -117,3 +125,10 @@ export const PersonalInfoPage = (): JSX.Element => {
         </InnerPageLayout>
     );
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default PersonalInfoPage;

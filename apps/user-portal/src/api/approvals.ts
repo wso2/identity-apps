@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary, HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 /**
  * Fetches the list of pending approvals from the list.
@@ -69,7 +69,7 @@ export const fetchPendingApprovals = (
         };
     }
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data as ApprovalTaskSummary[]);
         })
@@ -96,7 +96,7 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
         url: `${ store.getState().config.endpoints.pendingApprovals }/${ id }`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response.data as ApprovalTaskDetails);
         })
@@ -131,7 +131,7 @@ export const updatePendingApprovalStatus = (
         url: `${ store.getState().config.endpoints.pendingApprovals }/${ id }/state`
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response) => {
             return Promise.resolve(response);
         })

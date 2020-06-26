@@ -19,6 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
+import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { InboundProvisioningConfigurations } from "./inbound-provisioning-configuration";
 import { OutboundProvisioningConfiguration } from "./outbound-provisioning-configuration";
@@ -27,6 +28,7 @@ import {
     FeatureConfigInterface,
     ProvisioningConfigurationInterface
 } from "../../../../models";
+import { AppState } from "../../../../store";
 
 /**
  * Proptypes for the provision settings component.
@@ -67,6 +69,8 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         [ "data-testid" ]: testId
     } = props;
 
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    
     return (
         <>
             <InboundProvisioningConfigurations
@@ -74,7 +78,11 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                 provisioningConfigurations={ provisioningConfigurations }
                 onUpdate={ onUpdate }
                 readOnly={
-                    !hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update)
+                    !hasRequiredScopes(
+                        featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update,
+                        allowedScopes
+                    )
                 }
                 data-testid={ `${ testId }-inbound-configuration` }
             />

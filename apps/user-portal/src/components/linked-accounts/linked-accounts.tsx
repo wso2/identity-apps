@@ -22,8 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
     addAccountAssociation,
-    removeLinkedAccount,
-    switchAccount
+    removeLinkedAccount
 } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
@@ -33,10 +32,11 @@ import {
     LinkedAccountInterface
 } from "../../models";
 import { AppState } from "../../store";
-import { getProfileLinkedAccounts } from "../../store/actions";
+import { getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { SettingsSection } from "../shared";
 import { LinkedAccountsEdit } from "./linked-accounts-edit";
 import { LinkedAccountsList } from "./linked-accounts-list";
+import { refreshPage } from "../../utils";
 
 /**
  * Prop types for the liked accounts component.
@@ -165,37 +165,36 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * @param {LinkedAccountInterface} account - Target account.
      */
     const handleLinkedAccountSwitch = (account: LinkedAccountInterface) => {
-        switchAccount(account)
-            .then(() => {
-                // reload the page on successful account switch.
-                window.location.reload();
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.detail) {
-                    onAlertFired({
-                        description: t(
-                            "userPortal:components.linkedAccounts.notifications.switchAccount.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "userPortal:components.linkedAccounts.notifications.switchAccount.error.message"
-                        )
-                    });
-
-                    return;
-                }
-
+        try {
+            dispatch(handleAccountSwitching(account));
+            refreshPage();
+        } catch (error) {
+        
+            if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                        "userPortal:components.linkedAccounts.notifications.switchAccount.error.description",
+                        { description: error.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                        "userPortal:components.linkedAccounts.notifications.switchAccount.error.message"
                     )
                 });
+
+                return;
+            }
+
+            onAlertFired({
+                description: t(
+                    "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
+                )
             });
+        }  
     };
 
     /**
@@ -240,7 +239,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     level: AlertLevels.ERROR,
                     message: t(
                         "userPortal:components.linkedAccounts.notifications.removeAssociation.genericError.message"
-                    ),
+                    )
                 });
             });
     };

@@ -30,7 +30,7 @@ import {
 } from "../api";
 import { CustomApplicationTemplate } from "../components/applications/meta";
 import { TechnologyLogos } from "../configs";
-import { ApplicationManagementConstants } from "../constants";
+import {ApplicationManagementConstants, DocumentationConstants} from "../constants";
 import {
     ApplicationTemplateListInterface,
     ApplicationTemplateListItemInterface,
@@ -399,4 +399,21 @@ export class ApplicationManagementUtils {
 
         return samples;
     };
+
+    /**
+     * Get the docs key for the SDKs.
+     *
+     * @param template - string
+     */
+    public static getSDKDocsKey = (template: string) => `${
+        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].SDKs`;
+
+    /**
+     * Get the docs key for the Samples.
+     *
+     * @param template - string
+     */
+    public static getSampleDocsKey = (template: string) => `${
+        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Samples`;
+
 }

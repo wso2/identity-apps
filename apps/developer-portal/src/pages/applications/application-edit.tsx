@@ -69,7 +69,7 @@ type ApplicationEditPageInterface = TestableComponentInterface
  *
  * @return {React.ReactElement}
  */
-export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
+const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     props: ApplicationEditPageInterface
 ): ReactElement => {
 
@@ -95,9 +95,12 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
+    const [ helpPanelSDKContent, setHelpPanelSDKContent ] = useState<string>(undefined);
     const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<DocPanelUICardInterface>(undefined);
+    const [ helpPanelSelectedSDK, setHelpPanelSelectedSDK ] = useState<DocPanelUICardInterface>(undefined);
     const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
     const [ samples, setSamples ] = useState<DocPanelUICardInterface[]>(undefined);
+    const [ sdks, setSDKS ] = useState<DocPanelUICardInterface[]>(undefined);
     const [
         isHelpPanelDocContentRequestLoading,
         setHelpPanelDocContentRequestLoadingStatus
@@ -157,7 +160,8 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             && applicationTemplates instanceof Array
             && applicationTemplates.length > 0) {
 
-            setApplicationTemplate(applicationTemplates.find((template) => template.name === applicationTemplateName));
+            setApplicationTemplate(applicationTemplates.find(
+                (template) => template.name === applicationTemplateName));
         }
     }, [ applicationTemplateName, applicationTemplates ]);
 
@@ -178,28 +182,42 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
 
         dispatch(setHelpPanelDocsContentURL(editApplicationDocs[
             ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-            .get(applicationTemplateName) ]));
+            .get(applicationTemplateName) ]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW]));
     }, [ applicationTemplateName, helpPanelDocStructure ]);
 
     /**
      * Filter application samples based on the template type.
      */
     useEffect(() => {
-        const samplesDocs = _.get(helpPanelDocStructure, ApplicationManagementConstants.APPLICATION_SAMPLES_DOCS_KEY);
+        if (!applicationTemplateName) {
+            return;
+        }
+        const templateName = ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
+            .get(applicationTemplateName);
+
+        const samplesDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSampleDocsKey(templateName));
+        const SDKDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSDKDocsKey(templateName));
 
         if (!samplesDocs) {
             return;
         }
 
         const samples: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(samplesDocs);
+        const sdks: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(SDKDocs);
 
         if (samples instanceof Array && samples.length === 1) {
             setHelpPanelSelectedSample(samples[ 0 ]);
             setSamplesTabBackButtonEnabled(false);
         }
 
-        setSamples(samples);
-    }, [ helpPanelDocStructure ]);
+        if (sdks instanceof Array && sdks.length === 1) {
+            setHelpPanelSelectedSDK(sdks[ 0 ]);
+            setSamplesTabBackButtonEnabled(false);
+        }
+
+        setSDKS(sdks.filter((item) => item.name !== "overview"));
+        setSamples(samples.filter((item) => item.name !== "overview"));
+    }, [ applicationTemplateName, helpPanelDocStructure ]);
 
     /**
      * Called when help panel doc URL status changes.
@@ -212,10 +230,10 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
         setHelpPanelDocContentRequestLoadingStatus(true);
 
         getRawDocumentation<string>(
-            config.endpoints.documentationContent,
+            config?.endpoints?.documentationContent,
             helpPanelDocURL,
-            config.deployment.documentation.provider,
-            config.deployment.documentation.githubOptions.branch)
+            config?.deployment?.documentation?.provider,
+            config?.deployment?.documentation?.githubOptions?.branch)
             .then((response) => {
                 setHelpPanelDocContent(response);
             })
@@ -247,6 +265,34 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             });
     },[
         helpPanelSelectedSample,
+        config.deployment.documentation.githubOptions.branch,
+        config.deployment.documentation.provider,
+        config.endpoints.documentationContent
+    ]);
+
+    /**
+     * Called when the technology is changed in the SDK section.
+     */
+    useEffect(() => {
+        if (!helpPanelSelectedSDK?.docs) {
+            return;
+        }
+
+        setHelpPanelSamplesContentRequestLoadingStatus(true);
+
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelSelectedSDK.docs,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
+            .then((response) => {
+                setHelpPanelSDKContent(response);
+            })
+            .finally(() => {
+                setHelpPanelSamplesContentRequestLoadingStatus(false);
+            });
+    },[
+        helpPanelSelectedSDK,
         config.deployment.documentation.githubOptions.branch,
         config.deployment.documentation.provider,
         config.endpoints.documentationContent
@@ -327,7 +373,8 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
                     description: t("devPortal:components.applications.notifications.fetchApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchApplication.genericError.message")
+                    message: t("devPortal:components.applications.notifications.fetchApplication.genericError." +
+                        "message")
                 }));
             })
             .finally(() => {
@@ -359,12 +406,21 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
     };
 
     /**
-     * Handles help panel samples change event.
+     * Handles help panel sample change event.
      *
      * @param sample - Selected sample.
      */
     const handleHelpPanelSelectedSample = (sample: any) => {
         setHelpPanelSelectedSample(sample);
+    };
+
+    /**
+     * Handles help panel SDK change event.
+     *
+     * @param sdk - Selected SDK.
+     */
+    const handleHelpPanelSelectedSDK = (sdk: any) => {
+        setHelpPanelSelectedSDK(sdk);
     };
 
     const helpPanelTabs: HelpPanelTabInterface[] = [
@@ -430,11 +486,11 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
                         <>
                             <Heading as="h4">
                                 { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
-                                    "technology.title") }
+                                    "sample.title") }
                             </Heading>
                             <Hint>
                                 { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
-                                    "technology.subTitle") }
+                                    "sample.subTitle") }
                             </Hint>
                             <Divider hidden/>
 
@@ -463,6 +519,75 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
             heading: t("common:samples"),
             hidden: !samples || (samples instanceof Array && samples.length < 1),
             icon: "code" as SemanticICONS
+        },
+        {
+            content: (
+                helpPanelSelectedSDK
+                    ? (
+                        <>
+                            <PageHeader
+                                title={ `${ helpPanelSelectedSDK.displayName } SDK` }
+                                titleAs="h4"
+                                backButton={ samplesTabBackButtonEnabled && {
+                                    onClick: () => setHelpPanelSelectedSDK(undefined),
+                                    text: t("devPortal:components.applications.helpPanel.tabs.sdks." +
+                                        "content.sdk.goBack")
+                                } }
+                                bottomMargin={ false }
+                                data-testid={ `${ testId }-help-panel-samples-tab-page-header` }
+                            />
+                            <Divider hidden/>
+                            {
+                                helpPanelSelectedSDK?.docs && (
+                                    isHelpPanelSamplesContentRequestLoading
+                                        ? <ContentLoader dimmer/>
+                                        : (
+                                            <Markdown
+                                                source={ helpPanelSDKContent }
+                                                data-testid={ `${ testId }-help-panel-samples-tab-markdown-renderer` }
+                                            />
+                                        )
+                                )
+                            }
+                        </>
+                    )
+                    : (
+                        <>
+                            <Heading as="h4">
+                                { t("devPortal:components.applications.helpPanel.tabs.sdks.content." +
+                                    "sdk.title") }
+                            </Heading>
+                            <Hint>
+                                { t("devPortal:components.applications.helpPanel.tabs.sdks.content." +
+                                    "sdk.subTitle") }
+                            </Hint>
+                            <Divider hidden/>
+
+                            <Grid>
+                                <Grid.Row columns={ 4 }>
+                                    {
+                                        sdks && sdks.map((sdk, index) => (
+                                            <Grid.Column key={ index }>
+                                                <SelectionCard
+                                                    size="auto"
+                                                    header={ sdk.displayName }
+                                                    image={ TechnologyLogos[ sdk.image ] }
+                                                    imageSize="mini"
+                                                    spaced="bottom"
+                                                    onClick={ () => handleHelpPanelSelectedSDK(sdk) }
+                                                    data-testid={ `${ testId }-help-panel-samples-tab-selection-card` }
+                                                />
+                                            </Grid.Column>
+                                        ))
+                                    }
+                                </Grid.Row>
+                            </Grid>
+                        </>
+                    )
+            ),
+            heading: t("common:sdks"),
+            hidden: !sdks || (sdks instanceof Array && sdks.length < 1),
+            icon: "file code outline" as SemanticICONS
         }
     ];
 
@@ -521,3 +646,10 @@ export const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface
 ApplicationEditPage.defaultProps = {
     "data-testid": "application-edit"
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default ApplicationEditPage;
