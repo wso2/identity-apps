@@ -2,6 +2,9 @@
     "accountApp": {
         "path": "/user-portal/overview"
     },
+    "adminApp": {
+        "path": "/admin-portal/overview"
+    },
     "appBaseName": "developer-portal",
     "clientID": "DEVELOPER_PORTAL",
     "debug": false,

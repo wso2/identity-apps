@@ -30,7 +30,8 @@ import {
     Item,
     Menu,
     Placeholder,
-    Responsive
+    Responsive,
+    SemanticICONS
 } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
 
@@ -60,9 +61,20 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
 }
 
 /**
- * Header links interface.
+ * Header links dynamic interface to pass in extra props for `Link` component.
  */
-export interface HeaderLinkInterface {
+export interface HeaderLinkInterface extends StrictHeaderLinkInterface {
+    [ key: string ]: any;
+}
+
+/**
+ * Header links strict interface.
+ */
+export interface StrictHeaderLinkInterface {
+    /**
+     * Link icon.
+     */
+    icon?: SemanticICONS;
     /**
      * Link location.
      */
@@ -71,6 +83,10 @@ export interface HeaderLinkInterface {
      * Link name.
      */
     name: string;
+    /**
+     * Open link using window.open()
+     */
+    useWindowOpen?: boolean;
 }
 
 /**
@@ -215,7 +231,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                     profileInfo={ profileInfo }
                                                     isLoading={ isProfileInfoLoading }
                                                     data-testid={ `${ testId }-user-dropdown-avatar` }
-                                                    size="tiny"
+                                                    size="x60"
                                                 />
                                                 <Item.Content verticalAlign="middle">
                                                     <Item.Description>
@@ -261,7 +277,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                 </Item.Content>
                                             </Item>
                                         </Item.Group>
-                                        <Dropdown.Divider/>
                                         {
                                             (linkedAccounts && linkedAccounts.length && linkedAccounts.length > 0)
                                                 ? (
@@ -319,17 +334,45 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                             (userDropdownLinks
                                                 && userDropdownLinks.length
                                                 && userDropdownLinks.length > 0)
-                                                ? userDropdownLinks.map((link, index) => (
-                                                    <Dropdown.Item
-                                                        key={ index }
-                                                        className="action-panel"
-                                                        data-testid={ `${ testId }-dropdown-link-${ name }` }
-                                                    >
-                                                        <Link className="action-button" to={ link.to }>
-                                                            { link.name }
-                                                        </Link>
-                                                    </Dropdown.Item>
-                                                ))
+                                                ? userDropdownLinks.map((link, index) => {
+                                                    const {
+                                                        icon,
+                                                        name,
+                                                        to,
+                                                        target,
+                                                        useWindowOpen,
+                                                        ...rest
+                                                    } = link;
+
+                                                    return (
+                                                        <Dropdown.Item
+                                                            key={ index }
+                                                            className="action-panel"
+                                                            onClick={ () => {
+                                                                    useWindowOpen
+                                                                        ? window.open(to, target, "noopener")
+                                                                        : null
+                                                                }
+                                                            }
+                                                            data-testid={ `${ testId }-dropdown-link-${ name }` }
+                                                        >
+                                                            <Icon className="link-icon" name={ icon }/>
+                                                            {
+                                                                useWindowOpen
+                                                                    ? name
+                                                                    : (
+                                                                        <Link
+                                                                            className="link-text"
+                                                                            to={ to }
+                                                                            { ...rest }
+                                                                        >
+                                                                            { name }
+                                                                        </Link>
+                                                                    )
+                                                            }
+                                                        </Dropdown.Item>
+                                                    )
+                                                })
                                                 : null
                                         }
                                     </Dropdown.Menu>

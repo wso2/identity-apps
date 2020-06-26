@@ -89,9 +89,16 @@ var AppUtils = AppUtils || (function() {
                 _config.accountAppOrigin = _config.accountApp.origin;
             }
 
+            if (_config.adminApp && _config.adminApp.origin) {
+                _config.adminAppOrigin = _config.adminApp.origin;
+            }
+
             return {
                 accountApp: {
                     path: _config.accountAppOrigin + this.getTenantPath() + _config.accountApp.path
+                },
+                adminApp: {
+                    path: _config.adminAppOrigin + this.getTenantPath() + _config.adminApp.path
                 },
                 appBase: _config.appBaseName,
                 appBaseWithTenant: this.getTenantPath() + "/" + _config.appBaseName,
@@ -159,6 +166,7 @@ var AppUtils = AppUtils || (function() {
 
             _default = {
                 "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
+                "adminAppOrigin": _args.adminAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };

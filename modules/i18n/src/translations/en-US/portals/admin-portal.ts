@@ -1012,6 +1012,12 @@ export const adminPortal: AdminPortalNS = {
                 }
             }
         },
+        header: {
+            links: {
+                devPortalNav: "Developer Portal",
+                userPortalNav: "My Account"
+            }
+        },
         helpPanel: {
             notifications: {
                 pin: {

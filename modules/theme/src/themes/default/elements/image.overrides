@@ -90,6 +90,22 @@
                     }
                 }
             }
+            &.x60 {
+                width: @x60Width;
+                height: @x60Width;
+
+                .initials {
+                    font-size: 2.4em;
+                    line-height: @x60Width;
+                }
+                &.editable {
+                    .edit-icon {
+                        font-size: 1.8em;
+                        line-height: @x60Width;
+                        margin-left: -2px;
+                    }
+                }
+            }
             &.tiny {
                 width: @tinyWidth;
                 height: @tinyWidth;

@@ -47,3 +47,11 @@
 --------------------*/
 
 @listPaginationMarginRight: 10px;
+
+/*-------------------
+    User Dropdown
+--------------------*/
+
+@userDropdownMinWidth: 270px;
+@userDropdownPadding: 8px;
+@userDropdownLinkMargin: 8px 0;

@@ -17,14 +17,10 @@
  */
 
 import { DocumentationConstants } from "@wso2is/core/constants";
-import {
-    CommonDeploymentConfigInterface,
-    DocumentationProviders,
-    DocumentationStructureFileTypes
-} from "@wso2is/core/models";
+import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
-import { ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
  * Class to handle application config operations.
@@ -43,10 +39,12 @@ export class Config {
     /**
      * Get the deployment config.
      *
-     * @return {CommonDeploymentConfigInterface} Deployment config object.
+     * @return {DeploymentConfigInterface} Deployment config object.
      */
-    public static getDeploymentConfig(): CommonDeploymentConfigInterface {
+    public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
+            accountApp: window["AppUtils"].getConfig().accountApp,
+            adminApp: window["AppUtils"].getConfig().adminApp,
             appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,

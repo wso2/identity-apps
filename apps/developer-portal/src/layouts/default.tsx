@@ -190,21 +190,23 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                     basicProfileInfo={ profileInfo }
                     fluid={ !isMobileViewport ? fluid : false }
                     isProfileInfoLoading={ isProfileInfoLoading }
-                    userDropdownInfoAction={ (
-                        <Button
-                            size="tiny"
-                            primary
-                            onClick={
-                                (): void => {
-                                    window.open(window[ "AppUtils" ].getConfig().accountApp.path);
-                                }
-                            }
-                        >
-                            { t("common:myAccount") }
-                        </Button>
-                    ) }
                     userDropdownLinks={ [
                         {
+                            icon: "arrow right",
+                            name: t("devPortal:components.header.links.userPortalNav"),
+                            target: "_blank",
+                            to: window[ "AppUtils" ].getConfig().accountApp.path,
+                            useWindowOpen: true
+                        },
+                        {
+                            icon: "arrow right",
+                            name: t("devPortal:components.header.links.adminPortalNav"),
+                            target: "_blank",
+                            to: window[ "AppUtils" ].getConfig().adminApp.path,
+                            useWindowOpen: true
+                        },
+                        {
+                            icon: "power off",
                             name: t("common:logout"),
                             to: window[ "AppUtils" ].getConfig().routes.logout
                         }

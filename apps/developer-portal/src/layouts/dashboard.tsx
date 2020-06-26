@@ -47,7 +47,7 @@ import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Button, Image, Responsive } from "semantic-ui-react";
+import { Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
@@ -362,21 +362,23 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     basicProfileInfo={ profileInfo }
                     fluid={ !isMobileViewport ? fluid : false }
                     isProfileInfoLoading={ isProfileInfoLoading }
-                    userDropdownInfoAction={ (
-                        <Button
-                            size="tiny"
-                            primary
-                            onClick={
-                                (): void => {
-                                    window.open(window[ "AppUtils" ].getConfig().accountApp.path);
-                                }
-                            }
-                        >
-                            { t("common:myAccount") }
-                        </Button>
-                    ) }
                     userDropdownLinks={ [
                         {
+                            icon: "arrow right",
+                            name: t("devPortal:components.header.links.userPortalNav"),
+                            target: "_blank",
+                            to: window[ "AppUtils" ].getConfig().accountApp.path,
+                            useWindowOpen: true
+                        },
+                        {
+                            icon: "arrow right",
+                            name: t("devPortal:components.header.links.adminPortalNav"),
+                            target: "_blank",
+                            to: window[ "AppUtils" ].getConfig().adminApp.path,
+                            useWindowOpen: true
+                        },
+                        {
+                            icon: "power off",
                             name: t("common:logout"),
                             to: window[ "AppUtils" ].getConfig().routes.logout
                         }
