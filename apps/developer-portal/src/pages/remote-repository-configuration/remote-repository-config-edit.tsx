@@ -20,7 +20,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { PageLayout } from "@wso2is/react-components";
 import { RemoteRepoEdit } from "../../components";
 
-export const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
+const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
     /*return (
         <PageLayout
             isLoading={ isIdentityProviderRequestLoading }
@@ -43,3 +43,10 @@ export const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
         <div>testing</div>
     )
 }
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default RemoteRepositoryEditPage;

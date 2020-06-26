@@ -114,6 +114,27 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        children: [
+            {
+                component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config-edit")),
+                exact: true,
+                icon: "overview",
+                id: "remote-repo-edit",
+                name: "Remote Repo Config Edit",
+                path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            },
+        ],
+        component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config")),
+        icon: "overview",
+        id: "remote-repo",
+        name: "Remote Repo Config",
+        path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
         component: lazy(() => import("../pages/customize")),
         icon: "overview",
         id: "customize",

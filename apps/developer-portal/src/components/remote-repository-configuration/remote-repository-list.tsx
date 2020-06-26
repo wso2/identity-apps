@@ -70,7 +70,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.1"),
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.2")
                     ] }
-                    image={ OverviewPageIllustrations.quickLinks.generalConfigs }
+                    image={ OverviewPageIllustrations.statsOverview.idp }
                     imageSize="tiny"
                 />
             );

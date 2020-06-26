@@ -28,7 +28,7 @@ import { addAlert } from "@wso2is/core/dist/src/store";
 import { AlertInterface, AlertLevels } from "@wso2is/core/dist/src/models";
 import { useTranslation } from "react-i18next";
 
-export const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
+const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -117,3 +117,10 @@ export const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         </PageLayout>
     )
 }
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default RemoteRepoConfig;

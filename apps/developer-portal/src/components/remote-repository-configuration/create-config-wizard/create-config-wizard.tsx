@@ -20,8 +20,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { TestableComponentInterface, AlertInterface, AlertLevels } from "@wso2is/core/dist/src/models";
 import { Modal, Grid, Icon } from "semantic-ui-react";
 import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
-import { RemoteRepoConfigDetails } from "./remote-repo-config";
-import { RolesWizardStepIcons } from "../../../configs";
+import { RemoteRepoConfigDetails } from "./remote-repo-config-details";
+import { ApplicationWizardStepIcons } from "../../../configs";
 import { useTrigger } from "@wso2is/forms";
 import { createRemoteRepoConfig } from "../../../api";
 import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteConfigForm } from "../../../models";
@@ -107,13 +107,7 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
             closeWizard();
             updateList();
         }).catch(error => {
-            handleAlerts({
-                description: error.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t(
-                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.message"
-                )
-            });
+            //handle error
         })
     };
 
@@ -125,7 +119,7 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
                 data-testid={ `${ testId }-form` }
             />
         ),
-        icon: RolesWizardStepIcons.general,
+        icon: ApplicationWizardStepIcons.general,
         title: "Remote Repository General Configurations"
     }];
 
