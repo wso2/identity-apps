@@ -23,15 +23,23 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Error" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ResetPasswordRequest" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="javax.servlet.http.Cookie" %>
+<%@ page import="java.util.Base64" %>
+<%@ page import="org.wso2.carbon.core.util.SignatureUtil" %>
+<%@ page import="org.json.simple.JSONObject" %>
+<%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="java.net.URL" %>
+<%@ page import="java.net.MalformedURLException" %>
+
 
 <jsp:directive.include file="includes/localize.jsp"/>
-<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
     String ERROR_MESSAGE = "errorMsg";
@@ -43,12 +51,40 @@
             IdentityManagementEndpointUtil.getStringValue(request.getSession().getAttribute("confirmationKey"));
     String newPassword = request.getParameter("reset-password");
     String callback = request.getParameter("callback");
-
+    String tenantDomain = request.getParameter(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    boolean isUserPortalURL = false;
+    String sessionDataKey = null;
+    String username = request.getParameter("username");
+    
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
-
+    
+    if (callback.equals(IdentityManagementEndpointUtil.getUserPortalUrl(application
+            .getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL)))) {
+        isUserPortalURL = true;
+    }
+    
+    Map<String, String> queryParamsMap = new HashMap<>();
+    
+    try {
+        URL callbackURL = new URL(callback);
+        String queryString = callbackURL.getQuery();
+        String[] queryParams = queryString.split("&");
+        
+        for (String queryPart : queryParams) {
+            String[] parts = queryPart.split("=");
+            queryParamsMap.put(parts[0], parts[1]);
+        }
+    } catch (MalformedURLException e) {
+    
+    }
+    
+    if (queryParamsMap.containsKey("sessionDataKey")) {
+        sessionDataKey = queryParamsMap.get("sessionDataKey");
+    }
+    
     if (StringUtils.isNotBlank(newPassword)) {
         NotificationApi notificationApi = new NotificationApi();
         ResetPasswordRequest resetPasswordRequest = new ResetPasswordRequest();
@@ -57,7 +93,12 @@
         property.setKey("callback");
         property.setValue(URLEncoder.encode(callback, "UTF-8"));
         properties.add(property);
-
+    
+        Property userPortalURLProperty = new Property();
+        userPortalURLProperty.setKey("isUserPortalURL");
+        userPortalURLProperty.setValue(String.valueOf(isUserPortalURL));
+        properties.add(userPortalURLProperty);
+        
         Property tenantProperty = new Property();
         tenantProperty.setKey(IdentityManagementEndpointConstants.TENANT_DOMAIN);
         if (tenantDomain == null) {
@@ -72,6 +113,19 @@
 
         try {
             notificationApi.setPasswordPost(resetPasswordRequest);
+    
+            if (StringUtils.isNotEmpty(request.getParameter("autoLogin"))) {
+                String signature = Base64.getEncoder().encodeToString(SignatureUtil.doSignature(username));
+                JSONObject cookieValueInJson = new JSONObject();
+                cookieValueInJson.put("username", username);
+                cookieValueInJson.put("signature", signature);
+                Cookie cookie = new Cookie("WSO2",
+                        Base64.getEncoder().encodeToString(cookieValueInJson.toString().getBytes()));
+                cookie.setPath("/");
+                cookie.setSecure(true);
+                response.addCookie(cookie);
+            }
+            
         } catch (ApiException e) {
 
             Error error = IdentityManagementEndpointUtil.buildError(e);
@@ -138,6 +192,31 @@
         </div>
     </div>
 
+    <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
+    
+    
+        <%
+            if (username != null) {
+        %>
+        <div>
+            <input type="hidden" name="username"
+                   value="<%=Encode.forHtmlAttribute(username)%>"/>
+        </div>
+        <%
+            }
+        %>
+        <%
+            if (sessionDataKey != null) {
+        %>
+        <div>
+            <input type="hidden" name="sessionDataKey"
+                   value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+        </div>
+        <%
+            }
+        %>
+    </form>
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -155,9 +234,15 @@
                 onHide: function () {
                     <%
                        try {
+                           if(StringUtils.isNotEmpty(request.getParameter("autoLogin"))) {
+                    %>
+                    document.callbackForm.submit();
+                    <%
+                           } else {
                     %>
                     location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
                     <%
+                    }
                     } catch (URISyntaxException e) {
                         request.setAttribute("error", true);
                         request.setAttribute("errorMsg", "Invalid callback URL found in the request.");

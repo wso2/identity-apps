@@ -20,7 +20,6 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -30,6 +29,8 @@
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String callback = (String) request.getAttribute("callback");
     String tenantDomain = (String) request.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
+    String username = request.getParameter("username");
+    String sessionDataKey = request.getParameter("sessionDataKey");
     if (tenantDomain == null) {
         tenantDomain = (String) session.getAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN);
     }
@@ -38,100 +39,126 @@
 
 <!doctype html>
 <html>
-    <head>
+<head>
+    <%
+        File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
+        if (headerFile.exists()) {
+    %>
+    <jsp:include page="extensions/header.jsp"/>
+    <% } else { %>
+    <jsp:directive.include file="includes/header.jsp"/>
+    <% } %>
+</head>
+<body>
+<main class="center-segment">
+    <div class="ui container medium center aligned middle aligned">
+        <!-- product-title -->
         <%
-            File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
-            if (headerFile.exists()) {
+            File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
+            if (productTitleFile.exists()) {
         %>
-        <jsp:include page="extensions/header.jsp"/>
+        <jsp:include page="extensions/product-title.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:directive.include file="includes/product-title.jsp"/>
         <% } %>
-    </head>
-    <body>
-        <main class="center-segment">
-            <div class="ui container medium center aligned middle aligned">
-                <!-- product-title -->
-                <%
-                    File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
-                    if (productTitleFile.exists()) {
-                %>
-                <jsp:include page="extensions/product-title.jsp"/>
-                <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
-                <% } %>
-                <div class="ui segment">
-                    <!-- content -->
-                    <h2>
-                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Reset.Password")%>
-                    </h2>
-
-                    <% if (error) { %>
-                    <div class="ui visible negative message">
-                        <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
-                    </div>
-                    <% } %>
-                    <div id="ui visible negative message" hidden="hidden"></div>
-
-                    <div class="segment-form">
-                        <form class="ui large form" method="post" action="completepasswordreset.do" id="passwordResetForm">
-                            <div class="ui negative message" hidden="hidden" id="error-msg"></div>
-                            <div class="field">
-                                <label>
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.new.password")%>
-                                </label>
-                                <input id="reset-password" name="reset-password" type="password"
-                                    required="">
-                            </div>
-
-                            <%
-                                if (callback != null) {
-                            %>
-                            <div>
-                                <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
-                            </div>
-                            <%
-                                }
-                            %>
-                            <%
-                                if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled() && tenantDomain != null) {
-                            %>
-                            <div>
-                                <input type="hidden" name="tenantdomain" value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
-                            </div>
-                            <%
-                                }
-                            %>
-                            <div class="field">
-                                <label>
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
-                                </label>
-                                <input id="reset-password2" name="reset-password2" type="password"
-                                    data-match="reset-password" required="">
-                            </div>
-                            <div class="ui divider hidden"></div>
-
-                            <div class="align-right buttons">
-                                <button id="submit"
-                                        class="ui primary button"
-                                        type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Submit")%>
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+        <div class="ui segment">
+            <!-- content -->
+            <h2>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Reset.Password")%>
+            </h2>
+            
+            <% if (error) { %>
+            <div class="ui visible negative message">
+                <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%>
             </div>
-        </main>
-        <!-- /content/body -->
-        <!-- product-footer -->
-        <%
-            File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-            if (productFooterFile.exists()) {
-        %>
-        <jsp:include page="extensions/product-footer.jsp"/>
-        <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
-        <% } %>
+            <% } %>
+            <div id="ui visible negative message" hidden="hidden"></div>
+            
+            <div class="segment-form">
+                <form class="ui large form" method="post" action="completepasswordreset.do" id="passwordResetForm">
+                    <div class="ui negative message" hidden="hidden" id="error-msg"></div>
+                    <div class="field">
+                        <label>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.new.password")%>
+                        </label>
+                        <input id="reset-password" name="reset-password" type="password"
+                               required="">
+                    </div>
+                    
+                    <%
+                        if (username != null) {
+                    %>
+                    <div>
+                        <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username) %>"/>
+                    </div>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (callback != null) {
+                    %>
+                    <div>
+                        <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
+                    </div>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (tenantDomain != null) {
+                    %>
+                    <div>
+                        <input type="hidden" name="tenantdomain" value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
+                    </div>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (sessionDataKey != null) {
+                    %>
+                    <div>
+                        <input type="hidden" name="sessionDataKey"
+                               value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+                    </div>
+                    <%
+                        }
+                    %>
+                    <div class="field">
+                        <label>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
+                        </label>
+                        <input id="reset-password2" name="reset-password2" type="password"
+                               data-match="reset-password" required="">
+                    </div>
+                    <div class="ui divider hidden"></div>
+                    
+                    <div class="align-right buttons">
+                        <button id="submit"
+                                class="ui primary button"
+                                type="submit">
+                            <input type="hidden" id="autoLogin" name="autoLogin" value="autoLogin"/>
+                            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Login")%>
+                        </button>
+                        <button id="submit"
+                                class="ui primary button"
+                                onClick="removeAutoLogin();"
+                                type="submit"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Back")%>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- /content/body -->
+<!-- product-footer -->
+<%
+    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+    if (productFooterFile.exists()) {
+%>
+<jsp:include page="extensions/product-footer.jsp"/>
+<% } else { %>
+<jsp:directive.include file="includes/product-footer.jsp"/>
+<% } %>
 
         <!-- footer -->
         <%
@@ -173,6 +200,10 @@
                 });
             });
 
+            function removeAutoLogin() {
+                $("#autoLogin").remove();
+            }
+
         </script>
-    </body>
+</body>
 </html>
