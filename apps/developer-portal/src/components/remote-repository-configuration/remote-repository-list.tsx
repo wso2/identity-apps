@@ -96,12 +96,6 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                                 actionsFloated="right"
                                 actions={ [
                                     {
-                                        icon: "pencil alternate",
-                                        onClick: () => { handleIdentityProviderEdit(repoObject.id) },
-                                        popupText: "Edit Config",
-                                        type: "button"
-                                    },
-                                    {
                                         icon: "trash alternate",
                                         popupText: "Delete Config",
                                         type: "button",
