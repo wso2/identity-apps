@@ -103,7 +103,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
            }
        }
 
-    }, [ config, userName ]);
+    }, [ config?.deployment?.tenant, userName ]);
 
     /**
      * Checks if the portal access should be granted based on the feature config.
