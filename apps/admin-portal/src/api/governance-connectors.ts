@@ -109,6 +109,15 @@ export const getConnectorCategories = (): Promise<any> => {
 };
 
 /**
+ * Retrieve governance connector category.
+ *
+ * @returns {Promise<any>} a promise containing the data.
+ */
+export const getConnectorCategory = (categoryId: string): Promise<any> => {
+    return getData(store.getState().config.endpoints.governanceConnectorCategories + "/" + categoryId);
+};
+
+/**
  * Retrieve self sign up configurations.
  *
  * @returns {Promise<any>} a promise containing the configurations.

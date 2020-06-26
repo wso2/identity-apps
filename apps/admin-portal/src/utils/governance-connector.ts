@@ -77,4 +77,12 @@ export class GovernanceConnectorUtils {
                 }
             });
     }
+
+    public static encodeConnectorPropertyName(name: string): string {
+        return name.split(".").join("_");
+    }
+
+    public static decodeConnectorPropertyName(name: string): string {
+        return name.split("_").join(".");
+    }
 }

@@ -37,6 +37,7 @@
         "@wso2is/theme": "^1.0.313",
         "@wso2is/validation": "^1.0.313",
         "country-language": "^0.1.7"
+        "redux-form": "latest"
     },
     "devDependencies": {
         "eslint-plugin-node": "^11.0.0",

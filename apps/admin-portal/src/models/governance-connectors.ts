@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import exp from "constants";
+
 /**
  *  Captures the configurations related to user self sign up.
  */
@@ -75,4 +77,28 @@ export interface RealmConfigurationsInterface {
 	homeRealmIdentifiers?: string[];
 	idleSessionTimeoutPeriod?: string;
 	rememberMePeriod?: string;
+}
+
+export interface ConnectorPropertyInterface {
+	name: string;
+	value: string;
+	displayName: string;
+	description: string;
+}
+
+export interface GovernanceConnectorInterface {
+	id: string;
+	name: string;
+	category: string;
+	friendlyName: string;
+	description?: string;
+	order: string;
+	subCategory: string;
+	properties: ConnectorPropertyInterface[];
+}
+
+export interface GovernanceConnectorCategoryInterface {
+	name?: string;
+	description?: string;
+	connectors?: GovernanceConnectorInterface[];
 }
