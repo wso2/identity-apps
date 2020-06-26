@@ -31,7 +31,9 @@ import {
     OverviewPage,
     PageNotFound,
     PrivacyPage,
-    UnauthorizedErrorPage
+    UnauthorizedErrorPage,
+    RemoteRepoConfig,
+    RemoteRepositoryEditPage
 } from "../pages";
 
 /**
@@ -123,6 +125,27 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         id: "identityProviders",
         name: "common:identityProviders",
         path: AppConstants.PATHS.get("IDP"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        children: [
+            {
+                component: RemoteRepositoryEditPage,
+                exact: true,
+                icon: "overview",
+                id: "remote-repo-edit",
+                name: "Remote Repo Config Edit",
+                path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            },
+        ],
+        component: RemoteRepoConfig,
+        icon: "overview",
+        id: "remote-repo",
+        name: "Remote Repo Config",
+        path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
         protected: true,
         showOnSidePanel: true
     },

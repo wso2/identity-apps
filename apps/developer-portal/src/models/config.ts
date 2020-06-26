@@ -72,6 +72,7 @@ export interface ServiceResourceEndpointsInterface {
     documentationContent: string;
     documentationStructure: string;
     identityProviders: string;
+    remoteRepoConfig: string;
     localAuthenticators: string;
     me: string;
     requestPathAuthenticators: string;

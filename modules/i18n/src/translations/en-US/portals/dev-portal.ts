@@ -62,6 +62,60 @@ export const devPortal: DevPortalNS = {
             },
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
+        remoteConfig: {
+            placeholders: {
+                emptyList: {
+                    action: "New Remote Repository Config",
+                    subtitles: {
+                        0: "Currently there are no configs available.",
+                        1: "You can add a new config by ",
+                        2: "clicking on the button below."
+                    },
+                    title: "Add new Remote Repository Config"
+                }
+            },
+            list: {
+                confirmations: {
+                    deleteConfig: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you delete this configuration, you will not be able to get it back. All the " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the configuration."
+                    }
+                }
+            },
+            notifications: {
+                deleteConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Deletion Error"
+                    },
+                    genericError: {
+                        description: "Failed to delete the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the configuration.",
+                        message: "Deletetion successful"
+                    }
+                },
+                createConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Creation Error"
+                    },
+                    genericError: {
+                        description: "Failed to create the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the confuguration.",
+                        message: "Creation successful"
+                    }
+                }
+            }
+        },
         applications: {
             addWizard: {
                 steps: {

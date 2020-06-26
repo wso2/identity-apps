@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -16,8 +16,17 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./identity-providers";
-export * from "./protected-route";
-export * from "./shared";
-export * from "./remote-repository-configuration";
+import React, { FunctionComponent, ReactElement } from "react";
+import { InterfaceRemoteRepoConfig } from "../../../models";
+
+interface RemoteConfigDetailProps {
+    configObject: InterfaceRemoteRepoConfig;
+}
+
+export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
+    props: RemoteConfigDetailProps
+): ReactElement => {
+    return (
+        <div></div>
+    )
+}
