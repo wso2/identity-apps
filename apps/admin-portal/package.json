@@ -15,8 +15,8 @@
         "build-prod": "run-script-os",
         "build-prod:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production",
         "build-prod:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production",
-        "clean": "rm -rf build && npm run clean:themes",
-        "clean:themes": "rm -rf src/themes",
+        "clean": "rimraf build && npm run clean:themes",
+        "clean:themes": "rimraf src/themes",
         "copy:themes": "node scripts/copy-themes.js",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
         "postinstall": "node scripts/post-install.js",
@@ -61,6 +61,7 @@
         "redux": "*",
         "redux-devtools-extension": "*",
         "redux-thunk": "*",
+        "rimraf": "*",
         "style-loader": "*",
         "thread-loader": "*"
     }
