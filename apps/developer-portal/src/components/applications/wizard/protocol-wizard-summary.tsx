@@ -322,7 +322,7 @@ export const ProtocolWizardSummary: FunctionComponent<ProtocolWizardSummaryProps
             }
             {
                 customProtocol && summary?.properties.map((prop: SubmitFormCustomPropertiesInterface) => (
-                        <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Row className="summary-field" columns={ 2 } key={ prop.key }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                                 <div className="label">{ prop.key }</div>
                             </Grid.Column>
