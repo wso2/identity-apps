@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -24,13 +23,13 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Button, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { deleteUser, getUserStoreList, getUsersList } from "../../api";
 import { AddUserWizard, AdvancedSearchWithBasicFilters, UsersList, UsersListOptionsComponent } from "../../components";
 import { UIConstants, UserConstants } from "../../constants";
 import { UserListInterface } from "../../models";
-import { store } from "../../store";
+import { AppState, store } from "../../store";
 
 /**
  * Users info page.
@@ -55,7 +54,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
 
-    const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
+    const username = useSelector((state: AppState) => state.auth.username);
     const tenantName = store.getState().config.deployment.tenant;
     const tenantSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
 
@@ -166,13 +165,13 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        const attributes = userListMetaContent ? generateAttributesString(userListMetaContent.values()) : null;
+        const attributes = userListMetaContent ? generateAttributesString(userListMetaContent?.values()) : null;
         getList(listItemLimit, listOffset, null, attributes, userStore);
     }, [ userStore ]);
 
     useEffect(() => {
         if (userListMetaContent) {
-            const attributes = generateAttributesString(userListMetaContent.values());
+            const attributes = generateAttributesString(userListMetaContent?.values());
             getList(listItemLimit, listOffset, null, attributes, "primary");
         }
     }, [ listOffset, listItemLimit ]);
@@ -181,7 +180,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
         if (!isListUpdated) {
             return;
         }
-        const attributes = generateAttributesString(userListMetaContent.values());
+        const attributes = generateAttributesString(userListMetaContent?.values());
         getList(listItemLimit, listOffset, null, attributes, userStore);
         setListUpdated(false);
     }, [ isListUpdated ]);

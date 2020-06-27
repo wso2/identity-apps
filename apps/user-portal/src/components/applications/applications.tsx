@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import { AllApplications } from "./all-applications";
 import { ApplicationSearch } from "./application-search";
@@ -33,6 +33,7 @@ import {
     StorageApplicationSettingsInterface,
     emptyStorageApplicationSettingsItem
 } from "../../models";
+import { AppState } from "../../store";
 import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
 
 /**
@@ -55,6 +56,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     const [recentApplications, setRecentApplications] = useState<Application[]>([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [isRequestLoading, setIsRequestLoading] = useState(false);
+    const username = useSelector((state: AppState) => state.authenticationInformation.username);
     const { t } = useTranslation();
 
     /**
@@ -104,7 +106,6 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      * Populates the list of recent applications.
      */
     const populateRecentApplications = (): void => {
-        const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
         const applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
             getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
         );
@@ -153,7 +154,6 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      * @param {string} id - Id of the accessed application.
      */
     const updateRecentApplications = (id: string): void => {
-        const username = AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME);
         let applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
             getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
         );
