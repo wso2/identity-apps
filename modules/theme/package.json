@@ -25,14 +25,14 @@
         "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
         "clean-css": "^4.2.1",
         "less-plugin-rewrite-variable": "0.1.0",
-        "replace": "^1.1.5",
-        "rimraf": "^3.0.2"
+        "replace": "^1.1.5"
     },
     "peerDependencies": {
         "fs-extra": "*",
         "less": "*",
         "less-to-json": "*",
         "merge-files": "*",
+        "rimraf": "*",
         "semantic-ui-css": "*",
         "semantic-ui-less": "*"
     }
