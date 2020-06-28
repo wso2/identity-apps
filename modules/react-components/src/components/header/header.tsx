@@ -20,7 +20,7 @@ import { getGravatarImage } from "@wso2is/core/api";
 import { resolveUserDisplayName, resolveUsername } from "@wso2is/core/helpers";
 import { LinkedAccountInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, SyntheticEvent } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import {
     Container,
@@ -39,6 +39,10 @@ import { UserAvatar } from "../avatar";
  * Header component prop types.
  */
 export interface HeaderPropsInterface extends TestableComponentInterface {
+    /**
+     * Top announcement component.
+     */
+    announcement?: ReactNode;
     // TODO: Add proper type interface.
     basicProfileInfo: any;
     brand?: React.ReactNode;
@@ -101,6 +105,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
+        announcement,
         brand,
         brandLink,
         basicProfileInfo,
@@ -124,7 +129,8 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const classes = classNames(
         "app-header",
         {
-            [ "fluid-header" ]: fluid
+            [ "fluid-header" ]: fluid,
+            [ "has-announcement" ]: announcement
         }
         , className
     );
@@ -184,6 +190,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 
     return (
         <Menu id="app-header" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
+            { announcement }
             <Container fluid={ fluid } data-testid={ `${ testId }-container` }>
                 {
                     showSidePanelToggle
