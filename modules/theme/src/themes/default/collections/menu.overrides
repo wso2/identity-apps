@@ -21,7 +21,7 @@
          Theme Overrides
 *******************************/
 
-.ui.menu.fixed {
+.ui.menu {
     &.app-header, &.app-footer {
         .item {
             &:hover, &:active, &:focus, &:visited {
@@ -32,6 +32,10 @@
     &.app-header {
         box-shadow: none;
 
+        &.has-announcement {
+            display: block;
+            height: auto;
+        }
         .user-dropdown {
             &:hover, &:active, &:focus {
                 background: transparent;
@@ -294,7 +298,7 @@
 
 // Fix for the unstackable list item images getting weird sizes on mobile.
 @media only screen and (max-width: @tabletBreakpoint) {
-    .ui.menu.fixed {
+    .ui.menu {
         &.app-header {
             .user-dropdown {
                 .authenticated-user {
