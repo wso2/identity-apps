@@ -17,16 +17,15 @@
  */
 
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { Logo, ProductBrand } from "@wso2is/react-components";
+import { ProfileInfoInterface } from "@wso2is/core/models";
+import { Logo, ProductBrand, UserAvatar } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { SyntheticEvent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
-    Button,
     Container,
-    Divider,
     Dropdown,
     Icon,
     Item,
@@ -36,11 +35,10 @@ import {
 } from "semantic-ui-react";
 import { getGravatarImage } from "../../api";
 import { GlobalConfig } from "../../configs";
-import { resolveUserDisplayName, resolveUsername } from "../../helpers";
+import { history, resolveUserDisplayName, resolveUsername } from "../../helpers";
 import { AlertLevels, AuthStateInterface, LinkedAccountInterface } from "../../models";
 import { AppState } from "../../store";
 import { addAlert, getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
-import { UserAvatar } from "../shared";
 import { refreshPage } from "../../utils";
 
 /**
@@ -86,7 +84,11 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                     )
                     : resolveUserDisplayName(profileDetails)
             }</div>
-            <UserAvatar isLoading={ isProfileInfoLoading } authState={ profileDetails } size="mini" />
+            <UserAvatar
+                isLoading={ isProfileInfoLoading }
+                profileInfo={ profileDetails?.profileInfo as ProfileInfoInterface }
+                size="mini"
+            />
         </span>
     );
 
@@ -185,9 +187,9 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                         key={ `logged-in-user-${profileDetails.profileInfo.userName}` }
                                     >
                                         <UserAvatar
-                                            authState={ profileDetails }
+                                            profileInfo={ profileDetails?.profileInfo as ProfileInfoInterface }
                                             isLoading={ isProfileInfoLoading }
-                                            size="tiny"
+                                            size="x60"
                                         />
                                         <Item.Content verticalAlign="middle">
                                             <Item.Description>
@@ -217,20 +219,10 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                                         </div>
                                                     )
                                                 }
-                                                <Divider hidden />
-                                                <Button
-                                                    as={ Link }
-                                                    to="/personal-info"
-                                                    size="tiny"
-                                                    primary
-                                                >
-                                                    { t("common:personalInfo") }
-                                                </Button>
                                             </Item.Description>
                                         </Item.Content>
                                     </Item>
                                 </Item.Group>
-                                <Dropdown.Divider />
                                 {
                                     (linkedAccounts && linkedAccounts.length && linkedAccounts.length > 0)
                                         ? (
@@ -276,10 +268,19 @@ export const Header: React.FunctionComponent<HeaderProps> = (props: HeaderProps)
                                         )
                                         : null
                                 }
-                                <Dropdown.Item className="action-panel">
-                                    <Link className="action-button" to={ window["AppUtils"].getConfig().routes.logout }>
-                                        { t("common:logout") }
-                                    </Link>
+                                <Dropdown.Item
+                                    className="action-panel"
+                                    onClick={ () => history.push("/personal-info") }
+                                >
+                                    <Icon className="link-icon" name="arrow right"/>
+                                    { t("common:personalInfo") }
+                                </Dropdown.Item>
+                                <Dropdown.Item
+                                    className="action-panel"
+                                    onClick={ () => history.push(window["AppUtils"].getConfig().routes.logout) }
+                                >
+                                    <Icon className="link-icon" name="power off"/>
+                                    { t("common:logout") }
                                 </Dropdown.Item>
                             </Dropdown.Menu>
                         </Dropdown>

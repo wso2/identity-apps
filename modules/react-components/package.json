@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/react-components",
-    "version": "1.0.305",
+    "version": "1.0.309",
     "description": "A React component library for WSO2 Identity Server frontend apps implementing Semantic UI Framework",
     "keywords": [
         "WSO2",
@@ -17,25 +17,22 @@
         "start:storybook": "NODE_PATH=src start-storybook -p 6006 -c .storybook -s ./dist",
         "build:storybook": "build-storybook",
         "build": "npm run clean && npm run compile",
-        "clean": "npm run rimraf ./dist",
-        "clean:assets": "npm run rimraf ./dist/assets",
+        "clean": "rimraf ./dist",
+        "clean:assets": "rimraf ./dist/assets",
         "compile": "run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "copy:assets": "node scripts/copy-assets.js",
         "postbuild": "node scripts/post-build.js",
-        "rimraf": "run-script-os",
-        "rimraf:default": "../../node_modules/rimraf/bin.js",
-        "rimraf:win32": "..\\..\\node_modules\\rimraf\\bin.js",
         "start": "npm run start:storybook",
         "lint": "tslint -t stylish --project ."
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.0.305",
-        "@wso2is/forms": "^1.0.305",
-        "@wso2is/theme": "^1.0.305"
+        "@wso2is/core": "^1.0.309",
+        "@wso2is/forms": "^1.0.309",
+        "@wso2is/theme": "^1.0.309"
     },
     "peerDependencies": {
         "@babel/core": "*",

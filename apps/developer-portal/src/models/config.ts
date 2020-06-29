@@ -48,7 +48,23 @@ export interface FeatureConfigInterface {
 /**
  * Portal Deployment config interface inheriting the common configs from core module.
  */
-export type DeploymentConfigInterface = CommonDeploymentConfigInterface;
+export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
+    /**
+     * Configs of the user portal app.
+     */
+    accountApp: ExternalAppConfigInterface;
+    /**
+     * Configs of the admin portal app.
+     */
+    adminApp: ExternalAppConfigInterface;
+}
+
+/**
+ * Interface for defining settings and configs of an external app.
+ */
+interface ExternalAppConfigInterface {
+    path: string;
+}
 
 /**
  * Portal UI config interface inheriting the common configs from core module.

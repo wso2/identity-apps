@@ -274,6 +274,12 @@ export const UserAvatarSizes = (): ReactElement => (
             name="little"
         />
         <UserAvatar
+            avatarInitialsLimit={ 2 }
+            spaced="right"
+            size="x60"
+            name="6 0"
+        />
+        <UserAvatar
             spaced="right"
             size="tiny"
             name="tiny"

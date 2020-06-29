@@ -6,6 +6,13 @@
         {% endfor %}
         {% endif %}
     },
+    "adminApp": {
+        {% if developer_portal.applications.admin_app.configs is defined %}
+        {% for key, value in developer_portal.applications.admin_app.configs.items() %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
     "appBaseName": "{{ developer_portal.app_base_name }}",
     "clientID": "{{ developer_portal.client_id }}",
     "debug": {{ developer_portal.debug.enable }},

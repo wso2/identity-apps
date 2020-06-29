@@ -5,6 +5,9 @@
     "appBaseName": "admin-portal",
     "clientID": "ADMIN_PORTAL",
     "debug": false,
+    "developerApp": {
+        "path": "/developer-portal/overview"
+    },
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",

@@ -1655,6 +1655,12 @@ export const devPortal: DevPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
+        header: {
+            links: {
+                adminPortalNav: "Admin Portal",
+                userPortalNav: "My Account"
+            }
+        },
         helpPanel: {
             notifications: {
                 pin: {

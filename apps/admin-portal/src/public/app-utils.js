@@ -89,6 +89,10 @@ var AppUtils = AppUtils || (function() {
                 _config.accountAppOrigin = _config.accountApp.origin;
             }
 
+            if (_config.developerApp && _config.developerApp.origin) {
+                _config.developerAppOrigin = _config.developerApp.origin;
+            }
+
             return {
                 accountApp: {
                     path: _config.accountAppOrigin + this.getTenantPath() + _config.accountApp.path
@@ -100,6 +104,9 @@ var AppUtils = AppUtils || (function() {
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(),
                 debug: _config.debug,
+                developerApp: {
+                    path: _config.developerAppOrigin + this.getTenantPath() + _config.developerApp.path
+                },
                 documentation: _config.documentation,
                 loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName +
                     _config.loginCallbackPath,
@@ -160,6 +167,7 @@ var AppUtils = AppUtils || (function() {
             _default = {
                 "accountAppOrigin": _args.accountAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "clientOrigin": window.location.origin,
+                "developerAppOrigin": _args.developerAppOrigin || _args.serverOrigin || fallbackServerOrigin,
                 "serverOrigin": _args.serverOrigin || fallbackServerOrigin
             };
 
