@@ -17,12 +17,25 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import { Hint, RenderInput } from "@wso2is/react-components";
+import { Hint, RenderCheckBox, RenderInput } from "@wso2is/react-components";
 import React from "react"
 import { Field, reduxForm } from "redux-form"
 import { Grid } from "semantic-ui-react";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils/governance-connector";
+
+/**
+ * Determine the matching Form component based on the property attributes.
+ * 
+ * @param property
+ */
+const getFieldComponent = (property: ConnectorPropertyInterface) => {
+    if (property.value === "true" || property.value === "false") {
+        return RenderCheckBox;
+    } else {
+        return RenderInput;
+    }
+};
 
 /**
  * Dynamically render governance connector forms.
@@ -35,26 +48,32 @@ const DynamicConnectorForm = (props) => {
         handleSubmit,
         [ "data-testid" ]: testId
     } = props;
-    const fields: ConnectorPropertyInterface[] = props.props.fields;
+    const properties: ConnectorPropertyInterface[] = props.props.properties;
     return (
         <form onSubmit={ handleSubmit }>
             <Grid padded={ true }>
             {
-                fields?.map((field, index) => {
+                properties?.map((property, index) => {
                     return (
                         <Grid.Row columns={ 1 } className="pl-3" key={ index }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <label htmlFor={ field.name }>{ field.displayName }</label>
+                                {
+                                    (getFieldComponent(property) === RenderInput) &&
+                                    <label htmlFor={ property.name }>{ property.displayName }</label>
+                                }
                                 <Field
-                                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(field.name) }
-                                    component={ RenderInput }
+                                    name={ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) }
+                                    component={ getFieldComponent(property) }
                                     required={ true }
                                     width={ 10 }
-                                    placeholder={ field.value }
-                                    data-testid={ `${ testId }-${ field.name }` }
+                                    placeholder={ property.value }
+                                    data-testid={ `${ testId }-${ property.name }` }
+                                    label={ property.displayName }
+                                    toggle
+
                                 />
                                 <Hint>
-                                    { field.description }
+                                    { property.description }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>

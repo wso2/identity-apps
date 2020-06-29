@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Section } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
@@ -61,14 +61,20 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     const getConnectorInitialValues = (connector: GovernanceConnectorInterface) => {
         const values = {};
         connector?.properties.map(property => {
-            values[GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)] = property.value;
+            if (property.value === "true") {
+                values[GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)] = true;
+            } else if (property.value === "false") {
+                values[GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)] = false;
+            } else {
+                values[GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)] = property.value;
+            }
         });
         return values;
     };
 
     const connectorForm: ReactElement = (
         <DynamicConnectorForm onSubmit={ handleSubmit }
-                              props={ { fields: connector.properties } }
+                              props={ { properties: connector.properties } }
                               form={ connector.name + "-form" }
                               initialValues={ getConnectorInitialValues(connector) }
                               data-testid={ `${ testId }-${ connector.name }-form` }

@@ -90,3 +90,37 @@ export const RenderInput = createRenderer(
         )
     }
 );
+
+export const RenderCheckBox = createRenderer(
+    (
+        input, label, fieldClass, placeholder, type, selectOptions, meta, checkboxLabel,
+        componentClass, disabled, onLabel, offLabel, children, fieldOptions, rest
+    ) => {
+        return (
+            <Form.Checkbox
+                { ...input }
+                className={ fieldClass }
+                componentClass={ componentClass }
+                placeholder={ placeholder }
+                disabled={ disabled }
+                label={ label }
+                checked={ input.value }
+                error={
+                    meta.touched && ((meta.error && (
+                        {
+                            content: meta.error,
+                            pointing: "left"
+                        }
+                    )) || (meta.warning
+                        && (
+                            {
+                                content: meta.warning,
+                                pointing: "left"
+                            }
+                        )))
+                }
+                { ...rest }
+            />
+        )
+    }
+);
