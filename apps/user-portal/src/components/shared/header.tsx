@@ -42,7 +42,7 @@ import { Image } from "semantic-ui-react";
 import { ApplicationConstants } from "../../constants";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
-import { handleAccountSwitching } from "../../store/actions";
+import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
 import { CommonUtils, refreshPage } from "../../utils";
 
 /**
@@ -81,6 +81,16 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ announcement, setAnnouncement ] = useState<AnnouncementBannerInterface>(undefined);
+
+    useEffect(() => {
+        if (_.isEmpty(profileInfo)) {
+            dispatch(getProfileInformation());
+        }
+
+        if (_.isEmpty(linkedAccounts)) {
+            dispatch(getProfileLinkedAccounts());
+        }
+    }, []);
 
     useEffect(() => {
         if (_.isEmpty(config)) {
