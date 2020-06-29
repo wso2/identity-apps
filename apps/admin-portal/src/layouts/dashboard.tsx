@@ -17,13 +17,7 @@
  */
 
 import { getProfileInfo } from "@wso2is/core/api";
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import {
-    AlertInterface,
-    ChildRouteInterface,
-    ProfileInfoInterface,
-    RouteInterface
-} from "@wso2is/core/models";
+import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -31,9 +25,6 @@ import {
     Alert,
     DashboardLayout as DashboardLayoutSkeleton,
     Footer,
-    Header,
-    Logo,
-    ProductBrand,
     SidePanel,
     ThemeContext,
     TopLoadingBar
@@ -52,11 +43,10 @@ import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Button, Image, Responsive } from "semantic-ui-react";
-import { ProtectedRoute } from "../components";
+import { Responsive } from "semantic-ui-react";
+import { Header, ProtectedRoute } from "../components";
 import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
-import { ComponentPlaceholder } from "../extensions";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface, GovernanceConnectorCategoryInterface } from "../models";
 import { GovernanceConnectorsPage } from "../pages/configurations";
@@ -90,8 +80,6 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const dispatch = useDispatch();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const isProfileInfoLoading: boolean = useSelector(
-        (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -110,6 +98,67 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
+
+    useEffect(() => {
+        setSelectedRoute(getInitialActiveRoute());
+    }, []);
+
+    useEffect(() => {
+        // Filter the routes and get only the enabled routes defined in the app config.
+        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig, allowedScopes));
+
+        if (_.isEmpty(profileInfo)) {
+            dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
+        }
+    }, []);
+
+    useEffect(() => {
+        if (headerHeight === document.getElementById("app-header").offsetHeight) {
+            return;
+        }
+        setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
+    });
+
+    useEffect(() => {
+        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
+            return;
+        }
+        setFooterHeight(document.getElementById("app-footer").offsetHeight);
+    });
+
+    useEffect(() => {
+        if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
+            if (!governanceConnectorRoutesAdded) {
+                const serverConfigsRoute = routes.find(route => route.id === "serverConfigurations");
+                governanceConnectorCategories.map(category => {
+                    let subCategoryExists = false;
+                    category.connectors?.map(connector => {
+                        if (connector.subCategory !== "DEFAULT") {
+                            subCategoryExists = true;
+                            return;
+                        }
+                    });
+                    if (subCategoryExists) {
+                        console.log("Subcategories found.");
+                    }
+                    serverConfigsRoute.children.push({
+                        component: GovernanceConnectorsPage,
+                        exact: true,
+                        icon: "childIcon",
+                        id: category.id,
+                        level: 2,
+                        name: category.name,
+                        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
+                        protected: true,
+                        showOnSidePanel: true
+                    });
+                });
+                setGovernanceConnectorRoutesAdded(true);
+            }
+        } else {
+            GovernanceConnectorUtils.getGovernanceConnectors();
+        }
+    }, [ governanceConnectorCategories ]);
 
     /**
      * Checks if the URL path is similar to the path of the route that's passed in.
@@ -279,67 +328,6 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         return resolvedRoutes;
     };
 
-    useEffect(() => {
-        if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
-            if (!governanceConnectorRoutesAdded) {
-                const serverConfigsRoute = routes.find(route => route.id === "serverConfigurations");
-                governanceConnectorCategories.map(category => {
-                    let subCategoryExists = false;
-                    category.connectors?.map(connector => {
-                        if (connector.subCategory !== "DEFAULT") {
-                            subCategoryExists = true;
-                            return;
-                        }
-                    });
-                    if (subCategoryExists) {
-                        console.log("Subcategories found.");
-                    }
-                    serverConfigsRoute.children.push({
-                        component: GovernanceConnectorsPage,
-                        exact: true,
-                        icon: "childIcon",
-                        id: category.id,
-                        level: 2,
-                        name: category.name,
-                        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
-                        protected: true,
-                        showOnSidePanel: true
-                    });
-                });
-                setGovernanceConnectorRoutesAdded(true);
-            }
-        } else {
-            GovernanceConnectorUtils.getGovernanceConnectors();
-        }
-    }, [ governanceConnectorCategories ]);
-
-    useEffect(() => {
-        // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig, allowedScopes));
-
-        if (_.isEmpty(profileInfo)) {
-            dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
-        }
-    }, []);
-
-    useEffect(() => {
-        setSelectedRoute(getInitialActiveRoute());
-    }, []);
-
-    useEffect(() => {
-        if (headerHeight === document.getElementById("app-header").offsetHeight) {
-            return;
-        }
-        setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
-    }, []);
-
-    useEffect(() => {
-        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
-            return;
-        }
-        setFooterHeight(document.getElementById("app-footer").offsetHeight);
-    }, []);
-
     /**
      * Handles language switch action.
      * @param {string} language - Selected language.
@@ -376,63 +364,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
-                    brand={ (
-                        <ProductBrand
-                            style={ { marginTop: 0 } }
-                            logo={
-                                (state.logo && state.logo !== "")
-                                    ? <Image src={ state.logo } style={ { maxHeight: 25 } }/>
-                                    : (
-                                        <Logo
-                                            className="portal-logo"
-                                            image={
-                                                resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                                    `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                                    `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
-                                                    state.theme)
-                                            }
-                                        />
-                                    )
-                            }
-                            name={ state.productName && state.productName !== "" ?
-                                state.productName
-                                :
-                                config.deployment.applicationName
-                            }
-                            version={ config.deployment.productVersion }
-                        />
-                    ) }
-                    brandLink={ config.deployment.appHomePath }
-                    basicProfileInfo={ profileInfo }
                     fluid={ !isMobileViewport ? fluid : false }
-                    isProfileInfoLoading={ isProfileInfoLoading }
-                    userDropdownLinks={ [
-                        {
-                            icon: "arrow right",
-                            name: t("adminPortal:components.header.links.userPortalNav"),
-                            target: "_blank",
-                            to: window[ "AppUtils" ].getConfig().accountApp.path,
-                            useWindowOpen: true
-                        },
-                        {
-                            icon: "arrow right",
-                            name: t("adminPortal:components.header.links.devPortalNav"),
-                            target: "_blank",
-                            to: window[ "AppUtils" ].getConfig().developerApp.path,
-                            useWindowOpen: true
-                        },
-                        {
-                            icon: "power off",
-                            name: t("common:logout"),
-                            to: window[ "AppUtils" ].getConfig().routes.logout
-                        }
-                    ] }
-                    profileInfo={ profileInfo }
-                    showUserDropdown={ true }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
-                >
-                    <ComponentPlaceholder section="feedback-button" type="component"/>
-                </Header>
+                />
             ) }
             sidePanel={ (
                 <SidePanel
