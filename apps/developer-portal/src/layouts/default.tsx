@@ -16,17 +16,13 @@
  * under the License.
  */
 
-import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { AlertInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { AlertInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     Alert,
     DefaultLayout as DefaultLayoutSkeleton,
     Footer,
-    Header,
-    Logo,
-    ProductBrand,
     ThemeContext,
     TopLoadingBar
 } from "@wso2is/react-components";
@@ -35,11 +31,10 @@ import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { Button, Image, Responsive } from "semantic-ui-react";
-import { ProtectedRoute } from "../components";
+import { Responsive } from "semantic-ui-react";
+import { Header, ProtectedRoute } from "../components";
 import { defaultLayoutRoutes } from "../configs";
 import { UIConstants } from "../constants";
-import { ComponentPlaceholder } from "../extensions";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 
@@ -72,9 +67,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const { state } = useContext(ThemeContext);
 
-    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const isProfileInfoLoading: boolean = useSelector(
-        (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
         (state: AppState) => state.global.supportedI18nLanguages);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -91,14 +83,14 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             return;
         }
         setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
-    }, []);
+    });
 
     useEffect(() => {
         if (footerHeight === document.getElementById("app-footer").offsetHeight) {
             return;
         }
         setFooterHeight(document.getElementById("app-footer").offsetHeight);
-    }, []);
+    });
 
     /**
      * Handles the layout on change event.
@@ -160,63 +152,9 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
-                    brand={ (
-                        <ProductBrand
-                            style={ { marginTop: 0 } }
-                            logo={
-                                (state.logo && state.logo !== "")
-                                    ? <Image src={ state.logo } style={ { maxHeight: 25 } }/>
-                                    : (
-                                        <Logo
-                                            className="portal-logo"
-                                            image={
-                                                resolveAppLogoFilePath(window[ "AppUtils" ].getConfig().ui.appLogoPath,
-                                                    `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
-                                                    `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
-                                                    state.theme)
-                                            }
-                                        />
-                                    )
-                            }
-                            name={
-                                (state.productName && state.productName !== "")
-                                    ? state.productName
-                                    : config.deployment.applicationName
-                            }
-                            version={ config.deployment.productVersion }
-                        />
-                    ) }
-                    brandLink={ config.deployment.appHomePath }
-                    basicProfileInfo={ profileInfo }
                     fluid={ !isMobileViewport ? fluid : false }
-                    isProfileInfoLoading={ isProfileInfoLoading }
-                    userDropdownLinks={ [
-                        {
-                            icon: "arrow right",
-                            name: t("devPortal:components.header.links.userPortalNav"),
-                            target: "_blank",
-                            to: window[ "AppUtils" ].getConfig().accountApp.path,
-                            useWindowOpen: true
-                        },
-                        {
-                            icon: "arrow right",
-                            name: t("devPortal:components.header.links.adminPortalNav"),
-                            target: "_blank",
-                            to: window[ "AppUtils" ].getConfig().adminApp.path,
-                            useWindowOpen: true
-                        },
-                        {
-                            icon: "power off",
-                            name: t("common:logout"),
-                            to: window[ "AppUtils" ].getConfig().routes.logout
-                        }
-                    ] }
-                    profileInfo={ profileInfo }
-                    showUserDropdown={ true }
                     showSidePanelToggle={ false }
-                >
-                    <ComponentPlaceholder section="feedback-button" type="component"/>
-                </Header>
+                />
             ) }
             footer={ (
                 <Footer
