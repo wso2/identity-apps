@@ -191,7 +191,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
     return (
         <Menu id="app-header" className={ classes } fixed={ fixed } borderless data-testid={ testId }>
             { announcement }
-            <Container fluid={ fluid } data-testid={ `${ testId }-container` }>
+            <Container fluid={ fluid } data-testid={ `${ testId }-container` } className="app-header-container">
                 {
                     showSidePanelToggle
                         ? (

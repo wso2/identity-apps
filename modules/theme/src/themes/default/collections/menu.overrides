@@ -78,26 +78,24 @@
                 .linked-accounts-list {
                     max-height: 200px;
                     overflow: auto;
-                }
-                .linked-account {
-                    background: @whiteSmoke;
-                    border-top: 1px solid #ccc;
-                    border-top-color: rgba(0,0,0,.2);
-                    margin-top: 0;
-                    margin-bottom: 0;
+                    border-bottom: 1px solid @defaultBorderColor;
 
-                    &:hover {
-                        cursor: pointer;
-                        background: darken(@whiteSmoke, 2);
-                    }
-                    &:first-child {
-                        border-top: 0;
-                    }
-                    .name {
-                        font-weight: 400;
-                    }
-                    .email {
-                        color: @nobel;
+                    .linked-account {
+                        border-radius: @defaultBorderRadius !important;
+                        margin: @userDropdownLinkedAccountMargin;
+                        border: none;
+                        transition: none !important;
+
+                        &:hover {
+                            cursor: pointer;
+                            background: darken(@whiteSmoke, 2);
+                        }
+                        .name {
+                            font-weight: 400;
+                        }
+                        .email {
+                            color: @nobel;
+                        }
                     }
                 }
                 .action-panel {
@@ -302,8 +300,8 @@
         &.app-header {
             .user-dropdown {
                 .authenticated-user {
-                    .ui.image.user-image.tiny {
-                        width: 80px !important;
+                    .ui.image.user-image.x60 {
+                        width: 60px !important;
                     }
                 }
                 .linked-accounts-list {
