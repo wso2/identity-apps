@@ -118,6 +118,22 @@ export const getConnectorCategory = (categoryId: string): Promise<any> => {
 };
 
 /**
+ * Update governance connector configurations.
+ *
+ * @param data request payload
+ * @param categoryId ID of the connector category
+ * @param connectorId ID of the connector
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const updateGovernanceConnector = (data: object, categoryId: string, connectorId: string): Promise<any> => {
+    const url = store.getState().config.endpoints.governanceConnectorCategories +
+        "/" + categoryId +
+        "/connectors/" + connectorId;
+    return updateConfigurations(data, url);
+};
+
+
+/**
  * Retrieve self sign up configurations.
  *
  * @returns {Promise<any>} a promise containing the configurations.

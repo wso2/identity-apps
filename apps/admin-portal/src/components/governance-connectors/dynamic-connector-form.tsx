@@ -22,7 +22,7 @@ import React from "react"
 import { Field, reduxForm } from "redux-form"
 import { Grid } from "semantic-ui-react";
 import { ConnectorPropertyInterface } from "../../models";
-import { GovernanceConnectorUtils } from "../../utils/governance-connector";
+import { GovernanceConnectorUtils } from "../../utils";
 
 /**
  * Determine the matching Form component based on the property attributes.
@@ -34,6 +34,14 @@ const getFieldComponent = (property: ConnectorPropertyInterface) => {
         return RenderCheckBox;
     } else {
         return RenderInput;
+    }
+};
+
+const getFieldType = (property: ConnectorPropertyInterface) => {
+    if (property.name.startsWith("__secret__")) {
+        return "password";
+    } else {
+        return "text";
     }
 };
 
@@ -64,11 +72,15 @@ const DynamicConnectorForm = (props) => {
                                 <Field
                                     name={ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) }
                                     component={ getFieldComponent(property) }
+                                    type={ getFieldType(property) }
                                     required={ true }
                                     width={ 10 }
                                     placeholder={ property.value }
                                     data-testid={ `${ testId }-${ property.name }` }
                                     label={ property.displayName }
+                                    fieldClass={ "fieldClass" }
+                                    class={ "fieldClass" }
+                                    componentClass={ "componentClass" }
                                     toggle
 
                                 />

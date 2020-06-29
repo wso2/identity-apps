@@ -23,3 +23,4 @@ export * from "./http-utils";
 export * from "./role-management-utils";
 export * from "./sort-list";
 export * from "./userstores";
+export * from "./governance-connector-utils";

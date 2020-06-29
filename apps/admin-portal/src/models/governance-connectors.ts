@@ -90,6 +90,7 @@ export interface GovernanceConnectorInterface {
 	id: string;
 	name: string;
 	category: string;
+	categoryId?: string;
 	friendlyName: string;
 	description?: string;
 	order: string;

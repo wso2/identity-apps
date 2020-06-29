@@ -572,6 +572,8 @@ export interface AdminPortalNS {
         governanceConnectors: {
             notifications: {
                 getConnectorCategories: Notification;
+                getConnector: Notification;
+                updateConnector: Notification;
             };
         };
         helpPanel: {

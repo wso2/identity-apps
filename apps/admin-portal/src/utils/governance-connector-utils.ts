@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { getConnectorCategories } from "../api";
 import { store } from "../store";
-import { SetGovernanceConnectorCategory } from "../store/actions/governance-connector";
+import { SetGovernanceConnectorCategory } from "../store/actions";
 import { GovernanceConnectorsInterface } from "../store/actions/types";
 
 /**
@@ -79,10 +79,10 @@ export class GovernanceConnectorUtils {
     }
 
     public static encodeConnectorPropertyName(name: string): string {
-        return name.split(".").join("_");
+        return name.split(".").join("-");
     }
 
     public static decodeConnectorPropertyName(name: string): string {
-        return name.split("_").join(".");
+        return name.split("-").join(".");
     }
 }

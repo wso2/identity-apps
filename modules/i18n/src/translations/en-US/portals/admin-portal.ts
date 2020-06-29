@@ -925,6 +925,20 @@ export const adminPortal: AdminPortalNS = {
         },
         governanceConnectors: {
             notifications: {
+                getConnector: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving governance connector.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
                 getConnectorCategories: {
                     error: {
                         description: "{{ description }}",
@@ -932,6 +946,20 @@ export const adminPortal: AdminPortalNS = {
                     },
                     genericError: {
                         description: "An error occurred while retrieving governance connector categories.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                updateConnector: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating governance connector.",
                         message: "Something went wrong"
                     },
                     success: {

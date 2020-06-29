@@ -16,16 +16,18 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { Section } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
+import { updateGovernanceConnector } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
 import { GovernanceConnectorInterface } from "../../models";
-import { GovernanceConnectorUtils } from "../../utils/governance-connector";
+import { GovernanceConnectorUtils } from "../../utils";
 
 /**
  * Prop types for the realm configurations component.
@@ -54,8 +56,51 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     const { t } = useTranslation();
 
+    const handleUpdateError = (error) => {
+        if (error.response && error.response.data && error.response.data.detail) {
+            dispatch(addAlert({
+                description: t("adminPortal:components.governanceConnectors.notifications." +
+                    "updateConnector.error.description", { description: error.response.data.description }),
+                level: AlertLevels.ERROR,
+                message: t("adminPortal:components.governanceConnectors.notifications." +
+                    "updateConnector.error.message")
+            }));
+        } else {
+            // Generic error message
+            dispatch(addAlert({
+                description: t("adminPortal:components.governanceConnectors.notifications." +
+                    "updateConnector.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: t("adminPortal:components.governanceConnectors.notifications." +
+                    "updateConnector.genericError.message")
+            }));
+        }
+    };
+
     const handleSubmit = (values) => {
-        console.log(values)
+        const data = {
+            "operation": "UPDATE",
+            "properties": []
+        };
+        for(const key in values) {
+            data.properties.push({
+                "name": GovernanceConnectorUtils.decodeConnectorPropertyName(key),
+                "value": values[key]
+            });
+        }
+        updateGovernanceConnector(data, connector.categoryId, connector.id)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("adminPortal:components.governanceConnectors.notifications." +
+                        "updateConnector.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("adminPortal:components.governanceConnectors.notifications." +
+                        "updateConnector.success.message")
+                }));
+            })
+            .catch((error) => {
+                handleUpdateError(error);
+            });
     };
 
     const getConnectorInitialValues = (connector: GovernanceConnectorInterface) => {

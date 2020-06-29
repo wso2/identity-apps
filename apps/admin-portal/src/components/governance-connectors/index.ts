@@ -21,3 +21,5 @@ export * from "./account-recovery";
 export * from "./login-policies";
 export * from "./password-policies";
 export * from "./realm-configurations";
+export * from "./dynamic-connector-form";
+export * from "./dynamic-governance-connector";

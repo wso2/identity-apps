@@ -57,7 +57,7 @@ import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { GovernanceConnectorsPage } from "../pages/configurations";
 import { AppState, store } from "../store";
 import { GovernanceConnectorCategoryInterface } from "../store/actions/types";
-import { GovernanceConnectorUtils } from "../utils/governance-connector";
+import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Dashboard layout Prop types.

@@ -16,16 +16,17 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { DynamicGovernanceConnector } from "../../components/governance-connectors/dynamic-governance-connector";
+import { getConnectorCategory } from "../../api";
+import { DynamicGovernanceConnector } from "../../components";
 import { history } from "../../helpers";
 import { GovernanceConnectorCategoryInterface } from "../../models";
-import { getConnectorCategory } from "../../api";
 
 /**
  * Props for the Server Configurations page.
@@ -62,12 +63,31 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
     const loadCategoryConnectors = (categoryId: string) => {
         getConnectorCategory(categoryId)
-            .then((response) => {
+            .then((response: GovernanceConnectorCategoryInterface) => {
+                response.connectors.map(connector => {
+                    connector.categoryId = categoryId;
+                });
                 setConnectorCategory(response);
             })
             .catch((error) => {
-                // Todo handle error
-                console.log(error)
+                if (error.response && error.response.data && error.response.data.detail) {
+                    dispatch(addAlert({
+                        description: t("adminPortal:components.governanceConnectors.notifications." +
+                            "getConnector.error.description", { description: error.response.data.description }),
+                        level: AlertLevels.ERROR,
+                        message: t("adminPortal:components.governanceConnectors.notifications." +
+                            "getConnector.error.message")
+                    }));
+                } else {
+                    // Generic error message
+                    dispatch(addAlert({
+                        description: t("adminPortal:components.governanceConnectors.notifications." +
+                            "getConnector.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("adminPortal:components.governanceConnectors.notifications." +
+                            "getConnector.genericError.message")
+                    }));
+                }
             });
     };
 
