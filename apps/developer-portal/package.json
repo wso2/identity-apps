@@ -22,8 +22,8 @@
         "postinstall": "node scripts/post-install.js",
         "prebuild": "node scripts/pre-build.js",
         "start": "run-script-os",
-        "start:win32": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "start:default": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
+        "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
+        "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
         "test": "jest --passWithNoTests"
     },
     "dependencies": {
