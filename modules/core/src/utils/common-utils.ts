@@ -16,8 +16,9 @@
  * under the License.
  */
 
+import sortBy from "lodash/sortBy";
 import moment from "moment";
-import { ProductReleaseTypes } from "../models";
+import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
 
 /**
  * Class containing common utility methods used across application.
@@ -79,5 +80,32 @@ export class CommonUtils {
         }
 
         return [ versionNo, release, releaseType ];
+    }
+
+    /**
+     * Iterates through the announcements array and gets the valid announcement to be displayed.
+     *
+     * @param {AnnouncementBannerInterface[]} announcements - Array of announcements.
+     * @param {string[]} seen - Set of seen announcements.
+     * @return {AnnouncementBannerInterface} Valid announcement.
+     */
+    public static getValidAnnouncement(announcements: AnnouncementBannerInterface[],
+                                       seen: string[]): AnnouncementBannerInterface {
+
+        const sorted: AnnouncementBannerInterface[] = sortBy(announcements, [ "order" ]);
+        let selected: AnnouncementBannerInterface = null;
+
+        for (const item of sorted) {
+            const isExpired = moment.duration(moment.unix(parseInt(item.expire, 10)).diff(moment()))
+                .asMilliseconds() < 0;
+            const isSeen = seen.includes(item.id);
+
+            if (!isExpired && !isSeen) {
+                selected = item;
+                break;
+            }
+        }
+
+        return selected;
     }
 }
