@@ -124,6 +124,7 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            announcements: window["AppUtils"].getConfig().ui.announcements,
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             doNotDeleteApplications: window["doNotDeleteApplications"] || [],
