@@ -51,7 +51,7 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     className?: string;
     fixed?: "left" | "right" | "bottom" | "top";
     fluid?: boolean;
-    isProfileInfoLoading: boolean;
+    isProfileInfoLoading?: boolean;
     linkedAccounts?: LinkedAccountInterface[];
     // TODO: Add proper type interface.
     profileInfo: any;

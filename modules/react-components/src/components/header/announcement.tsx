@@ -47,7 +47,7 @@ export interface StrictAnnouncementPropsInterface {
     /**
      * Background color.
      */
-    color: SemanticCOLORS | "primary" | "secondary";
+    color: SemanticCOLORS | "primary" | "secondary" | string;
     /**
      * Is fluid layout.
      */
