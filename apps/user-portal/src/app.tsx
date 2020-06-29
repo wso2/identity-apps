@@ -17,13 +17,15 @@
  */
 
 import { CommonDeploymentConfigInterface } from "@wso2is/core//models";
-import { isPortalAccessGranted } from "@wso2is/core/helpers";
+import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
+import { emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
     setI18nConfigs,
     setServiceResourceEndpoints,
     setUIConfigs
 } from "@wso2is/core/store";
+import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader } from "@wso2is/react-components";
 import _ from "lodash";
@@ -54,6 +56,7 @@ export const App = (): ReactElement => {
 
     const dispatch = useDispatch();
 
+    const userName: string = useSelector((state: AppState) => state.authenticationInformation.username);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
@@ -84,6 +87,34 @@ export const App = (): ReactElement => {
 
         history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
     }, [ loginInit, allowedScopes, config ]);
+
+    /**
+     * Set the application settings of the user to the local storage.
+     */
+    useEffect(() => {
+        if (!userName && userName === "") {
+            return;
+        }
+
+        const tenant = config?.deployment?.tenant;
+        const tenantAppSettings = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenant));
+        const appSettings = {};
+
+        appSettings[userName] = emptyIdentityAppsSettings();
+
+        if (!tenantAppSettings) {
+            LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(appSettings));
+        } else {
+            if (CommonHelpers.lookupKey(tenantAppSettings, userName) === null) {
+                const newUserSettings = {
+                    ...tenantAppSettings,
+                    [ userName ]: emptyIdentityAppsSettings()
+                };
+                LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
+            }
+        }
+
+    }, [ config?.deployment?.tenant, userName ]);
 
     return (
         <>

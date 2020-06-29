@@ -18,7 +18,7 @@
 
 import * as React from "react";
 import { Container, Divider } from "semantic-ui-react";
-import { AppFooter, Header as AppHeader, PageHeader } from "../components";
+import { AppFooter, Header, PageHeader } from "../components";
 
 /**
  * Default page layout component Prop types.
@@ -43,7 +43,7 @@ export const DefaultPageLayout: React.FunctionComponent<DefaultPageLayoutProps> 
 
     return (
         <>
-            <AppHeader showSidePanelToggle={ false }/>
+            <Header showSidePanelToggle={ false }/>
             <Container className="layout-content default-layout">
                 <Divider className="x2" hidden/>
                 <PageHeader
