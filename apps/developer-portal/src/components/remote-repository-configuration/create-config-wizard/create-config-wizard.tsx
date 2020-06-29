@@ -16,17 +16,17 @@
  * under the License.
  */
 
+import {  AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/dist/src/models";
+import { useTrigger } from "@wso2is/forms";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { TestableComponentInterface, AlertInterface, AlertLevels } from "@wso2is/core/dist/src/models";
-import { Modal, Grid, Icon } from "semantic-ui-react";
-import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { useDispatch } from "react-redux";
+import { Grid, Modal } from "semantic-ui-react";
 import { RemoteRepoConfigDetails } from "./remote-repo-config-details";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { useTrigger } from "@wso2is/forms";
 import { createRemoteRepoConfig } from "../../../api";
 import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteConfigForm } from "../../../models";
-import { AxiosResponse } from "axios";
-import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/dist/src/store";
 import { useTranslation } from "react-i18next";
 
@@ -106,7 +106,7 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
             }
             closeWizard();
             updateList();
-        }).catch(error => {
+        }).catch(() => {
             //handle error
         })
     };

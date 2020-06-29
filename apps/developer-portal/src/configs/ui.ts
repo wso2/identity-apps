@@ -327,6 +327,10 @@ export const OverviewPageIllustrations = {
     }
 };
 
+export const RemoteConfigPageIllustrations = {
+    noListElements: BuildingIcon
+};
+
 export const HelpPanelIcons = {
     endpoints: {
         authorize: AuthorizeIcon,

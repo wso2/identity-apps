@@ -16,14 +16,22 @@
  * under the License.
  */
 
+import { 
+    ConfirmationModal,
+    EmptyPlaceholder, 
+    PrimaryButton,
+    ResourceList, 
+    ResourceListItem
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { InterfaceRemoteRepoConfig } from "../../models";
-import { ResourceList, ResourceListItem, EmptyPlaceholder, PrimaryButton, ConfirmationModal } from "@wso2is/react-components";
-import { UIConstants, AppConstants } from "../../constants";
-import { useTranslation, Trans } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
-import { OverviewPageIllustrations } from "../../configs";
+import { RemoteConfigPageIllustrations } from "../../configs";
+import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
+import { InterfaceRemoteRepoConfig } from "../../models";
+
+
 
 interface RemoteRepoListProp {
     repoObjectList: InterfaceRemoteRepoConfig[];
@@ -70,7 +78,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.1"),
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.2")
                     ] }
-                    image={ OverviewPageIllustrations.statsOverview.idp }
+                    image={ RemoteConfigPageIllustrations.noListElements }
                     imageSize="tiny"
                 />
             );
@@ -97,12 +105,12 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                                 actions={ [
                                     {
                                         icon: "trash alternate",
-                                        popupText: "Delete Config",
-                                        type: "button",
                                         onClick: () => {
                                             setCurrentDeleteConfig(repoObject);
                                             setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                                         },
+                                        popupText: "Delete Config",
+                                        type: "button"
                                     }
                                 ] }
                                 itemHeader={ repoObject.name }

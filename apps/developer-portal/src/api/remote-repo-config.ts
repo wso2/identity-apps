@@ -1,15 +1,33 @@
-import {  InterfaceRemoteRepoListResponse, InterfaceRemoteRepoConfigDetails } from "../models";
-import { store } from "../store";
+/**
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 import { HttpMethods } from "@wso2is/core/dist/src/models";
-import { AxiosHttpClient } from "@wso2is/http";
-import { AxiosResponse, AxiosRequestConfig } from "axios";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { OAuth } from "@wso2is/oauth-web-worker";
+import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteRepoListResponse } from "../models";
+import { store } from "../store";
 
 /**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}.
  */
-const httpClient = AxiosHttpClient.getInstance();
+const httpClient = OAuth.getInstance().httpRequest;
 
 
 export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemoteRepoListResponse>> => {
@@ -22,7 +40,7 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteRepoConfig
     };
-    return httpClient.request<InterfaceRemoteRepoListResponse>(requestConfig)
+    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             return Promise.resolve(response);
         })
@@ -38,11 +56,11 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        method: HttpMethods.POST,
         data: configObj,
+        method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteRepoConfig
     };
-    return httpClient.request<InterfaceRemoteRepoListResponse>(requestConfig)
+    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             return Promise.resolve(response);
         })
@@ -62,7 +80,7 @@ export const deleteRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
         url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
     };
 
-    return httpClient.request(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
