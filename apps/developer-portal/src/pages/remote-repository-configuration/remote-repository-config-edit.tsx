@@ -16,31 +16,108 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { PageLayout } from "@wso2is/react-components";
 import { RemoteRepoEdit } from "../../components";
+import { history } from "../../helpers";
+import { getRemoteRepoConfig, deleteRemoteRepoConfig, updateRemoteRepoConfig } from "../../api/remote-repo-config";
+import { InterfaceRemoteConfigDetails, InterfaceRemoteRepoConfig, InterfaceEditDetails } from "../../models";
+import { AxiosResponse } from "axios";
+import { AppConstants } from "../../constants";
+import { AlertLevels, AlertInterface } from "@wso2is/core/dist/src/models";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+import { addAlert } from "@wso2is/core/dist/src/store";
 
 const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
-    /*return (
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+    
+    const [ remoteConfig, setRemoteConfig ] = useState<InterfaceRemoteConfigDetails>(undefined);
+
+    /**
+     * Use effect for the initial component load.
+     */
+    useEffect(() => {
+        const path = history.location.pathname.split("/");
+        const id = path[ path.length - 1 ];
+
+        getRemoteRepoConfig(id).then((response: AxiosResponse<InterfaceRemoteConfigDetails>)  => {
+            if (response.status === 200) {
+                setRemoteConfig(response.data);
+            }
+        })
+    }, []);
+
+    /**
+     * Handles the back button click event.
+     */
+    const handleBackButtonClick = (): void => {
+        history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG"));
+    };
+
+    /**
+     * Dispatches the alert object to the redux store.
+     *
+     * @param {AlertInterface} alert - Alert object.
+     */
+    const handleAlerts = (alert: AlertInterface) => {
+        dispatch(addAlert(alert));
+    };
+
+    /**
+     * Function which will handle role deletion action.
+     *
+     * @param role - Role ID which needs to be deleted
+     */
+    const handleOnDelete = (config: InterfaceRemoteConfigDetails): void => {
+        deleteRemoteRepoConfig(config.id).then(() => {
+            handleAlerts({
+                description: t(
+                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.message"
+                )
+            });
+        });
+        history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG"));
+    };
+
+    const handleOnConfigUpdate = (id: string, values: InterfaceEditDetails): void => {
+        updateRemoteRepoConfig(id, values).then(() => {
+            handleAlerts({
+                description: t(
+                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.message"
+                )
+            });
+        })
+    }
+    
+    return (
         <PageLayout
-            isLoading={ isIdentityProviderRequestLoading }
-            title={ identityProvider.name }
+            title={ remoteConfig ? remoteConfig.remoteFetchName : "" }
             contentTopMargin={ true }
-            description={ identityProvider.description }
+            description={ "Edit remote repository configurations." }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("devPortal:pages.idpTemplate.backButton")
+                text: "Back to configs"
             } }
             titleTextAlign="left"
             bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
         >
-            <RemoteRepoEdit configId={""} configObject={} />
+            <RemoteRepoEdit 
+                handleConfigDelete={ handleOnDelete }  
+                configId={ remoteConfig?.id }
+                onConfigUpdate={ handleOnConfigUpdate }
+                configObject={ remoteConfig } 
+            />
         </PageLayout>
-    )*/
-
-    return (
-        <div>testing</div>
     )
 }
 

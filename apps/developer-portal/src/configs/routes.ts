@@ -127,6 +127,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             },
         ],
         component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config")),
+        exact: true,
         icon: "overview",
         id: "remote-repo",
         name: "Remote Repo Config",

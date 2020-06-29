@@ -19,13 +19,14 @@
 import React, { FunctionComponent, ReactElement } from "react";
 import { ResourceTab } from "@wso2is/react-components";
 import { useTranslation } from "react-i18next";
-import { InterfaceRemoteRepoConfig } from "../../../models";
+import { InterfaceRemoteConfigDetails, InterfaceEditDetails } from "../../../models";
 import { RemoteConfigDetail } from "./remote-repository-details";
 
 interface RemoteRepoEditProps {
-    configId: string;
-    configObject: InterfaceRemoteRepoConfig;
-    onConfigUpdate: () => void;
+    configId?: string;
+    configObject?: InterfaceRemoteConfigDetails;
+    onConfigUpdate?: (id: string, values: InterfaceEditDetails) => void;
+    handleConfigDelete: (repoConfig: InterfaceRemoteConfigDetails) => void;
 }
 
 export const RemoteRepoEdit: FunctionComponent<RemoteRepoEditProps> = (props: RemoteRepoEditProps): ReactElement => {
@@ -34,15 +35,20 @@ export const RemoteRepoEdit: FunctionComponent<RemoteRepoEditProps> = (props: Re
 
     const {
         configObject,
-        onConfigUpdate
+        onConfigUpdate,
+        handleConfigDelete
     } = props;
 
     const panes = () => ([
         {
-            menuItem: t("devPortal:components.roles.edit.menuItems.basic"),
+            menuItem: "Config Details",
             render: () => (
                 <ResourceTab.Pane attached={ false }>
-                    <RemoteConfigDetail configObject={ configObject } />
+                    <RemoteConfigDetail 
+                        handleConfigDelete={ handleConfigDelete } 
+                        configObject={ configObject } 
+                        onConfigUpdate={ onConfigUpdate } 
+                    />
                 </ResourceTab.Pane>
             )
         }

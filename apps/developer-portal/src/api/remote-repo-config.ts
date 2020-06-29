@@ -19,7 +19,7 @@
 import { HttpMethods } from "@wso2is/core/dist/src/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { OAuth } from "@wso2is/oauth-web-worker";
-import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteRepoListResponse } from "../models";
+import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteRepoListResponse, InterfaceRemoteConfigDetails, InterfaceEditDetails } from "../models";
 import { store } from "../store";
 
 /**
@@ -49,6 +49,44 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
         });
 }
 
+export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
+    };
+    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
+        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
+export const triggerConfigDeployment = (id: string): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.POST,
+        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id + "/trigger"
+    };
+    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
+        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
 export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetails): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -59,6 +97,26 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
         data: configObj,
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteRepoConfig
+    };
+    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
+        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
+export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetails): Promise<AxiosResponse> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        data: configObj,
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
     };
     return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {

@@ -27,6 +27,7 @@ import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/dist/src/store";
 import { AlertInterface, AlertLevels } from "@wso2is/core/dist/src/models";
 import { useTranslation } from "react-i18next";
+import { triggerConfigDeployment } from "../../api/remote-repo-config";
 
 const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
@@ -66,9 +67,9 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     };
 
     /**
-     * Function which will handle role deletion action.
+     * Function which will handle config deletion action.
      *
-     * @param role - Role ID which needs to be deleted
+     * @param role - Config ID which needs to be deleted
      */
     const handleOnDelete = (config: InterfaceRemoteRepoConfig): void => {
         deleteRemoteRepoConfig(config.id).then(() => {
@@ -84,6 +85,25 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             setListUpdated(true);
         });
     };
+
+    /**
+     * Function which will handle config trigger.
+     * @param config Config ID which needs to be triggered
+     */
+    const handleOnTrigger = (config: InterfaceRemoteRepoConfig): void => {
+        triggerConfigDeployment(config.id).then((response) => {
+            handleAlerts({
+                description: t(
+                    "devPortal:components.remoteConfig.notifications.triggerConfig.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "devPortal:components.remoteConfig.notifications.triggerConfig.success.message"
+                )
+            });
+            setListUpdated(true);
+        });
+    }
     
     return (
         <PageLayout
@@ -103,6 +123,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                         showCreateWizard={ setShowWizard } 
                         handleConfigDelete={ handleOnDelete } 
                         repoObjectList={ remoteRepoConfig } 
+                        handleOnTrigger={ handleOnTrigger }
                     />
                 </ListLayout>
                 {

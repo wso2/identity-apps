@@ -28,8 +28,48 @@ export interface InterfaceRemoteRepoConfig {
     id: string;
     isEnabled: boolean;
     name: string;
+    lastDeployed: string;
     repositoryManagerType: string;
     successfulDeployments: number;
+}
+
+export interface InterfaceRemoteConfigDetails {
+    id: string;
+    isEnabled: boolean;
+    remoteFetchName: string;
+    repositoryManagerType?: string;
+    actionListenerType?: string;
+    configurationDeployerType?: string;
+    repositoryManagerAttributes?: {
+        accessToken: string;
+        userName: string;
+        uri: string;
+        branch: string;
+        directory: string;
+    };
+    configurationDeployerAttributes?: any;
+    status?: {
+        count: number;
+        successfulDeployments: number;
+        failedDeployments: number;
+        lastSynchronizedTime: string;
+        remoteFetchRevisionStatuses: InterfaceRemoteRevisionStatus[];
+    };
+    actionListenerAttributes?: {
+        frequency: number;
+    };
+}
+
+export interface InterfaceEditDetails {
+    isEnabled: boolean;
+    remoteFetchName: string;
+}
+
+export interface InterfaceRemoteRevisionStatus {
+    itemName: string;
+    deployedTime: string;
+    deployedStatus: string;
+    deploymentErrorReport: string;
 }
 
 export interface InterfaceRemoteRepoConfigDetails {

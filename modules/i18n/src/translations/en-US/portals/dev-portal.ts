@@ -100,6 +100,34 @@ export const devPortal: DevPortalNS = {
                         message: "Deletetion successful"
                     }
                 },
+                triggerConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Trigger Error"
+                    },
+                    genericError: {
+                        description: "Failed to trigger the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully triggered the configuration.",
+                        message: "Trigger successful"
+                    }
+                },
+                editConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Edit Error"
+                    },
+                    genericError: {
+                        description: "Failed to edit the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully edited the configuration.",
+                        message: "Edit successful"
+                    }
+                },
                 createConfig: {
                     error: {
                         description: "{{description}}",

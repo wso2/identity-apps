@@ -37,13 +37,14 @@ interface RemoteRepoListProp {
     repoObjectList: InterfaceRemoteRepoConfig[];
     handleConfigDelete: (repoConfig: InterfaceRemoteRepoConfig) => void;
     showCreateWizard: (state: boolean) => void;
+    handleOnTrigger: (repoConfig: InterfaceRemoteRepoConfig) => void;
 }
 
 export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: RemoteRepoListProp): ReactElement => {
 
     const { t } = useTranslation();
 
-    const { repoObjectList, handleConfigDelete, showCreateWizard } = props;
+    const { repoObjectList, handleConfigDelete, showCreateWizard, handleOnTrigger } = props;
 
     const [ currentDeleteConfig, setCurrentDeleteConfig ] = useState<InterfaceRemoteRepoConfig>();
     const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
@@ -53,7 +54,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
      *
      * @param {string} idpId Identity provider id.
      */
-    const handleIdentityProviderEdit = (configId: string): void => {
+    const handleRemoteRepoEdit = (configId: string): void => {
         history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT").replace(":id", configId));
     };
 
@@ -87,6 +88,14 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
         return null;
     };
 
+    const generateMetaContent = (repoObject: InterfaceRemoteRepoConfig) => {
+        return (
+            <div>
+                <p>{`Successfull Deployments : ${repoObject.successfulDeployments} , Failed Deployments : ${repoObject.failedDeployments}`}</p>
+            </div>
+        )
+    }
+
     return (
         <>
             <ResourceList
@@ -102,7 +111,23 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                             <ResourceListItem
                                 key={ index }
                                 actionsFloated="right"
+                                metaContent={ generateMetaContent(repoObject) }
+                                metaColumnWidth={ 5 }
+                                actionsColumnWidth={ 4 }
+                                itemDescription={ `Last Deployed : ${repoObject.lastDeployed}` }
                                 actions={ [
+                                    {
+                                        icon: "retweet",
+                                        onClick: (): void => { handleOnTrigger(repoObject) },
+                                        popupText: "Trigger Config",
+                                        type: "button"
+                                    },
+                                    {
+                                        icon: "pencil alternate",
+                                        onClick: (): void => handleRemoteRepoEdit(repoObject.id),
+                                        popupText: "Edit Config",
+                                        type: "button"
+                                    },
                                     {
                                         icon: "trash alternate",
                                         onClick: () => {

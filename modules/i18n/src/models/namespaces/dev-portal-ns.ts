@@ -94,6 +94,8 @@ export interface DevPortalNS {
             },
             notifications: {
                 deleteConfig: Notification,
+                editConfig: Notification,
+                triggerConfig: Notification,
                 createConfig: Notification
             }
         };

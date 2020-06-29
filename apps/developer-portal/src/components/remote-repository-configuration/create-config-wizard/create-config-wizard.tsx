@@ -79,7 +79,7 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
                 type: "GIT"
             }
         }
-        createTemplateType(configs);
+        createConfigurtion(configs);
     };
 
     /**
@@ -91,7 +91,7 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
         dispatch(addAlert(alert));
     };
 
-    const createTemplateType = (templateTypeName: InterfaceRemoteRepoConfigDetails): void => {
+    const createConfigurtion = (templateTypeName: InterfaceRemoteRepoConfigDetails): void => {
         createRemoteRepoConfig(templateTypeName).then((response: AxiosResponse) => {
             if (response.status === 201) {
                 handleAlerts({
