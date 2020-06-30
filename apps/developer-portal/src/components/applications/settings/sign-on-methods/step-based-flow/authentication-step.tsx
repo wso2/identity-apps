@@ -172,7 +172,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                     {
                                         authenticator?.authenticators?.map((item) => {
                                             return (
-                                                <Form.Field>
+                                                <Form.Field key={ item.authenticatorId }>
                                                     <Radio
                                                         label={ item.name }
                                                         name={ item.name }

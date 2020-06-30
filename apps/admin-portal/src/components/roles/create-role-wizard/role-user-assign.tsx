@@ -481,7 +481,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                         {
                                                             selectedUsers?.map((user) => {
                                                                 return (
-                                                                    <Table.Row>
+                                                                    <Table.Row key={ user.id }>
                                                                         <Table.Cell collapsing>
                                                                             <UserAvatar
                                                                                 data-testid={ `${ testId }-users-list-

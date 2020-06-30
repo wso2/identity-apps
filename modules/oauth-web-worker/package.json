@@ -7,7 +7,7 @@
     "types": "dist/typings/src/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "rimraf dist; webpack -p --env.NODE_ENV=production"
+        "build": "rimraf dist && webpack -p --env.NODE_ENV=production"
     },
     "keywords": [
         "oauth",

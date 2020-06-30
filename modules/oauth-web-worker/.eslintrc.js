@@ -1,16 +1,15 @@
 module.exports = {
     extends: [
-        "../../.eslintrc.js"
-    ]
-};
-
+        "../../.eslintrc.js",
+        "eslint:recommended",
+        "plugin:import/typescript"
+    ],
     env: {
         browser: true,
         es6: true,
         jest: true,
         node: true
     },
-    extends: ["eslint:recommended", "plugin:import/typescript"],
     overrides: [
         {
             env: {
