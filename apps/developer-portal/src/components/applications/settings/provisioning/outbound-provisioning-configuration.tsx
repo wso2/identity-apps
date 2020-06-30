@@ -197,7 +197,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                         (provisioningIdp) => {
                                         return (
                                             <AuthenticatorAccordion
-                                                key={ provisioningIdp?.idp }
+                                                key={ provisioningIdp.idp }
                                                 globalActions={ [
                                                     {
                                                         icon: "trash alternate",
