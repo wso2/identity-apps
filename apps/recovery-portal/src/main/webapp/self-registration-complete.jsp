@@ -33,6 +33,7 @@
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
     String confirm = (String) request.getAttribute("confirm");
+    String confirmLiteReg = (String) request.getAttribute("confirmLiteReg");
 
     isEmailNotificationEnabled = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.ConfigConstants.ENABLE_EMAIL_NOTIFICATION));
@@ -51,6 +52,9 @@
     <% } %>
 </head>
 <body>
+<% if (StringUtils.isNotBlank(confirmLiteReg) && confirmLiteReg.equals("true")) {
+    response.sendRedirect(callback);
+} else { %>
 <div class="ui tiny modal notify">
     <div class="header">
         <h4>
@@ -82,6 +86,7 @@
         </button>
     </div>
 </div>
+<% }%>
 
 <!-- footer -->
 <%
