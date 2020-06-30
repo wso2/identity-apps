@@ -37,7 +37,6 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
-
     String username = request.getParameter("username");
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
@@ -46,7 +45,6 @@
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
-
 
     if (StringUtils.isBlank(username) || StringUtils.isBlank(confirmationKey)) {
         confirmationKey = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("confirmationKey"));
@@ -69,8 +67,6 @@
         request.setAttribute("callback", callback);
         request.setAttribute("confirmLiteReg", "true");
         request.getRequestDispatcher("self-registration-complete.jsp").forward(request,response);
-
-
     } catch (ApiException e) {
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
         request.getRequestDispatcher("error.jsp").forward(request, response);
