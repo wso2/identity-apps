@@ -10,7 +10,7 @@
         "build:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production && npm run test",
         "build:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production && npm run test",
         "build:analyze": "run-script-os",
-        "build:analyze:win32": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true",
+        "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true",
         "build:analyze:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true",
         "build-prod": "run-script-os",
         "build-prod:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production",
@@ -22,8 +22,8 @@
         "postinstall": "node scripts/post-install.js",
         "prebuild": "node scripts/pre-build.js",
         "start": "run-script-os",
-        "start:win32": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "start:default": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
+        "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
+        "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
         "test": "jest --passWithNoTests"
     },
     "dependencies": {
