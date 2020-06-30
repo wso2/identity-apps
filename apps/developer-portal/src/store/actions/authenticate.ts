@@ -143,7 +143,7 @@ export const handleSignIn = () => (dispatch) => {
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: ["SYSTEM", "openid"],
-            serverOrigin: window["AppUtils"].getConfig().serverOrigin
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
         })
         .then(() => {
             oAuth

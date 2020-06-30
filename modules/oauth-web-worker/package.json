@@ -1,13 +1,13 @@
 {
     "name": "@wso2is/oauth-web-worker",
-    "version": "1.0.306",
+    "version": "1.0.310",
     "description": "OAuth authentication using web worker",
     "main": "dist/main.js",
     "module": "dist/main.js",
     "types": "dist/typings/src/index.d.ts",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "rimraf dist; webpack -p --env.NODE_ENV=production"
+        "build": "rimraf dist && webpack -p --env.NODE_ENV=production"
     },
     "keywords": [
         "oauth",

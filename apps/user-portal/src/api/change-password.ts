@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticateSessionUtil, AuthenticateUserKeys } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
 import { OAuth } from "@wso2is/oauth-web-worker";
 import { HttpMethods } from "../models";
@@ -49,7 +48,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     const requestConfig = {
         auth: {
             password: currentPassword,
-            username: AuthenticateSessionUtil.getSessionParameter(AuthenticateUserKeys.USERNAME)
+            username: store.getState().authenticationInformation.username
         },
         data: {
             Operations: [
