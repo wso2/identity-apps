@@ -176,6 +176,11 @@
         <jsp-file>/recovery.jsp</jsp-file>
     </servlet>
 
+    <servlet>
+        <servlet-name>confirmliteuserregistration.do</servlet-name>
+        <jsp-file>/lite-user-confirm.jsp</jsp-file>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>recoveraccountrouter.do</servlet-name>
         <url-pattern>/recoveraccountrouter.do</url-pattern>
@@ -250,6 +255,11 @@
     <servlet-mapping>
         <servlet-name>verify.do</servlet-name>
         <url-pattern>/verify.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>confirmliteuserregistration.do</servlet-name>
+        <url-pattern>/confirmliteuserregistration.do</url-pattern>
     </servlet-mapping>
 
     <error-page>
