@@ -18,14 +18,13 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Section } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { GenericIcon, LinkButton, Section } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Accordion, Grid, Icon } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
 import { updateGovernanceConnector } from "../../api";
-import { SettingsSectionIcons } from "../../configs";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -51,6 +50,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         connector,
         ["data-testid"]: testId
     } = props;
+
+    const [ connectorAccordionActiveState, setConnectorAccordionActiveState ] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -126,21 +127,53 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         />
     );
 
+    const handleConnectorAccordionClick = () => {
+        setConnectorAccordionActiveState(!connectorAccordionActiveState)
+    };
+
+    const connectorAccordion: ReactElement = (
+        <Accordion fluid styled data-testid={ `${ testId }-main-accordion` }>
+            <Accordion.Title
+                active={ connectorAccordionActiveState }
+                index={ 0 }
+                onClick={ handleConnectorAccordionClick }
+            >
+                <Grid className="middle aligned">
+                    <Grid.Row columns={ 2 } className="inner-list-item">
+                        <Grid.Column className="first-column">
+                            <LinkButton className="p-3">Settings</LinkButton>
+                        </Grid.Column>
+                        <Grid.Column className="last-column" textAlign="right">
+                            <GenericIcon
+                                size="default"
+                                defaultIcon
+                                link
+                                inline
+                                transparent
+                                verticalAlign="middle"
+                                className="pr-3"
+                                icon={ <Icon name="angle right" className="chevron"/> }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Accordion.Title>
+            <Accordion.Content active={ connectorAccordionActiveState }>
+                { connectorForm }
+            </Accordion.Content>
+        </Accordion>
+    );
+
     return (
         <Section
             header={ connector?.friendlyName }
             description={ connector?.description }
-            icon={ SettingsSectionIcons.associatedAccounts }
-            iconMini={ SettingsSectionIcons.associatedAccountsMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
+            accordion={ connectorAccordion }
             data-testid={ `${ testId }-section` }
         >
-            <Divider className="m-0 mb-2"/>
-            <div className="main-content-inner">
-                { connectorForm }
-            </div>
         </Section>
     );
 };

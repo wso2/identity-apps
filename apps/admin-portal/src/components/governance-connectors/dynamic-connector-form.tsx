@@ -17,7 +17,7 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import { Hint, RenderCheckBox, RenderInput } from "@wso2is/react-components";
+import { Hint, RenderInput, RenderToggle } from "@wso2is/react-components";
 import React from "react"
 import { Field, reduxForm } from "redux-form"
 import { Grid } from "semantic-ui-react";
@@ -31,7 +31,7 @@ import { GovernanceConnectorUtils } from "../../utils";
  */
 const getFieldComponent = (property: ConnectorPropertyInterface) => {
     if (property.value === "true" || property.value === "false") {
-        return RenderCheckBox;
+        return RenderToggle;
     } else {
         return RenderInput;
     }
@@ -81,8 +81,6 @@ const DynamicConnectorForm = (props) => {
                                     fieldClass={ "fieldClass" }
                                     class={ "fieldClass" }
                                     componentClass={ "componentClass" }
-                                    toggle
-
                                 />
                                 {
                                     (property.description !== "" &&
