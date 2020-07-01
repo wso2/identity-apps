@@ -91,20 +91,59 @@ export const RenderInput = createRenderer(
     }
 );
 
+export const RenderToggle = createRenderer(
+    (
+        input, label, fieldClass, placeholder, type, selectOptions, meta, checkboxLabel,
+        componentClass, disabled, onLabel, offLabel, children, fieldOptions, rest
+    ) => {
+        const { value, onChange, ...inputRest } = input;
+
+        return (
+            <Form.Checkbox
+                { ...inputRest }
+                className={ fieldClass }
+                componentClass={ componentClass }
+                placeholder={ placeholder }
+                checked={ !!value }
+                onClick={ (event, data) => onChange(data.checked) }
+                label={ label }
+                error={
+                    meta.touched && ((meta.error && (
+                        {
+                            content: meta.error,
+                            pointing: "left"
+                        }
+                    )) || (meta.warning
+                        && (
+                            {
+                                content: meta.warning,
+                                pointing: "left"
+                            }
+                        )))
+                }
+                toggle
+                { ...rest }
+            />
+        )
+    }
+);
+
 export const RenderCheckBox = createRenderer(
     (
         input, label, fieldClass, placeholder, type, selectOptions, meta, checkboxLabel,
         componentClass, disabled, onLabel, offLabel, children, fieldOptions, rest
     ) => {
+        const { value, onChange, ...inputRest } = input;
+
         return (
             <Form.Checkbox
-                { ...input }
+                { ...inputRest }
                 className={ fieldClass }
                 componentClass={ componentClass }
                 placeholder={ placeholder }
-                disabled={ disabled }
+                checked={ !!value }
+                onClick={ (event, data) => onChange(data.checked) }
                 label={ label }
-                checked={ input.value }
                 error={
                     meta.touched && ((meta.error && (
                         {
