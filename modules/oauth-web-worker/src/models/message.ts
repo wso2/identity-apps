@@ -52,6 +52,7 @@ export interface UserInfo {
     username: string;
     displayName: string;
     allowedScopes: string;
+    authorizationEndpoint: string;
 }
 
 export interface AuthCode {

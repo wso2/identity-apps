@@ -150,7 +150,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
 				});
 			})
 			.catch((error) => {
-				return Promise.reject(error.response);
+				return Promise.reject(error);
 			});
 	};
 
@@ -187,7 +187,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
 				return Promise.resolve(response);
 			})
 			.catch((error) => {
-				return Promise.reject(error.response);
+				return Promise.reject(error);
 			});
 	};
 
@@ -243,7 +243,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
 				return Promise.resolve(validity);
 			})
 			.catch((error) => {
-				return Promise.reject(error.response);
+				return Promise.reject(error);
 			});
 	};
 
@@ -394,7 +394,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
 				});
 			})
 			.catch((error) => {
-				return Promise.reject(error.response);
+				return Promise.reject(error);
 			});
 	};
 
@@ -721,11 +721,11 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
 	};
 
 	/**
-	 * Makes api calls.
+	 * Makes multiple api calls. Wraps `axios.spread`.
 	 *
-	 * @param {AxiosRequestConfig} config API request data.
+	 * @param {AxiosRequestConfig[]} config API request data.
 	 *
-	 * @returns {AxiosResponse} A promise that resolves with the response.
+	 * @returns {AxiosResponse[]} A promise that resolves with the response.
 	 */
 	const httpRequestAll = (configs: AxiosRequestConfig[]): Promise<AxiosResponse[]> => {
 		let matches = false;
@@ -895,11 +895,12 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
 	 */
 	const getUserInfo = (): UserInfo => {
 		return {
-			allowedScopes: allowedScope,
-			displayName: displayName,
-			email: email,
-			username: userName
-		};
+            allowedScopes: allowedScope,
+            authorizationEndpoint: authorizeEndpoint,
+            displayName: displayName,
+            email: email,
+            username: userName
+        };
 	};
 
 	/**
