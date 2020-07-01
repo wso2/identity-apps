@@ -181,7 +181,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 export const handleSignIn = () => (dispatch) => {
     const oAuth = OAuth.getInstance();
     oAuth
-		.initialize({
+        .initialize({
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
             callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
@@ -191,30 +191,30 @@ export const handleSignIn = () => (dispatch) => {
             scope: ["SYSTEM", "openid"],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
         })
-		.then(() => {
-			oAuth
-				.signIn()
-				.then((response) => {
-					dispatch(
-						setSignIn({
-							// eslint-disable-next-line @typescript-eslint/camelcase
-							display_name: response.displayName,
-							email: response.email,
-							scope: response.allowedScopes,
-							username: response.username
-						})
-					);
+        .then(() => {
+            oAuth
+                .signIn()
+                .then((response) => {
+                    dispatch(
+                        setSignIn({
+                            // eslint-disable-next-line @typescript-eslint/camelcase
+                            display_name: response.displayName,
+                            email: response.email,
+                            scope: response.allowedScopes,
+                            username: response.username
+                        })
+                    );
                     sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
                     sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
-					dispatch(getProfileInformation());
-				})
-				.catch((error) => {
-					throw error;
-				});
-		})
-		.catch((error) => {
-			throw error;
-		});
+                    dispatch(getProfileInformation());
+                })
+                .catch((error) => {
+                    throw error;
+                });
+        })
+        .catch((error) => {
+            throw error;
+        });
 };
 
 /**

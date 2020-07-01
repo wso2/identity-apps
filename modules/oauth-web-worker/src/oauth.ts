@@ -117,8 +117,8 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
         }
 
         if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
-			return window.sessionStorage.getItem(AUTHORIZATION_CODE);
-		}
+            return window.sessionStorage.getItem(AUTHORIZATION_CODE);
+        }
 
         return null;
     };
