@@ -29,7 +29,7 @@ import {
     setSignOut
 } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { AUTHORIZATION_ENDPOINT, OAuth, OIDC_SESSION_IFRAME_ENDPOINT } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
 import { history } from "../../helpers";
 import { store } from "../index";
@@ -158,7 +158,8 @@ export const handleSignIn = () => (dispatch) => {
                             username: response.username
                         })
                     );
-
+                    sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
+                    sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
