@@ -53,6 +53,7 @@ export interface UserInfo {
     displayName: string;
     allowedScopes: string;
     authorizationEndpoint: string;
+    oidcSessionIframe: string;
 }
 
 export interface AuthCode {
