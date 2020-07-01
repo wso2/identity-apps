@@ -503,7 +503,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
                     response.data.token_endpoint.substring(0, response.data.token_endpoint.lastIndexOf("token")) +
                     "revoke";
                 issuer = response.data.issuer;
-                checkSessionIframe = response.data.checkSessionIframe;
+                checkSessionIframe = response.data.check_session_iframe;
                 setIsOpConfigInitiated(true);
 
                 return Promise.resolve(
