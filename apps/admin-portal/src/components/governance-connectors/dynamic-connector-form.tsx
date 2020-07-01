@@ -84,9 +84,13 @@ const DynamicConnectorForm = (props) => {
                                     toggle
 
                                 />
-                                <Hint>
-                                    { property.description }
-                                </Hint>
+                                {
+                                    (property.description !== "" &&
+                                        <Hint>
+                                            { property.description }
+                                        </Hint>
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     )

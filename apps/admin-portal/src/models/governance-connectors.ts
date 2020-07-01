@@ -99,7 +99,12 @@ export interface GovernanceConnectorInterface {
 }
 
 export interface GovernanceConnectorCategoryInterface {
+	id?: string;
 	name?: string;
 	description?: string;
 	connectors?: GovernanceConnectorInterface[];
+}
+
+export interface GovernanceConnectorsInterface {
+	categories?: GovernanceConnectorCategoryInterface[];
 }

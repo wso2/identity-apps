@@ -20,9 +20,9 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { getConnectorCategories } from "../api";
+import { GovernanceConnectorsInterface } from "../models";
 import { store } from "../store";
 import { SetGovernanceConnectorCategory } from "../store/actions";
-import { GovernanceConnectorsInterface } from "../store/actions/types";
 
 /**
  * Utility class for governance connectors.
@@ -49,8 +49,8 @@ export class GovernanceConnectorUtils {
             .then((response) => {
                 response.map(category => {
                     connectorCategories.categories.push({
-                        displayName: category.name,
-                        id: category.id
+                        id: category.id,
+                        name: category.name
                     })
                 });
                 store.dispatch(SetGovernanceConnectorCategory(connectorCategories));

@@ -53,10 +53,9 @@ import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { ComponentPlaceholder } from "../extensions";
 import { history } from "../helpers";
-import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
+import { ConfigReducerStateInterface, FeatureConfigInterface, GovernanceConnectorCategoryInterface } from "../models";
 import { GovernanceConnectorsPage } from "../pages/configurations";
 import { AppState, store } from "../store";
-import { GovernanceConnectorCategoryInterface } from "../store/actions/types";
 import { GovernanceConnectorUtils } from "../utils";
 
 /**
@@ -96,7 +95,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-    const governanceConnectors: GovernanceConnectorCategoryInterface[] = useSelector(
+    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
@@ -276,18 +275,28 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     };
 
     useEffect(() => {
-        if (governanceConnectors !== undefined && governanceConnectors.length > 0) {
+        if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
             if (!governanceConnectorRoutesAdded) {
                 const serverConfigsRoute = routes.find(route => route.id === "serverConfigurations");
-                governanceConnectors.map(category => {
+                governanceConnectorCategories.map(category => {
+                    let subCategoryExists = false;
+                    category.connectors?.map(connector => {
+                        if (connector.subCategory !== "DEFAULT") {
+                            subCategoryExists = true;
+                            return;
+                        }
+                    });
+                    if (subCategoryExists) {
+                        console.log("Subcategories found.");
+                    }
                     serverConfigsRoute.children.push({
                         component: GovernanceConnectorsPage,
                         exact: true,
                         icon: "childIcon",
                         id: category.id,
                         level: 2,
-                        name: category.displayName,
-                        path: AppConstants.PATHS.get("SERVER_CONFIGS").replace(":id", category.id),
+                        name: category.name,
+                        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
                         protected: true,
                         showOnSidePanel: true
                     });
@@ -297,7 +306,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         } else {
             GovernanceConnectorUtils.getGovernanceConnectors();
         }
-    }, [ governanceConnectors ]);
+    }, [ governanceConnectorCategories ]);
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.

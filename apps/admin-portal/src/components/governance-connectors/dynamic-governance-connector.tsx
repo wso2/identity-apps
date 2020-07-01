@@ -82,7 +82,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             "operation": "UPDATE",
             "properties": []
         };
-        for(const key in values) {
+        for (const key in Object.keys(values)) {
             data.properties.push({
                 "name": GovernanceConnectorUtils.decodeConnectorPropertyName(key),
                 "value": values[key]

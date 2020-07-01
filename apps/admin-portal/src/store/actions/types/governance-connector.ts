@@ -22,6 +22,8 @@
  * @readonly
  * @enum {string}
  */
+import { GovernanceConnectorsInterface } from "../../../models";
+
 export enum GovernanceConnectorActionTypes {
 
     /**
@@ -30,15 +32,6 @@ export enum GovernanceConnectorActionTypes {
      * @type {string}
      */
     SET_GOVERNANCE_CONNECTOR_CATEGORY = "SET_GOVERNANCE_CONNECTOR_CATEGORY",
-}
-
-export interface GovernanceConnectorsInterface {
-    categories?: GovernanceConnectorCategoryInterface[];
-}
-
-export interface GovernanceConnectorCategoryInterface {
-    displayName: string;
-    id?: string;
 }
 
 export interface SetGovernanceConnectorCategoryInterface {

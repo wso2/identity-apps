@@ -17,9 +17,9 @@
  */
 import {
     GovernanceConnectorActionTypes,
-    GovernanceConnectorsInterface,
     SetGovernanceConnectorCategoryInterface
 } from "./types";
+import { GovernanceConnectorsInterface } from "../../models";
 
 export const SetGovernanceConnectorCategory = (
     payload: GovernanceConnectorsInterface
