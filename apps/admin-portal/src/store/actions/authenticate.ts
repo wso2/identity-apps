@@ -158,6 +158,7 @@ export const handleSignIn = () => (dispatch) => {
 							username: response.username
 						})
 					);
+                    
                     sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
                     sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
 					dispatch(getProfileInformation());
