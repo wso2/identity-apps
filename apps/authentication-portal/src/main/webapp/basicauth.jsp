@@ -71,10 +71,11 @@
                             success: function (data) {
                                 if (data && data.status == 'redirect' && data.redirectUrl && data.redirectUrl.length > 0) {
                                     window.location.href = data.redirectUrl;
-                                } else {
-                                    // Mark it so that the next submit can be ignored.
+                                } else if ($form.data('submitted') !== true) {
                                     $form.data('submitted', true);
                                     document.getElementById("loginForm").submit();
+                                } else {
+                                    console.warn("Prevented a possible double submit event.");
                                 }
                             },
                             cache: false
