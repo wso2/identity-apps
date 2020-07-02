@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RouteInterface } from "@wso2is/core/dist/src/models";
+import { RouteInterface } from "@wso2is/core/models";
 import * as getConfig from "./config";
 import  { lazy } from "react";
 
