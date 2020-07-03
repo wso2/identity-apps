@@ -197,7 +197,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 type: values.get("type"),
-                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
+                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
+                bindingType: values.get("bindingType")
             },
             allowedOrigins: [],
             callbackURLs: [buildCallBackUrlWithRegExp(callBackUrls)],
@@ -625,6 +626,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         : metadata.accessTokenType.defaultValue }
                                     type="radio"
                                     children={ getAllowedList(metadata.accessTokenType, true) }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-access-token-type-radio-group` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                                <Field
+                                    label={
+                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            ".accessToken.fields.bindingType.label")
+                                    }
+                                    name="bindingType"
+                                    default={ initialValues ? initialValues.accessToken.bindingType
+                                        : metadata.accessTokenBindingType.defaultValue }
+                                    type="radio"
+                                    children={ getAllowedList(metadata.accessTokenBindingType, true) }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-access-token-type-radio-group` }
                                 />
