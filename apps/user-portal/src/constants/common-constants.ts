@@ -36,6 +36,5 @@ export class CommonConstants {
      * @type {string}
      * @default
      */
-    public static readonly SEEN_ANNOUNCEMENTS_KEY: string = "identityAppsSettings.userPortal" +
-        ".announcements.seen";
+    public static readonly SEEN_ANNOUNCEMENTS_KEY: string = "identityAppsSettings.userPortal.announcements.seen";
 }
