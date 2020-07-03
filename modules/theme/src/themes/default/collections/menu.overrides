@@ -179,9 +179,6 @@
                 &:before {
                     display: none;
                 }
-                &.active {
-                    background: transparent;
-                }
             }
         }
 
@@ -202,6 +199,7 @@
             text-transform: @sidePanelCategoryTextTransform;
             color: @lightFontColor;
             padding-left: @itemHorizontalPadding;
+            margin-bottom: @sidePanelCategoryMarginBottom;
 
             &.with-dividers {
                 &:not(:first-child) {
@@ -218,6 +216,8 @@
         }
 
         .side-panel-item {
+            border-radius: @defaultBorderRadius;
+
             .route-name {
                 cursor: pointer;
                 color: @sidePanelDefaultFontColor;
@@ -259,12 +259,12 @@
                 }
             }
 
-            &.categorized {
-                margin: @sidePanelCategorizedItemMargin;
+            &.hover-background {
+                margin-bottom: @sidePanelBackgroundHoveredItemMarginBottom;
             }
 
             &.active {
-                &:not(.categorized) {
+                &.hover-highlighted {
                     // override semantic ui menu item active background color
                     background-color: transparent;
 
@@ -277,15 +277,10 @@
                         }
                     }
                 }
-
-                &.categorized {
-                    border-radius: @defaultBorderRadius;
-                    background: @activeItemBackground;
-                }
             }
 
             &:hover {
-                &:not(.categorized) {
+                &.hover-highlighted {
                     // override semantic ui menu item hover background color
                     background-color: transparent;
 
@@ -297,11 +292,6 @@
                             fill: @sidePanelHoverFontColor;
                         }
                     }
-                }
-
-                &.categorized {
-                    border-radius: @defaultBorderRadius;
-                    background: @hoverItemBackground;
                 }
             }
         }

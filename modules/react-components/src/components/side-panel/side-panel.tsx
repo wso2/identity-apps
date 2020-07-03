@@ -54,6 +54,10 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      */
     headerHeight: number;
     /**
+     * Hover type.
+     */
+    hoverType?: "highlighted" | "background";
+    /**
      * Side panel icons.
      */
     icons: any;
@@ -274,6 +278,7 @@ SidePanel.defaultProps = {
     "data-testid": "side-panel",
     desktopContentTopSpacing: UIConstants.DEFAULT_DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING,
     fluid: false,
+    hoverType: "highlighted",
     showCategoryDividers: true,
     sidePanelItemHeight: UIConstants.DEFAULT_SIDE_PANEL_ITEM_HEIGHT,
     sidePanelTopMargin: false,

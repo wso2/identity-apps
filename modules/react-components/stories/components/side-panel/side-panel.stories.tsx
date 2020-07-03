@@ -17,6 +17,7 @@
  *
  */
 
+import { select } from "@storybook/addon-knobs";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import React, { ReactElement, useState } from "react";
 import { ROUTES, ROUTES_WITH_CHILDREN, SidePanelIcons, meta } from "./side-panel.stories.meta";
@@ -49,6 +50,16 @@ export const DefaultSidePanel = (): ReactElement => {
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 onSidePanelItemClick={ handleSidePanelItemClick }
+                hoverType={
+                    select(
+                        "Hover Type",
+                        {
+                            Background: "background",
+                            Highlighted: "highlighted"
+                        },
+                        "highlighted"
+                    )
+                }
                 icons={ SidePanelIcons }
                 routes={ ROUTES }
                 selected={ selectedRoute }
@@ -89,6 +100,16 @@ export const WithChildren = (): ReactElement => {
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 onSidePanelItemClick={ handleSidePanelItemClick }
+                hoverType={
+                    select(
+                        "Hover Type",
+                        {
+                            Background: "background",
+                            Highlighted: "highlighted"
+                        },
+                        "highlighted"
+                    )
+                }
                 icons={ SidePanelIcons }
                 routes={ ROUTES_WITH_CHILDREN }
                 selected={ selectedRoute }
@@ -117,7 +138,7 @@ WithChildren.story = {
  */
 export const Categorized = (): ReactElement => {
 
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(ROUTES[0]);
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(ROUTES_WITH_CHILDREN[0]);
 
     const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
         if (!route.children) {
@@ -129,9 +150,19 @@ export const Categorized = (): ReactElement => {
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
                 categorized={ true }
+                hoverType={
+                    select(
+                        "Hover Type",
+                        {
+                            Background: "background",
+                            Highlighted: "highlighted"
+                        },
+                        "background"
+                    )
+                }
                 onSidePanelItemClick={ handleSidePanelItemClick }
                 icons={ SidePanelIcons }
-                routes={ ROUTES }
+                routes={ ROUTES_WITH_CHILDREN }
                 selected={ selectedRoute }
                 footerHeight={ 0 }
                 headerHeight={ 0 }

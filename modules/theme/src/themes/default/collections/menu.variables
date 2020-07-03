@@ -44,7 +44,8 @@
 
 @sidePanelCategoryFontSize: 10px;
 @sidePanelCategoryTextTransform: uppercase;
-@sidePanelCategorizedItemMargin: 10px 0;
+@sidePanelCategoryMarginBottom: 10px;
+@sidePanelBackgroundHoveredItemMarginBottom: 10px;
 
 /*-------------------
       Pagination

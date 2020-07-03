@@ -68,12 +68,14 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         selected,
         translationHook,
         sidePanelItemHeight,
+        hoverType,
         [ "data-testid" ]: testId
     } = props;
 
     const classes = classNames(
         "side-panel-item",
         {
+            [ `hover-${ hoverType }` ]: hoverType,
             "active" : selected && (selected.path === route.path),
             categorized
         }
@@ -204,6 +206,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                     ? (
                         <SidePanelItemGroup
                             caretIcon={ caretIcon }
+                            hoverType={ hoverType }
                             categorized={ categorized }
                             childRoutes={ route.children }
                             footerHeight={ footerHeight }
