@@ -19,6 +19,7 @@
 export * from "./avatar";
 export * from "./alert";
 export * from "./app-avatar";
+export * from "./header";
 export * from "./language-switcher";
 export * from "./advanced-search";
 export * from "./danger-zone";

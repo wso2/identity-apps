@@ -102,6 +102,7 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            announcements: window["AppUtils"].getConfig().ui.announcements,
             authenticatorApp: { apps: [ { link: "", name: "" } ] },
             copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             features: window["AppUtils"].getConfig().ui.features,

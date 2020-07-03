@@ -22,7 +22,6 @@ export * from "./approvals";
 export * from "./change-password";
 export * from "./consents";
 export * from "./footer";
-export * from "./header";
 export * from "./linked-accounts";
 export * from "./multi-factor-authentication";
 export * from "./overview";

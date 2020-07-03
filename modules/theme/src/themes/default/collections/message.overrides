@@ -1,3 +1,26 @@
 /*******************************
        Message Overrides
 *******************************/
+
+/*-------------------
+    Announcement
+--------------------*/
+
+.ui.message {
+    &.announcement {
+        border-radius: 0;
+        box-shadow: none;
+        margin-bottom: 0;
+        padding: @announcementPadding;
+        font-weight: 400;
+
+        &.primary {
+            color: @white;
+            background: @primaryColor;
+        }
+        &.secondary {
+            color: @white;
+            background: @secondaryColor;
+        }
+    }
+}

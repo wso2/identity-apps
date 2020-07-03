@@ -16,12 +16,26 @@
  * under the License.
  */
 
-export * from "./app-constants";
-export * from "./application-management";
-export * from "./common-constants";
-export * from "./documentation-constants";
-export * from "./i18n-constants";
-export * from "./identity-provider-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./identity-provider-management-constants";
+/**
+ * Class containing common constants.
+ */
+export class CommonConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
+
+    /**
+     * Key to get the set of seen announcements from pref storage.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SEEN_ANNOUNCEMENTS_KEY: string = "identityAppsSettings.userPortal" +
+        ".announcements.seen";
+}
