@@ -251,6 +251,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        component: lazy(() => import("../pages/configurations/governance-connectors")),
+        exact: true,
+        icon: "childIcon",
+        id: "governanceConnectors",
+        name: "adminPortal:components.sidePanel.governanceConnectors",
+        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS"),
+        protected: true,
+        showOnSidePanel: false
+    },
+    {
         component: null,
         icon: null,
         id: "404",
