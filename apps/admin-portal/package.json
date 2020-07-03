@@ -36,8 +36,7 @@
         "@wso2is/react-components": "^1.0.313",
         "@wso2is/theme": "^1.0.313",
         "@wso2is/validation": "^1.0.313",
-        "country-language": "^0.1.7",
-        "redux-form": "^8.3.6"
+        "country-language": "^0.1.7"
     },
     "devDependencies": {
         "eslint-plugin-node": "^11.0.0",
@@ -60,6 +59,7 @@
         "react-redux": "*",
         "react-router-dom": "*",
         "redux": "*",
+        "redux-form": "*",
         "redux-devtools-extension": "*",
         "redux-thunk": "*",
         "rimraf": "*",

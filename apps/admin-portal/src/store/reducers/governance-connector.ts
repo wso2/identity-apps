@@ -16,10 +16,10 @@
  * under the License.
  */
 
+import { GovernanceConnectorsInterface } from "../../models";
 import {
     GovernanceConnectorActionTypes,
-    GovernanceConnectorActions,
-    GovernanceConnectorsInterface
+    GovernanceConnectorActions
 } from "../actions/types";
 
 /**

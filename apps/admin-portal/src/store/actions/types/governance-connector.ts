@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { GovernanceConnectorsInterface } from "../../../models";
+
 /**
  * Enum for help panel action types.
  *
  * @readonly
  * @enum {string}
  */
-import { GovernanceConnectorsInterface } from "../../../models";
-
 export enum GovernanceConnectorActionTypes {
 
     /**

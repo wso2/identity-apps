@@ -18,7 +18,12 @@
 
 import { getProfileInfo } from "@wso2is/core/api";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    ChildRouteInterface,
+    ProfileInfoInterface,
+    RouteInterface
+} from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
