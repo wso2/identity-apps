@@ -67,7 +67,6 @@ export const RenderInput = createRenderer(
             <Form.Input
                 { ...input }
                 className={ fieldClass }
-                componentClass={ componentClass }
                 placeholder={ placeholder }
                 type={ type }
                 disabled={ disabled }
@@ -102,7 +101,6 @@ export const RenderToggle = createRenderer(
             <Form.Checkbox
                 { ...inputRest }
                 className={ fieldClass }
-                componentClass={ componentClass }
                 placeholder={ placeholder }
                 checked={ !!value }
                 onClick={ (event, data) => onChange(data.checked) }

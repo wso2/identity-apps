@@ -56,10 +56,10 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
     useEffect(() => {
         const path = history.location.pathname.split("/");
-        const categoryId = path[ path.length - 1 ];
+        const newCategoryId = path[ path.length - 1 ];
 
-        loadCategoryConnectors(categoryId);
-    }, []);
+        loadCategoryConnectors(newCategoryId);
+    }, [ ]);
 
     const loadCategoryConnectors = (categoryId: string) => {
         getConnectorCategory(categoryId)
@@ -110,7 +110,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                             key={ index }
                                             data-testid={ `${ testId }-` + connector.id }
                                         />
-                                        <Divider hidden={ true }/>
+                                        <Divider hidden={ true } key={ "Divider-" + index } />
                                     </>
                                 )
                             })

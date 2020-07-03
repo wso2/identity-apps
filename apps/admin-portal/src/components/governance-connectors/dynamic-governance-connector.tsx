@@ -83,7 +83,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             "operation": "UPDATE",
             "properties": []
         };
-        for (const key in Object.keys(values)) {
+        for (const key in values) {
             data.properties.push({
                 "name": GovernanceConnectorUtils.decodeConnectorPropertyName(key),
                 "value": values[key]
@@ -93,11 +93,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             .then(() => {
                 dispatch(addAlert({
                     description: t("adminPortal:components.governanceConnectors.notifications." +
-                        "updateConnector.success.description"),
+                        "updateConnector.success.description", { name: connector.friendlyName }),
                     level: AlertLevels.SUCCESS,
                     message: t("adminPortal:components.governanceConnectors.notifications." +
                         "updateConnector.success.message")
                 }));
+                handleConnectorAccordionClick();
             })
             .catch((error) => {
                 handleUpdateError(error);

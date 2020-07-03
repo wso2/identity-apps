@@ -57,6 +57,7 @@ const DynamicConnectorForm = (props) => {
         [ "data-testid" ]: testId
     } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
+
     return (
         <form onSubmit={ handleSubmit }>
             <Grid padded={ true }>
@@ -78,9 +79,6 @@ const DynamicConnectorForm = (props) => {
                                     placeholder={ property.value }
                                     data-testid={ `${ testId }-${ property.name }` }
                                     label={ property.displayName }
-                                    fieldClass={ "fieldClass" }
-                                    class={ "fieldClass" }
-                                    componentClass={ "componentClass" }
                                 />
                                 {
                                     (property.description !== "" &&
@@ -107,7 +105,7 @@ const DynamicConnectorForm = (props) => {
 };
 
 export default reduxForm({
-    enableReInitialize: true
+    enableReinitialize: true
 })(DynamicConnectorForm)
 
 /**

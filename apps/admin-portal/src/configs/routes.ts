@@ -241,17 +241,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 path: AppConstants.PATHS.get("EMAIL_TEMPLATE_LOCALE_ADD"),
                 protected: true,
                 showOnSidePanel: false
-            },
-            {
-                component: lazy(() => import("../pages/configurations/governance-connectors")),
-                exact: true,
-                icon: "childIcon",
-                id: "governance-connectors",
-                level: 2,
-                name: "adminPortal:components.sidePanel.generalConfigurations",
-                path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS"),
-                protected: true,
-                showOnSidePanel: false
             }
         ],
         exact: true,
