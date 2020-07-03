@@ -52,6 +52,8 @@ export interface UserInfo {
     username: string;
     displayName: string;
     allowedScopes: string;
+    authorizationEndpoint: string;
+    oidcSessionIframe: string;
 }
 
 export interface AuthCode {
