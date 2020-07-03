@@ -18,7 +18,12 @@
 
 import { getProfileInfo } from "@wso2is/core/api";
 import { resolveAppLogoFilePath } from "@wso2is/core/helpers";
-import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    ChildRouteInterface,
+    ProfileInfoInterface,
+    RouteInterface
+} from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
@@ -50,11 +55,13 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { Button, Image, Responsive } from "semantic-ui-react";
 import { ProtectedRoute } from "../components";
 import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
-import { UIConstants } from "../constants";
+import { AppConstants, UIConstants } from "../constants";
 import { ComponentPlaceholder } from "../extensions";
 import { history } from "../helpers";
-import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
+import { ConfigReducerStateInterface, FeatureConfigInterface, GovernanceConnectorCategoryInterface } from "../models";
+import { GovernanceConnectorsPage } from "../pages/configurations";
 import { AppState, store } from "../store";
+import { GovernanceConnectorUtils } from "../utils";
 
 /**
  * Dashboard layout Prop types.
@@ -93,6 +100,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
+        (state: AppState) => state.governanceConnector.categories);
+    const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[ 0 ]);
@@ -268,6 +278,40 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 
         return resolvedRoutes;
     };
+
+    useEffect(() => {
+        if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
+            if (!governanceConnectorRoutesAdded) {
+                const serverConfigsRoute = routes.find(route => route.id === "serverConfigurations");
+                governanceConnectorCategories.map(category => {
+                    let subCategoryExists = false;
+                    category.connectors?.map(connector => {
+                        if (connector.subCategory !== "DEFAULT") {
+                            subCategoryExists = true;
+                            return;
+                        }
+                    });
+                    if (subCategoryExists) {
+                        console.log("Subcategories found.");
+                    }
+                    serverConfigsRoute.children.push({
+                        component: GovernanceConnectorsPage,
+                        exact: true,
+                        icon: "childIcon",
+                        id: category.id,
+                        level: 2,
+                        name: category.name,
+                        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
+                        protected: true,
+                        showOnSidePanel: true
+                    });
+                });
+                setGovernanceConnectorRoutesAdded(true);
+            }
+        } else {
+            GovernanceConnectorUtils.getGovernanceConnectors();
+        }
+    }, [ governanceConnectorCategories ]);
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.

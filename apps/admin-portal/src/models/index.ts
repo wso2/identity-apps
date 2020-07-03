@@ -22,6 +22,6 @@ export * from "./email-template";
 export * from "./permission";
 export * from "./reducer-state";
 export * from "./roles";
-export * from "./server-configurations";
+export * from "./governance-connectors";
 export * from "./user";
 export * from "./user-stores";

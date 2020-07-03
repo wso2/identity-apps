@@ -29,7 +29,7 @@ import { store } from "../store";
  */
 const httpClient = OAuth.getInstance().httpRequest;
 
-export const getConfigurations = (url: string): Promise<any> => {
+export const getData = (url: string): Promise<any> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
@@ -100,96 +100,35 @@ export const updateConfigurations = (data: object, url: string): Promise<any> =>
 };
 
 /**
- * Retrieve self sign up configurations.
+ * Retrieve governance connector categories.
  *
- * @returns {Promise<any>} a promise containing the configurations.
+ * @returns {Promise<any>} a promise containing the data.
  */
-export const getSelfSignUpConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.selfSignUp);
+export const getConnectorCategories = (): Promise<any> => {
+    return getData(store.getState().config.endpoints.governanceConnectorCategories);
 };
 
 /**
- * Update self sign up configurations.
+ * Retrieve governance connector category.
+ *
+ * @returns {Promise<any>} a promise containing the data.
+ */
+export const getConnectorCategory = (categoryId: string): Promise<any> => {
+    return getData(store.getState().config.endpoints.governanceConnectorCategories + "/" + categoryId);
+};
+
+/**
+ * Update governance connector configurations.
  *
  * @param data request payload
- *
+ * @param categoryId ID of the connector category
+ * @param connectorId ID of the connector
  * @returns {Promise<any>} a promise containing the response.
  */
-export const updateSelfSignUpConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, store.getState().config.endpoints.selfSignUp);
-};
-
-/**
- * Retrieve account recovery configurations.
- *
- * @returns {Promise<any>} a promise containing the configurations.
- */
-export const getAccountRecoveryConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.accountRecovery);
-};
-
-/**
- * Update account recovery configurations.
- *
- * @param data request payload
- *
- * @returns {Promise<any>} a promise containing the response.
- */
-export const updateAccountRecoveryConfigurations = (data: object): Promise<any> => {
-    return updateConfigurations(data, store.getState().config.endpoints.accountRecovery);
-};
-
-/**
- * Retrieve all login policies.
- *
- * @returns {Promise<any>} a promise containing the configurations.
- */
-export const getAllLoginPolicies = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.loginPolicies);
-};
-
-/**
- * Update login policies.
- *
- * @param data request payload
- *
- * @returns {Promise<any>} a promise containing the response.
- */
-export const updateAllLoginPolicies = (data: object): Promise<any> => {
-    // Todo: API allows to update any property without looking at the connector ID. Would be better to have different
-    // API calls per each connector if the UI design permits it.
-    return updateConfigurations(data, store.getState().config.endpoints.accountLocking);
-};
-
-/**
- * Retrieve all password policies.
- *
- * @returns {Promise<any>} a promise containing the configurations.
- */
-export const getAllPasswordPolicies = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.passwordPolicies);
-};
-
-/**
- * Update password policies.
- *
- * @param data request payload
- *
- * @returns {Promise<any>} a promise containing the response.
- */
-export const updateAllPasswordPolicies = (data: object): Promise<any> => {
-    // Todo: API allows to update any property without looking at the connector ID. Would be better to have different
-    // API calls per each connector if the UI design permits it.
-    return updateConfigurations(data, store.getState().config.endpoints.passwordHistory);
-};
-
-/**
- * Retrieve available request path authenticators.
- *
- * @returns {Promise<any>} a promise containing the response.
- */
-export const getRequestPathAuthenticators = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.requestPathAuthenticators);
+export const updateGovernanceConnector = (data: object, categoryId: string, connectorId: string): Promise<any> => {
+    const url = store.getState().config.endpoints.governanceConnectorCategories +
+        "/" + categoryId + "/connectors/" + connectorId;
+    return updateConfigurations(data, url);
 };
 
 /**
@@ -198,7 +137,7 @@ export const getRequestPathAuthenticators = (): Promise<any> => {
  * @returns {Promise<any>} a promise containing the response.
  */
 export const getServerConfigurations = (): Promise<any> => {
-    return getConfigurations(store.getState().config.endpoints.serverConfigurations);
+    return getData(store.getState().config.endpoints.serverConfigurations);
 };
 
 /**

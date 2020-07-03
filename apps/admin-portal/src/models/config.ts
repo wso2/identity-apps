@@ -109,6 +109,7 @@ export interface ServiceResourceEndpointsInterface {
     clientCertificates: string;
     emailTemplateType: string;
     externalClaims: string;
+    governanceConnectorCategories: string;
     groups: string;
     localClaims: string;
     loginPolicies: string;

@@ -16,12 +16,10 @@
  * under the License.
  */
 
-import { getAppConfig } from "@wso2is/core/api";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
-    setFeatureConfigs,
     setI18nConfigs,
     setServiceResourceEndpoints,
     setUIConfigs
@@ -40,7 +38,6 @@ import { Config, baseRoutes } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
-    ConfigInterface,
     ConfigReducerStateInterface,
     DeploymentConfigInterface,
     FeatureConfigInterface,
@@ -91,17 +88,17 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
 
         appSettings[userName] = emptyIdentityAppsSettings();
 
-       if (!tenantAppSettings) {
-           LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(appSettings));
-       } else {
-           if (CommonHelpers.lookupKey(tenantAppSettings, userName) === null) {
-               const newUserSettings = {
-                   ...tenantAppSettings,
-                   [ userName ]: emptyIdentityAppsSettings()
-               };
-               LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
-           }
-       }
+        if (!tenantAppSettings) {
+            LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(appSettings));
+        } else {
+            if (CommonHelpers.lookupKey(tenantAppSettings, userName) === null) {
+                const newUserSettings = {
+                    ...tenantAppSettings,
+                    [userName]: emptyIdentityAppsSettings()
+                };
+                LocalStorageUtils.setValueInLocalStorage(tenant, JSON.stringify(newUserSettings));
+            }
+        }
 
     }, [ config?.deployment?.tenant, userName ]);
 
@@ -134,9 +131,9 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                     <Suspense fallback={ <ContentLoader dimmer/> }>
                                         <Helmet>
                                             <link
-                                                href={ `${window["AppUtils"].getConfig().clientOrigin}/` + 
-                                                    `${window["AppUtils"].getConfig().appBase}/libs/themes/` + 
-                                                    `${ state.theme }/theme.min.css` }
+                                                href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
+                                                `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
+                                                `${ state.theme }/theme.min.css` }
                                                 rel="stylesheet"
                                                 type="text/css"
                                             />
