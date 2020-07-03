@@ -20,6 +20,6 @@
             "@wso2is/core/utils": ["node_modules/@wso2is/core/dist/src/utils"]
         }
     },
-    "exclude": ["node_modules", "stories"],
+    "exclude": ["node_modules", "dist", "scripts", "stories"],
     "extends": "../../configs/common.tsconfig.json"
 }
