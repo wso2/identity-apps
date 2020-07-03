@@ -17,7 +17,12 @@
  */
 
 import { UIConstants } from "@wso2is/core/constants";
-import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    CategorizedRouteInterface,
+    ChildRouteInterface,
+    RouteInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import classNames from "classnames";
 import _ from "lodash";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
@@ -32,6 +37,10 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      * Caret icon.
      */
     caretIcon?: any;
+    /**
+     * Should the panel be categorized.
+     */
+    categorized?: boolean;
     /**
      * Content spacing.
      */
@@ -57,6 +66,10 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      * Selected route.
      */
     selected: RouteInterface | ChildRouteInterface;
+    /**
+     * Show category dividers.
+     */
+    showCategoryDividers?: boolean;
     /**
      * Side panel item height.
      */
@@ -104,6 +117,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
     const {
         allowedScopes,
         bordered,
+        categorized,
         children,
         desktopContentTopSpacing,
         footerHeight,
@@ -177,6 +191,29 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         onSidePanelItemClick(route);
     };
 
+    /**
+     * Categorize the routes.
+     *
+     * @param {RouteInterface[]} routes - Routes array.
+     * @return {CategorizedRouteInterface} Categorized routes.
+     */
+    const getCategorizedItems = (routes: RouteInterface[]): CategorizedRouteInterface => {
+        const categorizedRoutes: CategorizedRouteInterface = {};
+
+        for (const route of routes) {
+            if (route.category) {
+                if (categorizedRoutes[route.category]) {
+                    categorizedRoutes[route.category].push(route);
+                    continue;
+                }
+
+                categorizedRoutes[route.category] = [ route ];
+            }
+        }
+
+        return categorizedRoutes;
+    };
+
     return (
         <div style={ mainLayoutStyles } className="layout-content">
             <Responsive { ...Responsive.onlyMobile } className="mobile-container">
@@ -190,7 +227,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                             { ...props }
                             type="mobile"
                             onSidePanelItemClick={ handleItemOnClick }
-                            routes={ items }
+                            routes={ categorized ? getCategorizedItems(items) : items }
                             data-testid={ `${testId}-items` }
                             allowedScopes={ allowedScopes }
                         />
@@ -217,7 +254,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                         { ...props }
                         type="desktop"
                         onSidePanelItemClick={ handleItemOnClick }
-                        routes={ items }
+                        routes={ categorized ? getCategorizedItems(items) : items }
                         data-testid={ `${ testId }-items` }
                     />
                 </div>
@@ -233,9 +270,11 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
  * Default props for the side panel items component.
  */
 SidePanel.defaultProps = {
+    categorized: false,
     "data-testid": "side-panel",
     desktopContentTopSpacing: UIConstants.DEFAULT_DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING,
     fluid: false,
+    showCategoryDividers: true,
     sidePanelItemHeight: UIConstants.DEFAULT_SIDE_PANEL_ITEM_HEIGHT,
     sidePanelTopMargin: false,
     translationHook: null

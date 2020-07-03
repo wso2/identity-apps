@@ -18,6 +18,7 @@
 
 import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
+import classNames from "classnames";
 import _ from "lodash";
 import React, { ReactElement } from "react";
 import { Label, Menu, SemanticCOLORS } from "semantic-ui-react";
@@ -57,6 +58,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
     const {
         allowedScopes,
         caretIcon,
+        categorized,
         footerHeight,
         headerHeight,
         icons,
@@ -68,6 +70,14 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         sidePanelItemHeight,
         [ "data-testid" ]: testId
     } = props;
+
+    const classes = classNames(
+        "side-panel-item",
+        {
+            "active" : selected && (selected.path === route.path),
+            categorized
+        }
+    );
 
     /**
      * Validates if any of the child routes is supposed to be shown
@@ -142,9 +152,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                     ? (
                         <Menu.Item
                             name={ route.name }
-                            className={ `side-panel-item ${
-                                selected && (selected.path === route.path) ? "active" : ""
-                            }` }
+                            className={ classes }
                             active={ selected && (selected.path === route.path) }
                             onClick={ (): void => onSidePanelItemClick(route) }
                             data-testid={ `${ testId }-${ _.kebabCase(route.id) }` }
@@ -196,6 +204,7 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                     ? (
                         <SidePanelItemGroup
                             caretIcon={ caretIcon }
+                            categorized={ categorized }
                             childRoutes={ route.children }
                             footerHeight={ footerHeight }
                             headerHeight={ headerHeight }

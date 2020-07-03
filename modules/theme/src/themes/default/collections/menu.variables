@@ -42,6 +42,10 @@
 @sidePanelChildItemGroupLeftPadding: 15px;
 @sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
 
+@sidePanelCategoryFontSize: 10px;
+@sidePanelCategoryTextTransform: uppercase;
+@sidePanelCategorizedItemMargin: 10px 0;
+
 /*-------------------
       Pagination
 --------------------*/

@@ -26,9 +26,20 @@ export interface RouteInterface extends StaticRouteInterface {
 }
 
 /**
+ * Interface for categorized routes.
+ */
+export interface CategorizedRouteInterface {
+    [ key: string ]: RouteInterface[];
+}
+
+/**
  * Static route interface.
  */
 export interface StaticRouteInterface {
+    /**
+     * Main category to put the rout under.
+     */
+    category?: string;
     /**
      * Component to be displayed.
      */

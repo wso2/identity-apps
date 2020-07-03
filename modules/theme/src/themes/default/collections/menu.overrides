@@ -197,6 +197,26 @@
             }
         }
 
+        .side-panel-category {
+            font-size: @sidePanelCategoryFontSize;
+            text-transform: @sidePanelCategoryTextTransform;
+            color: @lightFontColor;
+            padding-left: @itemHorizontalPadding;
+
+            &.with-dividers {
+                &:not(:first-child) {
+                    &:before {
+                        content: "";
+                        display: block;
+                        width: 100%;
+                        background-color: @defaultBorderColor;
+                        height: 1px;
+                        margin: 12px 0;
+                    }
+                }
+            }
+        }
+
         .side-panel-item {
             .route-name {
                 cursor: pointer;
@@ -239,31 +259,49 @@
                 }
             }
 
-            &.active {
-                // override semantic ui menu item active background color
-                background-color: transparent;
+            &.categorized {
+                margin: @sidePanelCategorizedItemMargin;
+            }
 
-                .route-name {
-                    color: @sidePanelActiveFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelActiveFontColor;
+            &.active {
+                &:not(.categorized) {
+                    // override semantic ui menu item active background color
+                    background-color: transparent;
+
+                    .route-name {
+                        color: @sidePanelActiveFontColor;
                     }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelActiveFontColor;
+                        }
+                    }
+                }
+
+                &.categorized {
+                    border-radius: @defaultBorderRadius;
+                    background: @activeItemBackground;
                 }
             }
 
             &:hover {
-                // override semantic ui menu item hover background color
-                background-color: transparent;
+                &:not(.categorized) {
+                    // override semantic ui menu item hover background color
+                    background-color: transparent;
 
-                .route-name {
-                    color: @sidePanelHoverFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelHoverFontColor;
+                    .route-name {
+                        color: @sidePanelHoverFontColor;
                     }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelHoverFontColor;
+                        }
+                    }
+                }
+
+                &.categorized {
+                    border-radius: @defaultBorderRadius;
+                    background: @hoverItemBackground;
                 }
             }
         }
@@ -286,6 +324,11 @@
                     height: 8px;
                     width: 8px;
                     margin-top: 3px;
+                }
+            }
+            .categorized {
+                &:first-child {
+                    margin-top: 0;
                 }
             }
         }
