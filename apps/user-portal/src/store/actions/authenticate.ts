@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TokenConstants } from "@wso2is/core/constants";
 import { I18n } from "@wso2is/i18n";
 import { AUTHORIZATION_ENDPOINT, OAuth, OIDC_SESSION_IFRAME_ENDPOINT } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
@@ -188,7 +189,7 @@ export const handleSignIn = () => (dispatch) => {
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: ["SYSTEM", "openid"],
+            scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
         })
         .then(() => {

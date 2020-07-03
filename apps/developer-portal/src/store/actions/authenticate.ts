@@ -17,6 +17,7 @@
  */
 
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
+import { TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import {
@@ -142,7 +143,7 @@ export const handleSignIn = () => (dispatch) => {
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: ["SYSTEM", "openid"],
+            scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
         })
         .then(() => {
