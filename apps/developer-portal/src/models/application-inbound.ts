@@ -57,6 +57,7 @@ export interface OIDCMetadataInterface {
     idTokenEncryptionMethod?: MetadataPropertyInterface;
     scopeValidators?: MetadataPropertyInterface;
     accessTokenType?: MetadataPropertyInterface;
+    accessTokenBindingType?: MetadataPropertyInterface;
 }
 
 export enum State {
@@ -73,6 +74,7 @@ interface AccessTokenConfigurationInterface {
     type?: string;
     userAccessTokenExpiryInSeconds?: number;
     applicationAccessTokenExpiryInSeconds?: number;
+    bindingType?: string;
 }
 
 interface RefreshTokenConfigurationInterface {
