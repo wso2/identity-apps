@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" class="icon" id="dashboard-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="14px" height="14px" viewBox="0 0 428.948 428.948" xml:space="preserve">
+	<g>
+		<g>
+			<path class="path fill secondary" d="M221.988,280.48c9.664,0,17.516-7.889,17.516-17.563c0-9.653-7.852-17.487-17.516-17.487
+				l-79.361-58.371l61.844,76.985C205.045,273.208,212.68,280.48,221.988,280.48z"/>
+			<rect class="path fill primary" x="127.008" y="332.197" width="174.933" height="41.513"/>
+			<path class="path fill primary" d="M366.13,118.057c-40.51-40.509-94.369-62.818-151.656-62.818
+				c-57.288,0-111.148,22.309-151.657,62.818S0,212.425,0,269.713c0,36.99,9.319,72.539,26.816,103.997h40.086l29.319-16.929
+				l-12.948-22.428l-37.7,21.768c-13.319-25.932-20.843-55.307-20.843-86.408c0-5.504,0.25-10.951,0.711-16.338l44.952,7.926
+				l4.497-25.504l-45.481-8.019c8.127-35.883,26.451-67.937,51.755-92.948l30.815,36.725l19.839-16.646l-31.049-37.002
+				c28.471-21.379,63.128-34.938,100.757-37.485v49.117h25.896V80.422c37.629,2.549,72.286,16.107,100.758,37.486l-31.05,37.001
+				l19.838,16.646l30.816-36.726c25.303,25.012,43.627,57.066,51.754,92.948l-45.48,8.021l4.498,25.502l44.949-7.927
+				c0.461,5.388,0.711,10.834,0.711,16.338c0,31.103-7.521,60.479-20.842,86.409l-37.701-21.766l-12.947,22.427l29.318,16.927h40.088
+				c17.498-31.458,26.816-67.007,26.816-103.997C428.949,212.424,406.638,158.564,366.13,118.057z"/>
+		</g>
+	</g>
+</svg>
