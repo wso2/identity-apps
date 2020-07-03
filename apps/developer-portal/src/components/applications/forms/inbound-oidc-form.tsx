@@ -539,7 +539,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".validations.empty")
                                     }
                                     type="checkbox"
-                                    value={ initialValues.publicClient ? ["supportPublicClients"] : [] }
+                                    value={
+                                        initialValues.publicClient
+                                            ? [ "supportPublicClients" ]
+                                            : []
+                                    }
                                     children={ [
                                         {
                                             label: t("devPortal:components.applications.forms.inboundOIDC" +
@@ -622,8 +626,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".accessToken.fields.type.label")
                                     }
                                     name="type"
-                                    default={ initialValues.accessToken ? initialValues.accessToken.type
-                                        : metadata.accessTokenType.defaultValue }
+                                    default={
+                                        initialValues.accessToken
+                                            ? initialValues.accessToken.type
+                                            : metadata.accessTokenType.defaultValue
+                                    }
                                     type="radio"
                                     children={ getAllowedList(metadata.accessTokenType, true) }
                                     readOnly={ readOnly }
@@ -639,8 +646,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".accessToken.fields.bindingType.label")
                                     }
                                     name="bindingType"
-                                    default={ initialValues ? initialValues.accessToken.bindingType
-                                        : metadata.accessTokenBindingType.defaultValue }
+                                    default={
+                                        initialValues
+                                            ? initialValues.accessToken.bindingType
+                                            : metadata.accessTokenBindingType.defaultValue
+                                    }
                                     type="radio"
                                     children={ getAllowedList(metadata.accessTokenBindingType, true) }
                                     readOnly={ readOnly }
@@ -661,9 +671,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.expiry.validations.empty")
                                     }
-                                    value={ initialValues.accessToken ?
-                                        initialValues.accessToken.userAccessTokenExpiryInSeconds.toString() :
-                                        metadata.defaultUserAccessTokenExpiryTime }
+                                    value={
+                                        initialValues.accessToken
+                                            ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
+                                            : metadata.defaultUserAccessTokenExpiryTime
+                                    }
                                     placeholder={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.expiry.placeholder")
@@ -718,7 +730,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".refreshToken.fields.renew.validations.empty")
                                     }
                                     type="checkbox"
-                                    value={ initialValues.refreshToken?.renewRefreshToken ? ["refreshToken"] : [] }
+                                    value={
+                                        initialValues.refreshToken?.renewRefreshToken
+                                            ? ["refreshToken"]
+                                            : []
+                                    }
                                     children={ [
                                         {
                                             label: t("devPortal:components.applications.forms.inboundOIDC" +
@@ -752,9 +768,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".refreshToken.fields.expiry.placeholder")
                                     }
-                                    value={ initialValues.refreshToken ?
-                                        initialValues.refreshToken.expiryInSeconds.toString() :
-                                        metadata.defaultRefreshTokenExpiryTime }
+                                    value={ initialValues.refreshToken
+                                        ? initialValues.refreshToken.expiryInSeconds.toString()
+                                        : metadata.defaultRefreshTokenExpiryTime }
                                     type="number"
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-refresh-token-expiry-time-input` }
@@ -822,7 +838,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             );
                                         }
                                     }
-                                    value={ initialValues.idToken?.encryption.enabled ? ["enableEncryption"] : [] }
+                                    value={
+                                        initialValues.idToken?.encryption.enabled
+                                            ? ["enableEncryption"]
+                                            : []
+                                    }
                                     children={ [
                                         {
                                             label: t("devPortal:components.applications.forms.inboundOIDC" +
@@ -850,8 +870,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".fields.algorithm.validations.empty")
                                     }
                                     type="dropdown"
-                                    default={ initialValues.idToken ? initialValues.idToken.encryption.algorithm :
-                                        metadata.idTokenEncryptionAlgorithm.defaultValue }
+                                    default={
+                                        initialValues.idToken
+                                            ? initialValues.idToken.encryption.algorithm
+                                            : metadata.idTokenEncryptionAlgorithm.defaultValue
+                                    }
                                     placeholder={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".idToken.fields.algorithm.placeholder")
@@ -880,8 +903,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".fields.method.validations.empty")
                                     }
                                     type="dropdown"
-                                    default={ initialValues.idToken ? initialValues.idToken.encryption.method :
-                                        metadata.idTokenEncryptionMethod.defaultValue }
+                                    default={
+                                        initialValues.idToken
+                                            ? initialValues.idToken.encryption.method
+                                            : metadata.idTokenEncryptionMethod.defaultValue
+                                    }
                                     placeholder={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
                                             ".fields.method.placeholder")
@@ -914,8 +940,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
                                             ".fields.expiry.placeholder")
                                     }
-                                    value={ initialValues.idToken ? initialValues.idToken.expiryInSeconds.toString() :
-                                        metadata.defaultIdTokenExpiryTime }
+                                    value={
+                                        initialValues.idToken
+                                            ? initialValues.idToken.expiryInSeconds.toString()
+                                            : metadata.defaultIdTokenExpiryTime
+                                    }
                                     type="number"
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-id-token-expiry-time-input` }
@@ -1004,8 +1033,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     required={ false }
                                     requiredErrorMessage="this is needed"
                                     type="checkbox"
-                                    value={ initialValues.validateRequestObjectSignature ?
-                                        ["EnableRequestObjectSignatureValidation"] : [] }
+                                    value={
+                                        initialValues.validateRequestObjectSignature
+                                            ? ["EnableRequestObjectSignatureValidation"]
+                                            : []
+                                    }
                                     children={ [
                                         {
                                             label: t("devPortal:components.applications.forms.inboundOIDC" +
