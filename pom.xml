@@ -396,6 +396,11 @@
                 <version>${carbon.identity.framework.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.wso2.carbon.identity.governance</groupId>
+                <artifactId>org.wso2.carbon.identity.recovery</artifactId>
+                <version>${identity.governance.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.google.code.gson</groupId>
                 <artifactId>gson</artifactId>
                 <version>${com.google.code.gson.version}</version>
@@ -660,6 +665,7 @@
         <carbon.identity.framework.imp.pkg.version.range>[5.0.0, 6.0.0)</carbon.identity.framework.imp.pkg.version.range>
         <carbon.identity.oauth.version>6.2.142</carbon.identity.oauth.version>
         <carbon.identity.oauth.imp.pkg.version.range>[6.1.0, 7.0.0)</carbon.identity.oauth.imp.pkg.version.range>
+        <identity.governance.version>1.4.16</identity.governance.version>
 
         <commons-io.wso2.version>2.4.0.wso2v1</commons-io.wso2.version>
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>

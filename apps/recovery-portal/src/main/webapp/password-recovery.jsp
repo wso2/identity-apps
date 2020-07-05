@@ -184,6 +184,18 @@
                         <%
                             }
                         %>
+    
+                        <%
+                            String sessionDataKey = request.getParameter("sessionDataKey");
+                            if (sessionDataKey != null) {
+                        %>
+                        <div>
+                            <input type="hidden" name="sessionDataKey"
+                                   value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
+                        </div>
+                        <%
+                            }
+                        %>
 
                         <%
                             if (reCaptchaEnabled) {
