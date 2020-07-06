@@ -65,7 +65,7 @@ export interface InterfaceConfigDetails {
     successfulDeployments: number;
     failedDeployments: number;
     lastSynchronizedTime: string;
-    remoteFetchRevisionStatuses: InterfaceRemoteFetchStatus[]
+    remoteFetchRevisionStatuses: InterfaceRemoteFetchStatus[];
 }
 
 export interface InterfaceRemoteFetchStatus {

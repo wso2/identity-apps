@@ -16,16 +16,14 @@
  * under the License.
  */
 
-import { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Modal, Grid, Segment } from "semantic-ui-react";
-import React from "react";
 import { Heading, LinkButton } from "@wso2is/react-components";
-import { useTranslation } from "react-i18next";
-import { InterfaceRemoteRepoConfig, InterfaceConfigDetails } from "../../models";
-import { DeploymentStatus } from "./remote-deployment-status";
-import { ApplicationWizardStepIcons } from "../../configs";
-import { getConfigDeploymentDetails } from "../../api";
 import { AxiosResponse } from "axios";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { Grid, Modal } from "semantic-ui-react";
+import { DeploymentStatus } from "./remote-deployment-status";
+import { getConfigDeploymentDetails } from "../../api";
+import { ApplicationWizardStepIcons } from "../../configs";
+import { InterfaceConfigDetails, InterfaceRemoteRepoConfig } from "../../models";
 
 interface InterfaceRemoteRepoDetailProps {
     repoObject: InterfaceRemoteRepoConfig;
@@ -35,8 +33,6 @@ interface InterfaceRemoteRepoDetailProps {
 export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps> = (
     props: InterfaceRemoteRepoDetailProps
 ): ReactElement => {
-
-    const { t } = useTranslation();
 
     const [ configDetailObject, setConfigDetailObject ] = useState<InterfaceConfigDetails>(undefined)
 
@@ -50,10 +46,10 @@ export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps
             if (response.status === 200) {
                 setConfigDetailObject(response.data);
             }
-        }).catch(error => {
+        }).catch(() => {
             //handle error response
         })
-    },[ configDetailObject != undefined ])
+    },[])
 
     const WIZARD_STEPS = [{
         content: (
@@ -82,10 +78,12 @@ export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps
                 <Grid columns='equal'>
                     <Grid.Row>
                         <Grid.Column>
-                            <span><strong>Failed Deployements : </strong>{configDetailObject?.failedDeployments}</span>
+                            <span><strong>Failed Deployements : </strong>
+                                {configDetailObject?.failedDeployments}</span>
                         </Grid.Column>
                         <Grid.Column>
-                            <span><strong>Successful Deployements : </strong>{configDetailObject?.successfulDeployments}</span>
+                            <span><strong>Successful Deployements : </strong>
+                                {configDetailObject?.successfulDeployments}</span>
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row>
@@ -106,7 +104,7 @@ export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps
                                 floated="left"
                                 onClick={ () => { onCloseHandler() } }
                             >
-                                { t("common:cancel") }
+                                { "Close" }
                             </LinkButton>
                         </Grid.Column>
                     </Grid.Row>

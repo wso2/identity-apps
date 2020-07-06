@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { PageLayout, ListLayout } from "@wso2is/react-components";
-import { getRemoteRepoConfigList, deleteRemoteRepoConfig } from "../../api";
-import { RemoteRepoList, CreateRemoteRepoConfig } from "../../components";
 import { AxiosResponse } from "axios";
-import { InterfaceRemoteRepoListResponse, InterfaceRemoteRepoConfig } from "../../models";
+import { ListLayout, PageLayout } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { deleteRemoteRepoConfig, getRemoteRepoConfigList } from "../../api";
+import { CreateRemoteRepoConfig, RemoteRepoList } from "../../components";
+import { InterfaceRemoteRepoConfig, InterfaceRemoteRepoListResponse } from "../../models";
 import { UIConstants } from "../../constants";
 import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AlertInterface, AlertLevels } from "@wso2is/core/dist/src/models";
+import { addAlert } from "@wso2is/core/store";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { useTranslation } from "react-i18next";
 import { triggerConfigDeployment } from "../../api/remote-repo-config";
 
@@ -104,10 +104,6 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             setListUpdated(true);
         });
     }
-
-    const handleOnView = (config: InterfaceRemoteRepoConfig): void => {
-        
-    }
     
     return (
         <PageLayout
@@ -128,7 +124,6 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                         handleConfigDelete={ handleOnDelete } 
                         repoObjectList={ remoteRepoConfig }
                         handleOnTrigger={ handleOnTrigger }
-                        handleOnView={ handleOnView }
                     />
                 </ListLayout>
                 {

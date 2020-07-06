@@ -16,10 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
-import { InterfaceConfigDetails, InterfaceRemoteFetchStatus } from "../../models";
-import { Segment, Label } from "semantic-ui-react";
 import { CodeEditor } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement } from "react";
+import { Label, Segment } from "semantic-ui-react";
+import { InterfaceConfigDetails, InterfaceRemoteFetchStatus } from "../../models";
 
 interface InterfaceDeployementStatusProps {
     statusObject: InterfaceConfigDetails;
@@ -33,16 +33,13 @@ export const DeploymentStatus: FunctionComponent<InterfaceDeployementStatusProps
         statusObject
     } = props;
 
-    console.log(statusObject);
-
     return (
         <>
             {
                 statusObject && statusObject.remoteFetchRevisionStatuses.length > 0 &&
                 statusObject.remoteFetchRevisionStatuses.map((value: InterfaceRemoteFetchStatus, index: number) => {
-                    console.log(value);
                     return (
-                        <Segment className="deploymentStatus">
+                        <Segment key={ index } className="deploymentStatus">
                             <Label 
                                 color={ value.deployedStatus == "FAIL" ? "red" : "teal" } 
                                 attached='top'>{ value.deployedStatus == "FAIL" ? 

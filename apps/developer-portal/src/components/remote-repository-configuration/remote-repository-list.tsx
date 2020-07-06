@@ -26,11 +26,11 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
+import { RemoteRepoDetails } from "./remote-repository-details";
 import { RemoteConfigPageIllustrations } from "../../configs";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { InterfaceRemoteRepoConfig } from "../../models";
-import { RemoteRepoDetails } from "./remote-repository-details";
 
 
 
@@ -39,14 +39,13 @@ interface RemoteRepoListProp {
     handleConfigDelete: (repoConfig: InterfaceRemoteRepoConfig) => void;
     showCreateWizard: (state: boolean) => void;
     handleOnTrigger: (repoConfig: InterfaceRemoteRepoConfig) => void;
-    handleOnView?: (repoConfig: InterfaceRemoteRepoConfig) => void;
 }
 
 export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: RemoteRepoListProp): ReactElement => {
 
     const { t } = useTranslation();
 
-    const { repoObjectList, handleConfigDelete, showCreateWizard, handleOnTrigger, handleOnView } = props;
+    const { repoObjectList, handleConfigDelete, showCreateWizard, handleOnTrigger } = props;
 
     const [ currentDeleteConfig, setCurrentDeleteConfig ] = useState<InterfaceRemoteRepoConfig>();
     const [ currentDetailsConfig, setCurrentDetailsConfig ] = useState<InterfaceRemoteRepoConfig>();
