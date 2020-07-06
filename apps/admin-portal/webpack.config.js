@@ -49,8 +49,6 @@ module.exports = (env) => {
 
     // Build configurations.
     const distFolder = path.resolve(__dirname, "build", basename);
-    const faviconImage = path.resolve(__dirname, "node_modules",
-        "@wso2is/theme/dist/lib/themes/default/assets/images/favicon.ico");
     const titleText = deploymentConfig.ui.appTitle;
 
     return {
@@ -259,7 +257,6 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
-                    favicon: faviconImage,
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
                     importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -278,7 +275,6 @@ module.exports = (env) => {
                     title: titleText
                 })
                 : new HtmlWebpackPlugin({
-                    favicon: faviconImage,
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
                     publicPath: publicPath,
