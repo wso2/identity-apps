@@ -289,14 +289,14 @@ module.exports = (env) => {
             // temporarily require only the ones for the languages supported by default.
             // TODO: Remove this when dynamic runtime localization support is announced.
             new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /pt|si|ta/),
-            new CompressionPlugin({
+            isProduction && new CompressionPlugin({
                 algorithm: "gzip",
                 filename: "[path].gz[query]",
                 minRatio: 0.8,
                 test: /\.(js|css|html|svg)$/,
                 threshold: 10240
             }),
-            new BrotliPlugin({
+            isProduction && new BrotliPlugin({
                 asset: "[path].br[query]",
                 minRatio: 0.8,
                 test: /\.(js|css|html|svg)$/,
