@@ -50,6 +50,7 @@
         "lodash": "*",
         "log": "*",
         "moment": "*",
+        "react-helmet": "*",
         "react-i18next": "*",
         "react-notification-system": "*",
         "react-redux": "*",
