@@ -104,6 +104,10 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             setListUpdated(true);
         });
     }
+
+    const handleOnView = (config: InterfaceRemoteRepoConfig): void => {
+        
+    }
     
     return (
         <PageLayout
@@ -122,8 +126,9 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                     <RemoteRepoList 
                         showCreateWizard={ setShowWizard } 
                         handleConfigDelete={ handleOnDelete } 
-                        repoObjectList={ remoteRepoConfig } 
+                        repoObjectList={ remoteRepoConfig }
                         handleOnTrigger={ handleOnTrigger }
+                        handleOnView={ handleOnView }
                     />
                 </ListLayout>
                 {

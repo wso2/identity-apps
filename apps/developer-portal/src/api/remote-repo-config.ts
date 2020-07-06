@@ -19,7 +19,7 @@
 import { HttpMethods } from "@wso2is/core/dist/src/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { OAuth } from "@wso2is/oauth-web-worker";
-import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteRepoListResponse, InterfaceRemoteConfigDetails, InterfaceEditDetails } from "../models";
+import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteRepoListResponse, InterfaceRemoteConfigDetails, InterfaceEditDetails, InterfaceConfigDetails } from "../models";
 import { store } from "../store";
 
 /**
@@ -78,8 +78,27 @@ export const triggerConfigDeployment = (id: string): Promise<AxiosResponse> => {
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteRepoConfig + "/" + id + "/trigger"
     };
-    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
-        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
+            return Promise.resolve(response);
+        })
+        .catch((error) => {
+            return Promise.reject(error);
+        });
+}
+
+export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<InterfaceConfigDetails>> => {
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id + "/status"
+    };
+    return httpClient<InterfaceConfigDetails>(requestConfig)
+        .then((response: AxiosResponse<InterfaceConfigDetails>) => {
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -98,8 +117,8 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteRepoConfig
     };
-    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
-        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -118,8 +137,8 @@ export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetai
         method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
     };
-    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
-        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse) => {
             return Promise.resolve(response);
         })
         .catch((error) => {

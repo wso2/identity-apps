@@ -30,6 +30,7 @@ import { RemoteConfigPageIllustrations } from "../../configs";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { InterfaceRemoteRepoConfig } from "../../models";
+import { RemoteRepoDetails } from "./remote-repository-details";
 
 
 
@@ -38,16 +39,19 @@ interface RemoteRepoListProp {
     handleConfigDelete: (repoConfig: InterfaceRemoteRepoConfig) => void;
     showCreateWizard: (state: boolean) => void;
     handleOnTrigger: (repoConfig: InterfaceRemoteRepoConfig) => void;
+    handleOnView?: (repoConfig: InterfaceRemoteRepoConfig) => void;
 }
 
 export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: RemoteRepoListProp): ReactElement => {
 
     const { t } = useTranslation();
 
-    const { repoObjectList, handleConfigDelete, showCreateWizard, handleOnTrigger } = props;
+    const { repoObjectList, handleConfigDelete, showCreateWizard, handleOnTrigger, handleOnView } = props;
 
     const [ currentDeleteConfig, setCurrentDeleteConfig ] = useState<InterfaceRemoteRepoConfig>();
-    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ currentDetailsConfig, setCurrentDetailsConfig ] = useState<InterfaceRemoteRepoConfig>();
+    const [ showConfigDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showConfigDetailsModal, setShowConfigDetailsModal ] = useState<boolean>(false)
 
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
@@ -91,7 +95,8 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
     const generateMetaContent = (repoObject: InterfaceRemoteRepoConfig) => {
         return (
             <div>
-                <p>{`Successfull Deployments : ${repoObject.successfulDeployments} , Failed Deployments : ${repoObject.failedDeployments}`}</p>
+                <p>{`Successfull Deployments : ${repoObject.successfulDeployments} , 
+                Failed Deployments : ${repoObject.failedDeployments}`}</p>
             </div>
         )
     }
@@ -114,8 +119,19 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                                 metaContent={ generateMetaContent(repoObject) }
                                 metaColumnWidth={ 5 }
                                 actionsColumnWidth={ 4 }
-                                itemDescription={ `Last Deployed : ${repoObject.lastDeployed}` }
+                                itemDescription={ repoObject.lastDeployed ? 
+                                    `Last Deployed : ${repoObject.lastDeployed}` : "" 
+                                }
                                 actions={ [
+                                    {
+                                        icon: "eye",
+                                        onClick: () => {
+                                            setCurrentDetailsConfig(repoObject);
+                                            setShowConfigDetailsModal(true);
+                                        },
+                                        popupText: "Trigger Config",
+                                        type: "button"
+                                    },
                                     {
                                         icon: "retweet",
                                         onClick: (): void => { handleOnTrigger(repoObject) },
@@ -132,7 +148,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                                         icon: "trash alternate",
                                         onClick: () => {
                                             setCurrentDeleteConfig(repoObject);
-                                            setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
+                                            setShowDeleteConfirmationModal(!showConfigDeleteConfirmation);
                                         },
                                         popupText: "Delete Config",
                                         type: "button"
@@ -145,11 +161,11 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                 }
             </ResourceList>
             {
-                showRoleDeleteConfirmation && 
+                showConfigDeleteConfirmation && 
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
-                        open={ showRoleDeleteConfirmation }
+                        open={ showConfigDeleteConfirmation }
                         assertion={ currentDeleteConfig.name }
                         assertionHint={ 
                             (
@@ -183,6 +199,12 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                             { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
+            }
+            {
+                showConfigDetailsModal && ( <RemoteRepoDetails 
+                        onCloseHandler={ () => setShowConfigDetailsModal(false) }
+                        repoObject={ currentDetailsConfig }
+                /> )
             }
         </>
     )

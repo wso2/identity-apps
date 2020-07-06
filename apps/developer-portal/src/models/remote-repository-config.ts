@@ -60,6 +60,21 @@ export interface InterfaceRemoteConfigDetails {
     };
 }
 
+export interface InterfaceConfigDetails {
+    count: number;
+    successfulDeployments: number;
+    failedDeployments: number;
+    lastSynchronizedTime: string;
+    remoteFetchRevisionStatuses: InterfaceRemoteFetchStatus[]
+}
+
+export interface InterfaceRemoteFetchStatus {
+    itemName: string;
+    deployedTime: string;
+    deployedStatus: string;
+    deploymentErrorReport: string;
+}
+
 export interface InterfaceEditDetails {
     isEnabled: boolean;
     remoteFetchName: string;
