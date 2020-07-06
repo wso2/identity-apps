@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import React, { Dispatch, FunctionComponent, PropsWithChildren, ReactElement, createContext, useReducer } from "react";
 import {
-    handleCompileTheme,
     handleCSS,
+    handleCompileTheme,
     handleProductName,
     handleSetAppName,
     handleSetCopyrightText,
@@ -26,8 +27,7 @@ import {
     handleStyles,
     handleThemeToggle
 } from "./actions";
-import React, { createContext, Dispatch, useReducer } from "react";
-import { ThemeCompileOptionsInterface, ThemeContextInterface, ThemeTypes } from "./models";
+import { ThemeCompileOptionsInterface, ThemeContextInterface, ThemeContextStateInterface, ThemeTypes } from "./models";
 import { themeContextReducer, themeInitialState } from "./reducer";
 
 /**
@@ -47,13 +47,31 @@ export const ThemeContext = createContext<ThemeContextInterface>({
 });
 
 /**
+ * Theme provider props interface.
+ */
+interface ThemeProviderProsInterface {
+    /**
+     * Initial reducer state.
+     */
+    initialState?: ThemeContextStateInterface;
+}
+
+/**
  * ThemeContext Provider.
  *
- * @param {any} { children } - Wrap content/elements.
- * @returns { RecatElement } - ThemeContext Provider.
+ * @param {React.PropsWithChildren<ThemeProviderProsInterface>} props - Wrap content/elements.
+ * @returns { React.ReactElement } - ThemeContext Provider.
  */
-export const ThemeProvider = ({ children }) => {
-    const [ state, dispatch ] = useReducer(themeContextReducer, themeInitialState);
+export const ThemeProvider: FunctionComponent<PropsWithChildren<ThemeProviderProsInterface>> = (
+    props: PropsWithChildren<ThemeProviderProsInterface>
+): ReactElement => {
+
+    const {
+        children,
+        initialState
+    } = props;
+
+    const [ state, dispatch ] = useReducer(themeContextReducer, { ...themeInitialState, ...initialState });
 
     const compile = (options?: ThemeCompileOptionsInterface) => { handleCompileTheme(dispatch, state, options); };
 
