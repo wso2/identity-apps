@@ -25,7 +25,6 @@
 
 @spacer: 1rem;
 @pageHeaderMaxWidth: 600px;
-@productLogoHeight: 22px;
 
 each(range(5), {
     .ui.divider.hidden.x@{value} {
@@ -37,47 +36,51 @@ body {
     .user-dropdown .ui.items {
         margin: 0;
     }
+}
 
-    .product-title {
-        .product-title-meta {
-            text-align: right;
+/*-----------------------------
+      Product Branding
+------------------------------*/
 
-            .version-label {
-                padding: 3px 6px;
-                font-size: 0.6em;
-                font-weight: 600;
+.product-title {
+    .product-title-meta {
+        text-align: right;
 
-                &.primary {
-                    background-color: @primaryColor !important;
-                }
-                &.secondary {
-                    background-color: @secondaryColor !important;
-                }
+        .version-label {
+            padding: 3px 6px;
+            font-size: 0.6em;
+            font-weight: 600;
+
+            &.primary {
+                background-color: @primaryColor !important;
+            }
+            &.secondary {
+                background-color: @secondaryColor !important;
             }
         }
-        .product-logo {
-            width: 60px;
-            vertical-align: text-top;
-            margin-right: 5px;
+    }
+    .product-logo {
+        width: @productLogoWidth;
+        vertical-align: text-top;
+        margin-right: 5px;
 
-            .icon {
-                height: @productLogoHeight;
-            }
-            &.portal-logo {
-                width: auto !important;
-            }
+        .icon {
+            height: @productLogoHeight;
         }
-        .product-title-text {
-            text-transform: uppercase;
-            font-weight: 400;
-            font-size: 1.4rem;
-            display: inline-block;
-            vertical-align: sub;
-            margin-left: 0.2em;
+        &.portal-logo {
+            width: auto !important;
         }
-        .user-image {
-            width: 100px !important;
-        }
+    }
+    .product-title-text {
+        text-transform: @productTitleTextTransform;
+        font-weight: @productTitleFontWeight;
+        font-size: @productTitleFontSize !important;
+        display: inline-block;
+        vertical-align: sub;
+        margin-left: 0.2em;
+    }
+    .user-image {
+        width: 100px !important;
     }
 }
 
