@@ -80,6 +80,9 @@
         },
         "gravatarConfig": {
             "fallback": "404"
+        },
+        "theme": {
+            "name": "default"
         }
     }
 }

@@ -231,6 +231,10 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                             template.category === ApplicationTemplateCategories.DEFAULT)
                     }
                     templateIcons={ ApplicationTemplateIllustrations }
+                    templateIconOptions={ {
+                        fill: "primary"
+                    } }
+                    templateIconSize="tiny"
                     heading={
                         t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.quickSetup.heading")
@@ -271,6 +275,10 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                     templates={ availableDefaultTemplates }
                     secondaryTemplates={ availableCustomInboundTemplates }
                     templateIcons={ InboundProtocolLogos }
+                    templateIconOptions={ {
+                        fill: "primary"
+                    } }
+                    templateIconSize="tiny"
                     heading={
                         t("devPortal:components.applications.edit.sections.access.addProtocolWizard.steps" +
                             ".protocolSelection.manualSetup.heading")

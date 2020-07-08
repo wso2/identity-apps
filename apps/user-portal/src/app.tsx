@@ -27,9 +27,10 @@ import {
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ContentLoader } from "@wso2is/react-components";
+import { ContentLoader, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, Suspense, useEffect } from "react";
+import React, { ReactElement, Suspense, useContext, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
@@ -53,6 +54,8 @@ import { filteredRoutes } from "./utils";
  * @return {React.Element}
  */
 export const App = (): ReactElement => {
+
+    const { state } = useContext(ThemeContext);
 
     const dispatch = useDispatch();
 
@@ -125,6 +128,24 @@ export const App = (): ReactElement => {
                             <div className="container-fluid">
                                 <I18nextProvider i18n={ I18n.instance }>
                                     <Suspense fallback={ <ContentLoader dimmer/> }>
+                                        <Helmet>
+                                            <link
+                                                rel="shortcut icon"
+                                                href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
+                                                `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
+                                                `${ state.theme }/assets/images/favicon.ico` }
+                                            />
+                                            <link
+                                                href={ `${window["AppUtils"].getConfig().clientOrigin}/` +
+                                                `${window["AppUtils"].getConfig().appBase}/libs/themes/` +
+                                                `${ state.theme }/theme.min.css` }
+                                                rel="stylesheet"
+                                                type="text/css"
+                                            />
+                                            <style type="text/css">
+                                                { state.css }
+                                            </style>
+                                        </Helmet>
                                         <Switch>
                                             <Redirect
                                                 exact={ true }

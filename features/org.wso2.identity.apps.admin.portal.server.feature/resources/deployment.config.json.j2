@@ -288,6 +288,13 @@
                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
            {% endfor %}
            {% endif %}
+        },
+        "theme": {
+            {% if admin_portal.ui.theme is defined %}
+                {% for key, value in admin_portal.ui.theme.items() %}
+                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
         }
     }
 }

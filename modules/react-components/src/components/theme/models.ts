@@ -36,13 +36,13 @@ export interface ThemeCompileOptionsInterface {
  * ThemeContext state interface.
  */
 export interface ThemeContextStateInterface {
-    appName: string;
-    copyrightText: string;
-    css: string;
-    logo: string;
-    productName: string;
-    styles: ThemeCompileOptionsInterface;
-    theme: ThemeTypes;
+    appName?: string;
+    copyrightText?: string;
+    css?: string;
+    logo?: string;
+    productName?: string;
+    styles?: ThemeCompileOptionsInterface;
+    theme?: ThemeTypes;
 }
 
 /*

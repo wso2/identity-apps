@@ -94,7 +94,7 @@ I18n.init({
 ReactDOM.render(
     (
         <Provider store={ store }>
-            <ThemeProvider>
+            <ThemeProvider initialState={ { theme: window["AppUtils"].getConfig().ui.theme.name } }>
                 <BrowserRouter>
                     <App />
                 </BrowserRouter>
