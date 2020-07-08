@@ -72,7 +72,7 @@
 		<![endif]-->
 		</head>
 
-		<body onload="getLoginDiv()">
+		<body class="login-portal layout email-otp-portal-layout" onload="getLoginDiv()">
 			<main class="center-segment">
 				<div class="ui container medium center aligned middle aligned">
 					<!-- product-title -->
