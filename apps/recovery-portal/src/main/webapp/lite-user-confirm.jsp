@@ -71,7 +71,12 @@
             String username = extendedUser.getUsername();
             callback = callback + "?confirmation=" + confirmationKey + "&username=" + extendedUser.getUsername();
         } else {
-            throw new ApiException(400, "Provided confirmation code is invalid.");
+            request.setAttribute("error", true);
+            request.setAttribute("errorMsg",
+                    IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Invalid.code"));
+            request.setAttribute("errorCode", "18001");
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+            return;
         }
 
         request.setAttribute("callback", callback);
