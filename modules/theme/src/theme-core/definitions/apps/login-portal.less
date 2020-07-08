@@ -38,4 +38,146 @@
     }
 }
 
+/*-----------------------------
+      Login Portals Commons
+------------------------------*/
+
+.login-portal {
+    &.layout {
+        background: @loginPortalBackgroundColor;
+        height: 100%;
+        flex-direction: column;
+        display: flex;
+
+        .app-header {
+            .product-title .product-title-text {
+                margin: 0;
+            }
+        }
+
+        .center-segment {
+            flex-shrink: 0;
+            margin: auto;
+            display: flex;
+            align-items: center;
+
+            > .ui.container {
+                &.medium {
+                    max-width: 450px !important;
+                }
+
+                &.large {
+                    max-width: 700px !important;
+                }
+
+                > .ui.segment {
+                    padding: 3rem;
+                    border-radius: @loginPortalLoginCardBorderRadius;
+
+                    .segment-form {
+                        text-align: left;
+
+                        .buttons {
+                            margin-top: 1em;
+                        }
+
+                        .buttons.align-right {
+                            button {
+                                margin: 0 0 0 0.25em;
+                            }
+                            input {
+                                margin: 0 0 0 0.25em;
+                            }
+                        }
+
+                        .column {
+                            .buttons.align-left {
+                                button.link-button {
+                                    padding: .78571429em 1.5em .78571429em 0;
+                                }
+                                input.link-button {
+                                    padding: .78571429em 1.5em .78571429em 0;
+                                }
+                            }
+                        }
+
+                        .align-center {
+                            text-align: center;
+                        }
+
+                        .align-right {
+                            text-align: right;
+                        }
+                    }
+                }
+            }
+
+            .product-title {
+                .product-logo {
+                    padding-left: 0;
+
+                    img {
+                        height: @loginPortalProductLogoHeight;
+                    }
+                }
+                .product-title-text {
+                    margin: 2em 0 1em;
+                    position: relative;
+                }
+            }
+        }
+
+        #toc {
+            position: sticky;
+            top: 93px;
+        }
+
+        .ui.segment.toc {
+            padding: 20px;
+            ul.ui.list.nav {
+                >li.sub {
+                    margin-left: 20px;
+                    &:before {
+                        content: "\2192";
+                        margin-left: -1em;
+                    }
+                }
+                >li {
+                    >a {
+                        color: rgba(0,0,0,.87);
+                        text-decoration: none;
+                    }
+                    &:before {
+                        content: "\2219";
+                        font-weight: bold;
+                        font-size: 1.6em;
+                        line-height: 0.5em;
+                        display: inline-block;
+                        width: 1em;
+                        margin-left: -0.7em;
+                    }
+                    &:hover {
+                        a {
+                            color: @primaryColor;
+                            text-decoration: none;
+                            cursor: pointer;
+                        }
+                        &:before {
+                            color: @primaryColor;
+                        }
+                    }
+                }
+            }
+        }
+
+        .cookie-policy-message {
+            font-size: 14px;
+        }
+
+        footer {
+            padding: 2rem 0;
+        }
+    }
+}
+
 .loadUIOverrides();

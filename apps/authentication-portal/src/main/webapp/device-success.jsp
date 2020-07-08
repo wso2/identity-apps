@@ -34,7 +34,7 @@
     <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 </head>
-<body onload="loadFunc()">
+<body class="login-portal layout authentication-portal-layout" onload="loadFunc()">
     <main class="center-segment">
         <div class="ui container medium center aligned middle">
             

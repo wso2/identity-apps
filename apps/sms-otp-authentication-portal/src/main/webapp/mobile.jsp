@@ -63,7 +63,7 @@
         <![endif]-->
     </head>
 
-    <body onload="getLoginDiv()">
+    <body class="login-portal layout sms-otp-portal-layout" onload="getLoginDiv()">
         <main class="center-segment">
             <div class="ui container medium center aligned middle aligned">
                 <!-- product-title -->
@@ -152,4 +152,3 @@
         </script>
     </body>
 </html>
- 

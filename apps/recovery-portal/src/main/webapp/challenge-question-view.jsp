@@ -54,7 +54,7 @@
         }
     %>
 </head>
-<body>
+<body class="login-portal layout recovery-layout">
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
             <!-- product-title -->
