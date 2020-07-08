@@ -22,8 +22,10 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.NotificationApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.LiteRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeIntrospectResponse" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ExtendedUser" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
@@ -37,7 +39,6 @@
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
-    String username = request.getParameter("username");
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
 
@@ -46,12 +47,12 @@
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
 
-    if (StringUtils.isBlank(username) || StringUtils.isBlank(confirmationKey)) {
+    if (StringUtils.isBlank(confirmationKey)) {
         confirmationKey = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("confirmationKey"));
     }
     String message = "" ;
 
-    NotificationApi notificationApi = new NotificationApi();
+    LiteRegisterApi liteRegisterApi = new LiteRegisterApi();
     try {
         List<Property> properties = new ArrayList<>();
         Property tenantDomainProperty = new Property();
@@ -62,7 +63,16 @@
         CodeValidationRequest validationRequest = new CodeValidationRequest();
         validationRequest.setCode(confirmationKey);
         validationRequest.setProperties(properties);
-        notificationApi.validateCodePostCall(validationRequest);
+        CodeIntrospectResponse codeIntrospectResponse = liteRegisterApi.introspectCode(validationRequest);
+
+        if ((codeIntrospectResponse != null) && (codeIntrospectResponse.getUser() != null)
+                && (codeIntrospectResponse.getUser().getUsername() != null)) {
+            ExtendedUser extendedUser = codeIntrospectResponse.getUser();
+            String username = extendedUser.getUsername();
+            callback = callback + "?confirmation=" + confirmationKey + "&username=" + extendedUser.getUsername();
+        } else {
+            throw new ApiException(400, "Provided confirmation code is in invalid.");
+        }
 
         request.setAttribute("callback", callback);
         request.setAttribute("confirmLiteReg", "true");
