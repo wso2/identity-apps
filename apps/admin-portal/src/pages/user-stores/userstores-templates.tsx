@@ -195,6 +195,10 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                     setSelectedType(rawUserstoreTypes.find((type) => type.typeId === id));
                                 } }
                                 templateIcons={ UserstoreTemplateIllustrations }
+                                templateIconOptions={ {
+                                    fill: "primary"
+                                } }
+                                templateIconSize="tiny"
                                 paginate={ true }
                                 paginationLimit={ 4 }
                                 paginationOptions={ {

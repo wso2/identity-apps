@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, CardProps } from "semantic-ui-react";
-import { GenericIcon, GenericIconSizes } from "../icon";
+import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Tooltip } from "../typography";
 
 /**
@@ -43,6 +43,10 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
      * Image for the card.
      */
     image?: any;
+    /**
+     * Icon options.
+     */
+    imageOptions?: Omit<GenericIconProps, "icon" | "size">;
     /**
      * Side of the image.
      */
@@ -97,6 +101,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         id,
         inline,
         image,
+        imageOptions,
         imageSize,
         multilineDescription,
         onClick,
@@ -143,6 +148,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                             data-testid={ `${ testId }-image` }
                             square
                             transparent
+                            { ...imageOptions }
                         />
                     </Card.Content>
                 )

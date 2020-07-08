@@ -39,6 +39,14 @@ export interface TemplateGridPropsInterface<T> extends TestableComponentInterfac
      */
     heading?: ReactNode;
     /**
+     * Size of the icon.
+     */
+    templateIconSize?: TemplateCardPropsInterface["imageSize"];
+    /**
+     * Icon options.
+     */
+    templateIconOptions?: TemplateCardPropsInterface["imageOptions"];
+    /**
      * Callback to be fired on template selection.
      */
     onTemplateSelect: (e: SyntheticEvent, { id }: { id: string }) => void;
@@ -175,6 +183,8 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         useSelectionCard,
         onSecondaryTemplateSelect,
         secondaryTemplates,
+        templateIconOptions,
+        templateIconSize,
         useNameInitialAsImage,
         [ "data-testid" ]: testId
     } = props;
@@ -275,6 +285,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                 <UserAvatar name={ template.name } size="tiny"/>
                                 : resolveTemplateImage(template.image)
                         }
+                        imageOptions={ templateIconOptions }
                         onClick={ onClick }
                         selected={ selectedTemplate?.id === template.id }
                         data-testid={ `${ testId }-selection-card` }
@@ -390,6 +401,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         key={ index }
                                         description={ template.description }
                                         image={ resolveTemplateImage(template.image) }
+                                        imageOptions={ templateIconOptions }
                                         tagsSectionTitle={ tagsSectionTitle }
                                         tags={
                                             type === "application"
@@ -408,7 +420,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         name={ template.name }
                                         id={ template.id }
                                         onClick={ onTemplateSelect }
-                                        imageSize="tiny"
+                                        imageSize={ templateIconSize }
                                         data-testid={ `${ testId }-template-card` }
                                     />
                                 ))
@@ -426,6 +438,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
  */
 TemplateGrid.defaultProps = {
     "data-testid": "template-grid",
+    iconSize: "tiny",
     paginate: true,
     paginationLimit: DEFAULT_PAGINATION_LIMIT,
     paginationOptions: {
