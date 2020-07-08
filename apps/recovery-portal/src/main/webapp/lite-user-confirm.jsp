@@ -71,7 +71,7 @@
             String username = extendedUser.getUsername();
             callback = callback + "?confirmation=" + confirmationKey + "&username=" + extendedUser.getUsername();
         } else {
-            throw new ApiException(400, "Provided confirmation code is in invalid.");
+            throw new ApiException(400, "Provided confirmation code is invalid.");
         }
 
         request.setAttribute("callback", callback);
