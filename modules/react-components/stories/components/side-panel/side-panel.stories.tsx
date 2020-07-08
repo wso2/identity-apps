@@ -17,11 +17,10 @@
  *
  */
 
-import { CaretRightIcon, SidePanelIconSet } from "@wso2is/theme";
+import { select } from "@storybook/addon-knobs";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
-import { meta, ROUTES, ROUTES_WITH_CHILDREN } from "./side-panel.stories.meta";
 import React, { ReactElement, useState } from "react";
-import { action } from "@storybook/addon-actions";
+import { ROUTES, ROUTES_WITH_CHILDREN, SidePanelIcons, meta } from "./side-panel.stories.meta";
 import { SidePanel } from "../../../src";
 
 export default {
@@ -41,18 +40,34 @@ export const DefaultSidePanel = (): ReactElement => {
 
     const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(ROUTES[0]);
 
+    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
+        if (!route.children) {
+            setSelectedRoute(route);
+        }
+    };
+
     return (
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
-                caretIcon={ CaretRightIcon }
-                onSidePanelItemClick={ action("clicked on item") }
-                icons={ SidePanelIconSet }
+                onSidePanelItemClick={ handleSidePanelItemClick }
+                hoverType={
+                    select(
+                        "Hover Type",
+                        {
+                            Background: "background",
+                            Highlighted: "highlighted"
+                        },
+                        "highlighted"
+                    )
+                }
+                icons={ SidePanelIcons }
                 routes={ ROUTES }
                 selected={ selectedRoute }
                 footerHeight={ 0 }
                 headerHeight={ 0 }
                 mobileSidePanelVisibility={ false }
                 onSidePanelPusherClick={ null }
+                allowedScopes={ null }
             />
         </div>
     );
@@ -73,7 +88,7 @@ DefaultSidePanel.story = {
  */
 export const WithChildren = (): ReactElement => {
 
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(ROUTES[0]);
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(ROUTES_WITH_CHILDREN[0]);
 
     const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
         if (!route.children) {
@@ -84,15 +99,25 @@ export const WithChildren = (): ReactElement => {
     return (
         <div style={ { margin: "1em 0", width: "200px" } }>
             <SidePanel
-                caretIcon={ CaretRightIcon }
                 onSidePanelItemClick={ handleSidePanelItemClick }
-                icons={ SidePanelIconSet }
+                hoverType={
+                    select(
+                        "Hover Type",
+                        {
+                            Background: "background",
+                            Highlighted: "highlighted"
+                        },
+                        "highlighted"
+                    )
+                }
+                icons={ SidePanelIcons }
                 routes={ ROUTES_WITH_CHILDREN }
                 selected={ selectedRoute }
                 footerHeight={ 0 }
                 headerHeight={ 0 }
                 mobileSidePanelVisibility={ false }
                 onSidePanelPusherClick={ null }
+                allowedScopes={ null }
             />
         </div>
     );
@@ -102,6 +127,57 @@ WithChildren.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 1 ].description
+        }
+    }
+};
+
+/**
+ * Story to display a categorized side panel.
+ *
+ * @return {React.ReactElement}
+ */
+export const Categorized = (): ReactElement => {
+
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(ROUTES_WITH_CHILDREN[0]);
+
+    const handleSidePanelItemClick = (route: RouteInterface | ChildRouteInterface): void => {
+        if (!route.children) {
+            setSelectedRoute(route);
+        }
+    };
+
+    return (
+        <div style={ { margin: "1em 0", width: "200px" } }>
+            <SidePanel
+                categorized={ true }
+                hoverType={
+                    select(
+                        "Hover Type",
+                        {
+                            Background: "background",
+                            Highlighted: "highlighted"
+                        },
+                        "background"
+                    )
+                }
+                onSidePanelItemClick={ handleSidePanelItemClick }
+                icons={ SidePanelIcons }
+                routes={ ROUTES_WITH_CHILDREN }
+                selected={ selectedRoute }
+                footerHeight={ 0 }
+                headerHeight={ 0 }
+                mobileSidePanelVisibility={ false }
+                onSidePanelPusherClick={ null }
+                allowedScopes={ null }
+            />
+        </div>
+    );
+};
+
+Categorized.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 2 ].description
         }
     }
 };

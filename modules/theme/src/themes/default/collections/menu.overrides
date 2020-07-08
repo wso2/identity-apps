@@ -181,9 +181,6 @@
                 &:before {
                     display: none;
                 }
-                &.active {
-                    background: transparent;
-                }
             }
         }
 
@@ -199,7 +196,30 @@
             }
         }
 
+        .side-panel-category {
+            font-size: @sidePanelCategoryFontSize;
+            text-transform: @sidePanelCategoryTextTransform;
+            color: @lightFontColor;
+            padding-left: @itemHorizontalPadding;
+            margin-bottom: @sidePanelCategoryMarginBottom;
+
+            &.with-dividers {
+                &:not(:first-child) {
+                    &:before {
+                        content: "";
+                        display: block;
+                        width: 100%;
+                        background-color: @defaultBorderColor;
+                        height: 1px;
+                        margin: 12px 0;
+                    }
+                }
+            }
+        }
+
         .side-panel-item {
+            border-radius: @defaultBorderRadius;
+
             .route-name {
                 cursor: pointer;
                 color: @sidePanelDefaultFontColor;
@@ -241,30 +261,38 @@
                 }
             }
 
-            &.active {
-                // override semantic ui menu item active background color
-                background-color: transparent;
+            &.hover-background {
+                margin-bottom: @sidePanelBackgroundHoveredItemMarginBottom;
+            }
 
-                .route-name {
-                    color: @sidePanelActiveFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelActiveFontColor;
+            &.active {
+                &.hover-highlighted {
+                    // override semantic ui menu item active background color
+                    background-color: transparent;
+
+                    .route-name {
+                        color: @sidePanelActiveFontColor;
+                    }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelActiveFontColor;
+                        }
                     }
                 }
             }
 
             &:hover {
-                // override semantic ui menu item hover background color
-                background-color: transparent;
+                &.hover-highlighted {
+                    // override semantic ui menu item hover background color
+                    background-color: transparent;
 
-                .route-name {
-                    color: @sidePanelHoverFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelHoverFontColor;
+                    .route-name {
+                        color: @sidePanelHoverFontColor;
+                    }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelHoverFontColor;
+                        }
                     }
                 }
             }
@@ -288,6 +316,11 @@
                     height: 8px;
                     width: 8px;
                     margin-top: 3px;
+                }
+            }
+            .categorized {
+                &:first-child {
+                    margin-top: 0;
                 }
             }
         }
