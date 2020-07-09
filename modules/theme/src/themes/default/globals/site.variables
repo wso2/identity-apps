@@ -44,6 +44,7 @@
 --------------------*/
 
 @primaryColor        : @orange;
+@secondaryColor      : @doveGray;
 @accentColor1        : #1a1c4c;
 @accentColor2        : #f5385b;
 @accentColor3        : #00b7e1;
@@ -70,6 +71,7 @@
 @dullGreen        : #34a850;
 @paleGray         : #d6d6d6;
 @alabaster        : #fcfcfc;
+@doveGray         : #616161;
 
 /*-------------------
      Image Sizes

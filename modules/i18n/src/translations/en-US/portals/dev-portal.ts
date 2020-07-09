@@ -1228,12 +1228,27 @@ export const devPortal: DevPortalNS = {
             },
             helpPanel: {
                 tabs: {
+                    configs: {
+                        content: {
+                            subTitle: "Update the pre defined configurations through the template or add new " +
+                                "configurations depending on the protocol (OIDC, SAML, WS-Trust, etc.) configured " +
+                                "for the application.",
+                            title: "Application Configurations"
+                        },
+                        heading: "Configurations Guide"
+                    },
                     docs: {
                         content: null,
                         heading: "Docs"
                     },
-                    info: {
+                    start: {
                         content: {
+                            endpoints: {
+                                subTitle: "If you implement your application without using a WSO2 SDK, the " +
+                                    "following server endpoints will be useful for you to implement authentication " +
+                                    "for the app.",
+                                title: "Server endpoints"
+                            },
                             oidcConfigurations: {
                                 labels: {
                                     authorize: "Authorize",
@@ -1256,10 +1271,23 @@ export const devPortal: DevPortalNS = {
                                     sso: "Single Sign-On"
                                 }
                             },
-                            subTitle: "Use the following endpoints to setup your application conveniently.",
-                            title: "Server Endpoints"
+                            trySample: {
+                                btn: "Explore samples",
+                                subTitle: "You can try out the samples which will demonstrate the authentication " +
+                                    "flow. Click the button below to download and deploy the sample application.",
+                                title: "Try with a sample"
+                            },
+                            useSDK: {
+                                btns: {
+                                    withSDK: "Using SDK",
+                                    withoutSDK: "Manually"
+                                },
+                                subTitle: "Install and use our SDKs to integrate authentication to your application " +
+                                    "with minimum number of code lines.",
+                                title: "Integrate your own app"
+                            }
                         },
-                        heading: "Info"
+                        heading: "What's Next?"
                     },
                     samples: {
                         content: {
