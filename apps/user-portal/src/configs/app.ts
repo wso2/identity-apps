@@ -46,7 +46,6 @@ export class Config {
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,
             appLoginPath: window["AppUtils"].getConfig().routes.login,
-            applicationName: window["AppUtils"].getConfig().ui.appName,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
@@ -103,9 +102,11 @@ export class Config {
     public static getUIConfig(): UIConfigInterface {
         return {
             announcements: window["AppUtils"].getConfig().ui.announcements,
+            appName: window["AppUtils"].getConfig().ui.appName,
             authenticatorApp: { apps: [ { link: "", name: "" } ] },
             copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             features: window["AppUtils"].getConfig().ui.features,
+            productName: window["AppUtils"].getConfig().ui.productName,
             titleText: window["AppUtils"].getConfig().appTitle
         };
     }

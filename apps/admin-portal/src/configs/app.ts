@@ -46,7 +46,7 @@ export class Config {
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,
             appLoginPath: window["AppUtils"].getConfig().routes.login,
-            applicationName: window["AppUtils"].getConfig().ui.appName,
+            appName: window["AppUtils"].getConfig().ui.appName,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
@@ -140,9 +140,11 @@ export class Config {
         return {
             announcements: window["AppUtils"].getConfig().ui.announcements,
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
+            appName: window["AppUtils"].getConfig().ui.appName,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             features: window["AppUtils"].getConfig().ui.features,
-            gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig
+            gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
+            productName: window["AppUtils"].getConfig().ui.productName
         };
     }
 }
