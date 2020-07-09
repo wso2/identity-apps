@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { AxiosResponse } from "axios";
 import { ListLayout, PageLayout } from "@wso2is/react-components";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 import { deleteRemoteRepoConfig, getRemoteRepoConfigList } from "../../api";
 import { CreateRemoteRepoConfig, RemoteRepoList } from "../../components";
-import { InterfaceRemoteRepoConfig, InterfaceRemoteRepoListResponse } from "../../models";
 import { UIConstants } from "../../constants";
-import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
-import { useTranslation } from "react-i18next";
+import { InterfaceRemoteRepoConfig, InterfaceRemoteRepoListResponse } from "../../models";
 import { triggerConfigDeployment } from "../../api/remote-repo-config";
 
 const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
@@ -52,8 +52,8 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             if (response.status === 200) {
                 setRemoteRepoConfig(response.data.remotefetchConfigurations);
             }
-        }).catch((error) => {
-            console.log(error)
+        }).catch(() => {
+            //Handle Error
         })
     }
 
