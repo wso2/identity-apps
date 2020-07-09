@@ -95,6 +95,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
     const [ helpPanelSDKContent, setHelpPanelSDKContent ] = useState<string>(undefined);
+    const [ helpPanelConfigContent, setHelpPanelConfigContent ] = useState<string>(undefined);
     const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<DocPanelUICardInterface>(undefined);
     const [ helpPanelSelectedSDK, setHelpPanelSelectedSDK ] = useState<DocPanelUICardInterface>(undefined);
     const [
@@ -310,6 +311,34 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     ]);
 
     /**
+     * Called when the technology is changed in the Configurations section.
+     */
+    useEffect(() => {
+        if (!helpPanelSelectedProtocol?.docs) {
+            return;
+        }
+
+        setHelpPanelSamplesContentRequestLoadingStatus(true);
+
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelSelectedProtocol.docs,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
+            .then((response) => {
+                setHelpPanelConfigContent(response);
+            })
+            .finally(() => {
+                setHelpPanelSamplesContentRequestLoadingStatus(false);
+            });
+    },[
+        helpPanelSelectedProtocol,
+        config.deployment.documentation.githubOptions.branch,
+        config.deployment.documentation.provider,
+        config.endpoints.documentationContent
+    ]);
+
+    /**
      * Remove template name if multiple protocols configured.
      */
     useEffect(() => {
@@ -459,7 +488,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 title={ `${ helpPanelSelectedProtocol.displayName } Configurations` }
                                 titleAs="h4"
                                 backButton={ samplesTabBackButtonEnabled && {
-                                    onClick: () => setHelpPanelSelectedSample(undefined),
+                                    onClick: () => setHelpPanelSelectedProtocol(undefined),
                                     text: t("devPortal:components.applications.helpPanel.tabs.samples." +
                                         "content.sample.goBack")
                                 } }
@@ -468,12 +497,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                             />
                             <Divider hidden/>
                             {
-                                helpPanelSelectedSample?.docs && (
+                                helpPanelSelectedProtocol?.docs && (
                                     isHelpPanelSamplesContentRequestLoading
                                         ? <ContentLoader dimmer/>
                                         : (
                                             <Markdown
-                                                source={ helpPanelSampleContent }
+                                                source={ helpPanelConfigContent }
                                                 data-testid={ `${ testId }-help-panel-configs-tab-markdown-renderer` }
                                             />
                                         )
