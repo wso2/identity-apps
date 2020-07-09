@@ -133,6 +133,7 @@
            {% endfor %}
            {% endif %}
         },
+        "productName": "{{ developer_portal.ui.product_name }}",
         "theme": {
             {% if developer_portal.ui.theme is defined %}
                 {% for key, value in developer_portal.ui.theme.items() %}

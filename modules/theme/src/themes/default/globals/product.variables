@@ -103,3 +103,6 @@
 @productTitleTextTransform: uppercase;
 @productTitleFontWeight: 400;
 @productTitleFontSize: 1.4rem;
+@productTitleAppNameMargin: 0 0 0 5px;
+@productTitleAppNameFontSize: inherit;
+@productTitleAppNameFontWeight: 300;
