@@ -32,8 +32,6 @@ import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { InterfaceRemoteRepoConfig } from "../../models";
 
-
-
 interface RemoteRepoListProp {
     repoObjectList: InterfaceRemoteRepoConfig[];
     handleConfigDelete: (repoConfig: InterfaceRemoteRepoConfig) => void;
