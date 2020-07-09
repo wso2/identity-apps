@@ -123,7 +123,6 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
         title: "Remote Repository General Configurations"
     }];
 
-    
     return (
         <Modal
             open={ true }
