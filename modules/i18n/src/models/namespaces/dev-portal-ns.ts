@@ -75,6 +75,30 @@ export interface DevPortalNS {
             };
             resultsIndicator: string;
         };
+        remoteConfig: {
+            placeholders: {
+                emptyList: {
+                    action: string,
+                    subtitles: {
+                        0: string,
+                        1: string,
+                        2: string
+                    },
+                    title: string
+                }
+            },
+            list: {
+                confirmations: {
+                    deleteConfig: Confirmation;
+                };
+            },
+            notifications: {
+                deleteConfig: Notification,
+                editConfig: Notification,
+                triggerConfig: Notification,
+                createConfig: Notification
+            }
+        };
         applications: {
             addWizard: {
                 steps: {

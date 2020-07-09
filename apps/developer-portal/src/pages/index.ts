@@ -23,3 +23,4 @@ export * from "./identity-providers";
 export * from "./customize";
 export * from "./overview";
 export * from "./privacy";
+export * from "./remote-repository-configuration";
