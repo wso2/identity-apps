@@ -25,7 +25,7 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.LiteRegisterApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeValidationRequest" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.CodeIntrospectResponse" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ExtendedUser" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.User" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
@@ -67,9 +67,9 @@
 
         if ((codeIntrospectResponse != null) && (codeIntrospectResponse.getUser() != null)
                 && (codeIntrospectResponse.getUser().getUsername() != null)) {
-            ExtendedUser extendedUser = codeIntrospectResponse.getUser();
-            String username = extendedUser.getUsername();
-            callback = callback + "?confirmation=" + confirmationKey + "&username=" + extendedUser.getUsername();
+            User user = codeIntrospectResponse.getUser();
+            String username = user.getUsername();
+            callback = callback + "?confirmation=" + confirmationKey + "&username=" + user.getUsername();
         } else {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg",
