@@ -37,6 +37,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { Config } from "./configs";
+import { UIConstants } from "./constants";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
 import { onHttpRequestError, onHttpRequestFinish, onHttpRequestStart, onHttpRequestSuccess } from "./utils";
@@ -94,7 +95,11 @@ I18n.init({
 ReactDOM.render(
     (
         <Provider store={ store }>
-            <ThemeProvider initialState={ { theme: window["AppUtils"].getConfig().ui.theme.name } }>
+            <ThemeProvider
+                initialState={ {
+                    theme: window["AppUtils"].getConfig().ui?.theme?.name ?? UIConstants.DEFAULT_THEME
+                } }
+            >
                 <BrowserRouter>
                     <App />
                 </BrowserRouter>
