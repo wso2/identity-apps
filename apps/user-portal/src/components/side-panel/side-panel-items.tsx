@@ -117,7 +117,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                                     as={ NavLink }
                                     to={ route.path }
                                     name={ route.name }
-                                    className={ `side-panel-item ${ activeRoute(route.path) }` }
+                                    className={ `side-panel-item ${ activeRoute(route.path) } hover-highlighted` }
                                     active={ activeRoute(route.path) === "active" }
                                     onClick={ onSidePanelItemClick }
                                     key={ index }
