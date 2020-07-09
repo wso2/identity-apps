@@ -53,6 +53,21 @@
         {% endif %}
     },
     "ui": {
+        "announcements": [
+            {% if developer_portal.ui.announcements is defined %}
+            {% for announcement in developer_portal.ui.announcements %}
+            {
+            {% for key, value in announcement.items() %}
+            {% if value is number %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            }{{ "," if not loop.last }}
+            {% endfor %}
+            {% endif %}
+        ],
         "appCopyright": "{{ developer_portal.ui.app_copyright }}",
         "appTitle": "{{ developer_portal.ui.app_title }}",
         "appName": "{{ developer_portal.ui.app_name }}",
@@ -117,6 +132,13 @@
                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
            {% endfor %}
            {% endif %}
+        },
+        "theme": {
+            {% if developer_portal.ui.theme is defined %}
+                {% for key, value in developer_portal.ui.theme.items() %}
+                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+                {% endfor %}
+            {% endif %}
         }
     }
 }

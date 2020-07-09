@@ -22,6 +22,8 @@ module.exports = () => {
             components: {
                 "example": "./components/example.tsx"
             }
-        }
+        },
+        routes: [
+        ]
     };
 };

@@ -409,6 +409,7 @@ export interface DevPortalNS {
                             heading: string;
                             hint: string;
                             fields: {
+                                bindingType: FormAttributes;
                                 expiry: FormAttributes;
                                 type: FormAttributes;
                             };

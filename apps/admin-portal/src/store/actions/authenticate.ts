@@ -17,6 +17,7 @@
  */
 
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
+import { TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import {
@@ -29,7 +30,7 @@ import {
     setSignOut
 } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { AUTHORIZATION_ENDPOINT, OAuth, OIDC_SESSION_IFRAME_ENDPOINT } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
 import { history } from "../../helpers";
 import { store } from "../index";
@@ -135,39 +136,40 @@ export const getProfileInformation = () => (dispatch): void => {
 export const handleSignIn = () => (dispatch) => {
     const oAuth = OAuth.getInstance();
     oAuth
-		.initialize({
-			baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-			callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
-			clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-			clientID: window["AppUtils"].getConfig().clientID,
-			enablePKCE: true,
-			responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-			scope: ["SYSTEM", "openid"],
-			serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
-		})
-		.then(() => {
-			oAuth
-				.signIn()
-				.then((response) => {
-					dispatch(
-						setSignIn({
-							// eslint-disable-next-line @typescript-eslint/camelcase
-							display_name: response.displayName,
-							email: response.email,
-							scope: response.allowedScopes,
-							username: response.username
-						})
-					);
-
-					dispatch(getProfileInformation());
-				})
-				.catch((error) => {
-					throw error;
-				});
-		})
-		.catch((error) => {
-			throw error;
-		});
+        .initialize({
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
+            enablePKCE: true,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
+            scope: [TokenConstants.SYSTEM_SCOPE],
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
+        })
+        .then(() => {
+            oAuth
+                .signIn()
+                .then((response) => {
+                    dispatch(
+                        setSignIn({
+                            // eslint-disable-next-line @typescript-eslint/camelcase
+                            display_name: response.displayName,
+                            email: response.email,
+                            scope: response.allowedScopes,
+                            username: response.username
+                        })
+                    );
+                    sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
+                    sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
+                    dispatch(getProfileInformation());
+                })
+                .catch((error) => {
+                    throw error;
+                });
+        })
+        .catch((error) => {
+            throw error;
+        });
 };
 
 /**

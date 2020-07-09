@@ -67,7 +67,7 @@
         <![endif]-->
     </head>
 
-    <body>
+    <body class="login-portal layout sms-otp-portal-layout">
         <main class="center-segment">
             <div class="ui container medium center aligned middle aligned">
                 <!-- product-title -->

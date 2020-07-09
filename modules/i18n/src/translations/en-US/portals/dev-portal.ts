@@ -715,6 +715,9 @@ export const devPortal: DevPortalNS = {
                     sections: {
                         accessToken: {
                             fields: {
+                                bindingType: {
+                                    label: "Token binding type"
+                                },
                                 expiry: {
                                     hint: "Configure the user access token expiry time (in seconds).",
                                     label: "User access token expiry time",

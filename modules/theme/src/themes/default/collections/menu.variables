@@ -42,6 +42,11 @@
 @sidePanelChildItemGroupLeftPadding: 15px;
 @sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
 
+@sidePanelCategoryFontSize: 10px;
+@sidePanelCategoryTextTransform: uppercase;
+@sidePanelCategoryMarginBottom: 10px;
+@sidePanelBackgroundHoveredItemMarginBottom: 10px;
+
 /*-------------------
       Pagination
 --------------------*/
@@ -55,3 +60,4 @@
 @userDropdownMinWidth: 270px;
 @userDropdownPadding: 8px;
 @userDropdownLinkMargin: 8px 0;
+@userDropdownLinkedAccountMargin: 8px 0;

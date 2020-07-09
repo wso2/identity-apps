@@ -453,6 +453,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                     type="idp"
                                     templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
                                     templateIcons={ IdPIcons }
+                                    templateIconOptions={ {
+                                        fill: "primary"
+                                    } }
+                                    templateIconSize="tiny"
                                     heading={ t("devPortal:components.idp.templates.quickSetup.heading") }
                                     subHeading={ t("devPortal:components.idp.templates.quickSetup.subHeading") }
                                     onTemplateSelect={ handleTemplateSelection }
@@ -484,6 +488,10 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         type="idp"
                         templates={ [ ExpertModeTemplate ] }
                         templateIcons={ IdPIcons }
+                        templateIconOptions={ {
+                            fill: "primary"
+                        } }
+                        templateIconSize="tiny"
                         heading={ t("devPortal:components.idp.templates.manualSetup.heading") }
                         subHeading={ t("devPortal:components.idp.templates.manualSetup.subHeading") }
                         onTemplateSelect={ handleTemplateSelection }

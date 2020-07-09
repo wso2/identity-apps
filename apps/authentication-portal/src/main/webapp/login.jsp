@@ -145,7 +145,7 @@
         }
     %>
 </head>
-<body onload="checkSessionKey()">
+<body class="login-portal layout authentication-portal-layout" onload="checkSessionKey()">
     <main class="center-segment">
         <div class="ui container medium center aligned middle aligned">
 

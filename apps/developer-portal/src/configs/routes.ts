@@ -20,6 +20,12 @@ import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
+import { EXTENSION_ROUTES } from "../extensions";
+
+/**
+ * Load extension routes if available.
+ */
+const extensions = EXTENSION_ROUTES();
 
 /**
  * Dashboard Layout Routes array.
@@ -153,6 +159,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: false
     },
+    ...extensions,
     {
         component: null,
         icon: null,

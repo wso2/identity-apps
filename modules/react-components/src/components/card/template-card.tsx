@@ -67,6 +67,10 @@ export interface TemplateCardPropsInterface extends TestableComponentInterface {
      */
     imageSize?: GenericIconSizes;
     /**
+     * Icon options.
+     */
+    imageOptions?: Omit<GenericIconProps, "icon" | "size">;
+    /**
      * Template card onclick event.
      * @param {React.MouseEvent<HTMLAnchorElement>} e - Event,
      * @param {CardProps} data - Card data.
@@ -123,6 +127,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         id,
         inline,
         image,
+        imageOptions,
         imageSize,
         onClick,
         selected,
@@ -157,12 +162,13 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                 image && (
                     <Card.Content className="card-image-container">
                         <GenericIcon
+                            square
+                            transparent
                             className="card-image"
                             size={ imageSize }
                             icon={ image }
                             data-testid={ `${ testId }-image` }
-                            square
-                            transparent
+                            { ...imageOptions }
                         />
                     </Card.Content>
                 )

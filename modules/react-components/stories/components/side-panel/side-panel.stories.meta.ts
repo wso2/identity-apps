@@ -18,6 +18,13 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
+import { ReactComponent as AppIcon } from "../../assets/images/icons/app-icon.svg";
+import { ReactComponent as ArrowRight } from "../../assets/images/icons/arrow-right-icon.svg";
+import { ReactComponent as ControlsIcon } from "../../assets/images/icons/controls-icon.svg";
+import { ReactComponent as DashboardIcon } from "../../assets/images/icons/dashboard-icon.svg";
+import { ReactComponent as LockIcon } from "../../assets/images/icons/lock-icon.svg";
+import { ReactComponent as ToolsIcon } from "../../assets/images/icons/tools-icon.svg";
+import { ReactComponent as UserIcon } from "../../assets/images/icons/user-icon.svg";
 import { StoryCategories } from "../../hierarchy";
 import { StoryMetaInterface } from "../../models";
 
@@ -32,6 +39,10 @@ export const meta: StoryMetaInterface = {
         {
             description: "Side panel view with child items.",
             title: "With child items"
+        },
+        {
+            description: "Side panel view with categories.",
+            title: "Categorized"
         }
     ],
     title: `${ StoryCategories.COMPONENTS }/Side Panel`
@@ -39,6 +50,7 @@ export const meta: StoryMetaInterface = {
 
 export const ROUTES: RouteInterface[] = [
     {
+        category: "Overview",
         component: null,
         icon: "overview",
         id: "overview",
@@ -48,6 +60,7 @@ export const ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "Overview",
         component: null,
         featureStatus: "alpha",
         icon: "apps",
@@ -58,6 +71,7 @@ export const ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "Overview",
         component: null,
         icon: "personal",
         id: "personalInfo",
@@ -67,6 +81,7 @@ export const ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "Security",
         component: null,
         featureStatus: "new",
         icon: "security",
@@ -77,6 +92,7 @@ export const ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "Workflows",
         component: null,
         icon: "operations",
         id: "operations",
@@ -89,6 +105,7 @@ export const ROUTES: RouteInterface[] = [
 
 export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
     {
+        category: "General",
         component: null,
         icon: "overview",
         id: "overview",
@@ -98,6 +115,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "General",
         children: [
             {
                 component: null,
@@ -128,6 +146,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "General",
         children: [
             {
                 component: null,
@@ -167,6 +186,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "Security",
         component: null,
         featureStatus: "new",
         icon: "security",
@@ -177,6 +197,7 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "Workflows",
         component: null,
         icon: "operations",
         id: "operations",
@@ -186,3 +207,13 @@ export const ROUTES_WITH_CHILDREN: RouteInterface[] = [
         showOnSidePanel: true
     }
 ];
+
+export const SidePanelIcons = {
+    account: ControlsIcon,
+    apps: AppIcon,
+    childIcon: ArrowRight,
+    operations: ToolsIcon,
+    overview: DashboardIcon,
+    personal: UserIcon,
+    security: LockIcon
+};

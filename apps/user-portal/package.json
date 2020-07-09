@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/user-portal",
-    "version": "1.0.309",
+    "version": "1.0.323",
     "description": "WSO2 Identity Server User Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -15,8 +15,8 @@
         "build-prod": "run-script-os",
         "build-prod:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production",
         "build-prod:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production",
-        "clean": "rm -rf build && npm run clean:themes",
-        "clean:themes": "rm -rf src/themes",
+        "clean": "rimraf build && npm run clean:themes",
+        "clean:themes": "rimraf src/themes",
         "copy:themes": "node scripts/copy-themes.js",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
         "postinstall": "node scripts/post-install.js",
@@ -27,15 +27,15 @@
         "test": "jest --passWithNoTests"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.309",
-        "@wso2is/core": "^1.0.309",
-        "@wso2is/forms": "^1.0.309",
-        "@wso2is/http": "^1.0.309",
-        "@wso2is/i18n": "^1.0.309",
-        "@wso2is/oauth-web-worker": "^1.0.309",
-        "@wso2is/react-components": "^1.0.309",
-        "@wso2is/theme": "^1.0.309",
-        "@wso2is/validation": "^1.0.309",
+        "@wso2is/authentication": "^1.0.323",
+        "@wso2is/core": "^1.0.323",
+        "@wso2is/forms": "^1.0.323",
+        "@wso2is/http": "^1.0.323",
+        "@wso2is/i18n": "^1.0.323",
+        "@wso2is/oauth-web-worker": "^1.0.323",
+        "@wso2is/react-components": "^1.0.323",
+        "@wso2is/theme": "^1.0.323",
+        "@wso2is/validation": "^1.0.323",
         "qrcode.react": "^1.0.0"
     },
     "devDependencies": {
@@ -50,6 +50,7 @@
         "lodash": "*",
         "log": "*",
         "moment": "*",
+        "react-helmet": "*",
         "react-i18next": "*",
         "react-notification-system": "*",
         "react-redux": "*",
@@ -57,6 +58,7 @@
         "redux": "*",
         "redux-devtools-extension": "*",
         "redux-thunk": "*",
+        "rimraf": "*",
         "thread-loader": "*",
         "ua-parser-js": "*"
     }

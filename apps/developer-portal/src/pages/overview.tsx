@@ -214,6 +214,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                 ) }
                 subHeading={ t("devPortal:pages.overview.subTitle") }
                 icon={ OverviewPageIllustrations.jumbotronIllustration }
+                iconOptions={ {
+                    fill: "primary"
+                } }
             />
             <PageLayout
                 contentTopMargin={ false }
