@@ -416,4 +416,12 @@ export class ApplicationManagementUtils {
     public static getSampleDocsKey = (template: string) => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Samples`;
 
+    /**
+     * Get the docs key for the Configurations.
+     *
+     * @param template - string
+     */
+    public static getConfigDocsKey = (template: string) => `${
+        ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
+
 }
