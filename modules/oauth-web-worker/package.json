@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/oauth-web-worker",
-    "version": "1.0.323",
+    "version": "1.0.324",
     "description": "OAuth authentication using web worker",
     "main": "dist/main.js",
     "module": "dist/main.js",
