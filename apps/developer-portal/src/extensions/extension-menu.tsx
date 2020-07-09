@@ -16,14 +16,20 @@
  * under the License.
  */
 
-module.exports = () => {
-    return {
-        sections: {
-            components: {
-                "example": "./components/example.tsx"
-            }
-        },
-        routes: [
-        ]
-    };
-};
+import { RouteInterface } from "@wso2is/core/models";
+import * as getConfig from "./config";
+import  { lazy } from "react";
+
+/**
+ * This will dynamically add extension routes to the application
+ */
+export const EXTENSION_ROUTES = (): RouteInterface[]  => {
+    const routes: RouteInterface[]  = getConfig()?.routes;
+
+    routes.forEach(route => {
+        const routePath = route.components;
+        route.component = lazy(() => import(`${routePath}`));
+    })
+
+    return routes;
+}
