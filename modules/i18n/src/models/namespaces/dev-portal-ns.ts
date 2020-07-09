@@ -85,6 +85,13 @@ export interface DevPortalNS {
                         2: string
                     },
                     title: string
+                },
+                emptyDetails: {
+                    subtitles: {
+                        0: string,
+                        1: string
+                    },
+                    title: string
                 }
             },
             list: {

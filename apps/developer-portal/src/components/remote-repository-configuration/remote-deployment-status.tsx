@@ -36,7 +36,7 @@ export const DeploymentStatus: FunctionComponent<InterfaceDeployementStatusProps
     return (
         <>
             {
-                statusObject && statusObject.remoteFetchRevisionStatuses.length > 0 &&
+                statusObject && statusObject.count > 0 && statusObject.remoteFetchRevisionStatuses.length > 0 &&
                 statusObject.remoteFetchRevisionStatuses.map((value: InterfaceRemoteFetchStatus, index: number) => {
                     return (
                         <Segment key={ index } className="deploymentStatus">

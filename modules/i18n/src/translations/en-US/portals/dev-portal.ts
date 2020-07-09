@@ -72,6 +72,13 @@ export const devPortal: DevPortalNS = {
                         2: "clicking on the button below."
                     },
                     title: "Add new Remote Repository Config"
+                },
+                emptyDetails: {
+                    subtitles: {
+                        0: "The configuration is not yet deployed.",
+                        1: "Please deploy the configuration and check back."
+                    },
+                    title: "Configuration is not deployed."
                 }
             },
             list: {
