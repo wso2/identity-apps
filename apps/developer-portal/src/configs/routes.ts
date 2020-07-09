@@ -20,6 +20,12 @@ import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
+import { EXTENSION_ROUTES } from "../extensions";
+
+/**
+ * Load extension routes if available.
+ */
+const extensions = EXTENSION_ROUTES();
 
 /**
  * Dashboard Layout Routes array.
@@ -114,6 +120,28 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        children: [
+            {
+                component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config-edit")),
+                exact: true,
+                icon: "overview",
+                id: "remote-repo-edit",
+                name: "Remote Repo Config Edit",
+                path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
+                protected: true,
+                showOnSidePanel: false
+            },
+        ],
+        component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config")),
+        exact: true,
+        icon: "overview",
+        id: "remote-repo",
+        name: "Remote Repo Config",
+        path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
         component: lazy(() => import("../pages/customize")),
         icon: "overview",
         id: "customize",
@@ -131,6 +159,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: false
     },
+    ...extensions,
     {
         component: null,
         icon: null,

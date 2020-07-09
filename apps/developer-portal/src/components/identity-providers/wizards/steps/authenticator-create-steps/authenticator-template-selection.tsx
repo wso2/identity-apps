@@ -118,6 +118,9 @@ export const AuthenticatorTemplateSelection:
                                     key={ index }
                                     header={ template.name }
                                     image={ IdPIcons[template.image] }
+                                    imageOptions={ {
+                                        fill: "primary"
+                                    } }
                                     onClick={ (): void => handleTemplateSelection(template) }
                                     selected={ selectedTemplate?.id === template.id }
                                     data-testid={ `${ testId }-template-${ index }` }
@@ -146,6 +149,9 @@ export const AuthenticatorTemplateSelection:
                                     key={ index }
                                     header={ option.displayName }
                                     image={ option.icon }
+                                    imageOptions={ {
+                                        fill: "primary"
+                                    } }
                                     onClick={ (): void => handleManualModeOptionSelection(option) }
                                     selected={ selectedManualModeOption?.authenticatorId === option.authenticatorId }
                                     data-testid={ `${ testId }-manual-option-${ index }` }

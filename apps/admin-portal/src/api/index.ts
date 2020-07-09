@@ -20,6 +20,6 @@ export * from "./certificates";
 export * from "./claims";
 export * from "./email-templates";
 export * from "./roles";
-export * from "./server-configurations";
+export * from "./governance-connectors";
 export * from "./user-stores";
 export * from "./users";

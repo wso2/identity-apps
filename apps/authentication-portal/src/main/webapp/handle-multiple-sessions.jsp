@@ -63,7 +63,7 @@
         <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 </head>
-<body>
+<body class="login-portal layout authentication-portal-layout">
     <main class="center-segment">
         <div class="ui container medium center aligned middle">
 

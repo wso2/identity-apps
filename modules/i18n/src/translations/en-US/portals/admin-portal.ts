@@ -922,6 +922,52 @@ export const adminPortal: AdminPortalNS = {
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
+        governanceConnectors: {
+            notifications: {
+                getConnector: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving governance connector.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                getConnectorCategories: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Retrieval Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while retrieving governance connector categories.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "",
+                        message: ""
+                    }
+                },
+                updateConnector: {
+                    error: {
+                        description: "{{ description }}",
+                        message: "Update Error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating governance connector.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "{{ name }} Connector updated successfully.",
+                        message: "Update Successful."
+                    }
+                }
+            }
+        },
         groups: {
             advancedSearch: {
                 form: {
@@ -1529,462 +1575,6 @@ export const adminPortal: AdminPortalNS = {
             }
         },
         serverConfigs: {
-            accountRecovery: {
-                actionTitles: {
-                    config: "More"
-                },
-                confirmation: {
-                    heading: "Confirmation",
-                    message: "Do you wish to save the configurations related to user account recovery?"
-                },
-                description: "Configure how account recovery should happen with your users.",
-                heading: "Account Recovery",
-                notifications: {
-                    getConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving the account recovery configurations.",
-                            message: "Something went wrong"
-                        },
-                        success: {
-                            description: "",
-                            message: ""
-                        }
-                    },
-                    updateConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the account recovery configurations.",
-                            message: "Update Successful"
-                        }
-                    },
-                    updateEnableNotificationPasswordRecovery: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated notification based password recovery status.",
-                            message: ""
-                        }
-                    },
-                    updateEnableUsernameRecovery: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated username recovery status.",
-                            message: ""
-                        }
-                    },
-                    updateNotificationPasswordRecoveryReCaptcha: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully configured reCaptcha for notification based password recovery.",
-                            message: ""
-                        }
-                    },
-                    updateSecurityQuestionPasswordRecoveryReCaptcha: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully configured security question based password recovery status.",
-                            message: ""
-                        }
-                    },
-                    updateUsernameRecoveryReCaptcha: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the account recovery configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully configured reCaptcha for username recovery.",
-                            message: ""
-                        }
-                    }
-                },
-                otherSettings: {
-                    form: {
-                        enableForcedChallengeQuestions: {
-                            hint: "Force users to provide answers to challenge questions during sign in",
-                            label: "Enable forced challenge questions"
-                        },
-                        enableInternalNotificationManagement: {
-                            hint: "Set false if the client application handles notification sending",
-                            label: "Enable internal notification management"
-                        },
-                        notifyQuestionRecoveryStart: {
-                            label: "Notify when questions based recovery starts"
-                        },
-                        notifyRecoverySuccess: {
-                            label: "Notify when recovery success"
-                        },
-                        reCaptchaMaxFailedAttempts: {
-                            label: "Max failed attempts for reCaptcha",
-                            placeholder: "2",
-                            validations: {
-                                empty: "Max failed attempts for reCaptcha is required."
-                            }
-                        },
-                        recoveryCallbackURLRegex: {
-                            hint: "Callback URL regex for the recovery.",
-                            label: "Recovery callback URL regex",
-                            placeholder: ".*",
-                            validations: {
-                                empty: "Recovery callback URL regex is required."
-                            }
-                        },
-                        recoveryLinkExpiryTime: {
-                            hint: "Specify the time to expire the recovery link in minutes.",
-                            label: "Recovery link expiry time",
-                            placeholder: "1440",
-                            validations: {
-                                empty: "Number of questions required for password recovery is required."
-                            }
-                        },
-                        smsOTPExpiryTime: {
-                            hint: "Specify the time to expire the SMS OTP in minutes.",
-                            label: "SMS OTP expiry time",
-                            placeholder: "1",
-                            validations: {
-                                empty: "Number of questions required for password recovery is required."
-                            }
-                        }
-                    },
-                    heading: "Other Settings"
-                },
-                passwordRecovery: {
-                    form: {
-                        enableNotificationBasedRecovery: {
-                            label: "Enable notification based password recovery"
-                        },
-                        enableReCaptchaForNotificationBasedRecovery: {
-                            hint: "reCaptcha will be prompted during notification based password recovery.",
-                            label: "Enable reCaptcha for notification based password recovery"
-                        },
-                        enableReCaptchaForSecurityQuestionBasedRecovery: {
-                            hint: "Show captcha for challenge question based password recovery",
-                            label: "Enable reCaptcha for security questions based password recovery"
-                        },
-                        enableSecurityQuestionBasedRecovery: {
-                            label: "Enable security question based password recovery"
-                        },
-                        noOfQuestionsRequired: {
-                            hint: "The user will have to successfully answer this number of security questions to " +
-                                "recover the password.",
-                            label: "Number of questions required for password recovery",
-                            placeholder: "2",
-                            validations: {
-                                empty: "Number of questions required for password recovery is required."
-                            }
-                        }
-                    },
-                    heading: "Password Recovery"
-                },
-                usernameRecovery: {
-                    form: {
-                        enable: {
-                            label: "Enable username recovery"
-                        },
-                        enableReCaptcha: {
-                            hint: "reCaptcha will be prompted during the username recovery flow.",
-                            label: "Enable reCaptcha for username recovery"
-                        }
-                    },
-                    heading: "Username Recovery"
-                }
-            },
-            loginPolicies: {
-                accountDisable: {
-                    form: {
-                        accountDisableInternalNotificationManagement: {
-                            hint: "If disabled, the client application should handle notification sending.",
-                            label: "Manage account disabling notifications internally"
-                        },
-                        accountDisablingEnable: {
-                            hint: "Allow administrator to disable user accounts.",
-                            label: "Allow the administrator to disable user accounts."
-                        }
-                    },
-                    heading: "Account Disabling"
-                },
-                accountLock: {
-                    form: {
-                        accountLockEnable: {
-                            hint: "Lock user account on failed login attempts.",
-                            label: "Lock user accounts on failed login attempts."
-                        },
-                        accountLockInternalNotificationManagement: {
-                            hint: "If disabled, the client application should handle notification sending.",
-                            label: "Manage account locking notifications internally"
-                        },
-                        accountLockTime: {
-                            hint: "Initial account lock time period in minutes.",
-                            label: "Initial account lock duration",
-                            placeholder: "5"
-                        },
-                        accountLockTimeIncrementFactor: {
-                            hint: "Account lock duration will be increased by this factor. " +
-                                "Ex: Initial duration: 5m; Increment factor: 2; Next lock duration: 5 x 2 = 10m",
-                            label: "Account lock duration increment factor",
-                            placeholder: "2"
-                        },
-                        maxFailedLoginAttemptsToAccountLock: {
-                            hint: "Number of failed login attempts allowed until account lock.",
-                            label: "Maximum failed login attempts",
-                            placeholder: "2"
-                        }
-                    },
-                    heading: "Account Locking"
-                },
-                actionTitles: {
-                    config: "More"
-                },
-                confirmation: {
-                    heading: "Confirmation",
-                    message: "Do you wish to save the configurations related to login policies?"
-                },
-                description: "Configure the login policies of the system.",
-                heading: "Login Policies",
-                notifications: {
-                    getConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving the login policies.",
-                            message: "Retrieval Error"
-                        },
-                        success: {
-                            description: "",
-                            message: ""
-                        }
-                    },
-                    updateAccountDisableInternalNotificationManagement: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the account disabling notification settings.",
-                            message: ""
-                        }
-                    },
-                    updateAccountDisablingEnable: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the account disabling policy.",
-                            message: ""
-                        }
-                    },
-                    updateAccountLockEnable: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the account locking policy.",
-                            message: ""
-                        }
-                    },
-                    updateConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the login policies.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the login policies.",
-                            message: "Update Successful"
-                        }
-                    }
-                },
-                reCaptcha: {
-                    form: {
-                        maxFailedLoginAttemptsToReCaptcha: {
-                            hint: "Number of failed login attempts allowed until prompting reCaptcha.",
-                            label: "Maximum failed login attempts",
-                            placeholder: "3"
-                        },
-                        reCaptchaPreference: {
-                            label: "Select reCaptcha preference.",
-                            reCaptchaAfterMaxFailedAttemptsEnable: {
-                                label: "Prompt reCaptcha after max failed attempts"
-                            },
-                            reCaptchaAlwaysEnable: {
-                                label: "Always prompt reCaptcha"
-                            }
-                        }
-                    },
-                    heading: "Captcha for SSO Login"
-                }
-            },
-            passwordPolicies: {
-                actionTitles: {
-                    config: "More"
-                },
-                confirmation: {
-                    heading: "Confirmation",
-                    message: "Do you wish to save the configurations related to password policies?"
-                },
-                description: "Configure the password policies of the system.",
-                heading: "Password Policies",
-                notifications: {
-                    accountDisablingEnable: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the password policies.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the account disabling policy.",
-                            message: ""
-                        }
-                    },
-                    accountLockEnable: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the password policies.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the account locking policy.",
-                            message: ""
-                        }
-                    },
-                    getConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving the password policies.",
-                            message: "Retrieval Error"
-                        },
-                        success: {
-                            description: "",
-                            message: ""
-                        }
-                    },
-                    updateConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the password policies.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the password policies.",
-                            message: "Update Successful"
-                        }
-                    }
-                },
-                passwordHistory: {
-                    form: {
-                        enable: {
-                            hint: "Restrict users from using previously used passwords.",
-                            label: "Validate password history"
-                        },
-                        passwordHistoryCount: {
-                            hint: "Restrict reusing last n number of password during password update",
-                            label: "Password history validation count",
-                            placeholder: "3",
-                            validations: {
-                                empty: "Password history validation count cannot be empty."
-                            }
-                        }
-                    },
-                    heading: "Password History"
-                },
-                passwordPatterns: {
-                    form: {
-                        enable: {
-                            hint: "",
-                            label: "Validate passwords based on a policy pattern"
-                        },
-                        errorMessage: {
-                            hint: "This error message will be displayed when a pattern violation is ditected.",
-                            label: "Error message on pattern violation"
-                        },
-                        policyMaxLength: {
-                            hint: "Maximum number of characters in the password.",
-                            label: "Maximum number of characters"
-                        },
-                        policyMinLength: {
-                            hint: "Minimum number of characters in the password.",
-                            label: "Minimum number of characters"
-                        },
-                        policyPattern: {
-                            hint: "A regex pattern to validate the password.",
-                            label: "Password pattern regex"
-                        }
-                    },
-                    heading: "Password Patterns"
-                }
-            },
             realmConfiguration: {
                 actionTitles: {
                     config: "More"
@@ -2053,143 +1643,6 @@ export const adminPortal: AdminPortalNS = {
                             message: "Update Successful"
                         }
                     }
-                }
-            },
-            selfRegistration: {
-                actionTitles: {
-                    config: "More"
-                },
-                confirmation: {
-                    heading: "Confirmation",
-                    message: "Do you wish to save the configurations related to user self registration?"
-                },
-                description: "Configure how the user self registration should happen with your users.",
-                form: {
-                    callbackURLRegex: {
-                        hint: "This prefix will be used to validate the callback URL.",
-                        label: "User self registration callback URL prefix",
-                        placeholder: "https://localhost:9443/authenticationendpoint/login.do",
-                        validations: {
-                            empty: "User self registration callback URL regex is required."
-                        }
-                    },
-                    enable: {
-                        label: "User self registration"
-                    },
-                    enableAccountLockOnCreation: {
-                        label: "Lock user account on creation"
-                    },
-                    enableReCaptcha: {
-                        label: "Enable reCaptcha"
-                    },
-                    internalNotificationManagement: {
-                        label: "Internal notification management"
-                    },
-                    smsOTPExpiryTime: {
-                        hint: "Specify the expiry time in minutes for the SMS OTP.",
-                        label: "User self registration SMS OTP expiry time",
-                        placeholder: "1",
-                        validations: {
-                            empty: "User self registration SMS OTP expiry time is required."
-                        }
-                    },
-                    verificationLinkExpiryTime: {
-                        hint: "Specify the expiry time in minutes for the verification link.",
-                        label: "User self registration verification link expiry time",
-                        placeholder: "1440",
-                        validations: {
-                            empty: "User self registration verification link expiry time is required."
-                        }
-                    }
-                },
-                heading: "User Self Registration",
-                notifications: {
-                    getConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Retrieval Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while retrieving the self registration configurations.",
-                            message: "Retrieval Error"
-                        },
-                        success: {
-                            description: "",
-                            message: ""
-                        }
-                    },
-                    updateAccountLockOnCreation: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated self registration account lock on creation status.",
-                            message: ""
-                        }
-                    },
-                    updateConfigurations: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated the self registration configurations.",
-                            message: "Update Successful"
-                        }
-                    },
-                    updateEnable: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated self registration enabled status.",
-                            message: ""
-                        }
-                    },
-                    updateInternalNotificationManagement: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated self registration internal notification management " +
-                                "status.",
-                            message: ""
-                        }
-                    },
-                    updateReCaptcha: {
-                        error: {
-                            description: "{{ description }}",
-                            message: "Update Error"
-                        },
-                        genericError: {
-                            description: "An error occurred while updating the self registration configurations.",
-                            message: "Update Error"
-                        },
-                        success: {
-                            description: "Successfully updated self registration enable reCaptcha status.",
-                            message: ""
-                        }
-                    }
-
                 }
             }
         },

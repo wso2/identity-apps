@@ -136,6 +136,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                         : null
                                 }
                                 templateIcons={ ApplicationTemplateIllustrations }
+                                templateIconOptions={ {
+                                    fill: "primary"
+                                } }
+                                templateIconSize="tiny"
                                 heading={ t("devPortal:components.applications.templates.quickSetup.heading") }
                                 subHeading={ t("devPortal:components.applications.templates.quickSetup.subHeading") }
                                 onTemplateSelect={ handleTemplateSelection }
@@ -174,6 +178,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                             : null
                     }
                     templateIcons={ ApplicationTemplateIllustrations }
+                    templateIconOptions={ {
+                        fill: "primary"
+                    } }
+                    templateIconSize="tiny"
                     heading={ t("devPortal:components.applications.templates.manualSetup.heading") }
                     subHeading={ t("devPortal:components.applications.templates.manualSetup.subHeading") }
                     onTemplateSelect={ handleTemplateSelection }

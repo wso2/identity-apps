@@ -92,3 +92,14 @@
 @menuBorder: @menuBorderWidth solid @menuBorderColor;
 @menuBoxShadow: @raisedShadow;
 @menuBorderRadius: @borderRadius;
+
+/*-----------------------------
+      Product Branding
+------------------------------*/
+
+@productLogoHeight: 22px;
+@productLogoWidth: 60px;
+
+@productTitleTextTransform: uppercase;
+@productTitleFontWeight: 400;
+@productTitleFontSize: 1.4rem;

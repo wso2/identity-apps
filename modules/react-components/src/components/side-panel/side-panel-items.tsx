@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement } from "react";
+import { CategorizedRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
+import React, { Fragment, FunctionComponent, ReactElement } from "react";
 import { Menu } from "semantic-ui-react";
 import { CommonSidePanelPropsInterface } from "./side-panel";
 import { SidePanelItem } from "./side-panel-item";
@@ -29,7 +30,7 @@ export interface SidePanelItemsPropsInterface extends CommonSidePanelPropsInterf
     /**
      * Set of routes.
      */
-    routes: RouteInterface[];
+    routes: RouteInterface[] | CategorizedRouteInterface | any;
     /**
      * Panel type.
      */
@@ -56,11 +57,19 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
         desktopContentTopSpacing,
         headerHeight,
         routes,
+        showCategoryDividers,
         sidePanelPosition,
         sidePanelTopMargin,
         type,
         [ "data-testid" ]: testId
     } = props;
+
+    const categoryClasses = classNames(
+        "side-panel-category",
+        {
+            "with-dividers": showCategoryDividers
+        }
+    );
 
     const calcSidePanelTopMargin = (): string | undefined => {
         if (!sidePanelTopMargin) {
@@ -68,9 +77,9 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
         }
 
         if (typeof sidePanelTopMargin === "number") {
-            return `${sidePanelTopMargin}px`;
+            return `${ sidePanelTopMargin }px`;
         } else if (typeof sidePanelTopMargin === "boolean" && sidePanelTopMargin === true) {
-            return `${headerHeight + desktopContentTopSpacing}px`;
+            return `${ headerHeight + desktopContentTopSpacing }px`;
         }
 
         return undefined;
@@ -83,20 +92,42 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
         }
         : null;
 
+    /**
+     * Renders a re-usable side panel item.
+     *
+     * @param {RouteInterface} route - Route object.
+     * @param {number} index - Index.
+     * @return {any}
+     */
+    const renderItem = (route: RouteInterface, index: number) => (
+        <SidePanelItem
+            key={ route.level ? `level-${ route.level }-${ index }` : `level-${ 0 }-${ index }` }
+            route={ route }
+            data-testid={ `${ testId }-item` }
+            allowedScopes={ allowedScopes }
+            { ...props }
+        />
+    );
+
     return (
-        <Menu className={ `side-panel ${type}` } style={ style } data-testid={ testId } vertical fluid>
+        <Menu className={ `side-panel ${ type }` } style={ style } data-testid={ testId } vertical fluid>
             {
-                routes
-                    ? routes.map((route, index) => (
-                        <SidePanelItem
-                            key={ route.level ? `level-${route.level}-${index}` : `level-${0}-${index}` }
-                            route={ route }
-                            data-testid={ `${testId}-item` }
-                            allowedScopes={ allowedScopes }
-                            { ...props }
-                        />
-                    ))
-                    : null
+                routes && (
+                    routes instanceof Array
+                        ? routes.map((route, index) => (
+                            renderItem(route, index)
+                        ))
+                        : Object.entries(routes).map(([ key, value ]) => (
+                            <Fragment key={ key }>
+                                <div className={ categoryClasses }>{ key }</div>
+                                {
+                                    value instanceof Array && value.map((route, index) => (
+                                        renderItem(route, index)
+                                    ))
+                                }
+                            </Fragment>
+                        ))
+                )
             }
         </Menu>
     );

@@ -152,6 +152,12 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                     <Suspense fallback={ <ContentLoader dimmer/> }>
                                         <Helmet>
                                             <link
+                                                rel="shortcut icon"
+                                                href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
+                                                `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
+                                                `${ state.theme }/assets/images/favicon.ico` }
+                                            />
+                                            <link
                                                 href={ `${window["AppUtils"].getConfig().clientOrigin}/` + 
                                                     `${window["AppUtils"].getConfig().appBase}/libs/themes/` + 
                                                     `${ state.theme }/theme.min.css` }

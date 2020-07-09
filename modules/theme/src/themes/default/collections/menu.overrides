@@ -21,7 +21,7 @@
          Theme Overrides
 *******************************/
 
-.ui.menu.fixed {
+.ui.menu {
     &.app-header, &.app-footer {
         .item {
             &:hover, &:active, &:focus, &:visited {
@@ -32,6 +32,10 @@
     &.app-header {
         box-shadow: none;
 
+        &.has-announcement {
+            display: block;
+            height: auto;
+        }
         .user-dropdown {
             &:hover, &:active, &:focus {
                 background: transparent;
@@ -74,26 +78,24 @@
                 .linked-accounts-list {
                     max-height: 200px;
                     overflow: auto;
-                }
-                .linked-account {
-                    background: @whiteSmoke;
-                    border-top: 1px solid #ccc;
-                    border-top-color: rgba(0,0,0,.2);
-                    margin-top: 0;
-                    margin-bottom: 0;
+                    border-bottom: 1px solid @defaultBorderColor;
 
-                    &:hover {
-                        cursor: pointer;
-                        background: darken(@whiteSmoke, 2);
-                    }
-                    &:first-child {
-                        border-top: 0;
-                    }
-                    .name {
-                        font-weight: 400;
-                    }
-                    .email {
-                        color: @nobel;
+                    .linked-account {
+                        border-radius: @defaultBorderRadius !important;
+                        margin: @userDropdownLinkedAccountMargin;
+                        border: none;
+                        transition: none !important;
+
+                        &:hover {
+                            cursor: pointer;
+                            background: darken(@whiteSmoke, 2);
+                        }
+                        .name {
+                            font-weight: 400;
+                        }
+                        .email {
+                            color: @nobel;
+                        }
                     }
                 }
                 .action-panel {
@@ -179,9 +181,6 @@
                 &:before {
                     display: none;
                 }
-                &.active {
-                    background: transparent;
-                }
             }
         }
 
@@ -197,7 +196,30 @@
             }
         }
 
+        .side-panel-category {
+            font-size: @sidePanelCategoryFontSize;
+            text-transform: @sidePanelCategoryTextTransform;
+            color: @lightFontColor;
+            padding-left: @itemHorizontalPadding;
+            margin-bottom: @sidePanelCategoryMarginBottom;
+
+            &.with-dividers {
+                &:not(:first-child) {
+                    &:before {
+                        content: "";
+                        display: block;
+                        width: 100%;
+                        background-color: @defaultBorderColor;
+                        height: 1px;
+                        margin: 12px 0;
+                    }
+                }
+            }
+        }
+
         .side-panel-item {
+            border-radius: @defaultBorderRadius;
+
             .route-name {
                 cursor: pointer;
                 color: @sidePanelDefaultFontColor;
@@ -239,30 +261,38 @@
                 }
             }
 
-            &.active {
-                // override semantic ui menu item active background color
-                background-color: transparent;
+            &.hover-background {
+                margin-bottom: @sidePanelBackgroundHoveredItemMarginBottom;
+            }
 
-                .route-name {
-                    color: @sidePanelActiveFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelActiveFontColor;
+            &.active {
+                &.hover-highlighted {
+                    // override semantic ui menu item active background color
+                    background-color: transparent;
+
+                    .route-name {
+                        color: @sidePanelActiveFontColor;
+                    }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelActiveFontColor;
+                        }
                     }
                 }
             }
 
             &:hover {
-                // override semantic ui menu item hover background color
-                background-color: transparent;
+                &.hover-highlighted {
+                    // override semantic ui menu item hover background color
+                    background-color: transparent;
 
-                .route-name {
-                    color: @sidePanelHoverFontColor;
-                }
-                svg, .icon {
-                    .path {
-                        fill: @sidePanelHoverFontColor;
+                    .route-name {
+                        color: @sidePanelHoverFontColor;
+                    }
+                    svg, .icon {
+                        .path {
+                            fill: @sidePanelHoverFontColor;
+                        }
                     }
                 }
             }
@@ -288,18 +318,23 @@
                     margin-top: 3px;
                 }
             }
+            .categorized {
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
         }
     }
 }
 
 // Fix for the unstackable list item images getting weird sizes on mobile.
 @media only screen and (max-width: @tabletBreakpoint) {
-    .ui.menu.fixed {
+    .ui.menu {
         &.app-header {
             .user-dropdown {
                 .authenticated-user {
-                    .ui.image.user-image.tiny {
-                        width: 80px !important;
+                    .ui.image.user-image.x60 {
+                        width: 60px !important;
                     }
                 }
                 .linked-accounts-list {

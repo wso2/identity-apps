@@ -17,6 +17,7 @@
  */
 
 export * from "./app-constants";
+export * from "./common-constants";
 export * from "./email-constants";
 export * from "./i18n-constants";
 export * from "./role-constants";

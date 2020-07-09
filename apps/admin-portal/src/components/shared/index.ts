@@ -17,4 +17,5 @@
 */
 
 export * from "./advanced-search-with-basic-filters";
+export * from "./header";
 export * from "./upload-certificate";

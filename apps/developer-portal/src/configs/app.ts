@@ -107,6 +107,7 @@ export class Config {
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
             documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
             identityProviders: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-providers`,
+            remoteRepoConfig: `${this.getDeploymentConfig().serverHost}/api/server/v1/remote-fetch`,
             localAuthenticators: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
@@ -124,6 +125,7 @@ export class Config {
      */
     public static getUIConfig(): UIConfigInterface {
         return {
+            announcements: window["AppUtils"].getConfig().ui.announcements,
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             doNotDeleteApplications: window["doNotDeleteApplications"] || [],

@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./server-configurations";
+export * from "./governance-connectors";

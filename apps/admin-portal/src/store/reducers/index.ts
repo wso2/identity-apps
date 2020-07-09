@@ -21,3 +21,4 @@ export * from "./config";
 export * from "./global";
 export * from "./loaders";
 export * from "./profile";
+export * from "./governance-connector";

@@ -57,6 +57,12 @@
                 errorMessage = "The code entered is expired. Authentication Failed!";
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.SEND_OTP_DIRECTLY_DISABLE_MSG)) {
                 errorMessage = "User not found in the directory. Cannot proceed further without SMS OTP authentication.";
+            } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
+                errorMessage = "User account is locked. Please retry later.";
+                String unlockTime = request.getParameter("unlockTime");
+                if (unlockTime != null) {
+                  errorMessage = String.format("User account is locked. Please retry after %s minutes.", unlockTime);
+                }
             } else if (SMSOTPUtils.useInternalErrorCodes()) {
                 String httpCode = URLDecoder.decode(errorMessage, SMSOTPConstants.CHAR_SET_UTF_8);
                 errorMessage = SMSOTPConstants.ErrorMessage.getMappedErrorMessage(httpCode);
@@ -86,7 +92,7 @@
         <![endif]-->
     </head>
 
-    <body>
+    <body class="login-portal layout sms-otp-portal-layout">
         <main class="center-segment">
             <div class="ui container medium center aligned middle aligned">
                 <!-- product-title -->

@@ -64,6 +64,7 @@ export class ApplicationConstants {
      */
     public static readonly PATHS: Map<string, string> = new Map<string, string>()
         .set("404", "/404")
+        .set("PROFILE_INFO", "/personal-info")
         .set("UNAUTHORIZED", "/unauthorized");
 
     /**

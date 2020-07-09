@@ -20,3 +20,4 @@ export * from "./applications";
 export * from "./identity-providers";
 export * from "./protected-route";
 export * from "./shared";
+export * from "./remote-repository-configuration";

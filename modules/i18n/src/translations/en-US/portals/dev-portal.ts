@@ -62,6 +62,88 @@ export const devPortal: DevPortalNS = {
             },
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
+        remoteConfig: {
+            placeholders: {
+                emptyList: {
+                    action: "New Remote Repository Config",
+                    subtitles: {
+                        0: "Currently there are no configs available.",
+                        1: "You can add a new config by ",
+                        2: "clicking on the button below."
+                    },
+                    title: "Add new Remote Repository Config"
+                }
+            },
+            list: {
+                confirmations: {
+                    deleteConfig: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you delete this configuration, you will not be able to get it back. All the " +
+                            "Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently delete the configuration."
+                    }
+                }
+            },
+            notifications: {
+                deleteConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Deletion Error"
+                    },
+                    genericError: {
+                        description: "Failed to delete the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the configuration.",
+                        message: "Deletetion successful"
+                    }
+                },
+                triggerConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Trigger Error"
+                    },
+                    genericError: {
+                        description: "Failed to trigger the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully triggered the configuration.",
+                        message: "Trigger successful"
+                    }
+                },
+                editConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Edit Error"
+                    },
+                    genericError: {
+                        description: "Failed to edit the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully edited the configuration.",
+                        message: "Edit successful"
+                    }
+                },
+                createConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Creation Error"
+                    },
+                    genericError: {
+                        description: "Failed to create the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the confuguration.",
+                        message: "Creation successful"
+                    }
+                }
+            }
+        },
         applications: {
             addWizard: {
                 steps: {
@@ -626,6 +708,9 @@ export const devPortal: DevPortalNS = {
                     sections: {
                         accessToken: {
                             fields: {
+                                bindingType: {
+                                    label: "Token binding type"
+                                },
                                 expiry: {
                                     hint: "Configure the user access token expiry time (in seconds).",
                                     label: "User access token expiry time",

@@ -202,17 +202,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
         children: [
             {
-                component: lazy(() => import("../pages/configurations/server-configurations")),
-                exact: true,
-                icon: "childIcon",
-                id: "generalConfigurations",
-                level: 2,
-                name: "adminPortal:components.sidePanel.generalConfigurations",
-                path: AppConstants.PATHS.get("SERVER_CONFIGS"),
-                protected: true,
-                showOnSidePanel: true
-            },
-            {
                 component: lazy(() => import("../pages/email-templates/email-template-types")),
                 exact: true,
                 icon: "childIcon",
@@ -260,6 +249,16 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         name: "adminPortal:components.sidePanel.configurations",
         protected: true,
         showOnSidePanel: true
+    },
+    {
+        component: lazy(() => import("../pages/configurations/governance-connectors")),
+        exact: true,
+        icon: "childIcon",
+        id: "governanceConnectors",
+        name: "adminPortal:components.sidePanel.governanceConnectors",
+        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS"),
+        protected: true,
+        showOnSidePanel: false
     },
     {
         component: null,

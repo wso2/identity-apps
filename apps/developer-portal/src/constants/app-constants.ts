@@ -46,7 +46,9 @@ export class AppConstants {
         .set("OVERVIEW", "/overview")
         .set("PAGE_NOT_FOUND", "/404")
         .set("PRIVACY", "/privacy")
-        .set("UNAUTHORIZED", "/unauthorized");
+        .set("UNAUTHORIZED", "/unauthorized")
+        .set("REMOTE_REPO_CONFIG", "/remote-repository-config")
+        .set("REMOTE_REPO_CONFIG_EDIT", "/remote-repository-config/:id");
 
     /**
      * Error given by server when the user has denied consent.

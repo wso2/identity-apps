@@ -65,6 +65,7 @@ export interface StorageIdentityUserPreferencesInterface {
     applicationPreferences: StorageApplicationSettingsItemsInterface;
     devPortal: StorageDevPortalPreferencesInterface;
     userPreferences: StorageUserPreferencesItemsInterface;
+    [ key: string ]: any;
 }
 
 /**

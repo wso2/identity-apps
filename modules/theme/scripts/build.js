@@ -39,6 +39,7 @@ const semanticUILessModuleDir = path.join(lessNpmModuleDir, "..", "semantic-ui-l
 
 const SAMPLE_THEME_NAME = "sample";
 const DEFAULT_THEME_NAME = "default";
+const MANIFEST_FILE_NAME = "assets-manifest.json";
 
 /*
  * Generate Default Site Variables JSON files
@@ -123,6 +124,58 @@ const copyAssets = (theme, filePath) => {
 };
 
 /*
+ * Generate assets manifest file.
+ */
+/**
+ * Generates an assets manifest file.
+ *
+ * @param theme - Theme name.
+ * @param themePath - Path for the theme in "src".
+ * @return {Promise<void>}
+ */
+const createAssetManifest = async (theme, themePath) => {
+
+    const themePathInDist = path.join(distDir, "lib", "themes", theme);
+    const themeAssetsPath = path.join(themePath, "assets");
+    const targetManifestFile = path.join(themePathInDist, MANIFEST_FILE_NAME);
+    const pathToReplace = path.join(__dirname, "..", "src");
+    const filesToSkip = [ ".DS_Store" ];
+    let manifest = {};
+
+    const extractFilePaths = (folderPath, folder, files = []) => {
+        if (fs.statSync(folderPath).isDirectory()) {
+            fs.readdirSync(folderPath).map((fileName) => {
+                if (!fs.statSync(path.join(folderPath, fileName)).isDirectory() && !filesToSkip.includes(fileName)) {
+                    manifest = {
+                        ...manifest,
+                        [ folder ]: {
+                            ...manifest[folder],
+                            [ fileName ]: path.relative(pathToReplace, path.join(folderPath, fileName))
+                        }
+                    };
+                }
+
+                extractFilePaths(files[files.push(path.join(folderPath, fileName)) - 1], folder, files);
+            });
+        }
+    };
+
+    // Get all the folders in theme "assets" folder and extract all the file paths recursively.
+    fs.readdirSync(themeAssetsPath).map((folder) => {
+
+        if (filesToSkip.includes(folder) || !fs.statSync(path.join(themeAssetsPath, folder)).isDirectory()) {
+            return;
+        }
+
+        extractFilePaths(path.join(themeAssetsPath, folder), folder);
+    });
+
+    fs.writeFileSync(targetManifestFile, JSON.stringify(manifest, null, 4), (error) => {
+        console.error("failed to create the manifest file at ", targetManifestFile, ". Trace - ", error);
+    });
+};
+
+/*
  * Less compile themes method. Which will read the themes folder and compile all the themes
  */
 const generateThemes = () => {
@@ -150,6 +203,14 @@ const generateThemes = () => {
 
             Object.keys(files).map((key) => writeFile(theme, key, files[key], themeIndexFile));
             copyAssets(theme, filePath);
+
+            createAssetManifest(theme, filePath)
+                .then(() => {
+                    console.log("assets manifest generation for " + theme + " theme succeeded.");
+                })
+                .catch((error) => {
+                    console.error("assets manifest generation for " + theme + " theme failed with error - ", error);
+                });
         }, (error) => {
             console.error(error);
         });

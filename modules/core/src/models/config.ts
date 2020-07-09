@@ -172,6 +172,10 @@ export interface FeatureConfigInterface {
  */
 export interface CommonUIConfigInterface {
     /**
+     * Portal Announcement banner.
+     */
+    announcements?: AnnouncementBannerInterface[];
+    /**
      * Copyright text for the footer.
      */
     appCopyright?: string;
@@ -188,6 +192,32 @@ export interface CommonUIConfigInterface {
      * Application features configurations
      */
     features?: FeatureConfigInterface;
+}
+
+/**
+ * Announcement banner interface.
+ */
+export interface AnnouncementBannerInterface {
+    /**
+     * Color of the banner.
+     */
+    color: string;
+    /**
+     * Expiry timestamp.
+     */
+    expire: string;
+    /**
+     * Unique ID.
+     */
+    id: string;
+    /**
+     * Order of the advertisement.
+     */
+    order: number;
+    /**
+     * Message to be displayed.
+     */
+    message: string;
 }
 
 /**

@@ -34,7 +34,7 @@
         <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 </head>
-<body>
+<body class="login-portal layout authentication-portal-layout">
     <main>
         <div id="app-header" class="ui borderless top fixed app-header menu">
             <div class="ui container">

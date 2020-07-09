@@ -18,6 +18,7 @@
 
 export * from "./app-constants";
 export * from "./application-management";
+export * from "./common-constants";
 export * from "./documentation-constants";
 export * from "./i18n-constants";
 export * from "./identity-provider-constants";

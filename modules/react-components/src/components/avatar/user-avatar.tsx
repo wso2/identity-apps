@@ -132,7 +132,7 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
      */
     const resolveAvatarImage = (): any => {
         // If an image is directly passed, give prominence.
-        if (image) {
+        if (image && !(image instanceof Promise)) {
             return image;
         }
 

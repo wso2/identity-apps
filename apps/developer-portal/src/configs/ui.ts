@@ -90,8 +90,20 @@ import {
     ReactComponent as GoogleIdPIcon
 } from "../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
 import {
-    ReactComponent as TwitterIdPIcon
+    ReactComponent as IWAKerberosIdPIllustration
+} from "../themes/default/assets/images/identity-providers/iwa-idp-illustration.svg";
+import {
+    ReactComponent as MicrosoftIdPIllustration
+} from "../themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg";
+import {
+    ReactComponent as Office365IdPIllustration
+} from "../themes/default/assets/images/identity-providers/office365-idp-illustration.svg";
+import {
+    ReactComponent as TwitterIdPIllustration
 } from "../themes/default/assets/images/identity-providers/twitter-idp-illustration.svg";
+import {
+    ReactComponent as YahooIdPIllustration
+} from "../themes/default/assets/images/identity-providers/yahoo-idp-illustration.svg";
 import { ReactComponent as CertificateBadge } from "../themes/default/assets/images/illustrations/badge.svg";
 import {
     ReactComponent as CertificateIllustration
@@ -265,15 +277,15 @@ export const IdPIcons = {
     facebook: FacebookIdPIcon,
     github: GithubIdPIcon,
     google: GoogleIdPIcon,
-    iwaKerberos: GoogleIdPIcon,
-    microsoft: GoogleIdPIcon,
-    office365: GoogleIdPIcon,
+    iwaKerberos: IWAKerberosIdPIllustration,
+    microsoft: MicrosoftIdPIllustration,
+    office365: Office365IdPIllustration,
     oidc: OIDCLogo,
     saml: SamlLogo,
     smsOTP: SMSOTPIcon,
-    twitter: TwitterIdPIcon,
+    twitter: TwitterIdPIllustration,
     wsFed: WSFedLogo,
-    yahoo: GoogleIdPIcon
+    yahoo: YahooIdPIllustration
 };
 
 export const IdPTemplateDocsIcons = {
@@ -325,6 +337,10 @@ export const OverviewPageIllustrations = {
         application: AppIcon,
         idp: BuildingIcon
     }
+};
+
+export const RemoteConfigPageIllustrations = {
+    noListElements: BuildingIcon
 };
 
 export const HelpPanelIcons = {

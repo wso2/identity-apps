@@ -569,6 +569,13 @@ export interface AdminPortalNS {
                 userPortalNav: string;
             };
         };
+        governanceConnectors: {
+            notifications: {
+                getConnectorCategories: Notification;
+                getConnector: Notification;
+                updateConnector: Notification;
+            };
+        };
         helpPanel: {
             notifications: {
                 pin: Notification;
@@ -915,164 +922,6 @@ export interface AdminPortalNS {
             };
         };
         serverConfigs: {
-            selfRegistration: {
-                actionTitles: {
-                    config: string;
-                };
-                description: string;
-                heading: string;
-                confirmation: {
-                    heading: string;
-                    message: string;
-                };
-                notifications: {
-                    getConfigurations: Notification;
-                    updateConfigurations: Notification;
-                    updateEnable: Notification;
-                    updateAccountLockOnCreation: Notification;
-                    updateInternalNotificationManagement: Notification;
-                    updateReCaptcha: Notification;
-                };
-                form: {
-                    enable: FormAttributes;
-                    enableAccountLockOnCreation: FormAttributes;
-                    internalNotificationManagement: FormAttributes;
-                    enableReCaptcha: FormAttributes;
-                    verificationLinkExpiryTime: FormAttributes;
-                    smsOTPExpiryTime: FormAttributes;
-                    callbackURLRegex: FormAttributes;
-                };
-            };
-            accountRecovery: {
-                actionTitles: {
-                    config: string;
-                };
-                description: string;
-                heading: string;
-                confirmation: {
-                    heading: string;
-                    message: string;
-                };
-                notifications: {
-                    getConfigurations: Notification;
-                    updateConfigurations: Notification;
-                    updateEnableUsernameRecovery: Notification;
-                    updateUsernameRecoveryReCaptcha: Notification;
-                    updateEnableNotificationPasswordRecovery: Notification;
-                    updateNotificationPasswordRecoveryReCaptcha: Notification;
-                    updateSecurityQuestionPasswordRecoveryReCaptcha: Notification;
-                };
-                usernameRecovery: {
-                    heading: string;
-                    form: {
-                        enable: FormAttributes;
-                        enableReCaptcha: FormAttributes;
-                    };
-                };
-                passwordRecovery: {
-                    heading: string;
-                    form: {
-                        enableNotificationBasedRecovery: FormAttributes;
-                        enableReCaptchaForNotificationBasedRecovery: FormAttributes;
-                        enableSecurityQuestionBasedRecovery: FormAttributes;
-                        noOfQuestionsRequired: FormAttributes;
-                        enableReCaptchaForSecurityQuestionBasedRecovery: FormAttributes;
-                    };
-                };
-                otherSettings: {
-                    heading: string;
-                    form: {
-                        enableForcedChallengeQuestions: FormAttributes;
-                        reCaptchaMaxFailedAttempts: FormAttributes;
-                        enableInternalNotificationManagement: FormAttributes;
-                        notifyRecoverySuccess: FormAttributes;
-                        notifyQuestionRecoveryStart: FormAttributes;
-                        recoveryLinkExpiryTime: FormAttributes;
-                        smsOTPExpiryTime: FormAttributes;
-                        recoveryCallbackURLRegex: FormAttributes;
-                    };
-                };
-            };
-            loginPolicies: {
-                actionTitles: {
-                    config: string;
-                };
-                description: string;
-                heading: string;
-                confirmation: {
-                    heading: string;
-                    message: string;
-                };
-                notifications: {
-                    getConfigurations: Notification;
-                    updateConfigurations: Notification;
-                    updateAccountLockEnable: Notification;
-                    updateAccountDisablingEnable: Notification;
-                    updateAccountDisableInternalNotificationManagement: Notification;
-                };
-                accountLock: {
-                    heading: string;
-                    form: {
-                        accountLockEnable: FormAttributes;
-                        maxFailedLoginAttemptsToAccountLock: FormAttributes;
-                        accountLockTime: FormAttributes;
-                        accountLockTimeIncrementFactor: FormAttributes;
-                        accountLockInternalNotificationManagement: FormAttributes;
-                    };
-                };
-                accountDisable: {
-                    heading: string;
-                    form: {
-                        accountDisablingEnable: FormAttributes;
-                        accountDisableInternalNotificationManagement: FormAttributes;
-                    };
-                };
-                reCaptcha: {
-                    heading: string;
-                    form: {
-                        reCaptchaPreference: {
-                            label: string;
-                            reCaptchaAlwaysEnable: FormAttributes;
-                            reCaptchaAfterMaxFailedAttemptsEnable: FormAttributes;
-                        };
-                        maxFailedLoginAttemptsToReCaptcha: FormAttributes;
-                    };
-                };
-            };
-            passwordPolicies: {
-                actionTitles: {
-                    config: string;
-                };
-                description: string;
-                heading: string;
-                confirmation: {
-                    heading: string;
-                    message: string;
-                };
-                notifications: {
-                    accountLockEnable: Notification;
-                    accountDisablingEnable: Notification;
-                    getConfigurations: Notification;
-                    updateConfigurations: Notification;
-                };
-                passwordHistory: {
-                    heading: string;
-                    form: {
-                        enable: FormAttributes;
-                        passwordHistoryCount: FormAttributes;
-                    };
-                };
-                passwordPatterns: {
-                    heading: string;
-                    form: {
-                        enable: FormAttributes;
-                        policyMinLength: FormAttributes;
-                        policyMaxLength: FormAttributes;
-                        policyPattern: FormAttributes;
-                        errorMessage: FormAttributes;
-                    };
-                };
-            };
             realmConfiguration: {
                 actionTitles: {
                     config: string;

@@ -16,4 +16,5 @@
  * under the License.
  */
 
+export * from "./announcement";
 export * from "./header";

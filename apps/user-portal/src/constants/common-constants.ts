@@ -16,8 +16,25 @@
  * under the License.
  */
 
-export * from "./user-self-registration";
-export * from "./account-recovery";
-export * from "./login-policies";
-export * from "./password-policies";
-export * from "./realm-configurations";
+/**
+ * Class containing common constants.
+ */
+export class CommonConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
+
+    /**
+     * Key to get the set of seen announcements from pref storage.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SEEN_ANNOUNCEMENTS_KEY: string = "identityAppsSettings.userPortal.announcements.seen";
+}

@@ -41,7 +41,7 @@
         <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
 </head>
-<body>
+<body class="login-portal layout recovery-layout">
 <!-- page content -->
 <main class="center-segment">  
     <div class="ui container large center aligned middle aligned">

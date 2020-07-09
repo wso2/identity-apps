@@ -52,7 +52,7 @@ export class AppConstants {
         .set("PRIVACY", "/privacy")
         .set("ROLES", "/roles")
         .set("ROLE_EDIT", "/roles/:id")
-        .set("SERVER_CONFIGS", "/server-configurations")
+        .set("GOVERNANCE_CONNECTORS", "/governance-connectors/:id")
         .set("UNAUTHORIZED", "/unauthorized")
         .set("USERS", "/users")
         .set("USER_EDIT", "/users/:id")

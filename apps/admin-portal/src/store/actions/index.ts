@@ -17,3 +17,4 @@
  */
 
 export * from "./authenticate";
+export * from "./governance-connector";
