@@ -75,7 +75,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-issuer-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.issuer") }
                         </label>
                     </Grid.Column>
@@ -100,7 +100,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-sso-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.sso") }
                         </label>
                     </Grid.Column>
@@ -125,7 +125,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-slo-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.slo") }
                         </label>
                     </Grid.Column>
@@ -150,7 +150,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-certificate-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.certificate") }
                         </label>
                     </Grid.Column>
@@ -165,7 +165,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                                 tenantName, samlConfigurations?.certificate) }
                         >
                             <Icon name="download" />
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.buttons.certificate") }
                         </Button>
                     </Grid.Column>
@@ -183,7 +183,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-metadata-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.labels.metadata") }
                         </label>
                     </Grid.Column>
@@ -196,7 +196,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                             onClick={ exportMetadataFile }
                         >
                             <Icon name="download" />
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "samlConfigurations.buttons.metadata") }
                         </Button>
                     </Grid.Column>
