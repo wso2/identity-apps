@@ -181,11 +181,7 @@
             }
         },
         "theme": {
-            {% if user_portal.ui.theme is defined %}
-                {% for key, value in user_portal.ui.theme.items() %}
-                    "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-                {% endfor %}
-            {% endif %}
+            "name": "{{ user_portal.theme }}"
         }
     }
 }
