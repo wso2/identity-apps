@@ -515,9 +515,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         </>
                     )
             ),
-            heading: "Configuration Guide",
+            heading: t("devPortal:components.applications.helpPanel.tabs.configs.heading"),
             hidden: !configs || (configs instanceof Array && configs.length < 1),
-            icon: "code" as SemanticICONS
+            icon: "file alternate outline" as SemanticICONS
         },
         {
             content: (

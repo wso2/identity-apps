@@ -287,7 +287,3 @@
       width: 188px;
    }
 }
-
-.ui.secondary.button {
-    background-color: #616161 !important;
-}
