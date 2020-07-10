@@ -86,7 +86,6 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
             <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
                 <Modal.Header>{ template.title }</Modal.Header>
                 <Modal.Content scrolling>
-                    <h2>{ template.title }</h2>
                     <p>{ template.summary }</p>
 
                     <h4>
