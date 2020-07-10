@@ -402,6 +402,9 @@
     }
 }
 
+/*-------------------
+   Animated Avatar
+--------------------*/
 
 .ui.image {
     &.animated-avatar {

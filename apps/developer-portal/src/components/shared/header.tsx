@@ -173,7 +173,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             onSidePanelToggleClick={ onSidePanelToggleClick }
             { ...rest }
         >
-            <ComponentPlaceholder section="feedback-button" type="component"/>
+            <div className="header-extensions">
+                <ComponentPlaceholder section="feedback-button" type="component"/>
+            </div>
         </ReusableHeader>
     );
 };
