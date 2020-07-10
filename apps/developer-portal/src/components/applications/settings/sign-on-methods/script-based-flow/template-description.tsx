@@ -89,7 +89,12 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                     <h2>{ template.title }</h2>
                     <p>{ template.summary }</p>
 
-                    <h4>Prerequisites</h4>
+                    <h4>
+                        {
+                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                                "templateDescription.description.prerequisites")
+                        }
+                    </h4>
                     <List>
                         { template.preRequisites.map((prerequisite: string, index: number) => {
                             return (
@@ -101,12 +106,20 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                         }) }
                     </List>
 
-                    <h4>Parameters</h4>
+                    <h4>
+                        {
+                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                                "templateDescription.description.parameters")
+                        }
+                    </h4>
                     <Table definition>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell />
-                                <Table.HeaderCell>Description</Table.HeaderCell>
+                                <Table.HeaderCell>{
+                                    t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                                        "templateDescription.description.description")
+                                }</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -122,7 +135,12 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                         </Table.Body>
                     </Table>
 
-                    <h4>Default Steps</h4>
+                    <h4>
+                        {
+                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                                "templateDescription.description.defaultSteps")
+                        }
+                    </h4>
                     { Object.entries(template.defaultStepsDescription)
                         // eslint-disable-next-line @typescript-eslint/no-unused-vars
                         .map(([ step, description ], index: number, steps) => {
@@ -137,7 +155,12 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             );
                         }) }
 
-                    <h4>Help Reference</h4>
+                    <h4>
+                        {
+                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                                "templateDescription.description.helpReference")
+                        }
+                    </h4>
                     <Message icon info>
                         <Icon name="help circle" />
                         <Message.Content>
@@ -145,7 +168,12 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                         </Message.Content>
                     </Message>
 
-                    <h4>Code</h4>
+                    <h4>
+                        {
+                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                                "templateDescription.description.code")
+                        }
+                    </h4>
                     <CodeEditor
                         lint
                         language="javascript"
