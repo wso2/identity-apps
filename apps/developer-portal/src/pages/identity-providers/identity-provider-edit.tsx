@@ -21,6 +21,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { StringUtils } from "@wso2is/core/utils";
 import {
+    AnimatedAvatar,
     AppAvatar,
     ContentLoader,
     HelpPanelLayout,
@@ -235,14 +236,24 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 title={ identityProvider.name }
                 contentTopMargin={ true }
                 description={ identityProvider.description }
-                image={ (
-                    <AppAvatar
-                        name={ identityProvider.name }
-                        image={ identityProvider.image }
-                        size="tiny"
-                        spaced="right"
-                    />
-                ) }
+                image={
+                    identityProvider.image
+                        ? (
+                            <AppAvatar
+                                name={ identityProvider.name }
+                                image={ identityProvider.image }
+                                size="tiny"
+                                spaced="right"
+                            />
+                        )
+                        : (
+                            <AnimatedAvatar
+                                name={ identityProvider.name }
+                                size="tiny"
+                                floated="left"
+                            />
+                        )
+                }
                 backButton={ {
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.idpTemplate.backButton")

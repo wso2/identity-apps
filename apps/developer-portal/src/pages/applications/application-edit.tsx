@@ -21,6 +21,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    AnimatedAvatar,
     AppAvatar,
     ContentLoader,
     Heading,
@@ -707,14 +708,24 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         { application.description }
                     </div>
                 ) }
-                image={ (
-                    <AppAvatar
-                        name={ application.name }
-                        image={ application.imageUrl }
-                        size="tiny"
-                        spaced="right"
-                    />
-                ) }
+                image={
+                    application.imageUrl
+                        ? (
+                            <AppAvatar
+                                name={ application.name }
+                                image={ application.imageUrl }
+                                size="tiny"
+                                spaced="right"
+                            />
+                        )
+                        : (
+                            <AnimatedAvatar
+                                name={ application.name }
+                                size="tiny"
+                                floated="left"
+                            />
+                        )
+                }
                 backButton={ {
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.applicationsEdit.backButton")

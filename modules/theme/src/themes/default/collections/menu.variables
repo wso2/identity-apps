@@ -61,3 +61,10 @@
 @userDropdownPadding: 8px;
 @userDropdownLinkMargin: 8px 0;
 @userDropdownLinkedAccountMargin: 8px 0;
+
+/*-------------------
+      Extensions
+--------------------*/
+
+@headerExtensionsDisplay: flex;
+@headerExtensionsAlignItems: center;

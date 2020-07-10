@@ -36,6 +36,10 @@
             display: block;
             height: auto;
         }
+        .header-extensions {
+            display: @headerExtensionsDisplay;
+            align-items: @headerExtensionsAlignItems;
+        }
         .user-dropdown {
             &:hover, &:active, &:focus {
                 background: transparent;
