@@ -1292,6 +1292,20 @@ export const devPortal: DevPortalNS = {
                     samples: {
                         content: {
                             sample: {
+                                configurations: {
+                                    btn: "Download the Configuration",
+                                    subTitle: "In order to integrate the application created in the server with " +
+                                        "the sample application, you need to initialise the client with following " +
+                                        "configurations.",
+                                    title: "Initialize the client"
+                                },
+                                downloadSample: {
+                                    btn: "Download the sample",
+                                    subTitle: "This sample application will show case the usage of the of WSO2 " +
+                                        "Identity Server SDK and how you can integrate any application with Identity " +
+                                        "Server.",
+                                    title: "Try out the sample"
+                                },
                                 goBack: "Go back",
                                 subTitle: "Quickly start prototyping by downloading our preconfigured sample " +
                                     "application.",
