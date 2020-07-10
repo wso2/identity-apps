@@ -105,11 +105,10 @@ export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps
             : 
                 <Modal.Content className="content-container" scrolling>
                     <EmptyPlaceholder
-                        title={ t("devPortal:components:remoteConfig:placeholders.emptyList.title") }
+                        title={ t("devPortal:components:remoteConfig:placeholders.emptyDetails.title") }
                         subtitle={ [
-                            t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.0"),
-                            t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.1"),
-                            t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.2")
+                            t("devPortal:components:remoteConfig:placeholders.emptyDetails.subtitles.0"),
+                            t("devPortal:components:remoteConfig:placeholders.emptyDetails.subtitles.1")
                         ] }
                         image={ RemoteConfigPageIllustrations.noListElements }
                         imageSize="tiny"
