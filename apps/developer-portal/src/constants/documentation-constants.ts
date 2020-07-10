@@ -27,8 +27,10 @@ export class DocumentationConstants {
      *
      * @hideconstructor
      */
+
     /* eslint-disable @typescript-eslint/no-empty-function */
-    private constructor() { }
+    private constructor() {
+    }
 
     /**
      * Key to find the developer portal docs.
@@ -36,4 +38,8 @@ export class DocumentationConstants {
      * @type {string}
      */
     public static readonly PORTAL_DOCS_KEY = "[\"Developer Portal\"]";
+
+    public static readonly Samples_Catalog: Map<string, string> = new Map<string, string>()
+        .set("JS_SPA_SAMPLE", "https://github.com/wso2-extensions/identity-samples-js/releases/download/0.1.0/" +
+            "identity-authenticate-sample-js-spa.zip")
 }
