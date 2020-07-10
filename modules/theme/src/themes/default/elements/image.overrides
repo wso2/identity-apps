@@ -401,3 +401,32 @@
         }
     }
 }
+
+
+.ui.image {
+    &.animated-avatar {
+        .initial {
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: white;
+            bottom: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        &.mini {
+            .initial {
+                font-size: 1.5em;
+            }
+        }
+        
+        &.tiny {
+            .initial {
+                font-size: 3em;
+            }
+        }
+    }
+}
