@@ -70,11 +70,6 @@ export interface CommonDeploymentConfigInterface {
      */
     appLoginPath: string;
     /**
-     * Name of the application.
-     * ex: `DEVELOPER PORTAL`
-     */
-    applicationName: string;
-    /**
      * Host of the client application.
      * ex: `https://localhost:9001`
      */
@@ -180,6 +175,11 @@ export interface CommonUIConfigInterface {
      */
     appCopyright?: string;
     /**
+     * Name of the application.
+     * ex: `Developer`
+     */
+    appName: string;
+    /**
      * Title text for the browser window.
      * ex: `WSO2 Identity Server`
      */
@@ -192,6 +192,11 @@ export interface CommonUIConfigInterface {
      * Application features configurations
      */
     features?: FeatureConfigInterface;
+    /**
+     * Name of the product.
+     * ex: `Identity Server`
+     */
+    productName: string;
 }
 
 /**

@@ -55,7 +55,7 @@ export const Title = (props: TitleProps) => {
                 }
             />
             <h1 className={ classNames(classes, "product-title-text") } style={ style }>
-                { store.getState().config.deployment.applicationName }
+                { store.getState().config.ui.appName }
             </h1>
             { children }
         </div>

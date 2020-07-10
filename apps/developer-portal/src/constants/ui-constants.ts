@@ -84,4 +84,10 @@ export class UIConstants {
      * @type {number}
      */
     public static readonly DEFAULT_STATS_LIST_ITEM_LIMIT: number = 5;
+
+    /**
+     * Default theme of the portal.
+     * @type {string}
+     */
+    public static readonly DEFAULT_THEME: string = "default";
 }

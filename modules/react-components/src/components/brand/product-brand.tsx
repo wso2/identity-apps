@@ -28,6 +28,10 @@ import { Heading } from "../typography";
  */
 export interface ProductBrandPropsInterface extends TestableComponentInterface {
     /**
+     * App name.
+     */
+    appName?: string;
+    /**
      * Additional CSS classes.
      */
     className?: string;
@@ -38,7 +42,7 @@ export interface ProductBrandPropsInterface extends TestableComponentInterface {
     /**
      * Product name.
      */
-    name: string;
+    productName?: string;
     /**
      * Custom styles object.
      */
@@ -83,15 +87,21 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
 ): ReactElement => {
 
     const {
+        appName,
         children,
         className,
         logo,
-        name,
+        productName,
         style,
         version,
         versionUISettings,
         [ "data-testid" ]: testId
     } = props;
+
+    const mainClasses = classNames(
+        className,
+        "product-title"
+    );
 
     const versionLabelClasses = classNames(
         "version-label",
@@ -171,18 +181,23 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
     };
 
     return (
-        <div className={ classNames(className, "product-title") } style={ style } data-testid={ testId }>
+        <div className={ mainClasses } style={ style } data-testid={ testId }>
             { version && resolveReleaseVersionLabel() }
             <div className="product-title-main">
                 { logo && logo }
-                <Heading
-                    className={ classNames(className, "product-title-text") }
-                    style={ style }
-                    data-testid={ `${ testId }-title` }
-                    compact
-                >
-                    { name }
-                </Heading>
+                {
+                    (appName || productName) && (
+                        <Heading
+                            className={ "product-title-text" }
+                            style={ style }
+                            data-testid={ `${ testId }-title` }
+                            compact
+                        >
+                            { productName }
+                            { appName && <span className="app-name">{ appName }</span> }
+                        </Heading>
+                    )
+                }
                 { children }
             </div>
         </div>
