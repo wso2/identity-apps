@@ -154,7 +154,7 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
         const a = document.createElement("a");
         a.style.display = "none";
         a.href = url;
-        a.download = "auth-configurations.json";
+        a.download = "config.json";
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
