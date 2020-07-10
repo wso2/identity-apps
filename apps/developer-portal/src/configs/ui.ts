@@ -168,7 +168,8 @@ export const SidePanelIcons = {
     applications: AppIcon,
     childIcon: ArrowRight,
     identityProviders: PlugIcon,
-    overview: DashboardIcon
+    overview: DashboardIcon,
+    appLogs: IDPMetadataIcon
 };
 
 export const SidePanelMiscIcons = {
