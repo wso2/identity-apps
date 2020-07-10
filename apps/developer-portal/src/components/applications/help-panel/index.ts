@@ -19,3 +19,4 @@
 export * from "./overview";
 export * from "./oidc-configurations";
 export * from "./saml-configurations";
+export * from "./samples-guide";

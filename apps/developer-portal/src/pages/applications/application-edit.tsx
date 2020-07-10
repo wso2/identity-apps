@@ -41,6 +41,7 @@ import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
 import { HelpPanelOverview } from "../../components/applications";
+import { SamplesGuideComponent } from "../../components/applications/help-panel";
 import { HelpSidebarIcons, TechnologyLogos, InboundProtocolLogos } from "../../configs";
 import { AppConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
@@ -555,8 +556,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     ? (
                         <>
                             <PageHeader
-                                title={ `${ helpPanelSelectedSample.displayName } Sample` }
-                                titleAs="h4"
+                                title={ `${ helpPanelSelectedSample.displayName } Sample Application` }
+                                titleAs="h1"
                                 backButton={ samplesTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedSample(undefined),
                                     text: t("devPortal:components.applications.helpPanel.tabs.samples." +
@@ -571,8 +572,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                     isHelpPanelSamplesContentRequestLoading
                                         ? <ContentLoader dimmer/>
                                         : (
-                                            <Markdown
-                                                source={ helpPanelSampleContent }
+                                            <SamplesGuideComponent
+                                                sampleType={ helpPanelSelectedSample.name }
+                                                application={ application }
+                                                markDownSource={ helpPanelSampleContent }
                                                 data-testid={ `${ testId }-help-panel-samples-tab-markdown-renderer` }
                                             />
                                         )
