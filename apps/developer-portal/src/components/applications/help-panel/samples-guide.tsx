@@ -145,7 +145,7 @@ export const SamplesGuideComponent: FunctionComponent<SamplesGuideComponentProps
         return protocolName;
     });
 
-    const downloadConfigFile = () => {
+    const downloadConfigFile = (): void => {
         const blob = new Blob(
             [JSON.stringify(authConfig, null, 2)],
             { type: "application/json" }
