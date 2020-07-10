@@ -19,6 +19,7 @@
 import { AlertLevels, LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
     EmptyPlaceholder,
@@ -249,14 +250,25 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                         }
                                     ] }
                                     actionsFloated="right"
-                                    avatar={ (
-                                        <AppAvatar
-                                            name={ idp.name }
-                                            image={ idp.image }
-                                            size="mini"
-                                            floated="left"
-                                        />
-                                    ) }
+                                    avatar={
+                                        idp.image
+                                            ? (
+                                                <AppAvatar
+                                                    name={ idp.name }
+                                                    image={ idp.image }
+                                                    size="mini"
+                                                    floated="left"
+                                                />
+                                            )
+                                            : (
+                                                <AnimatedAvatar
+                                                    name={ idp.name }
+                                                    size="mini"
+                                                    floated="left"
+                                                    data-testid={ `${ testId }-item-image` }
+                                                />
+                                            )
+                                    }
                                     itemHeader={ idp.name }
                                     itemDescription={ idp.description }
                                     onClick={

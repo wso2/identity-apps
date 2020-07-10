@@ -25,6 +25,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
     EmptyPlaceholder,
@@ -327,15 +328,26 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         id={ app.id }
                                         actions={ resolveListActions(app) }
                                         actionsFloated="right"
-                                        avatar={ (
-                                            <AppAvatar
-                                                name={ app.name }
-                                                image={ app.image }
-                                                size="mini"
-                                                floated="left"
-                                                data-testid={ `${ testId }-item-image` }
-                                            />
-                                        ) }
+                                        avatar={
+                                            app.image
+                                                ? (
+                                                    <AppAvatar
+                                                        name={ app.name }
+                                                        image={ app.image }
+                                                        size="mini"
+                                                        floated="left"
+                                                        data-testid={ `${ testId }-item-image` }
+                                                    />
+                                                )
+                                                : (
+                                                    <AnimatedAvatar
+                                                        name={ app.name }
+                                                        size="mini"
+                                                        floated="left"
+                                                        data-testid={ `${ testId }-item-image` }
+                                                    />
+                                                )
+                                        }
                                         itemHeader={ app.name }
                                         itemDescription={ (
                                             <>
