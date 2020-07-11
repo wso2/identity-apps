@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Header } from "semantic-ui-react";
 import { OIDCConfigurations } from "./oidc-configurations";
 import { SAMLConfigurations } from "./saml-configurations";
+import { ApplicationManagementConstants } from "../../../constants";
 import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -37,6 +38,8 @@ import { ApplicationManagementUtils } from "../../../utils";
  */
 interface HelpPanelOverviewPropsInterface extends TestableComponentInterface {
     inboundProtocols?: InboundProtocolListItemInterface[];
+    handleTabChange?: (tabId: number) => void;
+    applicationType?: string;
 }
 
 /**
@@ -56,7 +59,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
 
-    const { inboundProtocols } = props;
+    const { applicationType, inboundProtocols, handleTabChange } = props;
 
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
@@ -105,49 +108,50 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
     return (
         <>
             <Grid>
-                <Grid.Row textAlign="center">
-                    <Grid.Column width={ 16 }>
-                        <Heading as="h5">
-                            <strong>
-                                { t("devPortal:components.applications.helpPanel.tabs.start.content.trySample." +
-                                    "title") }
-                            </strong>
-                        </Heading>
-                        <Header.Subheader>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content.trySample." +
-                                "subTitle") }
-                        </Header.Subheader>
-                        <Divider hidden/>
-                        <PrimaryButton>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content.trySample." +
-                                "btn") }
-                        </PrimaryButton>
-                        <Divider hidden/>
-                        <Divider horizontal>Or</Divider>
-                        <Heading ellipsis as="h5">
-                            <strong>
-                                { t("devPortal:components.applications.helpPanel.tabs.start.content.useSDK." +
-                                    "title") }
-                            </strong>
-                        </Heading>
-                        <Header.Subheader>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content.useSDK." +
-                                "subTitle") }
-                        </Header.Subheader>
-                        <Divider hidden/>
-                        <Button.Group>
-                            <SecondaryButton>
-                                { t("devPortal:components.applications.helpPanel.tabs.start.content.useSDK." +
-                                    "btns.withSDK") }
-                            </SecondaryButton>
-                            <Button.Or basic/>
-                            <Button>
-                                { t("devPortal:components.applications.helpPanel.tabs.start.content.useSDK." +
-                                    "btns.withoutSDK") }
-                            </Button>
-                        </Button.Group>
-                    </Grid.Column>
-                </Grid.Row>
+                {
+                    applicationType && applicationType == ApplicationManagementConstants.SPA
+                        ? (
+                            <Grid.Row textAlign="center">
+                                <Grid.Column width={ 16 }>
+                                    <Heading as="h5">
+                                        <strong>
+                                            { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                                "content.trySample.title") }
+                                        </strong>
+                                    </Heading>
+                                    <Header.Subheader>
+                                        { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                            "content.trySample.subTitle") }
+                                    </Header.Subheader>
+                                    <Divider hidden/>
+                                    <PrimaryButton onClick={ () => { handleTabChange(2) } }>
+                                        { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                            "content.trySample.btn") }
+                                    </PrimaryButton>
+                                    <Divider hidden/>
+                                    <Divider horizontal>Or</Divider>
+                                    <Heading ellipsis as="h5">
+                                        <strong>
+                                            { t("devPortal:components.applications.helpPanel.tabs." +
+                                                "start.content.useSDK.title") }
+                                        </strong>
+                                    </Heading>
+                                    <Header.Subheader>
+                                        { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                                            "useSDK.subTitle") }
+                                    </Header.Subheader>
+                                    <Divider hidden/>
+                                    <Button.Group>
+                                        <SecondaryButton onClick={ () => { handleTabChange(3) } }>
+                                            { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                                "content.useSDK.btns.withSDK") }
+                                        </SecondaryButton>
+                                    </Button.Group>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                        : null
+                }
                 <Grid.Row>
                     <Grid.Column>
                         <Heading ellipsis as="h5">

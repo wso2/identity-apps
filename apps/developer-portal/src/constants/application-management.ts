@@ -106,6 +106,13 @@ export class ApplicationManagementConstants {
         .set("Mobile application", "OIDC Mobile Application")
         .set("Windows desktop application", "Windows Desktop Application");
 
+    /**
+     * Key for the SPA template.
+     * @constant
+     * @type {string}
+     */
+    public static readonly SPA = "Single page application";
+
     // API errors
     public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the auth protocol metadata.";
