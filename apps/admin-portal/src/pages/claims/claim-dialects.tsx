@@ -120,10 +120,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("adminPortal:components.claims.dialects.notifications.fetchDialects.description"),
+                        || t("adminPortal:components.claims.dialects.notifications.fetchDialects" +
+                            ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("adminPortal:components.claims.dialects.notifications.fetchDialects.message")
+                        || t("adminPortal:components.claims.dialects.notifications.fetchDialects" +
+                            ".genericError.message")
                 }
             ));
         }).finally(() => {
