@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Header } from "semantic-ui-react";
 import { OIDCConfigurations } from "./oidc-configurations";
 import { SAMLConfigurations } from "./saml-configurations";
+import { ApplicationManagementConstants } from "../../../constants";
 import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -31,14 +32,13 @@ import {
 } from "../../../models";
 import { AppState } from "../../../store";
 import { ApplicationManagementUtils } from "../../../utils";
-import { ApplicationManagementConstants } from "../../../constants";
 
 /**
  * Proptypes for the applications help panel overview component.
  */
 interface HelpPanelOverviewPropsInterface extends TestableComponentInterface {
     inboundProtocols?: InboundProtocolListItemInterface[];
-    handleTabChange?: (event) => void;
+    handleTabChange?: (tabId: number) => void;
     applicationType?: string;
 }
 
@@ -124,7 +124,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                                             "content.trySample.subTitle") }
                                     </Header.Subheader>
                                     <Divider hidden/>
-                                    <PrimaryButton onClick={ handleTabChange } value={ 2 }>
+                                    <PrimaryButton onClick={ () => { handleTabChange(2) } }>
                                         { t("devPortal:components.applications.helpPanel.tabs.start." +
                                             "content.trySample.btn") }
                                     </PrimaryButton>
@@ -142,7 +142,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                                     </Header.Subheader>
                                     <Divider hidden/>
                                     <Button.Group>
-                                        <SecondaryButton onClick={ handleTabChange } value={ 3 }>
+                                        <SecondaryButton onClick={ () => { handleTabChange(3) } }>
                                             { t("devPortal:components.applications.helpPanel.tabs.start." +
                                                 "content.useSDK.btns.withSDK") }
                                         </SecondaryButton>

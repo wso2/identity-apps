@@ -37,7 +37,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
+import {ButtonProps, Divider, Grid, Label, SemanticICONS} from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
 import { HelpPanelOverview } from "../../components/applications";
@@ -478,10 +478,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     /**
      * Handles the tab change from overview.
      *
-     * @param event
+     * @param tabId - number
      */
-    const handleTabChange = (event): void => {
-        setTabsActiveIndex(parseInt(event.target.value));
+    const handleTabChange = (tabId: number): void => {
+        setTabsActiveIndex(tabId);
     };
 
     const helpPanelTabs: HelpPanelTabInterface[] = [
