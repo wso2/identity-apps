@@ -119,6 +119,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
+    const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
 
     /**
      * Fetch the application details on initial component load.
@@ -474,9 +475,24 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setHelpPanelSelectedProtocol(protocol);
     };
 
+    /**
+     * Handles the tab change from overview.
+     *
+     * @param event
+     */
+    const handleTabChange = (event): void => {
+        setTabsActiveIndex(parseInt(event.target.value));
+    };
+
     const helpPanelTabs: HelpPanelTabInterface[] = [
         {
-            content: ( <HelpPanelOverview inboundProtocols={ application?.inboundProtocols }/> ),
+            content: (
+                <HelpPanelOverview
+                    applicationType={ applicationTemplateName }
+                    inboundProtocols={ application?.inboundProtocols }
+                    handleTabChange={ handleTabChange }
+                />
+                ),
             heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
             hidden: application?.inboundProtocols?.length <= 0,
             icon: "list alternate outline" as SemanticICONS
@@ -694,6 +710,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     return (
         <HelpPanelLayout
+            activeIndex={ tabsActiveIndex }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }

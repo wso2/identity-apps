@@ -61,6 +61,10 @@ export interface HelpPanelLayoutLayoutPropsInterface {
      * Array of objects describing tabs.
      */
     tabs: HelpPanelPropsInterface["tabs"];
+    /**
+     * Tabs active index.
+     */
+    activeIndex?: number;
 }
 
 /**
@@ -100,6 +104,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         isPinned,
         sidebarDirection,
         tabs,
+        activeIndex,
         ...rest
     } = props;
 
@@ -113,6 +118,13 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
     );
 
     const layoutContentClasses = classNames("layout-content");
+
+    useEffect(() => {
+        if (activeIndex == undefined || activeIndex == 0) {
+            return;
+        }
+        setHelpPanelTabsActiveIndex(activeIndex);
+    }, [ activeIndex ]);
 
     useEffect(() => {
         if (!sidebarRef?.current?.clientWidth) {
