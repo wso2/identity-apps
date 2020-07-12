@@ -131,6 +131,7 @@ export type GenericIconSizes =
     | "default"
     | "micro"
     | "mini"
+    | "x50"
     | "tiny"
     | "small"
     | "medium"
