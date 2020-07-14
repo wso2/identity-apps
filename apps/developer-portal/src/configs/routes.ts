@@ -120,12 +120,12 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 name: "Remote Repo Config Edit",
                 path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
                 protected: true,
-                showOnSidePanel: true
+                showOnSidePanel: false
             }
         ],
         component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config")),
         exact: true,
-        icon: "overview",
+        icon: "remoteRepo",
         id: "remote-repo",
         name: "Remote Repo Config",
         path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),

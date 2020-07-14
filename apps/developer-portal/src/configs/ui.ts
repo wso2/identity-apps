@@ -41,6 +41,7 @@ import {
 } from "../themes/default/assets/images/icons/certificate-colored-icon.svg";
 import { ReactComponent as ClockColoredIcon } from "../themes/default/assets/images/icons/clock-colored-icon.svg";
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
+import { ReactComponent as CodeForkIcon } from "../themes/default/assets/images/icons/code-fork.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as DocumentIcon } from "../themes/default/assets/images/icons/document-icon.svg";
@@ -165,11 +166,12 @@ import { ReactComponent as Office365Logo } from "../themes/default/assets/images
 import { ReactComponent as YahooLogo } from "../themes/default/assets/images/third-party/yahoo-logo.svg";
 
 export const SidePanelIcons = {
+    appLogs: IDPMetadataIcon,
     applications: AppIcon,
     childIcon: ArrowRight,
     identityProviders: PlugIcon,
     overview: DashboardIcon,
-    appLogs: IDPMetadataIcon
+    remoteRepo: CodeForkIcon
 };
 
 export const SidePanelMiscIcons = {
@@ -341,10 +343,6 @@ export const OverviewPageImages = {
         applications: AppIcon,
         idp: BuildingIcon
     }
-};
-
-export const RemoteConfigPageIllustrations = {
-    noListElements: BuildingIcon
 };
 
 export const HelpPanelIcons = {
