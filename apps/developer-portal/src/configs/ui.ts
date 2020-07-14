@@ -128,9 +128,6 @@ import {
     ReactComponent as SAMLWebAppTemplateIllustration
 } from "../themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg";
 import {
-    ReactComponent as SecurityIllustration
-} from "../themes/default/assets/images/illustrations/security-illustration.svg";
-import {
     ReactComponent as SPATemplateIllustration
 } from "../themes/default/assets/images/illustrations/spa-template-illustration.svg";
 import {
@@ -139,6 +136,7 @@ import {
 import {
     ReactComponent as WSTrustTemplateIllustration
 } from "../themes/default/assets/images/illustrations/ws-trust-template-illustration.svg";
+import BannerSprites from "../themes/default/assets/images/misc/banner-sprites.svg";
 import OIDCLogo from "../themes/default/assets/images/protocols/oidc.png";
 import OpenIDLogo from "../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../themes/default/assets/images/protocols/saml.png";
@@ -158,8 +156,10 @@ import { ReactComponent as JavaLogo } from "../themes/default/assets/images/tech
 import { ReactComponent as JavaScriptLogo } from "../themes/default/assets/images/technologies/javascript-logo.svg";
 import { ReactComponent as JWTLogo } from "../themes/default/assets/images/technologies/jwt-logo.svg";
 import { ReactComponent as NodeJSLogo } from "../themes/default/assets/images/technologies/nodejs-logo.svg";
+import { ReactComponent as PythonLogo } from "../themes/default/assets/images/technologies/python-logo.svg";
 import { ReactComponent as ReactLogo } from "../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../themes/default/assets/images/technologies/vue-logo.svg";
+import { ReactComponent as WindowsLogo } from "../themes/default/assets/images/technologies/windows-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { ReactComponent as Office365Logo } from "../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../themes/default/assets/images/third-party/yahoo-logo.svg";
@@ -226,10 +226,11 @@ export const TechnologyLogos = {
     javascript: JavaScriptLogo,
     nodejs: NodeJSLogo,
     openidconnect: OIDCLogo,
+    python: PythonLogo,
     react: ReactLogo,
     saml: SamlLogo,
     vue: VueLogo,
-    windows: DotNetLogo
+    windows: WindowsLogo
 };
 
 export const ApplicationWizardStepIcons = {
@@ -332,10 +333,12 @@ export const OutboundProvisioningConnectorWizard = {
     summary: ReportIcon
 };
 
-export const OverviewPageIllustrations = {
-    jumbotronIllustration: SecurityIllustration,
-    statsOverview: {
-        application: AppIcon,
+export const OverviewPageImages = {
+    jumbotron: {
+        background: BannerSprites
+    },
+    quickLinks: {
+        applications: AppIcon,
         idp: BuildingIcon
     }
 };

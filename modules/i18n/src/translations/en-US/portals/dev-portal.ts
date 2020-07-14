@@ -2550,61 +2550,22 @@ export const devPortal: DevPortalNS = {
             }
         },
         overview: {
-            widgets: {
-                insights: {
+            banner: {
+                heading: "WSO2 Identity Server for Developers",
+                subHeading: "Utilize SDKs & other developer tools to build a customized experience",
+                welcome: "Welcome, {{username}}"
+            },
+            quickLinks: {
+                cards: {
                     applications: {
                         heading: "Applications",
-                        subHeading: "Overview of applications"
+                        subHeading: "Create applications using predefined templates and manage configurations."
                     },
-                    idp: {
+                    idps: {
                         heading: "Identity Providers",
-                        subHeading: "Overview of Identity Providers"
+                        subHeading: "Create and manage identity providers based on templates and configure " +
+                            "authentication."
                     }
-                },
-                overview: {
-                    cards: {
-                        applications: {
-                            heading: "Applications"
-                        },
-                        idp: {
-                            heading: "Identity Providers"
-                        },
-                        userstores: {
-                            heading: "Userstores"
-                        }
-                    },
-                    heading: "Overview",
-                    subHeading: "Basic set of stats to understand the status of the instance."
-                },
-                quickLinks: {
-                    cards: {
-                        certificates: {
-                            heading: "Certificates",
-                            subHeading: "Manage certificates in the keystore."
-                        },
-                        dialects: {
-                            heading: "Attribute Dialects",
-                            subHeading: "Manage attribute dialects."
-                        },
-                        emailTemplates: {
-                            heading: "Email Templates",
-                            subHeading: "Manage email templates."
-                        },
-                        generalConfigs: {
-                            heading: "General Configurations",
-                            subHeading: "Manage configurations, policies, etc."
-                        },
-                        groups: {
-                            heading: "Groups",
-                            subHeading: "Manage user groups and permissions."
-                        },
-                        roles: {
-                            heading: "Roles",
-                            subHeading: "Manage user roles and permissions."
-                        }
-                    },
-                    heading: "Quick Links",
-                    subHeading: "Links to quickly navigate to features."
                 }
             }
         },
@@ -2985,5 +2946,14 @@ export const devPortal: DevPortalNS = {
             },
             title: "Page under construction"
         }
+    },
+    technologies: {
+        android: "Android",
+        angular: "Angular",
+        ios: "iOS",
+        java: "Java",
+        python: "Python",
+        react: "React",
+        windows: "Windows"
     }
 };

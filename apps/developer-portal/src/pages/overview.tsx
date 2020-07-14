@@ -20,18 +20,20 @@ import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    Jumbotron,
-    PageLayout,
+    Button, Heading,
+    Jumbotron, LabeledCard,
+    PageLayout, PrimaryButton, SelectionCard,
     StatsInsightsWidget,
-    StatsOverviewWidget
+    StatsOverviewWidget,
+    GenericIcon
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
+import { Divider, Grid, Icon, Card } from "semantic-ui-react";
 import { getApplicationList, getIdentityProviderList } from "../api";
 import { ApplicationList, IdentityProviderList, handleGetIDPListCallError } from "../components";
-import { OverviewPageIllustrations } from "../configs";
+import { OverviewPageImages, TechnologyLogos } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import {
@@ -143,128 +145,144 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             });
     };
 
-    const resolveGridContent = () => (
-        <>
-            <Grid.Column className="with-bottom-gutters">
-                <StatsInsightsWidget
-                    heading={ t("devPortal:components.overview.widgets.insights.applications.heading") }
-                    subHeading={
-                        t("devPortal:components.overview.widgets.insights.applications.subHeading")
-                    }
-                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                    onPrimaryActionClick={
-                        () => history.push(AppConstants.PATHS.get("APPLICATIONS"))
-                    }
-                    showExtraContent={
-                        appList?.applications
-                        && appList.applications instanceof Array
-                        && appList.applications.length > 0
-                    }
-                >
-                    <ApplicationList
-                        selection
-                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
-                        featureConfig={ featureConfig }
-                        isLoading={ isApplicationListRequestLoading }
-                        list={ appList }
-                        onEmptyListPlaceholderActionClick={
-                            () => history.push(AppConstants.PATHS.get("APPLICATIONS"))
-                        }
-                        showListItemActions={ false }
-                        data-testid={ `${ testId }-list` }
-                    />
-                </StatsInsightsWidget>
-            </Grid.Column>
-            <Grid.Column className="with-bottom-gutters">
-                <StatsInsightsWidget
-                    heading={ t("devPortal:components.overview.widgets.insights.idp.heading") }
-                    subHeading={
-                        t("devPortal:components.overview.widgets.insights.idp.subHeading")
-                    }
-                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                    onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
-                    showExtraContent={
-                        idpList?.identityProviders
-                        && idpList.identityProviders instanceof Array
-                        && idpList.identityProviders.length > 0
-                    }
-                >
-                    <IdentityProviderList
-                        selection
-                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
-                        isLoading={ isIdPListRequestLoading }
-                        list={ idpList }
-                        onEmptyListPlaceholderActionClick={
-                            () => history.push(AppConstants.PATHS.get("IDP"))
-                        }
-                        showListItemActions={ false }
-                        data-testid={ `${ testId }-list` }
-                    />
-                </StatsInsightsWidget>
-            </Grid.Column>
-        </>
-    );
-
     return (
-        <>
+        <div className="developer-portal page overview-page">
             <Jumbotron
-                heading={ t(
-                    "devPortal:pages.overview.title",
-                    { firstName: resolveUserDisplayName(profileInfo as ProfileInfoInterface) }
-                ) }
-                subHeading={ t("devPortal:pages.overview.subTitle") }
-                icon={ OverviewPageIllustrations.jumbotronIllustration }
-                iconOptions={ {
-                    fill: "primary"
+                bordered
+                background="accent1"
+                className="with-animated-background"
+                heading={ t("devPortal:components.overview.banner.heading") }
+                subHeading={ t("devPortal:components.overview.banner.subHeading") }
+                textAlign="center"
+                matchedPadding={ false }
+                borderRadius={ 10 }
+                style={ {
+                    backgroundImage: `url(${ OverviewPageImages.jumbotron.background })`
                 } }
-            />
+            >
+                <PrimaryButton
+                    basic
+                    onClick={ () => window.open(UIConstants.IS_DOC_URLS.get("5.11.0"), "_blank") }
+                >
+                    { t("common:documentation") }
+                </PrimaryButton>
+            </Jumbotron>
+            <Divider className="x3" hidden />
+            <Card.Group className="technology-showcase" centered>
+                <LabeledCard
+                    basic
+                    hoverType="colored"
+                    label={ t("devPortal:technologies.angular") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.angular }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    label={ t("devPortal:technologies.react") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.react }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    label={ t("devPortal:technologies.windows") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.windows }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    label={ t("devPortal:technologies.ios") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.ios }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    label={ t("devPortal:technologies.python") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.python }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    label={ t("devPortal:technologies.java") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.java }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    label={ t("devPortal:technologies.android") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.android }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+            </Card.Group>
+            <Divider className="x3" hidden />
+            <Divider />
+            <Divider className="x3" hidden />
+            <Card.Group className="quick-links" centered>
+                <Card
+                    className="basic-card"
+                    link={ false }
+                    as="div"
+                    onClick={ () => history.push(AppConstants.PATHS.get("APPLICATIONS")) }
+                >
+                    <GenericIcon
+                        size="x50"
+                        icon={ OverviewPageImages.quickLinks.applications }
+                        square
+                        relaxed="very"
+                        transparent
+                    />
+                    <Card.Content textAlign="center">
+                        <Card.Header>
+                            { t("devPortal:components.overview.quickLinks.cards.applications.heading") }
+                        </Card.Header>
+                        <Card.Description>
+                            { t("devPortal:components.overview.quickLinks.cards.applications.subHeading") }
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
+                <Card
+                    className="basic-card"
+                    link={ false }
+                    as="div"
+                    onClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
+                >
+                    <GenericIcon
+                        size="x50"
+                        icon={ OverviewPageImages.quickLinks.idp }
+                        square
+                        relaxed="very"
+                        transparent
+                    />
+                    <Card.Content textAlign="center">
+                        <Card.Header>
+                            { t("devPortal:components.overview.quickLinks.cards.idps.heading") }
+                        </Card.Header>
+                        <Card.Description>
+                            { t("devPortal:components.overview.quickLinks.cards.idps.subHeading") }
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
+            </Card.Group>
             <PageLayout
                 contentTopMargin={ false }
                 data-testid={ `${ testId }-page-layout` }
             >
-                <StatsOverviewWidget
-                    heading={ t("devPortal:components.overview.widgets.overview.heading") }
-                    subHeading={ t("devPortal:components.overview.widgets.overview.subHeading") }
-                    stats={ [
-                        {
-                            icon: OverviewPageIllustrations.statsOverview.application,
-                            iconOptions: {
-                                background: "accent1",
-                                fill: "white"
-                            },
-                            label: t("devPortal:components.overview.widgets.overview.cards.applications.heading"),
-                            value: appCount
-                        },
-                        {
-                            icon: OverviewPageIllustrations.statsOverview.idp,
-                            iconOptions: {
-                                background: "accent2",
-                                fill: "white"
-                            },
-                            label: t("devPortal:components.overview.widgets.overview.cards.idp.heading"),
-                            value: idpCount
-                        }
-                    ] }
-                />
-                <Divider hidden/>
-                <Grid>
-                    <Responsive
-                        as={ Grid.Row }
-                        columns={ 2 }
-                        minWidth={ Responsive.onlyComputer.minWidth }
-                    >
-                        { resolveGridContent() }
-                    </Responsive>
-                    <Responsive
-                        as={ Grid.Row }
-                        columns={ 1 }
-                        maxWidth={ Responsive.onlyComputer.minWidth }
-                    >
-                        { resolveGridContent() }
-                    </Responsive>
-                </Grid>
+
             </PageLayout>
-        </>
+        </div>
     );
 };
 

@@ -927,61 +927,21 @@ export interface DevPortalNS {
             };
         };
         overview: {
-            widgets: {
-                insights: {
+            banner: {
+                heading: string;
+                subHeading: string;
+                welcome: string;
+            };
+            quickLinks: {
+                cards: {
                     applications: {
                         heading: string;
                         subHeading: string;
                     };
-                    idp: {
+                    idps: {
                         heading: string;
                         subHeading: string;
                     };
-                };
-                overview: {
-                    cards: {
-                        applications: {
-                            heading: string;
-                        };
-                        idp: {
-                            heading: string;
-                        };
-                        userstores: {
-                            heading: string;
-                        };
-                    };
-                    heading: string;
-                    subHeading: string;
-                };
-                quickLinks: {
-                    cards: {
-                        certificates: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        dialects: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        emailTemplates: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        generalConfigs: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        groups: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        roles: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                    };
-                    heading: string;
-                    subHeading: string;
                 };
             };
         };
@@ -1188,5 +1148,14 @@ export interface DevPortalNS {
         loginError: Placeholder;
         unauthorized: Placeholder;
         underConstruction: Placeholder;
+    };
+    technologies: {
+        android: string;
+        angular: string;
+        ios: string;
+        java: string;
+        python: string;
+        react: string;
+        windows: string;
     };
 }

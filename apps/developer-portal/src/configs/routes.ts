@@ -19,8 +19,8 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { AppConstants } from "../constants";
-import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 import { EXTENSION_ROUTES } from "../extensions";
+import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 
 /**
  * Load extension routes if available.
@@ -47,20 +47,11 @@ const extensions = EXTENSION_ROUTES();
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: lazy(() => import("../pages/overview")),
-        icon: "overview",
-        id: "overview",
-        name: "common:overview",
-        path: AppConstants.PATHS.get("OVERVIEW"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
         children: [
             {
                 component: lazy(() => import("../pages/applications/application-template")),
                 exact: true,
-                icon: null,
+                icon: "childIcon",
                 id: "applicationTemplate",
                 name: "Application Templates",
                 path: AppConstants.PATHS.get("APPLICATION_TEMPLATES"),
@@ -70,7 +61,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/applications/application-edit")),
                 exact: true,
-                icon: "applications",
+                icon: "childIcon",
                 id: "applicationsEdit",
                 name: "Application Edit",
                 path: AppConstants.PATHS.get("APPLICATION_EDIT"),
@@ -92,7 +83,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/identity-providers/identity-provider-template")),
                 exact: true,
-                icon: null,
+                icon: "childIcon",
                 id: "identityProviderTemplate",
                 name: "Identity Provider Templates",
                 path: AppConstants.PATHS.get("IDP_TEMPLATES"),
@@ -102,7 +93,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/identity-providers/identity-provider-edit")),
                 exact: true,
-                icon: "applications",
+                icon: "childIcon",
                 id: "identityProvidersEdit",
                 name: "Identity Providers Edit",
                 path: AppConstants.PATHS.get("IDP_EDIT"),
@@ -124,13 +115,13 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config-edit")),
                 exact: true,
-                icon: "overview",
+                icon: "childIcon",
                 id: "remote-repo-edit",
                 name: "Remote Repo Config Edit",
                 path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
                 protected: true,
-                showOnSidePanel: false
-            },
+                showOnSidePanel: true
+            }
         ],
         component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config")),
         exact: true,
@@ -176,6 +167,15 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
  * Default page layout routes array.
  */
 const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
+    {
+        component: lazy(() => import("../pages/overview")),
+        icon: "overview",
+        id: "overview",
+        name: "common:overview",
+        path: AppConstants.PATHS.get("OVERVIEW"),
+        protected: true,
+        showOnSidePanel: true
+    },
     {
         component: lazy(() => import("../pages/privacy")),
         icon: null,
@@ -259,6 +259,15 @@ const APP_ROUTES: RouteInterface[] = [
     },
     {
         component: DefaultLayout,
+        icon: "overview",
+        id: "overview",
+        name: "common:overview",
+        path: AppConstants.PATHS.get("OVERVIEW"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        component: DefaultLayout,
         icon: null,
         id: "appRoutePrivacy",
         name: "Privacy",
@@ -318,4 +327,4 @@ export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
 export const dashboardLayoutRoutes = DASHBOARD_LAYOUT_ROUTES;
 export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
 export const errorLayoutRoutes = ERROR_LAYOUT_ROUTES;
-export const routes = [...DASHBOARD_LAYOUT_ROUTES];
+export const routes = [ ...DEFAULT_LAYOUT_ROUTES, ...DASHBOARD_LAYOUT_ROUTES ];

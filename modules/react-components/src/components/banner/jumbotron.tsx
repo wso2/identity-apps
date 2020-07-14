@@ -31,7 +31,7 @@ export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, Te
     /**
      * Background color.
      */
-    background: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "white" | "default" | SemanticCOLORS;
+    background?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "white" | "default" | SemanticCOLORS;
     /**
      * Border radius.
      */
