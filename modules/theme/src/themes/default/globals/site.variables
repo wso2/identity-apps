@@ -21,6 +21,10 @@
        Fonts
 --------------------*/
 
+// Needed to enable portals to be run offline.
+// Ref - https://github.com/Semantic-Org/Semantic-UI/issues/1521
+@importGoogleFonts : false;
+
 @iconFont          : "font-awesome";
 @fontName          : -apple-system, BlinkMacSystemFont, Segoe WPC, Segoe UI, HelveticaNeue-Light, Ubuntu, Droid Sans, sans-serif, @iconFont;
 @googleFontName    : 'Lato';
