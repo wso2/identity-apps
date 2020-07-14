@@ -181,6 +181,8 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
     return (
         <>
             <Jumbotron
+                contentInline
+                borderRadius={ 0 }
                 heading={ t(
                     "adminPortal:pages.overview.title", { firstName: resolveUserDisplayName(profileInfo) }
                 ) }
