@@ -266,13 +266,13 @@
 .roles-list{
     .ui.label {
         color: white;
-    
+
         &.application-label {
             background-color: @TransferComponentSegmentApplicationLabelBackgroundColor;
             border-color: @TransferComponentSegmentApplicationLabelBorderColor;
             margin-right: @rolesListingLabelMargin;
         }
-    
+
         &.internal-label {
             background-color: @TransferComponentSegmentInternalLabelBackgroundColor;
             border-color: @TransferComponentSegmentInternalLabelBorderColor;
@@ -442,5 +442,62 @@
 
     .file-name {
         font-size: 1em;
+    }
+}
+
+/*-----------------------------
+         Jumbotron
+------------------------------*/
+
+.ui.segment {
+    &.jumbotron {
+        &.matched-padding {
+            padding: @pageLayoutContentPadding;
+        }
+
+        &.background {
+            &-transparent {
+                background-color: transparent;
+            }
+            &-primary {
+                background-color: @primaryColor;
+            }
+            &-secondary {
+                background-color: @secondaryColor;
+            }
+            &-accent1 {
+                background-color: @accentColor1;
+            }
+            &-accent2 {
+                background-color: @accentColor2;
+            }
+            &-accent3 {
+                background-color: @accentColor3;
+            }
+        }
+        &.bordered {
+            &-default {
+                border: @defaultBorderWidth solid @defaultBorderColor;
+            }
+            &-bottom {
+                border-bottom: @defaultBorderWidth solid @defaultBorderColor;
+            }
+            &-top {
+                border-top: @defaultBorderWidth solid @defaultBorderColor;
+            }
+        }
+        &.border-radius {
+            &-none {
+                border-radius: 0;
+            }
+            &-default {
+                border-radius: @defaultBorderRadius;
+            }
+        }
+        &.inverted {
+            .jumbotron-heading {
+                color: @jumbotronInvertedHeadingColor;
+            }
+        }
     }
 }
