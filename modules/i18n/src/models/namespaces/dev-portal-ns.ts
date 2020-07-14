@@ -942,6 +942,10 @@ export interface DevPortalNS {
                         heading: string;
                         subHeading: string;
                     };
+                    remoteFetch: {
+                        heading: string;
+                        subHeading: string;
+                    };
                 };
             };
         };

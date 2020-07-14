@@ -2565,6 +2565,10 @@ export const devPortal: DevPortalNS = {
                         heading: "Identity Providers",
                         subHeading: "Create and manage identity providers based on templates and configure " +
                             "authentication."
+                    },
+                    remoteFetch: {
+                        heading: "Remote Fetch",
+                        subHeading: "Configure a remote repository to work seamlessly with WSO2 Identity Server."
                     }
                 }
             }

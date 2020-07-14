@@ -171,7 +171,7 @@ export const SidePanelIcons = {
     childIcon: ArrowRight,
     identityProviders: PlugIcon,
     overview: DashboardIcon,
-    remoteRepo: CodeForkIcon
+    remoteFetch: CodeForkIcon
 };
 
 export const SidePanelMiscIcons = {
@@ -341,7 +341,8 @@ export const OverviewPageImages = {
     },
     quickLinks: {
         applications: AppIcon,
-        idp: BuildingIcon
+        idp: BuildingIcon,
+        remoteFetch: CodeForkIcon
     }
 };
 

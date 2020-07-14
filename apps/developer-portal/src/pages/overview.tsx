@@ -275,6 +275,28 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         </Card.Description>
                     </Card.Content>
                 </Card>
+                <Card
+                    className="basic-card"
+                    link={ false }
+                    as="div"
+                    onClick={ () => history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG")) }
+                >
+                    <GenericIcon
+                        size="x50"
+                        icon={ OverviewPageImages.quickLinks.remoteFetch }
+                        square
+                        relaxed="very"
+                        transparent
+                    />
+                    <Card.Content textAlign="center">
+                        <Card.Header>
+                            { t("devPortal:components.overview.quickLinks.cards.remoteFetch.heading") }
+                        </Card.Header>
+                        <Card.Description>
+                            { t("devPortal:components.overview.quickLinks.cards.remoteFetch.subHeading") }
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
             </Card.Group>
             <PageLayout
                 contentTopMargin={ false }
