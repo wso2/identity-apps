@@ -171,7 +171,6 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
             <Card.Group className="technology-showcase" centered>
                 <LabeledCard
                     basic
-                    hoverType="colored"
                     label={ t("devPortal:technologies.angular") }
                     imageSize="x50"
                     image={ TechnologyLogos.angular }
