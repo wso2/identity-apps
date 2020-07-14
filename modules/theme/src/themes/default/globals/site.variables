@@ -45,7 +45,7 @@
 
 @primaryColor        : @orange;
 @secondaryColor      : @doveGray;
-@accentColor1        : #1a1c4c;
+@accentColor1        : #173163;
 @accentColor2        : #f5385b;
 @accentColor3        : #00b7e1;
 
@@ -85,6 +85,7 @@
 --------------------*/
 
 @iconHoverBgColor: @whiteSmoke;
+@iconDefaultBgColor: @nobel;
 
 /*-------------------
     Icon Sizes
@@ -95,6 +96,7 @@
 @iconMicro: 18px;
 @iconMini: 35px;
 @iconX50: 50px;
+@iconX60: 60px;
 @iconTiny: 80px;
 @iconSmall: 150px;
 @iconMedium: 300px;

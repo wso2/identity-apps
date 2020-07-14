@@ -101,12 +101,13 @@ Recent Application Card
         Labeled Card
 --------------------------------*/
 
+@labeledCardTextColor: @textColor;
 @labeledCardRightSpacing: 15px;
 @labeledCardHoverBoxShadow: @defaultCardHoverBoxShadow;
 @labeledCardTransition: @defaultCardTransition;
 @labeledCardBorder: @defaultCardBorder;
 @labeledCardMarginBottom: 5px;
-@labeledCardLabelFontColor: 0.8em;
+@labeledCardLabelFontColor: 1em;
 @labeledCardWrapperMarginBottom: 8px;
 @labeledCardTiny: 68px;
 
