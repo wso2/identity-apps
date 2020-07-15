@@ -218,7 +218,7 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
                                                                         trigger={ (
                                                                             <Icon
                                                                                 className="add-button"
-                                                                                name="info"
+                                                                                name="info circle"
                                                                                 onClick={ () => {
                                                                                     setSelectedTemplate(template);
                                                                                 } }
