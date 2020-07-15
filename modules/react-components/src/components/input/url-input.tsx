@@ -17,7 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useState
+} from "react";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 import { Hint } from "../typography";
 
@@ -42,6 +48,10 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Obtains the submit function and the url input value as arguments.
+     */
+    getSubmitAndInputValue?: (submitFunction: () => string, urlInputValue: () => string) => void;
 }
 
 /**
@@ -73,7 +83,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         hideComponent,
         computerWidth,
         readOnly,
-        [ "data-testid" ]: testId
+        getSubmitAndInputValue,
+        ["data-testid"]: testId
     } = props;
 
     const [changeUrl, setChangeUrl] = useState<string>("");
@@ -85,14 +96,18 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     /**
      * Add URL to the URL list.
+     * 
+     * @returns {string} URLs.
      */
-    const addUrl = () => {
+    const addUrl = useCallback((): string => {
         const url = changeUrl;
         const urlValid = validation(url);
         setValidURL(urlValid);
-        if (urlState === "" || urlState === undefined) {
+        if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
             setChangeUrl("");
+
+            return url;
         } else {
             const availableURls = urlState.split(",");
             const duplicate = availableURls.includes(url);
@@ -100,9 +115,13 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
+
+                return url + "," + urlState;
             }
         }
-    };
+
+        return;
+    },[changeUrl, setURLState, urlState, validation]);
 
     /**
      * Initial prediction for the URL.
@@ -167,7 +186,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         setPredictValue([]);
     };
 
-    const addFromButton = (e) => {
+    const addFormButton = (e) => {
         e.preventDefault();
         addUrl();
     };
@@ -185,6 +204,24 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         }
         setURLState(urlsAfterRemoved);
     };
+
+    /**
+     * Returns the changeUrl value.
+     * 
+     * @returns {string} Change URL.
+     */
+    const getChangeUrl = useCallback((): string => {
+        return changeUrl;
+    },[changeUrl]);
+
+    /**
+     * Calls the prop method by passing the `addUrl` and `getChangeUrl` methods as arguments.
+     */
+    useEffect(() => {
+        if (getSubmitAndInputValue) {
+            getSubmitAndInputValue(addUrl, getChangeUrl);
+        }
+    }, [getSubmitAndInputValue, addUrl, getChangeUrl]);
 
     useEffect(() => {
         setURLState(value);
@@ -244,7 +281,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             trigger={
                                 (
                                     <Button
-                                        onClick={ (e) => addFromButton(e) }
+                                        onClick={ (e) => addFormButton(e) }
                                         icon="add"
                                         type="button"
                                         disabled={ readOnly || disabled }
