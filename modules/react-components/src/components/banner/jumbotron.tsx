@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
 import { HeaderProps, Responsive, Segment, SegmentProps } from "semantic-ui-react";
 import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
@@ -80,6 +80,10 @@ export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, Te
      * Size of the icon.
      */
     iconSize?: GenericIconSizes;
+    /**
+     * Additional content to appear before the heading.
+     */
+    topContent?: ReactNode;
 }
 
 /**
@@ -109,6 +113,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
         style,
         subHeading,
         subHeadingAs,
+        topContent,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -169,6 +174,7 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
 
     return (
         <Segment className={ classes } style={ getStyle() } { ...resolveAdditionalProps() } { ...rest }>
+            { topContent }
             { (heading || subHeading) && (
                 <div className={ contentWrapperClasses }>
                     { heading && (
