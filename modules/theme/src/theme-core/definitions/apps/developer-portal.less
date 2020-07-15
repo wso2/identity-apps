@@ -407,3 +407,45 @@
         border-radius: 5px;
     }
 }
+
+/*****************************************
+   Adaptive Script Template Description
+*****************************************/
+.stepper {
+    display: grid;
+    grid-template-columns: 25px 1fr;
+    grid-template-rows: 25px 1fr;
+    grid-gap: 10px;
+    margin-bottom: 10px;
+
+    .step-number {
+        border-radius: 50%;
+        background-color: @primaryColor;
+        color: @white;
+        text-align: center;
+        padding: 5px;
+        height: 25px;
+        width: 25px;
+        font-size: 0.8em;
+    }
+
+    .step-text {
+        grid-row-start: 1;
+        grid-column-start: 2;
+        grid-row-end: 3;
+        padding-top: 5px;
+    }
+
+    .step-connector {
+        height: 100%;
+        min-height: 25px;
+        display: flex;
+        justify-content: center;
+
+        .step-line {
+            height: 100%;
+            width: 1px;
+            background-color: @paleGray;
+        }
+    }
+}

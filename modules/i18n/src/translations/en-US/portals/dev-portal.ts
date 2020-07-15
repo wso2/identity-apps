@@ -457,6 +457,17 @@ export const devPortal: DevPortalNS = {
                                 },
                                 subTitle: "Local authenticators for request path authentication.",
                                 title: "Request Path Authentication"
+                            },
+                            templateDescription: {
+                                description: {
+                                    code: "Code",
+                                    defaultSteps: "Default Steps",
+                                    description: "Description",
+                                    helpReference: "Help Reference",
+                                    parameters: "Parameters",
+                                    prerequisites: "Prerequisites"
+                                },
+                                popupContent: "More details"
                             }
                         },
                         tabName: "Sign-on Method"

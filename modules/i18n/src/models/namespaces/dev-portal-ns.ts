@@ -78,26 +78,26 @@ export interface DevPortalNS {
         remoteConfig: {
             placeholders: {
                 emptyList: {
-                    action: string,
+                    action: string;
                     subtitles: {
-                        0: string,
-                        1: string,
-                        2: string
-                    },
-                    title: string
-                }
-            },
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                    title: string;
+                };
+            };
             list: {
                 confirmations: {
                     deleteConfig: Confirmation;
                 };
-            },
+            };
             notifications: {
-                deleteConfig: Notification,
-                editConfig: Notification,
-                triggerConfig: Notification,
-                createConfig: Notification
-            }
+                deleteConfig: Notification;
+                editConfig: Notification;
+                triggerConfig: Notification;
+                createConfig: Notification;
+            };
         };
         applications: {
             addWizard: {
@@ -326,6 +326,17 @@ export interface DevPortalNS {
                                 subTitle: string;
                                 notifications: {
                                     getRequestPathAuthenticators: Notification;
+                                };
+                            };
+                            templateDescription: {
+                                popupContent: string;
+                                description: {
+                                    prerequisites: string;
+                                    parameters: string;
+                                    description: string;
+                                    defaultSteps: string;
+                                    helpReference: string;
+                                    code: string;
                                 };
                             };
                         };
