@@ -115,7 +115,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         sourceCode,
         tabSize,
         theme,
-        ["data-testid"]: testId,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -174,7 +174,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         if (getThemeFromEnvironment) {
             return (dark ? "material" : "default");
         }
-        
+
         if (!(theme === "dark" || theme === "light")) {
             throw new Error("Please select a supported theme. Only `dark` and `light` are supported at the moment.");
         }
