@@ -190,18 +190,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * Prepares form values for submit.
      *
      * @param values - Form values.
+     * @param url - Callback URLs.
+     * 
      * @return {any} Sanitized form values.
      */
-    const updateConfiguration = (values: any): any => {
+    const updateConfiguration = (values: any, url?: string): any => {
         const formValues = {
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
+                bindingType: values.get("bindingType"),
                 type: values.get("type"),
-                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
-                bindingType: values.get("bindingType")
+                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
             },
             allowedOrigins: [],
-            callbackURLs: [buildCallBackUrlWithRegExp(callBackUrls)],
+            callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls)],
             grantTypes: values.get("grant"),
             idToken: {
                 audience: [values.get("audience")],
@@ -251,15 +253,32 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }, [initialValues]
     );
 
+    /**
+     * Submit URL function.
+     */
+    let submitUrl: () => string;
+    /**
+     * Function to get the callback URLs.
+     */
+    let getURL: () => string;
+    
     return (
         metadata ?
             (
                 <Forms
                     onSubmit={ (values) => {
-                        if (isEmpty(callBackUrls)) {
+                        let url: string;
+                        if (getURL()) {
+                            url = submitUrl();
+                            if (!url) {
+                                return;
+                            }
+                        }
+
+                        if (isEmpty(callBackUrls)&& isEmpty(url)) {
                             setShowURLError(true);
                         } else {
-                            onSubmit(updateConfiguration(values));
+                            onSubmit(updateConfiguration(values, url));
                         }
                     } }
                 >
@@ -502,7 +521,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             readOnly={ readOnly }
                             addURLTooltip={ t("common:addURL") }
                             duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${ testId }-callback-url-input` }
+                            data-testid={ `${testId}-callback-url-input` }
+                            getSubmitAndInputValue={ (callSubmit: () => string, url: () => string) => {
+                                submitUrl = callSubmit;
+                                getURL=url;
+                            } }
                         />
                         {/*TODO: Enable this after the backend is fixed*/ }
                         {/*<Grid.Row columns={ 1 }>
