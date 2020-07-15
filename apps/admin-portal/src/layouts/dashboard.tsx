@@ -23,6 +23,7 @@ import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     Alert,
+    ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
     Footer,
     SidePanel,
@@ -34,6 +35,7 @@ import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
+    Suspense,
     SyntheticEvent,
     useContext,
     useEffect,
@@ -410,9 +412,11 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                 />
             ) }
         >
-            <Switch>
-                { resolveRoutes() }
-            </Switch>
+            <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Switch>
+                    { resolveRoutes() }
+                </Switch>
+            </Suspense>
         </DashboardLayoutSkeleton>
     );
 };
