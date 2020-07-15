@@ -25,6 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
+import { string } from "@hapi/joi";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -167,9 +168,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
+     * @param {string} - Callback URLs.
      * @return {object} Prepared values.
      */
-    const getFormValues = (values: any): object => {
+    const getFormValues = (values: any, urls?: string): object => {
         const configs = {
             inboundProtocolConfiguration: {
                 oidc: {
@@ -178,7 +180,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             }
         };
         if (showCallbackURL) {
-            configs.inboundProtocolConfiguration.oidc["callbackURLs"] = [buildCallBackUrlWithRegExp(callBackUrls)];
+            configs.inboundProtocolConfiguration.oidc[ "callbackURLs" ]
+                = [ buildCallBackUrlWithRegExp(urls ? urls : callBackUrls) ];
         }
         if (showRefreshToken) {
             configs.inboundProtocolConfiguration.oidc["refreshToken"] = {
@@ -188,15 +191,32 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         return configs;
     };
 
+    /**
+     * submitURL function.
+     */
+    let submitUrl: () => string;
+    /**
+     * Function that gets the value of callback URLs.
+     */
+    let getURL: () => string;
+
     return (templateValues
             ?
             <Forms
                 onSubmit={ (values) => {
+                    let url: string;
+                    if (getURL()) {
+                        url = submitUrl();
+                        if (!url){
+                            return;
+                        }
+                    }
+                    
                     // check whether callback url is empty or not
-                    if (_.isEmpty(callBackUrls)) {
+                    if (_.isEmpty(callBackUrls) && _.isEmpty(url)) {
                         setShowURLError(true);
                     } else {
-                        onSubmit(getFormValues(values));
+                        onSubmit(getFormValues(values, url));
                     }
                 } }
                 submitState={ triggerSubmit }
@@ -228,6 +248,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                         addURLTooltip={ t("common:addURL") }
                         duplicateURLErrorMessage={ t("common:duplicateURLError") }
                         data-testid={ `${ testId }-callback-url-input` }
+                        getSubmitAndInputValue={ (callSubmit: () => string, url: () => string) => {
+                            submitUrl = callSubmit;
+                            getURL=url;
+                        } }
                     />
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
