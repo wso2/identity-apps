@@ -203,7 +203,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
             },
             allowedOrigins: [],
-            callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls)],
+            callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
             grantTypes: values.get("grant"),
             idToken: {
                 audience: [values.get("audience")],
@@ -521,7 +521,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             readOnly={ readOnly }
                             addURLTooltip={ t("common:addURL") }
                             duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${testId}-callback-url-input` }
+                            data-testid={ `${ testId }-callback-url-input` }
                             getSubmitAndInputValue={ (callSubmit: () => string, url: () => string) => {
                                 submitUrl = callSubmit;
                                 getURL=url;
