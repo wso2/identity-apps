@@ -84,3 +84,9 @@
 ------------------------------------*/
 
 @secondaryLighterBackground: @alabaster;
+
+/*-----------------------------
+         Jumbotron
+------------------------------*/
+
+@jumbotronInvertedHeadingColor: @white;

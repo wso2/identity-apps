@@ -26,7 +26,6 @@
 @iconWrapperBorderWidth: 1px;
 @iconWrapperPadding: 5px;
 @iconWrapperVeryPadding: 10px;
-@iconDefaultBgColor: @nobel;
 @iconDefaultBgHoverColor: @black;
 @iconWrapperTwoTonePrimaryColor: @primaryColor;
 @iconWrapperTwoToneSecondaryColor: @nobel;

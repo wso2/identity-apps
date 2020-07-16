@@ -235,10 +235,10 @@
         box-shadow: none;
 
         &:hover {
-            transform: none;
+            transform: none !important;
             text-decoration: none;
-            cursor: pointer;
-            box-shadow: @basicCardHoverBoxShadow;
+            cursor: pointer !important;
+            box-shadow: @basicCardHoverBoxShadow !important;
         }
     }
 }
@@ -401,6 +401,20 @@
 .labeled-card-wrapper {
     text-align: center;
 
+    &.basic {
+        .labeled-card {
+            border: none !important;
+        }
+    }
+    &.padding {
+        &-none {
+            .labeled-card {
+                .card-image-container {
+                    padding: 0;
+                }
+            }
+        }
+    }
     &.tiny {
         width: @labeledCardTiny;
     }
@@ -419,6 +433,13 @@
 
                 .close-button {
                     visibility: visible;
+                }
+            }
+        }
+        &.hover-raised {
+            &-none {
+                .labeled-card {
+                    box-shadow: none !important;
                 }
             }
         }

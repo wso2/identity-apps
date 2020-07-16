@@ -78,7 +78,7 @@ body {
         display: inline-block;
         vertical-align: sub;
         margin-left: 0.2em;
-        
+
         .app-name {
             margin: @productTitleAppNameMargin;
             font-size: @productTitleAppNameFontSize;
@@ -597,6 +597,28 @@ body {
             }
         }
     }
+    &.x50 {
+        .icon {
+            width: @iconX50;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconX50;
+            }
+        }
+    }
+    &.x60 {
+        .icon {
+            width: @iconX60;
+            height: auto;
+        }
+        &.square {
+            .icon {
+                height: @iconX60;
+            }
+        }
+    }
     &.tiny {
         .icon {
             width: @iconTiny;
@@ -1005,7 +1027,7 @@ body {
 *****************************************/
 
 .advanced-search-wrapper {
-    position: relative; 
+    position: relative;
 
     &.aligned-left {
         text-align: left;

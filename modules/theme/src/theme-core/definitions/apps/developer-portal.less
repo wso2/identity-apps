@@ -22,7 +22,96 @@
  
  @import (multiple) '../../theme.less';
  .loadVariables();
- 
+
+/*-------------------------------
+            Pages
+--------------------------------*/
+
+.developer-portal.page {
+    &.overview-page {
+        .jumbotron {
+            padding: @overviewPageJumbotronPadding;
+
+            &.with-animated-background {
+                -webkit-transition: @overviewPageJumbotronAnimatedBackgroundTransition;
+                -moz-transition:  @overviewPageJumbotronAnimatedBackgroundTransition;
+                -o-transition:  @overviewPageJumbotronAnimatedBackgroundTransition;
+                transition:  @overviewPageJumbotronAnimatedBackgroundTransition;
+            }
+
+            &:hover {
+                &.with-animated-background {
+                    background-position-x: @overviewPageJumbotronAnimatedBackgroundHoverXPositionOffset;
+                    background-position-y: @overviewPageJumbotronAnimatedBackgroundHoverYPositionOffset;
+                }
+            }
+        }
+        .technology-showcase {
+            .labeled-card-wrapper {
+                &:not(:last-child) {
+                    margin-right: @overviewPageTechnologyShowcaseCardsMarginRight;
+                }
+
+                .labeled-card {
+                    .card-image-container {
+                        .theme-icon {
+                            svg.icon .path {
+                                transition: fill 0.5s ease;
+                            }
+                        }
+                    }
+                }
+
+                &:not(:hover) {
+                    .labeled-card {
+                        .card-image-container {
+                            .theme-icon {
+                                svg.icon .path {
+                                    fill: @iconDefaultBgColor;
+
+                                    &.stroke {
+                                        stroke: @iconDefaultBgColor;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .card-label {
+                        color: @lightTextColor;
+                    }
+                }
+                
+                &:hover {
+                    .card-label {
+                        color: darken(@lightTextColor, 40);
+                    }
+                }
+            }
+        }
+        .quick-links {
+            .ui.card {
+                max-width: @overviewPageQuickLinksCardMaxWidth;
+
+                .theme-icon {
+                    padding-top: 2em;
+                }
+                .content {
+                    border-top: none;
+                    padding: 1em 2em 1.5em 2em;
+                    
+                    .header {
+                        font-size: 1.1em;
+                    }
+                    .description {
+                        font-size: 0.9em;
+                    }
+                }
+            }
+        }
+    }
+}
+
  /*****************************************
              Sign on methods
  *****************************************/

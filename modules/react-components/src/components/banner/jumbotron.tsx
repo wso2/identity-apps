@@ -18,31 +18,32 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, ReactNode } from "react";
-import { Divider, HeaderProps, Responsive } from "semantic-ui-react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { HeaderProps, Responsive, Segment, SegmentProps } from "semantic-ui-react";
+import { SemanticCOLORS } from "semantic-ui-react/dist/commonjs/generic";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 import { Heading } from "../typography";
 
 /**
  * Proptypes for the jumbotron component.
  */
-export interface JumbotronPropsInterface extends TestableComponentInterface {
+export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, TestableComponentInterface {
     /**
-     * Additional classes.
+     * Background color.
      */
-    className?: string;
+    background?: "primary" | "secondary" | "accent1" | "accent2" | "accent3" | "white" | "default" | SemanticCOLORS;
     /**
-     * Extra content.
+     * Border radius.
      */
-    content?: ReactNode;
+    borderRadius?: "default" | number;
     /**
      * Enable borders.
      */
     bordered?: "bottom" | "top" | boolean;
     /**
-     * Clearing for floating elements.
+     * Should the content be inline.
      */
-    clearing?: boolean;
+    contentInline?: boolean;
     /**
      * Jumbotron heading.
      */
@@ -52,6 +53,10 @@ export interface JumbotronPropsInterface extends TestableComponentInterface {
      */
     headingAs?: HeaderProps["as"];
     /**
+     * Custom style object.
+     */
+    style?: object;
+    /**
      * Jumbotron sub heading.
      */
     subHeading?: string;
@@ -60,9 +65,9 @@ export interface JumbotronPropsInterface extends TestableComponentInterface {
      */
     subHeadingAs?: HeaderProps["as"];
     /**
-     * Enable content padding.
+     * Enable matching padding same as the page layout.
      */
-    padded?: boolean;
+    matchedPadding?: boolean;
     /**
      * Icon to represent the stats.
      */
@@ -75,10 +80,6 @@ export interface JumbotronPropsInterface extends TestableComponentInterface {
      * Size of the icon.
      */
     iconSize?: GenericIconSizes;
-    /**
-     * Text align direction.
-     */
-    textAlign?: "center" | "left" | "right";
 }
 
 /**
@@ -88,42 +89,88 @@ export interface JumbotronPropsInterface extends TestableComponentInterface {
  *
  * @return {React.ReactElement}
  */
-export const Jumbotron: FunctionComponent<JumbotronPropsInterface> = (
-    props: JumbotronPropsInterface
+export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterface>> = (
+    props: PropsWithChildren<JumbotronPropsInterface>
 ): ReactElement => {
 
     const {
+        children,
         className,
-        content,
+        contentInline,
+        background,
+        borderRadius,
         bordered,
-        clearing,
         heading,
         headingAs,
         icon,
         iconOptions,
         iconSize,
+        matchedPadding,
+        style,
         subHeading,
         subHeadingAs,
-        padded,
-        textAlign,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const classes = classNames(
-        "ui-jumbotron",
+        "jumbotron",
         {
+            [ `background-${ background }` ]: background,
             [ typeof bordered === "boolean" ? "bordered-default" : `bordered-${ bordered }` ]: bordered,
-            clearing,
-            padded,
-            [ `text-${ textAlign }` ]: textAlign
+            [ typeof borderRadius === "string" ? `border-radius-${ borderRadius }` : "" ]: borderRadius,
+            [ "matched-padding" ]: matchedPadding
         },
         className
     );
 
+    const contentWrapperClasses = classNames(
+        "jumbotron-content-wrapper",
+        {
+            [ "inline" ]: contentInline
+        }
+    );
+
+    /**
+     * Resolves the custom styles.
+     *
+     * @return {object} Styles object.
+     */
+    const getStyle = () => {
+        let modifiedStyle: object = style;
+
+        if (typeof borderRadius === "number") {
+            modifiedStyle = {
+                ...modifiedStyle,
+                borderRadius: `${ borderRadius }px`
+            }
+        }
+
+        return modifiedStyle;
+    };
+
+    /**
+     * Resolves additional properties.
+     *
+     * @return {object} Additional props.
+     */
+    const resolveAdditionalProps = (): object => {
+        let additionalProps: object = {};
+
+        if (background && !(background === "white" || background === "default")) {
+            additionalProps = {
+                ...additionalProps,
+                inverted: true
+            }
+        }
+
+        return additionalProps;
+    };
+
     return (
-        <div className={ classes }>
+        <Segment className={ classes } style={ getStyle() } { ...resolveAdditionalProps() } { ...rest }>
             { (heading || subHeading) && (
-                <div className="jumbotron-content-wrapper inline">
+                <div className={ contentWrapperClasses }>
                     { heading && (
                         <Heading
                             className="jumbotron-heading inline ellipsis"
@@ -145,13 +192,8 @@ export const Jumbotron: FunctionComponent<JumbotronPropsInterface> = (
                             { subHeading }
                         </Heading>
                     ) }
+                    { children }
                 </div>
-            ) }
-            { content && (
-                <>
-                    <Divider />
-                    { content }
-                </>
             ) }
             { icon && (
                 <Responsive
@@ -164,7 +206,7 @@ export const Jumbotron: FunctionComponent<JumbotronPropsInterface> = (
                     { ...iconOptions }
                 />
             ) }
-        </div>
+        </Segment>
     );
 };
 
@@ -172,12 +214,16 @@ export const Jumbotron: FunctionComponent<JumbotronPropsInterface> = (
  * Default props for the stat count card.
  */
 Jumbotron.defaultProps = {
+    background: "default",
+    basic: true,
+    borderRadius: "default",
     bordered: "bottom",
     clearing: true,
+    contentInline: false,
     "data-testid": "jumbotron",
     headingAs: "h1",
     iconSize: "auto",
-    padded: true,
+    matchedPadding: true,
     subHeadingAs: "h5",
     textAlign: "left"
 };
