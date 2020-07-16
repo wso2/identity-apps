@@ -47,7 +47,7 @@ export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, Te
     /**
      * Jumbotron heading.
      */
-    heading?: string;
+    heading?: ReactNode;
     /**
      * Element to render heading.
      */
@@ -59,7 +59,7 @@ export interface JumbotronPropsInterface extends Omit<SegmentProps, "color">, Te
     /**
      * Jumbotron sub heading.
      */
-    subHeading?: string;
+    subHeading?: ReactNode;
     /**
      * Element to render sub heading.
      */
@@ -175,28 +175,36 @@ export const Jumbotron: FunctionComponent<PropsWithChildren<JumbotronPropsInterf
     return (
         <Segment className={ classes } style={ getStyle() } { ...resolveAdditionalProps() } { ...rest }>
             { topContent }
-            { (heading || subHeading) && (
+            { (heading || subHeading || children) && (
                 <div className={ contentWrapperClasses }>
                     { heading && (
-                        <Heading
-                            className="jumbotron-heading inline ellipsis"
-                            as={ headingAs }
-                            data-testid={ `${ testId }-heading` }
-                            compact
-                        >
-                            { heading }
-                        </Heading>
+                        typeof heading === "string"
+                            ? (
+                                <Heading
+                                    className="jumbotron-heading inline ellipsis"
+                                    as={ headingAs }
+                                    data-testid={ `${ testId }-heading` }
+                                    compact
+                                >
+                                    { heading }
+                                </Heading>
+                            )
+                            : heading
                     ) }
                     { subHeading && (
-                        <Heading
-                            className="jumbotron-sub-heading"
-                            data-testid={ `${ testId }-sub-heading` }
-                            as={ subHeadingAs }
-                            subHeading
-                            ellipsis
-                        >
-                            { subHeading }
-                        </Heading>
+                        typeof subHeading === "string"
+                            ? (
+                                <Heading
+                                    className="jumbotron-sub-heading"
+                                    data-testid={ `${ testId }-sub-heading` }
+                                    as={ subHeadingAs }
+                                    subHeading
+                                    ellipsis
+                                >
+                                    { subHeading }
+                                </Heading>
+                            )
+                            : subHeading
                     ) }
                     { children }
                 </div>
