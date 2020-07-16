@@ -42,6 +42,10 @@ export interface HeadingPropsInterface extends HeaderProps, TestableComponentInt
      */
     compact?: boolean;
     /**
+     * Display inline.
+     */
+    inline?: boolean;
+    /**
      * De-emphasises the heading.
      */
     subHeading?: boolean;
@@ -64,6 +68,7 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
         className,
         compact,
         disabled,
+        inline,
         subHeading,
         [ "data-testid" ]: testId,
         ...rest
@@ -76,6 +81,7 @@ export const Heading: React.FunctionComponent<HeadingPropsInterface> = (
             compact,
             disabled,
             ellipsis,
+            inline,
             [ "subheading" ]: subHeading
         }
         , className
