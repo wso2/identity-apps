@@ -190,7 +190,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * Prepares form values for submit.
      *
      * @param values - Form values.
-     * @param url - Callback URLs.
+     * @param {string} url - Callback URLs.
      * 
      * @return {any} Sanitized form values.
      */
