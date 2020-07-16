@@ -18,7 +18,7 @@
  */
 
 /*-------------------
-    Icon Component
+    Generic Icon
 --------------------*/
 
 @iconWrapperBgColor: @lightGray;
@@ -32,6 +32,12 @@
 @iconWrapperColoredPrimaryColor: @primaryColor;
 @iconWrapperSpacingRight: 8px;
 @iconWrapperSpacingLeft: 8px;
+
+@genericIconRoundedHoverPadding: 6px;
+@genericIconSquareHoverPadding: 6px;
+@genericIconCircularHoverPadding: 10px;
+@genericIconCircularHoverWidth: fit-content;
+@genericIconCircularHoverMargin: 0 auto;
 
 /*-------------------
    Advanced search
@@ -96,12 +102,18 @@
       Product Branding
 ------------------------------*/
 
-@productLogoHeight: 22px;
+@productLogoHeight: 16px;
+@productLogoVerticalAlign: middle;
 @productLogoWidth: 60px;
+@productLogoMargin: 0 5px 0 0;
 
 @productTitleTextTransform: uppercase;
 @productTitleFontWeight: 400;
-@productTitleFontSize: 1.4rem;
+@productTitleFontSize: 1.2rem;
 @productTitleAppNameMargin: 0 0 0 5px;
 @productTitleAppNameFontSize: inherit;
 @productTitleAppNameFontWeight: 300;
+
+@productVersionLabelPadding: 3px 6px;
+@productVersionLabelFontSize: 0.6em;
+@productVersionLabelFontWeight: 600;

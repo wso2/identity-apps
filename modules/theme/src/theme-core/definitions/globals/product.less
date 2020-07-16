@@ -970,9 +970,24 @@ body {
         }
     }
     &.hoverable {
-        padding: 6px;
         display: flex;
-        border-radius: @defaultBorderRadius;
+
+        &.hover {
+            &-rounded {
+                padding: @genericIconRoundedHoverPadding;
+                border-radius: @defaultBorderRadius;
+            }
+            &-square {
+                padding: @genericIconSquareHoverPadding;
+                border-radius: 0;
+            }
+            &-circular {
+                width: @genericIconCircularHoverWidth;
+                margin: @genericIconCircularHoverMargin;
+                padding: @genericIconCircularHoverPadding;
+                border-radius: 50%;
+            }
+        }
 
         &:hover {
             background: @iconHoverBgColor;

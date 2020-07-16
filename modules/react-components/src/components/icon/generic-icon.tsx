@@ -58,6 +58,10 @@ export interface GenericIconProps extends TestableComponentInterface {
      */
     hoverable?: boolean;
     /**
+     * Hover type.
+     */
+    hoverType?: "rounded" | "square" | "circular";
+    /**
      * Icon for the component.
      */
     icon: any;
@@ -161,6 +165,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         fill,
         floated,
         hoverable,
+        hoverType,
         icon: Icon,
         inline,
         link,
@@ -189,6 +194,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         [ typeof fill === "boolean" ? "fill-default" : `fill-${ fill }` ]: fill,
         [`floated-${floated}`]: floated,
         hoverable,
+        [ `hover-${ hoverType }` ]: hoverType,
         "inline": inline,
         link,
         [ `link-${ linkType }` ]: linkType,
@@ -264,8 +270,8 @@ GenericIcon.defaultProps = {
     className: "",
     "data-testid": "generic-icon",
     defaultIcon: false,
-    fill: "default",
     floated: null,
+    hoverType: "rounded",
     inline: false,
     relaxed: false,
     rounded: false,

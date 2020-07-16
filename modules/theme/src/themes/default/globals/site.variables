@@ -96,7 +96,7 @@
 --------------------*/
 
 @iconHoverBgColor: @whiteSmoke;
-@iconDefaultBgColor: @nobel;
+@iconDefaultBgColor: #838383;
 
 /*-------------------
     Icon Sizes
