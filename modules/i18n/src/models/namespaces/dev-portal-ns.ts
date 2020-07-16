@@ -76,6 +76,50 @@ export interface DevPortalNS {
             resultsIndicator: string;
         };
         remoteConfig: {
+            pageTitles: {
+                listingPage: {
+                    title: string;
+                    description: string;
+                },
+                editPage: {
+                    title: string;
+                    description: string;
+                    backLink: string;
+                };
+            },
+            createConfigForm: {
+                configName: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitUrl: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitBranch: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitDirectory: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitUserName: {
+                    label: string;
+                    placeholder: string;
+                };
+                gitAccessToken: {
+                    label: string;
+                    placeholder: string;
+                };
+                enableConfig: {
+                    label: string;
+                }
+            }
             placeholders: {
                 emptyList: {
                     action: string,
@@ -103,7 +147,8 @@ export interface DevPortalNS {
                 deleteConfig: Notification,
                 editConfig: Notification,
                 triggerConfig: Notification,
-                createConfig: Notification
+                createConfig: Notification,
+                getConfig: Notification,
             }
         };
         applications: {

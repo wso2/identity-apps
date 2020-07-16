@@ -27,7 +27,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import { RemoteRepoDetails } from "./remote-repository-details";
-import { RemoteConfigPageIllustrations } from "../../configs";
+import { HelpPanelIcons } from "../../configs";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { InterfaceRemoteRepoConfig } from "../../models";
@@ -80,7 +80,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.1"),
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.2")
                     ] }
-                    image={ RemoteConfigPageIllustrations.noListElements }
+                    image={ HelpPanelIcons.endpoints.metadata }
                     imageSize="tiny"
                 />
             );
@@ -121,12 +121,13 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                                 }
                                 actions={ [
                                     {
+                                        hidden: repoObject.lastDeployed == undefined,
                                         icon: "eye",
                                         onClick: () => {
                                             setCurrentDetailsConfig(repoObject);
                                             setShowConfigDetailsModal(true);
                                         },
-                                        popupText: "Trigger Config",
+                                        popupText: "View Status",
                                         type: "button"
                                     },
                                     {

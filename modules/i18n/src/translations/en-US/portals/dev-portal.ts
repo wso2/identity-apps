@@ -63,6 +63,50 @@ export const devPortal: DevPortalNS = {
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
         remoteConfig: {
+            pageTitles: {
+                listingPage: {
+                    title: "Remote Repository Deployment Configuration",
+                    description: "Configure a remote repository to work seamlessly with the identity server."
+                },
+                editPage: {
+                    title: "Edit Configuration : ",
+                    description: "Edit remote repository configurations.",
+                    backLink: "Back to configurations"
+                }
+            },
+            createConfigForm: {
+                configName: {
+                    label: "Configuration Name",
+                    placeholder: "Name for the repository configuration",
+                    requiredMessage: "Configuration Name is required."
+                },
+                gitUrl: {
+                    label: "Git Repository URI",
+                    placeholder: "Link for github repository URL.",
+                    requiredMessage: "Git Repository URL is required."
+                },
+                gitBranch: {
+                    label: "Git Branch",
+                    placeholder: "github branch location",
+                    requiredMessage: "Git Branch is required."
+                },
+                gitDirectory: {
+                    label: "Git Directory",
+                    placeholder: "github directory location",
+                    requiredMessage: "Git directory is required."
+                },
+                gitUserName: {
+                    label: "Git User Name",
+                    placeholder: "Username of the github account."
+                },
+                gitAccessToken: {
+                    label: "Personal Access Token",
+                    placeholder: "Access token for the github account."
+                },
+                enableConfig: {
+                    label: "Enable Configuration"
+                }
+            },
             placeholders: {
                 emptyList: {
                     action: "New Remote Repository Config",
@@ -142,6 +186,20 @@ export const devPortal: DevPortalNS = {
                     },
                     genericError: {
                         description: "Failed to create the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully created the confuguration.",
+                        message: "Creation successful"
+                    }
+                },
+                getConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Creation Error"
+                    },
+                    genericError: {
+                        description: "Failed to retrieve the configuration",
                         message: "Something went wrong"
                     },
                     success: {

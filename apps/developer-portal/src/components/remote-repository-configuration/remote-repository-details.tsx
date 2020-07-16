@@ -16,15 +16,14 @@
  * under the License.
  */
 
-import { Heading, LinkButton, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
+import { Heading, LinkButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Grid, Modal, Icon } from "semantic-ui-react";
+import { Grid, Modal } from "semantic-ui-react";
 import { DeploymentStatus } from "./remote-deployment-status";
 import { getConfigDeploymentDetails } from "../../api";
-import { ApplicationWizardStepIcons, RemoteConfigPageIllustrations } from "../../configs";
+import { ApplicationWizardStepIcons } from "../../configs";
 import { InterfaceConfigDetails, InterfaceRemoteRepoConfig } from "../../models";
-import { useTranslation } from "react-i18next";
 
 interface InterfaceRemoteRepoDetailProps {
     repoObject: InterfaceRemoteRepoConfig;
@@ -34,8 +33,6 @@ interface InterfaceRemoteRepoDetailProps {
 export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps> = (
     props: InterfaceRemoteRepoDetailProps
 ): ReactElement => {
-
-    const { t } = useTranslation();
 
     const [ configDetailObject, setConfigDetailObject ] = useState<InterfaceConfigDetails>(undefined)
 
@@ -77,44 +74,28 @@ export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps
                     { "Depolyment details for the selected deployment configuration." }
                 </Heading>
             </Modal.Header>
-            { configDetailObject && configDetailObject.count > 0 ?
-                <>
-                    <Modal.Content className="steps-container">
-                        <Grid columns='equal'>
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <span><strong>Failed Deployements : </strong>
-                                        {configDetailObject?.failedDeployments}</span>
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <span><strong>Successful Deployements : </strong>
-                                        {configDetailObject?.successfulDeployments}</span>
-                                </Grid.Column>
-                            </Grid.Row>
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <span><strong>Last Deployed : </strong>{configDetailObject?.lastSynchronizedTime}</span>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Modal.Content>
-                    <Modal.Content className="content-container" scrolling>
-                        { WIZARD_STEPS[0].content }
-                    </Modal.Content>
-                </>
-            : 
-                <Modal.Content className="content-container" scrolling>
-                    <EmptyPlaceholder
-                        title={ t("devPortal:components:remoteConfig:placeholders.emptyDetails.title") }
-                        subtitle={ [
-                            t("devPortal:components:remoteConfig:placeholders.emptyDetails.subtitles.0"),
-                            t("devPortal:components:remoteConfig:placeholders.emptyDetails.subtitles.1")
-                        ] }
-                        image={ RemoteConfigPageIllustrations.noListElements }
-                        imageSize="tiny"
-                    />
-                </Modal.Content>
-            }
+            <Modal.Content className="steps-container">
+                <Grid columns='equal'>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <span><strong>Failed Deployements : </strong>
+                                {configDetailObject?.failedDeployments}</span>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <span><strong>Successful Deployements : </strong>
+                                {configDetailObject?.successfulDeployments}</span>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <span><strong>Last Deployed : </strong>{configDetailObject?.lastSynchronizedTime}</span>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Modal.Content>
+            <Modal.Content className="content-container" scrolling>
+                { WIZARD_STEPS[0].content }
+            </Modal.Content>
             <Modal.Actions>
                 <Grid>
                     <Grid.Row column={ 1 }>
