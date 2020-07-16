@@ -78,6 +78,13 @@
 @doveGray         : #616161;
 
 /*-------------------
+        Page
+--------------------*/
+
+@pageBackground      : #fbfbfb;
+@lightPageBackground : @white;
+
+/*-------------------
      Image Sizes
 --------------------*/
 
