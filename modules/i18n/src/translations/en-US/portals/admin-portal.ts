@@ -1650,6 +1650,14 @@ export const adminPortal: AdminPortalNS = {
             addEmailTemplate: "Add Email Template",
             addEmailTemplateLocale: "Add Email Template Locale",
             attributeDialects: "Attribute Dialects",
+            categories: {
+                attributes: "Attributes",
+                certificates: "Certificates",
+                configurations: "Configurations",
+                general: "General",
+                users: "Users",
+                userstores: "Userstores"
+            },
             certificates: "Certificates",
             configurations: "Configurations",
             editEmailTemplate: "Email Templates",

@@ -948,6 +948,14 @@ export interface AdminPortalNS {
             addEmailTemplate: string;
             addEmailTemplateLocale: string;
             attributeDialects: string;
+            categories: {
+                attributes: string;
+                certificates: string;
+                configurations: string;
+                general: string;
+                users: string;
+                userstores: string;
+            };
             certificates: string;
             configurations: string;
             editEmailTemplate: string;

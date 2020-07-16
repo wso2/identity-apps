@@ -41,6 +41,7 @@ import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } fr
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
+        category: "adminPortal:components.sidePanel.categories.general",
         component: lazy(() => import("../pages/overview")),
         icon: "overview",
         id: "overview",
@@ -50,6 +51,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
                 component: lazy(() => import("../pages/users/user-edit")),
@@ -72,6 +74,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
                 component: lazy(() => import("../pages/roles/role-edit")),
@@ -94,6 +97,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
                 component: lazy(() => import("../pages/roles/role-edit")),
@@ -116,6 +120,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.attributes",
         children: [
             {
                 component: lazy(() => import("../pages/claims/local-claims-edit")),
@@ -162,6 +167,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.userstores",
         children: [
             {
                 component: lazy(() => import("../pages/user-stores/user-stores-edit")),
@@ -191,6 +197,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.certificates",
         component: lazy(() => import("../pages/certificates/certificates-keystore")),
         icon: "certificate",
         id: "certificates",
@@ -200,18 +207,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.configurations",
         children: [
-            {
-                component: lazy(() => import("../pages/email-templates/email-template-types")),
-                exact: true,
-                icon: "childIcon",
-                id: "emailTemplates",
-                level: 2,
-                name: "adminPortal:components.sidePanel.emailTemplates",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
-                protected: true,
-                showOnSidePanel: true
-            },
             {
                 component: lazy(() => import("../pages/email-templates/email-templates")),
                 exact: true,
@@ -243,6 +240,17 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
+        component: lazy(() => import("../pages/email-templates/email-template-types")),
+        icon: "emailTemplates",
+        id: "emailTemplates",
+        name: "adminPortal:components.sidePanel.emailTemplates",
+        path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        category: "adminPortal:components.sidePanel.categories.configurations",
+        children: [],
         exact: true,
         icon: "serverConfigurations",
         id: "serverConfigurations",
@@ -251,6 +259,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.configurations",
         component: lazy(() => import("../pages/configurations/governance-connectors")),
         exact: true,
         icon: "childIcon",

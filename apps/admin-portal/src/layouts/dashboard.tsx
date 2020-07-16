@@ -372,12 +372,13 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             ) }
             sidePanel={ (
                 <SidePanel
-                    bordered="right"
+                    categorized
                     caretIcon={ SidePanelMiscIcons.caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }
                     footerHeight={ footerHeight }
                     headerHeight={ headerHeight }
+                    hoverType="background"
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }

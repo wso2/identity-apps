@@ -106,6 +106,7 @@ export const SidePanelIcons = {
     childIcon: ArrowRight,
     claims: ClaimsIcon,
     connections: PlugIcon,
+    emailTemplates: PaperRocketIcon,
     groups: UserGroupIcon,
     overview: DashboardIcon,
     roles: BriefcaseIcon,
@@ -234,6 +235,8 @@ export const OverviewPageIllustrations = {
         roles: BriefcaseIcon
     },
     statsOverview: {
+        groups: UserGroupIcon,
+        users: UserIcon,
         userstores: DatabaseIcon
     }
 };
