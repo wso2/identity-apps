@@ -299,7 +299,6 @@ const GroupsPage = (): ReactElement => {
         <PageLayout
             title={ t("adminPortal:pages.groups.title") }
             description={ t("adminPortal:pages.groups.subTitle") }
-            showBottomDivider={ true }
         >
             <ListLayout
                 advancedSearch={ (

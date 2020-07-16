@@ -209,7 +209,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         <PageLayout
             title={ t("devPortal:pages.applications.title") }
             description={ t("devPortal:pages.applications.subTitle") }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout

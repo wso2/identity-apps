@@ -303,7 +303,6 @@ const RolesPage = (): ReactElement => {
         <PageLayout
             title={ t("adminPortal:pages.roles.title") }
             description={ t("adminPortal:pages.roles.subTitle") }
-            showBottomDivider={ true }
         >
             {
                 !isEmptyResults &&

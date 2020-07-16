@@ -113,7 +113,8 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.description"),
+                        || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError" +
+                            ".description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
                         || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.message")
@@ -218,7 +219,6 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
             isLoading={ isLoading }
             title={ t("adminPortal:components.userstores.pageLayout.list.title") }
             description={ t("adminPortal:components.userstores.pageLayout.list.description") }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout

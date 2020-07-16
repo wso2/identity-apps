@@ -253,7 +253,6 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 isLoading={ isLoading }
                 title={ t("adminPortal:components.claims.local.pageLayout.local.title") }
                 description={ t("adminPortal:components.claims.local.pageLayout.local.description") }
-                showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.PATHS.get("CLAIM_DIALECTS")) },
                     text: t("adminPortal:components.claims.local.pageLayout.local.back")

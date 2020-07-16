@@ -244,7 +244,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 isLoading={ isLoading }
                 title={ t("adminPortal:components.claims.dialects.pageLayout.list.title") }
                 description={ t("adminPortal:components.claims.dialects.pageLayout.list.description") }
-                showBottomDivider={ true }
                 data-testid={ `${ testId }-page-layout` }
             >
                 {

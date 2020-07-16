@@ -302,7 +302,6 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
         <PageLayout
             title={ t("adminPortal:pages.users.title") }
             description={ t("adminPortal:pages.users.subTitle") }
-            showBottomDivider={ true }
         >
             <ListLayout
                 // TODO add sorting functionality.

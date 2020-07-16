@@ -230,7 +230,6 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                 isLoading={ isLoading }
                 title={ t("adminPortal:components.certificates.keystore.pageLayout.title") }
                 description={ t("adminPortal:components.certificates.keystore.pageLayout.description") }
-                showBottomDivider={ true }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout

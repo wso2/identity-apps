@@ -283,7 +283,6 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             <PageLayout
                 title={ t("devPortal:pages.idp.title") }
                 description={ t("devPortal:pages.idp.subTitle") }
-                showBottomDivider={ true }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout

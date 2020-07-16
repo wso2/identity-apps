@@ -152,7 +152,6 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
             isLoading={ isTemplateTypesFetchRequestLoading }
             title={ t("adminPortal:pages.emailTemplateTypes.title") }
             description={ t("adminPortal:pages.emailTemplateTypes.subTitle") }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
