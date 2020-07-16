@@ -16,23 +16,21 @@
  * under the License.
  */
 
-import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
-    Button, Heading,
-    Jumbotron, LabeledCard,
-    PageLayout, PrimaryButton, SelectionCard,
-    StatsInsightsWidget,
-    StatsOverviewWidget,
-    GenericIcon
+    GenericIcon,
+    Jumbotron,
+    LabeledCard,
+    PageLayout,
+    PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon, Card } from "semantic-ui-react";
+import { Card, Divider } from "semantic-ui-react";
 import { getApplicationList, getIdentityProviderList } from "../api";
-import { ApplicationList, IdentityProviderList, handleGetIDPListCallError } from "../components";
+import { handleGetIDPListCallError } from "../components";
 import { OverviewPageImages, TechnologyLogos } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
