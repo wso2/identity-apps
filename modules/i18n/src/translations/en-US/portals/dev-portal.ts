@@ -684,8 +684,8 @@ export const devPortal: DevPortalNS = {
                         callBackUrls: {
                             hint: "After the authentication, we will only redirect to the above callback URLs " +
                                 "and you can specify multiple URLs",
-                            label: "Callback URL",
-                            placeholder: "Enter callback URL",
+                            label: "Callback URLs",
+                            placeholder: "Enter callback URLs",
                             validations: {
                                 empty: "Please add valid URL."
                             }
