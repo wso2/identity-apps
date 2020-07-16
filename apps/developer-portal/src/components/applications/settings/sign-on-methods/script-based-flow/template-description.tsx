@@ -19,9 +19,7 @@
 import { CodeEditor, LinkButton } from "@wso2is/react-components";
 import React, {
     FunctionComponent,
-    ReactElement,
-    useEffect,
-    useState
+    ReactElement
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Icon, List, Message, Modal, Table } from "semantic-ui-react";
@@ -57,30 +55,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
         const { template, open, onClose } = props;
 
-        const [ dark, setDark ] = useState(false);
-
         const { t } = useTranslation();
-
-        /**
-         * Gets the browser color scheme so that the color scheme of the textarea can be decided.
-         */
-        useEffect(() => {
-            if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
-                setDark(true);
-            }
-            const callback = (e) => {
-                if (e.matches) {
-                    setDark(true);
-                } else {
-                    setDark(false);
-                }
-            };
-            window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
-
-            return () => {
-                window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
-            }
-        }, []);
 
         return (
             <Modal open={ open } onClose={ onClose } dimmer="blurring" size="small">
@@ -180,9 +155,9 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                         options={ {
                             lineWrapping: true
                         } }
-                        theme={ dark ? "dark" : "light" }
                         readOnly={ true }
                         data-testid={ `${template.title}-code-editor` }
+                        getThemeFromEnvironment={ true }
                     />
                 </Modal.Content>
                 <Modal.Actions>

@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import JSBeautify from "js-beautify";
 import { JSHINT } from "jshint/dist/jshint";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { UnControlled as CodeMirror, IUnControlledCodeMirror } from "react-codemirror2";
 import "codemirror/addon/lint/lint";
 import "codemirror/addon/lint/javascript-lint";
@@ -86,6 +86,10 @@ export interface CodeEditorProps extends IUnControlledCodeMirror, TestableCompon
      * Editor theme.
      */
     theme?: "dark" | "light";
+    /**
+     * Get theme from the environment.
+     */
+    getThemeFromEnvironment?: boolean;
 }
 
 /**
@@ -101,6 +105,7 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
 
     const {
         beautify,
+        getThemeFromEnvironment,
         language,
         lint,
         options,
@@ -114,6 +119,33 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
         ...rest
     } = props;
 
+    const [ dark, setDark ] = useState(false);
+    
+    /**
+     * Gets the browser color scheme so that the color scheme of the textarea can be decided.
+     */
+    useEffect(() => {
+        if (getThemeFromEnvironment && window.matchMedia && window.matchMedia("(prefers-color-scheme:dark)").matches) {
+            setDark(true);
+        }
+        const callback = (e) => {
+            if (e.matches) {
+                setDark(true);
+            } else {
+                setDark(false);
+            }
+        };
+        getThemeFromEnvironment &&
+            window.matchMedia &&
+            window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
+
+        return () => {
+            getThemeFromEnvironment &&
+                window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
+        }
+    }, [getThemeFromEnvironment]);
+    
     /**
      * Resolves the language mode.
      *
@@ -139,6 +171,10 @@ export const CodeEditor: FunctionComponent<CodeEditorProps> = (
      * @return {object} Resolved mode.
      */
     const resolveTheme = (): string => {
+        if (getThemeFromEnvironment) {
+            return (dark ? "material" : "default");
+        }
+
         if (!(theme === "dark" || theme === "light")) {
             throw new Error("Please select a supported theme. Only `dark` and `light` are supported at the moment.");
         }
