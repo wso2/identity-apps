@@ -26,10 +26,21 @@
 @sidePanelDefaultFontColor: @textColor;
 
 /*-------------------
+      App Header
+--------------------*/
+
+@appHeaderBackground: @lightPageBackground;
+@appHeaderHeight: 60px;
+@appHeaderBoxShadow: none;
+
+/*-------------------
       App Footer
 --------------------*/
 
-@appFooterMinHeight: 60px;
+@appFooterBackground: @lightPageBackground;
+@appFooterHeight: 50px;
+@appFooterLinkColor: @textColor;
+@appFooterLinkTextDecoration: underline;
 
 /*-------------------
     Side Panel Menu
@@ -44,8 +55,11 @@
 
 @sidePanelCategoryFontSize: 10px;
 @sidePanelCategoryTextTransform: uppercase;
-@sidePanelCategoryMarginBottom: 10px;
-@sidePanelBackgroundHoveredItemMarginBottom: 10px;
+@sidePanelCategoryMarginBottom: 6px;
+@sidePanelBackgroundHoveredItemMarginBottom: 5px;
+
+@sidePanelCategoryRelaxedMarginBottom: 10px;
+@sidePanelBackgroundHoveredItemRelaxedMarginBottom: 10px;
 
 /*-------------------
       Pagination

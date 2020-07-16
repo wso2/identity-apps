@@ -30,7 +30,9 @@
         }
     }
     &.app-header {
-        box-shadow: none;
+        background: @appHeaderBackground;
+        height: @appHeaderHeight;
+        box-shadow: @appHeaderBoxShadow;
 
         &.has-announcement {
             display: block;
@@ -159,13 +161,14 @@
         }
     }
     &.app-footer {
-        min-height: @appFooterMinHeight;
+        background: @appFooterBackground;
+        height: @appFooterHeight;
 
         .footer-link, .footer-dropdown .dropdown-trigger.link {
-            color: @primaryColor;
+            color: @appFooterLinkColor;
 
             &:hover {
-                text-decoration: underline;
+                text-decoration: @appFooterLinkTextDecoration;
                 cursor: pointer;
             }
         }
@@ -252,7 +255,7 @@
             }
 
             .caret {
-                margin-right: -15px;
+                margin-right: -4px;
                 margin-top: 2px;
                 transition: transform .3s ease-in-out;
 
@@ -298,6 +301,18 @@
                             fill: @sidePanelHoverFontColor;
                         }
                     }
+                }
+            }
+        }
+        
+        &.relaxed {
+            .side-panel-category {
+                margin-bottom: @sidePanelCategoryRelaxedMarginBottom;
+            }
+            
+            .side-panel-item {
+                &.hover-background {
+                    margin-bottom: @sidePanelBackgroundHoveredItemRelaxedMarginBottom;
                 }
             }
         }

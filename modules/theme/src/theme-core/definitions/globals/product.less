@@ -47,9 +47,9 @@ body {
         text-align: right;
 
         .version-label {
-            padding: 3px 6px;
-            font-size: 0.6em;
-            font-weight: 600;
+            padding: @productVersionLabelPadding;
+            font-size: @productVersionLabelFontSize;
+            font-weight: @productVersionLabelFontWeight;
 
             &.primary {
                 background-color: @primaryColor !important;
@@ -61,8 +61,8 @@ body {
     }
     .product-logo {
         width: @productLogoWidth;
-        vertical-align: text-top;
-        margin-right: 5px;
+        vertical-align: @productLogoVerticalAlign;
+        margin: @productLogoMargin;
 
         .icon {
             height: @productLogoHeight;
@@ -104,6 +104,10 @@ body {
 
 .inline {
     display: inline-block;
+}
+
+.inline-flex {
+    display: inline-flex;
 }
 
 .floated {
