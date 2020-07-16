@@ -63,7 +63,7 @@ export const fetchApplications = (
                 && response.data.applications.length
                 && response.data.applications.length > 0) {
                 applications = response.data.applications.filter(
-                    (app) => app.name !== store.getState().config.ui.applicationName);
+                    (app) => app.name !== store.getState().config.ui.appName);
             }
 
             return Promise.resolve({

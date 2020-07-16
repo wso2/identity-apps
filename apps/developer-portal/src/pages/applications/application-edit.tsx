@@ -20,8 +20,8 @@ import { getRawDocumentation } from "@wso2is/core/api";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { StringUtils } from "@wso2is/core/utils";
 import {
+    AnimatedAvatar,
     AppAvatar,
     ContentLoader,
     Heading,
@@ -37,11 +37,12 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Label, SemanticICONS } from "semantic-ui-react";
+import {ButtonProps, Divider, Grid, Label, SemanticICONS} from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
 import { HelpPanelOverview } from "../../components/applications";
-import { HelpSidebarIcons, TechnologyLogos } from "../../configs";
+import { SamplesGuideComponent } from "../../components/applications/help-panel";
+import { HelpSidebarIcons, TechnologyLogos, InboundProtocolLogos } from "../../configs";
 import { AppConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
@@ -96,11 +97,16 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
     const [ helpPanelSampleContent, setHelpPanelSampleContent ] = useState<string>(undefined);
     const [ helpPanelSDKContent, setHelpPanelSDKContent ] = useState<string>(undefined);
+    const [ helpPanelConfigContent, setHelpPanelConfigContent ] = useState<string>(undefined);
     const [ helpPanelSelectedSample, setHelpPanelSelectedSample ] = useState<DocPanelUICardInterface>(undefined);
     const [ helpPanelSelectedSDK, setHelpPanelSelectedSDK ] = useState<DocPanelUICardInterface>(undefined);
+    const [
+        helpPanelSelectedProtocol, setHelpPanelSelectedProtocol
+    ] = useState<DocPanelUICardInterface>(undefined);
     const [ samplesTabBackButtonEnabled, setSamplesTabBackButtonEnabled ] = useState<boolean>(true);
     const [ samples, setSamples ] = useState<DocPanelUICardInterface[]>(undefined);
     const [ sdks, setSDKS ] = useState<DocPanelUICardInterface[]>(undefined);
+    const [ configs, setConfigs ] = useState<DocPanelUICardInterface[]>(undefined);
     const [
         isHelpPanelDocContentRequestLoading,
         setHelpPanelDocContentRequestLoadingStatus
@@ -113,6 +119,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
+    const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
 
     /**
      * Fetch the application details on initial component load.
@@ -197,6 +204,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         const samplesDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSampleDocsKey(templateName));
         const SDKDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSDKDocsKey(templateName));
+        const configDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getConfigDocsKey(templateName));
 
         if (!samplesDocs) {
             return;
@@ -204,6 +212,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
         const samples: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(samplesDocs);
         const sdks: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(SDKDocs);
+        const configs: DocPanelUICardInterface[] = ApplicationManagementUtils.generateSamplesAndSDKDocs(configDocs);
 
         if (samples instanceof Array && samples.length === 1) {
             setHelpPanelSelectedSample(samples[ 0 ]);
@@ -215,8 +224,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             setSamplesTabBackButtonEnabled(false);
         }
 
+        if (configs instanceof Array && configs.length === 1) {
+            setHelpPanelSelectedProtocol(configs[ 0 ]);
+            setSamplesTabBackButtonEnabled(false);
+        }
+
         setSDKS(sdks.filter((item) => item.name !== "overview"));
         setSamples(samples.filter((item) => item.name !== "overview"));
+        setConfigs(configs.filter((item) => item.name !== "overview"));
     }, [ applicationTemplateName, helpPanelDocStructure ]);
 
     /**
@@ -293,6 +308,34 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             });
     },[
         helpPanelSelectedSDK,
+        config.deployment.documentation.githubOptions.branch,
+        config.deployment.documentation.provider,
+        config.endpoints.documentationContent
+    ]);
+
+    /**
+     * Called when the technology is changed in the Configurations section.
+     */
+    useEffect(() => {
+        if (!helpPanelSelectedProtocol?.docs) {
+            return;
+        }
+
+        setHelpPanelSamplesContentRequestLoadingStatus(true);
+
+        getRawDocumentation<string>(
+            config.endpoints.documentationContent,
+            helpPanelSelectedProtocol.docs,
+            config.deployment.documentation.provider,
+            config.deployment.documentation.githubOptions.branch)
+            .then((response) => {
+                setHelpPanelConfigContent(response);
+            })
+            .finally(() => {
+                setHelpPanelSamplesContentRequestLoadingStatus(false);
+            });
+    },[
+        helpPanelSelectedProtocol,
         config.deployment.documentation.githubOptions.branch,
         config.deployment.documentation.provider,
         config.endpoints.documentationContent
@@ -423,32 +466,104 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setHelpPanelSelectedSDK(sdk);
     };
 
+    /**
+     * Handles help panel Protocol change event.
+     *
+     * @param protocol - Selected Protool.
+     */
+    const handleHelpPanelSelectedProtocol = (protocol: any) => {
+        setHelpPanelSelectedProtocol(protocol);
+    };
+
+    /**
+     * Handles the tab change from overview.
+     *
+     * @param tabId - number
+     */
+    const handleTabChange = (tabId: number): void => {
+        setTabsActiveIndex(tabId);
+    };
+
     const helpPanelTabs: HelpPanelTabInterface[] = [
         {
-            content: ( <HelpPanelOverview inboundProtocols={ application?.inboundProtocols }/> ),
-            heading: t("devPortal:components.applications.helpPanel.tabs.info.heading"),
+            content: (
+                <HelpPanelOverview
+                    applicationType={ applicationTemplateName }
+                    inboundProtocols={ application?.inboundProtocols }
+                    handleTabChange={ handleTabChange }
+                />
+                ),
+            heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
             hidden: application?.inboundProtocols?.length <= 0,
             icon: "list alternate outline" as SemanticICONS
         },
         {
             content: (
-                isHelpPanelDocContentRequestLoading
-                    ? <ContentLoader dimmer/>
-                    : (
-                        <Markdown
-                            source={ helpPanelDocContent }
-                            transformImageUri={ (uri) =>
-                                uri.startsWith("http" || "https")
-                                    ? uri
-                                    : config.deployment.documentation?.imagePrefixURL + "/"
-                                        + StringUtils.removeDotsAndSlashesFromRelativePath(uri)
+                helpPanelSelectedProtocol
+                    ? (
+                        <>
+                            <PageHeader
+                                title={ `${ helpPanelSelectedProtocol.displayName } Configurations` }
+                                titleAs="h4"
+                                backButton={ samplesTabBackButtonEnabled && {
+                                    onClick: () => setHelpPanelSelectedProtocol(undefined),
+                                    text: t("devPortal:components.applications.helpPanel.tabs.samples." +
+                                        "content.sample.goBack")
+                                } }
+                                bottomMargin={ false }
+                                data-testid={ `${ testId }-help-panel-samples-tab-page-header` }
+                            />
+                            <Divider hidden/>
+                            {
+                                helpPanelSelectedProtocol?.docs && (
+                                    isHelpPanelSamplesContentRequestLoading
+                                        ? <ContentLoader dimmer/>
+                                        : (
+                                            <Markdown
+                                                source={ helpPanelConfigContent }
+                                                data-testid={ `${ testId }-help-panel-configs-tab-markdown-renderer` }
+                                            />
+                                        )
+                                )
                             }
-                            data-testid={ `${ testId }-help-panel-docs-tab-markdown-renderer` }
-                        />
+                        </>
+                    )
+                    : (
+                        <>
+                            <Heading as="h4">
+                                { t("devPortal:components.applications.helpPanel.tabs.configs.content." +
+                                    "title") }
+                            </Heading>
+                            <Hint>
+                                { t("devPortal:components.applications.helpPanel.tabs.configs.content." +
+                                    "subTitle") }
+                            </Hint>
+                            <Divider hidden/>
+
+                            <Grid>
+                                <Grid.Row columns={ 4 }>
+                                    {
+                                        configs && configs.map((configs, index) => (
+                                            <Grid.Column key={ index }>
+                                                <SelectionCard
+                                                    size="auto"
+                                                    header={ configs.displayName }
+                                                    image={ InboundProtocolLogos[ configs.image ] }
+                                                    imageSize="mini"
+                                                    spaced="bottom"
+                                                    onClick={ () => handleHelpPanelSelectedProtocol(configs) }
+                                                    data-testid={ `${ testId }-help-panel-samples-tab-selection-card` }
+                                                />
+                                            </Grid.Column>
+                                        ))
+                                    }
+                                </Grid.Row>
+                            </Grid>
+                        </>
                     )
             ),
-            heading: t("common:docs"),
-            hidden: !helpPanelDocURL,
+            heading: t("devPortal:components.applications.helpPanel.tabs.configs.heading"),
+            hidden: !configs || (configs instanceof Array && configs.length < 1),
             icon: "file alternate outline" as SemanticICONS
         },
         {
@@ -457,8 +572,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     ? (
                         <>
                             <PageHeader
-                                title={ `${ helpPanelSelectedSample.displayName } Sample` }
-                                titleAs="h4"
+                                title={ `${ helpPanelSelectedSample.displayName } Sample Application` }
+                                titleAs="h1"
                                 backButton={ samplesTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedSample(undefined),
                                     text: t("devPortal:components.applications.helpPanel.tabs.samples." +
@@ -473,8 +588,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                     isHelpPanelSamplesContentRequestLoading
                                         ? <ContentLoader dimmer/>
                                         : (
-                                            <Markdown
-                                                source={ helpPanelSampleContent }
+                                            <SamplesGuideComponent
+                                                sampleType={ helpPanelSelectedSample.name }
+                                                application={ application }
+                                                markDownSource={ helpPanelSampleContent }
                                                 data-testid={ `${ testId }-help-panel-samples-tab-markdown-renderer` }
                                             />
                                         )
@@ -593,6 +710,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     return (
         <HelpPanelLayout
+            activeIndex={ tabsActiveIndex }
             sidebarDirection="right"
             sidebarMiniEnabled={ true }
             tabs={ helpPanelTabs }
@@ -610,14 +728,24 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         { application.description }
                     </div>
                 ) }
-                image={ (
-                    <AppAvatar
-                        name={ application.name }
-                        image={ application.imageUrl }
-                        size="tiny"
-                        spaced="right"
-                    />
-                ) }
+                image={
+                    application.imageUrl
+                        ? (
+                            <AppAvatar
+                                name={ application.name }
+                                image={ application.imageUrl }
+                                size="tiny"
+                                spaced="right"
+                            />
+                        )
+                        : (
+                            <AnimatedAvatar
+                                name={ application.name }
+                                size="tiny"
+                                floated="left"
+                            />
+                        )
+                }
                 backButton={ {
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.applicationsEdit.backButton")

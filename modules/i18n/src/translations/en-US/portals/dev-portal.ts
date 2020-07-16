@@ -522,6 +522,17 @@ export const devPortal: DevPortalNS = {
                                 },
                                 subTitle: "Local authenticators for request path authentication.",
                                 title: "Request Path Authentication"
+                            },
+                            templateDescription: {
+                                description: {
+                                    code: "Code",
+                                    defaultSteps: "Default Steps",
+                                    description: "Description",
+                                    helpReference: "Help Reference",
+                                    parameters: "Parameters",
+                                    prerequisites: "Prerequisites"
+                                },
+                                popupContent: "More details"
                             }
                         },
                         tabName: "Sign-on Method"
@@ -1293,12 +1304,27 @@ export const devPortal: DevPortalNS = {
             },
             helpPanel: {
                 tabs: {
+                    configs: {
+                        content: {
+                            subTitle: "Update the pre defined configurations through the template or add new " +
+                                "configurations depending on the protocol (OIDC, SAML, WS-Trust, etc.) configured " +
+                                "for the application.",
+                            title: "Application Configurations"
+                        },
+                        heading: "Configurations Guide"
+                    },
                     docs: {
                         content: null,
                         heading: "Docs"
                     },
-                    info: {
+                    start: {
                         content: {
+                            endpoints: {
+                                subTitle: "If you implement your application without using a WSO2 SDK, the " +
+                                    "following server endpoints will be useful for you to implement authentication " +
+                                    "for the app.",
+                                title: "Server endpoints"
+                            },
                             oidcConfigurations: {
                                 labels: {
                                     authorize: "Authorize",
@@ -1321,14 +1347,41 @@ export const devPortal: DevPortalNS = {
                                     sso: "Single Sign-On"
                                 }
                             },
-                            subTitle: "Use the following endpoints to setup your application conveniently.",
-                            title: "Server Endpoints"
+                            trySample: {
+                                btn: "Explore samples",
+                                subTitle: "You can try out the samples which will demonstrate the authentication " +
+                                    "flow. Click the button below to download and deploy the sample application.",
+                                title: "Try with a sample"
+                            },
+                            useSDK: {
+                                btns: {
+                                    withSDK: "Using SDK",
+                                    withoutSDK: "Manually"
+                                },
+                                subTitle: "Install and use our SDKs to integrate authentication to your application " +
+                                    "with minimum number of code lines.",
+                                title: "Integrate your own app"
+                            }
                         },
-                        heading: "Info"
+                        heading: "What's Next?"
                     },
                     samples: {
                         content: {
                             sample: {
+                                configurations: {
+                                    btn: "Download the Configuration",
+                                    subTitle: "In order to integrate the application created in the server with " +
+                                        "the sample application, you need to initialise the client with following " +
+                                        "configurations.",
+                                    title: "Initialize the client"
+                                },
+                                downloadSample: {
+                                    btn: "Download the sample",
+                                    subTitle: "This sample application will show case the usage of the of WSO2 " +
+                                        "Identity Server SDK and how you can integrate any application with Identity " +
+                                        "Server.",
+                                    title: "Try out the sample"
+                                },
                                 goBack: "Go back",
                                 subTitle: "Quickly start prototyping by downloading our preconfigured sample " +
                                     "application.",

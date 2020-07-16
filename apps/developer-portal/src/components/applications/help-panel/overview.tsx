@@ -17,13 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading } from "@wso2is/react-components";
+import { Heading, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Button, Divider, Grid, Header } from "semantic-ui-react";
 import { OIDCConfigurations } from "./oidc-configurations";
 import { SAMLConfigurations } from "./saml-configurations";
+import { ApplicationManagementConstants } from "../../../constants";
 import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -37,6 +38,8 @@ import { ApplicationManagementUtils } from "../../../utils";
  */
 interface HelpPanelOverviewPropsInterface extends TestableComponentInterface {
     inboundProtocols?: InboundProtocolListItemInterface[];
+    handleTabChange?: (tabId: number) => void;
+    applicationType?: string;
 }
 
 /**
@@ -56,7 +59,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
 
-    const { inboundProtocols } = props;
+    const { applicationType, inboundProtocols, handleTabChange } = props;
 
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
@@ -78,7 +81,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
             })
         }
 
-    }, []);
+    }, [ inboundProtocols ]);
 
     useEffect(() => {
         if (oidcConfigurations !== undefined) {
@@ -104,33 +107,87 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
 
     return (
         <>
-            <Heading>
-                { t("devPortal:components.applications.helpPanel.tabs.info.content.title") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("devPortal:components.applications.helpPanel.tabs.info.content.subTitle") }
-                </Heading>
-            </Heading>
-            <Divider hidden />
-            {
-                isOIDC && (
-                    <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
-                )
-            }
-            {
-                isOIDC && isSAML
-                    ? (
-                        <>
-                            <Divider hidden />
-                            <Divider/>
-                            <Divider hidden />
-                        </>
-                    ) : null
-            }
-            {
-                isSAML && (
-                    <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
-                )
-            }
+            <Grid>
+                {
+                    applicationType && applicationType == ApplicationManagementConstants.SPA
+                        ? (
+                            <Grid.Row textAlign="center">
+                                <Grid.Column width={ 16 }>
+                                    <Heading as="h5">
+                                        <strong>
+                                            { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                                "content.trySample.title") }
+                                        </strong>
+                                    </Heading>
+                                    <Header.Subheader>
+                                        { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                            "content.trySample.subTitle") }
+                                    </Header.Subheader>
+                                    <Divider hidden/>
+                                    <PrimaryButton onClick={ () => { handleTabChange(2) } }>
+                                        { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                            "content.trySample.btn") }
+                                    </PrimaryButton>
+                                    <Divider hidden/>
+                                    <Divider horizontal>Or</Divider>
+                                    <Heading ellipsis as="h5">
+                                        <strong>
+                                            { t("devPortal:components.applications.helpPanel.tabs." +
+                                                "start.content.useSDK.title") }
+                                        </strong>
+                                    </Heading>
+                                    <Header.Subheader>
+                                        { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                                            "useSDK.subTitle") }
+                                    </Header.Subheader>
+                                    <Divider hidden/>
+                                    <Button.Group>
+                                        <SecondaryButton onClick={ () => { handleTabChange(3) } }>
+                                            { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                                "content.useSDK.btns.withSDK") }
+                                        </SecondaryButton>
+                                    </Button.Group>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
+                        : null
+                }
+                <Grid.Row>
+                    <Grid.Column>
+                        <Heading ellipsis as="h5">
+                            <strong>
+                                { t("devPortal:components.applications.helpPanel.tabs.start.content.endpoints." +
+                                "title") }
+                            </strong>
+                        </Heading>
+                        <Hint>
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content.endpoints." +
+                                "subTitle") }
+                        </Hint>
+                        <Divider hidden/>
+                        {
+                            isOIDC && (
+                                <OIDCConfigurations oidcConfigurations={ oidcConfigurations }/>
+                            )
+                        }
+                        {
+                            isOIDC && isSAML
+                                ? (
+                                    <>
+                                        <Divider hidden />
+                                        <Divider/>
+                                        <Divider hidden />
+                                    </>
+                                ) : null
+                        }
+                        {
+                            isSAML && (
+                                <SAMLConfigurations samlConfigurations={ samlConfigurations }/>
+                            )
+                        }
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
         </>
     );
 };

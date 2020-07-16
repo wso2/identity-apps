@@ -122,14 +122,14 @@ export interface DevPortalNS {
             }
             placeholders: {
                 emptyList: {
-                    action: string,
+                    action: string;
                     subtitles: {
-                        0: string,
-                        1: string,
-                        2: string
-                    },
-                    title: string
-                },
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                    title: string;
+                };
                 emptyDetails: {
                     subtitles: {
                         0: string,
@@ -137,12 +137,12 @@ export interface DevPortalNS {
                     },
                     title: string
                 }
-            },
+            };
             list: {
                 confirmations: {
                     deleteConfig: Confirmation;
                 };
-            },
+            };
             notifications: {
                 deleteConfig: Notification,
                 editConfig: Notification,
@@ -378,6 +378,17 @@ export interface DevPortalNS {
                                 subTitle: string;
                                 notifications: {
                                     getRequestPathAuthenticators: Notification;
+                                };
+                            };
+                            templateDescription: {
+                                popupContent: string;
+                                description: {
+                                    prerequisites: string;
+                                    parameters: string;
+                                    description: string;
+                                    defaultSteps: string;
+                                    helpReference: string;
+                                    code: string;
                                 };
                             };
                         };

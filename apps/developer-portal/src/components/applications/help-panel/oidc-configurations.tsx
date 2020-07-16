@@ -64,7 +64,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-authorize-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.authorize") }
                         </label>
                     </Grid.Column>
@@ -89,7 +89,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-token-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.token") }
                         </label>
                     </Grid.Column>
@@ -114,7 +114,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-userInfo-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.userInfo") }
                         </label>
                     </Grid.Column>
@@ -139,7 +139,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-jwks-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.keystore") }
                         </label>
                     </Grid.Column>
@@ -164,7 +164,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                             spaced="right"
                         />
                         <label data-testid={ `${ testId }-introspection-label` }>
-                            { t("devPortal:components.applications.helpPanel.tabs.info.content." +
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
                                 "oidcConfigurations.labels.introspection") }
                         </label>
                     </Grid.Column>

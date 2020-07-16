@@ -346,10 +346,10 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: t("adminPortal:components.claims.dialect.notifications." +
+                    description: t("adminPortal:components.claims.dialects.notifications." +
                         "deleteDialect.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.dialect.notifications." +
+                    message: t("adminPortal:components.claims.dialects.notifications." +
                         "deleteDialect.success.message")
                 }
             ));
@@ -357,11 +357,11 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.claims.dialect.notifications." +
+                        || t("adminPortal:components.claims.dialects.notifications." +
                             "deleteDialect.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
-                        || t("adminPortal:components.claims.dialect.notifications." +
+                        || t("adminPortal:components.claims.dialects.notifications." +
                             "deleteDialect.genericError.message")
                 }
             ));

@@ -461,7 +461,7 @@ export const adminPortal: AdminPortalNS = {
             },
             list: {
                 confirmation: {
-                    action: "confirm",
+                    action: "Confirm",
                     content: "{{message}} Please proceed with caution.",
                     dialect: {
                         message: "If you delete this external dialect, all the"

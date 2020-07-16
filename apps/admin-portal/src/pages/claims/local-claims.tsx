@@ -273,7 +273,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                                 },
                                 {
                                     key: 1,
-                                    text: t("adminPortal:components.claims.local.advancedSearch.error"),
+                                    text: t("adminPortal:components.claims.local.attributes.attributeURI"),
                                     value: "claimURI"
                                 }
                             ] }

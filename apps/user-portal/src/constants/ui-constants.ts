@@ -87,3 +87,24 @@ export const WARNING_ACCOUNT_STATUS_UPPER_LIMIT = 70;
  * @default
  */
 export const ERROR_ACCOUNT_STATUS_UPPER_LIMIT = 40;
+
+/**
+ * Class containing ui constants.
+ */
+export class UIConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
+
+    /**
+     * Default theme of the portal.
+     * @type {string}
+     */
+    public static readonly DEFAULT_THEME: string = "default";
+}

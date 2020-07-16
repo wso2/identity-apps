@@ -111,7 +111,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                         "addDialect.error.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message
-                    || t("adminPortal:components.claims.dialects.notifications.addDialect.success.description")
+                    || t("adminPortal:components.claims.dialects.notifications.addDialect.error.message")
             }));
         })
     };

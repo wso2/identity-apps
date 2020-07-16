@@ -29,6 +29,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
+import { TemplateDescription } from "./template-description";
 import { AdaptiveAuthTemplateInterface } from "../../../../../models";
 
 /**
@@ -95,6 +96,10 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
         const { t } = useTranslation();
 
         const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+        const [
+            selectedTemplate,
+            setSelectedTemplate
+        ] = useState<AdaptiveAuthTemplateInterface>(null);
 
         /**
          * Handles accordion title click.
@@ -115,95 +120,133 @@ export const ScriptTemplatesSidePanel: FunctionComponent<ScriptTemplatesSidePane
             setAccordionActiveIndexes(newIndexes);
         };
 
+        /**
+         * Closes the template description modal
+         */
+        const closeTemplateDescriptionModal = (): void => {
+            setSelectedTemplate(null);
+        };
+
         return (
-            <Sidebar
-                as={ Segment }
-                ref={ ref as any }
-                className="script-templates-panel"
-                animation="overlay"
-                icon="labeled"
-                direction="right"
-                vertical
-                secondary
-                visible={ visible }
-                data-testid={ testId }
-            >
-                { title && typeof title === "string" ? <Heading as="h6" bold>{ title }</Heading> : title }
+            <>
                 {
-                    (templates && templates instanceof Array && templates.length > 0)
-                        ? (
-                            <Accordion
-                                as={ Menu }
-                                className="template-category-menu"
-                                data-testid={ `${ testId }-accordion` }
-                                fluid
-                                secondary
-                                vertical
-                            >
-                                {
-                                    _.sortBy(templates, "order").map((category, index) => (
-                                        category?.templates && category.templates instanceof Array && (
-                                            <Menu.Item key={ index }>
-                                                <Accordion.Title
-                                                    active={ accordionActiveIndexes.includes(index) }
-                                                    className="category-name"
-                                                    content={ category.displayName }
-                                                    index={ index }
-                                                    icon={ <Icon className="angle right caret-icon"/> }
-                                                    onClick={ handleAccordionOnClick }
-                                                    data-testid={ `${ testId }-accordion-title-${ index }` }
-                                                />
-                                                <Accordion.Content
-                                                    className="template-list"
-                                                    active={ accordionActiveIndexes.includes(index) }
-                                                    data-testid={ `${ testId }-accordion-content-${ index }` }
-                                                >
-                                                    {
-                                                        category.templates.map((template, index) => (
-                                                            <Menu.Item key={ index }>
-                                                                <Popup
-                                                                    trigger={ (
-                                                                        <div className="template-name">
-                                                                            { template.name }
-                                                                        </div>
-                                                                    ) }
-                                                                    position="top center"
-                                                                    content={ template.name }
-                                                                    inverted
-                                                                />
-                                                                {
-                                                                    !readOnly && (
-                                                                        <Popup
-                                                                            trigger={ (
-                                                                                <Icon
-                                                                                    className="add-button"
-                                                                                    name="add"
-                                                                                    onClick={
-                                                                                        () => onTemplateSelect(
-                                                                                            template
-                                                                                        )
-                                                                                    }
-                                                                                />
-                                                                            ) }
-                                                                            position="top center"
-                                                                            content={ t("common:add") }
-                                                                            inverted
-                                                                        />
-                                                                    )
-                                                                }
-                                                            </Menu.Item>
-                                                        ))
-                                                    }
-                                                </Accordion.Content>
-                                            </Menu.Item>
-                                        ))
-                                    )
-                                }
-                            </Accordion>
-                        )
-                        : null
+                    selectedTemplate &&
+                    (
+                        <TemplateDescription
+                            template={ selectedTemplate }
+                            open={ !!selectedTemplate }
+                            onClose={ closeTemplateDescriptionModal }
+                        />
+                    )
                 }
-            </Sidebar>
+                <Sidebar
+                    as={ Segment }
+                    ref={ ref as any }
+                    className="script-templates-panel"
+                    animation="overlay"
+                    icon="labeled"
+                    direction="right"
+                    vertical
+                    secondary
+                    visible={ visible }
+                    data-testid={ testId }
+                >
+                    { title && typeof title === "string" ? <Heading as="h6" bold>{ title }</Heading> : title }
+                    {
+                        (templates && templates instanceof Array && templates.length > 0)
+                            ? (
+                                <Accordion
+                                    as={ Menu }
+                                    className="template-category-menu"
+                                    data-testid={ `${testId}-accordion` }
+                                    fluid
+                                    secondary
+                                    vertical
+                                >
+                                    {
+                                        _.sortBy(templates, "order").map((category, index) => (
+                                            category?.templates && category.templates instanceof Array && (
+                                                <Menu.Item key={ index }>
+                                                    <Accordion.Title
+                                                        active={ accordionActiveIndexes.includes(index) }
+                                                        className="category-name"
+                                                        content={ category.displayName }
+                                                        index={ index }
+                                                        icon={ <Icon className="angle right caret-icon" /> }
+                                                        onClick={ handleAccordionOnClick }
+                                                        data-testid={ `${testId}-accordion-title-${index}` }
+                                                    />
+                                                    <Accordion.Content
+                                                        className="template-list"
+                                                        active={ accordionActiveIndexes.includes(index) }
+                                                        data-testid={ `${testId}-accordion-content-${index}` }
+                                                    >
+                                                        {
+                                                            category.templates.map((template, index) => (
+                                                                <Menu.Item key={ index }>
+                                                                    <Popup
+                                                                        trigger={ (
+                                                                            <div className="template-name">
+                                                                                { template.name }
+                                                                            </div>
+                                                                        ) }
+                                                                        position="top center"
+                                                                        content={ template.name }
+                                                                        inverted
+                                                                    />
+                                                                    {
+                                                                        !readOnly && (
+                                                                            <Popup
+                                                                                trigger={ (
+                                                                                    <Icon
+                                                                                        className="add-button"
+                                                                                        name="add"
+                                                                                        onClick={
+                                                                                            () => onTemplateSelect(
+                                                                                                template
+                                                                                            )
+                                                                                        }
+                                                                                    />
+                                                                                ) }
+                                                                                position="top center"
+                                                                                content={ t("common:add") }
+                                                                                inverted
+                                                                            />
+                                                                        )
+                                                                    }
+                                                                    <Popup
+                                                                        trigger={ (
+                                                                            <Icon
+                                                                                className="add-button"
+                                                                                name="info circle"
+                                                                                onClick={ () => {
+                                                                                    setSelectedTemplate(template);
+                                                                                } }
+                                                                            />
+                                                                        ) }
+                                                                        position="top center"
+                                                                        inverted
+                                                                        content={
+                                                                            t("devPortal:components.applications" +
+                                                                                ".edit.sections.signOnMethod." +
+                                                                                "sections.templateDescription" +
+                                                                                ".popupContent")
+                                                                        }
+                                                                    />
+                                                                </Menu.Item>
+                                                            ))
+                                                        }
+                                                    </Accordion.Content>
+                                                </Menu.Item>
+                                            ))
+                                        )
+                                    }
+                                </Accordion>
+                            )
+                            : null
+                    }
+                </Sidebar>
+            </>
         );
     });
 

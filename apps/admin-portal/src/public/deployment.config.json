@@ -26,8 +26,8 @@
     },
     "ui": {
         "appCopyright": "WSO2 Identity Server",
-        "appTitle": "WSO2 Identity Server Admin Dashboard",
-        "appName": "Identity Server",
+        "appTitle": "Admin | WSO2 Identity Server",
+        "appName": "Admin",
         "appLogoPath": "/assets/images/logo.svg",
         "features": {
             "attributeDialects": {
@@ -178,6 +178,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "productName": "Identity Server",
         "theme": {
             "name": "default"
         }

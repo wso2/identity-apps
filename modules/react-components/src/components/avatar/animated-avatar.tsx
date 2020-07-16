@@ -17,15 +17,20 @@
 */
 
 import React, { FunctionComponent, ReactElement } from "react";
+import { Image, ImageProps } from "semantic-ui-react";
 
 /**
  * Prop types of the component
  */
-export interface AnimatedAvatarPropsInterface {
+export interface AnimatedAvatarPropsInterface extends ImageProps {
     /**
      * Sets if the avatar is of primary color or not
      */
     primary?: boolean;
+    /**
+     * Name to be passed in.
+     */
+    name?: string;
 }
 
 /**
@@ -39,9 +44,13 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
     props: AnimatedAvatarPropsInterface
 ): ReactElement => {
 
-    const { primary } = props;
-
-    return (
+    const {
+        name,
+        primary,
+        ...rest
+    } = props;
+    
+    const AnimatedSVGBackground = () => (
         <svg
             className="claims-avatar-background"
             xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +177,7 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
                         "871+341.616C853.871+341.71+853.795+341.786+853.701+341.786L683.148+341.786C683.054+341." +
                         "786+682.978+341.71+682.978+341.616L682.978+171.063C682.978+170.969+683.054+170." +
                         "893+683.148+170.893Z"
-                    } 
+                    }
                     strokeLinecap="round"
                     opacity={ (Math.random() * 0.2) + 0.8 }
                     strokeLinejoin="round"
@@ -450,5 +459,38 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
                     strokeLinejoin="round" />
             </g>
         </svg>
+    );
+
+    /**
+     * Generates the initials for the avatar.
+     *
+     * @return {string}
+     */
+    const generateInitials = (name): string => {
+        return name.charAt(0).toUpperCase();
+    };
+
+    return (
+        name
+            ? (
+                <Image
+                    rounded
+                    centered
+                    className="animated-avatar"
+                    { ...rest }
+                >
+                    <AnimatedSVGBackground/>
+                    <span className="initial">
+                        { generateInitials(name) }
+                    </span>
+                </Image>
+            )
+            : <AnimatedSVGBackground/>
     )
+};
+
+AnimatedAvatar.defaultProps = {
+    floated: "left",
+    size: "mini",
+    verticalAlign: "middle"
 };

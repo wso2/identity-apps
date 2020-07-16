@@ -119,6 +119,11 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ) }
             brand={ (
                 <ProductBrand
+                    appName={
+                        (state.appName && state.appName !== "")
+                            ? state.appName
+                            : config.ui.appName
+                    }
                     style={ { marginTop: 0 } }
                     logo={
                         (state.logo && state.logo !== "")
@@ -135,10 +140,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 />
                             )
                     }
-                    name={ state.productName && state.productName !== "" ?
-                        state.productName
-                        :
-                        config.deployment.applicationName
+                    productName={
+                        (state.productName && state.productName !== "")
+                            ? state.productName
+                            : config.ui.productName
                     }
                     version={ config.deployment.productVersion }
                 />
@@ -173,7 +178,9 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             onSidePanelToggleClick={ onSidePanelToggleClick }
             { ...rest }
         >
-            <ComponentPlaceholder section="feedback-button" type="component"/>
+            <div className="header-extensions">
+                <ComponentPlaceholder section="feedback-button" type="component"/>
+            </div>
         </ReusableHeader>
     );
 };
