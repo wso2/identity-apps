@@ -24,7 +24,7 @@ import { GenericIconProps, HelpPanel, HelpPanelPropsInterface, HelpPanelTabInter
 /**
  * Help panel layout Prop types.
  */
-export interface HelpPanelLayoutLayoutPropsInterface {
+export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInterface {
     /**
      * Extra CSS classes.
      */
@@ -177,10 +177,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
                 <Sidebar.Pushable className={ layoutClasses }>
                     <HelpPanel
                         as={ Menu }
-                        animation="overlay"
                         direction={ sidebarDirection }
-                        icon="labeled"
-                        vertical
                         visible={ helpSidebarVisibility }
                         ref={ sidebarRef }
                         actions={ [
@@ -215,7 +212,13 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
  * Default props for the sidebar pusher layout.
  */
 HelpPanelLayout.defaultProps = {
+    bordered: "left",
+    animation: "overlay",
     enabled: true,
+    icon: "labeled",
+    raised: false,
+    showLabelsOnSidebarMini: false,
     sidebarMiniEnabled: true,
-    sidebarVisibility: false
+    sidebarVisibility: false,
+    vertical: true
 };
