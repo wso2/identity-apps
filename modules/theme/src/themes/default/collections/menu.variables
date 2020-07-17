@@ -59,7 +59,7 @@
 
 @sidePanelCategoryFontSize: 10px;
 @sidePanelCategoryTextTransform: uppercase;
-@sidePanelCategoryMarginBottom: 0;
+@sidePanelCategoryMarginBottom: 3px;
 @sidePanelCategoryDividerMargin: 10px 0;
 @sidePanelBackgroundHoveredItemMarginTop: 5px;
 

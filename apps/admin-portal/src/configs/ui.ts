@@ -42,13 +42,13 @@ import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images
 import { ReactComponent as GearsIcon } from "../themes/default/assets/images/icons/gears-icon.svg";
 import { ReactComponent as GraphIcon } from "../themes/default/assets/images/icons/graph-icon.svg";
 import { ReactComponent as KeyIcon } from "../themes/default/assets/images/icons/key-icon.svg";
-import { ReactComponent as LaunchIcon } from "../themes/default/assets/images/icons/launch-icon.svg";
 import { ReactComponent as MagnifierIcon } from "../themes/default/assets/images/icons/magnifier-icon.svg";
 import { ReactComponent as MaximizeIcon } from "../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as MinimizeIcon } from "../themes/default/assets/images/icons/minimize-icon.svg";
 import { ReactComponent as PaperRocketIcon } from "../themes/default/assets/images/icons/paper-rocket-icon.svg";
 import { ReactComponent as PinIcon } from "../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../themes/default/assets/images/icons/plug-icon.svg";
+import { ReactComponent as PlusIcon } from "../themes/default/assets/images/icons/plus-icon.svg";
 import { ReactComponent as ReportIcon } from "../themes/default/assets/images/icons/report-icon.svg";
 import { ReactComponent as SpinWheelIcon } from "../themes/default/assets/images/icons/spin-wheel-icon.svg";
 import { ReactComponent as FileUploadIllustration } from "../themes/default/assets/images/icons/upload.svg";
@@ -154,7 +154,7 @@ export const EmptyPlaceholderIllustrations = {
     fileUpload: FileUploadIllustration,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
-    newList: LaunchIcon,
+    newList: PlusIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };

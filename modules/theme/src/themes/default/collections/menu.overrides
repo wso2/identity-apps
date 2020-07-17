@@ -270,7 +270,7 @@
             }
 
             &.hover-background {
-                margin-bottom: @sidePanelBackgroundHoveredItemMarginBottom;
+                margin-top: @sidePanelBackgroundHoveredItemMarginTop;
             }
 
             &.active {
