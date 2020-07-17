@@ -118,6 +118,10 @@ export interface HelpPanelInterface {
     tabs: HelpPanelTabsInterface;
 }
 
+export interface HelpPanelActionsInterface {
+    [ key: string ]: string;
+}
+
 interface HelpPanelTabsInterface {
     [ key: string ]: HelpPanelTabInterface;
 }

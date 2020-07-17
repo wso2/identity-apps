@@ -35,7 +35,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, SemanticICONS } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import {
     getIdentityProviderList,
     getIdentityProviderTemplate,
@@ -49,6 +49,7 @@ import {
 import { IdentityProviderCreateWizard } from "../../components/identity-providers/wizards";
 import {
     EmptyPlaceholderIllustrations,
+    HelpPanelIcons,
     HelpSidebarIcons,
     IdPCapabilityIcons,
     IdPIcons,
@@ -420,7 +421,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             ),
             heading: t("common:docs"),
             hidden: !templateDocs || (templateDocs instanceof Array && templateDocs.length < 1),
-            icon: "file alternate outline" as SemanticICONS
+            icon: {
+                icon: HelpPanelIcons.tabs.docs
+            }
         }
     ];
 
@@ -432,6 +435,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ HelpSidebarIcons.actionPanel }
+            sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
+            pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
+            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 title={ t("devPortal:pages.idpTemplate.title") }

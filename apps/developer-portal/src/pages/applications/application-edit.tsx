@@ -37,12 +37,12 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {ButtonProps, Divider, Grid, Label, SemanticICONS} from "semantic-ui-react";
+import { Divider, Grid, Label } from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
 import { HelpPanelOverview } from "../../components/applications";
 import { SamplesGuideComponent } from "../../components/applications/help-panel";
-import { HelpSidebarIcons, TechnologyLogos, InboundProtocolLogos } from "../../configs";
+import { HelpPanelIcons, HelpSidebarIcons, InboundProtocolLogos, TechnologyLogos } from "../../configs";
 import { AppConstants, ApplicationManagementConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
@@ -495,7 +495,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 ),
             heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
             hidden: application?.inboundProtocols?.length <= 0,
-            icon: "list alternate outline" as SemanticICONS
+            icon: {
+                icon: HelpPanelIcons.tabs.whatsNext
+            }
         },
         {
             content: (
@@ -564,7 +566,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ),
             heading: t("devPortal:components.applications.helpPanel.tabs.configs.heading"),
             hidden: !configs || (configs instanceof Array && configs.length < 1),
-            icon: "file alternate outline" as SemanticICONS
+            icon: {
+                icon: HelpPanelIcons.tabs.guide
+            }
         },
         {
             content: (
@@ -635,7 +639,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ),
             heading: t("common:samples"),
             hidden: !samples || (samples instanceof Array && samples.length < 1),
-            icon: "code" as SemanticICONS
+            icon: {
+                icon: HelpPanelIcons.tabs.samples
+            }
         },
         {
             content: (
@@ -704,7 +710,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             ),
             heading: t("common:sdks"),
             hidden: !sdks || (sdks instanceof Array && sdks.length < 1),
-            icon: "file code outline" as SemanticICONS
+            icon: {
+                icon: HelpPanelIcons.tabs.sdks
+            }
         }
     ];
 
@@ -717,6 +725,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ HelpSidebarIcons.actionPanel }
+            sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
+            pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
+            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }

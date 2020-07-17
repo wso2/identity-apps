@@ -21,6 +21,7 @@ import {
     DangerZone,
     EditPage,
     FormAttributes,
+    HelpPanelActionsInterface,
     HelpPanelInterface,
     Notification,
     Page,
@@ -631,6 +632,7 @@ export interface DevPortalNS {
             };
         };
         helpPanel: {
+            actions: HelpPanelActionsInterface;
             notifications: {
                 pin: Notification;
             };

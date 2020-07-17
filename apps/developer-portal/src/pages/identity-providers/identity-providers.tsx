@@ -32,11 +32,11 @@ import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps, SemanticICONS } from "semantic-ui-react";
+import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../api";
 import { AdvancedSearchWithBasicFilters, IdentityProviderList } from "../../components";
 import { handleGetIDPListCallError } from "../../components/identity-providers/utils";
-import { HelpSidebarIcons } from "../../configs";
+import { HelpPanelIcons, HelpSidebarIcons } from "../../configs";
 import { IdentityProviderConstants, IdentityProviderManagementConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
@@ -267,7 +267,9 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             ),
             heading: t("common:docs"),
             hidden: !helpPanelDocURL,
-            icon: "file alternate outline" as SemanticICONS
+            icon: {
+                icon: HelpPanelIcons.tabs.docs
+            }
         }
     ];
 
@@ -279,6 +281,9 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ HelpSidebarIcons.actionPanel }
+            sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
+            pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
+            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 title={ t("devPortal:pages.idp.title") }
