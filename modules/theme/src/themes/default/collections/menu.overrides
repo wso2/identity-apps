@@ -218,7 +218,7 @@
                         width: 100%;
                         background-color: @defaultBorderColor;
                         height: 1px;
-                        margin: 12px 0;
+                        margin: @sidePanelCategoryDividerMargin;
                     }
                 }
             }
@@ -226,6 +226,7 @@
 
         .side-panel-item {
             border-radius: @defaultBorderRadius;
+            padding: @sidePanelItemPadding;
 
             .route-name {
                 cursor: pointer;

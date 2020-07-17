@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ReactComponent as AccountPolicyIcon } from "../themes/default/assets/images/icons/account-policy-icon.svg";
 import { ReactComponent as AlertIcon } from "../themes/default/assets/images/icons/alert-icon.svg";
 import { ReactComponent as ArrowRight } from "../themes/default/assets/images/icons/arrow-right-icon.svg";
 import {
@@ -29,6 +30,7 @@ import { ReactComponent as CertificateIcon } from "../themes/default/assets/imag
 import { ReactComponent as ClaimsIcon } from "../themes/default/assets/images/icons/claims-icon.svg";
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CogwheelIcon } from "../themes/default/assets/images/icons/cog-wheel-icon.svg";
+import { ReactComponent as ConsentIcon } from "../themes/default/assets/images/icons/consent.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as DatabaseAvatar } from "../themes/default/assets/images/icons/database-avatar.svg";
@@ -38,6 +40,7 @@ import { ReactComponent as DragSquaresIcon } from "../themes/default/assets/imag
 import { ReactComponent as EmailIcon } from "../themes/default/assets/images/icons/email-icon.svg";
 import { ReactComponent as ForbiddenIcon } from "../themes/default/assets/images/icons/forbidden-icon.svg";
 import { ReactComponent as GearsIcon } from "../themes/default/assets/images/icons/gears-icon.svg";
+import { ReactComponent as GraphIcon } from "../themes/default/assets/images/icons/graph-icon.svg";
 import { ReactComponent as KeyIcon } from "../themes/default/assets/images/icons/key-icon.svg";
 import { ReactComponent as LaunchIcon } from "../themes/default/assets/images/icons/launch-icon.svg";
 import { ReactComponent as MagnifierIcon } from "../themes/default/assets/images/icons/magnifier-icon.svg";
@@ -49,6 +52,7 @@ import { ReactComponent as PlugIcon } from "../themes/default/assets/images/icon
 import { ReactComponent as ReportIcon } from "../themes/default/assets/images/icons/report-icon.svg";
 import { ReactComponent as SpinWheelIcon } from "../themes/default/assets/images/icons/spin-wheel-icon.svg";
 import { ReactComponent as FileUploadIllustration } from "../themes/default/assets/images/icons/upload.svg";
+import { ReactComponent as UserConfigIcon } from "../themes/default/assets/images/icons/user-config-icon.svg";
 import { ReactComponent as UserGroupIcon } from "../themes/default/assets/images/icons/user-group-icon.svg";
 import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
 import {
@@ -105,7 +109,14 @@ export const SidePanelIcons = {
     certificate: CertificateIcon,
     childIcon: ArrowRight,
     claims: ClaimsIcon,
-    connections: PlugIcon,
+    connectors: {
+        [ "Account Management Policies" ]: UserConfigIcon,
+        [ "Analytics Engine" ]: GraphIcon,
+        [ "Consent Management" ]: ConsentIcon,
+        [ "Login Policies" ]: AccountPolicyIcon,
+        [ "Password Policies" ]: KeyIcon,
+        default: PlugIcon
+    },
     emailTemplates: PaperRocketIcon,
     groups: UserGroupIcon,
     overview: DashboardIcon,

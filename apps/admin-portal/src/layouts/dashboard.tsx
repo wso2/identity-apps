@@ -37,6 +37,7 @@ import React, {
     ReactNode,
     Suspense,
     SyntheticEvent,
+    lazy,
     useContext,
     useEffect,
     useState
@@ -51,7 +52,6 @@ import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface, GovernanceConnectorCategoryInterface } from "../models";
-import { GovernanceConnectorsPage } from "../pages/configurations";
 import { AppState, store } from "../store";
 import { GovernanceConnectorUtils } from "../utils";
 
@@ -131,7 +131,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     useEffect(() => {
         if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
             if (!governanceConnectorRoutesAdded) {
-                const serverConfigsRoute = routes.find(route => route.id === "serverConfigurations");
+
+                const filteredRoutesClone = [ ...filteredRoutes ];
+
                 governanceConnectorCategories.map(category => {
                     let subCategoryExists = false;
                     category.connectors?.map(connector => {
@@ -141,20 +143,26 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                         }
                     });
                     if (subCategoryExists) {
-                        console.log("Subcategories found.");
+                        // TODO: Implement sub category handling logic here.
                     }
-                    serverConfigsRoute.children.push({
-                        component: GovernanceConnectorsPage,
+
+                    filteredRoutesClone.unshift({
+                        category: "adminPortal:components.sidePanel.categories.configurations",
+                        component: lazy(() => import("../pages/configurations/governance-connectors")),
                         exact: true,
-                        icon: "childIcon",
+                        icon: {
+                            icon: SidePanelIcons.connectors[ category.name ] ?? SidePanelIcons.connectors.default
+                        },
                         id: category.id,
-                        level: 2,
                         name: category.name,
+                        order: 6,
                         path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
                         protected: true,
                         showOnSidePanel: true
                     });
                 });
+
+                setFilteredRoutes(filteredRoutesClone);
                 setGovernanceConnectorRoutesAdded(true);
             }
         } else {
@@ -383,7 +391,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     icons={ SidePanelIcons }
-                    routes={ filteredRoutes }
+                    routes={ RouteUtils.sanitizeForUI(filteredRoutes) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }

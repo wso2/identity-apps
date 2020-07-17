@@ -65,6 +65,10 @@ export interface StaticRouteInterface {
      */
     name: string;
     /**
+     * Side panel order.
+     */
+    order?: number;
+    /**
      * Router path.
      */
     path?: string;

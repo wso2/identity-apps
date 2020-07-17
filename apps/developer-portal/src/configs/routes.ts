@@ -18,6 +18,7 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
+import { SidePanelIcons } from "./ui";
 import { AppConstants } from "../constants";
 import { EXTENSION_ROUTES } from "../extensions";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
@@ -51,7 +52,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/applications/application-template")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "applicationTemplate",
                 name: "Application Templates",
                 path: AppConstants.PATHS.get("APPLICATION_TEMPLATES"),
@@ -61,7 +64,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/applications/application-edit")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "applicationsEdit",
                 name: "Application Edit",
                 path: AppConstants.PATHS.get("APPLICATION_EDIT"),
@@ -71,7 +76,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/applications/applications")),
         exact: true,
-        icon: "applications",
+        icon: {
+            icon: SidePanelIcons.applications
+        },
         id: "applications",
         name: "common:applications",
         path: AppConstants.PATHS.get("APPLICATIONS"),
@@ -83,7 +90,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/identity-providers/identity-provider-template")),
                 exact: true,
-                icon: "childIcon",
+                 icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "identityProviderTemplate",
                 name: "Identity Provider Templates",
                 path: AppConstants.PATHS.get("IDP_TEMPLATES"),
@@ -93,7 +102,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/identity-providers/identity-provider-edit")),
                 exact: true,
-                icon: "childIcon",
+                 icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "identityProvidersEdit",
                 name: "Identity Providers Edit",
                 path: AppConstants.PATHS.get("IDP_EDIT"),
@@ -103,7 +114,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/identity-providers/identity-providers")),
         exact: true,
-        icon: "identityProviders",
+        icon: {
+            icon: SidePanelIcons.identityProviders
+        },
         id: "identityProviders",
         name: "common:identityProviders",
         path: AppConstants.PATHS.get("IDP"),
@@ -115,7 +128,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config-edit")),
                 exact: true,
-                icon: "childIcon",
+                 icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "remote-repo-edit",
                 name: "Remote Repo Config Edit",
                 path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
@@ -125,7 +140,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/remote-repository-configuration/remote-repository-config")),
         exact: true,
-        icon: "remoteFetch",
+        icon: {
+            icon: SidePanelIcons.remoteFetch
+        },
         id: "remote-repo",
         name: "Remote Repo Config",
         path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
@@ -134,7 +151,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     },
     {
         component: lazy(() => import("../pages/customize")),
-        icon: "overview",
+        icon: {
+            icon: SidePanelIcons.overview
+        },
         id: "customize",
         name: "Customize",
         path: AppConstants.PATHS.get("CUSTOMIZE"),
@@ -169,7 +188,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
 const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
         component: lazy(() => import("../pages/overview")),
-        icon: "overview",
+        icon: {
+            icon: SidePanelIcons.overview
+        },
         id: "overview",
         name: "common:overview",
         path: AppConstants.PATHS.get("OVERVIEW"),
@@ -259,12 +280,12 @@ const APP_ROUTES: RouteInterface[] = [
     },
     {
         component: DefaultLayout,
-        icon: "overview",
-        id: "overview",
+        icon: null,
+        id: "appRouteOverview",
         name: "common:overview",
         path: AppConstants.PATHS.get("OVERVIEW"),
         protected: true,
-        showOnSidePanel: true
+        showOnSidePanel: false
     },
     {
         component: DefaultLayout,
