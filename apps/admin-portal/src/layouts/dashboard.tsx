@@ -325,7 +325,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             })
         };
 
-        recurse(filteredRoutes);
+        recurse([ ...filteredRoutes ]);
 
         return resolvedRoutes;
     };
