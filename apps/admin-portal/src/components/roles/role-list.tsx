@@ -28,12 +28,16 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Image, Label } from "semantic-ui-react";
+import { Icon, Image, Label, ListItemProps } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { APPLICATION_DOMAIN, GROUP_VIEW_PATH, INTERNAL_DOMAIN, ROLE_VIEW_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
     /**
      * Flag for Group list.
      */
@@ -46,19 +50,35 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
      * Role delete callback.
      * @param {RolesInterface} role - Deleting role.
      */
-    handleRoleDelete: (role: RolesInterface) => void;
+    handleRoleDelete?: (role: RolesInterface) => void;
+    /**
+     * On list item select callback.
+     */
+    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
     /**
      * Callback for the search query clear action.
      */
-    onSearchQueryClear: () => void;
+    onSearchQueryClear?: () => void;
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
-    onEmptyListPlaceholderActionClick: () => void;
+    onEmptyListPlaceholderActionClick?: () => void;
     /**
      * Search query for the list.
      */
-    searchQuery: string;
+    searchQuery?: string;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
+    /**
+     * Show/Hide meta content.
+     */
+    showMetaContent?: boolean;
 }
 
 /**
@@ -69,13 +89,18 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
     
     const {
+        defaultListItemLimit,
         handleRoleDelete,
         isGroup,
         isLoading,
         onEmptyListPlaceholderActionClick,
+        onListItemClick,
         onSearchQueryClear,
         roleList,
+        selection,
         searchQuery,
+        showListItemActions,
+        showMetaContent,
         [ "data-testid" ]: testId
     } = props;
 
@@ -223,9 +248,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 className="roles-list"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit,
                     imageType: "square"
                 } }
+                selection={ selection }
             >
                 {
                     roleList && roleList instanceof Array && roleList.length > 0
@@ -234,33 +260,37 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                 data-testid={ `${ testId }-list-item-${ role.displayName }` }
                                 key={ index }
                                 actionsFloated="right"
-                                actions={ [
-                                    {
-                                        icon: "pencil alternate",
-                                        onClick: () => handleRoleEdit(role.id),
-                                        popupText:
-                                            isGroup
-                                                ? t("adminPortal:components.roles.list.popups.edit",
-                                                    { type: "Group" })
-                                                : t("adminPortal:components.roles.list.popups.edit",
-                                                    { type: "Role" }),
-                                        type: "button"
-                                    },
-                                    {
-                                        icon: "trash alternate",
-                                        onClick: () => {
-                                            setCurrentDeletedRole(role);
-                                            setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
-                                        },
-                                        popupText:
-                                            isGroup
-                                                ? t("adminPortal:components.roles.list.popups.delete",
-                                                    { type: "Group" })
-                                                : t("adminPortal:components.roles.list.popups.delete",
-                                                    { type: "Role" }),
-                                        type: "button"
-                                    }
-                                ] }
+                                actions={
+                                    showListItemActions
+                                        ? [
+                                            {
+                                                icon: "pencil alternate",
+                                                onClick: () => handleRoleEdit(role.id),
+                                                popupText:
+                                                    isGroup
+                                                        ? t("adminPortal:components.roles.list.popups.edit",
+                                                        { type: "Group" })
+                                                        : t("adminPortal:components.roles.list.popups.edit",
+                                                        { type: "Role" }),
+                                                type: "button"
+                                            },
+                                            {
+                                                icon: "trash alternate",
+                                                onClick: () => {
+                                                    setCurrentDeletedRole(role);
+                                                    setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
+                                                },
+                                                popupText:
+                                                    isGroup
+                                                        ? t("adminPortal:components.roles.list.popups.delete",
+                                                        { type: "Group" })
+                                                        : t("adminPortal:components.roles.list.popups.delete",
+                                                        { type: "Role" }),
+                                                type: "button"
+                                            }
+                                        ]
+                                        : []
+                                }
                                 avatar={ (
                                     <Image
                                         floated="left"
@@ -276,7 +306,21 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                     </Image>
                                 ) }
                                 itemHeader={ generateHeaderContent(role.displayName) }
-                                metaContent={ CommonUtils.humanizeDateDifference(role.meta.created) }
+                                metaContent={
+                                    showMetaContent
+                                        ? CommonUtils.humanizeDateDifference(role.meta.created)
+                                        : null
+                                }
+                                onClick={
+                                    (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
+                                        if (!selection) {
+                                            return;
+                                        }
+
+                                        handleRoleEdit(role.id);
+                                        onListItemClick(event, data);
+                                    }
+                                }
                             />
                         ))
                         : showPlaceholders()
@@ -327,4 +371,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             }
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+RoleList.defaultProps = {
+    defaultListItemLimit: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+    selection: false,
+    showListItemActions: true,
+    showMetaContent: true
 };

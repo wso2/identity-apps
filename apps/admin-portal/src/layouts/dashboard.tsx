@@ -109,7 +109,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig, allowedScopes));
 
-        if (_.isEmpty(profileInfo)) {
+        if (isEmpty(profileInfo)) {
             dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
         }
     }, []);
