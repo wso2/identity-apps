@@ -106,6 +106,9 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                fill={ true }
+                celled={ false }
+                divided={ true }
             >
                 {
                     repoObjectList && repoObjectList instanceof Array && repoObjectList.length > 0

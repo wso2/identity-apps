@@ -223,6 +223,9 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 imageType: "square"
             } }
             selection={ selection }
+            fill={ true }
+            celled={ false }
+            divided={ true }
             data-testid={ `${ testId }-resource-list` }
         >
             {

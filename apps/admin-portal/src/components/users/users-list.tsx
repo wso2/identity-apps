@@ -274,6 +274,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     count: defaultListItemLimit,
                     imageType: "circular"
                 } }
+                fill={ true }
+                celled={ false }
+                divided={ true }
                 selection={ selection }
             >
                 {
