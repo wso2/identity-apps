@@ -115,6 +115,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                     listItemLimit={ listItemLimit }
                     onPageChange={ () => { console.log() } }
                     showPagination={ false }
+                    showTopActionPanel={ false }
                     totalPages={ Math.ceil(remoteRepoConfig?.length / listItemLimit) }
                     totalListSize={ remoteRepoConfig?.length }
                 >

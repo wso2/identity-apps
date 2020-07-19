@@ -251,7 +251,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                     count: defaultListItemLimit,
                     imageType: "square"
                 } }
-                fill={ true }
+                fill={ !showPlaceholders() }
                 celled={ false }
                 divided={ true }
                 selection={ selection }

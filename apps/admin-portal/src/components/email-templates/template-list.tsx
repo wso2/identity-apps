@@ -116,7 +116,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                fill={ true }
+                fill={ !showPlaceholders() }
                 celled={ false }
                 divided={ true }
                 data-testid={ testId }
