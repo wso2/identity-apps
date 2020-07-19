@@ -94,6 +94,20 @@ body {
          Global Helper Classes
 *****************************************/
 
+.display {
+    &-flex {
+        display: flex !important;
+    }
+    
+    &-inline {
+        display: inline !important;
+    }
+    
+    &-inline-block {
+        display: inline-block !important;
+    }
+}
+
 .flex {
     display: flex;
 }
@@ -475,6 +489,16 @@ body {
 
     &.list-layout {
         .top-action-panel {
+            .ui.grid {
+                background: @listLayoutActionPanelBackgroundColor;
+                margin-right: @listLayoutActionPanelMarginRight;
+                margin-left: @listLayoutActionPanelMarginLeft;
+                border: @listLayoutActionPanelBorder;
+                
+                .row {
+                    padding: @listLayoutActionPanelPadding;
+                }
+            }
             .actions {
                 display: flex;
 
