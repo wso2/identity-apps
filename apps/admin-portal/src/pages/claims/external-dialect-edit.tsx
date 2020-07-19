@@ -271,6 +271,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             <Divider hidden />
 
             <Segment>
+                <Divider hidden />
                 <EditExternalClaims
                     dialectID={ dialectId }
                     isLoading={ isLoading }

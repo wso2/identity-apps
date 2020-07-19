@@ -286,6 +286,19 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
+                action={
+                    (isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0))
+                    && (
+                        <PrimaryButton
+                            onClick={ (): void => {
+                                history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
+                            } }
+                            data-testid={ `${ testId }-add-button` }
+                        >
+                            <Icon name="add"/>{ t("devPortal:components.idp.buttons.addIDP") }
+                        </PrimaryButton>
+                    )
+                }
                 title={ t("devPortal:pages.idp.title") }
                 description={ t("devPortal:pages.idp.subTitle") }
                 data-testid={ `${ testId }-page-layout` }
@@ -322,18 +335,6 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleListSortingStrategyOnChange }
-                    rightActionPanel={
-                        (
-                            <PrimaryButton
-                                onClick={ (): void => {
-                                    history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
-                                } }
-                                data-testid={ `${ testId }-add-button` }
-                            >
-                                <Icon name="add"/>{ t("devPortal:components.idp.buttons.addIDP") }
-                            </PrimaryButton>
-                        )
-                    }
                     showPagination={ true }
                     showTopActionPanel={ isIdPListRequestLoading || !(!searchQuery && idpList?.totalResults <= 0) }
                     sortOptions={ IDENTITY_PROVIDER_LIST_SORTING_OPTIONS }

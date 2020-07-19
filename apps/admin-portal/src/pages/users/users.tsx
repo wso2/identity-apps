@@ -300,6 +300,18 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
     return (
         <PageLayout
+            action={
+                (isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0))
+                && (
+                    <PrimaryButton
+                        data-testid="user-mgt-user-list-add-user-button"
+                        onClick={ () => setShowWizard(true) }
+                    >
+                        <Icon name="add"/>
+                        { t("adminPortal:components.users.buttons.addNewUserBtn") }
+                    </PrimaryButton>
+                )
+            }
             title={ t("adminPortal:pages.users.title") }
             description={ t("adminPortal:pages.users.subTitle") }
         >
@@ -344,17 +356,6 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
-                rightActionPanel={
-                    (
-                        <PrimaryButton
-                            data-testid="user-mgt-user-list-add-user-button"
-                            onClick={ () => setShowWizard(true) }
-                        >
-                            <Icon name="add"/>
-                            { t("adminPortal:components.users.buttons.addNewUserBtn") }
-                        </PrimaryButton>
-                    )
-                }
                 leftActionPanel={
                     (
                         <>

@@ -216,6 +216,22 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
 
     return (
         <PageLayout
+            action={
+                (isLoading || !(!searchQuery && filteredUserStores?.length <= 0))
+                && hasRequiredScopes(featureConfig?.userStores, featureConfig?.userStores?.scopes?.create,
+                    allowedScopes)
+                && (
+                    <PrimaryButton
+                        onClick={ () => {
+                            history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));
+                        } }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add"/>
+                        { t("adminPortal:components.userstores.pageLayout.list.primaryAction") }
+                    </PrimaryButton>
+                )
+            }
             isLoading={ isLoading }
             title={ t("adminPortal:components.userstores.pageLayout.list.title") }
             description={ t("adminPortal:components.userstores.pageLayout.list.description") }
@@ -265,22 +281,6 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 onSortStrategyChange={ handleSortStrategyChange }
                 onSortOrderChange={ handleSortOrderChange }
                 resetPagination={ resetPagination }
-                rightActionPanel={
-                    hasRequiredScopes(
-                        featureConfig?.userStores,
-                        featureConfig?.userStores?.scopes?.create,
-                        allowedScopes) && (
-                        <PrimaryButton
-                            onClick={ () => {
-                                history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));
-                            } }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add" />
-                            { t("adminPortal:components.userstores.pageLayout.list.primaryAction")}
-                        </PrimaryButton>
-                    )
-                }
                 leftActionPanel={ null }
                 showPagination={ true }
                 sortOptions={ SORT_BY }

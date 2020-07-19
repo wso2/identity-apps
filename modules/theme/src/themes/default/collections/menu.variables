@@ -77,7 +77,7 @@
 @listPaginationBorder: none;
 @listPaginationFontSize: 0.8em;
 
-@listPaginationItemBorderColor: lighten(@borderColor, 40);
+@listPaginationItemBorderColor: @lightBorderColor;
 @listPaginationItemBorder: @defaultBorderWidth solid @listPaginationItemBorderColor;
 @listPaginationItemBorderRadius: @defaultBorderRadius;
 @listPaginationItemBackground: @lightPageBackground;

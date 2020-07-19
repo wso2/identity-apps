@@ -241,6 +241,20 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 )
             }
             <PageLayout
+                action={
+                    (isLoading || !(!searchQuery && filteredDialects?.length <= 0))
+                    && (
+                        <PrimaryButton
+                            onClick={ () => {
+                                setAddEditClaim(true);
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("adminPortal:components.claims.dialects.pageLayout.list.primaryAction") }
+                        </PrimaryButton>
+                    )
+                }
                 isLoading={ isLoading }
                 title={ t("adminPortal:components.claims.dialects.pageLayout.list.title") }
                 description={ t("adminPortal:components.claims.dialects.pageLayout.list.description") }
@@ -342,19 +356,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
                     resetPagination={ resetPagination }
-                    rightActionPanel={
-                        (
-                            <PrimaryButton
-                                onClick={ () => {
-                                    setAddEditClaim(true);
-                                } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add" />
-                                { t("adminPortal:components.claims.dialects.pageLayout.list.primaryAction") }
-                            </PrimaryButton>
-                        )
-                    }
                     showPagination={ true }
                     sortOptions={ SORT_BY }
                     sortStrategy={ sortBy }

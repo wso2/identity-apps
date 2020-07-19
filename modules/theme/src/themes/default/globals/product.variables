@@ -133,3 +133,14 @@
 
 // Same value as @listPaginationFontSize in menu.
 @paginationBarItemLimitDropdownFontSize: 0.8em;
+
+/*-----------------------------
+        List Layout
+------------------------------*/
+
+@listLayoutActionPanelBackgroundColor: @lightPageBackground;
+@listLayoutActionPanelMarginRight: 0;
+@listLayoutActionPanelMarginLeft: 0;
+@listLayoutActionPanelBorder: @defaultBorderWidth solid @lightBorderColor;
+@listLayoutActionPanelBorderRadius: @defaultBorderRadius;
+@listLayoutActionPanelPadding: 8px 0;

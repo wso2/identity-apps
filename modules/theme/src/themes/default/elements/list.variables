@@ -76,7 +76,7 @@
       Resource List
 --------------------------*/
 
-@resourceListItemBorderColor: lighten(@borderColor, 40);
+@resourceListItemBorderColor: @lightBorderColor;
 
 @resourceListFillVariationOuterBorder: @defaultBorderWidth solid @resourceListItemBorderColor;
 @resourceListFillVariationItemPadding: @veryRelaxedItemVerticalPadding 0.9em !important;
