@@ -347,7 +347,7 @@ const GroupsPage = (): ReactElement => {
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
-                leftActionPanel={
+                rightActionPanel={
                     <Dropdown
                         data-testid="group-mgt-groups-list-stores-dropdown"
                         selection

@@ -356,7 +356,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 data-testid="user-mgt-user-list-layout"
                 onPageChange={ handlePaginationChange }
-                leftActionPanel={
+                rightActionPanel={
                     (
                         <>
                             <Popup

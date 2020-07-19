@@ -357,7 +357,7 @@ const RolesPage = (): ReactElement => {
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleListSortingStrategyOnChange }
                     sortStrategy={ listSortingStrategy }
-                    leftActionPanel={
+                    rightActionPanel={
                         (
                             <Dropdown
                                 data-testid="role-mgt-roles-list-filters-dropdown"
