@@ -72,6 +72,18 @@
 
 @listPaginationMarginRight: 10px;
 
+@listPaginationBoxShadow: none;
+@listPaginationBackground: transparent;
+@listPaginationBorder: none;
+@listPaginationFontSize: 0.8em;
+
+@listPaginationItemBorderColor: lighten(@borderColor, 40);
+@listPaginationItemBorder: @defaultBorderWidth solid @listPaginationItemBorderColor;
+@listPaginationItemBorderRadius: @defaultBorderRadius;
+@listPaginationItemBackground: @lightPageBackground;
+@listPaginationItemColor: lighten(@textColor, 20);
+@listPaginationItemActiveColor: @textColor;
+
 /*-------------------
     User Dropdown
 --------------------*/

@@ -123,3 +123,13 @@
 ------------------------------*/
 
 @emptyPlaceholderActionMargin: 15px 0 0 0;
+
+/*-----------------------------
+        Pagination Bar
+------------------------------*/
+
+// Same color as @listPaginationItemBorderColor in menu.
+@paginationBarItemLimitLabelColor: lighten(@textColor, 20);
+
+// Same value as @listPaginationFontSize in menu.
+@paginationBarItemLimitDropdownFontSize: 0.8em;

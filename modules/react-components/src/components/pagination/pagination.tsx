@@ -165,11 +165,11 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         <div className={ classes } data-testid={ testId }>
             {
                 showItemsPerPageDropdown && (
-                    <label>
+                    <label className="page-limit-label">
                         { itemsPerPageDropdownLabel }
                         <Dropdown
                             data-testid={ `${ testId }-items-per-page-dropdown` }
-                            className="labeled horizontal right"
+                            className="labeled horizontal right page-limit-dropdown"
                             compact
                             defaultValue={ itemsPerPageDropdownLowerLimit }
                             options={ generatePageCountDropdownOptions() }

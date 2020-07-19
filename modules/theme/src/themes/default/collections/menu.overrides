@@ -373,19 +373,27 @@
     }
 }
 
-/*******************************************
-               Pagination
-*******************************************/
+/*-------------------
+      Pagination
+--------------------*/
 
 .ui.pagination.menu {
     &.list-pagination {
-         box-shadow: none;
-         border: none;
+        box-shadow: @listPaginationBoxShadow;
+        border: @listPaginationBorder;
+        background: @listPaginationBackground;
+        font-size: @listPaginationFontSize;
 
-         > .item {
-            border: @defaultBorderWidth solid @defaultBorderColor;
-            border-radius: @defaultBorderRadius;
+        > .item {
+            border: @listPaginationItemBorder;
+            border-radius: @listPaginationItemBorderRadius;
+            background: @listPaginationItemBackground;
+            color: @listPaginationItemColor;
 
+            &.active {
+                color: @listPaginationItemActiveColor;
+                border-color: @primaryColor;
+            }
             &:not(:last-child) {
                 margin-right: @listPaginationMarginRight;
             }
@@ -395,6 +403,6 @@
             &:focus {
                 outline: none;
             }
-         }
+        }
     }
 }
