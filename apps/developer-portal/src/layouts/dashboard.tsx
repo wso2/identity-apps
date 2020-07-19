@@ -35,7 +35,8 @@ import {
     ThemeContext,
     TopLoadingBar
 } from "@wso2is/react-components";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import isEmpty from "lodash/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -109,7 +110,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig, allowedScopes));
 
-        if (_.isEmpty(profileInfo)) {
+        if (isEmpty(profileInfo)) {
             dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
         }
     }, [ featureConfig ]);
@@ -347,7 +348,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     icons={ SidePanelIcons }
-                    routes={ RouteUtils.sanitizeForUI(filteredRoutes) }
+                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }

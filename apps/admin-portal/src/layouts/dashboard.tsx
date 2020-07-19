@@ -30,7 +30,8 @@ import {
     ThemeContext,
     TopLoadingBar
 } from "@wso2is/react-components";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import isEmpty from "lodash/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -391,7 +392,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
                     icons={ SidePanelIcons }
-                    routes={ RouteUtils.sanitizeForUI(filteredRoutes) }
+                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
