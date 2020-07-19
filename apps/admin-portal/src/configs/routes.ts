@@ -284,6 +284,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             }
         ],
         component: lazy(() => import("../pages/email-templates/email-template-types")),
+        exact: true,
         icon: {
             icon: SidePanelIcons.emailTemplates
         },
