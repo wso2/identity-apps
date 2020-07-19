@@ -27,6 +27,10 @@ import { GenericIcon } from "../icon";
  */
 export interface PageHeaderPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     /**
+     * Action component.
+     */
+    action?: ReactNode;
+    /**
      * Go back button.
      */
     backButton?: BackButtonInterface;
@@ -90,6 +94,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
+        action,
         backButton,
         bottomMargin,
         className,
@@ -114,7 +119,16 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const innerClasses = classNames(
         "page-header-inner",
         {
+            [ "display-inline-block" ]: action,
             [ "with-image" ]: image
+        }
+    );
+
+    const backButtonClasses = classNames(
+        "back-button",
+        {
+            [ "display-flex" ]: action,
+            "fluid": isLoading
         }
     );
 
@@ -126,7 +140,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                         backButton && backButton.text && (
                             isLoading
                                 ? (
-                                    <div className="back-button fluid">
+                                    <div className={ backButtonClasses }>
                                         <Placeholder>
                                             <Placeholder.Line length="short"/>
                                         </Placeholder>
@@ -135,7 +149,7 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                 : (
                                     <div
                                         data-testid={ backButton[ "data-testid" ] }
-                                        className="back-button"
+                                        className={ backButtonClasses }
                                         onClick={ backButton.onClick }
                                     >
                                         <Icon name="arrow left"/>
@@ -201,8 +215,10 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                     </Header>
                                 )
                         }
-
                     </div>
+                    {
+                        action && <div className="floated right action">{ action }</div>
+                    }
                     {
                         bottomMargin && <Divider hidden/>
                     }
