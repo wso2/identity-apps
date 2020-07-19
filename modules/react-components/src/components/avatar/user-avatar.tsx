@@ -24,6 +24,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Icon, Popup } from "semantic-ui-react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
 import GravatarLogo from "../../assets/images/gravatar-logo.png";
+import DummyUser from "../../assets/images/user.png";
 
 /**
  * Prop types for the user avatar component.
@@ -206,6 +207,7 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
 UserAvatar.defaultProps = {
     authState: null,
     "data-testid": "user-avatar",
+    defaultIcon: DummyUser,
     gravatarInfoPopoverText: null,
     isEditable: false,
     name: null,
