@@ -107,7 +107,7 @@
 @productLogoWidth: 60px;
 @productLogoMargin: 0 5px 0 0;
 
-@productTitleTextTransform: uppercase;
+@productTitleTextTransform: none;
 @productTitleFontWeight: 400;
 @productTitleFontSize: 1.2rem;
 @productTitleAppNameMargin: 0 0 0 5px;
