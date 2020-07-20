@@ -504,3 +504,15 @@
         }
     }
 }
+
+/*-----------------------------
+      Emphasized Segment
+------------------------------*/
+
+.ui.segment {
+    &.emphasized {
+        background: @emphasizedSegmentBackgroundColor;
+        border: @emphasizedSegmentBorder;
+        border-radius: @emphasizedSegmentBorderRadius;
+    }
+}
