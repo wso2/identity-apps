@@ -245,6 +245,9 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         isLoading={ isGroupsListRequestLoading }
                         onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.PATHS.get("GROUPS")) }
                         showListItemActions={ false }
+                        actionsColumnWidth={ 1 }
+                        descriptionColumnWidth={ 14 }
+                        metaColumnWidth={ 1 }
                         showMetaContent={ false }
                         roleList={ groupList }
                     />
@@ -270,8 +273,8 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.PATHS.get("USERS")) }
                         showListItemActions={ false }
                         actionsColumnWidth={ 1 }
-                        descriptionColumnWidth={ 7 }
-                        metaColumnWidth={ 7 }
+                        descriptionColumnWidth={ 14 }
+                        metaColumnWidth={ 1 }
                         showMetaContent={ false }
                         data-testid={ `${ testId }-list` }
                     />

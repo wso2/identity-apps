@@ -28,12 +28,16 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Image, Label, ListItemProps } from "semantic-ui-react";
+import { Icon, Image, Label, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { APPLICATION_DOMAIN, GROUP_VIEW_PATH, INTERNAL_DOMAIN, ROLE_VIEW_PATH, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     * Width of the action panel column.
+     */
+    actionsColumnWidth?: SemanticWIDTHS;
     /**
      * Default list item limit.
      */
@@ -79,6 +83,14 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
      * Show/Hide meta content.
      */
     showMetaContent?: boolean;
+    /**
+     * Width of the description area.
+     */
+    descriptionColumnWidth?: SemanticWIDTHS;
+    /**
+     * Width of the meta info area.
+     */
+    metaColumnWidth?: SemanticWIDTHS;
 }
 
 /**
@@ -89,6 +101,8 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
     
     const {
+        actionsColumnWidth,
+        descriptionColumnWidth,
         defaultListItemLimit,
         handleRoleDelete,
         isGroup,
@@ -97,6 +111,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         onListItemClick,
         onSearchQueryClear,
         roleList,
+        metaColumnWidth,
         selection,
         searchQuery,
         showListItemActions,
@@ -314,6 +329,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                         ? CommonUtils.humanizeDateDifference(role.meta.created)
                                         : null
                                 }
+                                metaColumnWidth={ metaColumnWidth }
+                                descriptionColumnWidth={ descriptionColumnWidth }
+                                actionsColumnWidth={ actionsColumnWidth }
                                 onClick={
                                     (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
                                         if (!selection) {
@@ -380,7 +398,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
  * Default props for the component.
  */
 RoleList.defaultProps = {
+    actionsColumnWidth: 3,
     defaultListItemLimit: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+    descriptionColumnWidth: 3,
+    metaColumnWidth: 10,
     selection: false,
     showListItemActions: true,
     showMetaContent: true
