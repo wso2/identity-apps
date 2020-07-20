@@ -29,6 +29,7 @@ import {
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Divider } from "semantic-ui-react";
 import { deleteApplication, updateApplicationDetails } from "../../../api";
 import {
     ApplicationInterface,
@@ -276,6 +277,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             data-testid={ `${ testId }-form` }
                         />
                     </EmphasizedSegment>
+                    <Divider hidden />
                     { resolveDangerActions() }
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }

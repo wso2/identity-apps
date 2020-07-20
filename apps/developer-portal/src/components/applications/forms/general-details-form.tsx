@@ -365,8 +365,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Divider/>
-                        <Heading as="h5">
+                        <Heading as="h4">
                             { t("devPortal:components.applications.forms.advancedConfig.sections.certificate" +
                                 ".heading") }
                         </Heading>
