@@ -178,7 +178,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
-        "productName": "IDENTITY SERVER",
+        "productName": "Identity Server",
         "theme": {
             "name": "default"
         }

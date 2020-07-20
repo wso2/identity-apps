@@ -76,7 +76,7 @@
                 }
             }
         },
-        "productName": "IDENTITY SERVER",
+        "productName": "Identity Server",
         "theme": {
             "name": "default"
         }
