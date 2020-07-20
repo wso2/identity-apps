@@ -111,6 +111,9 @@ export const StatsQuickLinksWidget: FunctionComponent<StatsQuickLinksWidgetProps
                                         <SelectionCard
                                             key={ index }
                                             image={ image }
+                                            imageOptions={ {
+                                              fill: "default"  
+                                            } }
                                             size="auto"
                                             header={ header }
                                             imageSize="mini"
