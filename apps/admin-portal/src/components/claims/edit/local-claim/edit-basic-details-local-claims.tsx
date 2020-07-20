@@ -19,7 +19,13 @@
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { ConfirmationModal, CopyInputField, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    CopyInputField,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -172,243 +178,247 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     return (
         <>
             { confirmDelete && deleteConfirmation() }
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                        <Form>
-                            <Form.Field
-                                data-testid={ `${ testId }-form-attribute-uri-readonly-input` }
-                            >
-                                <label>{ t("adminPortal:components.claims.local.attributes.attributeURI") }</label>
-                                <CopyInputField value={ claim ? claim.claimURI : "" } />
-                            </Form.Field>
-                        </Form>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-            <Forms
-                onSubmit={ (values) => {
-                    const data: Claim = {
-                        attributeMapping: claim.attributeMapping,
-                        claimURI: claim.claimURI,
-                        description: values.get("description").toString(),
-                        displayName: values.get("name").toString(),
-                        displayOrder: values.get("displayOrder") ?
-                            parseInt(values.get("displayOrder").toString()) : claim.displayOrder,
-                        properties: claim.properties,
-                        readOnly: values.get("readOnly").length > 0,
-                        regEx: values.get("regularExpression").toString(),
-                        required: values.get("required").length > 0,
-                        supportedByDefault: values.get("supportedByDefault").length > 0
-
-                    };
-                    updateAClaim(claim.id, data).then(() => {
-                        dispatch(addAlert(
-                            {
-                                description: t("adminPortal:components.claims.local.notifications." +
-                                    "updateClaim.success.description"),
-                                level: AlertLevels.SUCCESS,
-                                message: t("adminPortal:components.claims.local.notifications." +
-                                    "updateClaim.success.message")
-                            }
-                        ));
-                        update();
-                    }).catch(error => {
-                        dispatch(addAlert(
-                            {
-                                description: error?.description
-                                    || t("adminPortal:components.claims.local.notifications.updateClaim." +
-                                        "genericError.description"),
-                                level: AlertLevels.ERROR,
-                                message: error?.message
-                                    || t("adminPortal:components.claims.local.notifications." +
-                                        "updateClaim.genericError.description")
-                            }
-                        ));
-                    })
-                } }
-            >
+            <EmphasizedSegment>
                 <Grid>
                     <Grid.Row columns={ 1 }>
                         <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                            <Field
-                                onMouseOver={ () => {
-                                    delayPopup(setIsShowNameHint, nameTimer);
-                                } }
-                                onMouseOut={ () => {
-                                    closePopup(setIsShowNameHint, nameTimer);
-                                } }
-                                type="text"
-                                name="name"
-                                label={ t("adminPortal:components.claims.local.forms.name.label") }
-                                required={ true }
-                                requiredErrorMessage={ t("adminPortal:components.claims.local.forms." +
-                                    "name.requiredErrorMessage") }
-                                placeholder={ t("adminPortal:components.claims.local.forms.name.placeholder") }
-                                value={ claim?.displayName }
-                                ref={ nameField }
-                                data-testid={ `${ testId }-form-name-input` }
-                            />
-                            <Popup
-                                content={ t("adminPortal:components.claims.local.forms.nameHint") }
-                                inverted
-                                open={ isShowNameHint }
-                                trigger={ <span></span> }
-                                onClose={ () => {
-                                    closePopup(setIsShowNameHint, nameTimer);
-                                } }
-                                position="bottom left"
-                                context={ nameField }
-                            />
-                            <Divider hidden />
-                            <Field
-                                type="textarea"
-                                name="description"
-                                label={ t("adminPortal:components.claims.local.forms.description.label") }
-                                required={ true }
-                                requiredErrorMessage={ t("adminPortal:components.claims.local.forms.description." +
-                                    "requiredErrorMessage") }
-                                placeholder={ t("adminPortal:components.claims.local.forms.description.placeholder") }
-                                value={ claim?.description }
-                                data-testid={ `${ testId }-form-description-input` }
-                            />
-                            <Divider hidden />
-                            <Field
-                                type="text"
-                                name="regularExpression"
-                                label={ t("adminPortal:components.claims.local.forms.regEx.label") }
-                                required={ false }
-                                requiredErrorMessage=""
-                                placeholder={ t("adminPortal:components.claims.local.forms.regEx.placeholder") }
-                                value={ claim?.regEx }
-                                onMouseOver={ () => {
-                                    delayPopup(setIsShowRegExHint, regExTimer);
-                                } }
-                                onMouseOut={ () => {
-                                    closePopup(setIsShowRegExHint, regExTimer);
-                                } }
-                                ref={ regExField }
-                                data-testid={ `${ testId }-form-regex-input` }
-                            />
-                            <Popup
-                                content={ t("adminPortal:components.claims.local.forms.description.regExHint") }
-                                inverted
-                                open={ isShowRegExHint }
-                                trigger={ <span></span> }
-                                onClose={ () => {
-                                    closePopup(setIsShowRegExHint, regExTimer);
-                                } }
-                                position="bottom left"
-                                context={ regExField }
-                            />
-                            <Divider hidden />
-                            <Field
-                                type="checkbox"
-                                name="supportedByDefault"
-                                required={ false }
-                                requiredErrorMessage=""
-                                children={ [ {
-                                    label: t("adminPortal:components.claims.local.forms.supportedByDefault.label"),
-                                    value: "Support"
-                                } ] }
-                                value={ claim?.supportedByDefault ? [ "Support" ] : [] }
-                                listen={ (values: Map<string, FormValue>) => {
-                                    setIsShowDisplayOrder(values?.get("supportedByDefault")?.length > 0);
-                                } }
-                                data-testid={ `${ testId }-form-supported-by-default-input` }
-                            />
-                            {
-                                isShowDisplayOrder
-                                && (
-                                    <>
-                                        <Field
-                                            type="number"
-                                            min="0"
-                                            name="displayOrder"
-                                            label={ t("adminPortal:components.claims.local.forms.displayOrder.label") }
-                                            required={ false }
-                                            requiredErrorMessage=""
-                                            placeholder={ t("adminPortal:components.claims.local.forms." +
-                                                "displayOrder.placeholder") }
-                                            value={ claim?.displayOrder.toString() }
-                                            onMouseOver={ () => {
-                                                delayPopup(setIsShowDisplayOrderHint, displayTimer);
-                                            } }
-                                            onMouseOut={ () => {
-                                                closePopup(setIsShowDisplayOrderHint, displayTimer);
-                                            } }
-                                            ref={ displayOrderField }
-                                            data-testid={ `${ testId }-form-display-order-input` }
-                                        />
-                                        <Popup
-                                            content={ t("adminPortal:components.claims.local.forms.displayOrderHint") }
-                                            inverted
-                                            open={ isShowDisplayOrderHint }
-                                            trigger={ <span></span> }
-                                            onClose={ () => {
-                                                closePopup(setIsShowDisplayOrderHint, displayTimer);
-                                            } }
-                                            position="bottom left"
-                                            context={ displayOrderField }
-                                        />
-                                    </>
-                                )
-                            }
-                            <Divider hidden />
-                            <Field
-                                type="checkbox"
-                                name="required"
-                                required={ false }
-                                requiredErrorMessage=""
-                                children={ [ {
-                                    label: t("adminPortal:components.claims.local.forms.required.label"),
-                                    value: "Required"
-                                } ] }
-                                value={ claim?.required ? [ "Required" ] : [] }
-                                data-testid={ `${ testId }-form-required-checkbox` }
-                            />
-                            <Divider hidden />
-                            <Field
-                                type="checkbox"
-                                name="readOnly"
-                                required={ false }
-                                requiredErrorMessage=""
-                                children={ [ {
-                                    label: t("adminPortal:components.claims.local.forms.readOnly.label"),
-                                    value: "ReadOnly"
-                                } ] }
-                                value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
-                                data-testid={ `${ testId }-form-readonly-checkbox` }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column width={ 6 }>
-                            <Field
-                                type="submit"
-                                value={ t("common:update") }
-                                data-testid={ `${ testId }-form-submit-button` }
-                            />
+                            <Form>
+                                <Form.Field
+                                    data-testid={ `${ testId }-form-attribute-uri-readonly-input` }
+                                >
+                                    <label>{ t("adminPortal:components.claims.local.attributes.attributeURI") }</label>
+                                    <CopyInputField value={ claim ? claim.claimURI : "" } />
+                                </Form.Field>
+                            </Form>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
-            </Forms>
-            <Grid columns={ 1 }>
-                <Grid.Column width={ 16 }>
-                    <DangerZoneGroup
-                        sectionHeader={ t("common:dangerZone") }
-                        data-testid={ `${ testId }-danger-zone-group` }
-                    >
-                        <DangerZone
-                            actionTitle={ t("adminPortal:components.claims.local.dangerZone.actionTitle") }
-                            header={ t("adminPortal:components.claims.local.dangerZone.header") }
-                            subheader={ t("adminPortal:components.claims.local.dangerZone.subheader") }
-                            onActionClick={ () => setConfirmDelete(true) }
-                            data-testid={ `${ testId }-local-claim-delete-danger-zone` }
-                        />
-                    </DangerZoneGroup>
-                </Grid.Column>
-            </Grid>
+                <Forms
+                    onSubmit={ (values) => {
+                        const data: Claim = {
+                            attributeMapping: claim.attributeMapping,
+                            claimURI: claim.claimURI,
+                            description: values.get("description").toString(),
+                            displayName: values.get("name").toString(),
+                            displayOrder: values.get("displayOrder") ?
+                                parseInt(values.get("displayOrder").toString()) : claim.displayOrder,
+                            properties: claim.properties,
+                            readOnly: values.get("readOnly").length > 0,
+                            regEx: values.get("regularExpression").toString(),
+                            required: values.get("required").length > 0,
+                            supportedByDefault: values.get("supportedByDefault").length > 0
+    
+                        };
+                        updateAClaim(claim.id, data).then(() => {
+                            dispatch(addAlert(
+                                {
+                                    description: t("adminPortal:components.claims.local.notifications." +
+                                        "updateClaim.success.description"),
+                                    level: AlertLevels.SUCCESS,
+                                    message: t("adminPortal:components.claims.local.notifications." +
+                                        "updateClaim.success.message")
+                                }
+                            ));
+                            update();
+                        }).catch(error => {
+                            dispatch(addAlert(
+                                {
+                                    description: error?.description
+                                        || t("adminPortal:components.claims.local.notifications.updateClaim." +
+                                            "genericError.description"),
+                                    level: AlertLevels.ERROR,
+                                    message: error?.message
+                                        || t("adminPortal:components.claims.local.notifications." +
+                                            "updateClaim.genericError.description")
+                                }
+                            ));
+                        })
+                    } }
+                >
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
+                                <Field
+                                    onMouseOver={ () => {
+                                        delayPopup(setIsShowNameHint, nameTimer);
+                                    } }
+                                    onMouseOut={ () => {
+                                        closePopup(setIsShowNameHint, nameTimer);
+                                    } }
+                                    type="text"
+                                    name="name"
+                                    label={ t("adminPortal:components.claims.local.forms.name.label") }
+                                    required={ true }
+                                    requiredErrorMessage={ t("adminPortal:components.claims.local.forms." +
+                                        "name.requiredErrorMessage") }
+                                    placeholder={ t("adminPortal:components.claims.local.forms.name.placeholder") }
+                                    value={ claim?.displayName }
+                                    ref={ nameField }
+                                    data-testid={ `${ testId }-form-name-input` }
+                                />
+                                <Popup
+                                    content={ t("adminPortal:components.claims.local.forms.nameHint") }
+                                    inverted
+                                    open={ isShowNameHint }
+                                    trigger={ <span></span> }
+                                    onClose={ () => {
+                                        closePopup(setIsShowNameHint, nameTimer);
+                                    } }
+                                    position="bottom left"
+                                    context={ nameField }
+                                />
+                                <Divider hidden />
+                                <Field
+                                    type="textarea"
+                                    name="description"
+                                    label={ t("adminPortal:components.claims.local.forms.description.label") }
+                                    required={ true }
+                                    requiredErrorMessage={ t("adminPortal:components.claims.local.forms.description." +
+                                        "requiredErrorMessage") }
+                                    placeholder={
+                                        t("adminPortal:components.claims.local.forms.description.placeholder")
+                                    }
+                                    value={ claim?.description }
+                                    data-testid={ `${ testId }-form-description-input` }
+                                />
+                                <Divider hidden />
+                                <Field
+                                    type="text"
+                                    name="regularExpression"
+                                    label={ t("adminPortal:components.claims.local.forms.regEx.label") }
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    placeholder={ t("adminPortal:components.claims.local.forms.regEx.placeholder") }
+                                    value={ claim?.regEx }
+                                    onMouseOver={ () => {
+                                        delayPopup(setIsShowRegExHint, regExTimer);
+                                    } }
+                                    onMouseOut={ () => {
+                                        closePopup(setIsShowRegExHint, regExTimer);
+                                    } }
+                                    ref={ regExField }
+                                    data-testid={ `${ testId }-form-regex-input` }
+                                />
+                                <Popup
+                                    content={ t("adminPortal:components.claims.local.forms.description.regExHint") }
+                                    inverted
+                                    open={ isShowRegExHint }
+                                    trigger={ <span></span> }
+                                    onClose={ () => {
+                                        closePopup(setIsShowRegExHint, regExTimer);
+                                    } }
+                                    position="bottom left"
+                                    context={ regExField }
+                                />
+                                <Divider hidden />
+                                <Field
+                                    type="checkbox"
+                                    name="supportedByDefault"
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    children={ [ {
+                                        label: t("adminPortal:components.claims.local.forms.supportedByDefault.label"),
+                                        value: "Support"
+                                    } ] }
+                                    value={ claim?.supportedByDefault ? [ "Support" ] : [] }
+                                    listen={ (values: Map<string, FormValue>) => {
+                                        setIsShowDisplayOrder(values?.get("supportedByDefault")?.length > 0);
+                                    } }
+                                    data-testid={ `${ testId }-form-supported-by-default-input` }
+                                />
+                                {
+                                    isShowDisplayOrder
+                                    && (
+                                        <>
+                                            <Field
+                                                type="number"
+                                                min="0"
+                                                name="displayOrder"
+                                                label={ t("adminPortal:components.claims.local.forms.displayOrder" +
+                                                    ".label") }
+                                                required={ false }
+                                                requiredErrorMessage=""
+                                                placeholder={ t("adminPortal:components.claims.local.forms." +
+                                                    "displayOrder.placeholder") }
+                                                value={ claim?.displayOrder.toString() }
+                                                onMouseOver={ () => {
+                                                    delayPopup(setIsShowDisplayOrderHint, displayTimer);
+                                                } }
+                                                onMouseOut={ () => {
+                                                    closePopup(setIsShowDisplayOrderHint, displayTimer);
+                                                } }
+                                                ref={ displayOrderField }
+                                                data-testid={ `${ testId }-form-display-order-input` }
+                                            />
+                                            <Popup
+                                                content={
+                                                    t("adminPortal:components.claims.local.forms.displayOrderHint")
+                                                }
+                                                inverted
+                                                open={ isShowDisplayOrderHint }
+                                                trigger={ <span></span> }
+                                                onClose={ () => {
+                                                    closePopup(setIsShowDisplayOrderHint, displayTimer);
+                                                } }
+                                                position="bottom left"
+                                                context={ displayOrderField }
+                                            />
+                                        </>
+                                    )
+                                }
+                                <Divider hidden />
+                                <Field
+                                    type="checkbox"
+                                    name="required"
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    children={ [ {
+                                        label: t("adminPortal:components.claims.local.forms.required.label"),
+                                        value: "Required"
+                                    } ] }
+                                    value={ claim?.required ? [ "Required" ] : [] }
+                                    data-testid={ `${ testId }-form-required-checkbox` }
+                                />
+                                <Divider hidden />
+                                <Field
+                                    type="checkbox"
+                                    name="readOnly"
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    children={ [ {
+                                        label: t("adminPortal:components.claims.local.forms.readOnly.label"),
+                                        value: "ReadOnly"
+                                    } ] }
+                                    value={ claim?.readOnly ? [ "ReadOnly" ] : [] }
+                                    data-testid={ `${ testId }-form-readonly-checkbox` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column width={ 6 }>
+                                <Field
+                                    type="submit"
+                                    value={ t("common:update") }
+                                    data-testid={ `${ testId }-form-submit-button` }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Forms>
+            </EmphasizedSegment>
+            <Divider hidden />
+            <DangerZoneGroup
+                sectionHeader={ t("common:dangerZone") }
+                data-testid={ `${ testId }-danger-zone-group` }
+            >
+                <DangerZone
+                    actionTitle={ t("adminPortal:components.claims.local.dangerZone.actionTitle") }
+                    header={ t("adminPortal:components.claims.local.dangerZone.header") }
+                    subheader={ t("adminPortal:components.claims.local.dangerZone.subheader") }
+                    onActionClick={ () => setConfirmDelete(true) }
+                    data-testid={ `${ testId }-local-claim-delete-danger-zone` }
+                />
+            </DangerZoneGroup>
         </>
     )
 };

@@ -19,7 +19,13 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -251,23 +257,25 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         !isLoading
             ? (
                 <>
-                    <GeneralDetailsForm
-                        certificate={ certificate }
-                        name={ name }
-                        appId={ appId }
-                        description={ description }
-                        discoverability={ discoverability }
-                        onSubmit={ handleFormSubmit }
-                        imageUrl={ imageUrl }
-                        accessUrl={ accessUrl }
-                        readOnly={
-                            !hasRequiredScopes(
-                                featureConfig?.applications, featureConfig?.applications?.scopes?.update,
-                                allowedScopes
-                            )
-                        }
-                        data-testid={ `${ testId }-form` }
-                    />
+                    <EmphasizedSegment>
+                        <GeneralDetailsForm
+                            certificate={ certificate }
+                            name={ name }
+                            appId={ appId }
+                            description={ description }
+                            discoverability={ discoverability }
+                            onSubmit={ handleFormSubmit }
+                            imageUrl={ imageUrl }
+                            accessUrl={ accessUrl }
+                            readOnly={
+                                !hasRequiredScopes(
+                                    featureConfig?.applications, featureConfig?.applications?.scopes?.update,
+                                    allowedScopes
+                                )
+                            }
+                            data-testid={ `${ testId }-form` }
+                        />
+                    </EmphasizedSegment>
                     { resolveDangerActions() }
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }

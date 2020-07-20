@@ -26,6 +26,7 @@ import { updateApplicationConfigurations } from "../../../api";
 import { AdvancedConfigurationsInterface, FeatureConfigInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { AdvancedConfigurationsForm } from "../forms";
+import { EmphasizedSegment } from "@wso2is/react-components";
 
 /**
  * Proptypes for the advance settings component.
@@ -110,7 +111,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
     };
 
     return (
-        <div className="advanced-configuration-section">
+        <EmphasizedSegment className="advanced-configuration-section">
             <AdvancedConfigurationsForm
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }
@@ -120,7 +121,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                 }
                 data-testid={ `${ testId }-form` }
             />
-        </div>
+        </EmphasizedSegment>
     );
 };
 

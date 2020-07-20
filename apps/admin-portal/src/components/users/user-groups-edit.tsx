@@ -19,6 +19,7 @@
 import { getRolesList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, RolesMemberInterface } from "@wso2is/core/models";
 import {
+    EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
     LinkButton,
@@ -39,7 +40,6 @@ import {
     Label,
     Modal,
     Popup,
-    Segment,
     Table
 } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
@@ -734,8 +734,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     <Grid.Column computer={ 8 }>
                         {
                             primaryGroupsList?.size > 0 ? (
-                            <Segment.Group fluid>
-                                <Segment
+                                <EmphasizedSegment
                                     data-testid="user-mgt-groups-list"
                                     className="user-role-edit-header-segment"
                                 >
@@ -818,10 +817,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             </Table.Body>
                                         </Table>
                                     </Grid.Row>
-                                </Segment>
-                            </Segment.Group>
+                                </EmphasizedSegment>
                             ) : (
-                                <Segment>
+                                <EmphasizedSegment>
                                     <EmptyPlaceholder
                                         data-testid="user-mgt-empty-groups-list"
                                         title={ t("adminPortal:components.user.updateUser.groups.editGroups." +
@@ -846,7 +844,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         imageSize="tiny"
                                     />
-                                </Segment>
+                                </EmphasizedSegment>
                             )
                         }
                     </Grid.Column>

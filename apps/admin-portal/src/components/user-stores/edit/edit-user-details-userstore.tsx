@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -191,83 +191,30 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
     };
 
     return (
-        <Forms
-            onSubmit={ onSubmitHandler }
-        >
-            <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 8 }>
-                        {
-                            properties?.required?.map((property: TypeProperty, index: number) => {
-                                const name = property.description.split("#")[ 0 ];
-                                const isPassword = property.attributes
-                                    .find(attribute => attribute.name === "type").value === "password";
-                                const toggle = property.attributes
-                                    .find(attribute => attribute.name === "type")?.value === "boolean";
-
-                                return (
-                                    isPassword
-                                        ? (
-                                            <Field
-                                                name={ property.name }
-                                                type="password"
-                                                key={ index }
-                                                required={ true }
-                                                label={ name }
-                                                requiredErrorMessage={
-                                                    t("adminPortal:components.userstores.forms." +
-                                                        "custom.requiredErrorMessage",
-                                                        {
-                                                            name: property.description.split("#")[ 0 ]
-                                                        })
-                                                }
-                                                showPassword={ t("common:showPassword") }
-                                                hidePassword={ t("common:hidePassword") }
-                                                placeholder={
-                                                    t("adminPortal:components.userstores.forms." +
-                                                        "custom.placeholder",
-                                                        {
-                                                            name: property.description.split("#")[ 0 ]
-                                                        })
-                                                }
-                                                data-testid={ `${ testId }-form-password-input-${ property.name }` }
-                                            />
-                                        )
-                                        : toggle
+        <EmphasizedSegment>
+            <Forms
+                onSubmit={ onSubmitHandler }
+            >
+                <Grid>
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column width={ 8 }>
+                            {
+                                properties?.required?.map((property: TypeProperty, index: number) => {
+                                    const name = property.description.split("#")[ 0 ];
+                                    const isPassword = property.attributes
+                                        .find(attribute => attribute.name === "type").value === "password";
+                                    const toggle = property.attributes
+                                        .find(attribute => attribute.name === "type")?.value === "boolean";
+    
+                                    return (
+                                        isPassword
                                             ? (
                                                 <Field
                                                     name={ property.name }
-                                                    value={ property.value ?? property.defaultValue }
-                                                    type="toggle"
-                                                    key={ index }
-                                                    required={ false }
-                                                    label={ property.description.split("#")[ 0 ] }
-                                                    requiredErrorMessage={
-                                                        t("adminPortal:components.userstores.forms." +
-                                                            "custom.requiredErrorMessage",
-                                                            {
-                                                                name: property.description.split("#")[ 0 ]
-                                                            })
-                                                    }
-                                                    toggle
-                                                    placeholder={
-                                                        t("adminPortal:components.userstores.forms." +
-                                                            "custom.placeholder",
-                                                            {
-                                                                name: property.description.split("#")[ 0 ]
-                                                            })
-                                                    }
-                                                    data-testid={ `${ testId }-form-toggle-${ property.name }` }
-                                                />
-                                            ) :
-                                            (
-                                                <Field
-                                                    name={ property.name }
-                                                    value={ property.value ?? property.defaultValue }
-                                                    type="text"
+                                                    type="password"
                                                     key={ index }
                                                     required={ true }
-                                                    label={ property.description.split("#")[ 0 ] }
+                                                    label={ name }
                                                     requiredErrorMessage={
                                                         t("adminPortal:components.userstores.forms." +
                                                             "custom.requiredErrorMessage",
@@ -275,6 +222,8 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                     }
+                                                    showPassword={ t("common:showPassword") }
+                                                    hidePassword={ t("common:hidePassword") }
                                                     placeholder={
                                                         t("adminPortal:components.userstores.forms." +
                                                             "custom.placeholder",
@@ -282,58 +231,18 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                 name: property.description.split("#")[ 0 ]
                                                             })
                                                     }
-                                                    data-testid={ `${ testId }-form-text-input-${ property.name }` }
+                                                    data-testid={ `${ testId }-form-password-input-${ property.name }` }
                                                 />
                                             )
-                                );
-                            })
-                        }
-
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
-
-            { (properties?.optional.sql.delete.length > 0
-                || properties?.optional.sql.insert.length > 0
-                || properties?.optional.sql.select.length > 0
-                || properties?.optional.sql.update.length > 0)
-                && (
-                    <Grid columns={ 1 }>
-                        <Grid.Column width={ 8 } textAlign="center">
-                            <LinkButton
-                                type="button"
-                                onClick={ () => { setShowMore(!showMore) } }
-                                data-testid={ `${ testId }-show-more-button` }
-                            >
-                                <Icon name={ showMore ? "chevron up" : "chevron down" } />
-                                { showMore ? t("common:showLess") : t("common:showMore") }
-                            </LinkButton>
-                        </Grid.Column>
-                    </Grid>
-                ) }
-
-            { showMore && properties?.optional.nonSql.length > 0 &&
-                (
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 8 }>
-                                {
-                                    properties?.optional?.nonSql.map((property: TypeProperty, index: number) => {
-                                        const name = property.description.split("#")[ 0 ];
-                                        const isPassword = property.attributes
-                                            .find(attribute => attribute.name === "type").value === "password";
-                                        const toggle = property.attributes
-                                            .find(attribute => attribute.name === "type")?.value === "boolean";
-
-                                        return (
-                                            isPassword
+                                            : toggle
                                                 ? (
                                                     <Field
                                                         name={ property.name }
-                                                        type="password"
+                                                        value={ property.value ?? property.defaultValue }
+                                                        type="toggle"
                                                         key={ index }
                                                         required={ false }
-                                                        label={ name }
+                                                        label={ property.description.split("#")[ 0 ] }
                                                         requiredErrorMessage={
                                                             t("adminPortal:components.userstores.forms." +
                                                                 "custom.requiredErrorMessage",
@@ -341,8 +250,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
-                                                        showPassword={ t("common:showPassword") }
-                                                        hidePassword={ t("common:hidePassword") }
+                                                        toggle
                                                         placeholder={
                                                             t("adminPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
@@ -350,102 +258,196 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
-                                                        data-testid={ `${ testId }-form-non-sql-password-input-${
-                                                            property.name }` }
+                                                        data-testid={ `${ testId }-form-toggle-${ property.name }` }
+                                                    />
+                                                ) :
+                                                (
+                                                    <Field
+                                                        name={ property.name }
+                                                        value={ property.value ?? property.defaultValue }
+                                                        type="text"
+                                                        key={ index }
+                                                        required={ true }
+                                                        label={ property.description.split("#")[ 0 ] }
+                                                        requiredErrorMessage={
+                                                            t("adminPortal:components.userstores.forms." +
+                                                                "custom.requiredErrorMessage",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        placeholder={
+                                                            t("adminPortal:components.userstores.forms." +
+                                                                "custom.placeholder",
+                                                                {
+                                                                    name: property.description.split("#")[ 0 ]
+                                                                })
+                                                        }
+                                                        data-testid={ `${ testId }-form-text-input-${ property.name }` }
                                                     />
                                                 )
-                                                : toggle
-                                                    ? (
-                                                        <Field
-                                                            name={ property.name }
-                                                            value={ property.value ?? property.defaultValue }
-                                                            type="toggle"
-                                                            key={ index }
-                                                            required={ false }
-                                                            label={ property.description.split("#")[ 0 ] }
-                                                            requiredErrorMessage={
-                                                                t("adminPortal:components.userstores.forms.edit." +
-                                                                    "connection.custom.requiredErrorMessage",
-                                                                    {
-                                                                        name: property.description.split("#")[ 0 ]
-                                                                    })
-                                                            }
-                                                            toggle
-                                                            placeholder={
-                                                                t("adminPortal:components.userstores.forms." +
-                                                                    "custom.placeholder",
-                                                                    {
-                                                                        name: property.description.split("#")[ 0 ]
-                                                                    })
-                                                            }
-                                                            data-testid={ `${ testId }-form-non-sql-toggle-${
-                                                                property.name }` }
-                                                        />
-                                                    )
-                                                    : (
-                                                        <Field
-                                                            name={ property.name }
-                                                            value={ property.value ?? property.defaultValue }
-                                                            type="text"
-                                                            key={ index }
-                                                            required={ false }
-                                                            label={ property.description.split("#")[ 0 ] }
-                                                            requiredErrorMessage={
-                                                                t("adminPortal:components.userstores.forms.edit." +
-                                                                    "connection.custom.requiredErrorMessage",
-                                                                    {
-                                                                        name: property.description.split("#")[ 0 ]
-                                                                    })
-                                                            }
-                                                            placeholder={
-                                                                t("adminPortal:components.userstores.forms." +
-                                                                    "custom.placeholder",
-                                                                    {
-                                                                        name: property.description.split("#")[ 0 ]
-                                                                    })
-                                                            }
-                                                            data-testid={ `${ testId }-form-non-sql-text-input-${
-                                                                property.name }` }
-                                                        />
-                                                    )
-                                        );
-                                    })
-                                }
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                )
-            }
-            { showMore
-                && (properties?.optional.sql.delete.length > 0
+                                    );
+                                })
+                            }
+    
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+    
+                { (properties?.optional.sql.delete.length > 0
                     || properties?.optional.sql.insert.length > 0
                     || properties?.optional.sql.select.length > 0
                     || properties?.optional.sql.update.length > 0)
-                && (
-                    <Grid columns={ 1 }>
-                        <Grid.Column width={ 16 }>
-                            <SqlEditor
-                                onChange={ (name: string, value: string) => {
-                                    const tempSql = new Map(sql);
-                                    tempSql.set(name, value);
-                                    setSql(tempSql);
-                                } }
-                                properties={ properties?.optional.sql }
-                                values={ sql }
-                                data-testid={ `${ testId }-sql-editor` }
-                            />
-                        </Grid.Column>
-                    </Grid>
-                )
-            }
-            <Grid columns={ 1 }>
-                <Grid.Column width={ 8 }>
-                    <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
-                        Update
-                    </PrimaryButton>
-                </Grid.Column>
-            </Grid>
-        </Forms>
+                    && (
+                        <Grid columns={ 1 }>
+                            <Grid.Column width={ 8 } textAlign="center">
+                                <LinkButton
+                                    type="button"
+                                    onClick={ () => { setShowMore(!showMore) } }
+                                    data-testid={ `${ testId }-show-more-button` }
+                                >
+                                    <Icon name={ showMore ? "chevron up" : "chevron down" } />
+                                    { showMore ? t("common:showLess") : t("common:showMore") }
+                                </LinkButton>
+                            </Grid.Column>
+                        </Grid>
+                    ) }
+    
+                { showMore && properties?.optional.nonSql.length > 0 &&
+                    (
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column width={ 8 }>
+                                    {
+                                        properties?.optional?.nonSql.map((property: TypeProperty, index: number) => {
+                                            const name = property.description.split("#")[ 0 ];
+                                            const isPassword = property.attributes
+                                                .find(attribute => attribute.name === "type").value === "password";
+                                            const toggle = property.attributes
+                                                .find(attribute => attribute.name === "type")?.value === "boolean";
+    
+                                            return (
+                                                isPassword
+                                                    ? (
+                                                        <Field
+                                                            name={ property.name }
+                                                            type="password"
+                                                            key={ index }
+                                                            required={ false }
+                                                            label={ name }
+                                                            requiredErrorMessage={
+                                                                t("adminPortal:components.userstores.forms." +
+                                                                    "custom.requiredErrorMessage",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
+                                                            }
+                                                            showPassword={ t("common:showPassword") }
+                                                            hidePassword={ t("common:hidePassword") }
+                                                            placeholder={
+                                                                t("adminPortal:components.userstores.forms." +
+                                                                    "custom.placeholder",
+                                                                    {
+                                                                        name: property.description.split("#")[ 0 ]
+                                                                    })
+                                                            }
+                                                            data-testid={ `${ testId }-form-non-sql-password-input-${
+                                                                property.name }` }
+                                                        />
+                                                    )
+                                                    : toggle
+                                                        ? (
+                                                            <Field
+                                                                name={ property.name }
+                                                                value={ property.value ?? property.defaultValue }
+                                                                type="toggle"
+                                                                key={ index }
+                                                                required={ false }
+                                                                label={ property.description.split("#")[ 0 ] }
+                                                                requiredErrorMessage={
+                                                                    t("adminPortal:components.userstores.forms.edit." +
+                                                                        "connection.custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                toggle
+                                                                placeholder={
+                                                                    t("adminPortal:components.userstores.forms." +
+                                                                        "custom.placeholder",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                data-testid={ `${ testId }-form-non-sql-toggle-${
+                                                                    property.name }` }
+                                                            />
+                                                        )
+                                                        : (
+                                                            <Field
+                                                                name={ property.name }
+                                                                value={ property.value ?? property.defaultValue }
+                                                                type="text"
+                                                                key={ index }
+                                                                required={ false }
+                                                                label={ property.description.split("#")[ 0 ] }
+                                                                requiredErrorMessage={
+                                                                    t("adminPortal:components.userstores.forms.edit." +
+                                                                        "connection.custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                placeholder={
+                                                                    t("adminPortal:components.userstores.forms." +
+                                                                        "custom.placeholder",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                data-testid={ `${ testId }-form-non-sql-text-input-${
+                                                                    property.name }` }
+                                                            />
+                                                        )
+                                            );
+                                        })
+                                    }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    )
+                }
+                { showMore
+                    && (properties?.optional.sql.delete.length > 0
+                        || properties?.optional.sql.insert.length > 0
+                        || properties?.optional.sql.select.length > 0
+                        || properties?.optional.sql.update.length > 0)
+                    && (
+                        <Grid columns={ 1 }>
+                            <Grid.Column width={ 16 }>
+                                <SqlEditor
+                                    onChange={ (name: string, value: string) => {
+                                        const tempSql = new Map(sql);
+                                        tempSql.set(name, value);
+                                        setSql(tempSql);
+                                    } }
+                                    properties={ properties?.optional.sql }
+                                    values={ sql }
+                                    data-testid={ `${ testId }-sql-editor` }
+                                />
+                            </Grid.Column>
+                        </Grid>
+                    )
+                }
+                <Grid columns={ 1 }>
+                    <Grid.Column width={ 8 }>
+                        <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
+                            Update
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid>
+            </Forms>
+        </EmphasizedSegment>
     );
 };
 

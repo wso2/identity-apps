@@ -106,31 +106,37 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         {
             menuItem: t("adminPortal:components.claims.local.pageLayout.edit.tabs.general"),
             render: () => (
-                <EditBasicDetailsLocalClaims
-                    claim={ claim }
-                    update={ getClaim }
-                    data-testid="local-claims-basic-details-edit"
-                />
+                <ResourceTab.Pane controlledSegmentation>
+                    <EditBasicDetailsLocalClaims
+                        claim={ claim }
+                        update={ getClaim }
+                        data-testid="local-claims-basic-details-edit"
+                    />
+                </ResourceTab.Pane>
             )
         },
         {
             menuItem: t("adminPortal:components.claims.local.pageLayout.edit.tabs.mappedAttributes"),
             render: () => (
-                <EditMappedAttributesLocalClaims
-                    claim={ claim }
-                    update={ getClaim }
-                    data-testid={ `${ testId }-edit-local-claims-mapped-attributes` }
-                />
+                <ResourceTab.Pane controlledSegmentation>
+                    <EditMappedAttributesLocalClaims
+                        claim={ claim }
+                        update={ getClaim }
+                        data-testid={ `${ testId }-edit-local-claims-mapped-attributes` }
+                    />
+                </ResourceTab.Pane>
             )
         },
         {
             menuItem: t("adminPortal:components.claims.local.pageLayout.edit.tabs.additionalProperties"),
             render: () => (
-                <EditAdditionalPropertiesLocalClaims
-                    claim={ claim }
-                    update={ getClaim }
-                    data-testid={ `${ testId }-edit-local-claims-additional-properties` }
-                />
+                <ResourceTab.Pane controlledSegmentation>
+                    <EditAdditionalPropertiesLocalClaims
+                        claim={ claim }
+                        update={ getClaim }
+                        data-testid={ `${ testId }-edit-local-claims-additional-properties` }
+                    />
+                </ResourceTab.Pane>
             )
         }
     ];

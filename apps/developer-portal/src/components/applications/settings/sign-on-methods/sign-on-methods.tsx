@@ -20,7 +20,7 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import { Heading, Hint, PrimaryButton } from "@wso2is/react-components";
+import { EmphasizedSegment, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -248,7 +248,6 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     const showRequestPathAuthenticators: ReactElement = (
         <>
-            <Divider />
             <Heading as="h4">{ t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
                 "requestPathAuthenticators.title") }</Heading>
             <Hint>{ t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
@@ -287,7 +286,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     );
 
     return (
-        <div className="sign-on-methods-tab-content">
+        <EmphasizedSegment className="sign-on-methods-tab-content">
             <StepBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
@@ -300,7 +299,6 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 }
                 data-testid={ `${ testId }-step-based-flow` }
             />
-            <Divider />
             <ScriptBasedFlow
                 authenticationSequence={ sequence }
                 isLoading={ isLoading }
@@ -331,7 +329,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     </>
                 )
             }
-        </div>
+        </EmphasizedSegment>
     );
 };
 

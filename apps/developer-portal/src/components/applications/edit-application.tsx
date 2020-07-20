@@ -205,7 +205,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     };
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <GeneralApplicationSettings
                 accessUrl={ application.accessUrl }
                 appId={ application.id }
@@ -225,7 +225,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     const ApplicationSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <AccessConfiguration
                 appId={ application.id }
                 appName={ application.name }
@@ -241,7 +241,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     const AttributeSettingTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
                 appId={ application.id }
                 claimConfigurations={ application.claimConfiguration }
@@ -257,7 +257,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
 
     const SignOnMethodsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <SignOnMethods
                 appId={ application.id }
                 authenticationSequence={ application.authenticationSequence }
@@ -270,7 +270,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     const AdvancedSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <AdvancedSettings
                 appId={ application.id }
                 advancedConfigurations={ application.advancedConfigurations }
@@ -282,7 +282,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     );
 
     const ProvisioningSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <ProvisioningSettings
                 application={ application }
                 provisioningConfigurations={ application.provisioningConfigurations }

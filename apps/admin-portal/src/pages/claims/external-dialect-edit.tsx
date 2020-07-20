@@ -19,7 +19,14 @@
 import { getAllExternalClaims } from "@wso2is/core/api";
 import { AlertLevels, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AnimatedAvatar, ConfirmationModal, DangerZone, DangerZoneGroup, PageLayout } from "@wso2is/react-components";
+import {
+    AnimatedAvatar,
+    ConfirmationModal,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment,
+    PageLayout
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -215,6 +222,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     return (
         <PageLayout
+            showBottomDivider
             isLoading={ isLoading }
             image={
                 <Image
@@ -242,36 +250,36 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-
-            <Divider />
-
             <Grid>
                 <Grid.Row columns={ 1 }>
-                    <Grid.Column width={ 8 }>
-                        <Header as="h5">
+                    <Grid.Column width={ 16 }>
+                        <Header as="h4">
                             { t("adminPortal:components.claims.dialects.pageLayout.edit.updateDialectURI") }
                         </Header>
-                        <EditDialectDetails
-                            dialect={ dialect }
-                            data-testid={ `${ testId }-edit-dialect-details` }
-                        />
+                        <EmphasizedSegment>
+                            <EditDialectDetails
+                                dialect={ dialect }
+                                data-testid={ `${ testId }-edit-dialect-details` }
+                            />
+                        </EmphasizedSegment>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
+            
             <Divider hidden />
-            <Divider />
+
             <Grid columns={ 1 }>
                 <Grid.Column width={ 16 }>
-                    <Header as="h5">
+                    <Header as="h4">
                         { t("adminPortal:components.claims.dialects.pageLayout.edit.updateExternalAttributes") }
                     </Header>
                 </Grid.Column>
             </Grid>
 
-            <Divider hidden />
+            <Divider hidden/>
 
-            <Segment>
-                <Divider hidden />
+            <EmphasizedSegment>
+                <Divider hidden/>
                 <EditExternalClaims
                     dialectID={ dialectId }
                     isLoading={ isLoading }
@@ -279,7 +287,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     update={ getExternalClaims }
                     data-testid={ `${ testId }-edit-external-claims` }
                 />
-            </Segment>
+            </EmphasizedSegment>
 
             <Divider hidden />
 

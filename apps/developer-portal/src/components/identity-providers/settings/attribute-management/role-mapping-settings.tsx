@@ -101,9 +101,9 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         <>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <Divider/>
-                    <Heading as="h5">{ t("devPortal:components.idp.forms.roleMapping.heading") }</Heading>
+                    <Heading as="h4">{ t("devPortal:components.idp.forms.roleMapping.heading") }</Heading>
                     <DynamicField
+                        bottomMargin={ false }
                         data={
                             initialRoleMappings ?
                                 initialRoleMappings.map(mapping => {

@@ -56,7 +56,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         {
             menuItem: t("adminPortal:components.user.editUser.menu.menuItems.0"),
             render: () => (
-                <ResourceTab.Pane attached={ false }>
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
                         onAlertFired={ handleAlerts }
                         user={ user }
@@ -68,7 +68,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         {
             menuItem: t("adminPortal:components.user.editUser.menu.menuItems.1"),
             render: () => (
-                <ResourceTab.Pane attached={ false }>
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserGroupsList
                         onAlertFired={ handleAlerts }
                         user={ user }
@@ -80,7 +80,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         {
             menuItem: t("adminPortal:components.user.editUser.menu.menuItems.2"),
             render: () => (
-                <ResourceTab.Pane attached={ false }>
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserRolesList
                         onAlertFired={ handleAlerts }
                         user={ user }
