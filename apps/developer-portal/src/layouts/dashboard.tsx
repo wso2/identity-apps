@@ -53,7 +53,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { Header, ProtectedRoute } from "../components";
-import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
+import { SidePanelMiscIcons, routes } from "../configs";
 import { UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
@@ -347,7 +347,6 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    icons={ SidePanelIcons }
                     routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
                     selected={ selectedRoute }
                     translationHook={ t }

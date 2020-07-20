@@ -391,7 +391,6 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    icons={ SidePanelIcons }
                     routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
                     selected={ selectedRoute }
                     translationHook={ t }
