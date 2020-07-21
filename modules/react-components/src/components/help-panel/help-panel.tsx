@@ -22,21 +22,24 @@ import React, {
     ForwardRefExoticComponent,
     PropsWithoutRef,
     ReactElement,
-    ReactNode, RefAttributes,
-    forwardRef, useEffect, useState
+    ReactNode,
+    RefAttributes,
+    forwardRef,
+    useEffect,
+    useState
 } from "react";
 import {
-    Icon,
     Menu,
-    SemanticICONS,
     SemanticShorthandItem,
     Sidebar,
     SidebarProps,
     TabPaneProps
 } from "semantic-ui-react";
 import { HelpPanelActionBar } from "./help-panel-action-bar";
+import { ReactComponent as CaretLeftIcon } from "../../assets/images/caret-left-icon.svg";
 import { GenericIcon, GenericIconProps } from "../icon";
 import { ResourceTab } from "../tab";
+import { Tooltip } from "../typography";
 
 /**
  * Component ref type.
@@ -57,7 +60,11 @@ export interface HelpPanelPropsInterface extends SidebarProps, TestableComponent
     /**
      * Set of actions for the top action bar.
      */
-    actions: GenericIconProps[];
+    actions?: HelpPanelActionInterface[];
+    /**
+     * Enable borders.
+     */
+    bordered?: "left" | "right" | "bottom" | "top" | boolean;
     /**
      * Array of objects describing tabs.
      */
@@ -67,18 +74,48 @@ export interface HelpPanelPropsInterface extends SidebarProps, TestableComponent
      */
     sidebarMiniEnabled?: boolean;
     /**
+     * Tooltip for the sidebar toggle button.
+     */
+    sidebarToggleTooltip?: string;
+    /**
+     * Flag to show/hide tab labels on mini sidebar.
+     */
+    showLabelsOnSidebarMini?: boolean;
+    /**
+     * Flag to enable/disable showing tool tips on action bar.
+     */
+    showTooltipsOnActionBar?: boolean;
+    /**
+     * Flag to enable/disable showing tool tips on sidebar mini.
+     */
+    showTooltipsOnSidebarMini?: boolean;
+    /**
      * Callback to be called on sidebar toggle.
      */
-    onSidebarToggle: () => void;
+    onSidebarToggle?: () => void;
     /**
      * Called on sidebar mini item click.
      * @param {string} item - Clicked on item.
      */
     onSidebarMiniItemClick?: (item: string) => void;
     /**
+     * Should the help panel appear raised.
+     */
+    raised?: boolean;
+    /**
      * Initial tabs active index.
      */
     tabsActiveIndex?: number;
+}
+
+/**
+ * Interface for help panel actions.
+ */
+export interface HelpPanelActionInterface extends GenericIconProps {
+    /**
+     * Tooltip for the button.
+     */
+    tooltip?: string;
 }
 
 /**
@@ -94,7 +131,7 @@ export interface HelpPanelTabInterface {
     heading: any;
     hidden: boolean;
     content: ReactNode;
-    icon: SemanticICONS;
+    icon: GenericIconProps;
 }
 
 /**
@@ -110,11 +147,17 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
 
         const {
             actions,
+            bordered,
             children,
             className,
             onSidebarToggle,
             tabs,
+            raised,
+            showLabelsOnSidebarMini,
+            showTooltipsOnActionBar,
+            showTooltipsOnSidebarMini,
             sidebarMiniEnabled,
+            sidebarToggleTooltip,
             visible,
             tabsActiveIndex,
             onSidebarMiniItemClick,
@@ -124,7 +167,7 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
 
         const [ activeIndex, setActiveIndex ] = useState<number>(tabsActiveIndex);
         const [ tabPanes, setTabPanes ] = useState<{
-            icon?: SemanticICONS;
+            icon?: GenericIconProps;
             pane?: SemanticShorthandItem<TabPaneProps>;
             menuItem?: any;
             render?: () => ReactNode;
@@ -133,7 +176,9 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
         const classes = classNames(
             "help-panel",
             {
-                mini: sidebarMiniEnabled && !visible
+                [ typeof bordered === "boolean" ? "bordered-default" : `bordered-${ bordered }` ]: bordered,
+                mini: sidebarMiniEnabled && !visible,
+                raised
             },
             className
         );
@@ -178,19 +223,33 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                 data-testid={ testId }
                 { ...rest }
             >
-                <div ref={ ref }>
+                <div className="help-panel-content-container" ref={ ref }>
                     {
                         sidebarMiniEnabled && !visible && (
-                            <>
+                            <div className="sidebar-mini-menu">
                                 <Menu.Item
                                     as="a"
                                     onClick={ onSidebarToggle }
                                     data-testid={ `${ testId }-visibility-toggle` }
                                 >
-                                    <Icon
-                                        color="grey"
-                                        name="angle left"
-                                        data-testid={ `${ testId }-visibility-toggle-icon` }
+                                    <Tooltip
+                                        compact
+                                        trigger={ (
+                                            <div>
+                                                <GenericIcon
+                                                    link
+                                                    hoverable
+                                                    defaultIcon
+                                                    transparent
+                                                    icon={ CaretLeftIcon }
+                                                    size="default"
+                                                    hoverType="circular"
+                                                    data-testid={ `${ testId }-visibility-toggle-icon` }
+                                                />
+                                            </div>
+                                        ) }
+                                        content={ sidebarToggleTooltip }
+                                        size="mini"
                                     />
                                 </Menu.Item>
                                 {
@@ -202,17 +261,34 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                                 onClick={ () => onSidebarMiniItemClick(pane.menuItem) }
                                                 data-testid={ `${ testId }-sidebar-mini-item-${ index }` }
                                             >
-                                                <Icon
-                                                    color="grey"
-                                                    name={ pane.icon }
-                                                    data-testid={ `${ testId }-sidebar-mini-item-${ index }-icon` }
+                                                <Tooltip
+                                                    compact
+                                                    disabled={ showLabelsOnSidebarMini || !showTooltipsOnSidebarMini }
+                                                    trigger={ (
+                                                        <div>
+                                                            <GenericIcon
+                                                                link
+                                                                hoverable
+                                                                defaultIcon
+                                                                transparent
+                                                                size="default"
+                                                                hoverType="circular"
+                                                                data-testid={
+                                                                    `${ testId }-sidebar-mini-item-${ index }-icon`
+                                                                }
+                                                                { ...pane.icon }
+                                                            />
+                                                        </div>
+                                                    ) }
+                                                    content={ pane.menuItem }
+                                                    size="mini"
                                                 />
-                                                { pane.menuItem }
+                                                { showLabelsOnSidebarMini && pane.menuItem }
                                             </Menu.Item>
                                         ))
                                     )
                                 }
-                            </>
+                            </div>
                         )
                     }
                     {
@@ -223,16 +299,29 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
                                         <HelpPanel.ActionBar data-testid={ `${ testId }-action-bar` }>
                                             {
                                                 actions.map((action, index) => (
-                                                    <GenericIcon
+                                                    <Tooltip
+                                                        compact
                                                         key={ index }
-                                                        size="default"
-                                                        defaultIcon
-                                                        link
-                                                        hoverable
-                                                        inline
-                                                        transparent
-                                                        data-testid={ `${ testId }-action-bar-action-${ index }` }
-                                                        { ...action }
+                                                        // TODO: Enable after fixing the flickering issue.
+                                                        disabled={ true }
+                                                        trigger={ (
+                                                            <div>
+                                                                <GenericIcon
+                                                                    link
+                                                                    inline
+                                                                    hoverable
+                                                                    transparent
+                                                                    defaultIcon
+                                                                    size="default"
+                                                                    data-testid={
+                                                                        `${ testId }-action-bar-action-${ index }`
+                                                                    }
+                                                                    { ...action }
+                                                                />
+                                                            </div>
+                                                        ) }
+                                                        content={ action.tooltip }
+                                                        size="mini"
                                                     />
                                                 ))
                                             }
@@ -258,9 +347,15 @@ export const HelpPanel: ForwardRefExoticComponent<PropsWithoutRef<HelpPanelCompo
  * Default props for the help panel component.
  */
 HelpPanel.defaultProps = {
+    bordered: "left",
     "data-testid": "help-panel",
     direction: "right",
+    raised: false,
+    showLabelsOnSidebarMini: false,
+    showTooltipsOnActionBar: true,
+    showTooltipsOnSidebarMini: true,
     sidebarMiniEnabled: true,
+    sidebarToggleTooltip: "Open help panel",
     visible: true
 };
 

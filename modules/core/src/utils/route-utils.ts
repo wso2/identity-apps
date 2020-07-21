@@ -38,14 +38,14 @@ export class RouteUtils {
     /**
      * Filters the set of enabled routes based on the app config.
      *
-     * @param {RouteInterface[] | ChildRouteInterface[]} routes - Routes to evaluate.
+     * @param {RouteInterface[]} routes - Routes to evaluate.
      * @param {T} featureConfig - Feature config.
-     *
-     * @return {RouteInterface[] | ChildRouteInterface[]} Filtered routes.
+     * @param {string} allowedScopes - Set of allowed scopes.
+     * @return {RouteInterface[]} Filtered routes.
      */
-    public static filterEnabledRoutes<T>(
-        routes: RouteInterface[] | ChildRouteInterface[],featureConfig: T, allowedScopes: string
-    ): RouteInterface[] | ChildRouteInterface[] { 
+    public static filterEnabledRoutes<T>(routes: RouteInterface[],
+                                         featureConfig: T,
+                                         allowedScopes: string): RouteInterface[] { 
 
         // Filters features based on scope requirements.
         const filter = (routeArr: RouteInterface[] | ChildRouteInterface[], allowedScopes: string) => {
@@ -72,6 +72,18 @@ export class RouteUtils {
             });
         };
 
+        return filter(routes, allowedScopes);
+    }
+
+    /**
+     * Sanitize the routes for UI. Removes unnecessary routes which are not supposed to be
+     * displayed on the UI navigation panels.
+     *
+     * @param {RouteInterface[]} routes - Routes to evaluate.
+     * @return {RouteInterface[]} Filtered routes.
+     */
+    public static sanitizeForUI<T>(routes: RouteInterface[]): RouteInterface[] {
+
         // Remove any redundant routes.
         const sanitize = (routeArr: RouteInterface[] | ChildRouteInterface[]) => {
             return routeArr.filter((route: RouteInterface | ChildRouteInterface) => {
@@ -93,10 +105,10 @@ export class RouteUtils {
                     route.children = sanitize(route.children);
                 }
 
-                return true;
+                return route.showOnSidePanel;
             });
         };
 
-        return sanitize(filter(routes, allowedScopes));
+        return sanitize(routes);
     }
 }

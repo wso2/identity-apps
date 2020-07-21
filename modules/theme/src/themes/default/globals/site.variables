@@ -42,6 +42,7 @@
 
 @defaultBorderWidth: 1px;
 @defaultBorderColor: @borderColor;
+@lightBorderColor: lighten(@borderColor, 40);
 
 /*-------------------
     Brand Colors
@@ -78,6 +79,13 @@
 @doveGray         : #616161;
 
 /*-------------------
+        Page
+--------------------*/
+
+@pageBackground      : #fbfbfb;
+@lightPageBackground : @white;
+
+/*-------------------
      Image Sizes
 --------------------*/
 
@@ -89,7 +97,7 @@
 --------------------*/
 
 @iconHoverBgColor: @whiteSmoke;
-@iconDefaultBgColor: @nobel;
+@iconDefaultBgColor: #838383;
 
 /*-------------------
     Icon Sizes

@@ -33,10 +33,9 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { SemanticICONS } from "semantic-ui-react";
 import { getIdentityProviderDetail } from "../../api";
 import { EditIdentityProvider } from "../../components";
-import { HelpSidebarIcons } from "../../configs";
+import { HelpPanelIcons, HelpSidebarIcons } from "../../configs";
 import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../../constants";
 import { history } from "../../helpers";
 import {
@@ -218,7 +217,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             ),
             heading: t("common:docs"),
             hidden: !helpPanelDocURL,
-            icon: "file alternate outline" as SemanticICONS
+            icon: {
+                icon: HelpPanelIcons.tabs.docs
+            }
         }
     ];
 
@@ -230,6 +231,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ HelpSidebarIcons.actionPanel }
+            sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
+            pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
+            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 isLoading={ isIdentityProviderRequestLoading }

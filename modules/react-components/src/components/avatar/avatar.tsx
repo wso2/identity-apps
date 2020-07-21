@@ -20,8 +20,6 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent } from "react";
 import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
-import CodeIcon from "../../assets/images/code-icon.svg";
-import DummyUser from "../../assets/images/user.png";
 
 /**
  * Prop types for the Avatar component.
@@ -47,6 +45,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface {
      * Custom class for the component.
      */
     className?: string;
+    /**
+     * Default icon.
+     */
+    defaultIcon?: any;
     /**
      * Floated direction of the avatar.
      */
@@ -131,6 +133,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         bordered,
         children,
         className,
+        defaultIcon,
         floated,
         image,
         inline,
@@ -305,7 +308,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                 <img
                     className="inner-image"
                     alt="avatar"
-                    src={ avatarType === "user" ? DummyUser : CodeIcon }
+                    src={ defaultIcon }
                     data-testid={ `${ testId }-image` }
                 />
             </div>

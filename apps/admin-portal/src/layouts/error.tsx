@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { ContentLoader, ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { errorLayoutRoutes } from "../configs";
@@ -48,31 +48,33 @@ export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsIn
 
     return (
         <ErrorLayoutSkeleton fluid={ fluid }>
-            <Switch>
-                {
-                    errorLayoutRoutes.map((route, index) => (
-                        route.redirectTo
-                            ? <Redirect to={ route.redirectTo } />
-                            : route.protected
-                                ? (
-                                    <ProtectedRoute
-                                        component={ route.component }
-                                        path={ route.path }
-                                        key={ index }
-                                    />
-                                )
-                                : (
-                                    <Route
-                                        path={ route.path }
-                                        render={ (renderProps) =>
-                                            (<route.component { ...renderProps } />)
-                                        }
-                                        key={ index }
-                                    />
-                                )
-                    ))
-                }
-            </Switch>
+            <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Switch>
+                    {
+                        errorLayoutRoutes.map((route, index) => (
+                            route.redirectTo
+                                ? <Redirect to={ route.redirectTo } />
+                                : route.protected
+                                    ? (
+                                        <ProtectedRoute
+                                            component={ route.component }
+                                            path={ route.path }
+                                            key={ index }
+                                        />
+                                    )
+                                    : (
+                                        <Route
+                                            path={ route.path }
+                                            render={ (renderProps) =>
+                                                (<route.component { ...renderProps } />)
+                                            }
+                                            key={ index }
+                                        />
+                                    )
+                        ))
+                    }
+                </Switch>
+            </Suspense>
         </ErrorLayoutSkeleton>
     );
 };

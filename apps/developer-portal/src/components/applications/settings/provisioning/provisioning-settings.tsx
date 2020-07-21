@@ -86,9 +86,6 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                 }
                 data-testid={ `${ testId }-inbound-configuration` }
             />
-            <Divider hidden/>
-            <Divider/>
-            <Divider hidden/>
             <OutboundProvisioningConfiguration
                 application={ application }
                 provisioningConfigurations={ provisioningConfigurations }

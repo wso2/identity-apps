@@ -26,10 +26,21 @@
 @sidePanelDefaultFontColor: @textColor;
 
 /*-------------------
+      App Header
+--------------------*/
+
+@appHeaderBackground: @lightPageBackground;
+@appHeaderHeight: 60px;
+@appHeaderBoxShadow: none;
+
+/*-------------------
       App Footer
 --------------------*/
 
-@appFooterMinHeight: 60px;
+@appFooterBackground: @lightPageBackground;
+@appFooterHeight: 50px;
+@appFooterLinkColor: @textColor;
+@appFooterLinkTextDecoration: underline;
 
 /*-------------------
     Side Panel Menu
@@ -39,19 +50,39 @@
 @sidePanelActiveFontColor: @primaryColor;
 @sidePanelHoverFontColor: @primaryColor;
 
+@sidePanelItemHorizontalPadding: 1em;
+@sidePanelItemVerticalPadding: 0.7em;
+@sidePanelItemPadding: @sidePanelItemVerticalPadding @sidePanelItemHorizontalPadding;
+
 @sidePanelChildItemGroupLeftPadding: 15px;
 @sidePanelChildItemPadding: @itemVerticalPadding @itemHorizontalPadding;
 
 @sidePanelCategoryFontSize: 10px;
 @sidePanelCategoryTextTransform: uppercase;
-@sidePanelCategoryMarginBottom: 10px;
-@sidePanelBackgroundHoveredItemMarginBottom: 10px;
+@sidePanelCategoryMarginBottom: 3px;
+@sidePanelCategoryDividerMargin: 10px 0;
+@sidePanelBackgroundHoveredItemMarginTop: 5px;
+
+@sidePanelCategoryRelaxedMarginBottom: 10px;
+@sidePanelBackgroundHoveredItemRelaxedMarginBottom: 10px;
 
 /*-------------------
       Pagination
 --------------------*/
 
 @listPaginationMarginRight: 10px;
+
+@listPaginationBoxShadow: none;
+@listPaginationBackground: transparent;
+@listPaginationBorder: none;
+@listPaginationFontSize: 0.8em;
+
+@listPaginationItemBorderColor: @lightBorderColor;
+@listPaginationItemBorder: @defaultBorderWidth solid @listPaginationItemBorderColor;
+@listPaginationItemBorderRadius: @defaultBorderRadius;
+@listPaginationItemBackground: @lightPageBackground;
+@listPaginationItemColor: lighten(@textColor, 20);
+@listPaginationItemActiveColor: @textColor;
 
 /*-------------------
     User Dropdown

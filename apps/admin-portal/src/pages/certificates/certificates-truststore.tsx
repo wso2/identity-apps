@@ -179,7 +179,6 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
         <PageLayout
             title="Certificates in the Truststore"
             description="Create and manage certificates in the truststore"
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout

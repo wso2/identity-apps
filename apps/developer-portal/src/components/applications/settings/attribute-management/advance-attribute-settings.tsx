@@ -103,12 +103,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
             >
                 <Grid>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            <Divider/>
-                            <Divider hidden/>
-                        </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Heading as="h5">
+                            <Heading as="h4">
                                 { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
                                     ".subject.heading") }
                             </Heading>
@@ -230,12 +226,8 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                         </Grid.Column>
                     </Grid.Row>
                     <Grid.Row columns={ 2 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            <Divider/>
-                            <Divider hidden/>
-                        </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Heading as="h5">
+                            <Heading as="h4">
                                 { t("devPortal:components.applications.forms.advancedAttributeSettings.sections" +
                                     ".role.heading") }
                             </Heading>

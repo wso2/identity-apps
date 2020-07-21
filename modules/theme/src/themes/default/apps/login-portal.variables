@@ -9,3 +9,7 @@
 @loginPortalBackgroundColor: @white;
 @loginPortalProductLogoHeight: 22px;
 @loginPortalLoginCardBorderRadius: @defaultBorderRadius;
+@loginPortalProductTitleTextMargin: 2em 0 1em;
+@loginPortalProductTitleTextPosition: relative;
+@loginPortalProductTitleTextFontSize: 1.4em !important;
+@loginPortalProductTitleTextVerticalAlign: unset;

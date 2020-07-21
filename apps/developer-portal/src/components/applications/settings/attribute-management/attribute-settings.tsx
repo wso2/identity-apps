@@ -28,12 +28,12 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { ContentLoader } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Grid } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { AdvanceAttributeSettings } from "./advance-attribute-settings";
 import { AttributeSelection } from "./attribute-selection";
 import { RoleMapping } from "./role-mapping";
@@ -586,75 +586,78 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     return (
         !isClaimRequestLoading && selectedDialect && !(_.isEmpty(claims) && _.isEmpty(externalClaims))
             ?
-            <Grid className="claim-mapping">
-                <AttributeSelection
-                    claims={ claims }
-                    setClaims={ setClaims }
-                    externalClaims={ externalClaims }
-                    setExternalClaims={ setExternalClaims }
-                    selectedClaims={ selectedClaims }
-                    selectedExternalClaims={ selectedExternalClaims }
-                    setSelectedClaims={ setSelectedClaims }
-                    setSelectedExternalClaims={ setSelectedExternalClaims }
-                    selectedDialect={ selectedDialect }
-                    claimMapping={ claimMapping }
-                    setClaimMapping={ setClaimMapping }
-                    createMapping={ createMapping }
-                    removeMapping={ removeMapping }
-                    getCurrentMapping={ getCurrentMapping }
-                    updateClaimMapping={ updateClaimMapping }
-                    addToClaimMapping={ addToClaimMapping }
-                    claimConfigurations={ claimConfigurations }
-                    claimMappingOn={ claimMappingOn }
-                    setClaimMappingOn={ setClaimMappingOn }
-                    claimMappingError={ claimMappingError }
-                    readOnly={
-                        !hasRequiredScopes(
-                            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+            <EmphasizedSegment>
+                <Grid className="claim-mapping">
+                    <AttributeSelection
+                        claims={ claims }
+                        setClaims={ setClaims }
+                        externalClaims={ externalClaims }
+                        setExternalClaims={ setExternalClaims }
+                        selectedClaims={ selectedClaims }
+                        selectedExternalClaims={ selectedExternalClaims }
+                        setSelectedClaims={ setSelectedClaims }
+                        setSelectedExternalClaims={ setSelectedExternalClaims }
+                        selectedDialect={ selectedDialect }
+                        claimMapping={ claimMapping }
+                        setClaimMapping={ setClaimMapping }
+                        createMapping={ createMapping }
+                        removeMapping={ removeMapping }
+                        getCurrentMapping={ getCurrentMapping }
+                        updateClaimMapping={ updateClaimMapping }
+                        addToClaimMapping={ addToClaimMapping }
+                        claimConfigurations={ claimConfigurations }
+                        claimMappingOn={ claimMappingOn }
+                        setClaimMappingOn={ setClaimMappingOn }
+                        claimMappingError={ claimMappingError }
+                        readOnly={
+                            !hasRequiredScopes(
+                                featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+                        }
+                        data-testid={ `${ testId }-attribute-selection` }
+                    />
+                    <Divider hidden />
+                    <AdvanceAttributeSettings
+                        dropDownOptions={ createDropdownOption() }
+                        triggerSubmission={ triggerAdvanceSettingFormSubmission }
+                        setSubmissionValues={ setAdvanceSettingValues }
+                        initialRole={ claimConfigurations.role }
+                        initialSubject={ claimConfigurations.subject }
+                        claimMappingOn={ claimMappingOn }
+                        readOnly={
+                            !hasRequiredScopes(
+                                featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+                        }
+                        data-testid={ `${ testId }-advanced-attribute-settings-form` }
+                    />
+                    <RoleMapping
+                        submitState={ triggerAdvanceSettingFormSubmission }
+                        onSubmit={ setRoleMapping }
+                        initialMappings={ claimConfigurations.role?.mappings }
+                        readOnly={
+                            !hasRequiredScopes(
+                                featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+                        }
+                        data-testid={ `${ testId }-role-mapping` }
+                    />
+                    {
+                        hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update,
+                            allowedScopes) && (
+                            <Grid.Row>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
+                                    <Button
+                                        primary
+                                        size="small"
+                                        onClick={ updateValues }
+                                        data-testid={ `${ testId }-submit-button` }
+                                    >
+                                        { t("common:update") }
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        )
                     }
-                    data-testid={ `${ testId }-attribute-selection` }
-                />
-                <AdvanceAttributeSettings
-                    dropDownOptions={ createDropdownOption() }
-                    triggerSubmission={ triggerAdvanceSettingFormSubmission }
-                    setSubmissionValues={ setAdvanceSettingValues }
-                    initialRole={ claimConfigurations.role }
-                    initialSubject={ claimConfigurations.subject }
-                    claimMappingOn={ claimMappingOn }
-                    readOnly={
-                        !hasRequiredScopes(
-                            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
-                    }
-                    data-testid={ `${ testId }-advanced-attribute-settings-form` }
-                />
-                <RoleMapping
-                    submitState={ triggerAdvanceSettingFormSubmission }
-                    onSubmit={ setRoleMapping }
-                    initialMappings={ claimConfigurations.role?.mappings }
-                    readOnly={
-                        !hasRequiredScopes(
-                            featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
-                    }
-                    data-testid={ `${ testId }-role-mapping` }
-                />
-                {
-                    hasRequiredScopes(
-                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes) && (
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                                <Button
-                                    primary
-                                    size="small"
-                                    onClick={ updateValues }
-                                    data-testid={ `${ testId }-submit-button` }
-                                >
-                                    { t("common:update") }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    )
-                }
-            </Grid>
+                </Grid>
+            </EmphasizedSegment>
             : <ContentLoader/>
     );
 };

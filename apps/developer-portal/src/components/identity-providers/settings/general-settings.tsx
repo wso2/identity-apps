@@ -22,7 +22,7 @@ import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { CheckboxProps } from "semantic-ui-react";
+import { CheckboxProps, Divider } from "semantic-ui-react";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../../api";
 import {
     ConfigReducerStateInterface,
@@ -166,6 +166,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                         data-testid={ `${ testId }-form` }
 
                     />
+                    <Divider hidden />
                     { !(config.ui.doNotDeleteIdentityProviders.includes(name)) && (
                         <DangerZoneGroup sectionHeader={ t("devPortal:components.idp.dangerZoneGroup.header") }>
                             <DangerZone

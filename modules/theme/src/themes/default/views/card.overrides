@@ -462,6 +462,11 @@
                 cursor: pointer;
                 box-shadow: @labeledCardHoverBoxShadow;
             }
+            &.background {
+                &-transparent {
+                    background: transparent;
+                }
+            }
             .close-button {
                 border-radius: 50% !important;
                 display: inline-table;

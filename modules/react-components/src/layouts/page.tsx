@@ -56,6 +56,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
 ): ReactElement => {
 
     const {
+        action,
         children,
         contentTopMargin,
         className,
@@ -81,6 +82,7 @@ export const PageLayout: FunctionComponent<PropsWithChildren<PageLayoutPropsInte
         <div className={ layoutClasses } data-tesid={ testId }>
             <div className={ layoutContentClasses }>
                 <PageHeader
+                    action={ action }
                     data-testid={ `${ testId }-page-header` }
                     { ...rest }
                 />

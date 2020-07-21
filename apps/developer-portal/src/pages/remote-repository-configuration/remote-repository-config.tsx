@@ -109,13 +109,13 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         <PageLayout
                 title="Remote Repository Deployment Configuration"
                 description="Configure a remote repository to work seamlessly with the identity server."
-                showBottomDivider={ true }
             >
                 <ListLayout
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
                     onPageChange={ () => { console.log() } }
                     showPagination={ false }
+                    showTopActionPanel={ false }
                     totalPages={ Math.ceil(remoteRepoConfig?.length / listItemLimit) }
                     totalListSize={ remoteRepoConfig?.length }
                 >

@@ -459,6 +459,9 @@
             &-transparent {
                 background-color: transparent;
             }
+            &-white {
+                background-color: @white;
+            }
             &-primary {
                 background-color: @primaryColor;
             }
@@ -499,5 +502,17 @@
                 color: @jumbotronInvertedHeadingColor;
             }
         }
+    }
+}
+
+/*-----------------------------
+      Emphasized Segment
+------------------------------*/
+
+.ui.segment {
+    &.emphasized {
+        background: @emphasizedSegmentBackgroundColor;
+        border: @emphasizedSegmentBorder;
+        border-radius: @emphasizedSegmentBorderRadius;
     }
 }

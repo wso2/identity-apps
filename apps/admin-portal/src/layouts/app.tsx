@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AppLayout as AppLayoutSkeleton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AppLayout as AppLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { appRoutes } from "../configs";
@@ -32,35 +32,37 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
 
     return (
         <AppLayoutSkeleton>
-            <Switch>
-                {
-                    appRoutes.map((route, index) => (
-                        route.redirectTo
-                            ? <Redirect to={ route.redirectTo } />
-                            : route.protected
-                                ? (
-                                    <ProtectedRoute
-                                        component={ route.component ? route.component : null }
-                                        path={ route.path }
-                                        key={ index }
-                                        exact={ route.exact }
-                                    />
-                                )
-                                : (
-                                    <Route
-                                        path={ route.path }
-                                        render={ (renderProps) =>
-                                            route.component
-                                                ? <route.component { ...renderProps } />
-                                                : null
-                                        }
-                                        key={ index }
-                                        exact={ route.exact }
-                                    />
-                                )
-                    ))
-                }
-            </Switch>
+            <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Switch>
+                    {
+                        appRoutes.map((route, index) => (
+                            route.redirectTo
+                                ? <Redirect to={ route.redirectTo } />
+                                : route.protected
+                                    ? (
+                                        <ProtectedRoute
+                                            component={ route.component ? route.component : null }
+                                            path={ route.path }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
+                                    : (
+                                        <Route
+                                            path={ route.path }
+                                            render={ (renderProps) =>
+                                                route.component
+                                                    ? <route.component { ...renderProps } />
+                                                    : null
+                                            }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
+                        ))
+                    }
+                </Switch>
+            </Suspense>
         </AppLayoutSkeleton>
     );
 };

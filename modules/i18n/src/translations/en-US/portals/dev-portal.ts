@@ -1746,6 +1746,12 @@ export const devPortal: DevPortalNS = {
             }
         },
         helpPanel: {
+            actions: {
+                close: "Close",
+                open: "Open help panel",
+                pin: "Pin",
+                unPin: "Unpin"
+            },
             notifications: {
                 pin: {
                     success: {

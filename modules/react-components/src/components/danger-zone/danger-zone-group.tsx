@@ -48,12 +48,12 @@ export const DangerZoneGroup: FunctionComponent<PropsWithChildren<DangerZoneGrou
     } = props;
 
     return (
-        <>
+        <div className="danger-zone-group-wrapper">
             <Header as="h5" className="bold-text" data-testid={ `${ testId }-header` }>{ sectionHeader }</Header>
             <Segment.Group className="danger-zone-group" data-testid={ `${ testId }` }>
                 { children }
             </Segment.Group>
-        </>
+        </div>
     );
 };
 

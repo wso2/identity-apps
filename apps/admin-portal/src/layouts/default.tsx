@@ -21,12 +21,21 @@ import { initializeAlertSystem } from "@wso2is/core/store";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     Alert,
+    ContentLoader,
     DefaultLayout as DefaultLayoutSkeleton,
     Footer,
     ThemeContext,
     TopLoadingBar
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useContext, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    Suspense,
+    SyntheticEvent,
+    useContext,
+    useEffect,
+    useState
+} from "react";
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
@@ -180,35 +189,37 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
                 />
             ) }
         >
-            <Switch>
-                {
-                    defaultLayoutRoutes.map((route, index) => (
-                        route.redirectTo
-                            ? <Redirect to={ route.redirectTo }/>
-                            : route.protected
-                            ? (
-                                <ProtectedRoute
-                                    component={ route.component ? route.component : null }
-                                    path={ route.path }
-                                    key={ index }
-                                    exact={ route.exact }
-                                />
-                            )
-                            : (
-                                <Route
-                                    path={ route.path }
-                                    render={ (renderProps) =>
-                                        route.component
-                                            ? <route.component { ...renderProps } />
-                                            : null
-                                    }
-                                    key={ index }
-                                    exact={ route.exact }
-                                />
-                            )
-                    ))
-                }
-            </Switch>
+            <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Switch>
+                    {
+                        defaultLayoutRoutes.map((route, index) => (
+                            route.redirectTo
+                                ? <Redirect to={ route.redirectTo }/>
+                                : route.protected
+                                ? (
+                                    <ProtectedRoute
+                                        component={ route.component ? route.component : null }
+                                        path={ route.path }
+                                        key={ index }
+                                        exact={ route.exact }
+                                    />
+                                )
+                                : (
+                                    <Route
+                                        path={ route.path }
+                                        render={ (renderProps) =>
+                                            route.component
+                                                ? <route.component { ...renderProps } />
+                                                : null
+                                        }
+                                        key={ index }
+                                        exact={ route.exact }
+                                    />
+                                )
+                        ))
+                    }
+                </Switch>
+            </Suspense>
         </DefaultLayoutSkeleton>
     );
 };

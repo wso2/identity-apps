@@ -39,6 +39,10 @@ export interface ResourceListSubComponentsInterface {
  */
 export interface ResourceListPropsInterface extends ListProps, TestableComponentInterface  {
     /**
+     * Should the list appear on a filled background (usually with foreground color).
+     */
+    fill?: boolean;
+    /**
      * Is the list in loading state.
      */
     isLoading?: boolean;
@@ -46,6 +50,10 @@ export interface ResourceListPropsInterface extends ListProps, TestableComponent
      * Optional meta for the loading state.
      */
     loadingStateOptions?: ListLoadingStateOptionsInterface;
+    /**
+     * Should the list appear on a transparent background.
+     */
+    transparent?: boolean;
 }
 
 /**
@@ -74,16 +82,23 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
 ): ReactElement => {
 
     const {
+        celled,
         children,
         className,
+        fill,
         isLoading,
         loadingStateOptions,
+        transparent,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
     const classes = classNames(
-        "resource-list"
+        "resource-list",
+        {
+            transparent,
+            [ typeof fill === "boolean" ? "fill-default" : `fill-${ fill }` ]: fill
+        }
         , className
     );
 
@@ -132,7 +147,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
     return (
         <List
             className={ classes }
-            celled
+            divided={ celled }
             relaxed="very"
             data-testid={ testId }
             { ...rest }
@@ -150,12 +165,14 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
  * Default props for the component.
  */
 ResourceList.defaultProps = {
+    celled: true,
     "data-testid": "resource-list",
     isLoading: false,
     loadingStateOptions: {
         count: 10,
         imageType: "square"
-    }
+    },
+    transparent: true
 };
 
 ResourceList.Header = ResourceListHeader;

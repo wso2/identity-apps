@@ -42,7 +42,10 @@ import {
 import { ReactComponent as ClockColoredIcon } from "../themes/default/assets/images/icons/clock-colored-icon.svg";
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeForkIcon } from "../themes/default/assets/images/icons/code-fork.svg";
+import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
+import { ReactComponent as CogWheelIcon } from "../themes/default/assets/images/icons/cog-wheel-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
+import { ReactComponent as CubeStack } from "../themes/default/assets/images/icons/cube-stack-icon.svg";
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as DocumentIcon } from "../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DragSquaresIcon } from "../themes/default/assets/images/icons/drag-squares-icon.svg";
@@ -54,7 +57,6 @@ import {
 import { ReactComponent as IntrospectIcon } from "../themes/default/assets/images/icons/introspect.svg";
 import { ReactComponent as IssuerIcon } from "../themes/default/assets/images/icons/issuer.svg";
 import { ReactComponent as JWKSIcon } from "../themes/default/assets/images/icons/jwks.svg";
-import { ReactComponent as LaunchIcon } from "../themes/default/assets/images/icons/launch-icon.svg";
 import { ReactComponent as LockShieldIcon } from "../themes/default/assets/images/icons/lock-shield.svg";
 import {
     ReactComponent as MagnifierColoredIcon
@@ -63,9 +65,12 @@ import { ReactComponent as MagnifierIcon } from "../themes/default/assets/images
 import { ReactComponent as MaximizeIcon } from "../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../themes/default/assets/images/icons/minimize-icon.svg";
+import { ReactComponent as OpenBookIcon } from "../themes/default/assets/images/icons/open-book-icon.svg";
 import { ReactComponent as PinIcon } from "../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../themes/default/assets/images/icons/plug-icon.svg";
+import { ReactComponent as PlusIcon } from "../themes/default/assets/images/icons/plus-icon.svg";
 import { ReactComponent as ReportIcon } from "../themes/default/assets/images/icons/report-icon.svg";
+import { ReactComponent as ShuttleIcon } from "../themes/default/assets/images/icons/shuttle-icon.svg";
 import { ReactComponent as SLOIcon } from "../themes/default/assets/images/icons/slo.svg";
 import { ReactComponent as SpinWheelIcon } from "../themes/default/assets/images/icons/spin-wheel-icon.svg";
 import { ReactComponent as SSOIcon } from "../themes/default/assets/images/icons/sso.svg";
@@ -189,7 +194,7 @@ export const EmptyPlaceholderIllustrations = {
     fileUpload: FileUploadIllustration,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
-    newList: LaunchIcon,
+    newList: PlusIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };
@@ -358,5 +363,12 @@ export const HelpPanelIcons = {
         samlSSO: SSOIcon,
         token: TokenIcon,
         userInfo: UserInfoIcon
+    },
+    tabs: {
+        docs: OpenBookIcon,
+        guide: CogWheelIcon,
+        samples: CodeIcon,
+        sdks: CubeStack,
+        whatsNext: ShuttleIcon
     }
 };

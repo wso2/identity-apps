@@ -42,6 +42,10 @@ export interface LanguageSwitcherProps extends TestableComponentInterface {
      */
     onLanguageChange: (language: string) => void;
     /**
+     * Show/Hide dropdown caret icon.
+     */
+    showDropdownCaret?: boolean;
+    /**
      * Set of supported languages.
      */
     supportedLanguages: object;
@@ -67,6 +71,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
         currentLanguage,
         direction,
         onLanguageChange,
+        showDropdownCaret,
         supportedLanguages,
         upward,
         [ "data-testid" ]: testId
@@ -89,6 +94,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
             upward={ upward }
             language={ currentLanguage }
             changeLanguage={ handleLanguageChange }
+            showCaret={ showDropdownCaret }
             supportedLanguages={ supportedLanguages }
             data-testid={ testId }
         />
@@ -101,5 +107,6 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
 LanguageSwitcher.defaultProps = {
     "data-testid": "language-switcher",
     direction: "left",
+    showDropdownCaret: false,
     upward: true
 };

@@ -185,6 +185,18 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
     
     return (
         <PageLayout
+            action={
+                (isEmailTemplatesFetchRequestLoading || emailTemplates?.length > 0)
+                && (
+                    <PrimaryButton
+                        onClick={ () => handleAddNewTemplate() }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add"/>
+                        { t("adminPortal:components.emailTemplates.buttons.newTemplate") }
+                    </PrimaryButton>
+                )
+            }
             isLoading={ isEmailTemplatesFetchRequestLoading }
             title={
                 (emailTemplateTypeDetails && emailTemplateTypeDetails.displayName)
@@ -208,19 +220,8 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
                 showPagination={ true }
                 totalPages={ Math.ceil(emailTemplates?.length / listItemLimit) }
                 totalListSize={ emailTemplates?.length }
-                rightActionPanel={
-                    (
-                        <PrimaryButton
-                            onClick={ () => handleAddNewTemplate() }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("adminPortal:components.emailTemplates.buttons.newTemplate") }
-                        </PrimaryButton>
-                    )
-                }
                 data-testid={ `${ testId }-list-layout` }
-                showTopActionPanel={ isEmailTemplatesFetchRequestLoading || emailTemplates?.length  > 0 }
+                showTopActionPanel={ false }
             >
                 <EmailTemplateList
                     isLoading={ isEmailTemplatesFetchRequestLoading }

@@ -584,21 +584,21 @@ export interface AdminPortalNS {
         overview: {
             widgets: {
                 insights: {
-                    applications: {
+                    groups: {
                         heading: string;
                         subHeading: string;
                     };
-                    idp: {
+                    users: {
                         heading: string;
                         subHeading: string;
                     };
                 };
                 overview: {
                     cards: {
-                        applications: {
+                        groups: {
                             heading: string;
                         };
-                        idp: {
+                        users: {
                             heading: string;
                         };
                         userstores: {
@@ -948,6 +948,14 @@ export interface AdminPortalNS {
             addEmailTemplate: string;
             addEmailTemplateLocale: string;
             attributeDialects: string;
+            categories: {
+                attributes: string;
+                certificates: string;
+                configurations: string;
+                general: string;
+                users: string;
+                userstores: string;
+            };
             certificates: string;
             configurations: string;
             editEmailTemplate: string;

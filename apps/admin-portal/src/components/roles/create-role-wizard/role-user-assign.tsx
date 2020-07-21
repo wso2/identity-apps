@@ -20,6 +20,7 @@ import { RolesMemberInterface, TestableComponentInterface } from "@wso2is/core/m
 import { Forms } from "@wso2is/forms";
 import {
     Button,
+    EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
     LinkButton,
@@ -32,7 +33,7 @@ import {
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
+import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { getUsersList } from "../../../api";
 import { EmptyPlaceholderIllustrations } from "../../../configs";
 import { UIConstants } from "../../../constants";
@@ -438,83 +439,81 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     return (
         <>
-            { isEdit ? 
+            { isEdit ?
                 <Grid>
                     <Grid.Row>
                         <Grid.Column computer={ 8 }>
                             {
                                 selectedUsers?.length > 0 ? (
-                                    <Segment.Group fluid>
-                                        <Segment className="user-role-edit-header-segment">
-                                            <Grid.Row>
-                                                <Grid.Column>
-                                                    <Input
-                                                        data-testid={ `${ testId }-users-list-search-input` }
-                                                        icon={ <Icon name="search"/> }
-                                                        onChange={ handleAssignedUserListSearch }
-                                                        placeholder={ t("adminPortal:components.roles.addRoleWizard." +
-                                                            "users.assignUserModal.list.searchPlaceholder") }
-                                                        floated="left"
-                                                        size="small"
-                                                    />
-                                                    <Button
-                                                        data-testid={ `${ testId }-users-list-edit-button` }
-                                                        size="medium"
-                                                        icon="pencil"
-                                                        floated="right"
-                                                        onClick={ handleOpenAddNewGroupModal }
-                                                    />
-                                                </Grid.Column>
-                                            </Grid.Row>
-                                            <Grid.Row>
-                                                <Table singleLine compact>
+                                    <EmphasizedSegment className="user-role-edit-header-segment">
+                                        <Grid.Row>
+                                            <Grid.Column>
+                                                <Input
+                                                    data-testid={ `${ testId }-users-list-search-input` }
+                                                    icon={ <Icon name="search"/> }
+                                                    onChange={ handleAssignedUserListSearch }
+                                                    placeholder={ t("adminPortal:components.roles.addRoleWizard." +
+                                                        "users.assignUserModal.list.searchPlaceholder") }
+                                                    floated="left"
+                                                    size="small"
+                                                />
+                                                <Button
+                                                    data-testid={ `${ testId }-users-list-edit-button` }
+                                                    size="medium"
+                                                    icon="pencil"
+                                                    floated="right"
+                                                    onClick={ handleOpenAddNewGroupModal }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row>
+                                            <Table singleLine compact>
                                                 <Table.Header>
                                                     <Table.Row>
-                                                        <Table.HeaderCell />
+                                                        <Table.HeaderCell/>
                                                         <Table.HeaderCell>
                                                             { t("adminPortal:components.roles.edit.users.list." +
-                                                                "header")}
+                                                                "header") }
                                                         </Table.HeaderCell>
                                                     </Table.Row>
                                                 </Table.Header>
-                                                    <Table.Body>
-                                                        {
-                                                            selectedUsers?.map((user) => {
-                                                                return (
-                                                                    <Table.Row key={ user.id }>
-                                                                        <Table.Cell collapsing>
-                                                                            <UserAvatar
-                                                                                data-testid={ `${ testId }-users-list-
+                                                <Table.Body>
+                                                    {
+                                                        selectedUsers?.map((user) => {
+                                                            return (
+                                                                <Table.Row key={ user.id }>
+                                                                    <Table.Cell collapsing>
+                                                                        <UserAvatar
+                                                                            data-testid={ `${ testId }-users-list-
                                                                                 ${ user.userName }-avatar` }
-                                                                                name={ user.userName }
-                                                                                size="mini"
-                                                                                floated="left"
-                                                                                image={ user.profileUrl }
-                                                                            />
-                                                                        </Table.Cell>
-                                                                        <Table.Cell>
-                                                                            { user.userName }
-                                                                        </Table.Cell>
-                                                                    </Table.Row>
-                                                                )
-                                                            })
-                                                        }
-                                                    </Table.Body>
-                                                </Table>
-                                            </Grid.Row>
-                                        </Segment>
-                                    </Segment.Group>
+                                                                            name={ user.userName }
+                                                                            size="mini"
+                                                                            floated="left"
+                                                                            image={ user.profileUrl }
+                                                                        />
+                                                                    </Table.Cell>
+                                                                    <Table.Cell>
+                                                                        { user.userName }
+                                                                    </Table.Cell>
+                                                                </Table.Row>
+                                                            )
+                                                        })
+                                                    }
+                                                </Table.Body>
+                                            </Table>
+                                        </Grid.Row>
+                                    </EmphasizedSegment>
                                 ) : (
-                                    <Segment>
+                                    <EmphasizedSegment>
                                         <EmptyPlaceholder
                                             title={ t("adminPortal:components.roles.edit.users.list." +
                                                 "emptyPlaceholder.title") }
                                             subtitle={ [
                                                 isGroup
                                                     ? t("adminPortal:components.roles.edit.users.list." +
-                                                        "emptyPlaceholder.subtitles", { type: "group" })
+                                                    "emptyPlaceholder.subtitles", { type: "group" })
                                                     : t("adminPortal:components.roles.edit.users.list." +
-                                                        "emptyPlaceholder.subtitles", { type: "role" })
+                                                    "emptyPlaceholder.subtitles", { type: "role" })
                                             ] }
                                             action={
                                                 <PrimaryButton
@@ -529,7 +528,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             image={ EmptyPlaceholderIllustrations.emptyList }
                                             imageSize="tiny"
                                         />
-                                    </Segment>
+                                    </EmphasizedSegment>
                                 )
                             }
                         </Grid.Column>

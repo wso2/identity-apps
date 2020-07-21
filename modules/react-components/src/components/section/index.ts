@@ -19,3 +19,4 @@
 
 export * from "./edit-section";
 export * from "./section";
+export * from "./emphasized-segment";

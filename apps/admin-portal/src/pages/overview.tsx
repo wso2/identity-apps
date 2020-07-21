@@ -16,24 +16,29 @@
  * under the License.
  */
 
+import { getRolesList } from "@wso2is/core/api";
 import { resolveUserDisplayName } from "@wso2is/core/helpers";
-import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, ProfileInfoInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    Heading,
     Jumbotron,
     PageLayout,
+    StatsInsightsWidget,
     StatsOverviewWidget,
-    StatsQuickLinksWidget
+    StatsQuickLinksWidget,
+    UserAvatar
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Responsive } from "semantic-ui-react";
-import { getUserStores } from "../api";
+import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
+import { getUserStores, getUsersList } from "../api";
+import { RoleList, UsersList } from "../components";
 import { OverviewPageIllustrations } from "../configs";
-import { AppConstants } from "../constants";
+import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
-import { QueryParams } from "../models";
+import { QueryParams, UserListInterface } from "../models";
 import { AppState } from "../store";
 
 /**
@@ -61,12 +66,61 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
     const dispatch = useDispatch();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-
+    const isProfileInfoLoading: boolean = useSelector(
+        (state: AppState) => state.loaders.isProfileInfoRequestLoading);
+    const [ usersList, setUsersList ] = useState<UserListInterface>({});
+    const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
+    const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
+    const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
     const [ userstoresCount, setUserstoresCount ] = useState<number>(0);
+    const [ userCount, setUsersCount ] = useState<number>(0);
+    const [ groupCount, setGroupCount ] = useState<number>(0);
 
     useEffect(() => {
         getUserstoresList(null, null, null, null);
+        getUserList(UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT, null, null, null, null);
+        getGroupsList();
     }, []);
+
+    const getUserList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
+        setUserListRequestLoading(true);
+
+        getUsersList(limit, offset, filter, attribute, domain)
+            .then((response) => {
+                setUsersList(response);
+                setUsersCount(response?.totalResults);
+            })
+            .finally(() => {
+                setUserListRequestLoading(false);
+            });
+    };
+
+    const getGroupsList = () => {
+        setGroupsListRequestLoading(true);
+
+        getRolesList(undefined)
+            .then((response) => {
+                if (response.status === 200) {
+                    const roleResources = response.data.Resources;
+                    if (roleResources && roleResources instanceof Array && roleResources.length !== 0) {
+                        const updatedResources = roleResources.filter((role: RolesInterface) => {
+                            return !role.displayName.includes("Application/")
+                                && !role.displayName.includes("Internal/");
+                        });
+                        response.data.Resources = updatedResources;
+                        setGroupsList(updatedResources);
+                        setGroupCount(updatedResources.length);
+                        
+                        return;
+                    }
+
+                    setGroupsList([]);
+                }
+            })
+            .finally(() => {
+                setGroupsListRequestLoading(false);
+            });
+    };
 
     /**
      * Fetches all userstores.
@@ -175,61 +229,149 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     ] }
                 />
             </Grid.Column>
+            <Grid.Column className="with-bottom-gutters">
+                <StatsInsightsWidget
+                    heading={ t("adminPortal:components.overview.widgets.insights.groups.heading") }
+                    subHeading={ t("adminPortal:components.overview.widgets.insights.groups.subHeading") }
+                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
+                    onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("GROUPS")) }
+                    showExtraContent={ groupList instanceof Array && groupList.length > 0 }
+                >
+                    <RoleList
+                        selection
+                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
+                        data-testid="group-mgt-groups-list"
+                        isGroup={ true }
+                        isLoading={ isGroupsListRequestLoading }
+                        onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.PATHS.get("GROUPS")) }
+                        showListItemActions={ false }
+                        actionsColumnWidth={ 1 }
+                        descriptionColumnWidth={ 14 }
+                        metaColumnWidth={ 1 }
+                        showMetaContent={ false }
+                        roleList={ groupList }
+                    />
+                </StatsInsightsWidget>
+            </Grid.Column>
+            <Grid.Column className="with-bottom-gutters">
+                <StatsInsightsWidget
+                    heading={ t("adminPortal:components.overview.widgets.insights.users.heading") }
+                    subHeading={ t("adminPortal:components.overview.widgets.insights.users.subHeading") }
+                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
+                    onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("USERS")) }
+                    showExtraContent={
+                        usersList?.Resources
+                        && usersList.Resources instanceof Array
+                        && usersList.Resources.length > 0
+                    }
+                >
+                    <UsersList
+                        selection
+                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
+                        isLoading={ isUserListRequestLoading }
+                        usersList={ usersList }
+                        onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.PATHS.get("USERS")) }
+                        showListItemActions={ false }
+                        actionsColumnWidth={ 1 }
+                        descriptionColumnWidth={ 14 }
+                        metaColumnWidth={ 1 }
+                        showMetaContent={ false }
+                        data-testid={ `${ testId }-list` }
+                    />
+                </StatsInsightsWidget>
+            </Grid.Column>
         </>
     );
 
     return (
-        <>
+        <PageLayout
+            contentTopMargin={ false }
+            data-testid={ `${ testId }-page-layout` }
+        >
             <Jumbotron
+                bordered
+                background="white"
                 contentInline
-                borderRadius={ 0 }
-                heading={ t(
-                    "adminPortal:pages.overview.title", { firstName: resolveUserDisplayName(profileInfo) }
-                ) }
-                subHeading={ t("adminPortal:pages.overview.subTitle") }
-                icon={ OverviewPageIllustrations.jumbotronIllustration }
                 iconOptions={ {
                     fill: "primary"
                 } }
-            />
-            <PageLayout
-                contentTopMargin={ false }
-                data-testid={ `${ testId }-page-layout` }
+                data-testid={ `${ testId }-jumbotron` }
             >
-                <StatsOverviewWidget
-                    heading={ t("adminPortal:components.overview.widgets.overview.heading") }
-                    subHeading={ t("adminPortal:components.overview.widgets.overview.subHeading") }
-                    stats={ [
-                        {
-                            icon: OverviewPageIllustrations.statsOverview.userstores,
-                            iconOptions: {
-                                background: "accent3",
-                                fill: "white"
-                            },
-                            label: t("adminPortal:components.overview.widgets.overview.cards.userstores.heading"),
-                            value: userstoresCount
-                        }
-                    ] }
-                />
-                <Divider hidden/>
-                <Grid>
-                    <Responsive
-                        as={ Grid.Row }
-                        columns={ 3 }
-                        minWidth={ Responsive.onlyComputer.minWidth }
-                    >
-                        { resolveGridContent() }
-                    </Responsive>
-                    <Responsive
-                        as={ Grid.Row }
-                        columns={ 1 }
-                        maxWidth={ Responsive.onlyComputer.minWidth }
-                    >
-                        { resolveGridContent() }
-                    </Responsive>
-                </Grid>
-            </PageLayout>
-        </>
+                <div className="inline-flex">
+                    <UserAvatar
+                        inline
+                        profileInfo={ profileInfo }
+                        isLoading={ isProfileInfoLoading }
+                        spaced="right"
+                        size="x60"
+                    />
+                    <div>
+                        <Heading as="h1" ellipsis compact>
+                            {
+                                t(
+                                    "adminPortal:pages.overview.title",
+                                    { firstName: resolveUserDisplayName(profileInfo) }
+                                )
+                            }
+                        </Heading>
+                        <Heading as="h5" subHeading ellipsis>
+                            { t("adminPortal:pages.overview.subTitle") }
+                        </Heading>
+                    </div>
+                </div>
+            </Jumbotron>
+            <Divider hidden />
+            <StatsOverviewWidget
+                heading={ t("adminPortal:components.overview.widgets.overview.heading") }
+                subHeading={ t("adminPortal:components.overview.widgets.overview.subHeading") }
+                stats={ [
+                    {
+                        icon: OverviewPageIllustrations.statsOverview.users,
+                        iconOptions: {
+                            background: "accent1",
+                            fill: "white"
+                        },
+                        label: t("adminPortal:components.overview.widgets.overview.cards.users.heading"),
+                        value: userCount
+                    },
+                    {
+                        icon: OverviewPageIllustrations.statsOverview.groups,
+                        iconOptions: {
+                            background: "accent2",
+                            fill: "white"
+                        },
+                        label: t("adminPortal:components.overview.widgets.overview.cards.groups.heading"),
+                        value: groupCount
+                    },
+                    {
+                        icon: OverviewPageIllustrations.statsOverview.userstores,
+                        iconOptions: {
+                            background: "accent3",
+                            fill: "white"
+                        },
+                        label: t("adminPortal:components.overview.widgets.overview.cards.userstores.heading"),
+                        value: userstoresCount
+                    }
+                ] }
+            />
+            <Divider hidden/>
+            <Grid>
+                <Responsive
+                    as={ Grid.Row }
+                    columns={ 3 }
+                    minWidth={ Responsive.onlyComputer.minWidth }
+                >
+                    { resolveGridContent() }
+                </Responsive>
+                <Responsive
+                    as={ Grid.Row }
+                    columns={ 1 }
+                    maxWidth={ Responsive.onlyComputer.minWidth }
+                >
+                    { resolveGridContent() }
+                </Responsive>
+            </Grid>
+        </PageLayout>
     );
 };
 
@@ -237,7 +379,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
  * Default props for the component.
  */
 OverviewPage.defaultProps = {
-    "data-testid": "overview"
+    "data-testid": "overview-page"
 };
 
 /**

@@ -1077,22 +1077,22 @@ export const adminPortal: AdminPortalNS = {
         overview: {
             widgets: {
                 insights: {
-                    applications: {
-                        heading: "Applications",
-                        subHeading: "Overview of applications"
+                    groups: {
+                        heading: "Groups",
+                        subHeading: "Overview of Groups"
                     },
-                    idp: {
-                        heading: "Identity Providers",
-                        subHeading: "Overview of Identity Providers"
+                    users: {
+                        heading: "Users",
+                        subHeading: "Overview of Users"
                     }
                 },
                 overview: {
                     cards: {
-                        applications: {
-                            heading: "Applications"
+                        groups: {
+                            heading: "Groups"
                         },
-                        idp: {
-                            heading: "Identity Providers"
+                        users: {
+                            heading: "Users"
                         },
                         userstores: {
                             heading: "Userstores"
@@ -1650,6 +1650,14 @@ export const adminPortal: AdminPortalNS = {
             addEmailTemplate: "Add Email Template",
             addEmailTemplateLocale: "Add Email Template Locale",
             attributeDialects: "Attribute Dialects",
+            categories: {
+                attributes: "Attributes",
+                certificates: "Certificates",
+                configurations: "Configurations",
+                general: "General",
+                users: "Users",
+                userstores: "Userstores"
+            },
             certificates: "Certificates",
             configurations: "Configurations",
             editEmailTemplate: "Email Templates",

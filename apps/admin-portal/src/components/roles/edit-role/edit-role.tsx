@@ -61,7 +61,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         {
             menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
             render: () => (
-                <ResourceTab.Pane attached={ false }>
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <BasicRoleDetails
                         data-testid={
                             isGroup
@@ -77,7 +77,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         },{
             menuItem: t("adminPortal:components.roles.edit.menuItems.permissions"),
             render: () => (
-                <ResourceTab.Pane attached={ false }>
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <RolePermissionDetails
                         data-testid={
                             isGroup
@@ -93,7 +93,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         },{
             menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
             render: () => (
-                <ResourceTab.Pane attached={ false }>
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <RoleUserDetails
                         data-testid={
                             isGroup

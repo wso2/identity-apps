@@ -47,9 +47,9 @@ body {
         text-align: right;
 
         .version-label {
-            padding: 3px 6px;
-            font-size: 0.6em;
-            font-weight: 600;
+            padding: @productVersionLabelPadding;
+            font-size: @productVersionLabelFontSize;
+            font-weight: @productVersionLabelFontWeight;
 
             &.primary {
                 background-color: @primaryColor !important;
@@ -61,8 +61,8 @@ body {
     }
     .product-logo {
         width: @productLogoWidth;
-        vertical-align: text-top;
-        margin-right: 5px;
+        vertical-align: @productLogoVerticalAlign;
+        margin: @productLogoMargin;
 
         .icon {
             height: @productLogoHeight;
@@ -81,6 +81,7 @@ body {
 
         .app-name {
             margin: @productTitleAppNameMargin;
+            text-transform: @productTitleAppNameTextTransform;
             font-size: @productTitleAppNameFontSize;
             font-weight: @productTitleAppNameFontWeight;
         }
@@ -94,6 +95,20 @@ body {
          Global Helper Classes
 *****************************************/
 
+.display {
+    &-flex {
+        display: flex !important;
+    }
+    
+    &-inline {
+        display: inline !important;
+    }
+    
+    &-inline-block {
+        display: inline-block !important;
+    }
+}
+
 .flex {
     display: flex;
 }
@@ -104,6 +119,10 @@ body {
 
 .inline {
     display: inline-block;
+}
+
+.inline-flex {
+    display: inline-flex;
 }
 
 .floated {
@@ -471,6 +490,16 @@ body {
 
     &.list-layout {
         .top-action-panel {
+            .ui.grid {
+                background: @listLayoutActionPanelBackgroundColor;
+                margin-right: @listLayoutActionPanelMarginRight;
+                margin-left: @listLayoutActionPanelMarginLeft;
+                border: @listLayoutActionPanelBorder;
+                
+                .row {
+                    padding: @listLayoutActionPanelPadding;
+                }
+            }
             .actions {
                 display: flex;
 
@@ -970,9 +999,24 @@ body {
         }
     }
     &.hoverable {
-        padding: 6px;
         display: flex;
-        border-radius: @defaultBorderRadius;
+
+        &.hover {
+            &-rounded {
+                padding: @genericIconRoundedHoverPadding;
+                border-radius: @defaultBorderRadius;
+            }
+            &-square {
+                padding: @genericIconSquareHoverPadding;
+                border-radius: 0;
+            }
+            &-circular {
+                width: @genericIconCircularHoverWidth;
+                margin: @genericIconCircularHoverMargin;
+                padding: @genericIconCircularHoverPadding;
+                border-radius: 50%;
+            }
+        }
 
         &:hover {
             background: @iconHoverBgColor;
@@ -1008,7 +1052,7 @@ body {
         color: @lightTextColor;
     }
     .action-container {
-        margin-top: 12px;
+        margin: @emptyPlaceholderActionMargin;
     }
 }
 
@@ -1296,6 +1340,14 @@ body {
 
     .list-pagination {
         float: right;
+    }
+    
+    .page-limit-label {
+        color: @paginationBarItemLimitLabelColor;
+    }
+
+    .page-limit-dropdown {
+        font-size: @paginationBarItemLimitDropdownFontSize;
     }
 }
 

@@ -27,6 +27,10 @@ import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
  */
 export interface LabeledCardPropsInterface extends TestableComponentInterface {
     /**
+     * Card Background color.
+     */
+    background?: "transparent" | "default";
+    /**
      * Basic appearance with no borders etc.
      */
     basic?: boolean;
@@ -112,6 +116,7 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
 ): ReactElement => {
 
     const {
+        background,
         basic,
         bottomMargin,
         className,
@@ -150,6 +155,7 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
     const cardClasses = classNames(
         "labeled-card",
         {
+            [ `background-${ background }` ]: background,
             disabled,
             selected,
             [ "with-image" ]: image
@@ -214,6 +220,7 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
  * Default props for the labeled card component.
  */
 LabeledCard.defaultProps = {
+    background: "default",
     basic: false,
     bottomMargin: true,
     "data-testid": "labeled-card",
