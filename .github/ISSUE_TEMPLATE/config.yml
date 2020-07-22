@@ -1,0 +1,6 @@
+
+blank_issues_enabled: true
+contact_links:
+  - name: ❗️ Issue/Bug report
+    url: https://github.com/wso2/product-is/issues
+    about: Please report issue or bug related to the project here
