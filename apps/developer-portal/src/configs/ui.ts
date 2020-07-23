@@ -254,6 +254,11 @@ export const IdentityProviderWizardStepIcons = {
     summary: ReportIcon
 };
 
+export const OIDCScopeWizardStepIcons = {
+    general: DocumentIcon,
+    claimConfig: GearsIcon
+};
+
 export const AuthenticatorIcons = {
     basic: BasicAuthIcon,
     default: LockShieldIcon,
