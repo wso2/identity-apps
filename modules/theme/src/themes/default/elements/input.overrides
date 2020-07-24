@@ -28,14 +28,18 @@
         border-radius: @borderRadius;
 
         input {
-            border: none;
+            border: @advancedSearchInputBorder;
+            background: @advancedSearchInputBackgroundColor;
         }
         &.with-add-on {
+            border: @advancedSearchWithAddonBorder;
+
             .input-add-on {
-                border: none;
+                border: @advancedSearchAddonButtonBorder;
+                background: @advancedSearchAddonButtonBackgroundColor !important;
 
                 &:active {
-                    background: transparent !important;
+                    background: @advancedSearchAddonButtonActiveBackgroundColor;
                 }
             }
         }

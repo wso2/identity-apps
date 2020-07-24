@@ -1,3 +1,16 @@
 /*******************************
         Input Variables
 *******************************/
+
+/*------------------------------
+        Advanced Search
+-------------------------------*/
+
+@advancedSearchWithAddonBorder: none;
+
+@advancedSearchInputBorder: none;
+@advancedSearchInputBackgroundColor: @lightInputBackground;
+
+@advancedSearchAddonButtonBorder: none;
+@advancedSearchAddonButtonBackgroundColor: @advancedSearchInputBackgroundColor;
+@advancedSearchAddonButtonActiveBackgroundColor: @advancedSearchInputBackgroundColor;
