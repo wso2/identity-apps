@@ -19,7 +19,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
-<jsp:directive.include file="../init-url.jsp"/>
+<jsp:directive.include file="../includes/init-url.jsp"/>
 
 <div>
     <h2 class="wr-title uppercase blue-bg padding-double white boarder-bottom-blue margin-none">
