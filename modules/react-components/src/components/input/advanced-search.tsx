@@ -71,6 +71,10 @@ export interface AdvancedSearchPropsInterface extends TestableComponentInterface
      */
     externalSearchQuery?: string;
     /**
+     * Fill color.
+     */
+    fill?: "white" | "default";
+    /**
      * Hint action keyboard keys.
      */
     hintActionKeys?: string;
@@ -134,6 +138,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
         dropdownPosition,
         dropdownTriggerPopupLabel,
         externalSearchQuery,
+        fill,
         hintActionKeys,
         hintLabel,
         clearIcon,
@@ -198,7 +203,8 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
      */
     const wrapperClasses = classNames({
         [ "search-hint-active" ]: showSearchFieldHint,
-        [ `aligned-${ aligned }` ]: aligned
+        [ `aligned-${ aligned }` ]: aligned,
+        [ `fill-${ fill }` ]: fill
     }, className);
 
     /**
@@ -392,6 +398,7 @@ AdvancedSearch.defaultProps = {
     dropdownPosition: "bottom left",
     dropdownTriggerPopupLabel: null,
     externalSearchQuery: "",
+    fill: "default",
     hintActionKeys: "Enter",
     hintLabel: "Search for",
     onExternalSearchQueryClear: null,

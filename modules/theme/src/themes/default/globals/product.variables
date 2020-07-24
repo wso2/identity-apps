@@ -43,6 +43,11 @@
    Advanced search
 --------------------*/
 
+@advancedSearchInputBorder: @defaultBorderWidth solid transparent;
+@advancedSearchInputBorderRadius: @defaultBorderRadius;
+@advancedSearchActiveInputBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+@advancedSearchActiveInputBorderBottom: none;
+
 @advancedSearchHintBackground: @lightInputBackground;
 @advancedSearchHintBorder: none;
 @advancedSearchOptionsShadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -50,11 +55,11 @@
 @advancedSearchOptionsHeaderBorderBottom: 1px solid #dededf;
 @advancedSearchDropdownMaxWidth: 520px;
 
-@advancedSearchWrapperBorder: @defaultBorderWidth solid transparent;
-@advancedSearchWrapperBorderBottom: none;
+@advancedSearchWhiteInputBackgroundColor: @white;
+@advancedSearchWhiteHintBackground: @white;
+@advancedSearchWhiteInputBorder: @defaultBorderWidth solid @defaultBorderColor;
 
-@advancedSearchActiveWrapperBorder: @defaultBorderWidth solid @borderColor;
-@advancedSearchActiveWrapperBorderBottom: none;
+@advancedSearchActiveInputBorder: @defaultBorderWidth solid @borderColor;
 @advancedSearchActiveBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
 
 @advancedSearchQueryHintPadding: 5px 16px;
@@ -63,8 +68,13 @@
 @advancedSearchQueryHintFontSize: 12px;
 @advancedSearchActiveSearchQueryBorder: 1px solid @borderColor;
 @advancedSearchActiveSearchQueryBorderTop: @defaultBorderWidth solid @lightBorderColor;
-@advancedSearchActiveSearchQueryLeft: -1px;
-@advancedSearchActiveSearchQueryWidth: @advancedSearchWidth + 2px;
+@advancedSearchActiveSearchQueryWidth: @advancedSearchWidth;
+
+@advancedSearchInputBackgroundColor: @lightInputBackground;
+
+@advancedSearchAddonButtonBorder: none;
+@advancedSearchAddonButtonBackgroundColor: @advancedSearchInputBackgroundColor;
+@advancedSearchAddonButtonActiveBackgroundColor: @advancedSearchInputBackgroundColor;
 
 /*-------------------
        Alert

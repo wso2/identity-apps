@@ -1108,8 +1108,42 @@ body {
 
 .advanced-search-wrapper {
     position: relative;
-    border: @advancedSearchWrapperBorder;
-    border-bottom: @advancedSearchWrapperBorderBottom;
+    
+    &.fill {
+        &-default {
+            &.search-hint-active {
+                .ui.action.input.advanced-search.with-add-on {
+                    border: @advancedSearchActiveInputBorder;
+                }
+            }
+        }
+        &-white {
+            .ui.action.input {
+                &.advanced-search {
+                    &.with-add-on {
+                        border: @advancedSearchWhiteInputBorder;
+                        border-radius: @advancedSearchInputBorderRadius;
+
+                        input {
+                            background: @advancedSearchWhiteInputBackgroundColor;
+                        }
+                        
+                        .input-add-on {
+                            background: @advancedSearchWhiteInputBackgroundColor !important;
+
+                            &:active {
+                                background: @advancedSearchWhiteInputBackgroundColor !important;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .search-query-hint {
+                background: @advancedSearchWhiteHintBackground;
+            }
+        }
+    }
 
     &.aligned-left {
         text-align: left;
@@ -1120,6 +1154,44 @@ body {
     &.aligned-center {
         text-align: center;
     }
+
+    .ui.action.input {
+        &.advanced-search {
+            min-width: @advancedSearchWidth;
+            border: @advancedSearchBorder;
+            border-radius: @borderRadius;
+            
+            &.with-add-on {
+                border: @advancedSearchInputBorder;
+
+                input {
+                    border: @advancedSearchInputBorder;
+                    background: @advancedSearchInputBackgroundColor;
+
+                    &:focus {
+                        border-right-color: transparent !important;
+                    }
+                }
+
+                .input-add-on {
+                    border: @advancedSearchAddonButtonBorder;
+                    background: @advancedSearchAddonButtonBackgroundColor !important;
+
+                    &:active {
+                        background: @advancedSearchAddonButtonActiveBackgroundColor;
+                    }
+                }
+            }
+        }
+    }
+
+    &.search-hint-active {
+        .ui.action.input.advanced-search.with-add-on {
+            border-radius: @advancedSearchActiveInputBorderRadius !important;
+            border-bottom: @advancedSearchActiveInputBorderBottom !important;
+        }
+    }
+    
     .search-query-hint {
         position: absolute;
         visibility: hidden;
@@ -1131,7 +1203,6 @@ body {
         background: @advancedSearchHintBackground;
         border: @advancedSearchActiveSearchQueryBorder;
         border-top: @advancedSearchActiveSearchQueryBorderTop;
-        left: @advancedSearchActiveSearchQueryLeft;
 
         .query {
             display: inline-block;
@@ -1146,16 +1217,6 @@ body {
         }
         &.active {
             visibility: visible;
-        }
-    }
-    
-    &.search-hint-active {
-        border: @advancedSearchActiveWrapperBorder;
-        border-radius: @advancedSearchActiveBorderRadius;
-        border-bottom: @advancedSearchActiveWrapperBorderBottom;
-
-        .search-query-hint {
-            
         }
     }
 }
