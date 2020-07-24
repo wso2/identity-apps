@@ -142,35 +142,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                advancedSearch={
-                    <AdvancedSearchWithBasicFilters
-                        onFilter={ null }
-                        filterAttributeOptions={ [
-                            {
-                                key: 0,
-                                text: t("common:name"),
-                                value: "name"
-                            }
-                        ] }
-                        filterAttributePlaceholder={
-                            t("devPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
-                                ".placeholder")
-                        }
-                        filterConditionsPlaceholder={
-                            t("devPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
-                                ".placeholder")
-                        }
-                        filterValuePlaceholder={
-                            t("devPortal:components.applications.advancedSearch.form.inputs.filterValue" +
-                                ".placeholder")
-                        }
-                        placeholder="Search by scope name"
-                        defaultSearchAttribute="name"
-                        defaultSearchOperator="co"
-                        triggerClearQuery={ triggerClearQuery }
-                        data-testid={ `${ testId }-list-advanced-search` }
-                    />
-                }
+                advancedSearch={ null }
                 onPageChange={ null }
                 onSortStrategyChange={ null }
                 rightActionPanel={
