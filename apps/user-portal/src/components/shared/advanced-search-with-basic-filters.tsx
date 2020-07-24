@@ -46,7 +46,17 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
 /**
  * Prop types for the application search component.
  */
-export interface AdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
+export interface AdvancedSearchWithBasicFiltersPropsInterface
+  extends StrictAdvancedSearchWithBasicFiltersPropsInterface,
+    TestableComponentInterface {
+    
+    [ key: string ]: any;
+}
+
+/**
+ * Strict prop types for the application search component.
+ */
+export interface StrictAdvancedSearchWithBasicFiltersPropsInterface extends TestableComponentInterface {
     /**
      * Default Search attribute. ex: "name"
      */
@@ -130,7 +140,8 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
         showResetButton,
         submitButtonLabel,
         triggerClearQuery,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const { t } = useTranslation();
@@ -211,22 +222,23 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
     return (
         <AdvancedSearch
             aligned="left"
-            clearButtonPopupLabel={ t("adminPortal:components.advancedSearch.popups.clear") }
+            clearButtonPopupLabel={ t("userPortal:components.advancedSearch.popups.clear") }
             clearIcon={ AdvancedSearchIcons.clear }
             defaultSearchStrategy={ defaultSearchAttribute + " " + defaultSearchOperator }
-            dropdownTriggerPopupLabel={ t("adminPortal:components.advancedSearch.popups.dropdown") }
-            hintActionKeys={ t("adminPortal:components.advancedSearch.hints.querySearch.actionKeys") }
-            hintLabel={ t("adminPortal:components.advancedSearch.hints.querySearch.label") }
+            dropdownTriggerPopupLabel={ t("userPortal:components.advancedSearch.popups.dropdown") }
+            hintActionKeys={ t("userPortal:components.advancedSearch.hints.querySearch.actionKeys") }
+            hintLabel={ t("userPortal:components.advancedSearch.hints.querySearch.label") }
             onExternalSearchQueryClear={ handleExternalSearchQueryClear }
             onSearchQuerySubmit={ handleSearchQuerySubmit }
             placeholder={ placeholder }
             resetSubmittedState={ handleResetSubmittedState }
-            searchOptionsHeader={ t("adminPortal:components.advancedSearch.options.header") }
+            searchOptionsHeader={ t("userPortal:components.advancedSearch.options.header") }
             externalSearchQuery={ externalSearchQuery }
             submitted={ isFormSubmitted }
             dropdownPosition={ dropdownPosition }
             triggerClearQuery={ triggerClearQuery }
             data-testid={ testId }
+            { ...rest }
         >
             <Grid>
                 <Grid.Row columns={ 1 }>
@@ -244,17 +256,17 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                 }
                                 // TODO: Enable this once default value is working properly for the dropdowns.
                                 // readOnly={ filterAttributeOptions.length === 1 }
-                                label={ t("adminPortal:components.advancedSearch.form.inputs.filterAttribute.label") }
+                                label={ t("userPortal:components.advancedSearch.form.inputs.filterAttribute.label") }
                                 name={ FILTER_ATTRIBUTE_FIELD_IDENTIFIER }
                                 placeholder={
                                     filterAttributePlaceholder
                                         ? filterAttributePlaceholder
-                                        : t("adminPortal:components.advancedSearch.form.inputs.filterAttribute" +
+                                        : t("userPortal:components.advancedSearch.form.inputs.filterAttribute" +
                                         ".placeholder")
                                 }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("adminPortal:components.advancedSearch.form.inputs.filterAttribute" +
+                                    t("userPortal:components.advancedSearch.form.inputs.filterAttribute" +
                                         ".validations.empty")
                                 }
                                 type="dropdown"
@@ -280,32 +292,32 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                             })
                                     }
                                     label={
-                                        t("adminPortal:components.advancedSearch.form.inputs.filterCondition.label")
+                                        t("userPortal:components.advancedSearch.form.inputs.filterCondition.label")
                                     }
                                     name={ FILTER_CONDITION_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterConditionsPlaceholder
                                             ? filterConditionsPlaceholder
-                                            : t("adminPortal:components.advancedSearch.form.inputs.filterCondition" +
+                                            : t("userPortal:components.advancedSearch.form.inputs.filterCondition" +
                                             ".placeholder")
                                     }
                                     required={ true }
-                                    requiredErrorMessage={ t("adminPortal:components.advancedSearch.form.inputs" +
+                                    requiredErrorMessage={ t("userPortal:components.advancedSearch.form.inputs" +
                                         ".filterCondition.validations.empty") }
                                     type="dropdown"
                                     data-testid={ `${ testId }-filter-condition-dropdown` }
                                 />
                                 <Field
-                                    label={ t("adminPortal:components.advancedSearch.form.inputs.filterValue.label") }
+                                    label={ t("userPortal:components.advancedSearch.form.inputs.filterValue.label") }
                                     name={ FILTER_VALUES_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterValuePlaceholder
                                             ? filterValuePlaceholder
-                                            : t("adminPortal:components.advancedSearch.form.inputs.filterValue" +
+                                            : t("userPortal:components.advancedSearch.form.inputs.filterValue" +
                                             ".placeholder")
                                     }
                                     required={ true }
-                                    requiredErrorMessage={ t("adminPortal:components.advancedSearch.form.inputs" +
+                                    requiredErrorMessage={ t("userPortal:components.advancedSearch.form.inputs" +
                                         ".filterValue.validations.empty") }
                                     type="text"
                                     data-testid={ `${ testId }-filter-value-input` }

@@ -121,7 +121,65 @@ export const userPortal: UserPortalNS = {
                 }
             }
         },
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "Filter attribute",
+                        placeholder: "E.g. Name, Description etc.",
+                        validations: {
+                            empty: "Filter attribute is a required field."
+                        }
+                    },
+                    filterCondition: {
+                        label: "Filter condition",
+                        placeholder: "E.g. Starts with etc.",
+                        validations: {
+                            empty: "Filter condition is a required field."
+                        }
+                    },
+                    filterValue: {
+                        label: "Filter value",
+                        placeholder: "E.g. admin, wso2 etc.",
+                        validations: {
+                            empty: "Filter value is a required field."
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Shift + Enter",
+                    label: "To search as a query"
+                }
+            },
+            options: {
+                header: "Advanced search"
+            },
+            placeholder: "Search by {{attribute}}",
+            popups: {
+                clear: "clear search",
+                dropdown: "Show options"
+            },
+            resultsIndicator: "Showing results for the query \"{{query}}\""
+        },
         applications: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Name, Description etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "E.g. Zoom, Salesforce etc."
+                        }
+                    }
+                },
+                placeholder: "Search by application name"
+            },
             all: {
                 heading: "All Applications"
             },
@@ -157,50 +215,6 @@ export const userPortal: UserPortalNS = {
             },
             recent: {
                 heading: "Recent Applications"
-            },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "Filter attribute",
-                                placeholder: "ex: name, description etc.",
-                                validations: {
-                                    empty: "Filter attribute is a required field"
-                                }
-                            },
-                            filterCondition: {
-                                label: "Filter condition",
-                                placeholder: "ex: Starts with etc.",
-                                validations: {
-                                    empty: "Filter condition is a required field"
-                                }
-                            },
-                            filterValue: {
-                                label: "Filter value",
-                                placeholder: "ex: facebook, slack etc.",
-                                validations: {
-                                    empty: "Filter value is a required field"
-                                }
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "To search as a query"
-                    }
-                },
-                options: {
-                    header: "Advanced search"
-                },
-                placeholder: "Search by name",
-                popups: {
-                    clear: "clear search",
-                    dropdown: "show options"
-                },
-                resultsIndicator: "Showing results for the query {{query}}"
             }
         },
         approvals: {
@@ -565,9 +579,9 @@ export const userPortal: UserPortalNS = {
                         heading: "Enter the verification code from the Authentication App",
                         label: "Verification Code",
                         placeholder: "Enter your verification code",
-                        requiredError: "Enter the verification code",
                         reScan: "Re-scan",
-                        reScanQuestion: "Want to scan the QR code again?"
+                        reScanQuestion: "Want to scan the QR code again?",
+                        requiredError: "Enter the verification code"
                     }
                 },
                 notifications: {

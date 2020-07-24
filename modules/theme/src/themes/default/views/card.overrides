@@ -133,6 +133,7 @@
             }
         }
         .top-action-panel {
+            background: @settingsCardTopActionPanelBackground;
             box-shadow: none;
             padding: 0 @settingsCardPadding;
             border-left: 0;

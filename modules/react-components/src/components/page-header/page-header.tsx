@@ -19,7 +19,7 @@
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { MouseEventHandler, ReactElement, ReactNode } from "react";
-import { Divider, Header, Icon, Placeholder } from "semantic-ui-react";
+import { Divider, Grid, Header, Icon, Placeholder, SemanticWIDTHS } from "semantic-ui-react";
 import { GenericIcon } from "../icon";
 
 /**
@@ -30,6 +30,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Action component.
      */
     action?: ReactNode;
+    /**
+     * Column width for the action container grid.
+     */
+    actionColumnWidth?: SemanticWIDTHS;
     /**
      * Go back button.
      */
@@ -46,6 +50,10 @@ export interface PageHeaderPropsInterface extends LoadableComponentInterface, Te
      * Description.
      */
     description?: ReactNode;
+    /**
+     * Column width for the heading container grid.
+     */
+    headingColumnWidth?: SemanticWIDTHS;
     /**
      * Optional image.
      */
@@ -95,10 +103,12 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
 
     const {
         action,
+        actionColumnWidth,
         backButton,
         bottomMargin,
         className,
         description,
+        headingColumnWidth,
         image,
         isLoading,
         showBottomDivider,
@@ -119,7 +129,6 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
     const innerClasses = classNames(
         "page-header-inner",
         {
-            [ "display-inline-block" ]: action,
             [ "with-image" ]: image
         }
     );
@@ -130,6 +139,67 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
             [ "display-flex" ]: action,
             "fluid": isLoading
         }
+    );
+    
+    const headingContent = (
+        <div className={ innerClasses }>
+            { image && (
+                <GenericIcon
+                    icon={
+                        isLoading ?
+                            (
+                                <div className="fluid">
+                                    <Placeholder style={ { height: 100, width: 100 } }>
+                                        <Placeholder.Image square/>
+                                    </Placeholder>
+                                </div>
+                            )
+                            : image
+                    }
+                    size="tiny"
+                    transparent
+                    spaced="right"
+                    data-testid={ `${ testId }-image` }
+                />
+            ) }
+
+            {
+                isLoading
+                    ? (
+                        <Header className="page-header ellipsis"
+                                as={ titleAs }
+                                textAlign={ titleTextAlign }
+                        >
+                            <div style={ { width: "250px" } }>
+                                <Placeholder fluid>
+                                    <Placeholder.Header>
+                                        <Placeholder.Line/>
+                                        { description && <Placeholder.Line/> }
+                                    </Placeholder.Header>
+                                </Placeholder>
+                            </div>
+                        </Header>
+                    )
+                    : (
+                        <Header
+                            className="page-header ellipsis"
+                            as={ titleAs }
+                            textAlign={ titleTextAlign }
+                            data-testid={ `${ testId }-header` }
+                        >
+                            { title && title }
+                            { description && (
+                                <Header.Subheader
+                                    className="sub-header ellipsis"
+                                    data-testid={ `${ testId }-sub-header` }
+                                >
+                                    { description }
+                                </Header.Subheader>
+                            ) }
+                        </Header>
+                    )
+            }
+        </div>
     );
 
     return (
@@ -158,66 +228,21 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                                 )
                         )
                     }
-                    <div className={ innerClasses }>
-                        { image && (
-                            <GenericIcon
-                                icon={
-                                    isLoading ?
-                                        (
-                                            <div className="fluid">
-                                                <Placeholder style={ { height: 100, width: 100 } }>
-                                                    <Placeholder.Image square/>
-                                                </Placeholder>
-                                            </div>
-                                        )
-                                        : image
-                                }
-                                size="tiny"
-                                transparent
-                                spaced="right"
-                                data-testid={ `${ testId }-image` }
-                            />
-                        ) }
-
-                        {
-                            isLoading
-                                ? (
-                                    <Header className="page-header ellipsis"
-                                            as={ titleAs }
-                                            textAlign={ titleTextAlign }
-                                    >
-                                        <div style={ { width: "250px" } }>
-                                            <Placeholder fluid>
-                                                <Placeholder.Header>
-                                                    <Placeholder.Line/>
-                                                    { description && <Placeholder.Line/> }
-                                                </Placeholder.Header>
-                                            </Placeholder>
-                                        </div>
-                                    </Header>
-                                )
-                                : (
-                                    <Header
-                                        className="page-header ellipsis"
-                                        as={ titleAs }
-                                        textAlign={ titleTextAlign }
-                                        data-testid={ `${ testId }-header` }
-                                    >
-                                        { title && title }
-                                        { description && (
-                                            <Header.Subheader
-                                                className="sub-header ellipsis"
-                                                data-testid={ `${ testId }-sub-header` }
-                                            >
-                                                { description }
-                                            </Header.Subheader>
-                                        ) }
-                                    </Header>
-                                )
-                        }
-                    </div>
                     {
-                        action && <div className="floated right action">{ action }</div>
+                        action
+                            ? (
+                                <Grid>
+                                    <Grid.Row>
+                                        <Grid.Column computer={ headingColumnWidth }>
+                                            { headingContent }
+                                        </Grid.Column>
+                                        <Grid.Column computer={ actionColumnWidth }>
+                                            { action && <div className="floated right action">{ action }</div> }
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
+                            )
+                            : headingContent
                     }
                     {
                         bottomMargin && <Divider hidden/>
@@ -235,8 +260,10 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
  * Default proptypes for the page header component.
  */
 PageHeader.defaultProps = {
+    actionColumnWidth: 6,
     bottomMargin: true,
     "data-testid": "page-header",
+    headingColumnWidth: 10,
     showBottomDivider: false,
     titleAs: "h1"
 };

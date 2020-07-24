@@ -343,6 +343,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
  */
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
-    dropdownPosition: "bottom right",
+    dropdownPosition: "bottom left",
     showResetButton: true
 };

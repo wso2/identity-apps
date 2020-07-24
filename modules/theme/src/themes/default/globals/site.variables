@@ -140,6 +140,12 @@
 @linkColor           : @primaryColor;
 @linkHoverUnderline  : underline;
 
+/*--------------
+   Form Input
+---------------*/
+
+@lightInputBackground : #fafafa;
+
 /*-------------------
    Advanced search
 --------------------*/
