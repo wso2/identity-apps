@@ -74,6 +74,7 @@ Recent Application Card
 @selectionCardHeaderMaxWidth: 100%;
 @selectionCardDescriptionMaxWidth: 100%;
 @selectionCardDescriptionMinHeight: 20px;
+@settingsCardTopActionPanelBackgroundColor: @lightPageBackground;
 
 /*-------------------------------
           Template Card
