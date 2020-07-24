@@ -164,6 +164,11 @@
 
 @listLayoutActionPanelDropdownBackground: @lightInputBackground;
 @listLayoutActionPanelDropdownBorder: none;
+@listLayoutActionPanelDropdownAddonBackground: @lightInputBackground;
+
+@listLayoutActionPanelDropdownWithSortBorder: @listLayoutActionPanelDropdownBorder;
+@listLayoutActionPanelDropdownWithSortBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+@listLayoutActionPanelDropdownWithSortAddonBorderRadius: 0 0 @defaultBorderRadius @defaultBorderRadius;
 
 @listLayoutActionPanelTriggerButtonBackground: @lightInputBackground;
 @listLayoutActionPanelTriggerButtonBorder: none;

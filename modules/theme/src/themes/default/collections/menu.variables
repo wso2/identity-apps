@@ -83,6 +83,7 @@
 @listPaginationItemBackground: @lightPageBackground;
 @listPaginationItemColor: lighten(@textColor, 20);
 @listPaginationItemActiveColor: @textColor;
+@listPaginationItemActiveBorderColor: @secondaryColor;
 
 /*-------------------
     User Dropdown

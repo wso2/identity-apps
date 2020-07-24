@@ -533,6 +533,24 @@ body {
                         border: @listLayoutActionPanelDropdownBorder;
                     }
                 }
+
+                .sort-list {
+                    display: flex;
+
+                    .ui.selection.dropdown {
+                        border-radius: @listLayoutActionPanelDropdownWithSortBorderRadius;
+
+                        &:not(.active) {
+                            border: @listLayoutActionPanelDropdownWithSortBorder;
+                        }
+                    }
+
+                    .ui.button {
+                        margin: 0;
+                        background: @listLayoutActionPanelDropdownAddonBackground;
+                        border-radius: @listLayoutActionPanelDropdownWithSortAddonBorderRadius;
+                    }
+                }
             }
         }
     }
@@ -1527,30 +1545,6 @@ body {
                 }
             }
         }
-    }
-}
-
-/*****************************************
-            Sort List Box
-*****************************************/
-
-.sort-list {
-    display: flex;
-    border-radius: @menuBorderRadius;
-    border: @menuBorder;
-
-    .ui.selection.dropdown {
-        border: none;
-        border-radius: unset;
-        border-top-left-radius: @menuBorderRadius;
-        border-bottom-left-radius: @menuBorderRadius;
-    }
-
-    .ui.button {
-        margin: 0;
-        border-radius: unset;
-        border-top-right-radius: @menuBorderRadius - 1;
-        border-bottom-right-radius: @menuBorderRadius - 1;
     }
 }
 
