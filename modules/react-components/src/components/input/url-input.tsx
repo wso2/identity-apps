@@ -49,9 +49,9 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      */
     readOnly?: boolean;
     /**
-     * Obtains the submit function and the url input value as arguments.
+     * Passes the submit function as an argument.
      */
-    getSubmitAndInputValue?: (submitFunction: () => string, urlInputValue: () => string) => void;
+    getSubmit?: (submitFunction: (callback: (url?: string) => void) => void) => void;
 }
 
 /**
@@ -83,20 +83,20 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         hideComponent,
         computerWidth,
         readOnly,
-        getSubmitAndInputValue,
-        ["data-testid"]: testId
+        getSubmit,
+        [ "data-testid" ]: testId
     } = props;
 
-    const [changeUrl, setChangeUrl] = useState<string>("");
-    const [predictValue, setPredictValue] = useState<string[]>([]);
-    const [validURL, setValidURL] = useState<boolean>(true);
-    const [duplicateURL, setDuplicateURL] = useState<boolean>(false);
-    const [keepFocus, setKeepFocus] = useState<boolean>(false);
-    const [hideEntireComponent, setHideEntireComponent] = useState<boolean>(false);
+    const [ changeUrl, setChangeUrl ] = useState<string>("");
+    const [ predictValue, setPredictValue ] = useState<string[]>([]);
+    const [ validURL, setValidURL ] = useState<boolean>(true);
+    const [ duplicateURL, setDuplicateURL ] = useState<boolean>(false);
+    const [ keepFocus, setKeepFocus ] = useState<boolean>(false);
+    const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
 
     /**
      * Add URL to the URL list.
-     * 
+     *
      * @returns {string} URLs.
      */
     const addUrl = useCallback((): string => {
@@ -111,7 +111,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         } else {
             const availableURls = urlState.split(",");
             const duplicate = availableURls.includes(url);
-            setDuplicateURL(duplicate);
+            urlValid && setDuplicateURL(duplicate);
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
@@ -121,7 +121,23 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         }
 
         return;
-    },[changeUrl, setURLState, urlState, validation]);
+    }, [ changeUrl, setURLState, urlState, validation ]);
+
+    /**
+     * This submits the URL and calls the callback function passing the URL as an argument.
+     *
+     * @param {(url: string) => void} callback A callback function that accepts the url as an optional argument.
+     */
+    const externalSubmit = (callback: (url?: string) => void): void => {
+        if (getChangeUrl()) {
+            const url = addUrl();
+            if (url) {
+                callback(url);
+            }
+        } else {
+            callback();
+        }
+    };
 
     /**
      * Initial prediction for the URL.
@@ -207,39 +223,38 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     /**
      * Returns the changeUrl value.
-     * 
+     *
      * @returns {string} Change URL.
      */
     const getChangeUrl = useCallback((): string => {
         return changeUrl;
-    },[changeUrl]);
+    }, [ changeUrl ]);
 
     /**
      * Calls the prop method by passing the `addUrl` and `getChangeUrl` methods as arguments.
      */
     useEffect(() => {
-        if (getSubmitAndInputValue) {
-            getSubmitAndInputValue(addUrl, getChangeUrl);
+        if (getSubmit) {
+            getSubmit(externalSubmit);
         }
-    }, [getSubmitAndInputValue, addUrl, getChangeUrl]);
+    }, [ getSubmit, addUrl, getChangeUrl ]);
 
     useEffect(() => {
         setURLState(value);
-    }, [value]);
+    }, [ value ]);
 
     useEffect(() => {
         if (showError) {
             setValidURL(false);
             setShowError(false);
         }
-    }, [showError]);
+    }, [ showError ]);
 
     useEffect(() => {
-            if (hideComponent) {
-                setHideEntireComponent(hideComponent);
-            }
-        }, [hideComponent]
-    );
+        if (hideComponent) {
+            setHideEntireComponent(hideComponent);
+        }
+    }, [ hideComponent ]);
 
     const computerSize: any = (computerWidth) ? computerWidth : 8;
 
@@ -253,8 +268,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 <label>{ labelName }</label>
                             </div>
                         ) : (
-                            <label>{ labelName }</label>
-                        )
+                                <label>{ labelName }</label>
+                            )
                     }
                 </Grid.Column>
             </Grid.Row>
