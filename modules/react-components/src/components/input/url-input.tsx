@@ -17,7 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, {
+    FunctionComponent,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useState
+} from "react";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
 import { Hint } from "../typography";
 
@@ -42,6 +48,10 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Passes the submit function as an argument.
+     */
+    getSubmit?: (submitFunction: (callback: (url?: string) => void) => void) => void;
 }
 
 /**
@@ -73,34 +83,59 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         hideComponent,
         computerWidth,
         readOnly,
+        getSubmit,
         [ "data-testid" ]: testId
     } = props;
 
-    const [changeUrl, setChangeUrl] = useState<string>("");
-    const [predictValue, setPredictValue] = useState<string[]>([]);
-    const [validURL, setValidURL] = useState<boolean>(true);
-    const [duplicateURL, setDuplicateURL] = useState<boolean>(false);
-    const [keepFocus, setKeepFocus] = useState<boolean>(false);
-    const [hideEntireComponent, setHideEntireComponent] = useState<boolean>(false);
+    const [ changeUrl, setChangeUrl ] = useState<string>("");
+    const [ predictValue, setPredictValue ] = useState<string[]>([]);
+    const [ validURL, setValidURL ] = useState<boolean>(true);
+    const [ duplicateURL, setDuplicateURL ] = useState<boolean>(false);
+    const [ keepFocus, setKeepFocus ] = useState<boolean>(false);
+    const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
 
     /**
      * Add URL to the URL list.
+     *
+     * @returns {string} URLs.
      */
-    const addUrl = () => {
+    const addUrl = useCallback((): string => {
         const url = changeUrl;
         const urlValid = validation(url);
         setValidURL(urlValid);
-        if (urlState === "" || urlState === undefined) {
+        if (urlValid && (urlState === "" || urlState === undefined)) {
             setURLState(url);
             setChangeUrl("");
+
+            return url;
         } else {
             const availableURls = urlState.split(",");
             const duplicate = availableURls.includes(url);
-            setDuplicateURL(duplicate);
+            urlValid && setDuplicateURL(duplicate);
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
+
+                return url + "," + urlState;
             }
+        }
+
+        return;
+    }, [ changeUrl, setURLState, urlState, validation ]);
+
+    /**
+     * This submits the URL and calls the callback function passing the URL as an argument.
+     *
+     * @param {(url: string) => void} callback A callback function that accepts the url as an optional argument.
+     */
+    const externalSubmit = (callback: (url?: string) => void): void => {
+        if (getChangeUrl()) {
+            const url = addUrl();
+            if (url) {
+                callback(url);
+            }
+        } else {
+            callback();
         }
     };
 
@@ -167,7 +202,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         setPredictValue([]);
     };
 
-    const addFromButton = (e) => {
+    const addFormButton = (e) => {
         e.preventDefault();
         addUrl();
     };
@@ -186,23 +221,40 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         setURLState(urlsAfterRemoved);
     };
 
+    /**
+     * Returns the changeUrl value.
+     *
+     * @returns {string} Change URL.
+     */
+    const getChangeUrl = useCallback((): string => {
+        return changeUrl;
+    }, [ changeUrl ]);
+
+    /**
+     * Calls the prop method by passing the `addUrl` and `getChangeUrl` methods as arguments.
+     */
+    useEffect(() => {
+        if (getSubmit) {
+            getSubmit(externalSubmit);
+        }
+    }, [ getSubmit, addUrl, getChangeUrl ]);
+
     useEffect(() => {
         setURLState(value);
-    }, [value]);
+    }, [ value ]);
 
     useEffect(() => {
         if (showError) {
             setValidURL(false);
             setShowError(false);
         }
-    }, [showError]);
+    }, [ showError ]);
 
     useEffect(() => {
-            if (hideComponent) {
-                setHideEntireComponent(hideComponent);
-            }
-        }, [hideComponent]
-    );
+        if (hideComponent) {
+            setHideEntireComponent(hideComponent);
+        }
+    }, [ hideComponent ]);
 
     const computerSize: any = (computerWidth) ? computerWidth : 8;
 
@@ -216,8 +268,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 <label>{ labelName }</label>
                             </div>
                         ) : (
-                            <label>{ labelName }</label>
-                        )
+                                <label>{ labelName }</label>
+                            )
                     }
                 </Grid.Column>
             </Grid.Row>
@@ -244,7 +296,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             trigger={
                                 (
                                     <Button
-                                        onClick={ (e) => addFromButton(e) }
+                                        onClick={ (e) => addFormButton(e) }
                                         icon="add"
                                         type="button"
                                         disabled={ readOnly || disabled }

@@ -25,6 +25,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
+import { string } from "@hapi/joi";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -59,11 +60,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
     const { t } = useTranslation();
 
-    const [callBackUrls, setCallBackUrls] = useState("");
-    const [publicClient, setPublicClient] = useState<string[]>([]);
-    const [refreshToken, setRefreshToken] = useState<string[]>([]);
-    const [showRefreshToken, setShowRefreshToken] = useState(false);
-    const [showURLError, setShowURLError] = useState(false);
+    const [ callBackUrls, setCallBackUrls ] = useState("");
+    const [ publicClient, setPublicClient ] = useState<string[]>([]);
+    const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
+    const [ showRefreshToken, setShowRefreshToken ] = useState(false);
+    const [ showURLError, setShowURLError ] = useState(false);
 
     // TODO enable after fixing callbackURL.
     // const [showCallbackUrl, setShowCallbackUrl] = useState(false);
@@ -108,7 +109,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
 
         form?.current?.props?.onSubmit(new Event("submit"));
-    }, [triggerSubmit]);
+    }, [ triggerSubmit ]);
 
     useEffect(() => {
         if (_.isEmpty(initialValues?.inboundProtocolConfiguration?.oidc)) {
@@ -116,31 +117,31 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             if (!_.isEmpty(templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs)) {
                 setCallBackUrls(
                     buildCallBackURLWithSeparator(
-                        templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[0]
+                        templateValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[ 0 ]
                     )
                 );
             } else {
                 setCallBackUrls("");
             }
             if (templateValues?.inboundProtocolConfiguration?.oidc?.publicClient) {
-                setPublicClient(["supportPublicClients"])
+                setPublicClient([ "supportPublicClients" ]);
             }
             if (templateValues?.inboundProtocolConfiguration?.oidc?.refreshToken?.renewRefreshToken) {
-                setRefreshToken(["refreshToken"])
+                setRefreshToken([ "refreshToken" ]);
             }
         } else {
             setCallBackUrls(
-                buildCallBackURLWithSeparator(initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[0]
+                buildCallBackURLWithSeparator(initialValues?.inboundProtocolConfiguration?.oidc?.callbackURLs[ 0 ]
                 )
             );
             if (initialValues?.inboundProtocolConfiguration?.oidc?.publicClient) {
-                setPublicClient(["supportPublicClients"])
+                setPublicClient([ "supportPublicClients" ]);
             }
             if (initialValues?.inboundProtocolConfiguration?.oidc?.refreshToken?.renewRefreshToken) {
-                setRefreshToken(["refreshToken"])
+                setRefreshToken([ "refreshToken" ]);
             }
         }
-    }, [initialValues]);
+    }, [ initialValues ]);
 
 
     // /**
@@ -157,19 +158,20 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
     useEffect(() => {
         const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
-        if (_.intersection(allowedGrantTypes, ["refresh_token"]).length > 0) {
+        if (_.intersection(allowedGrantTypes, [ "refresh_token" ]).length > 0) {
             setShowRefreshToken(true);
         }
-    }, [templateValues]);
+    }, [ templateValues ]);
 
 
     /**
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
+     * @param {string} - Callback URLs.
      * @return {object} Prepared values.
      */
-    const getFormValues = (values: any): object => {
+    const getFormValues = (values: any, urls?: string): object => {
         const configs = {
             inboundProtocolConfiguration: {
                 oidc: {
@@ -178,81 +180,92 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             }
         };
         if (showCallbackURL) {
-            configs.inboundProtocolConfiguration.oidc["callbackURLs"] = [buildCallBackUrlWithRegExp(callBackUrls)];
+            configs.inboundProtocolConfiguration.oidc[ "callbackURLs" ]
+                = [ buildCallBackUrlWithRegExp(urls ? urls : callBackUrls) ];
         }
         if (showRefreshToken) {
-            configs.inboundProtocolConfiguration.oidc["refreshToken"] = {
+            configs.inboundProtocolConfiguration.oidc[ "refreshToken" ] = {
                 renewRefreshToken: values.get("RefreshToken").includes("refreshToken")
             };
         }
         return configs;
     };
 
+    /**
+     * submitURL function.
+     */
+    let submitUrl: (callback: (url?: string) => void) => void;
+
     return (templateValues
-            ?
-            <Forms
-                onSubmit={ (values) => {
-                    // check whether callback url is empty or not
-                    if (_.isEmpty(callBackUrls)) {
+        ?
+        <Forms
+            onSubmit={ (values) => {
+                submitUrl((url: string) => {
+                    if (_.isEmpty(callBackUrls) && _.isEmpty(url)) {
                         setShowURLError(true);
                     } else {
-                        onSubmit(getFormValues(values));
+                        onSubmit(getFormValues(values, url));
                     }
-                } }
-                submitState={ triggerSubmit }
-            >
-                <Grid>
-                    <URLInput
-                        urlState={ callBackUrls }
-                        setURLState={ setCallBackUrls }
-                        labelName={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
-                        }
-                        placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                ".placeholder")
-                        }
-                        validationErrorMsg={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                ".validations.empty")
-                        }
-                        validation={ (value: string) => {
-                            return FormValidation.url(value);
-                        } }
-                        computerWidth={ 10 }
-                        setShowError={ setShowURLError }
-                        showError={ showURLError }
-                        hint={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
-                        }
-                        addURLTooltip={ t("common:addURL") }
-                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                        data-testid={ `${ testId }-callback-url-input` }
-                    />
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                            <Field
-                                name="publicClients"
-                                label=""
-                                required={ false }
-                                requiredErrorMessage="this is needed"
-                                type="checkbox"
-                                value={ publicClient }
-                                children={ [
-                                    {
-                                        label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                            ".fields.public.label"),
-                                        value: "supportPublicClients"
-                                    }
-                                ] }
-                                data-testid={ `${ testId }-public-client-checkbox` }
-                            />
-                            <Hint>
-                                { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
-                            </Hint>
-                        </Grid.Column>
-                    </Grid.Row>
-                    { showRefreshToken &&
+                });
+
+            } }
+            submitState={ triggerSubmit }
+        >
+            <Grid>
+                <URLInput
+                    urlState={ callBackUrls }
+                    setURLState={ setCallBackUrls }
+                    labelName={
+                        t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
+                    }
+                    placeholder={
+                        t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                            ".placeholder")
+                    }
+                    validationErrorMsg={
+                        t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                            ".validations.empty")
+                    }
+                    validation={ (value: string) => {
+                        return FormValidation.url(value);
+                    } }
+                    computerWidth={ 10 }
+                    setShowError={ setShowURLError }
+                    showError={ showURLError }
+                    hint={
+                        t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                    }
+                    addURLTooltip={ t("common:addURL") }
+                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                    data-testid={ `${ testId }-callback-url-input` }
+                    getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                        submitUrl = submitFunction;
+                    } }
+                />
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                        <Field
+                            name="publicClients"
+                            label=""
+                            required={ false }
+                            requiredErrorMessage="this is needed"
+                            type="checkbox"
+                            value={ publicClient }
+                            children={ [
+                                {
+                                    label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                        ".fields.public.label"),
+                                    value: "supportPublicClients"
+                                }
+                            ] }
+                            data-testid={ `${ testId }-public-client-checkbox` }
+                        />
+                        <Hint>
+                            { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                { showRefreshToken &&
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                             <Field
@@ -280,10 +293,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                             </Hint>
                         </Grid.Column>
                     </Grid.Row>
-                    }
-                </Grid>
-            </Forms>
-            : <ContentLoader/>
+                }
+            </Grid>
+        </Forms>
+        : <ContentLoader />
     );
 };
 
