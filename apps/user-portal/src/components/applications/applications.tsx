@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import React, { FunctionComponent, useEffect, useState } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { AllApplications } from "./all-applications";
-import { ApplicationSearch } from "./application-search";
 import { RecentApplications } from "./recent-applications";
 import { fetchApplications } from "../../api";
 import { ApplicationConstants } from "../../constants";
@@ -35,28 +35,36 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { getValueFromLocalStorage, setValueInLocalStorage } from "../../utils";
+import { AdvancedSearchWithBasicFilters } from "../shared";
 
 /**
  * Proptypes for the applications component.
  */
-interface ApplicationsProps {
+interface ApplicationsProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
 /**
  * Applications component.
- *
- * @return {JSX.Element}
+ * 
+ * @param {ApplicationsProps} props - Props injected to the component.
+ * @return {React.ReactElement}
  */
 export const Applications: FunctionComponent<ApplicationsProps> = (
     props: ApplicationsProps
-): JSX.Element => {
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
     const { onAlertFired } = props;
-    const [applications, setApplications] = useState<Application[]>([]);
-    const [recentApplications, setRecentApplications] = useState<Application[]>([]);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [isRequestLoading, setIsRequestLoading] = useState(false);
+    const [ applications, setApplications ] = useState<Application[]>([]);
+    const [ recentApplications, setRecentApplications ] = useState<Application[]>([]);
+    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ isRequestLoading, setIsRequestLoading ] = useState(false);
     const username = useSelector((state: AppState) => state.authenticationInformation.username);
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const { t } = useTranslation();
 
     /**
@@ -84,7 +92,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.applications.notifications.fetchApplications.error.message"
-                        ),
+                        )
                     });
 
                     return;
@@ -222,6 +230,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     const handleSearchQueryClear = (): void => {
         setSearchQuery("");
         getApplications(null, null, null);
+        setTriggerClearQuery(!triggerClearQuery);
     };
 
     /**
@@ -255,11 +264,44 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
     return (
         <div className="applications-page">
-            <ApplicationSearch onFilter={ handleApplicationFilter } />
+            <Grid>
+                <Grid.Row>
+                    <Grid.Column width={ 8 }>
+                        <AdvancedSearchWithBasicFilters
+                            fill="white"
+                            onFilter={ handleApplicationFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("userPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("userPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("userPortal:components.applications.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("userPortal:components.applications.advancedSearch.placeholder") }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-list-advanced-search` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
             <div className="search-results-indicator">
                 {
                     searchQuery
-                        ? t("userPortal:components.applications.search.resultsIndicator", { query: searchQuery })
+                        ? t("userPortal:components.advancedSearch.resultsIndicator", { query: searchQuery })
                         : ""
                 }
             </div>
@@ -297,4 +339,11 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
             />
         </div>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+Applications.defaultProps = {
+    "data-testid": "applications"
 };

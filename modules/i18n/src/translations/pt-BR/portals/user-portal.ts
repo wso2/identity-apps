@@ -121,7 +121,65 @@ export const userPortal: UserPortalNS = {
                 }
             }
         },
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "Atributo de filtro",
+                        placeholder: "ex: nome, descrição etc.",
+                        validations: {
+                            empty: "O atributo de filtro é um campo obrigatório"
+                        }
+                    },
+                    filterCondition: {
+                        label: "Condição do filtro",
+                        placeholder: "ex: começa com etc.",
+                        validations: {
+                            empty: "A condição do filtro é um campo obrigatório"
+                        }
+                    },
+                    filterValue: {
+                        label: "Valor do filtro",
+                        placeholder: "ex: admin, wso2 etc.",
+                        validations: {
+                            empty: "O valor do filtro é um campo obrigatório"
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Shift + Enter",
+                    label: "Para pesquisar como uma consulta"
+                }
+            },
+            options: {
+                header: "Busca Avançada"
+            },
+            placeholder: "Procura por nome",
+            popups: {
+                clear: "pesquisa clara",
+                dropdown: "mostrar opções"
+            },
+            resultsIndicator: "Mostrando resultados para \"{{query}}\""
+        },
         applications: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "ex: nome, descrição etc."
+                        },
+                        filterCondition: {
+                            placeholder: "ex: começa com etc."
+                        },
+                        filterValue: {
+                            placeholder: "ex: Zoom, Salesforce etc."
+                        }
+                    }
+                },
+                placeholder: "Procura por nome",
+            },
             all: {
                 heading: "Todas as aplicações"
             },
@@ -157,50 +215,6 @@ export const userPortal: UserPortalNS = {
             },
             recent: {
                 heading: "Aplicações recentes"
-            },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "Atributo de filtro",
-                                placeholder: "ex: nome, descrição etc.",
-                                validations: {
-                                    empty: "O atributo de filtro é um campo obrigatório"
-                                }
-                            },
-                            filterCondition: {
-                                label: "Condição do filtro",
-                                placeholder: "ex: começa com etc.",
-                                validations: {
-                                    empty: "A condição do filtro é um campo obrigatório"
-                                }
-                            },
-                            filterValue: {
-                                label: "Valor do filtro",
-                                placeholder: "ex: facebook, folga etc.",
-                                validations: {
-                                    empty: "O valor do filtro é um campo obrigatório"
-                                }
-                            },
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "Para pesquisar como uma consulta"
-                    }
-                },
-                options: {
-                    header: "Busca Avançada",
-                },
-                placeholder: "Procura por nome",
-                popups: {
-                    clear: "pesquisa clara",
-                    dropdown: "mostrar opções"
-                },
-                resultsIndicator: "Mostrando resultados para \"{{query}}\""
             }
         },
         approvals: {
@@ -562,9 +576,9 @@ export const userPortal: UserPortalNS = {
                         heading: "Digite o código de verificação no aplicativo de autenticação",
                         label: "Código de verificação",
                         placeholder: "Digite seu código de verificação",
-                        requiredError: "Insira o código de verificação",
                         reScan: "Verificar novamente",
-                        reScanQuestion: "Deseja digitalizar o código QR novamente?"
+                        reScanQuestion: "Deseja digitalizar o código QR novamente?",
+                        requiredError: "Insira o código de verificação"
                     }
                 },
                 notifications: {
@@ -603,7 +617,7 @@ export const userPortal: UserPortalNS = {
                     deviceRegistrationErrorModal: {
                         description: "O registro do dispositivo foi interrompido. Se isso não foi intencional, tente " +
                             "novamente o mesmo fluxo ou tente novamente com uma chave de segurança mais antiga.",
-                        heading: "Falha no registro do dispositivo",
+                        heading: "Falha no registro do dispositivo"
                     }
                 },
                 notifications: {
@@ -1145,7 +1159,7 @@ export const userPortal: UserPortalNS = {
                     }
                 }
             }
-        },
+        }
     },
     pages: {
         applications: {
@@ -1239,7 +1253,7 @@ export const userPortal: UserPortalNS = {
                 emptyConsentList: {
                     heading: "Você não concedeu consentimento a nenhum aplicativo"
                 }
-            },
+            }
         },
         federatedAssociations: {
             description: "Veja suas contas de outros provedores de identidade que estão vinculados a esta conta",
