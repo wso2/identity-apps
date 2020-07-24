@@ -72,11 +72,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
     const { t } = useTranslation();
 
-    const [isEncryptionEnabled, setEncryptionEnable] = useState(false);
-    const [callBackUrls, setCallBackUrls] = useState("");
-    const [showURLError, setShowURLError] = useState(false);
-    const [showRegenerateConfirmationModal, setShowRegenerateConfirmationModal] = useState<boolean>(false);
-    const [showRevokeConfirmationModal, setShowRevokeConfirmationModal] = useState<boolean>(false);
+    const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
+    const [ callBackUrls, setCallBackUrls ] = useState("");
+    const [ showURLError, setShowURLError ] = useState(false);
+    const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
+    const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -173,7 +173,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const handleRegenerateButton = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        setShowRegenerateConfirmationModal(true)
+        setShowRegenerateConfirmationModal(true);
     };
 
     /**
@@ -183,7 +183,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      */
     const handleRevokeButton = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        setShowRevokeConfirmationModal(true)
+        setShowRevokeConfirmationModal(true);
     };
 
     /**
@@ -191,7 +191,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      *
      * @param values - Form values.
      * @param {string} url - Callback URLs.
-     * 
+     *
      * @return {any} Sanitized form values.
      */
     const updateConfiguration = (values: any, url?: string): any => {
@@ -206,7 +206,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
             grantTypes: values.get("grant"),
             idToken: {
-                audience: [values.get("audience")],
+                audience: [ values.get("audience") ],
                 encryption: {
                     algorithm: isEncryptionEnabled ?
                         values.get("algorithm") : metadata.idTokenEncryptionAlgorithm.defaultValue,
@@ -250,36 +250,26 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             if (initialValues?.idToken?.encryption) {
                 setEncryptionEnable(initialValues.idToken.encryption?.enabled);
             }
-        }, [initialValues]
+        }, [ initialValues ]
     );
 
     /**
-     * Submit URL function.
+     * submitURL function.
      */
-    let submitUrl: () => string;
-    /**
-     * Function to get the callback URLs.
-     */
-    let getURL: () => string;
-    
+    let submitUrl: (callback: (url?: string) => void) => void;
+
     return (
         metadata ?
             (
                 <Forms
                     onSubmit={ (values) => {
-                        let url: string;
-                        if (getURL()) {
-                            url = submitUrl();
-                            if (!url) {
-                                return;
+                        submitUrl((url: string) => {
+                            if (isEmpty(callBackUrls) && isEmpty(url)) {
+                                setShowURLError(true);
+                            } else {
+                                onSubmit(updateConfiguration(values, url));
                             }
-                        }
-
-                        if (isEmpty(callBackUrls)&& isEmpty(url)) {
-                            setShowURLError(true);
-                        } else {
-                            onSubmit(updateConfiguration(values, url));
-                        }
+                        });
                     } }
                 >
                     <Grid>
@@ -471,8 +461,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider/>
-                                <Divider hidden/>
+                                <Divider />
+                                <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
@@ -522,9 +512,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             addURLTooltip={ t("common:addURL") }
                             duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-callback-url-input` }
-                            getSubmitAndInputValue={ (callSubmit: () => string, url: () => string) => {
-                                submitUrl = callSubmit;
-                                getURL=url;
+                            getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                submitUrl = submitFunction;
                             } }
                         />
                         {/*TODO: Enable this after the backend is fixed*/ }
@@ -586,8 +575,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* PKCE */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider/>
-                                <Divider hidden/>
+                                <Divider />
+                                <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
@@ -598,7 +587,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
                                         ".hint") }
                                 </Hint>
-                                <Divider hidden/>
+                                <Divider hidden />
                                 <Field
                                     name="PKCE"
                                     label=""
@@ -630,8 +619,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Access Token */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider/>
-                                <Divider hidden/>
+                                <Divider />
+                                <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
@@ -639,10 +628,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         ".accessToken.heading") }
                                 </Heading>
                                 <Hint>
-                                   { t("devPortal:components.applications.forms.inboundOIDC.sections.accessToken" +
-                                       ".hint") }
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.accessToken" +
+                                        ".hint") }
                                 </Hint>
-                                <Divider hidden/>
+                                <Divider hidden />
                                 <Field
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
@@ -735,15 +724,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Refresh Token */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider/>
-                                <Divider hidden/>
+                                <Divider />
+                                <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
                                     { t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                         ".refreshToken.heading") }
                                 </Heading>
-                                <Divider hidden/>
+                                <Divider hidden />
                                 <Field
                                     name="RefreshToken"
                                     label=""
@@ -755,7 +744,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={
                                         initialValues.refreshToken?.renewRefreshToken
-                                            ? ["refreshToken"]
+                                            ? [ "refreshToken" ]
                                             : []
                                     }
                                     children={ [
@@ -808,15 +797,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* ID Token */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider/>
-                                <Divider hidden/>
+                                <Divider />
+                                <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
                                     { t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                         ".idToken.heading") }
                                 </Heading>
-                                <Divider hidden/>
+                                <Divider hidden />
                                 <Field
                                     name="audience"
                                     label={
@@ -863,7 +852,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     }
                                     value={
                                         initialValues.idToken?.encryption.enabled
-                                            ? ["enableEncryption"]
+                                            ? [ "enableEncryption" ]
                                             : []
                                     }
                                     children={ [
@@ -982,12 +971,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Logout */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider/>
-                                <Divider hidden/>
+                                <Divider />
+                                <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">Logout URLs</Heading>
-                                <Divider hidden/>
+                                <Divider hidden />
                                 <Field
                                     name="backChannelLogoutUrl"
                                     label={
@@ -1058,7 +1047,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     type="checkbox"
                                     value={
                                         initialValues.validateRequestObjectSignature
-                                            ? ["EnableRequestObjectSignatureValidation"]
+                                            ? [ "EnableRequestObjectSignatureValidation" ]
                                             : []
                                     }
                                     children={ [
@@ -1076,15 +1065,15 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         { /* Scope Validators */ }
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider/>
-                                <Divider hidden/>
+                                <Divider />
+                                <Divider hidden />
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
                                     { t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                         ".scopeValidators.heading") }
                                 </Heading>
-                                <Divider hidden/>
+                                <Divider hidden />
                                 <Field
                                     name="scopeValidator"
                                     label=""
