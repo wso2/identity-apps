@@ -16,37 +16,33 @@
  * under the License.
  */
 
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
+    AlertLevels,
     FeatureConfigInterface,
     LoadableComponentInterface,
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
-    AppAvatar,
     ConfirmationModal,
     ResourceList,
     ResourceListActionInterface
 } from "@wso2is/react-components";
-import React, {FunctionComponent, ReactElement, useState} from "react";
-import {Trans, useTranslation} from "react-i18next";
-import { Label, ListItemProps } from "semantic-ui-react";
+import React, { FunctionComponent, ReactElement, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { ListItemProps } from "semantic-ui-react";
+import { deleteOIDCScope } from "../../api";
+import { AppConstants, ApplicationManagementConstants } from "../../constants";
+import { history } from "../../helpers";
 import {
-    ApplicationListItemInterface,
-    ApplicationTemplateListItemInterface,
     ConfigReducerStateInterface,
     OIDCScopesListInterface
 } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
-import {useDispatch, useSelector} from "react-redux";
-import {AppState} from "../../store";
-import {hasRequiredScopes, isFeatureEnabled} from "@wso2is/core/helpers";
-import {AppConstants, ApplicationManagementConstants} from "../../constants";
-import { history } from "../../helpers";
-import {deleteApplication, deleteOIDCScope} from "../../api";
-import {addAlert} from "@wso2is/core/dist/src/store";
-import {AlertLevels} from "@wso2is/core/dist/src/models";
+import { AppState } from "../../store";
 
 /**
  *
@@ -147,6 +143,8 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     const handleOIDCScopeDelete = (scopeName: string): void => {
         deleteOIDCScope(scopeName)
             .then(() => {
+                setDeletingScope(undefined);
+                onScopeDelete();
                 dispatch(addAlert({
                     description: t("devPortal:components.oidcScopes.notifications.deleteOIDCScope.success" +
                         ".description"),

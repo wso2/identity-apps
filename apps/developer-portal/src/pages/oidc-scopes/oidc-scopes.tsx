@@ -27,13 +27,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Icon } from "semantic-ui-react";
 import { getOIDCScopesList } from "../../api";
 import { OIDCScopeList } from "../../components/oidc-scopes";
+import { OIDCScopeCreateWizard } from "../../components/oidc-scopes/wizards";
 import { AdvancedSearchWithBasicFilters } from "../../components/shared";
-import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
 import { FeatureConfigInterface, OIDCScopesListInterface } from "../../models";
 import { AppState } from "../../store";
-import {AddUserWizard} from "../../../../admin-portal/src/components/users/wizard";
-import {OIDCScopeCreateWizard} from "../../components/oidc-scopes/wizards";
 
 const OIDC_SCOPE_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
@@ -200,7 +197,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                     featureConfig={ featureConfig }
                     isLoading={ isScopesListRequestLoading }
                     list={ scopeList }
-                    onScopeDelete={ null }
+                    onScopeDelete={ getOIDCScopes }
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                     onSearchQueryClear={ null }
                     searchQuery={ null }
@@ -211,7 +208,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
                         <OIDCScopeCreateWizard
                             data-testid="add-oidc-scope-wizard-modal"
                             closeWizard={ () => setShowWizard(false) }
-                            onUpdate={ null }
+                            onUpdate={ getOIDCScopes }
                         />
                     )
                 }

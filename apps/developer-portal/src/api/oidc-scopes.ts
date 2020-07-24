@@ -20,7 +20,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosError, AxiosResponse } from "axios";
-import  { OIDCScopesManagementConstants } from "../constants";
+import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
 import { store } from "../store";
 
@@ -136,7 +136,7 @@ export const createOIDCScope = <T>(data: OIDCScopesListInterface): Promise<T> =>
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+            if (response.status !== 201) {
                 throw new IdentityAppsApiException(
                     OIDCScopesManagementConstants.OIDC_SCOPE_CREATE_ERROR,
                     null,
@@ -224,7 +224,7 @@ export const deleteOIDCScope = <T>(scope: string): Promise<T> => {
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            if (response.status !== 200) {
+            if (response.status !== 204) {
                 throw new IdentityAppsApiException(
                     OIDCScopesManagementConstants.OIDC_SCOPE_DELETE_ERROR,
                     null,

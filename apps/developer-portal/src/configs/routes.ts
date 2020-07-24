@@ -154,7 +154,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/oidc-scopes/oidc-scopes-edit")),
                 exact: true,
-                icon: "overview",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "oidcScopesEdit",
                 name: "OIDC Scopes Edit",
                 path: AppConstants.PATHS.get("OIDC_SCOPES_EDIT"),
@@ -164,7 +166,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/oidc-scopes/oidc-scopes")),
         exact: true,
-        icon: "overview",
+        icon: {
+            icon: SidePanelIcons.scopes
+        },
         id: "oidcScopes",
         name: "OIDC Scopes",
         path: AppConstants.PATHS.get("OIDC_SCOPES"),
@@ -363,8 +367,6 @@ const BASE_ROUTES: RouteInterface[] = [
         showOnSidePanel: false
     }
 ];
-
-console.log("Routes", DASHBOARD_LAYOUT_ROUTES);
 
 export const appRoutes = APP_ROUTES;
 export const baseRoutes = BASE_ROUTES;

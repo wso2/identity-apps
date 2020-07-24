@@ -30,6 +30,7 @@ import { OIDCScopeAttributesList } from "./oidc-scope-attribute-list";
 import { createOIDCScope } from "../../../api";
 import { OIDCScopeWizardStepIcons } from "../../../configs";
 import { OIDCScopesManagementConstants } from "../../../constants";
+import { OIDCScopesListInterface } from "../../../models";
 
 /**
  * Interface for the wizard state.
@@ -54,7 +55,7 @@ enum WizardStepsFormTypes {
 interface OIDCScopeCreateWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;
     currentStep?: number;
-    onUpdate: (id: string) => void;
+    onUpdate: () => void;
 }
 
 /**
@@ -156,7 +157,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
 
     const handleWizardFormFinish = (attributes: string[]): void => {
 
-        const data = {
+        const data: OIDCScopesListInterface = {
             claims: attributes,
             description: wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
                 ? wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.description
@@ -168,7 +169,8 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
         setIsClaimRequestLoading(true);
 
         createOIDCScope(data)
-            .then((response) => {
+            .then(() => {
+                closeWizard();
                 dispatch(addAlert({
                     description: t("devPortal:components.oidcScopes.notifications.addOIDCScope" +
                         ".success.description"),
@@ -176,8 +178,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     message: t("devPortal:components.oidcScopes.notifications.addOIDCScope" +
                         ".success.message")
                 }));
+                onUpdate();
             })
             .catch((error) => {
+                closeWizard();
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
                         description: error.response.data.description,

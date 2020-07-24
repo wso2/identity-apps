@@ -152,7 +152,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                     description: t("devPortal:components.oidcScopes.notifications.updateOIDCScope.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.claims.external.notifications.updateOIDCScope.success" +
+                    message: t("devPortal:components.oidcScopes.notifications.updateOIDCScope.success" +
                         ".message")
                 }));
                 onUpdate(scope.name);
@@ -199,6 +199,13 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         setShowSelectionModal(true);
     };
 
+    const handleRemoveAttribute = (claim: string): void => {
+        const assignedClaims = scope?.claims;
+        const newClaimList = assignedClaims.filter((claimName) => claimName !== claim);
+
+        updateOIDCScope(newClaimList);
+    };
+
     return (
         <>
             <Grid>
@@ -241,25 +248,27 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                 <Table.Body>
                                                     {
                                                         scope?.claims?.map((claim, index) => {
-                                                                return (
-                                                                    <Table.Row key={ index }>
-                                                                        <Table.Cell width={ 15 }>
-                                                                            { claim }
-                                                                        </Table.Cell>
-                                                                        <Table.Cell textAlign="center">
-                                                                            <Popup
-                                                                                content="View permissions"
-                                                                                trigger={
-                                                                                    <Icon
-                                                                                        color="grey"
-                                                                                        name="trash alternate"
-                                                                                        onClick={ null }
-                                                                                    />
-                                                                                }
-                                                                            />
-                                                                        </Table.Cell>
-                                                                    </Table.Row>
-                                                                )
+                                                            return (
+                                                                <Table.Row key={ index }>
+                                                                    <Table.Cell width={ 15 }>
+                                                                        { claim }
+                                                                    </Table.Cell>
+                                                                    <Table.Cell textAlign="center">
+                                                                        <Popup
+                                                                            content="Remove attribute"
+                                                                            trigger={
+                                                                                <Icon
+                                                                                    color="grey"
+                                                                                    name="trash alternate"
+                                                                                    onClick={ () =>
+                                                                                        handleRemoveAttribute(claim)
+                                                                                    }
+                                                                                />
+                                                                            }
+                                                                        />
+                                                                    </Table.Cell>
+                                                                </Table.Row>
+                                                            )
                                                         })
                                                     }
                                                 </Table.Body>

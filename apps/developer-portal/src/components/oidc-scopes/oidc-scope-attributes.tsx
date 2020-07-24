@@ -16,9 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Modal } from "semantic-ui-react";
+import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import {
     Heading,
     LinkButton,
@@ -27,8 +25,9 @@ import {
     TransferList,
     TransferListItem
 } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ExternalClaim } from "@wso2is/core/models";
+import { Modal } from "semantic-ui-react";
 
 interface OIDCScopeAttributesPropsInterface extends TestableComponentInterface {
     availableClaims: ExternalClaim[];
@@ -278,7 +277,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
-                                        key={ claim?.claimURI }
+                                        key={ index }
                                         listItem={ claim?.claimURI }
                                         listItemId={ claim?.id }
                                         listItemIndex={ claim?.claimURI }
@@ -309,7 +308,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleAssignedItemCheckboxChange(claim) }
-                                        key={ claim?.claimURI }
+                                        key={ index }
                                         listItem={ claim?.claimURI }
                                         listItemId={ claim?.id }
                                         listItemIndex={ claim?.claimURI }
