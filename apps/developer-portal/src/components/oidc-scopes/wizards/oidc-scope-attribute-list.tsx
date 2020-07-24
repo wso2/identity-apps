@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
 import { ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
-import {TransferComponent, TransferList, TransferListItem} from "@wso2is/react-components";
-import {useTranslation} from "react-i18next";
-import {Forms} from "@wso2is/forms";
+import { Forms } from "@wso2is/forms";
+import { TransferComponent, TransferList, TransferListItem } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 /**
  * Interface for the OIDC scope attribute list props.
@@ -221,8 +221,6 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
         setSelectedClaims(selectedClaimsValues);
         setInitialSelectedClaims(selectedClaimsValues);
         setAvailableClaims([...tempAvailableClaims]);
-        // onUpdateAttributes(selectedClaims);
-        // setShowAddModal(false);
         return selectedClaims;
     });
 
