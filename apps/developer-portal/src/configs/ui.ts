@@ -70,6 +70,7 @@ import { ReactComponent as PinIcon } from "../themes/default/assets/images/icons
 import { ReactComponent as PlugIcon } from "../themes/default/assets/images/icons/plug-icon.svg";
 import { ReactComponent as PlusIcon } from "../themes/default/assets/images/icons/plus-icon.svg";
 import { ReactComponent as ReportIcon } from "../themes/default/assets/images/icons/report-icon.svg";
+import { ReactComponent as ScopeIcon } from "../themes/default/assets/images/icons/scope.svg";
 import { ReactComponent as ShuttleIcon } from "../themes/default/assets/images/icons/shuttle-icon.svg";
 import { ReactComponent as SLOIcon } from "../themes/default/assets/images/icons/slo.svg";
 import { ReactComponent as SpinWheelIcon } from "../themes/default/assets/images/icons/spin-wheel-icon.svg";
@@ -176,7 +177,8 @@ export const SidePanelIcons = {
     childIcon: ArrowRight,
     identityProviders: PlugIcon,
     overview: DashboardIcon,
-    remoteFetch: CodeForkIcon
+    remoteFetch: CodeForkIcon,
+    scopes: ScopeIcon
 };
 
 export const SidePanelMiscIcons = {
@@ -252,6 +254,11 @@ export const IdentityProviderWizardStepIcons = {
     general: DocumentIcon,
     outboundProvisioningSettings: GearsIcon,
     summary: ReportIcon
+};
+
+export const OIDCScopeWizardStepIcons = {
+    general: DocumentIcon,
+    claimConfig: GearsIcon
 };
 
 export const AuthenticatorIcons = {

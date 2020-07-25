@@ -16,10 +16,9 @@
  * under the License.
  */
 
- import { OAuth } from "@wso2is/oauth-web-worker";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { AxiosHttpClient } from "@wso2is/http";
+import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosError, AxiosResponse } from "axios";
 import { ApplicationManagementConstants } from "../constants";
 import {

@@ -16,13 +16,6 @@
  * under the License.
  */
 
-export * from "./app-constants";
-export * from "./application-management";
-export * from "./common-constants";
-export * from "./documentation-constants";
-export * from "./i18n-constants";
-export * from "./identity-provider-constants";
-export * from "./token-constants";
-export * from "./ui-constants";
-export * from "./identity-provider-management-constants";
-export * from "./oidc-scopes-management";
+export * from "./add-oidc-scope-wizard";
+export * from "./add-oidc-scope-form";
+export * from "./oidc-scope-attribute-list";

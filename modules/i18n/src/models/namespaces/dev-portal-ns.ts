@@ -939,6 +939,86 @@ export interface DevPortalNS {
                 };
             };
         };
+        oidcScopes: {
+            buttons: {
+                addScope: string;
+            };
+            confirmationModals: {
+                deleteScope: Confirmation;
+                deleteClaim: Confirmation;
+            };
+            editScope: {
+                claimList: {
+                    emptyPlaceholder: Placeholder;
+                    title: string;
+                    subTitle: string;
+                    addClaim: string;
+                    popupDelete: string;
+                    searchClaims: string;
+                };
+            };
+            forms: {
+                addScopeForm: {
+                    inputs: {
+                        displayName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        scopeName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+            };
+            list: {
+                empty: Placeholder;
+            };
+            wizards: {
+                addScopeWizard: {
+                    title: string;
+                    subTitle: string;
+                    steps: {
+                        basicDetails: string;
+                        claims: string;
+                    };
+                    buttons: {
+                        next: string;
+                        previous: string;
+                    };
+                    claimList: {
+                        searchPlaceholder: string;
+                        table: {
+                            header: string;
+                            emptyPlaceholders: {
+                                assigned: string;
+                                unAssigned: string;
+                            };
+                        };
+                    };
+                };
+            };
+            notifications: {
+                addOIDCScope: Notification;
+                addOIDCClaim: Notification;
+                fetchOIDCScopes: Notification;
+                fetchOIDCScope: Notification;
+                fetchOIDClaims: Notification;
+                deleteOIDCScope: Notification;
+                deleteOIDClaim: Notification;
+                updateOIDCScope: Notification;
+            };
+        };
         overview: {
             banner: {
                 heading: string;
@@ -1154,6 +1234,8 @@ export interface DevPortalNS {
                 provisioningDisplayName: string;
             };
         };
+        oidcScopes: Page;
+        oidcScopesEdit: EditPage;
         overview: Page;
     };
     placeholders: {
