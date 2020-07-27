@@ -85,7 +85,7 @@ import WorkerFile from "./oauth.worker";
  *
  * ```
  */
-export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterface {
+export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterface {
     /**
      * The private member variable that holds the reference to the web worker.
      */
@@ -128,7 +128,7 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
      *
      * @returns {string} Removes the path parameters and returns the URL.
      *
-     * Example:
+     * @example
      * `https://localhost:9443?code=g43dhkj243wghdgwedew65&session=34khkg2g`
      * will be stripped to `https://localhost:9443`
      */
@@ -173,9 +173,9 @@ export const OAuth: OAuthSingletonInterface = (function (): OAuthSingletonInterf
                 reject("Operation timed out");
             }, timeout ?? 10000);
 
-            return (channel.port1.onmessage = ({ data }: { data: ResponseMessage<R> }) => {
+            return (channel.port1.onmessage = ({ data }: { data: ResponseMessage<string> }) => {
                 clearTimeout(timer);
-                data.success ? resolve(data.data) : reject(data.error);
+                data.success ? resolve(JSON.parse(data.data)) : reject(JSON.parse(data.error));
             });
         });
     };
