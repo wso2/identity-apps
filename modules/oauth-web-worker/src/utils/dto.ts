@@ -18,6 +18,13 @@
 
 import { ResponseMessage } from "../models";
 
+/**
+ * JSON stringifies the passed object.
+ *
+ * @param {any} data The data object.
+ *
+ * @return {ResponseMessage<string>} JSON string.
+ */
 export const generateSuccessDTO = (data?: any): ResponseMessage<string> => {
     return {
         data: JSON.stringify(data ?? ""),
@@ -25,6 +32,13 @@ export const generateSuccessDTO = (data?: any): ResponseMessage<string> => {
     };
 };
 
+/**
+ * JSON stringifies the passed object.
+ *
+ * @param {any} error The error object.
+ *
+ * @return {ResponseMessage<string>} JSON string.
+ */
 export const generateFailureDTO = (error?: any): ResponseMessage<string> => {
     if (error.toJSON) {
         delete error.toJSON;
