@@ -57,6 +57,10 @@ export interface FooterPropsInterface extends TestableComponentInterface {
      */
     onLanguageChange?: (language: string) => void;
     /**
+     * Show/Hide language switcher dropdown caret icon.
+     */
+    showLanguageSwitcherDropdownCaret?: boolean;
+    /**
      * Should the switcher be shown.
      */
     showLanguageSwitcher?: boolean;
@@ -100,6 +104,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
         links,
         onLanguageChange,
         showLanguageSwitcher,
+        showLanguageSwitcherDropdownCaret,
         supportedLanguages,
         [ "data-testid" ]: testId
     } = props;
@@ -125,6 +130,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
                                     className="footer-dropdown"
                                     currentLanguage={ currentLanguage }
                                     onLanguageChange={ onLanguageChange }
+                                    showDropdownCaret={ showLanguageSwitcherDropdownCaret }
                                     supportedLanguages={ supportedLanguages }
                                     data-testid={ `${ testId }-language-switcher` }
                                 />
@@ -159,5 +165,6 @@ Footer.defaultProps = {
     "data-testid": "app-footer",
     fixed: "bottom",
     fluid: false,
-    showLanguageSwitcher: false
+    showLanguageSwitcher: false,
+    showLanguageSwitcherDropdownCaret: false
 };

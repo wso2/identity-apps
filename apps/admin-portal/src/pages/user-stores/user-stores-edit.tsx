@@ -129,49 +129,57 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
         {
             menuItem:  t ("adminPortal:components.userstores.pageLayout.edit.tabs.general"),
             render: () => (
-                <EditBasicDetailsUserStore
-                    properties={ properties?.basic }
-                    userStore={ userStore }
-                    update={ getUserStore }
-                    id={ userStoreId }
-                    data-testid={ `${ testId }-userstore-basic-details-edit` }
-                />
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <EditBasicDetailsUserStore
+                        properties={ properties?.basic }
+                        userStore={ userStore }
+                        update={ getUserStore }
+                        id={ userStoreId }
+                        data-testid={ `${ testId }-userstore-basic-details-edit` }
+                    />
+                </ResourceTab.Pane>
             )
         },
         {
             menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.connection"),
             render: () => (
-                <EditConnectionDetails
-                    update={ getUserStore }
-                    type={ type }
-                    id={ userStoreId }
-                    properties={ properties?.connection }
-                    data-testid={ `${ testId }-userstore-connection-details-edit` }
-                />
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <EditConnectionDetails
+                        update={ getUserStore }
+                        type={ type }
+                        id={ userStoreId }
+                        properties={ properties?.connection }
+                        data-testid={ `${ testId }-userstore-connection-details-edit` }
+                    />
+                </ResourceTab.Pane>
             )
         },
         {
             menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.user"),
             render: () => (
-                <EditUserDetails
-                    update={ getUserStore }
-                    type={ type }
-                    id={ userStoreId }
-                    properties={ properties?.user }
-                    data-testid={ `${ testId }-userstore-user-details-edit` }
-                />
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <EditUserDetails
+                        update={ getUserStore }
+                        type={ type }
+                        id={ userStoreId }
+                        properties={ properties?.user }
+                        data-testid={ `${ testId }-userstore-user-details-edit` }
+                    />
+                </ResourceTab.Pane>
             )
         },
         {
             menuItem: t("adminPortal:components.userstores.pageLayout.edit.tabs.group"),
             render: () => (
-                <EditGroupDetails
-                    update={ getUserStore }
-                    type={ type }
-                    id={ userStoreId }
-                    properties={ properties?.group }
-                    data-testid={ `${ testId }-userstore-group-details-edit` }
-                />
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <EditGroupDetails
+                        update={ getUserStore }
+                        type={ type }
+                        id={ userStoreId }
+                        properties={ properties?.group }
+                        data-testid={ `${ testId }-userstore-group-details-edit` }
+                    />
+                </ResourceTab.Pane>
             )
         }
     ];

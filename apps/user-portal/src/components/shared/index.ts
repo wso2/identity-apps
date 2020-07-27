@@ -17,11 +17,11 @@
  */
 
 export * from "./avatar";
+export * from "./advanced-search-with-basic-filters";
 export * from "./alert";
 export * from "./app-avatar";
 export * from "./header";
 export * from "./language-switcher";
-export * from "./advanced-search";
 export * from "./danger-zone";
 export * from "./edit-section";
 export * from "./empty-placeholder";

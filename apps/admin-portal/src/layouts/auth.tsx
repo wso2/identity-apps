@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AuthLayout as AuthLayoutSkeleton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import { AuthLayout as AuthLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../components";
 import { authLayoutRoutes } from "../configs";
@@ -48,35 +48,37 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
 
     return (
         <AuthLayoutSkeleton fluid={ fluid }>
-            <Switch>
-                {
-                    authLayoutRoutes.map((route, index) => (
-                        route.redirectTo
-                            ? <Redirect to={ route.redirectTo } />
-                            : route.protected
-                                ? (
-                                    <ProtectedRoute
-                                        component={ route.component ? route.component : null }
-                                        path={ route.path }
-                                        key={ index }
-                                        exact={ route.exact }
-                                    />
-                                )
-                                : (
-                                    <Route
-                                        path={ route.path }
-                                        render={ (renderProps) =>
-                                            route.component
-                                                ? <route.component { ...renderProps } />
-                                                : null
-                                        }
-                                        key={ index }
-                                        exact={ route.exact }
-                                    />
-                                )
-                    ))
-                }
-            </Switch>
+            <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Switch>
+                    {
+                        authLayoutRoutes.map((route, index) => (
+                            route.redirectTo
+                                ? <Redirect to={ route.redirectTo } />
+                                : route.protected
+                                    ? (
+                                        <ProtectedRoute
+                                            component={ route.component ? route.component : null }
+                                            path={ route.path }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
+                                    : (
+                                        <Route
+                                            path={ route.path }
+                                            render={ (renderProps) =>
+                                                route.component
+                                                    ? <route.component { ...renderProps } />
+                                                    : null
+                                            }
+                                            key={ index }
+                                            exact={ route.exact }
+                                        />
+                                    )
+                        ))
+                    }
+                </Switch>
+            </Suspense>
         </AuthLayoutSkeleton>
     );
 };

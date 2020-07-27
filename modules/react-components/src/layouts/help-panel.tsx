@@ -24,11 +24,15 @@ import { GenericIconProps, HelpPanel, HelpPanelPropsInterface, HelpPanelTabInter
 /**
  * Help panel layout Prop types.
  */
-export interface HelpPanelLayoutLayoutPropsInterface {
+export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInterface {
     /**
      * Extra CSS classes.
      */
     className?: string;
+    /**
+     * Tooltip for the close button.
+     */
+    closeButtonTooltip?: string;
     /**
      * Completely disables the sidebar.
      */
@@ -46,6 +50,10 @@ export interface HelpPanelLayoutLayoutPropsInterface {
      */
     isPinned?: boolean;
     /**
+     * Tooltip for the pin button.
+     */
+    pinButtonTooltip?: string;
+    /**
      * Direction of the sidebar.
      */
     sidebarDirection?: HelpPanelPropsInterface["direction"];
@@ -61,6 +69,10 @@ export interface HelpPanelLayoutLayoutPropsInterface {
      * Array of objects describing tabs.
      */
     tabs: HelpPanelPropsInterface["tabs"];
+    /**
+     * Tooltip for the unpin button.
+     */
+    unpinButtonTooltip?: string;
     /**
      * Tabs active index.
      */
@@ -98,13 +110,16 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
     const {
         children,
         className,
+        closeButtonTooltip,
         enabled,
         icons,
         onHelpPanelPinToggle,
         isPinned,
+        pinButtonTooltip,
         sidebarDirection,
         tabs,
         activeIndex,
+        unpinButtonTooltip,
         ...rest
     } = props;
 
@@ -177,20 +192,19 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
                 <Sidebar.Pushable className={ layoutClasses }>
                     <HelpPanel
                         as={ Menu }
-                        animation="overlay"
                         direction={ sidebarDirection }
-                        icon="labeled"
-                        vertical
                         visible={ helpSidebarVisibility }
                         ref={ sidebarRef }
                         actions={ [
                             {
                                 icon: icons.pin,
-                                onClick: onHelpPanelPinToggle
+                                onClick: onHelpPanelPinToggle,
+                                tooltip: isPinned ? unpinButtonTooltip : pinButtonTooltip
                             },
                             {
                                 icon: icons.close,
-                                onClick: handleHelpPanelToggle
+                                onClick: handleHelpPanelToggle,
+                                tooltip: closeButtonTooltip
                             }
                         ] }
                         tabsActiveIndex={ helpPanelTabsActiveIndex }
@@ -215,7 +229,17 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
  * Default props for the sidebar pusher layout.
  */
 HelpPanelLayout.defaultProps = {
+    animation: "overlay",
+    bordered: "left",
     enabled: true,
+    icon: "labeled",
+    pinButtonTooltip: "Pin",
+    raised: false,
+    showLabelsOnSidebarMini: false,
+    showTooltipsOnActionBar: true,
+    showTooltipsOnSidebarMini: true,
     sidebarMiniEnabled: true,
-    sidebarVisibility: false
+    sidebarVisibility: false,
+    unPinButtonTooltip: "Unpin",
+    vertical: true
 };

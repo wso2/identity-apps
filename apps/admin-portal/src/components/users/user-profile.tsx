@@ -25,12 +25,12 @@ import {
 } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms } from "@wso2is/forms";
-import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Input, Segment } from "semantic-ui-react";
 import { deleteUser, updateUserInfo } from "../../api";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
@@ -296,35 +296,38 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         <>
             {
                 !_.isEmpty(profileInfo) && (
-                    <Forms
-                        data-testid={ `${ testId }-form` }
-                        onSubmit={ (values) => handleSubmit(values) }
-                    >
-                        <Grid>
-                            {
-                                profileSchema && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
-                                    if (schema.name !== "roles.default") {
-                                        return (
-                                            generateProfileEditForm(schema, index)
-                                        );
-                                    }
-                                })
-                            }
-                            <Grid.Row columns={ 1 }>
-                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                    <Button
-                                        data-testid={ `${ testId }-form-update-button` }
-                                        primary
-                                        type="submit"
-                                        size="small"
-                                        className="form-button"
-                                    >
-                                        Update
-                                    </Button>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Forms>
+                    <EmphasizedSegment>
+                        <Forms
+                            data-testid={ `${ testId }-form` }
+                            onSubmit={ (values) => handleSubmit(values) }
+                        >
+                            <Grid>
+                                {
+                                    profileSchema
+                                    && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
+                                        if (schema.name !== "roles.default") {
+                                            return (
+                                                generateProfileEditForm(schema, index)
+                                            );
+                                        }
+                                    })
+                                }
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Button
+                                            data-testid={ `${ testId }-form-update-button` }
+                                            primary
+                                            type="submit"
+                                            size="small"
+                                            className="form-button"
+                                        >
+                                            Update
+                                        </Button>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Forms>
+                    </EmphasizedSegment>
                 )
             }
             <Divider hidden />

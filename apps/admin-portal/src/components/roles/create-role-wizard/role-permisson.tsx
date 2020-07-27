@@ -18,11 +18,11 @@
 
 import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
-import { ContentLoader, TreeView } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment, TreeView } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Grid, Segment } from "semantic-ui-react";
+import { Button, Divider, Grid } from "semantic-ui-react";
 import { getPermissionList, getPermissionsForRole } from "../../../api";
 import { Permission } from "../../../models";
 import { addPath } from "../role-utils";
@@ -298,10 +298,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     };
 
     return (
-        <Segment
-            data-testid={ testId }
-            basic
-        >
+        <EmphasizedSegment data-testid={ testId }>
             { !isPermissionsLoading && 
                 <div className="action-container">
                         <Button
@@ -358,7 +355,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     </>
                 }
             </Forms>
-        </Segment>
+        </EmphasizedSegment>
     )
 
 };

@@ -40,6 +40,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
 import { ApplicationConstants } from "../../constants";
+import { history } from "../../helpers";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
@@ -216,12 +217,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 {
                     icon: "arrow right",
                     name: t("common:personalInfo"),
-                    to: ApplicationConstants.PATHS.get("PROFILE_INFO")
+                    onClick: () => history.push(ApplicationConstants.PATHS.get("PROFILE_INFO"))
                 },
                 {
                     icon: "power off",
                     name: t("common:logout"),
-                    to: window[ "AppUtils" ].getConfig().routes.logout
+                    onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
                 }
             ] }
             profileInfo={ profileInfo }

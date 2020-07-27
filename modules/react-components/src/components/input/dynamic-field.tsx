@@ -54,6 +54,10 @@ export interface DynamicFieldPropsInterface extends TestableComponentInterface {
      */
     keyData?: KeyData[];
     /**
+     * Enable/Disable bottom margin.
+     */
+    bottomMargin?: boolean;
+    /**
      * Triggers submit
      */
     submit: boolean;
@@ -106,6 +110,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
 ): ReactElement => {
 
     const {
+        bottomMargin,
         data,
         keyType,
         keyData,
@@ -304,7 +309,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
                                     </List.Item>
                                 </List>
                             </Forms>
-                            <Divider hidden/>
+                            { bottomMargin && <Divider hidden/> }
                         </>
                     )
                     : null
@@ -538,6 +543,7 @@ export const DynamicField: FunctionComponent<DynamicFieldPropsInterface> = (
 
 // Set default props
 DynamicField.defaultProps = {
+    bottomMargin: true,
     "data-testid": "dynamic-field",
     duplicateKeyErrorMsg: "This is key is already selected. Please choose another key.",
     requiredField: false

@@ -103,7 +103,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
             <Grid.Row data-testid={ testId }>
                 <Grid.Column computer={ 10 }>
                     { uiProps.enablePrecedingDivider && <Divider/> }
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { uiProps.componentHeading }
                     </Heading>
                     <Hint>

@@ -18,7 +18,14 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, EmptyPlaceholder, Heading, PrimaryButton } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    EmphasizedSegment,
+    EmptyPlaceholder,
+    Heading,
+    PrimaryButton
+} from "@wso2is/react-components";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -320,10 +327,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     };
 
     return (
-        <>
+        <EmphasizedSegment>
             <Grid.Row>
                 <Grid.Column width={ 8 }>
-                    <Heading as="h5">OutBound Provisioning Connectors</Heading>
+                    <Heading as="h4">OutBound Provisioning Connectors</Heading>
                 </Grid.Column>
             </Grid.Row>
 
@@ -493,20 +500,17 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
             }
 
             {
-                identityProvider?.roles &&
-                (!isLoading) ? (
-                    <>
-                        <Divider/>
-                        <Divider hidden/>
+                (identityProvider?.roles && !isLoading)
+                    ? (
                         <OutboundProvisioningRoles
                             idpRoles={ identityProvider?.roles }
                             idpId={ identityProvider?.id }
                             data-testid={ `${ testId }-roles` }
                         />
-                    </>
-                ) : <ContentLoader/>
+                    )
+                    : <ContentLoader/>
             }
-         </>
+         </EmphasizedSegment>
     );
 };
 

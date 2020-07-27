@@ -149,10 +149,21 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
 
     return (
         <PageLayout
+            action={
+                (isTemplateTypesFetchRequestLoading || emailTemplateTypes?.length > 0)
+                && (
+                    <PrimaryButton
+                        onClick={ () => setShowNewTypeWizard(true) }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add"/>
+                        { t("adminPortal:components.emailTemplateTypes.buttons.newType") }
+                    </PrimaryButton>
+                )
+            }
             isLoading={ isTemplateTypesFetchRequestLoading }
             title={ t("adminPortal:pages.emailTemplateTypes.title") }
             description={ t("adminPortal:pages.emailTemplateTypes.subTitle") }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
@@ -163,17 +174,7 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
                 showPagination={ true }
                 totalPages={ Math.ceil(emailTemplateTypes?.length / listItemLimit) }
                 totalListSize={ emailTemplateTypes?.length }
-                rightActionPanel={
-                    (
-                        <PrimaryButton
-                            onClick={ () => setShowNewTypeWizard(true) }
-                            data-testid={ `${ testId }-list-layout-add-button` }
-                        >
-                            <Icon name="add"/>
-                            { t("adminPortal:components.emailTemplateTypes.buttons.newType") }
-                        </PrimaryButton>
-                    )
-                }
+                showTopActionPanel={ false }
                 data-testid={ `${ testId }-list-layout` }
             >
                 <EmailTemplateTypeList

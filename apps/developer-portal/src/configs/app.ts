@@ -110,6 +110,7 @@ export class Config {
             localAuthenticators: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators`,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
+            oidcScopes: `${this.getDeploymentConfig().serverHost}/api/server/v1/oidc/scopes`,
             requestPathAuthenticators:
                 `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
             saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,

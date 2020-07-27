@@ -84,3 +84,17 @@
 ------------------------------------*/
 
 @secondaryLighterBackground: @alabaster;
+
+/*-----------------------------
+         Jumbotron
+------------------------------*/
+
+@jumbotronInvertedHeadingColor: @white;
+
+/*-----------------------------
+      Emphasized Segment
+------------------------------*/
+
+@emphasizedSegmentBackgroundColor: @lightPageBackground;
+@emphasizedSegmentBorder: @defaultBorderWidth solid @lightBorderColor;
+@emphasizedSegmentBorderRadius: @defaultBorderRadius;

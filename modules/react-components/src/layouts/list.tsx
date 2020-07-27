@@ -40,6 +40,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      */
     advancedSearch?: ReactNode;
     /**
+     * Position of the advanced search component.
+     */
+    advancedSearchPosition?: "left" | "right";
+    /**
      * Extra CSS classes.
      */
     className?: string;
@@ -111,6 +115,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
 
     const {
         advancedSearch,
+        advancedSearchPosition,
         children,
         className,
         leftActionPanel,
@@ -148,6 +153,14 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 <Grid.Row>
                                     <Grid.Column width={ 8 }>
                                         <div className="left-aligned actions">
+                                            { advancedSearchPosition === "left" && advancedSearch }
+                                            { leftActionPanel }
+                                        </div>
+                                    </Grid.Column>
+                                    <Grid.Column width={ 8 }>
+                                        <div className="actions right-aligned">
+                                            { advancedSearchPosition === "right" && advancedSearch }
+                                            { rightActionPanel }
                                             {
                                                 sortOptions &&
                                                 sortStrategy &&
@@ -196,15 +209,6 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                                 </div>
                                             }
                                         </div>
-                                        <div className="left aligned-actions">
-                                            { leftActionPanel }
-                                        </div>
-                                    </Grid.Column>
-                                    <Grid.Column width={ 8 }>
-                                        <div className="actions right-aligned">
-                                            { advancedSearch }
-                                            { rightActionPanel }
-                                        </div>
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -237,6 +241,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
  * Default props for the list layout.
  */
 ListLayout.defaultProps = {
+    advancedSearchPosition: "left",
     "data-testid": "list-layout",
     showPagination: false,
     showTopActionPanel: true

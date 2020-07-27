@@ -95,7 +95,6 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         <PageLayout
             title={ connectorCategory?.name }
             description={ connectorCategory?.description }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <Grid>

@@ -29,9 +29,9 @@ import {
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Grid, Icon, List, SemanticWIDTHS } from "semantic-ui-react";
+import { Grid, Icon, List, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { UIConstants } from "../../constants";
+import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { UserBasicInterface, UserListInterface } from "../../models";
 
@@ -40,31 +40,63 @@ import { UserBasicInterface, UserListInterface } from "../../models";
  */
 interface UsersListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
+     * Width of the action panel column.
+     */
+    actionsColumnWidth?: SemanticWIDTHS;
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
      * User delete callback.
      *
      * @param {string} userId - ID of the deleting user.
      */
-    handleUserDelete: (userId: string) => void;
+    handleUserDelete?: (userId: string) => void;
     /**
      * Callback to be fired when the empty list placeholder action is clicked.
      */
-    onEmptyListPlaceholderActionClick: () => void;
+    onEmptyListPlaceholderActionClick?: () => void;
+    /**
+     * On list item select callback.
+     */
+    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
     /**
      * Callback for the search query clear action.
      */
-    onSearchQueryClear: () => void;
+    onSearchQueryClear?: () => void;
     /**
      * Search query for the list.
      */
-    searchQuery: string;
+    searchQuery?: string;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
+    /**
+     * Show/Hide meta content.
+     */
+    showMetaContent?: boolean;
     /**
      * Meta column list for the user list.
      */
-    userMetaListContent: Map<string, string>;
+    userMetaListContent?: Map<string, string>;
     /**
      * Users list.
      */
     usersList: UserListInterface;
+    /**
+     * Width of the description area.
+     */
+    descriptionColumnWidth?: SemanticWIDTHS;
+    /**
+     * Width of the meta info area.
+     */
+    metaColumnWidth?: SemanticWIDTHS;
 }
 
 /**
@@ -74,11 +106,19 @@ interface UsersListProps extends LoadableComponentInterface, TestableComponentIn
  */
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
     const {
+        actionsColumnWidth,
+        descriptionColumnWidth,
+        defaultListItemLimit,
         handleUserDelete,
         isLoading,
         onEmptyListPlaceholderActionClick,
+        onListItemClick,
         onSearchQueryClear,
+        metaColumnWidth,
         searchQuery,
+        selection,
+        showListItemActions,
+        showMetaContent,
         userMetaListContent,
         usersList,
         [ "data-testid" ]: testId
@@ -90,7 +130,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
 
     const handleUserEdit = (userId: string) => {
-        history.push(`users/${ userId }`);
+        history.push(AppConstants.PATHS.get("USER_EDIT").replace(":id", userId));
     };
 
     const deleteUser = (id: string): void => {
@@ -231,35 +271,45 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 className="application-list"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit,
                     imageType: "circular"
                 } }
+                fill={ !showPlaceholders() }
+                celled={ false }
+                divided={ true }
+                selection={ selection }
             >
                 {
                     usersList?.Resources && usersList.Resources instanceof Array && usersList.Resources.length > 0
                         ? usersList.Resources.map((user, index) => (
                             <ResourceListItem
                                 key={ index }
-                                actions={ [
-                                    {
-                                        "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
-                                        icon: "pencil alternate",
-                                        onClick: () => handleUserEdit(user.id),
-                                        popupText: t("adminPortal:components.users.usersList.list.iconPopups.edit"),
-                                        type: "button"
-                                    },
-                                    {
-                                        "data-testid": `${ testId }-delete-user-${ user.userName }-button`,
-                                        hidden: user.userName === "admin",
-                                        icon: "trash alternate",
-                                        onClick: (): void => {
-                                            setShowDeleteConfirmationModal(true);
-                                            setDeletingUser(user);
-                                        },
-                                        popupText: t("adminPortal:components.users.usersList.list.iconPopups.delete"),
-                                        type: "button"
-                                    }
-                                ] }
+                                actions={
+                                    showListItemActions
+                                        ? [
+                                            {
+                                                "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
+                                                icon: "pencil alternate",
+                                                onClick: () => handleUserEdit(user.id),
+                                                popupText: t("adminPortal:components.users.usersList.list" +
+                                                    ".iconPopups.edit"),
+                                                type: "button"
+                                            },
+                                            {
+                                                "data-testid": `${ testId }-delete-user-${ user.userName }-button`,
+                                                hidden: user.userName === "admin",
+                                                icon: "trash alternate",
+                                                onClick: (): void => {
+                                                    setShowDeleteConfirmationModal(true);
+                                                    setDeletingUser(user);
+                                                },
+                                                popupText: t("adminPortal:components.users.usersList.list" +
+                                                    ".iconPopups.delete"),
+                                                type: "button"
+                                            }
+                                        ]
+                                        : []
+                                }
                                 actionsFloated="right"
                                 avatar={ (
                                     <UserAvatar
@@ -273,10 +323,18 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                     " " + user.name.familyName : user.userName }
                                 itemDescription={ user.emails ? user.emails[ 0 ].toString() :
                                     user.userName }
-                                metaContent={ listContent(user) }
-                                metaColumnWidth={ 10 }
-                                descriptionColumnWidth={ 3 }
-                                actionsColumnWidth={ 3 }
+                                metaContent={ showMetaContent ? listContent(user) : null }
+                                metaColumnWidth={ metaColumnWidth }
+                                descriptionColumnWidth={ descriptionColumnWidth }
+                                actionsColumnWidth={ actionsColumnWidth }
+                                onClick={ (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
+                                    if (!selection) {
+                                        return;
+                                    }
+
+                                    handleUserEdit(user.id);
+                                    onListItemClick(event, data);
+                                } }
                             />
                         ))
                         : showPlaceholders()
@@ -327,4 +385,16 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             }
         </>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+UsersList.defaultProps = {
+    actionsColumnWidth: 3,
+    defaultListItemLimit: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+    descriptionColumnWidth: 3,
+    metaColumnWidth: 10,
+    showListItemActions: true,
+    showMetaContent: true
 };

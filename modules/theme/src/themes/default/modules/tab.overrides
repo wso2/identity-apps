@@ -17,9 +17,9 @@
  *
  */
 
-/*******************************
-    Resource Tabs Variation
-*******************************/
+/*-----------------------------
+         Resource Tabs
+------------------------------*/
 
 .tabs {
     &.resource-tabs {
@@ -34,6 +34,15 @@
         .ui.tab {
             border: none;
             box-shadow: none;
+        }
+        
+        .resource-tab-pane {
+            margin-top: @resourceTabsPaneMarginTop;
+
+            &.controlled-segments {
+                background: @resourceTabsControlledSegmentsPaneBackground;
+                padding: @resourceTabsControlledSegmentsPanePadding;
+            }
         }
     }
 }

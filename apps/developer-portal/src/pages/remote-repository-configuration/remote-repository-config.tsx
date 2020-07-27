@@ -132,6 +132,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                         //Will not need to handle on page change since only one record is only retrieved.
                     } }
                     showPagination={ false }
+                    showTopActionPanel={ false }
                     totalPages={ Math.ceil(remoteRepoConfig?.length / listItemLimit) }
                     totalListSize={ remoteRepoConfig?.length }
                 >

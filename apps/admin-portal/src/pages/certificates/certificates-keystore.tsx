@@ -227,10 +227,25 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                 )
             }
             <PageLayout
+                action={
+                    (isLoading || !(!searchQuery && certificatesKeystore?.length <= 0))
+                    && hasRequiredScopes(featureConfig?.certificates, featureConfig?.certificates?.scopes?.create,
+                        allowedScopes)
+                    && !isSuper && (
+                        <PrimaryButton
+                            onClick={ () => {
+                                setOpenModal(true);
+                            } }
+                            data-testid={ `${ testId }-list-layout-upload-button` }
+                        >
+                            <Icon name="cloud upload" />
+                            { t("adminPortal:components.certificates.keystore.pageLayout.primaryAction") }
+                        </PrimaryButton>
+                    )
+                }
                 isLoading={ isLoading }
                 title={ t("adminPortal:components.certificates.keystore.pageLayout.title") }
                 description={ t("adminPortal:components.certificates.keystore.pageLayout.description") }
-                showBottomDivider={ true }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout
@@ -272,22 +287,6 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
                     resetPagination={ resetPagination }
-                    rightActionPanel={
-                        (hasRequiredScopes(featureConfig?.certificates,
-                            featureConfig?.certificates?.scopes?.create,
-                            allowedScopes)
-                            && !isSuper) && (
-                            <PrimaryButton
-                                onClick={ () => {
-                                    setOpenModal(true);
-                                } }
-                                data-testid={ `${ testId }-list-layout-upload-button` }
-                            >
-                                <Icon name="cloud upload" />
-                                { t("adminPortal:components.certificates.keystore.pageLayout.primaryAction") }
-                            </PrimaryButton>
-                        )
-                    }
                     leftActionPanel={ null }
                     showPagination={ true }
                     sortOptions={ SORT_BY }

@@ -18,6 +18,7 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
+import { SidePanelIcons } from "./ui";
 import { AppConstants } from "../constants";
 import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } from "../layouts";
 
@@ -41,20 +42,27 @@ import { AppLayout, AuthLayout, DashboardLayout, DefaultLayout, ErrorLayout } fr
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
+        category: "adminPortal:components.sidePanel.categories.general",
         component: lazy(() => import("../pages/overview")),
-        icon: "overview",
+        icon: {
+            icon: SidePanelIcons.overview
+        },
         id: "overview",
         name: "adminPortal:components.sidePanel.overview",
+        order: 1,
         path: AppConstants.PATHS.get("OVERVIEW"),
         protected: true,
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
                 component: lazy(() => import("../pages/users/user-edit")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "usersEdit",
                 name: "adminPortal:components.sidePanel.editUsers",
                 path: AppConstants.PATHS.get("USER_EDIT"),
@@ -64,19 +72,25 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/users/users")),
         exact: true,
-        icon: "users",
+        icon: {
+            icon: SidePanelIcons.users
+        },
         id: "users",
         name: "adminPortal:components.sidePanel.users",
+        order: 2,
         path: AppConstants.PATHS.get("USERS"),
         protected: true,
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
                 component: lazy(() => import("../pages/roles/role-edit")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "groupsEdit",
                 name: "adminPortal:components.sidePanel.editGroups",
                 path: AppConstants.PATHS.get("GROUP_EDIT"),
@@ -86,19 +100,25 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/groups/groups")),
         exact: true,
-        icon: "groups",
+        icon: {
+            icon: SidePanelIcons.groups
+        },
         id: "groups",
         name: "adminPortal:components.sidePanel.groups",
+        order: 2,
         path: AppConstants.PATHS.get("GROUPS"),
         protected: true,
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
                 component: lazy(() => import("../pages/roles/role-edit")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "rolesEdit",
                 name: "adminPortal:components.sidePanel.editRoles",
                 path: AppConstants.PATHS.get("ROLE_EDIT"),
@@ -108,19 +128,25 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/roles/role")),
         exact: true,
-        icon: "roles",
+        icon: {
+            icon: SidePanelIcons.roles
+        },
         id: "roles",
         name: "adminPortal:components.sidePanel.roles",
+        order: 2,
         path: AppConstants.PATHS.get("ROLES"),
         protected: true,
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.attributes",
         children: [
             {
                 component: lazy(() => import("../pages/claims/local-claims-edit")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "editLocalClaims",
                 level: 2,
                 name: "adminPortal:components.sidePanel.editLocalClaims",
@@ -131,7 +157,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/claims/local-claims")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "localDialect",
                 level: 2,
                 name: "adminPortal:components.sidePanel.localDialect",
@@ -142,7 +170,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/claims/external-dialect-edit")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "editExternalDialect",
                 level: 2,
                 name: "adminPortal:components.sidePanel.editExternalDialect",
@@ -153,19 +183,24 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         ],
         component: lazy(() => import("../pages/claims/claim-dialects")),
         exact: true,
-        icon: "claims",
+        icon: {
+            icon: SidePanelIcons.claims
+        },
         id: "attributeDialects",
-        level: 2,
         name: "adminPortal:components.sidePanel.attributeDialects",
+        order: 5,
         path: AppConstants.PATHS.get("CLAIM_DIALECTS"),
         protected: true,
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.userstores",
         children: [
             {
                 component: lazy(() => import("../pages/user-stores/user-stores-edit")),
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "edit-user-store",
                 name: "adminPortal:components.sidePanel.editUserstore",
                 path: AppConstants.PATHS.get("USERSTORES_EDIT"),
@@ -174,7 +209,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             },
             {
                 component: lazy(() => import("../pages/user-stores/userstores-templates")),
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "userstore-templates",
                 name: "adminPortal:components.sidePanel.userstoreTemplates",
                 path: AppConstants.PATHS.get("USERSTORE_TEMPLATES"),
@@ -183,39 +220,38 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             }
         ],
         component: lazy(() => import("../pages/user-stores/user-stores")),
-        icon: "userStore",
+        icon: {
+            icon: SidePanelIcons.userStore
+        },
         id: "userStores",
         name: "adminPortal:components.sidePanel.userstores",
+        order: 3,
         path: AppConstants.PATHS.get("USERSTORES"),
         protected: true,
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.certificates",
         component: lazy(() => import("../pages/certificates/certificates-keystore")),
-        icon: "certificate",
+        icon: {
+            icon: SidePanelIcons.certificate
+        },
         id: "certificates",
         name: "adminPortal:components.sidePanel.certificates",
+        order: 4,
         path: AppConstants.PATHS.get("CERTIFICATES"),
         protected: true,
         showOnSidePanel: true
     },
     {
+        category: "adminPortal:components.sidePanel.categories.configurations",
         children: [
-            {
-                component: lazy(() => import("../pages/email-templates/email-template-types")),
-                exact: true,
-                icon: "childIcon",
-                id: "emailTemplates",
-                level: 2,
-                name: "adminPortal:components.sidePanel.emailTemplates",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
-                protected: true,
-                showOnSidePanel: true
-            },
             {
                 component: lazy(() => import("../pages/email-templates/email-templates")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.emailTemplates",
                 path: AppConstants.PATHS.get("EMAIL_TEMPLATE"),
@@ -225,7 +261,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/email-templates/email-locale-add")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.addEmailTemplate",
                 path: AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD"),
@@ -235,7 +273,9 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             {
                 component: lazy(() => import("../pages/email-templates/email-locale-add")),
                 exact: true,
-                icon: "childIcon",
+                icon: {
+                    icon: SidePanelIcons.childIcon
+                },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.addEmailTemplateLocale",
                 path: AppConstants.PATHS.get("EMAIL_TEMPLATE_LOCALE_ADD"),
@@ -243,19 +283,25 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
+        component: lazy(() => import("../pages/email-templates/email-template-types")),
         exact: true,
-        icon: "serverConfigurations",
-        id: "serverConfigurations",
-        name: "adminPortal:components.sidePanel.configurations",
+        icon: {
+            icon: SidePanelIcons.emailTemplates
+        },
+        id: "emailTemplates",
+        name: "adminPortal:components.sidePanel.emailTemplates",
+        order: 6,
+        path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
         protected: true,
         showOnSidePanel: true
     },
     {
         component: lazy(() => import("../pages/configurations/governance-connectors")),
         exact: true,
-        icon: "childIcon",
+        icon: null,
         id: "governanceConnectors",
         name: "adminPortal:components.sidePanel.governanceConnectors",
+        order: 6,
         path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS"),
         protected: true,
         showOnSidePanel: false

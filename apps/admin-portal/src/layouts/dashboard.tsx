@@ -23,18 +23,22 @@ import { RouteUtils } from "@wso2is/core/utils";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     Alert,
+    ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
     Footer,
     SidePanel,
     ThemeContext,
     TopLoadingBar
 } from "@wso2is/react-components";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import isEmpty from "lodash/isEmpty";
 import React, {
     FunctionComponent,
     ReactElement,
     ReactNode,
+    Suspense,
     SyntheticEvent,
+    lazy,
     useContext,
     useEffect,
     useState
@@ -49,7 +53,6 @@ import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface, GovernanceConnectorCategoryInterface } from "../models";
-import { GovernanceConnectorsPage } from "../pages/configurations";
 import { AppState, store } from "../store";
 import { GovernanceConnectorUtils } from "../utils";
 
@@ -107,7 +110,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig, allowedScopes));
 
-        if (_.isEmpty(profileInfo)) {
+        if (isEmpty(profileInfo)) {
             dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
         }
     }, []);
@@ -129,7 +132,9 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
     useEffect(() => {
         if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
             if (!governanceConnectorRoutesAdded) {
-                const serverConfigsRoute = routes.find(route => route.id === "serverConfigurations");
+
+                const filteredRoutesClone = [ ...filteredRoutes ];
+
                 governanceConnectorCategories.map(category => {
                     let subCategoryExists = false;
                     category.connectors?.map(connector => {
@@ -139,20 +144,26 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                         }
                     });
                     if (subCategoryExists) {
-                        console.log("Subcategories found.");
+                        // TODO: Implement sub category handling logic here.
                     }
-                    serverConfigsRoute.children.push({
-                        component: GovernanceConnectorsPage,
+
+                    filteredRoutesClone.unshift({
+                        category: "adminPortal:components.sidePanel.categories.configurations",
+                        component: lazy(() => import("../pages/configurations/governance-connectors")),
                         exact: true,
-                        icon: "childIcon",
+                        icon: {
+                            icon: SidePanelIcons.connectors[ category.name ] ?? SidePanelIcons.connectors.default
+                        },
                         id: category.id,
-                        level: 2,
                         name: category.name,
+                        order: 6,
                         path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
                         protected: true,
                         showOnSidePanel: true
                     });
                 });
+
+                setFilteredRoutes(filteredRoutesClone);
                 setGovernanceConnectorRoutesAdded(true);
             }
         } else {
@@ -323,7 +334,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             })
         };
 
-        recurse(filteredRoutes);
+        recurse([ ...filteredRoutes ]);
 
         return resolvedRoutes;
     };
@@ -370,17 +381,17 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             ) }
             sidePanel={ (
                 <SidePanel
-                    bordered="right"
+                    categorized
                     caretIcon={ SidePanelMiscIcons.caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }
                     footerHeight={ footerHeight }
                     headerHeight={ headerHeight }
+                    hoverType="background"
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    icons={ SidePanelIcons }
-                    routes={ filteredRoutes }
+                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
@@ -410,9 +421,11 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                 />
             ) }
         >
-            <Switch>
-                { resolveRoutes() }
-            </Switch>
+            <Suspense fallback={ <ContentLoader dimmer/> }>
+                <Switch>
+                    { resolveRoutes() }
+                </Switch>
+            </Suspense>
         </DashboardLayoutSkeleton>
     );
 };

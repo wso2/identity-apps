@@ -133,6 +133,7 @@
             }
         }
         .top-action-panel {
+            background: @settingsCardTopActionPanelBackground;
             box-shadow: none;
             padding: 0 @settingsCardPadding;
             border-left: 0;
@@ -235,10 +236,10 @@
         box-shadow: none;
 
         &:hover {
-            transform: none;
+            transform: none !important;
             text-decoration: none;
-            cursor: pointer;
-            box-shadow: @basicCardHoverBoxShadow;
+            cursor: pointer !important;
+            box-shadow: @basicCardHoverBoxShadow !important;
         }
     }
 }
@@ -401,6 +402,20 @@
 .labeled-card-wrapper {
     text-align: center;
 
+    &.basic {
+        .labeled-card {
+            border: none !important;
+        }
+    }
+    &.padding {
+        &-none {
+            .labeled-card {
+                .card-image-container {
+                    padding: 0;
+                }
+            }
+        }
+    }
     &.tiny {
         width: @labeledCardTiny;
     }
@@ -422,6 +437,13 @@
                 }
             }
         }
+        &.hover-raised {
+            &-none {
+                .labeled-card {
+                    box-shadow: none !important;
+                }
+            }
+        }
     }
     &.inline {
         display: inline-block;
@@ -440,6 +462,11 @@
                 text-decoration: none;
                 cursor: pointer;
                 box-shadow: @labeledCardHoverBoxShadow;
+            }
+            &.background {
+                &-transparent {
+                    background: transparent;
+                }
             }
             .close-button {
                 border-radius: 50% !important;

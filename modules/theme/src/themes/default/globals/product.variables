@@ -18,7 +18,7 @@
  */
 
 /*-------------------
-    Icon Component
+    Generic Icon
 --------------------*/
 
 @iconWrapperBgColor: @lightGray;
@@ -26,7 +26,6 @@
 @iconWrapperBorderWidth: 1px;
 @iconWrapperPadding: 5px;
 @iconWrapperVeryPadding: 10px;
-@iconDefaultBgColor: @nobel;
 @iconDefaultBgHoverColor: @black;
 @iconWrapperTwoTonePrimaryColor: @primaryColor;
 @iconWrapperTwoToneSecondaryColor: @nobel;
@@ -34,16 +33,48 @@
 @iconWrapperSpacingRight: 8px;
 @iconWrapperSpacingLeft: 8px;
 
+@genericIconRoundedHoverPadding: 6px;
+@genericIconSquareHoverPadding: 6px;
+@genericIconCircularHoverPadding: 10px;
+@genericIconCircularHoverWidth: fit-content;
+@genericIconCircularHoverMargin: 0 auto;
+
 /*-------------------
    Advanced search
 --------------------*/
 
-@advancedSearchHintBorder: 1px solid rgba(34, 36, 38, 0.15);
+@advancedSearchInputBorder: @defaultBorderWidth solid transparent;
+@advancedSearchInputBorderRadius: @defaultBorderRadius;
+@advancedSearchActiveInputBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+@advancedSearchActiveInputBorderBottom: none;
+
+@advancedSearchHintBackground: @lightInputBackground;
+@advancedSearchHintBorder: none;
 @advancedSearchOptionsShadow: 0 2px 4px rgba(0,0,0,0.2);
 @advancedSearchOptionsBorder: 1px solid rgba(0,0,0,0.2);
 @advancedSearchOptionsHeaderBorderBottom: 1px solid #dededf;
 @advancedSearchDropdownMaxWidth: 520px;
-@advancedSearchBorder: 1px solid @borderColor;
+
+@advancedSearchWhiteInputBackgroundColor: @white;
+@advancedSearchWhiteHintBackground: @white;
+@advancedSearchWhiteInputBorder: @defaultBorderWidth solid @defaultBorderColor;
+
+@advancedSearchActiveInputBorder: @defaultBorderWidth solid @borderColor;
+@advancedSearchActiveBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+
+@advancedSearchQueryHintPadding: 5px 16px;
+@advancedSearchQueryHintBorderBottomRightRadius: @defaultBorderRadius;
+@advancedSearchQueryHintBorderBottomLeftRadius: @defaultBorderRadius;
+@advancedSearchQueryHintFontSize: 12px;
+@advancedSearchActiveSearchQueryBorder: 1px solid @borderColor;
+@advancedSearchActiveSearchQueryBorderTop: @defaultBorderWidth solid @lightBorderColor;
+@advancedSearchActiveSearchQueryWidth: @advancedSearchWidth;
+
+@advancedSearchInputBackgroundColor: @lightInputBackground;
+
+@advancedSearchAddonButtonBorder: none;
+@advancedSearchAddonButtonBackgroundColor: @advancedSearchInputBackgroundColor;
+@advancedSearchAddonButtonActiveBackgroundColor: @advancedSearchInputBackgroundColor;
 
 /*-------------------
        Alert
@@ -97,12 +128,58 @@
       Product Branding
 ------------------------------*/
 
-@productLogoHeight: 22px;
+@productLogoHeight: 16px;
+@productLogoVerticalAlign: middle;
 @productLogoWidth: 60px;
+@productLogoMargin: 0 5px 0 0;
 
 @productTitleTextTransform: uppercase;
+@productTitleAppNameTextTransform: none;
 @productTitleFontWeight: 400;
-@productTitleFontSize: 1.4rem;
+@productTitleFontSize: 1.2rem;
 @productTitleAppNameMargin: 0 0 0 5px;
 @productTitleAppNameFontSize: inherit;
 @productTitleAppNameFontWeight: 300;
+
+@productVersionLabelPadding: 3px 6px;
+@productVersionLabelFontSize: 0.6em;
+@productVersionLabelFontWeight: 600;
+
+/*-----------------------------
+      Empty Placeholder
+------------------------------*/
+
+@emptyPlaceholderActionMargin: 15px 0 0 0;
+
+/*-----------------------------
+        Pagination Bar
+------------------------------*/
+
+// Same color as @listPaginationItemBorderColor in menu.
+@paginationBarItemLimitLabelColor: lighten(@textColor, 20);
+
+// Same value as @listPaginationFontSize in menu.
+@paginationBarItemLimitDropdownFontSize: 0.8em;
+
+/*-----------------------------
+        List Layout
+------------------------------*/
+
+@listLayoutActionPanelBackgroundColor: @lightPageBackground;
+@listLayoutActionPanelMarginRight: 0;
+@listLayoutActionPanelMarginLeft: 0;
+@listLayoutActionPanelBorder: @defaultBorderWidth solid @lightBorderColor;
+@listLayoutActionPanelBorderRadius: @defaultBorderRadius;
+@listLayoutActionPanelPadding: 8px 0;
+
+@listLayoutActionPanelDropdownBackground: @lightInputBackground;
+@listLayoutActionPanelDropdownBorder: none;
+@listLayoutActionPanelDropdownAddonBackground: @lightInputBackground;
+
+@listLayoutActionPanelDropdownWithSortBorder: @listLayoutActionPanelDropdownBorder;
+@listLayoutActionPanelDropdownWithSortBorderRadius: @defaultBorderRadius @defaultBorderRadius 0 0;
+@listLayoutActionPanelDropdownWithSortAddonBorderRadius: 0 0 @defaultBorderRadius @defaultBorderRadius;
+
+@listLayoutActionPanelTriggerButtonBackground: @lightInputBackground;
+@listLayoutActionPanelTriggerButtonBorder: none;
+@listLayoutActionPanelTriggerButtonBoxShadow: none;

@@ -58,3 +58,13 @@
         }
     }
 }
+
+/*-----------------------------
+        Compact Tooltip
+------------------------------*/
+
+.ui.popup {
+    &.compact {
+        padding: @compactTooltipPadding;
+    }
+}

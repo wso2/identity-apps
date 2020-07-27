@@ -19,10 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import {
-    Heading,
-    Hint
-} from "@wso2is/react-components";
+import { Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -31,7 +28,6 @@ import { IdpCertificatesListComponent } from "./idp-certificate-list";
 import { AddIDPJWKSUriFormComponent } from "./idp-jwks-endpoint-form";
 import { updateIDPCertificate } from "../../../../api";
 import { IdentityProviderInterface } from "../../../../models";
-
 
 /**
  * Proptypes for the IDP certificate component.
@@ -139,11 +135,6 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
     return (
         <Forms>
             <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        <Heading as="h5">Certificates</Heading>
-                    </Grid.Column>
-                </Grid.Row>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field

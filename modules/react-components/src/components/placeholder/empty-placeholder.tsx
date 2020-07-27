@@ -72,6 +72,7 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
                     ? (
                         <div className="image-container">
                             <GenericIcon
+                                fill="default"
                                 icon={ image }
                                 size={ imageSize }
                                 data-testid={ `${ testId }-icon` }

@@ -91,6 +91,7 @@ export interface ServiceResourceEndpointsInterface {
     remoteRepoConfig: string;
     localAuthenticators: string;
     me: string;
+    oidcScopes: string;
     requestPathAuthenticators: string;
     saml2Meta: string;
     wellKnown: string;

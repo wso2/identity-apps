@@ -551,6 +551,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                fill={ !showPlaceholders() }
+                celled={ false }
+                divided={ true }
                 data-testid={ testId }
             >
                 {

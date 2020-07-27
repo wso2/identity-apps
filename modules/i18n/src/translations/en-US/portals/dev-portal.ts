@@ -129,7 +129,7 @@ export const devPortal: DevPortalNS = {
                 confirmations: {
                     deleteConfig: {
                         assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this configuration, you will not be able to get it back. All the " +
+                        content: "If you delete this configuration, you will not be able to get it back." +
                             "Please proceed with caution.",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the configuration."
@@ -749,8 +749,8 @@ export const devPortal: DevPortalNS = {
                         callBackUrls: {
                             hint: "After the authentication, we will only redirect to the above callback URLs " +
                                 "and you can specify multiple URLs",
-                            label: "Callback URL",
-                            placeholder: "Enter callback URL",
+                            label: "Callback URLs",
+                            placeholder: "Enter callback URLs",
                             validations: {
                                 empty: "Please add valid URL."
                             }
@@ -1811,6 +1811,12 @@ export const devPortal: DevPortalNS = {
             }
         },
         helpPanel: {
+            actions: {
+                close: "Close",
+                open: "Open help panel",
+                pin: "Pin",
+                unPin: "Unpin"
+            },
             notifications: {
                 pin: {
                     success: {
@@ -2625,62 +2631,237 @@ export const devPortal: DevPortalNS = {
                 }
             }
         },
-        overview: {
-            widgets: {
-                insights: {
-                    applications: {
-                        heading: "Applications",
-                        subHeading: "Overview of applications"
+        oidcScopes: {
+            buttons: {
+                addScope: "New OIDC Scope"
+            },
+            confirmationModals: {
+                deleteClaim: {
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                    content: "If you delete this claim, you will not be able to get it back." +
+                        "Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the OIDC claim."
+                },
+                deleteScope: {
+                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                    content: "If you delete this scope, you will not be able to get it back." +
+                        "Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "This action is irreversible and will permanently delete the OIDC scope."
+                }
+            },
+            editScope: {
+                claimList: {
+                    addClaim:  "New Attribute",
+                    emptyPlaceholder: {
+                        action: "Add Attribute",
+                        subtitles: {
+                            0: "There are no attributes added for this OIDC scope",
+                            1: "Please add the required attributes to view them here."
+                        },
+                        title: "No OIDC attributes"
                     },
-                    idp: {
-                        heading: "Identity Providers",
-                        subHeading: "Overview of Identity Providers"
+                    popupDelete: "Delete attribute",
+                    searchClaims: "search attributes",
+                    subTitle: "Add or remove attributes of an OIDC scope",
+                    title: "{{ name }}"
+                }
+            },
+            forms: {
+                addScopeForm: {
+                    inputs: {
+                        description: {
+                            label: "Description",
+                            placeholder: "Enter a description for the scope"
+                        },
+                        displayName: {
+                            label: "Display name",
+                            placeholder: "Enter the display name",
+                            validations: {
+                                empty: "Display name is a required field"
+                            }
+                        },
+                        scopeName: {
+                            label: "Scope name",
+                            placeholder: "Enter the scope name",
+                            validations: {
+                                empty: "Scope name is a required field"
+                            }
+                        }
+                    }
+                }
+            },
+            list: {
+                empty: {
+                    action: "Add OIDC Scope",
+                    subtitles: {
+                        0: "There no OIDC Scopes in the system.",
+                        1: "Please add new OIDC scopes to view them here."
+                    },
+                    title: "No OIDC Scopes"
+                }
+            },
+            notifications: {
+                addOIDCClaim: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Creation error"
+                    },
+                    genericError: {
+                        description: "An error occurred while adding the OIDC attribute.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully added the new OIDC attribute",
+                        message: "Creation successful"
                     }
                 },
-                overview: {
-                    cards: {
-                        applications: {
-                            heading: "Applications"
-                        },
-                        idp: {
-                            heading: "Identity Providers"
-                        },
-                        userstores: {
-                            heading: "Userstores"
-                        }
+                addOIDCScope: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Creation error"
                     },
-                    heading: "Overview",
-                    subHeading: "Basic set of stats to understand the status of the instance."
+                    genericError: {
+                        description: "An error occurred while creating the OIDC scope.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully the new OIDC scope",
+                        message: "Creation successful"
+                    }
                 },
-                quickLinks: {
-                    cards: {
-                        certificates: {
-                            heading: "Certificates",
-                            subHeading: "Manage certificates in the keystore."
-                        },
-                        dialects: {
-                            heading: "Attribute Dialects",
-                            subHeading: "Manage attribute dialects."
-                        },
-                        emailTemplates: {
-                            heading: "Email Templates",
-                            subHeading: "Manage email templates."
-                        },
-                        generalConfigs: {
-                            heading: "General Configurations",
-                            subHeading: "Manage configurations, policies, etc."
-                        },
-                        groups: {
-                            heading: "Groups",
-                            subHeading: "Manage user groups and permissions."
-                        },
-                        roles: {
-                            heading: "Roles",
-                            subHeading: "Manage user roles and permissions."
+                deleteOIDCScope: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Deletion error"
+                    },
+                    genericError: {
+                        description: "An error occurred while deleting the OIDC scope.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the OIDC scope.",
+                        message: "Deletion successful"
+                    }
+                },
+                deleteOIDClaim: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Deletion error"
+                    },
+                    genericError: {
+                        description: "An error occurred while deleting the OIDC attribute.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully deleted the OIDC attribute.",
+                        message: "Deletion successful"
+                    }
+                },
+                fetchOIDCScope: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred while fetching the OIDC scope details.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully fetched the OIDC scope details.",
+                        message: "Retrieval successful"
+                    }
+                },
+                fetchOIDCScopes: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred while fetching the OIDC scopes.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully fetched the OIDC scope list.",
+                        message: "Retrieval successful"
+                    }
+                },
+                fetchOIDClaims: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "An error occurred while fetching the OIDC attributes.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully fetched the OIDC scope list.",
+                        message: "Retrieval successful"
+                    }
+                },
+                updateOIDCScope: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Update error"
+                    },
+                    genericError: {
+                        description: "An error occurred while updating the OIDC scope.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the OIDC scope.",
+                        message: "Update successful"
+                    }
+                }
+            },
+            wizards: {
+                addScopeWizard: {
+                    buttons: {
+                        next: "Next",
+                        previous: "Previous"
+                    },
+                    claimList: {
+                        searchPlaceholder: "search attributes",
+                        table: {
+                            emptyPlaceholders: {
+                                assigned: "All the available attributes are assigned for this OIDC scope.",
+                                unAssigned: "There are no attributes assigned for this OIDC scope."
+                            },
+                            header: "Attributes"
                         }
                     },
-                    heading: "Quick Links",
-                    subHeading: "Links to quickly navigate to features."
+                    steps: {
+                        basicDetails: "Basic Details",
+                        claims: "Add Attributes"
+                    },
+                    subTitle: "Create a new OIDC scope with required attributes",
+                    title: "Create OIDC Scope"
+                }
+            }
+        },
+        overview: {
+            banner: {
+                heading: "WSO2 Identity Server for Developers",
+                subHeading: "Utilize SDKs & other developer tools to build a customized experience",
+                welcome: "Welcome, {{username}}"
+            },
+            quickLinks: {
+                cards: {
+                    applications: {
+                        heading: "Applications",
+                        subHeading: "Create applications using predefined templates and manage configurations."
+                    },
+                    idps: {
+                        heading: "Identity Providers",
+                        subHeading: "Create and manage identity providers based on templates and configure " +
+                            "authentication."
+                    },
+                    remoteFetch: {
+                        heading: "Remote Fetch",
+                        subHeading: "Configure a remote repository to work seamlessly with WSO2 Identity Server."
+                    }
                 }
             }
         },
@@ -2990,6 +3171,15 @@ export const devPortal: DevPortalNS = {
             },
             title: "Select Identity Provider Type"
         },
+        oidcScopes: {
+            subTitle: "Create and manage OIDC scopes and the attributes bound to the scopes.",
+            title: "OIDC Scopes"
+        },
+        oidcScopesEdit: {
+            backButton: "Go back to scopes",
+            subTitle: "Add or remove OIDC attributes of the scope",
+            title: "Edit scope: {{ name }}"
+        },
         overview: {
             subTitle: "Configure and  manage applications, identity providers, users and roles, attribute dialects, " +
                 "etc.",
@@ -3061,5 +3251,14 @@ export const devPortal: DevPortalNS = {
             },
             title: "Page under construction"
         }
+    },
+    technologies: {
+        android: "Android",
+        angular: "Angular",
+        ios: "iOS",
+        java: "Java",
+        python: "Python",
+        react: "React",
+        windows: "Windows"
     }
 };

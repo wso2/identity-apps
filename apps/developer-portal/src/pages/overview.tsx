@@ -16,30 +16,19 @@
  * under the License.
  */
 
-import { resolveUserDisplayName } from "@wso2is/core/helpers";
-import { AlertLevels, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import {
+    GenericIcon,
     Jumbotron,
-    PageLayout,
-    StatsInsightsWidget,
-    StatsOverviewWidget
+    LabeledCard,
+    PrimaryButton
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
-import { getApplicationList, getIdentityProviderList } from "../api";
-import { ApplicationList, IdentityProviderList, handleGetIDPListCallError } from "../components";
-import { OverviewPageIllustrations } from "../configs";
+import { Card, Divider } from "semantic-ui-react";
+import { OverviewPageImages, TechnologyLogos } from "../configs";
 import { AppConstants, UIConstants } from "../constants";
 import { history } from "../helpers";
-import {
-    ApplicationListInterface,
-    FeatureConfigInterface,
-    IdentityProviderListResponseInterface
-} from "../models";
-import { AppState } from "../store";
 
 /**
  * Proptypes for the overview page component.
@@ -63,208 +52,191 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
 
     const { t } = useTranslation();
 
-    const dispatch = useDispatch();
-
-    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
-    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-
-    const [ appList, setAppList ] = useState<ApplicationListInterface>({});
-    const [ appCount, setAppCount ] = useState<number>(0);
-    const [ idpList, setIdPList ] = useState<IdentityProviderListResponseInterface>({});
-    const [ idpCount, setIdPCount ] = useState<number>(0);
-    const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
-    const [ isIdPListRequestLoading, setIdPListRequestLoading ] = useState<boolean>(false);
-
-    useEffect(() => {
-        getAppLists(UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT , null, null);
-        getIdPList(UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT , null, null);
-    }, []);
-
-    /**
-     * Retrieves the list of applications.
-     *
-     * @param {number} limit - List limit.
-     * @param {number} offset - List offset.
-     * @param {string} filter - Search query.
-     */
-    const getAppLists = (limit: number, offset: number, filter: string): void => {
-        setApplicationListRequestLoading(true);
-
-        getApplicationList(limit, offset, filter)
-            .then((response) => {
-                setAppList(response);
-                setAppCount(response?.totalResults);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.fetchApplications.error" +
-                            ".message")
-                    }));
-
-                    return;
-                }
-
-                dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.fetchApplications" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchApplications.genericError" +
-                        ".message")
-                }));
-            })
-            .finally(() => {
-                setApplicationListRequestLoading(false);
-            });
-    };
-
-    /**
-     * Retrieves the list of identity providers.
-     *
-     * @param {number} limit - List limit.
-     * @param {number} offset - List offset.
-     * @param {string} filter - Search query.
-     */
-    const getIdPList = (limit: number, offset: number, filter: string): void => {
-        setIdPListRequestLoading(true);
-
-        getIdentityProviderList(limit, offset, filter)
-            .then((response) => {
-                setIdPList(response);
-                setIdPCount(response?.totalResults);
-            })
-            .catch((error) => {
-                handleGetIDPListCallError(error);
-            })
-            .finally(() => {
-                setIdPListRequestLoading(false);
-            });
-    };
-
-    const resolveGridContent = () => (
-        <>
-            <Grid.Column className="with-bottom-gutters">
-                <StatsInsightsWidget
-                    heading={ t("devPortal:components.overview.widgets.insights.applications.heading") }
-                    subHeading={
-                        t("devPortal:components.overview.widgets.insights.applications.subHeading")
-                    }
-                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                    onPrimaryActionClick={
-                        () => history.push(AppConstants.PATHS.get("APPLICATIONS"))
-                    }
-                    showExtraContent={
-                        appList?.applications
-                        && appList.applications instanceof Array
-                        && appList.applications.length > 0
-                    }
-                >
-                    <ApplicationList
-                        selection
-                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
-                        featureConfig={ featureConfig }
-                        isLoading={ isApplicationListRequestLoading }
-                        list={ appList }
-                        onEmptyListPlaceholderActionClick={
-                            () => history.push(AppConstants.PATHS.get("APPLICATIONS"))
-                        }
-                        showListItemActions={ false }
-                        data-testid={ `${ testId }-list` }
-                    />
-                </StatsInsightsWidget>
-            </Grid.Column>
-            <Grid.Column className="with-bottom-gutters">
-                <StatsInsightsWidget
-                    heading={ t("devPortal:components.overview.widgets.insights.idp.heading") }
-                    subHeading={
-                        t("devPortal:components.overview.widgets.insights.idp.subHeading")
-                    }
-                    primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                    onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
-                    showExtraContent={
-                        idpList?.identityProviders
-                        && idpList.identityProviders instanceof Array
-                        && idpList.identityProviders.length > 0
-                    }
-                >
-                    <IdentityProviderList
-                        selection
-                        defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
-                        isLoading={ isIdPListRequestLoading }
-                        list={ idpList }
-                        onEmptyListPlaceholderActionClick={
-                            () => history.push(AppConstants.PATHS.get("IDP"))
-                        }
-                        showListItemActions={ false }
-                        data-testid={ `${ testId }-list` }
-                    />
-                </StatsInsightsWidget>
-            </Grid.Column>
-        </>
-    );
-
     return (
-        <>
+        <div className="developer-portal page overview-page">
             <Jumbotron
-                heading={ t(
-                    "devPortal:pages.overview.title",
-                    { firstName: resolveUserDisplayName(profileInfo as ProfileInfoInterface) }
-                ) }
-                subHeading={ t("devPortal:pages.overview.subTitle") }
-                icon={ OverviewPageIllustrations.jumbotronIllustration }
-                iconOptions={ {
-                    fill: "primary"
+                bordered
+                background="accent1"
+                className="with-animated-background"
+                heading={ t("devPortal:components.overview.banner.heading") }
+                subHeading={ t("devPortal:components.overview.banner.subHeading") }
+                textAlign="center"
+                matchedPadding={ false }
+                borderRadius={ 10 }
+                style={ {
+                    backgroundImage: `url(${ OverviewPageImages.jumbotron.background })`
                 } }
-            />
-            <PageLayout
-                contentTopMargin={ false }
-                data-testid={ `${ testId }-page-layout` }
+                data-testid={ `${ testId }-jumbotron` }
             >
-                <StatsOverviewWidget
-                    heading={ t("devPortal:components.overview.widgets.overview.heading") }
-                    subHeading={ t("devPortal:components.overview.widgets.overview.subHeading") }
-                    stats={ [
-                        {
-                            icon: OverviewPageIllustrations.statsOverview.application,
-                            iconOptions: {
-                                background: "accent1",
-                                fill: "white"
-                            },
-                            label: t("devPortal:components.overview.widgets.overview.cards.applications.heading"),
-                            value: appCount
-                        },
-                        {
-                            icon: OverviewPageIllustrations.statsOverview.idp,
-                            iconOptions: {
-                                background: "accent2",
-                                fill: "white"
-                            },
-                            label: t("devPortal:components.overview.widgets.overview.cards.idp.heading"),
-                            value: idpCount
-                        }
-                    ] }
+                <PrimaryButton
+                    basic
+                    onClick={ () => window.open(UIConstants.IS_DOC_URLS.get("5.11.0"), "_blank") }
+                >
+                    { t("common:documentation") }
+                </PrimaryButton>
+            </Jumbotron>
+            <Divider className="x3" hidden />
+            <Card.Group className="technology-showcase" centered>
+                <LabeledCard
+                    basic
+                    background="transparent"
+                    label={ t("devPortal:technologies.angular") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.angular }
+                    imageOptions={ {
+                        fill: false
+                    } }
+                    padding="none"
+                    raiseOnHover={ false }
                 />
-                <Divider hidden/>
-                <Grid>
-                    <Responsive
-                        as={ Grid.Row }
-                        columns={ 2 }
-                        minWidth={ Responsive.onlyComputer.minWidth }
-                    >
-                        { resolveGridContent() }
-                    </Responsive>
-                    <Responsive
-                        as={ Grid.Row }
-                        columns={ 1 }
-                        maxWidth={ Responsive.onlyComputer.minWidth }
-                    >
-                        { resolveGridContent() }
-                    </Responsive>
-                </Grid>
-            </PageLayout>
-        </>
+                <LabeledCard
+                    basic
+                    background="transparent"
+                    label={ t("devPortal:technologies.react") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.react }
+                    imageOptions={ {
+                        fill: false
+                    } }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    background="transparent"
+                    label={ t("devPortal:technologies.windows") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.windows }
+                    imageOptions={ {
+                        fill: false
+                    } }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    background="transparent"
+                    label={ t("devPortal:technologies.ios") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.ios }
+                    imageOptions={ {
+                        fill: false
+                    } }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    background="transparent"
+                    label={ t("devPortal:technologies.python") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.python }
+                    imageOptions={ {
+                        fill: false
+                    } }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    background="transparent"
+                    label={ t("devPortal:technologies.java") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.java }
+                    imageOptions={ {
+                        fill: false
+                    } }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+                <LabeledCard
+                    basic
+                    background="transparent"
+                    label={ t("devPortal:technologies.android") }
+                    imageSize="x50"
+                    image={ TechnologyLogos.android }
+                    imageOptions={ {
+                        fill: false
+                    } }
+                    padding="none"
+                    raiseOnHover={ false }
+                />
+            </Card.Group>
+            <Divider className="x3" hidden />
+            <Divider />
+            <Divider className="x3" hidden />
+            <Card.Group className="quick-links" centered>
+                <Card
+                    className="basic-card"
+                    link={ false }
+                    as="div"
+                    onClick={ () => history.push(AppConstants.PATHS.get("APPLICATIONS")) }
+                >
+                    <GenericIcon
+                        square
+                        fill="default"
+                        size="x50"
+                        icon={ OverviewPageImages.quickLinks.applications }
+                        relaxed="very"
+                        transparent
+                    />
+                    <Card.Content textAlign="center">
+                        <Card.Header>
+                            { t("devPortal:components.overview.quickLinks.cards.applications.heading") }
+                        </Card.Header>
+                        <Card.Description>
+                            { t("devPortal:components.overview.quickLinks.cards.applications.subHeading") }
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
+                <Card
+                    className="basic-card"
+                    link={ false }
+                    as="div"
+                    onClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
+                >
+                    <GenericIcon
+                        square
+                        fill="default"
+                        size="x50"
+                        icon={ OverviewPageImages.quickLinks.idp }
+                        relaxed="very"
+                        transparent
+                    />
+                    <Card.Content textAlign="center">
+                        <Card.Header>
+                            { t("devPortal:components.overview.quickLinks.cards.idps.heading") }
+                        </Card.Header>
+                        <Card.Description>
+                            { t("devPortal:components.overview.quickLinks.cards.idps.subHeading") }
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
+                <Card
+                    className="basic-card"
+                    link={ false }
+                    as="div"
+                    onClick={ () => history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG")) }
+                >
+                    <GenericIcon
+                        square
+                        fill="default"
+                        size="x50"
+                        icon={ OverviewPageImages.quickLinks.remoteFetch }
+                        relaxed="very"
+                        transparent
+                    />
+                    <Card.Content textAlign="center">
+                        <Card.Header>
+                            { t("devPortal:components.overview.quickLinks.cards.remoteFetch.heading") }
+                        </Card.Header>
+                        <Card.Description>
+                            { t("devPortal:components.overview.quickLinks.cards.remoteFetch.subHeading") }
+                        </Card.Description>
+                    </Card.Content>
+                </Card>
+            </Card.Group>
+        </div>
     );
 };
 
@@ -272,7 +244,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
  * Default props for the component.
  */
 OverviewPage.defaultProps = {
-    "data-testid": "overview"
+    "data-testid": "overview-page"
 };
 
 /**

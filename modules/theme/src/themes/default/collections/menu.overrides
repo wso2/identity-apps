@@ -30,7 +30,9 @@
         }
     }
     &.app-header {
-        box-shadow: none;
+        background: @appHeaderBackground;
+        height: @appHeaderHeight;
+        box-shadow: @appHeaderBoxShadow;
 
         &.has-announcement {
             display: block;
@@ -159,13 +161,14 @@
         }
     }
     &.app-footer {
-        min-height: @appFooterMinHeight;
+        background: @appFooterBackground;
+        height: @appFooterHeight;
 
         .footer-link, .footer-dropdown .dropdown-trigger.link {
-            color: @primaryColor;
+            color: @appFooterLinkColor;
 
             &:hover {
-                text-decoration: underline;
+                text-decoration: @appFooterLinkTextDecoration;
                 cursor: pointer;
             }
         }
@@ -215,7 +218,7 @@
                         width: 100%;
                         background-color: @defaultBorderColor;
                         height: 1px;
-                        margin: 12px 0;
+                        margin: @sidePanelCategoryDividerMargin;
                     }
                 }
             }
@@ -223,6 +226,7 @@
 
         .side-panel-item {
             border-radius: @defaultBorderRadius;
+            padding: @sidePanelItemPadding;
 
             .route-name {
                 cursor: pointer;
@@ -252,7 +256,7 @@
             }
 
             .caret {
-                margin-right: -15px;
+                margin-right: -4px;
                 margin-top: 2px;
                 transition: transform .3s ease-in-out;
 
@@ -266,7 +270,7 @@
             }
 
             &.hover-background {
-                margin-bottom: @sidePanelBackgroundHoveredItemMarginBottom;
+                margin-top: @sidePanelBackgroundHoveredItemMarginTop;
             }
 
             &.active {
@@ -298,6 +302,18 @@
                             fill: @sidePanelHoverFontColor;
                         }
                     }
+                }
+            }
+        }
+        
+        &.relaxed {
+            .side-panel-category {
+                margin-bottom: @sidePanelCategoryRelaxedMarginBottom;
+            }
+            
+            .side-panel-item {
+                &.hover-background {
+                    margin-bottom: @sidePanelBackgroundHoveredItemRelaxedMarginBottom;
                 }
             }
         }
@@ -357,19 +373,27 @@
     }
 }
 
-/*******************************************
-               Pagination
-*******************************************/
+/*-------------------
+      Pagination
+--------------------*/
 
 .ui.pagination.menu {
     &.list-pagination {
-         box-shadow: none;
-         border: none;
+        box-shadow: @listPaginationBoxShadow;
+        border: @listPaginationBorder;
+        background: @listPaginationBackground;
+        font-size: @listPaginationFontSize;
 
-         > .item {
-            border: @defaultBorderWidth solid @defaultBorderColor;
-            border-radius: @defaultBorderRadius;
+        > .item {
+            border: @listPaginationItemBorder;
+            border-radius: @listPaginationItemBorderRadius;
+            background: @listPaginationItemBackground;
+            color: @listPaginationItemColor;
 
+            &.active {
+                color: @listPaginationItemActiveColor;
+                border-color: @listPaginationItemActiveBorderColor;
+            }
             &:not(:last-child) {
                 margin-right: @listPaginationMarginRight;
             }
@@ -379,6 +403,6 @@
             &:focus {
                 outline: none;
             }
-         }
+        }
     }
 }

@@ -39,6 +39,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
 import { ComponentPlaceholder } from "../../extensions";
+import { history } from "../../helpers";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 import { CommonUtils } from "../../utils";
@@ -156,21 +157,19 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 {
                     icon: "arrow right",
                     name: t("devPortal:components.header.links.userPortalNav"),
-                    target: "_blank",
-                    to: window[ "AppUtils" ].getConfig().accountApp.path,
-                    useWindowOpen: true
+                    onClick: () => window.open(window[ "AppUtils" ].getConfig().accountApp.path,
+                        "_blank", "noopener")
                 },
                 {
                     icon: "arrow right",
                     name: t("devPortal:components.header.links.adminPortalNav"),
-                    target: "_blank",
-                    to: window[ "AppUtils" ].getConfig().adminApp.path,
-                    useWindowOpen: true
+                    onClick: () => window.open(window[ "AppUtils" ].getConfig().adminApp.path,
+                        "_blank", "noopener")
                 },
                 {
                     icon: "power off",
                     name: t("common:logout"),
-                    to: window[ "AppUtils" ].getConfig().routes.logout
+                    onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
                 }
             ] }
             profileInfo={ profileInfo }

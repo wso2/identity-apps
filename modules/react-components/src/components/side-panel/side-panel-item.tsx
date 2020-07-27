@@ -61,11 +61,11 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         categorized,
         footerHeight,
         headerHeight,
-        icons,
         iconSize,
         onSidePanelItemClick,
         route,
         selected,
+        showEllipsis,
         translationHook,
         sidePanelItemHeight,
         hoverType,
@@ -77,7 +77,8 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
         {
             [ `hover-${ hoverType }` ]: hoverType,
             "active" : selected && (selected.path === route.path),
-            categorized
+            categorized,
+            "ellipsis": showEllipsis
         }
     );
 
@@ -160,13 +161,13 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             data-testid={ `${ testId }-${ _.kebabCase(route.id) }` }
                         >
                             <GenericIcon
+                                transparent
                                 className="left-icon"
-                                icon={ icons[ route.icon ] }
                                 size={ iconSize }
                                 floated="left"
                                 spaced="right"
+                                { ...route.icon }
                                 data-testid={ `${ testId }-icon` }
-                                transparent
                             />
                             <span className="route-name" data-testid={ `${ testId }-label` }>
                                 { translationHook ? translationHook(route.name) : route.name }
@@ -211,7 +212,6 @@ export const SidePanelItem: React.FunctionComponent<SidePanelItemPropsInterface>
                             childRoutes={ route.children }
                             footerHeight={ footerHeight }
                             headerHeight={ headerHeight }
-                            icons={ icons }
                             onSidePanelItemClick={ onSidePanelItemClick }
                             selected={ selected }
                             open={ validateOpenState(route.open, selected, route.children) }

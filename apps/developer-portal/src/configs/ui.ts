@@ -41,7 +41,11 @@ import {
 } from "../themes/default/assets/images/icons/certificate-colored-icon.svg";
 import { ReactComponent as ClockColoredIcon } from "../themes/default/assets/images/icons/clock-colored-icon.svg";
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
+import { ReactComponent as CodeForkIcon } from "../themes/default/assets/images/icons/code-fork.svg";
+import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
+import { ReactComponent as CogWheelIcon } from "../themes/default/assets/images/icons/cog-wheel-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
+import { ReactComponent as CubeStack } from "../themes/default/assets/images/icons/cube-stack-icon.svg";
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as DocumentIcon } from "../themes/default/assets/images/icons/document-icon.svg";
 import { ReactComponent as DragSquaresIcon } from "../themes/default/assets/images/icons/drag-squares-icon.svg";
@@ -53,7 +57,6 @@ import {
 import { ReactComponent as IntrospectIcon } from "../themes/default/assets/images/icons/introspect.svg";
 import { ReactComponent as IssuerIcon } from "../themes/default/assets/images/icons/issuer.svg";
 import { ReactComponent as JWKSIcon } from "../themes/default/assets/images/icons/jwks.svg";
-import { ReactComponent as LaunchIcon } from "../themes/default/assets/images/icons/launch-icon.svg";
 import { ReactComponent as LockShieldIcon } from "../themes/default/assets/images/icons/lock-shield.svg";
 import {
     ReactComponent as MagnifierColoredIcon
@@ -62,9 +65,13 @@ import { ReactComponent as MagnifierIcon } from "../themes/default/assets/images
 import { ReactComponent as MaximizeIcon } from "../themes/default/assets/images/icons/maximize-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as MinimizeIcon } from "../themes/default/assets/images/icons/minimize-icon.svg";
+import { ReactComponent as OpenBookIcon } from "../themes/default/assets/images/icons/open-book-icon.svg";
 import { ReactComponent as PinIcon } from "../themes/default/assets/images/icons/pin-icon.svg";
 import { ReactComponent as PlugIcon } from "../themes/default/assets/images/icons/plug-icon.svg";
+import { ReactComponent as PlusIcon } from "../themes/default/assets/images/icons/plus-icon.svg";
 import { ReactComponent as ReportIcon } from "../themes/default/assets/images/icons/report-icon.svg";
+import { ReactComponent as ScopeIcon } from "../themes/default/assets/images/icons/scope.svg";
+import { ReactComponent as ShuttleIcon } from "../themes/default/assets/images/icons/shuttle-icon.svg";
 import { ReactComponent as SLOIcon } from "../themes/default/assets/images/icons/slo.svg";
 import { ReactComponent as SpinWheelIcon } from "../themes/default/assets/images/icons/spin-wheel-icon.svg";
 import { ReactComponent as SSOIcon } from "../themes/default/assets/images/icons/sso.svg";
@@ -128,9 +135,6 @@ import {
     ReactComponent as SAMLWebAppTemplateIllustration
 } from "../themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg";
 import {
-    ReactComponent as SecurityIllustration
-} from "../themes/default/assets/images/illustrations/security-illustration.svg";
-import {
     ReactComponent as SPATemplateIllustration
 } from "../themes/default/assets/images/illustrations/spa-template-illustration.svg";
 import {
@@ -139,6 +143,7 @@ import {
 import {
     ReactComponent as WSTrustTemplateIllustration
 } from "../themes/default/assets/images/illustrations/ws-trust-template-illustration.svg";
+import BannerSprites from "../themes/default/assets/images/misc/banner-sprites.svg";
 import OIDCLogo from "../themes/default/assets/images/protocols/oidc.png";
 import OpenIDLogo from "../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../themes/default/assets/images/protocols/saml.png";
@@ -158,18 +163,22 @@ import { ReactComponent as JavaLogo } from "../themes/default/assets/images/tech
 import { ReactComponent as JavaScriptLogo } from "../themes/default/assets/images/technologies/javascript-logo.svg";
 import { ReactComponent as JWTLogo } from "../themes/default/assets/images/technologies/jwt-logo.svg";
 import { ReactComponent as NodeJSLogo } from "../themes/default/assets/images/technologies/nodejs-logo.svg";
+import { ReactComponent as PythonLogo } from "../themes/default/assets/images/technologies/python-logo.svg";
 import { ReactComponent as ReactLogo } from "../themes/default/assets/images/technologies/react-logo.svg";
 import { ReactComponent as VueLogo } from "../themes/default/assets/images/technologies/vue-logo.svg";
+import { ReactComponent as WindowsLogo } from "../themes/default/assets/images/technologies/windows-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { ReactComponent as Office365Logo } from "../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../themes/default/assets/images/third-party/yahoo-logo.svg";
 
 export const SidePanelIcons = {
+    appLogs: IDPMetadataIcon,
     applications: AppIcon,
     childIcon: ArrowRight,
     identityProviders: PlugIcon,
     overview: DashboardIcon,
-    appLogs: IDPMetadataIcon
+    remoteFetch: CodeForkIcon,
+    scopes: ScopeIcon
 };
 
 export const SidePanelMiscIcons = {
@@ -187,7 +196,7 @@ export const EmptyPlaceholderIllustrations = {
     fileUpload: FileUploadIllustration,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
-    newList: LaunchIcon,
+    newList: PlusIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };
@@ -226,10 +235,11 @@ export const TechnologyLogos = {
     javascript: JavaScriptLogo,
     nodejs: NodeJSLogo,
     openidconnect: OIDCLogo,
+    python: PythonLogo,
     react: ReactLogo,
     saml: SamlLogo,
     vue: VueLogo,
-    windows: DotNetLogo
+    windows: WindowsLogo
 };
 
 export const ApplicationWizardStepIcons = {
@@ -244,6 +254,11 @@ export const IdentityProviderWizardStepIcons = {
     general: DocumentIcon,
     outboundProvisioningSettings: GearsIcon,
     summary: ReportIcon
+};
+
+export const OIDCScopeWizardStepIcons = {
+    general: DocumentIcon,
+    claimConfig: GearsIcon
 };
 
 export const AuthenticatorIcons = {
@@ -332,16 +347,15 @@ export const OutboundProvisioningConnectorWizard = {
     summary: ReportIcon
 };
 
-export const OverviewPageIllustrations = {
-    jumbotronIllustration: SecurityIllustration,
-    statsOverview: {
-        application: AppIcon,
-        idp: BuildingIcon
+export const OverviewPageImages = {
+    jumbotron: {
+        background: BannerSprites
+    },
+    quickLinks: {
+        applications: AppIcon,
+        idp: BuildingIcon,
+        remoteFetch: CodeForkIcon
     }
-};
-
-export const RemoteConfigPageIllustrations = {
-    noListElements: BuildingIcon
 };
 
 export const HelpPanelIcons = {
@@ -356,5 +370,12 @@ export const HelpPanelIcons = {
         samlSSO: SSOIcon,
         token: TokenIcon,
         userInfo: UserInfoIcon
+    },
+    tabs: {
+        docs: OpenBookIcon,
+        guide: CogWheelIcon,
+        samples: CodeIcon,
+        sdks: CubeStack,
+        whatsNext: ShuttleIcon
     }
 };

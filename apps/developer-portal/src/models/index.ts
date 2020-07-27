@@ -23,3 +23,4 @@ export * from "./help-panel";
 export * from "./identity-provider";
 export * from "./reducer-state";
 export * from "./remote-repository-config";
+export * from "./oidc-scopes";

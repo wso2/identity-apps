@@ -31,6 +31,7 @@ import {
     SemanticICONS
 } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps } from "../../icon";
+import { EmphasizedSegment } from "../../section";
 
 /**
  * Proptypes for the segmented accordion title component.
@@ -52,6 +53,10 @@ export interface SegmentedAccordionTitlePropsInterface extends AccordionTitlePro
      * Hides the chevron icon.
      */
     hideChevron?: boolean;
+    /**
+     * Flag to determine if emphasized segments should be used.
+     */
+    useEmphasizedSegments?: boolean;
 }
 
 /**
@@ -118,6 +123,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
         content,
         hideChevron,
         id,
+        useEmphasizedSegments,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -255,7 +261,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
 
     return (
         <Accordion.Title
-            as={ Segment }
+            as={ useEmphasizedSegments ? EmphasizedSegment : Segment }
             attached={ attached && (active ? "top" : false) }
             active={ active }
             className={ classes }
@@ -313,5 +319,6 @@ SegmentedAccordionTitle.defaultProps = {
     attached: true,
     clearing: false,
     "data-testid": "segmented-accordion-title",
-    hideChevron: false
+    hideChevron: false,
+    useEmphasizedSegments: true
 };

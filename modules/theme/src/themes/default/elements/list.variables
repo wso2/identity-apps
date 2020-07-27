@@ -71,3 +71,12 @@
 @menuBoxShadow: @raisedShadow;
 @menuBorderRadius: @borderRadius;
 @dynamicFieldButtons: 108px;
+
+/*------------------------
+      Resource List
+--------------------------*/
+
+@resourceListItemBorderColor: @lightBorderColor;
+
+@resourceListFillVariationOuterBorder: @defaultBorderWidth solid @resourceListItemBorderColor;
+@resourceListFillVariationItemPadding: @veryRelaxedItemVerticalPadding 0.9em !important;

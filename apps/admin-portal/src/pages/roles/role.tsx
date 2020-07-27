@@ -301,9 +301,23 @@ const RolesPage = (): ReactElement => {
 
     return (
         <PageLayout
+            action={
+                (isRoleListFetchRequestLoading || !(!searchQuery && paginatedRoles?.length <= 0))
+                && (
+                    <PrimaryButton
+                        data-testid="role-mgt-roles-list-add-button"
+                        onClick={ () => setShowWizard(true) }
+                    >
+                        <Icon
+                            data-testid="role-mgt-roles-list-add-button-icon"
+                            name="add"
+                        />
+                        { t("adminPortal:components.roles.list.buttons.addButton", { type: "Role" }) }
+                    </PrimaryButton>
+                )
+            }
             title={ t("adminPortal:pages.roles.title") }
             description={ t("adminPortal:pages.roles.subTitle") }
-            showBottomDivider={ true }
         >
             {
                 !isEmptyResults &&
@@ -344,20 +358,6 @@ const RolesPage = (): ReactElement => {
                     onSortStrategyChange={ handleListSortingStrategyOnChange }
                     sortStrategy={ listSortingStrategy }
                     rightActionPanel={
-                        (
-                            <PrimaryButton
-                                data-testid="role-mgt-roles-list-add-button"
-                                onClick={ () => setShowWizard(true) }
-                            >
-                                <Icon
-                                    data-testid="role-mgt-roles-list-add-button-icon"
-                                    name="add"
-                                />
-                                { t("adminPortal:components.roles.list.buttons.addButton", { type: "Role" }) }
-                            </PrimaryButton>
-                        )
-                    }
-                    leftActionPanel={
                         (
                             <Dropdown
                                 data-testid="role-mgt-roles-list-filters-dropdown"

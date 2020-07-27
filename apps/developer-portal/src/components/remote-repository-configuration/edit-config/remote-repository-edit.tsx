@@ -16,11 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
 import { ResourceTab } from "@wso2is/react-components";
-import { useTranslation } from "react-i18next";
-import { InterfaceRemoteConfigDetails, InterfaceEditDetails } from "../../../models";
+import React, { FunctionComponent, ReactElement } from "react";
 import { RemoteConfigDetail } from "./remote-repository-details";
+import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../../models";
 
 interface RemoteRepoEditProps {
     configId?: string;
@@ -30,8 +29,6 @@ interface RemoteRepoEditProps {
 }
 
 export const RemoteRepoEdit: FunctionComponent<RemoteRepoEditProps> = (props: RemoteRepoEditProps): ReactElement => {
-
-    const { t } = useTranslation();
 
     const {
         configObject,
@@ -43,7 +40,7 @@ export const RemoteRepoEdit: FunctionComponent<RemoteRepoEditProps> = (props: Re
         {
             menuItem: "Config Details",
             render: () => (
-                <ResourceTab.Pane attached={ false }>
+                <ResourceTab.Pane controlledSegmentation>
                     <RemoteConfigDetail 
                         handleConfigDelete={ handleConfigDelete } 
                         configObject={ configObject } 
@@ -57,4 +54,4 @@ export const RemoteRepoEdit: FunctionComponent<RemoteRepoEditProps> = (props: Re
     return (
         <ResourceTab panes={ panes() } />
     );
-}
+};

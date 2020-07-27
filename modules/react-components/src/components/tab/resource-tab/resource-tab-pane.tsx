@@ -17,13 +17,23 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
 import { Tab, TabPaneProps } from "semantic-ui-react";
 
 /**
  * Resource tab pane component Prop types.
  */
-export interface ResourceTabPanePropsInterface extends TabPaneProps, TestableComponentInterface { }
+export interface ResourceTabPanePropsInterface extends TabPaneProps, TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
+    /**
+     * Is the content segmentation handled from outside. 
+     */
+    controlledSegmentation?: boolean;
+}
 
 
 /**
@@ -39,12 +49,22 @@ export const ResourceTabPane: FunctionComponent<PropsWithChildren<ResourceTabPan
 
     const {
         children,
+        className,
+        controlledSegmentation,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
+    const classes = classNames(
+        "resource-tab-pane",
+        {
+            "controlled-segments": controlledSegmentation
+        },
+        className
+    );
+
     return (
-        <Tab.Pane attached={ false } data-testid={ testId } { ...rest }>{ children }</Tab.Pane>
+        <Tab.Pane className={ classes } attached={ false } data-testid={ testId } { ...rest }>{ children }</Tab.Pane>
     );
 };
 
@@ -52,5 +72,7 @@ export const ResourceTabPane: FunctionComponent<PropsWithChildren<ResourceTabPan
  * Default props for the resource tab pane component.
  */
 ResourceTabPane.defaultProps = {
+    attached: false,
+    controlledSegmentation: false,
     "data-testid": "resource-tab-pane"
 };

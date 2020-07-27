@@ -279,7 +279,9 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                                 };
                                             })
                                     }
-                                    label={ t("adminPortal:components.advancedSearch.form.inputs.filterCondition.label") }
+                                    label={
+                                        t("adminPortal:components.advancedSearch.form.inputs.filterCondition.label")
+                                    }
                                     name={ FILTER_CONDITION_FIELD_IDENTIFIER }
                                     placeholder={
                                         filterConditionsPlaceholder
@@ -343,6 +345,6 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
  */
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",
-    dropdownPosition: "bottom right",
+    dropdownPosition: "bottom left",
     showResetButton: true
 };

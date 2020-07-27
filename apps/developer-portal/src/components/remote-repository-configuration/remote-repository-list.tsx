@@ -27,7 +27,7 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import { RemoteRepoDetails } from "./remote-repository-details";
-import { HelpPanelIcons } from "../../configs";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants, UIConstants } from "../../constants";
 import { history } from "../../helpers";
 import { InterfaceRemoteRepoConfig } from "../../models";
@@ -48,12 +48,12 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
     const [ currentDeleteConfig, setCurrentDeleteConfig ] = useState<InterfaceRemoteRepoConfig>();
     const [ currentDetailsConfig, setCurrentDetailsConfig ] = useState<InterfaceRemoteRepoConfig>();
     const [ showConfigDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
-    const [ showConfigDetailsModal, setShowConfigDetailsModal ] = useState<boolean>(false)
+    const [ showConfigDetailsModal, setShowConfigDetailsModal ] = useState<boolean>(false);
 
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
      *
-     * @param {string} idpId Identity provider id.
+     * @param {string} configId - Identity provider id.
      */
     const handleRemoteRepoEdit = (configId: string): void => {
         history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT").replace(":id", configId));
@@ -80,7 +80,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.1"),
                         t("devPortal:components:remoteConfig:placeholders.emptyList.subtitles.2")
                     ] }
-                    image={ HelpPanelIcons.endpoints.metadata }
+                    image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
                 />
             );
@@ -96,7 +96,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                 Failed Deployments : ${repoObject.failedDeployments}`}</p>
             </div>
         )
-    }
+    };
 
     return (
         <>
@@ -106,6 +106,9 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                     count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
+                fill={ !showPlaceholders() }
+                celled={ false }
+                divided={ true }
             >
                 {
                     repoObjectList && repoObjectList instanceof Array && repoObjectList.length > 0
@@ -206,4 +209,4 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
             }
         </>
     )
-}
+};
