@@ -30,6 +30,7 @@ import {
 } from "./constants";
 import { OAuthWorker as OAuthWorkerClass, OAuthWorkerInterface, SignInResponse } from "./models";
 import { OAuthWorker } from "./oauth-worker";
+import { generateFailureDTO, generateSuccessDTO } from "./utils/dto";
 
 const ctx: OAuthWorkerClass<any> = self as any;
 
@@ -42,29 +43,22 @@ ctx.onmessage = ({ data, ports }) => {
         case INIT:
             try {
                 oAuthWorker = OAuthWorker.getInstance(data.data);
-                port.postMessage({ success: true });
+                port.postMessage(generateSuccessDTO());
             } catch (error) {
-                port.postMessage({
-                    error: error,
-                    success: false
-                });
+                port.postMessage(generateFailureDTO(error));
             }
 
             break;
         case SIGN_IN:
             if (!oAuthWorker) {
-                port.postMessage({
-                    error: "Worker has not been initiated.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
             } else if (oAuthWorker.doesTokenExist()) {
-                port.postMessage({
-                    data: {
+                port.postMessage(
+                    generateSuccessDTO({
                         data: oAuthWorker.getUserInfo(),
                         type: SIGNED_IN
-                    },
-                    success: true
-                });
+                    })
+                );
             } else {
                 oAuthWorker
                     .initOPConfiguration()
@@ -73,46 +67,35 @@ ctx.onmessage = ({ data, ports }) => {
                             .sendSignInRequest()
                             .then((response: SignInResponse) => {
                                 if (response.type === SIGNED_IN) {
-                                    port.postMessage({
-                                        data: {
+                                    port.postMessage(
+                                        generateSuccessDTO({
                                             data: response.data,
                                             type: SIGNED_IN
-                                        },
-                                        success: true
-                                    });
+                                        })
+                                    );
                                 } else {
-                                    port.postMessage({
-                                        data: {
+                                    port.postMessage(
+                                        generateSuccessDTO({
                                             code: response.code,
                                             pkce: response.pkce,
                                             type: AUTH_REQUIRED
-                                        },
-                                        success: true
-                                    });
+                                        })
+                                    );
                                 }
                             })
                             .catch((error) => {
-                                port.postMessage({
-                                    error: error,
-                                    success: false
-                                });
+                                port.postMessage(generateFailureDTO(error));
                             });
                     })
                     .catch((error) => {
-                        port.postMessage({
-                            error: error,
-                            success: false
-                        });
+                        port.postMessage(generateFailureDTO(error));
                     });
             }
 
             break;
         case AUTH_CODE:
             if (!oAuthWorker) {
-                port.postMessage({
-                    error: "Worker has not been initiated.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
@@ -129,170 +112,107 @@ ctx.onmessage = ({ data, ports }) => {
                         .sendSignInRequest()
                         .then((response: SignInResponse) => {
                             if (response.type === SIGNED_IN) {
-                                port.postMessage({
-                                    data: {
+                                port.postMessage(
+                                    generateSuccessDTO({
                                         data: response.data,
                                         type: SIGNED_IN
-                                    },
-                                    success: true
-                                });
+                                    })
+                                );
                             } else {
-                                port.postMessage({
-                                    data: {
+                                port.postMessage(
+                                    generateSuccessDTO({
                                         code: response.code,
                                         pkce: response.pkce,
                                         type: AUTH_REQUIRED
-                                    },
-                                    success: true
-                                });
+                                    })
+                                );
                             }
                         })
                         .catch((error) => {
-                            port.postMessage({
-                                error: error,
-                                success: false
-                            });
+                            port.postMessage(generateFailureDTO(error));
                         });
                 })
                 .catch((error) => {
-                    port.postMessage({
-                        error: error,
-                        success: false
-                    });
+                    port.postMessage(generateFailureDTO(error));
                 });
 
             break;
         case API_CALL:
             if (!oAuthWorker) {
-                port.postMessage({
-                    error: "Worker has not been initiated.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
             if (!oAuthWorker.isSignedIn()) {
-                port.postMessage({
-                    error: "You have not signed in yet.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("You have not signed in yet."));
             } else {
                 oAuthWorker
                     .httpRequest(data.data)
                     .then((response) => {
-                        port.postMessage({
-                            data: {
-                                data: response.data,
-                                headers: response.headers,
-                                status: response.status,
-                                statusText: response.statusText
-                            },
-                            success: true
-                        });
+                        port.postMessage(generateSuccessDTO(response));
                     })
                     .catch((error) => {
-                        port.postMessage({
-                            error: error,
-                            success: false
-                        });
+                        port.postMessage(generateFailureDTO(error));
                     });
             }
 
             break;
         case API_CALL_ALL:
             if (!oAuthWorker) {
-                port.postMessage({
-                    error: "Worker has not been initiated.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
             if (!oAuthWorker.isSignedIn()) {
-                port.postMessage({
-                    error: "You have not signed in yet.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("You have not signed in yet."));
             } else {
                 oAuthWorker
                     .httpRequestAll(data.data)
                     .then((response) => {
-                        port.postMessage({
-                            data: response.map((value) => ({
-                                data: value.data,
-                                headers: value.headers,
-                                status: value.status,
-                                statusText: value.statusText
-                            })),
-                            success: true
-                        });
+                        port.postMessage(generateSuccessDTO(response));
                     })
                     .catch((error) => {
-                        port.postMessage({
-                            error: error,
-                            success: false
-                        });
+                        port.postMessage(generateFailureDTO(error));
                     });
             }
 
             break;
         case LOGOUT:
             if (!oAuthWorker) {
-                port.postMessage({
-                    error: "Worker has not been initiated.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
             if (!oAuthWorker.isSignedIn()) {
-                port.postMessage({
-                    error: "You have not signed in yet.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("You have not signed in yet."));
             } else {
                 oAuthWorker
                     .signOut()
                     .then((response) => {
                         if (response) {
-                            port.postMessage({
-                                data: response,
-                                success: true
-                            });
+                            port.postMessage(generateSuccessDTO(response));
                         } else {
-                            port.postMessage({
-                                error: "Received no response",
-                                success: false
-                            });
+                            port.postMessage(generateFailureDTO("Received no response"));
                         }
                     })
                     .catch((error) => {
-                        port.postMessage({
-                            error: error,
-                            success: false
-                        });
+                        port.postMessage(generateFailureDTO(error));
                     });
             }
 
             break;
         case CUSTOM_GRANT:
             if (!oAuthWorker) {
-                port.postMessage({
-                    error: "Worker has not been initiated.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
             if (!oAuthWorker.isSignedIn() && data.data.signInRequired) {
-                port.postMessage({
-                    error: "You have not signed in yet.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("You have not signed in yet."));
 
                 break;
             }
@@ -300,34 +220,22 @@ ctx.onmessage = ({ data, ports }) => {
             oAuthWorker
                 .customGrant(data.data)
                 .then((response) => {
-                    port.postMessage({
-                        data: response,
-                        success: true
-                    });
+                    port.postMessage(generateSuccessDTO(response));
                 })
                 .catch((error) => {
-                    port.postMessage({
-                        error: error,
-                        success: false
-                    });
+                    port.postMessage(generateFailureDTO(error));
                 });
 
             break;
         case REVOKE_TOKEN:
             if (!oAuthWorker) {
-                port.postMessage({
-                    error: "Worker has not been initiated.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
             if (!oAuthWorker.isSignedIn() && data.data.signInRequired) {
-                port.postMessage({
-                    error: "You have not signed in yet.",
-                    success: false
-                });
+                port.postMessage(generateFailureDTO("You have not signed in yet."));
 
                 break;
             }
@@ -335,20 +243,14 @@ ctx.onmessage = ({ data, ports }) => {
             oAuthWorker
                 .revokeToken()
                 .then((response) => {
-                    port.postMessage({
-                        data: response,
-                        success: true
-                    });
+                    port.postMessage(generateSuccessDTO(response));
                 })
                 .catch((error) => {
-                    port.postMessage({
-                        error: error,
-                        success: false
-                    });
+                    port.postMessage(generateFailureDTO(error));
                 });
             break;
         default:
-            port.postMessage({ error: `Unknown message type ${data?.type}`, success: false });
+            port.postMessage(generateFailureDTO(`Unknown message type ${data?.type}`));
     }
 };
 
