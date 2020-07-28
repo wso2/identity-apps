@@ -20,3 +20,5 @@ export * from "./authentication_types";
 export * from "./endpoints";
 export * from "./token";
 export * from "./user";
+export * from "./messages";
+export * from "./template-tags";
