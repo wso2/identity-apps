@@ -16,7 +16,7 @@
  * under the License.
  */
 
-export * from "./authentication_types";
+export * from "./authentication-types";
 export * from "./endpoints";
 export * from "./token";
 export * from "./user";
