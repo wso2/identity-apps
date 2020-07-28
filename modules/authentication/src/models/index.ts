@@ -24,3 +24,4 @@ export * from "./crypto";
 export * from "./authenticated-user";
 export * from "./oauth";
 export * from "./oauth-worker";
+export * from "./session";
