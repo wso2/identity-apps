@@ -22,7 +22,7 @@ import { ResponseModeTypes } from "./oidc-request-params";
  * SDK Client config parameters.
  */
 export interface ConfigInterface {
-    autherizationType?: string;
+    authorizationType?: string;
     callbackURL: string;
     clientHost: string;
     clientID: string;
@@ -33,6 +33,8 @@ export interface ConfigInterface {
     responseMode?: ResponseModeTypes;
     scope?: string[];
     serverOrigin: string;
-    tenant?: string;
-    tenantPath?: string;
+}
+
+export interface WebWorkerConfigInterface extends ConfigInterface {
+    baseUrls: string[];
 }
