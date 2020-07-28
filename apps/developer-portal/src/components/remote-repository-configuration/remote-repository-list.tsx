@@ -124,12 +124,13 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                                 }
                                 actions={ [
                                     {
+                                        hidden: repoObject.lastDeployed == undefined,
                                         icon: "eye",
                                         onClick: () => {
                                             setCurrentDetailsConfig(repoObject);
                                             setShowConfigDetailsModal(true);
                                         },
-                                        popupText: "Trigger Config",
+                                        popupText: "View Status",
                                         type: "button"
                                     },
                                     {

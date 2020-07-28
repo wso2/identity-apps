@@ -77,6 +77,50 @@ export interface DevPortalNS {
             resultsIndicator: string;
         };
         remoteConfig: {
+            pageTitles: {
+                listingPage: {
+                    title: string;
+                    description: string;
+                },
+                editPage: {
+                    title: string;
+                    description: string;
+                    backLink: string;
+                };
+            },
+            createConfigForm: {
+                configName: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitUrl: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitBranch: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitDirectory: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitUserName: {
+                    label: string;
+                    placeholder: string;
+                };
+                gitAccessToken: {
+                    label: string;
+                    placeholder: string;
+                };
+                enableConfig: {
+                    label: string;
+                }
+            }
             placeholders: {
                 emptyList: {
                     action: string;
@@ -87,6 +131,13 @@ export interface DevPortalNS {
                     };
                     title: string;
                 };
+                emptyDetails: {
+                    subtitles: {
+                        0: string,
+                        1: string
+                    },
+                    title: string
+                }
             };
             list: {
                 confirmations: {
@@ -94,11 +145,12 @@ export interface DevPortalNS {
                 };
             };
             notifications: {
-                deleteConfig: Notification;
-                editConfig: Notification;
-                triggerConfig: Notification;
-                createConfig: Notification;
-            };
+                deleteConfig: Notification,
+                editConfig: Notification,
+                triggerConfig: Notification,
+                createConfig: Notification,
+                getConfig: Notification,
+            }
         };
         applications: {
             addWizard: {

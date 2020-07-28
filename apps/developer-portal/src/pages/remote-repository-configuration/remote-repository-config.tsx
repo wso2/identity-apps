@@ -16,25 +16,28 @@
  * under the License.
  */
 
-import { ListLayout, PageLayout } from "@wso2is/react-components";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ListLayout, PageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { deleteRemoteRepoConfig, getRemoteRepoConfigList } from "../../api";
+import { triggerConfigDeployment } from "../../api/remote-repo-config";
 import { CreateRemoteRepoConfig, RemoteRepoList } from "../../components";
 import { UIConstants } from "../../constants";
 import { InterfaceRemoteRepoConfig, InterfaceRemoteRepoListResponse } from "../../models";
-import { triggerConfigDeployment } from "../../api/remote-repo-config";
 
+/**
+ * Remote Repository Configuration Page.
+ */
 const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const [ remoteRepoConfig, setRemoteRepoConfig ] = useState<InterfaceRemoteRepoConfig[]>();
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ listItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isListUpdated, setListUpdated ] = useState(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
@@ -47,13 +50,24 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         setListUpdated(false);
     }, [ isListUpdated ]);
 
+    /**
+     * Util method to load configurations on page load.
+     */
     const getRemoteConfigList = () => {
         getRemoteRepoConfigList().then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             if (response.status === 200) {
                 setRemoteRepoConfig(response.data.remotefetchConfigurations);
             }
         }).catch(() => {
-            //Handle Error
+            handleAlerts({
+                description: t(
+                    "devPortal:components.remoteConfig.notifications.getConfig.genericError.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "devPortal:components.remoteConfig.notifications.getConfig.genericError.message"
+                )
+            });
         })
     }
 
@@ -91,7 +105,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
      * @param config Config ID which needs to be triggered
      */
     const handleOnTrigger = (config: InterfaceRemoteRepoConfig): void => {
-        triggerConfigDeployment(config.id).then((response) => {
+        triggerConfigDeployment(config.id).then(() => {
             handleAlerts({
                 description: t(
                     "devPortal:components.remoteConfig.notifications.triggerConfig.success.description"
@@ -107,13 +121,16 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     
     return (
         <PageLayout
-                title="Remote Repository Deployment Configuration"
-                description="Configure a remote repository to work seamlessly with the identity server."
+                title={ t("devPortal:components.remoteConfig.pageTitles.listingPage.title") }
+                description={ t("devPortal:components.remoteConfig.pageTitles.listingPage.description") }
+                showBottomDivider={ true }
             >
                 <ListLayout
                     currentListSize={ listItemLimit }
                     listItemLimit={ listItemLimit }
-                    onPageChange={ () => { console.log() } }
+                    onPageChange={ () => { 
+                        //Will not need to handle on page change since only one record is only retrieved.
+                    } }
                     showPagination={ false }
                     showTopActionPanel={ false }
                     totalPages={ Math.ceil(remoteRepoConfig?.length / listItemLimit) }
@@ -126,10 +143,8 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                         handleOnTrigger={ handleOnTrigger }
                     />
                 </ListLayout>
-                {
-                showWizard && (
+                { showWizard && (
                     <CreateRemoteRepoConfig
-                        data-testid="role-mgt-create-role-wizard"
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => setListUpdated(true) }
                     />

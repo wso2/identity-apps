@@ -16,26 +16,33 @@
  * under the License.
  */
 
-import {  AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/dist/src/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { RemoteRepoConfigDetails } from "./remote-repo-config-details";
-import { ApplicationWizardStepIcons } from "../../../configs";
 import { createRemoteRepoConfig } from "../../../api";
-import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteConfigForm } from "../../../models";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { useTranslation } from "react-i18next";
+import { ApplicationWizardStepIcons } from "../../../configs";
+import { InterfaceRemoteConfigForm, InterfaceRemoteRepoConfigDetails } from "../../../models";
 
+/**
+ * Create configuration wizard props.
+ */
 interface CreateRemoteRepoConfigProps extends TestableComponentInterface {
     closeWizard: () => void;
     updateList: () => void;
-    initStep?: number;
 }
 
+/**
+ * Create remote repository configuration wizard.
+ * 
+ * @param props - props required for creating a config.
+ */
 export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigProps> = (
     props: CreateRemoteRepoConfigProps
 ): ReactElement => {
@@ -44,7 +51,6 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
 
     const { 
         closeWizard,
-        initStep,
         updateList,
         [ "data-testid" ]: testId
     } = props;
@@ -52,15 +58,19 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
     const dispatch = useDispatch();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
-    const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
+    const [ currentStep ] = useState<number>(0);
 
+    /**
+     * Util method to submit create config form values.
+     * @param values form values
+     */
     const handleFormSubmit = (values: InterfaceRemoteConfigForm): void => {
         const configs: InterfaceRemoteRepoConfigDetails = {
             actionListener: {
-                type: "POLLING",
                 attributes: {
                     frequency: values.pollingfreq
-                }
+                },
+                type: "POLLING"
             },
             configurationDeployer: {
                 attributes: {},
@@ -91,8 +101,13 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
         dispatch(addAlert(alert));
     };
 
-    const createConfigurtion = (templateTypeName: InterfaceRemoteRepoConfigDetails): void => {
-        createRemoteRepoConfig(templateTypeName).then((response: AxiosResponse) => {
+    /**
+     * Create configuration record.
+     * 
+     * @param config - configuration data
+     */
+    const createConfigurtion = (config: InterfaceRemoteRepoConfigDetails): void => {
+        createRemoteRepoConfig(config).then((response: AxiosResponse) => {
             if (response.status === 201) {
                 handleAlerts({
                     description: t(
@@ -107,7 +122,15 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
             closeWizard();
             updateList();
         }).catch(() => {
-            //handle error
+            handleAlerts({
+                description: t(
+                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.message"
+                )
+            });
         })
     };
 

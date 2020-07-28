@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { TestableComponentInterface } from "@wso2is/core/dist/src/models";
-import { Forms, Field, FormValue } from "@wso2is/forms";
-import { Grid, GridRow, GridColumn } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
+import { Grid, GridColumn,  GridRow } from "semantic-ui-react";
 
 interface RemoteRepoConfigDetailsProps extends TestableComponentInterface {
     onSubmit: (values: any) => void;
@@ -39,14 +39,14 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
 
     const getFormValues = (values: any): any => {
         return {
-            configName: values.get("configName").toString(),
+            accessToken: values.get("accessToken").toString(),
             configEnabled: isEnabled,
-            gitUrl: values.get("gitURL").toString(),
+            configName: values.get("configName").toString(),
             gitBranch: values.get("gitBranch").toString(),
             gitDirectory: values.get("gitDirectory").toString(),
-            accessToken: values.get("accessToken").toString(),
-            userName: values.get("userName").toString(),
-            pollingfreq: parseInt(values.get("pollingFreq").toString())
+            gitUrl: values.get("gitURL").toString(),
+            pollingfreq: parseInt(values.get("pollingFreq").toString()),
+            userName: values.get("userName").toString()
         };
     };
 
@@ -68,10 +68,16 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
                         <Field
                             type="text"
                             name="configName"
-                            label={ "Configuration Name" }
-                            placeholder={ "Name for the repository configuration" }
+                            label={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.configName.label"
+                            ) }
+                            placeholder={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.configName.placeholder"
+                            ) }
                             required={ true }
-                            requiredErrorMessage={ "Configuration Name is required." }
+                            requiredErrorMessage={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.configName.requiredMessage"
+                            ) }
                         />
                     </GridColumn>
                 </GridRow>
@@ -86,7 +92,9 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
                                 value={ isEnabled ? [ "configEnabled" ] : [] }
                                 children={ [
                                     {
-                                        label: "Is Config Enabled",
+                                        label: t(
+                                            "devPortal:components.remoteConfig.createConfigForm.enableConfig.label"
+                                        ),
                                         value: "configEnabled"
                                     }
                                 ] }
@@ -98,20 +106,32 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
                         <Field
                             type="text"
                             name="gitURL"
-                            label={ "Git Repository URI" }
-                            placeholder={ "Git repository URL" }
+                            label={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitUrl.label"
+                            )  }
+                            placeholder={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitUrl.placeholder"
+                            ) }
                             required={ true }
-                            requiredErrorMessage={ "Git Repository URL is required." }
+                            requiredErrorMessage={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitUrl.requiredMessage"
+                            ) }
                         />
                     </GridColumn>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             type="text"
                             name="gitBranch"
-                            label={ "Git Branch" }
-                            placeholder={ "GIT Branch" }
+                            label={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitBranch.label"
+                            )  }
+                            placeholder={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitBranch.placeholder"
+                            ) }
                             required={ true }
-                            requiredErrorMessage={ "Git Branch is required." }
+                            requiredErrorMessage={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitBranch.requiredMessage"
+                            ) }
                         />
                     </GridColumn>
                 </GridRow>
@@ -120,10 +140,16 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
                         <Field
                             type="text"
                             name="gitDirectory"
-                            label={ "Directory" }
-                            placeholder={ "Git Directory" }
+                            label={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitDirectory.label"
+                            )  }
+                            placeholder={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitDirectory.placeholder"
+                            ) }
                             required={ true }
-                            requiredErrorMessage={ "Git directory is required." }
+                            requiredErrorMessage={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitDirectory.requiredMessage"
+                            ) }
                         />
                     </GridColumn>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -142,8 +168,12 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
                         <Field
                             type="text"
                             name="userName"
-                            label={ "User Name" }
-                            placeholder={ "GIT Username" }
+                            label={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitUserName.label"
+                            )  }
+                            placeholder={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitUserName.placeholder"
+                            ) }
                             required={ false }
                             requiredErrorMessage={ "" }
                         />
@@ -152,8 +182,12 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
                         <Field
                             type="text"
                             name="accessToken"
-                            label={ "Personal Access Token" }
-                            placeholder={ "Personal Access Token" }
+                            label={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitAccessToken.label"
+                            )  }
+                            placeholder={ t(
+                                "devPortal:components.remoteConfig.createConfigForm.gitAccessToken.placeholder"
+                            ) }
                             required={ false }
                             requiredErrorMessage={ "" }
                         />
