@@ -48,6 +48,7 @@ import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
 import { AccountSwitchRequestParams } from "../models/oidc-request-params";
 import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
+import { STORAGE } from "../constants/storage";
 
 /**
  * Checks whether authorization code is present.
@@ -67,7 +68,6 @@ export const hasAuthorizationCode = (): boolean => {
  * @returns {string} Resolved authorization code.
  */
 export const getAuthorizationCode = (): string => {
-
     if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
         return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
     }
@@ -87,11 +87,9 @@ export const getAuthorizationCode = (): string => {
  */
 const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
     return {
-        headers: {
-            "Accept": "application/json",
-            "Access-Control-Allow-Origin": clientHost,
-            "Content-Type": "application/x-www-form-urlencoded"
-        }
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": clientHost,
+        "Content-Type": "application/x-www-form-urlencoded"
     };
 };
 
@@ -100,15 +98,18 @@ const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
  *
  * @param {ConfigInterface} requestParams request parameters required for authorization request.
  */
-export const sendAuthorizationRequest = (requestParams: ConfigInterface): Promise<never>|boolean => {
-    const authorizeEndpoint = getAuthorizeEndpoint();
+export const sendAuthorizationRequest = (
+    requestParams: ConfigInterface,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
+): Promise<never> | boolean => {
+    const authorizeEndpoint = getAuthorizeEndpoint(storage, session);
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid authorize endpoint found."));
     }
 
-    let authorizeRequest = authorizeEndpoint + "?response_type=code&client_id="
-        + requestParams.clientID;
+    let authorizeRequest = authorizeEndpoint + "?response_type=code&client_id=" + requestParams.clientID;
 
     let scope = OIDC_SCOPE;
 
@@ -150,30 +151,39 @@ export const sendAuthorizationRequest = (requestParams: ConfigInterface): Promis
  * @returns {Promise<boolean>} whether token is valid.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const validateIdToken = (clientID: string, idToken: string,  serverOrigin: string): Promise<any> => {
-    const jwksEndpoint = getJwksUri();
+const validateIdToken = (
+    clientID: string,
+    idToken: string,
+    serverOrigin: string,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
+): Promise<any> => {
+    const jwksEndpoint = getJwksUri(storage, session);
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
         return Promise.reject("Invalid JWKS URI found.");
     }
 
-    return axios.get(jwksEndpoint)
+    return axios
+        .get(jwksEndpoint)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Failed to load public keys from JWKS URI: "
-                    + jwksEndpoint));
+                return Promise.reject(new Error("Failed to load public keys from JWKS URI: " + jwksEndpoint));
             }
 
             const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
 
-            let issuer = getIssuer();
+            let issuer = getIssuer(storage, session);
 
             if (!issuer || issuer.trim().length === 0) {
                 issuer = serverOrigin + SERVICE_RESOURCES.token;
             }
 
-            return Promise.resolve(isValidIdToken(idToken, jwk, clientID, issuer));
-        }).catch((error) => {
+            return Promise.resolve(
+                isValidIdToken(idToken, jwk, clientID, issuer, getAuthenticatedUser(idToken).username)
+            );
+        })
+        .catch((error) => {
             return Promise.reject(error);
         });
 };
@@ -185,10 +195,11 @@ const validateIdToken = (clientID: string, idToken: string,  serverOrigin: strin
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
 export const sendTokenRequest = (
-    requestParams: ConfigInterface
+    requestParams: ConfigInterface,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
 ): Promise<TokenResponseInterface> => {
-
-    const tokenEndpoint = getTokenEndpoint();
+    const tokenEndpoint = getTokenEndpoint(storage, session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
@@ -222,14 +233,21 @@ export const sendTokenRequest = (
         removeSessionParameter(PKCE_CODE_VERIFIER);
     }
 
-    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(requestParams.clientHost))
+    return axios
+        .post(tokenEndpoint, body.join("&"), { headers: getTokenRequestHeaders(requestParams.clientHost) })
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Invalid status code received in the token response: "
-                    + response.status));
+                return Promise.reject(
+                    new Error("Invalid status code received in the token response: " + response.status)
+                );
             }
-            return validateIdToken(requestParams.clientID, response.data.id_token, requestParams.serverOrigin)
-                .then((valid) => {
+            return validateIdToken(
+                requestParams.clientID,
+                response.data.id_token,
+                requestParams.serverOrigin,
+                storage,
+                session
+            ).then((valid) => {
                 if (valid) {
                     setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
 
@@ -247,7 +265,8 @@ export const sendTokenRequest = (
 
                 return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
             });
-        }).catch((error) => {
+        })
+        .catch((error) => {
             return Promise.reject(error);
         });
 };
@@ -261,10 +280,11 @@ export const sendTokenRequest = (
  */
 export const sendRefreshTokenRequest = (
     requestParams: ConfigInterface,
-    refreshToken: string
+    refreshToken: string,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
 ): Promise<TokenResponseInterface> => {
-
-    const tokenEndpoint = getTokenEndpoint();
+    const tokenEndpoint = getTokenEndpoint(storage, session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject("Invalid token endpoint found.");
@@ -275,30 +295,37 @@ export const sendRefreshTokenRequest = (
     body.push(`refresh_token=${refreshToken}`);
     body.push("grant_type=refresh_token");
 
-    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(requestParams.clientHost))
+    return axios
+        .post(tokenEndpoint, body.join("&"), { headers: getTokenRequestHeaders(requestParams.clientHost) })
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Invalid status code received in the refresh token response: "
-                    + response.status));
+                return Promise.reject(
+                    new Error("Invalid status code received in the refresh token response: " + response.status)
+                );
             }
-            return validateIdToken(requestParams.clientID, response.data.id_token, requestParams.serverOrigin)
-                .then((valid) => {
-                    if (valid) {
-                        const tokenResponse: TokenResponseInterface = {
-                            accessToken: response.data.access_token,
-                            expiresIn: response.data.expires_in,
-                            idToken: response.data.id_token,
-                            refreshToken: response.data.refresh_token,
-                            scope: response.data.scope,
-                            tokenType: response.data.token_type
-                        };
+            return validateIdToken(
+                requestParams.clientID,
+                response.data.id_token,
+                requestParams.serverOrigin,
+                storage,
+                session
+            ).then((valid) => {
+                if (valid) {
+                    const tokenResponse: TokenResponseInterface = {
+                        accessToken: response.data.access_token,
+                        expiresIn: response.data.expires_in,
+                        idToken: response.data.id_token,
+                        refreshToken: response.data.refresh_token,
+                        scope: response.data.scope,
+                        tokenType: response.data.token_type
+                    };
 
-                        return Promise.resolve(tokenResponse);
-                    }
-                    return Promise.reject(new Error("Invalid id_token in the token response: " +
-                        response.data.id_token));
-                });
-        }).catch((error) => {
+                    return Promise.resolve(tokenResponse);
+                }
+                return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
+            });
+        })
+        .catch((error) => {
             return Promise.reject(error);
         });
 };
@@ -311,8 +338,13 @@ export const sendRefreshTokenRequest = (
  * @returns {any}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendRevokeTokenRequest = (requestParams: ConfigInterface, accessToken: string): Promise<any> => {
-    const revokeTokenEndpoint = getRevokeTokenEndpoint();
+export const sendRevokeTokenRequest = (
+    requestParams: ConfigInterface,
+    accessToken: string,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
+): Promise<any> => {
+    const revokeTokenEndpoint = getRevokeTokenEndpoint(storage, session);
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
         return Promise.reject("Invalid revoke token endpoint found.");
@@ -323,16 +355,21 @@ export const sendRevokeTokenRequest = (requestParams: ConfigInterface, accessTok
     body.push(`token=${accessToken}`);
     body.push("token_type_hint=access_token");
 
-    return axios.post(revokeTokenEndpoint, body.join("&"),
-        { headers: getTokenRequestHeaders(requestParams.clientHost), withCredentials: true })
+    return axios
+        .post(revokeTokenEndpoint, body.join("&"), {
+            headers: getTokenRequestHeaders(requestParams.clientHost),
+            withCredentials: true
+        })
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Invalid status code received in the revoke token response: "
-                    + response.status));
+                return Promise.reject(
+                    new Error("Invalid status code received in the revoke token response: " + response.status)
+                );
             }
 
             return Promise.resolve(response);
-        }).catch((error) => {
+        })
+        .catch((error) => {
             return Promise.reject(error);
         });
 };
@@ -372,9 +409,11 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
 export const sendAccountSwitchRequest = (
-    requestParams: AccountSwitchRequestParams
+    requestParams: AccountSwitchRequestParams,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
 ): Promise<TokenResponseInterface> => {
-    const tokenEndpoint = getTokenEndpoint();
+    const tokenEndpoint = getTokenEndpoint(storage, session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
@@ -391,37 +430,43 @@ export const sendAccountSwitchRequest = (
 
     const body = [];
     body.push("grant_type=account_switch");
-    body.push(`username=${ requestParams.username }`);
-    body.push(`userstore-domain=${ requestParams["userstore-domain"] }`);
-    body.push(`tenant-domain=${ requestParams["tenant-domain"] }`);
-    body.push(`token=${ getSessionParameter(ACCESS_TOKEN) }`);
-    body.push(`scope=${ scope }`);
-    body.push(`client_id=${ requestParams.client_id }`);
+    body.push(`username=${requestParams.username}`);
+    body.push(`userstore-domain=${requestParams["userstore-domain"]}`);
+    body.push(`tenant-domain=${requestParams["tenant-domain"]}`);
+    body.push(`token=${getSessionParameter(ACCESS_TOKEN)}`);
+    body.push(`scope=${scope}`);
+    body.push(`client_id=${requestParams.client_id}`);
 
-    return axios.post(tokenEndpoint, body.join("&"), getTokenRequestHeaders(requestParams.clientHost))
+    return axios
+        .post(tokenEndpoint, body.join("&"), { headers: getTokenRequestHeaders(requestParams.clientHost) })
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error("Invalid status code received in the token response: "
-                    + response.status));
+                return Promise.reject(
+                    new Error("Invalid status code received in the token response: " + response.status)
+                );
             }
 
-            return validateIdToken(requestParams.client_id, response.data.id_token, requestParams.serverOrigin)
-                .then((valid) => {
-                    if (valid) {
-                        const tokenResponse: TokenResponseInterface = {
-                            accessToken: response.data.access_token,
-                            expiresIn: response.data.expires_in,
-                            idToken: response.data.id_token,
-                            refreshToken: response.data.refresh_token,
-                            scope: response.data.scope,
-                            tokenType: response.data.token_type
-                        };
-                        return Promise.resolve(tokenResponse);
-                    }
+            return validateIdToken(
+                requestParams.client_id,
+                response.data.id_token,
+                requestParams.serverOrigin,
+                storage,
+                session
+            ).then((valid) => {
+                if (valid) {
+                    const tokenResponse: TokenResponseInterface = {
+                        accessToken: response.data.access_token,
+                        expiresIn: response.data.expires_in,
+                        idToken: response.data.id_token,
+                        refreshToken: response.data.refresh_token,
+                        scope: response.data.scope,
+                        tokenType: response.data.token_type
+                    };
+                    return Promise.resolve(tokenResponse);
+                }
 
-                    return Promise.reject(new Error("Invalid id_token in the token response: "
-                        + response.data.id_token));
-                });
+                return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
+            });
         })
         .catch((error) => {
             return Promise.reject(error);
@@ -436,14 +481,16 @@ export const sendAccountSwitchRequest = (
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
+export const sendSignInRequest = (
+    requestParams: ConfigInterface,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>,
+    callback?: () => void
+): Promise<any> => {
     if (hasAuthorizationCode()) {
-        return sendTokenRequest(requestParams)
+        return sendTokenRequest(requestParams, storage, session)
             .then((response) => {
-                initUserSession(
-                    response,
-                    getAuthenticatedUser(response.idToken)
-                );
+                initUserSession(response, getAuthenticatedUser(response.idToken));
 
                 if (callback) {
                     callback();
@@ -452,14 +499,14 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
                 return Promise.resolve("Sign In successful!");
             })
             .catch((error) => {
-                if (error.response && (error.response.status === 400)) {
-                    sendAuthorizationRequest(requestParams);
+                if (error.response && error.response.status === 400) {
+                    sendAuthorizationRequest(requestParams, storage, session);
                 }
 
                 return Promise.reject(error);
             });
     } else {
-        sendAuthorizationRequest(requestParams);
+        sendAuthorizationRequest(requestParams, storage, session);
     }
 };
 
@@ -471,18 +518,22 @@ export const sendSignInRequest = (requestParams: ConfigInterface, callback?: () 
  * @returns {Promise<any>} sign in status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const handleSignIn = (requestParams: ConfigInterface, callback?: () => void): Promise<any> => {
+export const handleSignIn = (
+    requestParams: ConfigInterface,
+    storage: STORAGE,
+    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>,
+    callback?: () => void
+): Promise<any> => {
     if (getSessionParameter(ACCESS_TOKEN)) {
-        if (!isValidOPConfig(requestParams.tenant, requestParams.clientID)) {
+        if (!isValidOPConfig(requestParams.clientID, storage, session)) {
             endAuthenticatedSession();
-            resetOPConfiguration();
+            resetOPConfiguration(storage, session);
             // TODO: Better to have a callback to clear this on the app side.
             removeSessionParameter("auth_callback_url");
 
-            initOPConfiguration(requestParams, true)
-                .then(() => {
-                    sendSignInRequest(requestParams, callback);
-                });
+            initOPConfiguration(requestParams, true, storage, session).then(() => {
+                sendSignInRequest(requestParams, storage, session, callback);
+            });
 
             return;
         }
@@ -493,9 +544,8 @@ export const handleSignIn = (requestParams: ConfigInterface, callback?: () => vo
 
         return Promise.resolve("Sign In successful!");
     } else {
-        initOPConfiguration(requestParams, false)
-            .then(() => {
-                sendSignInRequest(requestParams, callback);
-            });
+        initOPConfiguration(requestParams, false, storage, session).then(() => {
+            sendSignInRequest(requestParams, storage, session, callback);
+        });
     }
 };
