@@ -21,7 +21,7 @@ import WordArray from "crypto-js/lib-typedarrays";
 import MD5 from "crypto-js/md5";
 import sha256 from "crypto-js/sha256";
 import { KEYUTIL, KJUR } from "jsrsasign";
-import { JWKInterface } from "../models/crypto";
+import { JWKInterface } from "../models";
 
 /**
  * Generate email hash.
@@ -29,7 +29,7 @@ import { JWKInterface } from "../models/crypto";
  * @returns {string} hashed email address.
  */
 export const getEmailHash = (emailAddress: string): CryptoJS.WordArray => {
-    return emailAddress ? MD5((emailAddress).trim()) : null;
+    return emailAddress ? MD5(emailAddress.trim()) : null;
 };
 
 /**
@@ -81,7 +81,7 @@ export const getSupportedSignatureAlgorithms = (): string[] => {
  * @returns {any} public key.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]): Error|any => {
+export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]): Error | any => {
     const headerJSON = JSON.parse(atob(jwtHeader));
 
     for (const key of keys) {
@@ -94,8 +94,12 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]): Er
         }
     }
 
-    throw new Error("Failed to find the 'kid' specified in the id_token. 'kid' found in the header : "
-        + headerJSON.kid + ", Expected values: " + keys.map((key) => key.kid).join(", "));
+    throw new Error(
+        "Failed to find the 'kid' specified in the id_token. 'kid' found in the header : " +
+            headerJSON.kid +
+            ", Expected values: " +
+            keys.map((key) => key.kid).join(", ")
+    );
 };
 
 /**
@@ -108,11 +112,19 @@ export const getJWKForTheIdToken = (jwtHeader: string, keys: JWKInterface[]): Er
  * @returns {any} whether the id_token is valid.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const isValidIdToken = (idToken, jwk, clientID: string, issuer: string): any => {
+export const isValidIdToken = (
+    idToken: string,
+    jwk: string,
+    clientID: string,
+    issuer: string,
+    username: string
+): boolean => {
     return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
-        aud: clientID,
-        gracePeriod: 3600,
-        iss: [issuer]
+        // `jsrsasign` typings only allow string[] as aud but string should also be possible.
+        // TODO: Remove any casting once the @types/jsrsasign contains a fix.
+        aud: clientID as any,
+        iss: [issuer],
+        sub: [username]
     });
 };
