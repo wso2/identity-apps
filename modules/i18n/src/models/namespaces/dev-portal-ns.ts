@@ -1190,6 +1190,15 @@ export interface DevPortalNS {
         };
         overview: Page;
     };
+    componentExtensions: {
+        component: {
+            application: {
+                quickStart: {
+                    title: string;
+                };
+            }
+        }
+    }
     placeholders: {
         404: Placeholder;
         accessDenied: Placeholder;

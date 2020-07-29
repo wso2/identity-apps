@@ -2931,6 +2931,15 @@ export const devPortal: DevPortalNS = {
             title: "Welcome, {{firstName}}"
         }
     },
+    componentExtensions: {
+        component: {
+            application: {
+                quickStart: {
+                    title: "Quick Start"
+                }
+            }
+        }
+    },
     placeholders: {
         404: {
             action: "Back to home",
