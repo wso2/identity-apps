@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
-import { Divider, Modal, ModalProps } from "semantic-ui-react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
+import { Divider, Icon, Modal, ModalProps } from "semantic-ui-react";
 
 interface ModalWithSidePanelSubComponentsInterface {
     MainPanel: typeof ModalWithSidePanelMainPanel;
@@ -37,7 +37,7 @@ export const ModalWithSidePanel: FunctionComponent<ModalProps & ComponentsPropsI
     ModalWithSidePanelSubComponentsInterface &
     ModalPanelSubComponentsInterface = (props: ModalProps & ComponentsPropsInterface): ReactElement => {
         return (
-            <Modal { ...props } className={ `modal-with-side-panel ${ props.className }` }>
+            <Modal { ...props } className={ `modal-with-side-panel ${ props.className ?? "" }` }>
                 <div className="panels">{ props?.children }</div>
             </Modal>
         );
@@ -48,7 +48,7 @@ export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<Compo
 ): ReactElement => {
     return (
         <>
-            <div className={ `header ${ props?.className }` }>{ props?.children }</div>
+            <div className={ `header ${ props?.className ?? "" }` }>{ props?.children }</div>
             <Divider className="divider" />
         </>
     );
@@ -57,7 +57,7 @@ export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<Compo
 export const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div className={ `content ${ props?.className }` }>{ props?.children }</div>;
+    return <div className={ `content ${ props?.className ?? "" }` }>{ props?.children }</div>;
 };
 
 export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
@@ -66,7 +66,7 @@ export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<Comp
     return (
         <>
             <Divider className="divider" />
-            <div className={ `actions ${ props?.className }` }>{ props?.children }</div>
+            <div className={ `actions ${ props?.className ?? "" }` }>{ props?.children }</div>
         </>
     );
 };
@@ -74,13 +74,29 @@ export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<Comp
 export const ModalWithSidePanelMainPanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div className={ `main-panel ${ props?.className }` }>{ props?.children }</div>;
+    return <div className={ `main-panel ${ props?.className ?? "" }` }>{ props?.children }</div>;
 };
 
 export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div className={ `side-panel ${ props?.className }` }>{ props?.children }</div>;
+    const [ sidePanelOpen, setSidePanelOpen ] = useState(true);
+
+    return (
+        <div className={ `side-panel ${ props?.className ?? "" } ${ !sidePanelOpen && "closed" }` }>
+            <div className="toggle-button-column">
+                <div
+                    className="toggle-button"
+                    onClick={ () => {
+                        setSidePanelOpen(!sidePanelOpen);
+                    } }
+                >
+                    <Icon name={ sidePanelOpen ? "chevron right" : "chevron left" } />
+                </div>
+            </div>
+            <div className={ `side-panel-content ${ sidePanelOpen ? "visible" : "hidden" }` }>{ props?.children }</div>
+        </div>
+    );
 };
 
 ModalWithSidePanel.MainPanel = ModalWithSidePanelMainPanel;
