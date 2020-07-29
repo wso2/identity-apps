@@ -1,0 +1,40 @@
+{
+    "id": "z345e11e-fc78-484b-9bec-015d2475u341r",
+    "name": "Slack",
+    "description": "Business communication platform.",
+    "image": "slack",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "Communication", "Community"
+    ],
+    "category": "VENDOR",
+    "displayOrder": 8,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": false
+            }
+        }
+    }
+}

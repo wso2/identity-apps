@@ -100,11 +100,15 @@ export class ApplicationManagementConstants {
      * @type {Map<string, string>}
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
-        .set("SAML web application", "SAML Web Application")
-        .set("OIDC web application", "OIDC Web Application")
-        .set("Single page application", "Single Page Application")
-        .set("Mobile application", "OIDC Mobile Application")
-        .set("Windows desktop application", "Windows Desktop Application");
+        .set("saml-web-application", "SAML Web Application")
+        .set("oidc-web-application", "OIDC Web Application")
+        .set("single-page-application", "Single Page Application")
+        .set("mobile-application", "OIDC Mobile Application")
+        .set("windows-desktop-application", "Windows Desktop Application")
+        .set("slack-application", "OIDC Web Application")
+        .set("zoom-application", "OIDC Web Application")
+        .set("workday-application", "OIDC Web Application")
+        .set("box-application", "OIDC Web Application");
 
     /**
      * Key for the SPA template.

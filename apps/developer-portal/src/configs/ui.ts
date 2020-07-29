@@ -143,6 +143,18 @@ import {
 import {
     ReactComponent as WSTrustTemplateIllustration
 } from "../themes/default/assets/images/illustrations/ws-trust-template-illustration.svg";
+import {
+    ReactComponent as SlackTemplateIllustration
+} from "../themes/default/assets/images/illustrations/slack-template-illustration.svg";
+import {
+    ReactComponent as WorkdayTemplateIllustration
+} from "../themes/default/assets/images/illustrations/workday-template-illustration.svg";
+import {
+    ReactComponent as ZoomTemplateIllustration
+} from "../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
+import {
+    ReactComponent as BoxTemplateIllustration
+} from "../themes/default/assets/images/illustrations/box-template-illustration.svg";
 import BannerSprites from "../themes/default/assets/images/misc/banner-sprites.svg";
 import OIDCLogo from "../themes/default/assets/images/protocols/oidc.png";
 import OpenIDLogo from "../themes/default/assets/images/protocols/openid.png";
@@ -219,7 +231,11 @@ export const ApplicationTemplateIllustrations = {
     samlWebApp: SAMLWebAppTemplateIllustration,
     spa: SPATemplateIllustration,
     windowsNative: WindowsTemplateIllustration,
-    wsTrust: WSTrustTemplateIllustration
+    wsTrust: WSTrustTemplateIllustration,
+    slack: SlackTemplateIllustration,
+    zoom: ZoomTemplateIllustration,
+    workday: WorkdayTemplateIllustration,
+    box: BoxTemplateIllustration
 };
 
 export const TechnologyLogos = {

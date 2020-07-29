@@ -1,0 +1,40 @@
+{
+    "id": "t565e11e-fc78-484b-9bec-015d2472008",
+    "name": "Zoom",
+    "description": "Enterprise video communications.",
+    "image": "zoom",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "Communication"
+    ],
+    "category": "VENDOR",
+    "displayOrder": 9,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": false
+            }
+        }
+    }
+}
