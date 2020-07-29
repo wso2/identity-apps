@@ -65,9 +65,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         closeWizard,
         template,
         subTitle,
-        addProtocol,
-        selectedProtocols,
-        appId,
         [ "data-testid" ]: testId
     } = props;
 
@@ -110,7 +107,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 createApplication({
                                     accessUrl: "",
                                     advancedConfigurations: {
-                                        discoverableByEndUsers: false,
+                                        discoverableByEndUsers: false
                                     },
                                     authenticationSequence: {
                                         attributeStepId: 1,
@@ -122,7 +119,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             } ]
                                         } ],
                                         subjectStepId: 1,
-                                        type: "DEFAULT",
+                                        type: "DEFAULT"
                                     },
                                     description: "OIDC web application::",
                                     imageUrl: "",
