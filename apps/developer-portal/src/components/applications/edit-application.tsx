@@ -44,6 +44,7 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
+import { ComponentExtensionPlaceholder } from "../../extensions/";
 
 /**
  * Proptypes for the applications edit component.
@@ -300,6 +301,16 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      */
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
+
+        const tabPanes = ComponentExtensionPlaceholder( { 
+            component: "application", 
+            subComponent: "edit", 
+            type: "tab" 
+        } );
+
+        if (tabPanes && tabPanes.length > 0) {
+            panes.push(...tabPanes);
+        }
 
         if (featureConfig) {
             if (isFeatureEnabled(featureConfig?.applications,

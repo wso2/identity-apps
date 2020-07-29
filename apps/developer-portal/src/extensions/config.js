@@ -23,6 +23,8 @@ module.exports = () => {
                 "example": "./components/example.tsx"
             }
         },
+        componentExtensions: [
+        ],
         routes: [
         ]
     };
