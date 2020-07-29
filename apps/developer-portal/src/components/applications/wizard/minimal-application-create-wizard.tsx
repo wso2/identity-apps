@@ -25,10 +25,10 @@ import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Image, Segment } from "semantic-ui-react";
+import { Grid, Segment } from "semantic-ui-react";
 import { ModalWithSidePanel } from "../..";
 import { createApplication, getApplicationTemplateData } from "../../../api";
-import { ApplicationTemplateIllustrations, TechnologyLogos } from "../../../configs";
+import { ApplicationTemplateIllustrations } from "../../../configs";
 import { AppConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import {
@@ -254,60 +254,68 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 />
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <p>Protocols</p>
-                                <Grid>
-                                    <Grid.Row columns={ 3 }>
-                                        <Grid.Column width={ 5 }>
-                                            <Segment
-                                                textAlign="center"
-                                                className={ `${ selectedProtocol === PROTOCOLS.OIDC &&
-                                                    "active" } protocol-cards` }
-                                                onClick={ () => { setSelectedProtocol(PROTOCOLS.OIDC); } }
-                                            >
-                                                <GenericIcon
-                                                    transparent={ true }
-                                                    size="small"
-                                                    icon={ ApplicationTemplateIllustrations.oidcWebApp }
-                                                />
-                                                OIDC
-                                            </Segment>
-                                        </Grid.Column>
-                                        <Grid.Column width={ 5 }>
-                                            <Segment
-                                                textAlign="center"
-                                                className={ `${ selectedProtocol === PROTOCOLS.SAML &&
-                                                    "active" } protocol-cards` }
-                                                onClick={ () => { setSelectedProtocol(PROTOCOLS.SAML); } }
-                                            >
-                                                <GenericIcon
-                                                    transparent={ true }
-                                                    size="small"
-                                                    icon={ ApplicationTemplateIllustrations.samlWebApp }
-                                                />
-                                                SAML
-                                            </Segment>
-                                        </Grid.Column>
-                                        <Grid.Column width={ 5 }>
-                                            <Segment
-                                                textAlign="center"
-                                                className={ `${ selectedProtocol === PROTOCOLS.PASSIVE_STS &&
-                                                    "active" } protocol-cards` }
-                                                onClick={ () => { setSelectedProtocol(PROTOCOLS.PASSIVE_STS); } }
-                                            >
-                                                <GenericIcon
-                                                    transparent={ true }
-                                                    size="small"
-                                                    icon={ ApplicationTemplateIllustrations.passiveSTS }
-                                                />
-                                                Passive STS
-                                            </Segment>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Grid.Column>
-                        </Grid.Row>
+                        { template.id === WEB_APP_TEMPLATE_ID && (
+                            <Grid.Row>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                    <p>Protocols</p>
+                                    <Grid>
+                                        <Grid.Row columns={ 3 }>
+                                            <Grid.Column width={ 5 }>
+                                                <Segment
+                                                    textAlign="center"
+                                                    className={ `${ selectedProtocol === PROTOCOLS.OIDC &&
+                                                        "active" } protocol-cards` }
+                                                    onClick={ () => {
+                                                        setSelectedProtocol(PROTOCOLS.OIDC);
+                                                    } }
+                                                >
+                                                    <GenericIcon
+                                                        transparent={ true }
+                                                        size="small"
+                                                        icon={ ApplicationTemplateIllustrations.oidcWebApp }
+                                                    />
+                                                    OIDC
+                                                </Segment>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 5 }>
+                                                <Segment
+                                                    textAlign="center"
+                                                    className={ `${ selectedProtocol === PROTOCOLS.SAML &&
+                                                        "active" } protocol-cards` }
+                                                    onClick={ () => {
+                                                        setSelectedProtocol(PROTOCOLS.SAML);
+                                                    } }
+                                                >
+                                                    <GenericIcon
+                                                        transparent={ true }
+                                                        size="small"
+                                                        icon={ ApplicationTemplateIllustrations.samlWebApp }
+                                                    />
+                                                    SAML
+                                                </Segment>
+                                            </Grid.Column>
+                                            <Grid.Column width={ 5 }>
+                                                <Segment
+                                                    textAlign="center"
+                                                    className={ `${ selectedProtocol === PROTOCOLS.PASSIVE_STS &&
+                                                        "active" } protocol-cards` }
+                                                    onClick={ () => {
+                                                        setSelectedProtocol(PROTOCOLS.PASSIVE_STS);
+                                                    } }
+                                                >
+                                                    <GenericIcon
+                                                        transparent={ true }
+                                                        size="small"
+                                                        icon={ ApplicationTemplateIllustrations.passiveSTS }
+                                                    />
+                                                    Passive STS
+                                                </Segment>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </Grid.Column>
+                            </Grid.Row>
+                        ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                 <URLInput
