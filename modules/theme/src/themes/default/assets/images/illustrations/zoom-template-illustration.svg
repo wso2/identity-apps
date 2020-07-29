@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="97" height="97" viewBox="0 0 97 97">
+  <defs>
+    <radialGradient id="radial-gradient" cx="0.58" cy="0.021" r="1.179" gradientTransform="translate(-0.028 0.437) rotate(-55.399)" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#54a0ff"/>
+      <stop offset="0.294" stop-color="#4c96fe"/>
+      <stop offset="1" stop-color="#3f85fb"/>
+    </radialGradient>
+  </defs>
+  <g id="zoom" transform="translate(-353 -316)">
+    <rect id="Rectangle_225" data-name="Rectangle 225" width="97" height="97" rx="21" transform="translate(353 316)" fill="url(#radial-gradient)"/>
+    <path id="Union_36" data-name="Union 36" d="M-11570.016-2341.49c-1.366-1.036-6.137-4.721-8.983-7.106s-3-3.906-3-6V-2365c0-2.093.154-3.614,3-6s7.617-6.07,8.983-7.106a2.686,2.686,0,0,1,2.455-.33A2.973,2.973,0,0,1-11566-2376v32.4a2.972,2.972,0,0,1-1.562,2.438,2.19,2.19,0,0,1-.876.161A2.588,2.588,0,0,1-11570.016-2341.49Zm-51.984.49a11,11,0,0,1-11-11v-23a4,4,0,0,1,4-4h33a11,11,0,0,1,11,11v23a4,4,0,0,1-4,4Z" transform="translate(12001 2724)" fill="#fff"/>
+  </g>
+</svg>

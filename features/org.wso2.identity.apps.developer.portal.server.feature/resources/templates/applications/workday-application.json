@@ -1,0 +1,40 @@
+{
+    "id": "r565e11e-fc78-484b-9bec-015d24753456",
+    "name": "Workday",
+    "description": "On‑demand financial management and human capital management.",
+    "image": "workday",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "HR"
+    ],
+    "category": "CUSTOM",
+    "displayOrder": 10,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": false
+            }
+        }
+    }
+}
