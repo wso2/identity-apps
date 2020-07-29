@@ -83,7 +83,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     };
 
     const GeneralIdentityProviderSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <GeneralSettings
                 editingIDP={ identityProvider }
                 description={ identityProvider.description }
@@ -99,7 +99,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     );
 
     const AttributeSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <AttributeSettings
                 idpId={ identityProvider.id }
                 initialClaims={ identityProvider.claims }
@@ -112,7 +112,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     );
 
     const AuthenticatorSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <AuthenticatorSettings
                 identityProvider={ identityProvider }
                 isLoading={ isLoading }
@@ -123,7 +123,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     );
 
     const OutboundProvisioningSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <OutboundProvisioningSettings
                 identityProvider={ identityProvider }
                 outboundConnectors={ identityProvider.provisioning?.outboundConnectors }
@@ -135,7 +135,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     );
 
     const JITProvisioningSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <JITProvisioningSettings
                 idpId={ identityProvider.id }
                 jitProvisioningConfigurations={ identityProvider.provisioning?.jit }
@@ -147,7 +147,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     );
 
     const AdvancedSettingsTabPane = (): ReactElement => (
-        <ResourceTab.Pane attached={ false }>
+        <ResourceTab.Pane controlledSegmentation>
             <AdvanceSettings
                 editingIDP={ identityProvider }
                 advancedConfigurations={ idpAdvanceConfig }

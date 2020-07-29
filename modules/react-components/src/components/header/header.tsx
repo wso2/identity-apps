@@ -26,6 +26,7 @@ import {
     Container,
     Divider,
     Dropdown,
+    DropdownItemProps,
     Icon,
     Item,
     Menu,
@@ -76,21 +77,24 @@ export interface HeaderLinkInterface extends StrictHeaderLinkInterface {
  */
 export interface StrictHeaderLinkInterface {
     /**
+     * Children content.
+     */
+    content?: ReactNode;
+    /**
      * Link icon.
      */
     icon?: SemanticICONS;
-    /**
-     * Link location.
-     */
-    to: string;
     /**
      * Link name.
      */
     name: string;
     /**
-     * Open link using window.open()
+     * Called on dropdown item click.
+     *
+     * @param {SyntheticEvent} event - React's original SyntheticEvent.
+     * @param {object} data - All props.
      */
-    useWindowOpen?: boolean;
+    onClick?: (event: React.MouseEvent<HTMLDivElement>, data: DropdownItemProps) => void;
 }
 
 /**
@@ -343,40 +347,22 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                 && userDropdownLinks.length > 0)
                                                 ? userDropdownLinks.map((link, index) => {
                                                     const {
+                                                        content,
                                                         icon,
                                                         name,
-                                                        to,
-                                                        target,
-                                                        useWindowOpen,
-                                                        ...rest
+                                                        onClick
                                                     } = link;
 
                                                     return (
                                                         <Dropdown.Item
                                                             key={ index }
                                                             className="action-panel"
-                                                            onClick={ () => {
-                                                                    useWindowOpen
-                                                                        ? window.open(to, target, "noopener")
-                                                                        : null
-                                                                }
-                                                            }
+                                                            onClick={ onClick }
                                                             data-testid={ `${ testId }-dropdown-link-${ name }` }
                                                         >
-                                                            <Icon className="link-icon" name={ icon }/>
-                                                            {
-                                                                useWindowOpen
-                                                                    ? name
-                                                                    : (
-                                                                        <Link
-                                                                            className="link-text"
-                                                                            to={ to }
-                                                                            { ...rest }
-                                                                        >
-                                                                            { name }
-                                                                        </Link>
-                                                                    )
-                                                            }
+                                                            { icon && <Icon className="link-icon" name={ icon } /> }
+                                                            { name }
+                                                            { content }
                                                         </Dropdown.Item>
                                                     )
                                                 })

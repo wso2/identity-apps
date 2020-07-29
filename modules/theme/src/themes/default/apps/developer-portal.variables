@@ -17,3 +17,15 @@
  *
  */
 
+/*-------------------------------
+            Pages
+--------------------------------*/
+
+// Overview Page
+
+@overviewPageTechnologyShowcaseCardsMarginRight: 4em;
+@overviewPageJumbotronPadding: 4em 3em;
+@overviewPageQuickLinksCardMaxWidth: 250px;
+@overviewPageJumbotronAnimatedBackgroundTransition: background-position .5s ease;
+@overviewPageJumbotronAnimatedBackgroundHoverXPositionOffset: 10px;
+@overviewPageJumbotronAnimatedBackgroundHoverYPositionOffset: 10px;

@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { ContentLoader } from "@wso2is/react-components";
+import { ContentLoader, EmphasizedSegment } from "@wso2is/react-components";
 import _, { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -248,87 +248,94 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [roleMapping]);
 
     return (
-        !isLoading ?
-            <Grid className="attributes-settings">
-                {/* Select attributes for mapping. */}
-                { selectedClaimsWithMapping &&
-                <AttributeSelection
-                    attributeList={ availableLocalClaims }
-                    selectedAttributesWithMapping={ selectedClaimsWithMapping }
-                    setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
-                    uiProps={ {
-                        attributeColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
-                            "attributeMapping.attributeColumnHeader"),
-                        attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
-                            "attributeMapping.attributeMapColumnHeader"),
-                        attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms.attributeSettings." +
-                            "attributeMapping.attributeMapInputPlaceholderPrefix"),
-                        componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
-                            "attributeMapping.componentHeading"),
-                        enablePrecedingDivider: false,
-                        hint: t("devPortal:components.idp.forms.attributeSettings.attributeMapping.hint")
-                    } }
-                    data-testid={ `${ testId }-claim-attribute-selection` }
-                /> }
+        !isLoading
+            ? (
+                <EmphasizedSegment>
+                    <Grid className="attributes-settings">
+                        {/* Select attributes for mapping. */ }
+                        { selectedClaimsWithMapping &&
+                        <AttributeSelection
+                            attributeList={ availableLocalClaims }
+                            selectedAttributesWithMapping={ selectedClaimsWithMapping }
+                            setSelectedAttributesWithMapping={ setSelectedClaimsWithMapping }
+                            uiProps={ {
+                                attributeColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                                    "attributeMapping.attributeColumnHeader"),
+                                attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                                    "attributeMapping.attributeMapColumnHeader"),
+                                attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms" +
+                                    ".attributeSettings.attributeMapping.attributeMapInputPlaceholderPrefix"),
+                                componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
+                                    "attributeMapping.componentHeading"),
+                                enablePrecedingDivider: false,
+                                hint: t("devPortal:components.idp.forms.attributeSettings.attributeMapping.hint")
+                            } }
+                            data-testid={ `${ testId }-claim-attribute-selection` }
+                        /> }
 
-                { selectedClaimsWithMapping &&
-                <UriAttributesSettings
-                    dropDownOptions={ createDropdownOption(selectedClaimsWithMapping, availableLocalClaims).filter(
-                        element => !_.isEmpty(element)) }
-                    initialRoleUri={ roleClaimUri }
-                    initialSubjectUri={ subjectClaimUri }
-                    claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
-                    updateRole={ setRoleClaimUri }
-                    updateSubject={ setSubjectClaimUri }
-                    data-testid={ `${ testId }-uri-attribute-settings` }
-                /> }
+                        { selectedClaimsWithMapping &&
+                        <UriAttributesSettings
+                            dropDownOptions={
+                                createDropdownOption(selectedClaimsWithMapping, availableLocalClaims)
+                                    .filter(element => !_.isEmpty(element)) }
+                            initialRoleUri={ roleClaimUri }
+                            initialSubjectUri={ subjectClaimUri }
+                            claimMappingOn={ !isEmpty(selectedClaimsWithMapping) }
+                            updateRole={ setRoleClaimUri }
+                            updateSubject={ setSubjectClaimUri }
+                            data-testid={ `${ testId }-uri-attribute-settings` }
+                        /> }
 
-                {/* Select attributes for provisioning. */}
-                { selectedProvisioningClaimsWithDefaultValue &&
-                <AttributeSelection
-                    attributeList={ buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims).filter(
-                        element => !_.isEmpty(element?.uri)) }
-                    selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
-                    setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
-                    uiProps={ {
-                        attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ? 
-                            t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
-                                "attributeColumnHeader.0") :
-                            t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
-                                "attributeColumnHeader.1"),
-                        attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
-                            "attributeProvisioning.attributeMapColumnHeader"),
-                        attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms.attributeSettings." +
-                            "attributeProvisioning.attributeMapInputPlaceholderPrefix"),
-                        componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
-                            "attributeProvisioning.componentHeading"),
-                        enablePrecedingDivider: true,
-                        hint: t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning.hint")
-                    } }
-                    data-testid={ `${ testId }-provisioning-attribute-selection` }
-                /> }
+                        {/* Select attributes for provisioning. */ }
+                        { selectedProvisioningClaimsWithDefaultValue &&
+                        <AttributeSelection
+                            attributeList={
+                                buildProvisioningClaimList(selectedClaimsWithMapping, availableLocalClaims)
+                                    .filter(element => !_.isEmpty(element?.uri)) }
+                            selectedAttributesWithMapping={ selectedProvisioningClaimsWithDefaultValue }
+                            setSelectedAttributesWithMapping={ setSelectedProvisioningClaimsWithDefaultValue }
+                            uiProps={ {
+                                attributeColumnHeader: _.isEmpty(selectedClaimsWithMapping) ?
+                                    t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
+                                        "attributeColumnHeader.0") :
+                                    t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning." +
+                                        "attributeColumnHeader.1"),
+                                attributeMapColumnHeader: t("devPortal:components.idp.forms.attributeSettings." +
+                                    "attributeProvisioning.attributeMapColumnHeader"),
+                                attributeMapInputPlaceholderPrefix: t("devPortal:components.idp.forms" +
+                                    ".attributeSettings.attributeProvisioning.attributeMapInputPlaceholderPrefix"),
+                                componentHeading: t("devPortal:components.idp.forms.attributeSettings." +
+                                    "attributeProvisioning.componentHeading"),
+                                enablePrecedingDivider: false,
+                                hint: t("devPortal:components.idp.forms.attributeSettings.attributeProvisioning.hint")
+                            } }
+                            data-testid={ `${ testId }-provisioning-attribute-selection` }
+                        /> }
 
-                {/* Set role mappings. */}
-                <RoleMappingSettings
-                    triggerSubmit={ triggerSubmission }
-                    initialRoleMappings={ initialRoleMappings }
-                    onSubmit={ setRoleMapping }
-                    data-testid={ `${ testId }-role-mapping` }
-                />
+                        {/* Set role mappings. */ }
+                        <RoleMappingSettings
+                            triggerSubmit={ triggerSubmission }
+                            initialRoleMappings={ initialRoleMappings }
+                            onSubmit={ setRoleMapping }
+                            data-testid={ `${ testId }-role-mapping` }
+                        />
 
-                <Grid.Row>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
-                        <Button
-                            primary
-                            size="small"
-                            onClick={ setTriggerSubmission }
-                            data-testid={ `${ testId }-update-button` }
-                        >
-                            { t("common:update") }
-                        </Button>
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid> : <ContentLoader/>
+                        <Grid.Row>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
+                                <Button
+                                    primary
+                                    size="small"
+                                    onClick={ setTriggerSubmission }
+                                    data-testid={ `${ testId }-update-button` }
+                                >
+                                    { t("common:update") }
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </EmphasizedSegment>
+            )
+            : <ContentLoader/>
     );
 };
 

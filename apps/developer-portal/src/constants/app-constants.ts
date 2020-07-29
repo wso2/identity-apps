@@ -43,6 +43,8 @@ export class AppConstants {
         .set("IDP", "/identity-providers")
         .set("IDP_TEMPLATES", "/identity-providers/templates")
         .set("IDP_EDIT", "/identity-providers/:id")
+        .set("OIDC_SCOPES", "/oidc-scopes")
+        .set("OIDC_SCOPES_EDIT", "/oidc-scopes/:id")
         .set("OVERVIEW", "/overview")
         .set("PAGE_NOT_FOUND", "/404")
         .set("PRIVACY", "/privacy")

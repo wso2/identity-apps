@@ -50,6 +50,7 @@
 
         > .item {
             padding: @veryRelaxedItemVerticalPadding 0.5em !important;
+            border-color: @resourceListItemBorderColor;
 
             .list-item-description {
                 max-width: 300px;
@@ -76,6 +77,18 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+            }
+        }
+        
+        &.fill {
+            &-default {
+                border: @resourceListFillVariationOuterBorder;
+                border-radius: @defaultBorderRadius;
+                background: @lightPageBackground;
+                
+                > .item {
+                    padding: @resourceListFillVariationItemPadding;
+                }     
             }
         }
     }

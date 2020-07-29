@@ -20,12 +20,20 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Card, CardProps, Label, LabelProps, Popup, SemanticSIZES } from "semantic-ui-react";
-import { GenericIcon, GenericIconSizes } from "../icon";
+import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
 /**
  * Proptypes for the labeled card component.
  */
 export interface LabeledCardPropsInterface extends TestableComponentInterface {
+    /**
+     * Card Background color.
+     */
+    background?: "transparent" | "default";
+    /**
+     * Basic appearance with no borders etc.
+     */
+    basic?: boolean;
     /**
      * If a bottom margin should be added.
      */
@@ -51,6 +59,10 @@ export interface LabeledCardPropsInterface extends TestableComponentInterface {
      */
     image: any;
     /**
+     * Icon options.
+     */
+    imageOptions?: Omit<GenericIconProps, "icon" | "size">;
+    /**
      * Size of the image.
      */
     imageSize?: GenericIconSizes;
@@ -75,6 +87,14 @@ export interface LabeledCardPropsInterface extends TestableComponentInterface {
      */
     onCloseClick?: (event: React.MouseEvent<HTMLElement>, data: LabelProps) => void;
     /**
+     * Padding.
+     */
+    padding?: "default" | "none";
+    /**
+     * Should raise on hover.
+     */
+    raiseOnHover?: boolean;
+    /**
      * If the card should appear as selected.
      */
     selected?: boolean;
@@ -96,6 +116,8 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
 ): ReactElement => {
 
     const {
+        background,
+        basic,
         bottomMargin,
         className,
         disabled,
@@ -103,11 +125,14 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
         id,
         inline,
         image,
+        imageOptions,
         imageSize,
         label,
         labelEllipsis,
         onClick,
         onCloseClick,
+        padding,
+        raiseOnHover,
         selected,
         size,
         [ "data-testid" ]: testId
@@ -116,8 +141,11 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
     const wrapperClasses = classNames(
         "labeled-card-wrapper",
         {
+            basic,
             fluid,
+            [ "hover-raised-none" ]: !raiseOnHover,
             inline,
+            [ `padding-${ padding }` ]: padding,
             [ size ]: size,
             [ "with-bottom-margin" ]: bottomMargin
         },
@@ -127,9 +155,17 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
     const cardClasses = classNames(
         "labeled-card",
         {
+            [ `background-${ background }` ]: background,
             disabled,
             selected,
             [ "with-image" ]: image
+        }
+    );
+
+    const cardLabelClasses = classNames(
+        "card-label",
+        {
+            "ellipsis": labelEllipsis
         }
     );
 
@@ -164,12 +200,13 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
                         data-testid={ `${ testId }-image` }
                         square
                         transparent
+                        { ...imageOptions }
                     />
                 </Card.Content>
             </Card>
             <Popup
                 disabled={ !labelEllipsis }
-                trigger={ <div className={ "card-label" + labelEllipsis ? " ellipsis" : "" }>{ label }</div> }
+                trigger={ <div className={ cardLabelClasses }>{ label }</div> }
                 position="bottom center"
                 content={ label }
                 data-testid={ `${ testId }-label` }
@@ -183,9 +220,13 @@ export const LabeledCard: FunctionComponent<LabeledCardPropsInterface> = (
  * Default props for the labeled card component.
  */
 LabeledCard.defaultProps = {
+    background: "default",
+    basic: false,
     bottomMargin: true,
     "data-testid": "labeled-card",
     imageSize: "mini",
     inline: true,
-    onClick: () => null
+    onClick: () => null,
+    padding: "default",
+    raiseOnHover: true
 };

@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { CodeEditor } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
-import { Label, Segment } from "semantic-ui-react";
+import { CodeEditor, SegmentedAccordion } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useState } from "react";
+import { Label } from "semantic-ui-react";
 import { InterfaceConfigDetails, InterfaceRemoteFetchStatus } from "../../models";
 
 interface InterfaceDeployementStatusProps {
@@ -33,32 +33,74 @@ export const DeploymentStatus: FunctionComponent<InterfaceDeployementStatusProps
         statusObject
     } = props;
 
+    const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>([]);
+
+    /**
+     * Handles accordion title click.
+     *
+     * @param {React.SyntheticEvent} e - Click event.
+     * @param {number} index - Clicked on index.
+     */
+    const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
+        const newIndexes = [ ...accordionActiveIndexes ];
+
+        if (newIndexes.includes(index)) {
+            const removingIndex = newIndexes.indexOf(index);
+            newIndexes.splice(removingIndex, 1);
+        } else {
+            newIndexes.push(index);
+        }
+
+        setAccordionActiveIndexes(newIndexes);
+    };
+
     return (
-        <>
+        <SegmentedAccordion fluid >
             {
                 statusObject && statusObject.remoteFetchRevisionStatuses.length > 0 &&
                 statusObject.remoteFetchRevisionStatuses.map((value: InterfaceRemoteFetchStatus, index: number) => {
                     return (
-                        <Segment key={ index } className="deploymentStatus">
-                            <Label 
-                                color={ value.deployedStatus == "FAIL" ? "red" : "teal" } 
-                                attached='top'>{ value.deployedStatus == "FAIL" ? 
-                                    "Deployement Failed" : value.deployedStatus }</Label>
-                            <h3>{ value.itemName }</h3>
-                            <CodeEditor
-                                lint
-                                language="htmlmixed"
-                                sourceCode={ value.deploymentErrorReport }
-                                options={ {
-                                    lineWrapping: true
-                                } }
-                                readOnly={ true }
-                                theme={  "dark" }
+                        <>
+                            <SegmentedAccordion.Title
+                                id={ value.itemName }
+                                active={ accordionActiveIndexes.includes(index) }
+                                index={ index }
+                                onClick={ handleAccordionOnClick }
+                                content={ (
+                                    <>
+                                        { value.itemName }
+                                        <Label
+                                            size="mini"
+                                            horizontal
+                                            className="deployment-status"
+                                            basic
+                                            color={ value.deployedStatus == "FAIL" ? "red" : "teal" } 
+                                        >
+                                            { value.deployedStatus == "FAIL" ? 
+                                                "Deployement Failed" : value.deployedStatus }
+                                        </Label>
+                                    </>
+                                ) }
+                                hideChevron={ false }
                             />
-                        </Segment>
+                            <SegmentedAccordion.Content
+                                active={ accordionActiveIndexes.includes(index) }
+                            >
+                                <CodeEditor
+                                    lint
+                                    language="htmlmixed"
+                                    sourceCode={ value.deploymentErrorReport }
+                                    options={ {
+                                        lineWrapping: true
+                                    } }
+                                    readOnly={ true }
+                                    theme={ "dark" }
+                                />
+                            </SegmentedAccordion.Content>
+                        </>
                     )
                 })
             }
-        </>
+        </SegmentedAccordion>
     )
 }

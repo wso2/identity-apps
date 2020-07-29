@@ -108,12 +108,8 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     return (
         <>
             <Grid.Row columns={ 2 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <Divider/>
-                    <Divider hidden/>
-                </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("devPortal:components.applications.edit.sections.attributes.roleMapping.heading") }
                     </Heading>
                     <DynamicField

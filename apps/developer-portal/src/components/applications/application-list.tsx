@@ -308,6 +308,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     imageType: "square"
                 } }
                 selection={ selection }
+                fill={ !showPlaceholders() }
+                celled={ false }
+                divided={ true }
                 data-testid={ testId }
             >
                 {

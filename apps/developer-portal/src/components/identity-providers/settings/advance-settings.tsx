@@ -25,6 +25,7 @@ import { updateIdentityProviderDetails } from "../../../api";
 import { IdentityProviderAdvanceInterface, IdentityProviderInterface } from "../../../models";
 import { AdvanceConfigurationsForm } from "../forms";
 import { handleIDPUpdateError } from "../utils";
+import { EmphasizedSegment } from "@wso2is/react-components";
 
 /**
  * Proptypes for the advance settings component.
@@ -86,15 +87,13 @@ export const AdvanceSettings: FunctionComponent<AdvanceSettingsPropsInterface> =
     };
 
     return (
-        <>
-            <div className="advanced-configuration-section">
-                <AdvanceConfigurationsForm
-                    config={ advancedConfigurations }
-                    onSubmit={ handleAdvancedConfigFormSubmit }
-                    data-testid={ testId }
-                />
-            </div>
-        </>
+        <EmphasizedSegment className="advanced-configuration-section">
+            <AdvanceConfigurationsForm
+                config={ advancedConfigurations }
+                onSubmit={ handleAdvancedConfigFormSubmit }
+                data-testid={ testId }
+            />
+        </EmphasizedSegment>
     );
 };
 

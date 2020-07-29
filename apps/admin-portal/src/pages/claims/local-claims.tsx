@@ -250,10 +250,25 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     : null
             }
             <PageLayout
+                action={
+                    (isLoading || !(!searchQuery && filteredClaims?.length <= 0))
+                    && hasRequiredScopes(featureConfig?.attributeDialects,
+                        featureConfig?.attributeDialects?.scopes?.create, allowedScopes)
+                    && (
+                        <PrimaryButton
+                            onClick={ () => {
+                                setOpenModal(true);
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("adminPortal:components.claims.local.pageLayout.local.action") }
+                        </PrimaryButton>
+                    )
+                }
                 isLoading={ isLoading }
                 title={ t("adminPortal:components.claims.local.pageLayout.local.title") }
                 description={ t("adminPortal:components.claims.local.pageLayout.local.description") }
-                showBottomDivider={ true }
                 backButton={ {
                     onClick: () => { history.push(AppConstants.PATHS.get("CLAIM_DIALECTS")) },
                     text: t("adminPortal:components.claims.local.pageLayout.local.back")
@@ -301,22 +316,6 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                     onPageChange={ handlePaginationChange }
                     onSortStrategyChange={ handleSortStrategyChange }
-                    rightActionPanel={
-                        hasRequiredScopes(
-                            featureConfig?.attributeDialects,
-                            featureConfig?.attributeDialects?.scopes?.create,
-                            allowedScopes) && (
-                            <PrimaryButton
-                                onClick={ () => {
-                                    setOpenModal(true);
-                                } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add" />
-                                { t("adminPortal:components.claims.local.pageLayout.local.action") }
-                            </PrimaryButton>
-                        )
-                    }
                     leftActionPanel={ null }
                     showPagination={ true }
                     sortOptions={ SORT_BY }

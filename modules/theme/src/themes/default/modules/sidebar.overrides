@@ -29,11 +29,35 @@
 
 .ui.sidebar {
     &.help-panel {
+        background: @helpPanelBackgroundColor;
+
+        &.bordered {
+            &-left {
+                border: none;
+                border-left: @helpPanelBorder;
+            }
+            &-right {
+                border: none;
+                border-right: @helpPanelBorder;
+            }
+            &-top {
+                border: none;
+                border-top: @helpPanelBorder;
+            }
+            &-bottom {
+                border: none;
+                border-bottom: @helpPanelBorder;
+            }
+        }
+        &:not(.raised) {
+            box-shadow: none;
+        }
         &:not(.mini) {
             width: @helpPanelWidth;
         }
         &.mini {
-            width: unset;
+            overflow-x: hidden;
+            width: @helpPanelMiniWidth;
         }
         .help-panel-action-bar {
             padding: 6px 15px;
@@ -76,6 +100,22 @@
 
                 .markdown-renderer {
                     text-align: left;
+                }
+            }
+        }
+        
+        .sidebar-mini-menu {
+            .item {
+                min-width: @helpPanelMiniItemMinWidth;
+                padding: @helpPanelMiniItemPadding;
+                margin: @helpPanelMiniItemMargin;
+               
+                &:hover {
+                    background: transparent;
+                }
+                &:before {
+                    margin: 0 auto;
+                    width: 70%;
                 }
             }
         }

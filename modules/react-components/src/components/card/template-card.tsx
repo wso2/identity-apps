@@ -200,6 +200,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                                                     icon={ tag.logo }
                                                                     size="micro"
                                                                     spaced="right"
+                                                                    fill={ false }
                                                                     data-testid={ `${ testId }-logo` }
                                                                     inline
                                                                     transparent

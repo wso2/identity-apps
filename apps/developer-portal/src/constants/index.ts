@@ -25,3 +25,4 @@ export * from "./identity-provider-constants";
 export * from "./token-constants";
 export * from "./ui-constants";
 export * from "./identity-provider-management-constants";
+export * from "./oidc-scopes-management";

@@ -24,7 +24,7 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Forms } from "@wso2is/forms"
-import { ConfirmationModal, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
+import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -197,97 +197,101 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     return (
         <>
-            <Forms 
-                onSubmit={ (values) => { 
-                    updateRoleName(values) 
-                } }
-            >
-                <Grid>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
-                            <Form.Field
-                                error={ !isRoleNamePatternValid }
-                            >
-                                <label
-                                    data-testid={
-                                        isGroup
-                                            ? `${ testId }-group-name-label`
-                                            : `${ testId }-role-name-label`
-                                    }
+            <EmphasizedSegment>
+                <Forms
+                    onSubmit={ (values) => {
+                        updateRoleName(values)
+                    } }
+                >
+                    <Grid>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                <Form.Field
+                                    error={ !isRoleNamePatternValid }
                                 >
+                                    <label
+                                        data-testid={
+                                            isGroup
+                                                ? `${ testId }-group-name-label`
+                                                : `${ testId }-role-name-label`
+                                        }
+                                    >
+                                        {
+                                            isGroup
+                                                ? t("adminPortal:components.groups.edit.basics.fields.groupName.name")
+                                                : t("adminPortal:components.roles.edit.basics.fields.roleName.name")
+                                        }
+                                    </label>
+                                    <Input
+                                        required={ true }
+                                        name={ "rolename" }
+                                        label={ labelText !== "" ? labelText + " /" : null }
+                                        requiredErrorMessage={
+                                            isGroup
+                                                ? t("adminPortal:components.groups.edit.basics.fields.groupName" +
+                                                ".required")
+                                                : t("adminPortal:components.roles.edit.basics.fields.roleName" +
+                                                ".required")
+                                        }
+                                        placeholder={
+                                            isGroup
+                                                ? t("adminPortal:components.groups.edit.basics.fields.groupName." +
+                                                "placeholder")
+                                                : t("adminPortal:components.roles.edit.basics.fields.roleName." +
+                                                "placeholder")
+                                        }
+                                        value={ nameValue }
+                                        onChange={ handleRoleNameChange }
+                                        type="text"
+                                        data-testid={
+                                            isGroup
+                                                ? `${ testId }-group-name-input`
+                                                : `${ testId }-role-name-input`
+                                        }
+                                        loading={ isRegExLoading }
+                                    />
                                     {
-                                        isGroup
-                                            ? t("adminPortal:components.groups.edit.basics.fields.groupName.name")
-                                            : t("adminPortal:components.roles.edit.basics.fields.roleName.name")
+                                        !isRoleNamePatternValid && (
+                                            isGroup
+                                                ?
+                                                <Label basic color="red" pointing>
+                                                    { t("adminPortal:components.roles.addRoleWizard.forms." +
+                                                        "roleBasicDetails.roleName.validations.invalid",
+                                                        { type: "group" }) }
+                                                </Label>
+                                                :
+                                                <Label basic color="red" pointing>
+                                                    { t("adminPortal:components.roles.addRoleWizard.forms." +
+                                                        "roleBasicDetails.roleName.validations.invalid",
+                                                        { type: "role" }) }
+                                                </Label>
+                                        )
                                     }
-                                </label>
-                                <Input
-                                    required={ true }
-                                    name={ "rolename" }
-                                    label={ labelText !== "" ? labelText + " /" : null }
-                                    requiredErrorMessage={ 
-                                        isGroup
-                                            ? t("adminPortal:components.groups.edit.basics.fields.groupName.required")
-                                            : t("adminPortal:components.roles.edit.basics.fields.roleName.required")
-                                    }
-                                    placeholder={ 
-                                        isGroup
-                                            ? t("adminPortal:components.groups.edit.basics.fields.groupName." +
-                                            "placeholder")
-                                            : t("adminPortal:components.roles.edit.basics.fields.roleName." +
-                                            "placeholder")
-                                    }
-                                    value={ nameValue }
-                                    onChange={ handleRoleNameChange }
-                                    type="text"
+                                </Form.Field>
+
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
                                     data-testid={
                                         isGroup
-                                            ? `${ testId }-group-name-input`
-                                            : `${ testId }-role-name-input`
+                                            ? `${ testId }-group-update-button`
+                                            : `${ testId }-role-update-button`
                                     }
-                                    loading={ isRegExLoading }
-                                />
-                                {
-                                    !isRoleNamePatternValid && (
-                                        isGroup
-                                            ?
-                                            <Label basic color="red" pointing>
-                                                { t("adminPortal:components.roles.addRoleWizard.forms." +
-                                                    "roleBasicDetails.roleName.validations.invalid",
-                                                    { type: "group" }) }
-                                            </Label>
-                                            :
-                                            <Label basic color="red" pointing>
-                                               { t("adminPortal:components.roles.addRoleWizard.forms." +
-                                                "roleBasicDetails.roleName.validations.invalid",
-                                                   { type: "role" }) }
-                                            </Label>
-                                    )
-                                }
-                            </Form.Field>
-                            
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button
-                                primary
-                                type="submit"
-                                size="small"
-                                className="form-button"
-                                data-testid={
-                                    isGroup
-                                        ? `${ testId }-group-update-button`
-                                        : `${ testId }-role-update-button`
-                                }
-                                disabled={ !isRoleNamePatternValid && !isRegExLoading }
-                            >
-                                { t("adminPortal:components.roles.edit.basics.buttons.update") }
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
+                                    disabled={ !isRoleNamePatternValid && !isRegExLoading }
+                                >
+                                    { t("adminPortal:components.roles.edit.basics.buttons.update") }
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Forms>
+            </EmphasizedSegment>
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone

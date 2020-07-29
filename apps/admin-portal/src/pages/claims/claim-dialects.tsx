@@ -21,11 +21,11 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ClaimDialect, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { AnimatedAvatar, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AnimatedAvatar, EmphasizedSegment, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup, Segment } from "semantic-ui-react";
+import { Divider, DropdownProps, Grid, Icon, Image, List, PaginationProps, Popup } from "semantic-ui-react";
 import {
     AddDialect,
     AdvancedSearchWithBasicFilters,
@@ -241,10 +241,23 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                 )
             }
             <PageLayout
+                action={
+                    (isLoading || !(!searchQuery && filteredDialects?.length <= 0))
+                    && (
+                        <PrimaryButton
+                            onClick={ () => {
+                                setAddEditClaim(true);
+                            } }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("adminPortal:components.claims.dialects.pageLayout.list.primaryAction") }
+                        </PrimaryButton>
+                    )
+                }
                 isLoading={ isLoading }
                 title={ t("adminPortal:components.claims.dialects.pageLayout.list.title") }
                 description={ t("adminPortal:components.claims.dialects.pageLayout.list.description") }
-                showBottomDivider={ true }
                 data-testid={ `${ testId }-page-layout` }
             >
                 {
@@ -252,7 +265,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                         featureConfig?.attributeDialects,
                         featureConfig?.attributeDialects?.scopes?.read,
                         allowedScopes) && (
-                        <Segment data-testid={ `${ testId }-local-dialect-container` } >
+                        <EmphasizedSegment data-testid={ `${ testId }-local-dialect-container` } >
                             <List>
                                 <List.Item>
                                     <Grid>
@@ -302,7 +315,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                     </Grid>
                                 </List.Item>
                             </List>
-                        </Segment>
+                        </EmphasizedSegment>
                     )
                 }
                 <Divider hidden />
@@ -343,19 +356,6 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     onSortStrategyChange={ handleSortStrategyChange }
                     onSortOrderChange={ handleSortOrderChange }
                     resetPagination={ resetPagination }
-                    rightActionPanel={
-                        (
-                            <PrimaryButton
-                                onClick={ () => {
-                                    setAddEditClaim(true);
-                                } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add" />
-                                { t("adminPortal:components.claims.dialects.pageLayout.list.primaryAction") }
-                            </PrimaryButton>
-                        )
-                    }
                     showPagination={ true }
                     sortOptions={ SORT_BY }
                     sortStrategy={ sortBy }

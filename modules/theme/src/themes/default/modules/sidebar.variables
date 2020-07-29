@@ -31,4 +31,10 @@
      Help Panel
 --------------------*/
 
+@helpPanelBackgroundColor: @lightPageBackground;
 @helpPanelWidth: 550px;
+@helpPanelBorder: @defaultBorderWidth solid @borderColor;
+@helpPanelMiniWidth: 5em;
+@helpPanelMiniItemMinWidth: @helpPanelMiniWidth;
+@helpPanelMiniItemPadding: 10px;
+@helpPanelMiniItemMargin: 0;

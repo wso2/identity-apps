@@ -21,6 +21,7 @@ import {
     DangerZone,
     EditPage,
     FormAttributes,
+    HelpPanelActionsInterface,
     HelpPanelInterface,
     Notification,
     Page,
@@ -76,6 +77,50 @@ export interface DevPortalNS {
             resultsIndicator: string;
         };
         remoteConfig: {
+            pageTitles: {
+                listingPage: {
+                    title: string;
+                    description: string;
+                },
+                editPage: {
+                    title: string;
+                    description: string;
+                    backLink: string;
+                };
+            },
+            createConfigForm: {
+                configName: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitUrl: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitBranch: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitDirectory: {
+                    label: string;
+                    placeholder: string;
+                    requiredMessage: string;
+                };
+                gitUserName: {
+                    label: string;
+                    placeholder: string;
+                };
+                gitAccessToken: {
+                    label: string;
+                    placeholder: string;
+                };
+                enableConfig: {
+                    label: string;
+                }
+            }
             placeholders: {
                 emptyList: {
                     action: string;
@@ -86,6 +131,13 @@ export interface DevPortalNS {
                     };
                     title: string;
                 };
+                emptyDetails: {
+                    subtitles: {
+                        0: string,
+                        1: string
+                    },
+                    title: string
+                }
             };
             list: {
                 confirmations: {
@@ -93,11 +145,12 @@ export interface DevPortalNS {
                 };
             };
             notifications: {
-                deleteConfig: Notification;
-                editConfig: Notification;
-                triggerConfig: Notification;
-                createConfig: Notification;
-            };
+                deleteConfig: Notification,
+                editConfig: Notification,
+                triggerConfig: Notification,
+                createConfig: Notification,
+                getConfig: Notification,
+            }
         };
         applications: {
             addWizard: {
@@ -631,6 +684,7 @@ export interface DevPortalNS {
             };
         };
         helpPanel: {
+            actions: HelpPanelActionsInterface;
             notifications: {
                 pin: Notification;
             };
@@ -937,62 +991,106 @@ export interface DevPortalNS {
                 };
             };
         };
+        oidcScopes: {
+            buttons: {
+                addScope: string;
+            };
+            confirmationModals: {
+                deleteScope: Confirmation;
+                deleteClaim: Confirmation;
+            };
+            editScope: {
+                claimList: {
+                    emptyPlaceholder: Placeholder;
+                    title: string;
+                    subTitle: string;
+                    addClaim: string;
+                    popupDelete: string;
+                    searchClaims: string;
+                };
+            };
+            forms: {
+                addScopeForm: {
+                    inputs: {
+                        displayName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        scopeName: {
+                            label: string;
+                            placeholder: string;
+                            validations: {
+                                empty: string;
+                            };
+                        };
+                        description: {
+                            label: string;
+                            placeholder: string;
+                        };
+                    };
+                };
+            };
+            list: {
+                empty: Placeholder;
+            };
+            wizards: {
+                addScopeWizard: {
+                    title: string;
+                    subTitle: string;
+                    steps: {
+                        basicDetails: string;
+                        claims: string;
+                    };
+                    buttons: {
+                        next: string;
+                        previous: string;
+                    };
+                    claimList: {
+                        searchPlaceholder: string;
+                        table: {
+                            header: string;
+                            emptyPlaceholders: {
+                                assigned: string;
+                                unAssigned: string;
+                            };
+                        };
+                    };
+                };
+            };
+            notifications: {
+                addOIDCScope: Notification;
+                addOIDCClaim: Notification;
+                fetchOIDCScopes: Notification;
+                fetchOIDCScope: Notification;
+                fetchOIDClaims: Notification;
+                deleteOIDCScope: Notification;
+                deleteOIDClaim: Notification;
+                updateOIDCScope: Notification;
+            };
+        };
         overview: {
-            widgets: {
-                insights: {
+            banner: {
+                heading: string;
+                subHeading: string;
+                welcome: string;
+            };
+            quickLinks: {
+                cards: {
                     applications: {
                         heading: string;
                         subHeading: string;
                     };
-                    idp: {
+                    idps: {
                         heading: string;
                         subHeading: string;
                     };
-                };
-                overview: {
-                    cards: {
-                        applications: {
-                            heading: string;
-                        };
-                        idp: {
-                            heading: string;
-                        };
-                        userstores: {
-                            heading: string;
-                        };
+                    remoteFetch: {
+                        heading: string;
+                        subHeading: string;
                     };
-                    heading: string;
-                    subHeading: string;
-                };
-                quickLinks: {
-                    cards: {
-                        certificates: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        dialects: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        emailTemplates: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        generalConfigs: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        groups: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                        roles: {
-                            heading: string;
-                            subHeading: string;
-                        };
-                    };
-                    heading: string;
-                    subHeading: string;
                 };
             };
         };
@@ -1188,6 +1286,8 @@ export interface DevPortalNS {
                 provisioningDisplayName: string;
             };
         };
+        oidcScopes: Page;
+        oidcScopesEdit: EditPage;
         overview: Page;
     };
     componentExtensions: {
@@ -1208,5 +1308,14 @@ export interface DevPortalNS {
         loginError: Placeholder;
         unauthorized: Placeholder;
         underConstruction: Placeholder;
+    };
+    technologies: {
+        android: string;
+        angular: string;
+        ios: string;
+        java: string;
+        python: string;
+        react: string;
+        windows: string;
     };
 }

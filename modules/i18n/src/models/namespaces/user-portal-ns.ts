@@ -23,6 +23,48 @@ import { DangerZone, NotificationItem, Page, Placeholder, Notification } from ".
  */
 export interface UserPortalNS {
     components: {
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    filterCondition: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    filterValue: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                };
+            };
+            hints: {
+                querySearch: {
+                    actionKeys: string;
+                    label: string;
+                };
+            };
+            options: {
+                header: string;
+            };
+            placeholder: string;
+            popups: {
+                clear: string;
+                dropdown: string;
+            };
+            resultsIndicator: string;
+        };
         accountRecovery: {
             codeRecovery: {
                 descriptions: {
@@ -86,6 +128,22 @@ export interface UserPortalNS {
             };
         };
         applications: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
+                        };
+                    };
+                };
+                placeholder: string;
+            };
             all: {
                 heading: string;
             };
@@ -100,50 +158,6 @@ export interface UserPortalNS {
             };
             recent: {
                 heading: string;
-            };
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterCondition: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                            filterValue: {
-                                label: string;
-                                placeholder: string;
-                                validations: {
-                                    empty: string;
-                                };
-                            };
-                        };
-                    };
-                };
-                hints: {
-                    querySearch: {
-                        actionKeys: string;
-                        label: string;
-                    };
-                };
-                options: {
-                    header: string;
-                };
-                placeholder: string;
-                popups: {
-                    clear: string;
-                    dropdown: string;
-                };
-                resultsIndicator: string;
             };
         };
         approvals: {

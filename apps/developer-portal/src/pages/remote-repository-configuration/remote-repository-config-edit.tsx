@@ -16,19 +16,22 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
-import { RemoteRepoEdit } from "../../components";
-import { history } from "../../helpers";
-import { getRemoteRepoConfig, deleteRemoteRepoConfig, updateRemoteRepoConfig } from "../../api/remote-repo-config";
-import { InterfaceRemoteConfigDetails, InterfaceRemoteRepoConfig, InterfaceEditDetails } from "../../models";
 import { AxiosResponse } from "axios";
-import { AppConstants } from "../../constants";
-import { AlertLevels, AlertInterface } from "@wso2is/core/dist/src/models";
-import { useDispatch } from "react-redux";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { useDispatch } from "react-redux";
+import { deleteRemoteRepoConfig, getRemoteRepoConfig, updateRemoteRepoConfig } from "../../api/remote-repo-config";
+import { RemoteRepoEdit } from "../../components";
+import { AppConstants } from "../../constants";
+import { history } from "../../helpers";
+import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../models";
 
+/**
+ * Remote Repository Configuration Edit Page.
+ */
 const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -85,6 +88,11 @@ const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
         history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG"));
     };
 
+    /**
+     * Util method to update the changed configuration.
+     * @param id - config id
+     * @param values - changed values
+     */
     const handleOnConfigUpdate = (id: string, values: InterfaceEditDetails): void => {
         updateRemoteRepoConfig(id, values).then(() => {
             handleAlerts({
@@ -101,12 +109,15 @@ const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
     
     return (
         <PageLayout
-            title={ remoteConfig ? remoteConfig.remoteFetchName : "" }
+            title={ remoteConfig ? 
+                t("devPortal:components.remoteConfig.pageTitles.editPage.title") + remoteConfig.remoteFetchName 
+                : t("devPortal:components.remoteConfig.pageTitles.editPage.title")
+            }
             contentTopMargin={ true }
-            description={ "Edit remote repository configurations." }
+            description={ t("devPortal:components.remoteConfig.pageTitles.editPage.description") }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: "Back to configs"
+                text: t("devPortal:components.remoteConfig.pageTitles.editPage.backLink")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

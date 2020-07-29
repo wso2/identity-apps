@@ -207,9 +207,24 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     return (
         <PageLayout
+            action={
+                (isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0))
+                && (hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.create,
+                    allowedScopes))
+                && (
+                    <PrimaryButton
+                        onClick={ (): void => {
+                            history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                        } }
+                        data-testid={ `${ testId }-list-layout-add-button` }
+                    >
+                        <Icon name="add"/>
+                        { t("devPortal:components.applications.list.actions.add") }
+                    </PrimaryButton>
+                )
+            }
             title={ t("devPortal:pages.applications.title") }
             description={ t("devPortal:pages.applications.subTitle") }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
@@ -247,22 +262,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
-                rightActionPanel={
-                    (hasRequiredScopes(
-                        featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))
-                        ? (
-                            <PrimaryButton
-                                onClick={ (): void => {
-                                    history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"));
-                                } }
-                                data-testid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add"/>
-                                { t("devPortal:components.applications.list.actions.add") }
-                            </PrimaryButton>
-                        )
-                        : null
-                }
                 showPagination={ true }
                 showTopActionPanel={ isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }

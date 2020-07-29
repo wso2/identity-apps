@@ -58,7 +58,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 16 }>
+                <Grid.Column width={ 6 }>
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
                             const dialectURI = values.get("dialectURI").toString();

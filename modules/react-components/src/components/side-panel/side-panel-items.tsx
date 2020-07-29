@@ -56,13 +56,23 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
         allowedScopes,
         desktopContentTopSpacing,
         headerHeight,
+        relaxed,
         routes,
         showCategoryDividers,
         sidePanelPosition,
         sidePanelTopMargin,
         type,
+        translationHook,
         [ "data-testid" ]: testId
     } = props;
+
+    const menuClasses = classNames(
+        "side-panel",
+        {
+            relaxed,
+            [ type ]: type
+        }
+    );
 
     const categoryClasses = classNames(
         "side-panel-category",
@@ -110,7 +120,7 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
     );
 
     return (
-        <Menu className={ `side-panel ${ type }` } style={ style } data-testid={ testId } vertical fluid>
+        <Menu className={ menuClasses } style={ style } data-testid={ testId } vertical fluid>
             {
                 routes && (
                     routes instanceof Array
@@ -119,7 +129,9 @@ export const SidePanelItems: FunctionComponent<SidePanelItemsPropsInterface> = (
                         ))
                         : Object.entries(routes).map(([ key, value ]) => (
                             <Fragment key={ key }>
-                                <div className={ categoryClasses }>{ key }</div>
+                                <div className={ categoryClasses }>
+                                    { translationHook ? translationHook(key) : key }
+                                </div>
                                 {
                                     value instanceof Array && value.map((route, index) => (
                                         renderItem(route, index)

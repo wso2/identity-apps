@@ -297,9 +297,20 @@ const GroupsPage = (): ReactElement => {
 
     return (
         <PageLayout
+            action={
+                (isGroupsListRequestLoading || !(!searchQuery && paginatedGroups?.length <= 0))
+                && (
+                    <PrimaryButton
+                        data-testid="group-mgt-groups-list-add-button"
+                        onClick={ () => setShowWizard(true) }
+                    >
+                        <Icon name="add"/>
+                        { t("adminPortal:components.roles.list.buttons.addButton", { type: "Group" }) }
+                    </PrimaryButton>
+                )
+            }
             title={ t("adminPortal:pages.groups.title") }
             description={ t("adminPortal:pages.groups.subTitle") }
-            showBottomDivider={ true }
         >
             <ListLayout
                 advancedSearch={ (
@@ -337,15 +348,6 @@ const GroupsPage = (): ReactElement => {
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
                 sortStrategy={ listSortingStrategy }
                 rightActionPanel={
-                    <PrimaryButton
-                        data-testid="group-mgt-groups-list-add-button"
-                        onClick={ () => setShowWizard(true) }
-                    >
-                        <Icon name="add"/>
-                        { t("adminPortal:components.roles.list.buttons.addButton", { type: "Group" }) }
-                    </PrimaryButton>
-                }
-                leftActionPanel={
                     <Dropdown
                         data-testid="group-mgt-groups-list-stores-dropdown"
                         selection

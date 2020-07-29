@@ -1,4 +1,4 @@
-/*!
+/**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
@@ -14,35 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-@type    : "view";
-@element : "jumbotron";
-
-@import (multiple) '../../theme.less';
-.loadVariables();
-
-/*****************************************
-            UI Jumbotron
-*****************************************/
-
-.ui-jumbotron {
-    &.padded {
-        padding: @pageLayoutContentPadding;
-    }
-
-    &.bordered {
-        &-default {
-            border: @defaultBorderWidth solid @defaultBorderColor;
-        }
-        &-bottom {
-            border-bottom: @defaultBorderWidth solid @defaultBorderColor;
-        }
-        &-top {
-            border-top: @defaultBorderWidth solid @defaultBorderColor;
-        }
-    }
-}
-
-.loadUIOverrides();
+export * from "./oidc-scopes";
+export * from "./oidc-scopes-edit";

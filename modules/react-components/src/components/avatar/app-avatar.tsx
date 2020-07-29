@@ -21,6 +21,7 @@ import classNames from "classnames";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
 import OrangeAppIconBackground from "../../assets/images/app-icon-background.png";
+import CodeIcon from "../../assets/images/code-icon.svg";
 
 /**
  * Prop types for the App Avatar component.
@@ -89,6 +90,7 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
  */
 AppAvatar.defaultProps = {
     "data-testid": "app-avatar",
+    defaultIcon: CodeIcon,
     image: null,
     name: null,
     onCard: false

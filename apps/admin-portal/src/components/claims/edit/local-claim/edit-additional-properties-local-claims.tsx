@@ -19,7 +19,7 @@
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { DynamicField, PrimaryButton } from "@wso2is/react-components";
+import { DynamicField, EmphasizedSegment, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -64,73 +64,74 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
     const { t } = useTranslation();
 
     return (
-        <Grid>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
-                    <p>{ t("adminPortal:components.claims.local.additionalProperties.hint") }</p>
-                    <DynamicField
-                        data={ claim.properties }
-                        keyType="text"
-                        keyName={ t("adminPortal:components.claims.local.additionalProperties.key") }
-                        valueName={ t("adminPortal:components.claims.local.additionalProperties.value") }
-                        submit={ submit }
-                        keyRequiredMessage={ t("adminPortal:components.claims.local.additionalProperties." +
-                            "keyRequiredErrorMessage") }
-                        valueRequiredErrorMessage={ t("adminPortal:components.claims.local.additionalProperties." +
-                            "valueRequiredErrorMessage") }
-                        requiredField={ true }
-                        update={ (data) => {
-                            const claimData = { ...claim };
-                            delete claimData.id;
-                            delete claimData.dialectURI;
-                            const submitData = {
-                                ...claimData,
-                                properties: [ ...data ]
-                            }
-
-                            updateAClaim(claim.id, submitData).then(() => {
-                                dispatch(addAlert(
-                                    {
-                                        description: t("adminPortal:components.claims.local.notifications." +
-                                            "updateClaim.success.description"),
-                                        level: AlertLevels.SUCCESS,
-                                        message: t("adminPortal:components.claims.local.notifications." +
-                                            "updateClaim.success.message")
-                                    }
-                                ));
-                                update();
-                            }).catch(error => {
-                                dispatch(addAlert(
-                                    {
-                                        description: error?.description
-                                            || t("adminPortal:components.claims.local.notifications." +
-                                                "updateClaim.genericError.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: error?.message
-                                            || t("adminPortal:components.claims.local.notifications." +
-                                                "updateClaim.genericError.message")
-                                    }
-                                ));
-                            })
-                        } }
-                        data-testid={ `${ testId }-form-properties-dynamic-field` }
-                    />
-                </Grid.Column>
-            </Grid.Row>
-            <Grid.Row columns={ 1 }>
-                <Grid.Column width={ 6 }>
-                    <PrimaryButton
-                        onClick={ () => {
-                            setSubmit();
-                        } }
-                        data-testid={ `${ testId }-submit-button` }
-                    >
-                        { t("common:update") }
-                    </PrimaryButton>
-                </Grid.Column>
-            </Grid.Row>
-        </Grid>
-
+        <EmphasizedSegment>
+            <Grid>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
+                        <p>{ t("adminPortal:components.claims.local.additionalProperties.hint") }</p>
+                        <DynamicField
+                            data={ claim.properties }
+                            keyType="text"
+                            keyName={ t("adminPortal:components.claims.local.additionalProperties.key") }
+                            valueName={ t("adminPortal:components.claims.local.additionalProperties.value") }
+                            submit={ submit }
+                            keyRequiredMessage={ t("adminPortal:components.claims.local.additionalProperties." +
+                                "keyRequiredErrorMessage") }
+                            valueRequiredErrorMessage={ t("adminPortal:components.claims.local.additionalProperties." +
+                                "valueRequiredErrorMessage") }
+                            requiredField={ true }
+                            update={ (data) => {
+                                const claimData = { ...claim };
+                                delete claimData.id;
+                                delete claimData.dialectURI;
+                                const submitData = {
+                                    ...claimData,
+                                    properties: [ ...data ]
+                                }
+    
+                                updateAClaim(claim.id, submitData).then(() => {
+                                    dispatch(addAlert(
+                                        {
+                                            description: t("adminPortal:components.claims.local.notifications." +
+                                                "updateClaim.success.description"),
+                                            level: AlertLevels.SUCCESS,
+                                            message: t("adminPortal:components.claims.local.notifications." +
+                                                "updateClaim.success.message")
+                                        }
+                                    ));
+                                    update();
+                                }).catch(error => {
+                                    dispatch(addAlert(
+                                        {
+                                            description: error?.description
+                                                || t("adminPortal:components.claims.local.notifications." +
+                                                    "updateClaim.genericError.description"),
+                                            level: AlertLevels.ERROR,
+                                            message: error?.message
+                                                || t("adminPortal:components.claims.local.notifications." +
+                                                    "updateClaim.genericError.message")
+                                        }
+                                    ));
+                                })
+                            } }
+                            data-testid={ `${ testId }-form-properties-dynamic-field` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column width={ 6 }>
+                        <PrimaryButton
+                            onClick={ () => {
+                                setSubmit();
+                            } }
+                            data-testid={ `${ testId }-submit-button` }
+                        >
+                            { t("common:update") }
+                        </PrimaryButton>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+        </EmphasizedSegment>
     );
 };
 

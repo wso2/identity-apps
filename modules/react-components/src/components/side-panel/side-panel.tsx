@@ -25,6 +25,7 @@ import {
 } from "@wso2is/core/models";
 import classNames from "classnames";
 import _ from "lodash";
+import sortBy from "lodash/sortBy";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Container, Responsive, Sidebar } from "semantic-ui-react";
 import { SidePanelItems } from "./side-panel-items";
@@ -58,14 +59,14 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      */
     hoverType?: "highlighted" | "background";
     /**
-     * Side panel icons.
-     */
-    icons: any;
-    /**
      * Side panel item onclick callback.
      * @param {RouteInterface | ChildRouteInterface} route - Clicked route.
      */
     onSidePanelItemClick: (route: RouteInterface | ChildRouteInterface) => void;
+    /**
+     * Add more margins between items.
+     */
+    relaxed?: boolean;
     /**
      * Selected route.
      */
@@ -74,6 +75,10 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      * Show category dividers.
      */
     showCategoryDividers?: boolean;
+    /**
+     * Show ellipsis in side panel items.
+     */
+    showEllipsis?: boolean;
     /**
      * Side panel item height.
      */
@@ -204,7 +209,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
     const getCategorizedItems = (routes: RouteInterface[]): CategorizedRouteInterface => {
         const categorizedRoutes: CategorizedRouteInterface = {};
 
-        for (const route of routes) {
+        for (const route of sortBy(routes, "order")) {
             if (route.category) {
                 if (categorizedRoutes[route.category]) {
                     categorizedRoutes[route.category].push(route);
@@ -280,6 +285,7 @@ SidePanel.defaultProps = {
     fluid: false,
     hoverType: "highlighted",
     showCategoryDividers: true,
+    showEllipsis: true,
     sidePanelItemHeight: UIConstants.DEFAULT_SIDE_PANEL_ITEM_HEIGHT,
     sidePanelTopMargin: false,
     translationHook: null

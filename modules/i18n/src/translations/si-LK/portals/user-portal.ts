@@ -121,7 +121,65 @@ export const userPortal: UserPortalNS = {
                 }
             }
         },
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "පෙරහන් ගුණාංගය",
+                        placeholder: "උදා: නම, විස්තරය ආදිය.",
+                        validations: {
+                            empty: "පෙරහන් ගුණාංගය අවශ්‍ය ක්ෂේත්‍රයකි"
+                        }
+                    },
+                    filterCondition: {
+                        label: "පෙරහන් තත්වය",
+                        placeholder: "උදා: සමඟ ආරම්භ වේ.",
+                        validations: {
+                            empty: "පෙරහන් තත්ත්වය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
+                        }
+                    },
+                    filterValue: {
+                        label: "පෙරහන් අගය",
+                        placeholder: "උදා: admin, wso2 ආදිය.",
+                        validations: {
+                            empty: "පෙරහන් අගය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Shift + Enter",
+                    label: "විමසුමක් ලෙස සෙවීමට"
+                }
+            },
+            options: {
+                header: "සංකීර්ණ සෙවීම"
+            },
+            placeholder: "නමින් සොයන්න",
+            popups: {
+                clear: "මකන්න",
+                dropdown: "විකල්ප පෙන්වන්න"
+            },
+            resultsIndicator: "{{query}} සඳහා ප්රතිපල"
+        },
         applications: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "උදා: නම, විස්තරය ආදිය."
+                        },
+                        filterCondition: {
+                            placeholder: "උදා: සමඟ ආරම්භ වේ."
+                        },
+                        filterValue: {
+                            placeholder: "උදා: admin, wso2 ආදිය."
+                        }
+                    }
+                },
+                placeholder: "නමින් සොයන්න"
+            },
             all: {
                 heading: "සියලුම ඇප්ස්"
             },
@@ -157,50 +215,6 @@ export const userPortal: UserPortalNS = {
             },
             recent: {
                 heading: "මෑතකදී විවෘත කළ ඇප්ස්"
-            },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "පෙරහන් ගුණාංගය",
-                                placeholder: "උදා: නම, විස්තරය ආදිය.",
-                                validations: {
-                                    empty: "පෙරහන් ගුණාංගය අවශ්‍ය ක්ෂේත්‍රයකි"
-                                }
-                            },
-                            filterCondition: {
-                                label: "පෙරහන් තත්වය",
-                                placeholder: "උදා: සමඟ ආරම්භ වේ.",
-                                validations: {
-                                    empty: "පෙරහන් තත්ත්වය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
-                                }
-                            },
-                            filterValue: {
-                                label: "පෙරහන් අගය",
-                                placeholder: "උදා: facebook, slack ආදිය.",
-                                validations: {
-                                    empty: "පෙරහන් අගය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි"
-                                }
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "විමසුමක් ලෙස සෙවීමට"
-                    }
-                },
-                options: {
-                    header: "සංකීර්ණ සෙවීම"
-                },
-                placeholder: "නමින් සොයන්න",
-                popups: {
-                    clear: "මකන්න",
-                    dropdown: "විකල්ප පෙන්වන්න"
-                },
-                resultsIndicator: "{{query}} සඳහා ප්රතිපල"
             }
         },
         approvals: {

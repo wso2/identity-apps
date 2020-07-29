@@ -121,7 +121,65 @@ export const userPortal: UserPortalNS = {
                 }
             }
         },
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "வடிகட்டும் பண்பு",
+                        placeholder: "எ.கா.: பெயர், விவரம் போன்றவை",
+                        validations: {
+                            empty: "வடிகட்டல் பண்பு ஒரு கட்டாய களமாகும்"
+                        }
+                    },
+                    filterCondition: {
+                        label: "வடிகட்டும் நிபந்தனை",
+                        placeholder: "எ.கா.: தொடங்குவது",
+                        validations: {
+                            empty: "வடிகட்டும் நிபந்தனை ஒரு கட்டாய களமாகும்"
+                        }
+                    },
+                    filterValue: {
+                        label: "வடிகட்டும் மதிப்பு",
+                        placeholder: "எ.கா.: admin, wso2 போன்றவை",
+                        validations: {
+                            empty: "வடிகட்டும் மதிப்பு ஒரு கட்டாய களமாகும்"
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Shift + Enter",
+                    label: "கேள்வியின் மூலம் தேடுவதற்கு"
+                }
+            },
+            options: {
+                header: "மேம்பட்ட தேடல்"
+            },
+            placeholder: "பெயரைக் கொண்டு தேடு",
+            popups: {
+                clear: "தேடலை அழி",
+                dropdown: "தேர்வுகளை காண்பி"
+            },
+            resultsIndicator: "{{query}} இற்கான பெறுபேறுகள்"
+        },
         applications: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "எ.கா.: பெயர், விவரம் போன்றவை"
+                        },
+                        filterCondition: {
+                            placeholder: "எ.கா.: தொடங்குவது"
+                        },
+                        filterValue: {
+                            placeholder: "எ.கா.: Zoom, Salesforce போன்றவை"
+                        }
+                    }
+                },
+                placeholder: "Search by application name"
+            },
             all: {
                 heading: "அனைத்து செயலிகளும்"
             },
@@ -158,50 +216,6 @@ export const userPortal: UserPortalNS = {
             },
             recent: {
                 heading: "அண்மையில் பயன்படுத்தப்பட்ட செயலிகள்"
-            },
-            search: {
-                forms: {
-                    searchForm: {
-                        inputs: {
-                            filerAttribute: {
-                                label: "வடிகட்டும் பண்பு",
-                                placeholder: "எ.கா.: பெயர், விவரம் போன்றவை",
-                                validations: {
-                                    empty: "வடிகட்டல் பண்பு ஒரு கட்டாய களமாகும்"
-                                }
-                            },
-                            filterCondition: {
-                                label: "வடிகட்டும் நிபந்தனை",
-                                placeholder: "எ.கா.: தொடங்குவது",
-                                validations: {
-                                    empty: "வடிகட்டும் நிபந்தனை ஒரு கட்டாய களமாகும்"
-                                }
-                            },
-                            filterValue: {
-                                label: "வடிகட்டும் மதிப்பு",
-                                placeholder: "எ.கா.: facebook, slack போன்றவை",
-                                validations: {
-                                    empty: "வடிகட்டும் மதிப்பு ஒரு கட்டாய களமாகும்"
-                                }
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "கேள்வியின் மூலம் தேடுவதற்கு"
-                    }
-                },
-                options: {
-                    header: "மேம்பட்ட தேடல்"
-                },
-                placeholder: "பெயரைக் கொண்டு தேடு",
-                popups: {
-                    clear: "தேடலை அழி",
-                    dropdown: "தேர்வுகளை காண்பி"
-                },
-                resultsIndicator: "{{query}} இற்கான பெறுபேறுகள்"
             }
         },
         approvals: {
@@ -566,9 +580,9 @@ export const userPortal: UserPortalNS = {
                         heading: "உறுதிப்பாட்டு செயலியிலிருந்து சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
                         label: "சரிபார்ப்புக் குறியீடு",
                         placeholder: "உங்கள் சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
-                        requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்",
                         reScan: "மீண்டும் பதிவு செய்",
-                        reScanQuestion: "QR குறியீட்டினை மீண்டும் பதிவு செய்ய வேண்டுமா?"
+                        reScanQuestion: "QR குறியீட்டினை மீண்டும் பதிவு செய்ய வேண்டுமா?",
+                        requiredError: "சரிபார்ப்புக் குறியீட்டை உள்ளிடவும்"
                     }
                 },
                 notifications: {

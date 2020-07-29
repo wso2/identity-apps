@@ -17,35 +17,6 @@
  *
  */
 
-/*******************************
-    Advanced Search Variation
-*******************************/
-
-.ui.action.input {
-    &.advanced-search {
-        min-width: @advancedSearchWidth;
-        border: @advancedSearchBorder;
-        border-radius: @borderRadius;
-
-        input {
-            border: none;
-        }
-        &.with-add-on {
-            .input-add-on {
-                border: none;
-
-                &:active {
-                    background: transparent !important;
-                }
-            }
-        }
-        &.active {
-            border-bottom-right-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-    }
-}
-
 .copy-field {
     input {
         font-size: 0.9em;

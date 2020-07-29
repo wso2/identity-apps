@@ -411,12 +411,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimConfigurations && initializationFinished
             ?
             <>
-                <Heading as="h5">
-                    { t("devPortal:components.applications.edit.sections.attributes.selection.heading") }
-                </Heading>
-                <Divider hidden/>
                 <Grid.Row>
                     <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
+                        <Heading as="h4">
+                            { t("devPortal:components.applications.edit.sections.attributes.selection.heading") }
+                        </Heading>
                         {
                             (selectedClaims.length > 0 || selectedExternalClaims.length > 0) ? (
                                 <Segment.Group fluid>

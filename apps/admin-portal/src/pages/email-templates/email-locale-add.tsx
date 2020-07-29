@@ -115,7 +115,6 @@ const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
                 text: t("adminPortal:pages.emailLocaleAdd.backButton", { name: emailTemplateName })
             } }
             titleTextAlign="left"
-            showBottomDivider={ true }
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >

@@ -43,6 +43,10 @@ export interface LanguageSwitcherDropdownProps extends TestableComponentInterfac
      */
     language: string;
     /**
+     * Show/Hide caret icon.
+     */
+    showCaret?: boolean;
+    /**
      * Should dropdown open upwards.
      */
     upward: boolean;
@@ -69,6 +73,7 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
         language,
         changeLanguage,
         upward,
+        showCaret,
         supportedLanguages,
         [ "data-testid" ]: testId
     } = props;
@@ -82,6 +87,7 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
     return (
         <Dropdown
             item
+            icon={ showCaret }
             className={ className }
             upward={ upward }
             trigger={ LanguageSwitcherTrigger() }
@@ -112,5 +118,6 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
  * Default proptypes for the language switcher dropdown component.
  */
 LanguageSwitcherDropdown.defaultProps = {
-    "data-testid": "language-switcher-dropdown"
+    "data-testid": "language-switcher-dropdown",
+    showCaret: false
 };

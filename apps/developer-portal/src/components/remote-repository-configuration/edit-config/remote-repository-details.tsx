@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
-import { InterfaceRemoteConfigDetails, InterfaceRemoteRepoConfig, InterfaceEditDetails } from "../../../models";
-import { Forms, Field } from "@wso2is/forms";
-import { Grid, Button, Divider, GridRow, GridColumn, Checkbox } from "semantic-ui-react";
-import { DangerZoneGroup, DangerZone, ConfirmationModal } from "@wso2is/react-components";
+import { Field, Forms } from "@wso2is/forms";
+import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { Button, Checkbox, Divider, Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../../models";
 
 interface RemoteConfigDetailProps {
     configObject: InterfaceRemoteConfigDetails;
@@ -50,141 +50,144 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
     }, [configObject]);
 
     const getFormValues = (values: any): InterfaceEditDetails => {
-        const config: InterfaceEditDetails = {
-            remoteFetchName: values.get("configName").toString(),
-            isEnabled: isEnabled
-        }
-        return config;
+        return {
+            isEnabled: isEnabled,
+            remoteFetchName: values.get("configName").toString()
+        };
     };
 
     return (
         <>
-            <Forms 
-                onSubmit={ (values) => { 
-                    onConfigUpdate(configObject.id, getFormValues(values));
-                } }
-            >
-                <Grid>
-                    <GridRow columns={ 2 }>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                type="text"
-                                name="configName"
-                                label={ "Configuration Name" }
-                                placeholder={ "Name for the repository configuration" }
-                                required={ true }
-                                value={ configObject ? configObject.remoteFetchName : "" }
-                                requiredErrorMessage={ "Configuration Name is required." }
-                            />
-                        </GridColumn>
-                    </GridRow>
-                    <GridRow columns={ 1 }>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Checkbox 
-                                name="configEnabled"
-                                required={ false }
-                                requiredErrorMessage=""
-                                type="checkbox"
-                                toggle
-                                onChange={ () => {
-                                    setIsEnabled(!isEnabled)
-                                } }
-                                checked={ isEnabled }
-                                label='Is Configuration Enabled' 
-                            />
-                        </GridColumn>
-                    </GridRow>
-                    <GridRow columns={ 1 }>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                type="text"
-                                name="gitURL"
-                                label={ "Git Repository URI" }
-                                placeholder={ "Git repository URL" }
-                                required={ true }
-                                disabled
-                                value={ configObject ? configObject.repositoryManagerAttributes.uri : "" }
-                                requiredErrorMessage={ "Git Repository URL is required." }
-                            />
-                        </GridColumn>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                type="text"
-                                name="gitBranch"
-                                label={ "Git Branch" }
-                                placeholder={ "GIT Branch" }
-                                required={ true }
-                                disabled
-                                value={ configObject ? configObject.repositoryManagerAttributes.branch : "" }
-                                requiredErrorMessage={ "Git Branch is required." }
-                            />
-                        </GridColumn>
-                    </GridRow>
-                    <GridRow columns={ 1 }>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                type="text"
-                                name="gitDirectory"
-                                label={ "Directory" }
-                                placeholder={ "Git Directory" }
-                                required={ true }
-                                disabled
-                                value={ configObject ? configObject.repositoryManagerAttributes.directory : "" }
-                                requiredErrorMessage={ "Git directory is required." }
-                            />
-                        </GridColumn>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                type="number"
-                                name="pollingFreq"
-                                label={ "Polling Frequency" }
-                                required={ true }
-                                disabled
-                                value={ configObject ? configObject.actionListenerAttributes.frequency.toString() : "" }
-                                requiredErrorMessage={ "" }
-                            />
-                        </GridColumn>
-                    </GridRow>
-                    <GridRow columns={ 1 }>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                type="text"
-                                name="userName"
-                                label={ "User Name" }
-                                placeholder={ "GIT Username" }
-                                required={ false }
-                                disabled
-                                value={ configObject ? configObject.repositoryManagerAttributes.userName : "" }
-                                requiredErrorMessage={ "" }
-                            />
-                        </GridColumn>
-                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Field
-                                type="text"
-                                name="accessToken"
-                                label={ "Personal Access Token" }
-                                placeholder={ "Personal Access Token" }
-                                required={ false }
-                                disabled
-                                value={ configObject ? configObject.repositoryManagerAttributes.accessToken : "" }
-                                requiredErrorMessage={ "" }
-                            />
-                        </GridColumn>
-                    </GridRow>
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                            <Button
-                                primary
-                                type="submit"
-                                size="small"
-                                className="form-button"
-                            >
-                                { "Update Configuration" }
-                            </Button>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Forms>
+            <EmphasizedSegment>
+                <Forms 
+                    onSubmit={ (values) => { 
+                        onConfigUpdate(configObject.id, getFormValues(values));
+                    } }
+                >
+                    <Grid>
+                        <GridRow columns={ 2 }>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="configName"
+                                    label={ "Configuration Name" }
+                                    placeholder={ "Name for the repository configuration" }
+                                    required={ true }
+                                    value={ configObject ? configObject.remoteFetchName : "" }
+                                    requiredErrorMessage={ "Configuration Name is required." }
+                                />
+                            </GridColumn>
+                        </GridRow>
+                        <GridRow columns={ 1 }>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Checkbox 
+                                    name="configEnabled"
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    type="checkbox"
+                                    toggle
+                                    onChange={ () => {
+                                        setIsEnabled(!isEnabled)
+                                    } }
+                                    checked={ isEnabled }
+                                    label='Is Configuration Enabled' 
+                                />
+                            </GridColumn>
+                        </GridRow>
+                        <GridRow columns={ 1 }>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="gitURL"
+                                    label={ "Git Repository URI" }
+                                    placeholder={ "Git repository URL" }
+                                    required={ true }
+                                    disabled
+                                    value={ configObject ? configObject.repositoryManagerAttributes.uri : "" }
+                                    requiredErrorMessage={ "Git Repository URL is required." }
+                                />
+                            </GridColumn>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="gitBranch"
+                                    label={ "Git Branch" }
+                                    placeholder={ "GIT Branch" }
+                                    required={ true }
+                                    disabled
+                                    value={ configObject ? configObject.repositoryManagerAttributes.branch : "" }
+                                    requiredErrorMessage={ "Git Branch is required." }
+                                />
+                            </GridColumn>
+                        </GridRow>
+                        <GridRow columns={ 1 }>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="gitDirectory"
+                                    label={ "Directory" }
+                                    placeholder={ "Git Directory" }
+                                    required={ true }
+                                    disabled
+                                    value={ configObject ? configObject.repositoryManagerAttributes.directory : "" }
+                                    requiredErrorMessage={ "Git directory is required." }
+                                />
+                            </GridColumn>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="number"
+                                    name="pollingFreq"
+                                    label={ "Polling Frequency" }
+                                    required={ true }
+                                    disabled
+                                    value={
+                                        configObject ? configObject.actionListenerAttributes.frequency.toString() : ""
+                                    }
+                                    requiredErrorMessage={ "" }
+                                />
+                            </GridColumn>
+                        </GridRow>
+                        <GridRow columns={ 1 }>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="userName"
+                                    label={ "User Name" }
+                                    placeholder={ "GIT Username" }
+                                    required={ false }
+                                    disabled
+                                    value={ configObject ? configObject.repositoryManagerAttributes.userName : "" }
+                                    requiredErrorMessage={ "" }
+                                />
+                            </GridColumn>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="accessToken"
+                                    label={ "Personal Access Token" }
+                                    placeholder={ "Personal Access Token" }
+                                    required={ false }
+                                    disabled
+                                    value={ configObject ? configObject.repositoryManagerAttributes.accessToken : "" }
+                                    requiredErrorMessage={ "" }
+                                />
+                            </GridColumn>
+                        </GridRow>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Button
+                                    primary
+                                    type="submit"
+                                    size="small"
+                                    className="form-button"
+                                >
+                                    { "Update Configuration" }
+                                </Button>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </Forms>
+            </EmphasizedSegment>
             <Divider hidden />
             <DangerZoneGroup sectionHeader="Danger Zone">
                 <DangerZone
@@ -236,4 +239,4 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
             }
         </>
     )
-}
+};

@@ -56,12 +56,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
     return (
         <>
             <Grid.Row>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <Divider/>
-                    <Divider hidden/>
-                </Grid.Column>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                    <Heading as="h5">
+                    <Heading as="h4">
                         { t("devPortal:components.idp.forms.uriAttributeSettings.subject.heading") }
                     </Heading>
                     <Divider hidden/>
@@ -96,12 +92,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             {
                 claimMappingOn &&
                 <Grid.Row columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Divider/>
-                        <Divider hidden/>
-                    </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Heading as="h5">
+                        <Heading as="h4">
                             { t("devPortal:components.idp.forms.uriAttributeSettings.role.heading") }
                         </Heading>
                         <Divider hidden/>
