@@ -16,21 +16,26 @@
  * under the License.
  */
 
-import React, { ReactElement, FunctionComponent, useState } from "react";
-import { TestableComponentInterface, AlertLevels } from "@wso2is/core/models";
-import { ApplicationTemplateListItemInterface } from "../../../models";
-import { Modal, Grid, Icon } from "semantic-ui-react";
-import { Heading, PrimaryButton, LinkButton, URLInput } from "@wso2is/react-components";
-import { useTranslation } from "react-i18next";
-import { Forms, Field, useTrigger } from "@wso2is/forms";
-import { FormValidation } from "@wso2is/validation";
-import { createApplication } from "../../../api";
-import { useDispatch } from "react-redux";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { history } from "../../../helpers";
-import { AppConstants } from "../../../constants";
+import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { GenericIcon, Heading, LinkButton, PrimaryButton, URLInput } from "@wso2is/react-components";
+import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash/isEmpty";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { Grid, Image, Segment } from "semantic-ui-react";
 import { ModalWithSidePanel } from "../..";
+import { createApplication, getApplicationTemplateData } from "../../../api";
+import { ApplicationTemplateIllustrations, TechnologyLogos } from "../../../configs";
+import { AppConstants } from "../../../constants";
+import { history } from "../../../helpers";
+import {
+    ApplicationTemplateInterface,
+    ApplicationTemplateListItemInterface,
+    MainApplicationInterface
+} from "../../../models";
 
 /**
  * Specifies the template ID of SPAs.
@@ -40,6 +45,24 @@ import { ModalWithSidePanel } from "../..";
  * @type {string}
  */
 const SPA_TEMPLATE_ID = "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7";
+
+/**
+ * The template ID of the Web application templates.
+ *
+ * @constant
+ *
+ * @type {string}
+ */
+const WEB_APP_TEMPLATE_ID = "b9c5e11e-fc78-484b-9bec-015d247561b8";
+
+/**
+ * Protocols
+ */
+enum PROTOCOLS {
+    OIDC,
+    PASSIVE_STS,
+    SAML
+}
 
 interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface {
     title: string;
@@ -60,14 +83,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 ): ReactElement => {
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
+    const [ templateSettings, setTemplateSettings ] = useState<MainApplicationInterface>(null);
+    const [ selectedProtocol, setSelectedProtocol ] = useState<PROTOCOLS>(PROTOCOLS.OIDC);
 
-    const {
-        title,
-        closeWizard,
-        template,
-        subTitle,
-        [ "data-testid" ]: testId
-    } = props;
+    const { title, closeWizard, template, subTitle, [ "data-testid" ]: testId } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -96,8 +115,42 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         return callbackURL;
     };
 
+    useEffect(() => {
+        getApplicationTemplateData(template.id)
+            .then((response: ApplicationTemplateInterface) => {
+                setTemplateSettings(response.application);
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(
+                        addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "devPortal:components.applications.notifications.fetchTemplate.error" + ".message"
+                            )
+                        })
+                    );
+
+                    return;
+                }
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "devPortal:components.applications.notifications.fetchTemplate" +
+                            ".genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "devPortal:components.applications.notifications.fetchTemplate.genericError" + ".message"
+                        )
+                    })
+                );
+            });
+    }, []);
+
     const resolveContent = (): ReactElement => {
-        if (template.id === SPA_TEMPLATE_ID) {
+        if (template.id === SPA_TEMPLATE_ID || template.id === WEB_APP_TEMPLATE_ID) {
             return (
                 <Forms
                     onSubmit={ (values) => {
@@ -105,86 +158,76 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             if (isEmpty(callBackUrls) && isEmpty(url)) {
                                 setShowURLError(true);
                             } else {
-                                createApplication({
-                                    accessUrl: "",
-                                    advancedConfigurations: {
-                                        discoverableByEndUsers: false
-                                    },
-                                    authenticationSequence: {
-                                        attributeStepId: 1,
-                                        steps: [ {
-                                            id: 1,
-                                            options: [ {
-                                                authenticator: "basic",
-                                                idp: "LOCAL"
-                                            } ]
-                                        } ],
-                                        subjectStepId: 1,
-                                        type: "DEFAULT"
-                                    },
-                                    description: "OIDC web application::",
-                                    imageUrl: "",
-                                    inboundProtocolConfiguration: {
-                                        oidc: {
-                                            callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
-                                            grantTypes: [ "authorization_code" ],
-                                            publicClient: false,
-                                            state: "ACTIVE",
-                                            validateRequestObjectSignature: false
-                                        }
-                                    },
-                                    name: values.get("name")
-                                }).then((response) => {
-                                    dispatch(
-                                        addAlert({
-                                            description: t(
-                                                "devPortal:components.applications.notifications." +
-                                                "addApplication.success.description"
-                                            ),
-                                            level: AlertLevels.SUCCESS,
-                                            message: t(
-                                                "devPortal:components.applications.notifications." +
-                                                "addApplication.success.message"
-                                            )
-                                        })
-                                    );
+                                const data = { ...templateSettings };
 
-                                    // The created resource's id is sent as a location header.
-                                    // If that's available, navigate to the edit page.
-                                    if (!isEmpty(response.headers.location)) {
-                                        const location = response.headers.location;
-                                        const createdAppID = location.substring(location.lastIndexOf("/") + 1);
+                                data.name = values.get("name").toString();
+                                data.inboundProtocolConfiguration.oidc.callbackURLs = [
+                                    buildCallBackUrlWithRegExp(url ? url : callBackUrls)
+                                ];
 
-                                        history.push(
-                                            AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", createdAppID)
+                                createApplication(data)
+                                    .then((response) => {
+                                        dispatch(
+                                            addAlert({
+                                                description: t(
+                                                    "devPortal:components.applications.notifications." +
+                                                    "addApplication.success.description"
+                                                ),
+                                                level: AlertLevels.SUCCESS,
+                                                message: t(
+                                                    "devPortal:components.applications.notifications." +
+                                                    "addApplication.success.message"
+                                                )
+                                            })
                                         );
 
-                                        return;
-                                    }
+                                        // The created resource's id is sent as a location header.
+                                        // If that's available, navigate to the edit page.
+                                        if (!isEmpty(response.headers.location)) {
+                                            const location = response.headers.location;
+                                            const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
-                                    // Fallback to applications page, if the location header is not present.
-                                    history.push(AppConstants.PATHS.get("APPLICATIONS"));
-                                }).catch((error) => {
-                                    if (error.response && error.response.data && error.response.data.description) {
-                                        dispatch(addAlert({
-                                            description: error.response.data.description,
-                                            level: AlertLevels.ERROR,
-                                            message: t("devPortal:components.applications.notifications." +
-                                                "addApplication.error.message")
-                                        }));
+                                            history.push(
+                                                AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", createdAppID)
+                                            );
 
-                                        return;
-                                    }
+                                            return;
+                                        }
 
-                                    dispatch(addAlert({
-                                        description: t("devPortal:components.applications.notifications." +
-                                            "addApplication.genericError" +
-                                            ".description"),
-                                        level: AlertLevels.ERROR,
-                                        message: t("devPortal:components.applications.notifications." +
-                                            "addApplication.genericError.message")
-                                    }));
-                                });
+                                        // Fallback to applications page, if the location header is not present.
+                                        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+                                    })
+                                    .catch((error) => {
+                                        if (error.response && error.response.data && error.response.data.description) {
+                                            dispatch(
+                                                addAlert({
+                                                    description: error.response.data.description,
+                                                    level: AlertLevels.ERROR,
+                                                    message: t(
+                                                        "devPortal:components.applications.notifications." +
+                                                        "addApplication.error.message"
+                                                    )
+                                                })
+                                            );
+
+                                            return;
+                                        }
+
+                                        dispatch(
+                                            addAlert({
+                                                description: t(
+                                                    "devPortal:components.applications.notifications." +
+                                                    "addApplication.genericError" +
+                                                    ".description"
+                                                ),
+                                                level: AlertLevels.ERROR,
+                                                message: t(
+                                                    "devPortal:components.applications.notifications." +
+                                                    "addApplication.genericError.message"
+                                                )
+                                            })
+                                        );
+                                    });
                             }
                         });
                     } }
@@ -209,6 +252,60 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     type="text"
                                     data-testid={ `${ testId }-application-name-input` }
                                 />
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                <p>Protocols</p>
+                                <Grid>
+                                    <Grid.Row columns={ 3 }>
+                                        <Grid.Column width={ 5 }>
+                                            <Segment
+                                                textAlign="center"
+                                                className={ `${ selectedProtocol === PROTOCOLS.OIDC &&
+                                                    "active" } protocol-cards` }
+                                                onClick={ () => { setSelectedProtocol(PROTOCOLS.OIDC); } }
+                                            >
+                                                <GenericIcon
+                                                    transparent={ true }
+                                                    size="small"
+                                                    icon={ ApplicationTemplateIllustrations.oidcWebApp }
+                                                />
+                                                OIDC
+                                            </Segment>
+                                        </Grid.Column>
+                                        <Grid.Column width={ 5 }>
+                                            <Segment
+                                                textAlign="center"
+                                                className={ `${ selectedProtocol === PROTOCOLS.SAML &&
+                                                    "active" } protocol-cards` }
+                                                onClick={ () => { setSelectedProtocol(PROTOCOLS.SAML); } }
+                                            >
+                                                <GenericIcon
+                                                    transparent={ true }
+                                                    size="small"
+                                                    icon={ ApplicationTemplateIllustrations.samlWebApp }
+                                                />
+                                                SAML
+                                            </Segment>
+                                        </Grid.Column>
+                                        <Grid.Column width={ 5 }>
+                                            <Segment
+                                                textAlign="center"
+                                                className={ `${ selectedProtocol === PROTOCOLS.PASSIVE_STS &&
+                                                    "active" } protocol-cards` }
+                                                onClick={ () => { setSelectedProtocol(PROTOCOLS.PASSIVE_STS); } }
+                                            >
+                                                <GenericIcon
+                                                    transparent={ true }
+                                                    size="small"
+                                                    icon={ ApplicationTemplateIllustrations.passiveSTS }
+                                                />
+                                                Passive STS
+                                            </Segment>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
@@ -266,16 +363,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     { title }
                     { subTitle && <Heading as="h6">{ subTitle }</Heading> }
                 </ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content>
-                    { resolveContent() }
-                </ModalWithSidePanel.Content>
+                <ModalWithSidePanel.Content>{ resolveContent() }</ModalWithSidePanel.Content>
                 <ModalWithSidePanel.Actions>
                     <Grid>
                         <Grid.Row column={ 1 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton floated="left" onClick={ handleWizardClose }>
                                     Cancel
-                            </LinkButton>
+                                </LinkButton>
                             </Grid.Column>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <PrimaryButton
@@ -295,7 +390,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header">
                     Guide
-                     <Heading as="h6">Use the following as the guidance</Heading>
+                    <Heading as="h6">Use the following as the guidance</Heading>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
@@ -304,20 +399,17 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     <h4>Lorem Ipsum</h4>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
                     Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
-                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa.
+                    consequatur culpa. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit
+                    possimus dolorem a! Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque
+                    quaerat pariatur consequatur culpa.
                     <h4>Lorem Ipsum</h4>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
                     Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
-                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa.
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
-                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa.
+                    consequatur culpa. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit
+                    possimus dolorem a! Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque
+                    quaerat pariatur consequatur culpa. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
+                    dolorum velit possimus dolorem a! Porro velit adipisci ea, quasi asperiores quo? Libero esse alias
+                    non itaque quaerat pariatur consequatur culpa.
                 </ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
         </ModalWithSidePanel>
