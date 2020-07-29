@@ -1,3 +1,9 @@
 /*******************************
       Container Variables
 *******************************/
+
+/*-----------------------
+  Typography Extension
+------------------------*/
+
+@textTypographyMutedColor: @lightTextColor;

@@ -610,3 +610,15 @@
         }
     }
 }
+
+/*-----------------------------
+      Relaxed Variation
+------------------------------*/
+
+.ui.card {
+    &.relaxed {
+        .content {
+            padding: @relaxedCardContentPadding;
+        }
+    }
+}

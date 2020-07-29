@@ -1,3 +1,15 @@
 /*******************************
       Container Overrides
 *******************************/
+
+/*-----------------------
+  Typography Extension
+------------------------*/
+
+.ui.container {
+    &.text-typography {
+        &.muted {
+            color: @textTypographyMutedColor;
+        }
+    }
+}
