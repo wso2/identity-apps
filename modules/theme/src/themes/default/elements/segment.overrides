@@ -516,3 +516,21 @@
         border-radius: @emphasizedSegmentBorderRadius;
     }
 }
+
+/*-----------------------------
+      Protocols Segments
+------------------------------*/
+
+.ui.segment {
+    &.protocol-cards {
+        cursor: pointer;
+    }
+
+    &:hover{
+        transform: scale(1.02);
+    }
+
+    &.active {
+        border-color: @primaryColor;
+    }
+}
