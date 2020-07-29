@@ -56,7 +56,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "applicationTemplate",
-                name: "Application Templates",
+                name: "devPortal:components.sidePanel.applicationTemplates",
                 path: AppConstants.PATHS.get("APPLICATION_TEMPLATES"),
                 protected: true,
                 showOnSidePanel: false
@@ -68,7 +68,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "applicationsEdit",
-                name: "Application Edit",
+                name: "devPortal:components.sidePanel.applicationEdit",
                 path: AppConstants.PATHS.get("APPLICATION_EDIT"),
                 protected: true,
                 showOnSidePanel: false
@@ -80,7 +80,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             icon: SidePanelIcons.applications
         },
         id: "applications",
-        name: "common:applications",
+        name: "devPortal:components.sidePanel.applications",
+        order: 2,
         path: AppConstants.PATHS.get("APPLICATIONS"),
         protected: true,
         showOnSidePanel: true
@@ -94,7 +95,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "identityProviderTemplate",
-                name: "Identity Provider Templates",
+                name: "devPortal:components.sidePanel.identityProviderTemplates",
                 path: AppConstants.PATHS.get("IDP_TEMPLATES"),
                 protected: true,
                 showOnSidePanel: false
@@ -106,7 +107,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "identityProvidersEdit",
-                name: "Identity Providers Edit",
+                name: "devPortal:components.sidePanel.identityProviderEdit",
                 path: AppConstants.PATHS.get("IDP_EDIT"),
                 protected: true,
                 showOnSidePanel: false
@@ -118,7 +119,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             icon: SidePanelIcons.identityProviders
         },
         id: "identityProviders",
-        name: "common:identityProviders",
+        name: "devPortal:components.sidePanel.identityProviders",
+        order: 3,
         path: AppConstants.PATHS.get("IDP"),
         protected: true,
         showOnSidePanel: true
@@ -132,7 +134,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "remote-repo-edit",
-                name: "Remote Repo Config Edit",
+                name: "devPortal:components.sidePanel.remoteRepoEdit",
                 path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
                 protected: true,
                 showOnSidePanel: false
@@ -144,7 +146,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             icon: SidePanelIcons.remoteFetch
         },
         id: "remote-repo",
-        name: "Remote Repo Config",
+        name: "devPortal:components.sidePanel.remoteRepo",
+        order: 4,
         path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
         protected: true,
         showOnSidePanel: true
@@ -158,7 +161,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "oidcScopesEdit",
-                name: "OIDC Scopes Edit",
+                name: "devPortal:components.sidePanel.oidcScopesEdit",
                 path: AppConstants.PATHS.get("OIDC_SCOPES_EDIT"),
                 protected: true,
                 showOnSidePanel: false
@@ -170,7 +173,8 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             icon: SidePanelIcons.scopes
         },
         id: "oidcScopes",
-        name: "OIDC Scopes",
+        name: "devPortal:components.sidePanel.oidcScopes",
+        order: 5,
         path: AppConstants.PATHS.get("OIDC_SCOPES"),
         protected: true,
         showOnSidePanel: true
@@ -181,7 +185,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
             icon: SidePanelIcons.overview
         },
         id: "customize",
-        name: "Customize",
+        name: "devPortal:components.sidePanel.customize",
         path: AppConstants.PATHS.get("CUSTOMIZE"),
         protected: true,
         showOnSidePanel: false
@@ -190,7 +194,7 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         component: lazy(() => import("../pages/privacy")),
         icon: null,
         id: "privacy",
-        name: "common:privacy",
+        name: "devPortal:components.sidePanel.privacy",
         path: AppConstants.PATHS.get("PRIVACY"),
         protected: true,
         showOnSidePanel: false
@@ -218,7 +222,8 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
             icon: SidePanelIcons.overview
         },
         id: "overview",
-        name: "common:overview",
+        name: "devPortal:components.sidePanel.overview",
+        order: 1,
         path: AppConstants.PATHS.get("OVERVIEW"),
         protected: true,
         showOnSidePanel: true
@@ -227,7 +232,7 @@ const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
         component: lazy(() => import("../pages/privacy")),
         icon: null,
         id: "privacy",
-        name: "Privacy",
+        name: "devPortal:components.sidePanel.privacy",
         path: AppConstants.PATHS.get("PRIVACY"),
         protected: true,
         showOnSidePanel: false

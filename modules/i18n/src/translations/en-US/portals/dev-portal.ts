@@ -3073,6 +3073,21 @@ export const devPortal: DevPortalNS = {
                 }
             }
         },
+        sidePanel: {
+            applicationEdit: "Application Edit",
+            applicationTemplates: "Application Templates",
+            applications: "Applications",
+            customize: "Customize",
+            identityProviderEdit: "Identity Providers Edit",
+            identityProviderTemplates: "Identity Provider Templates",
+            identityProviders: "Identity Providers",
+            oidcScopes: "OIDC Scopes",
+            oidcScopesEdit: "OIDC Scopes Edit",
+            overview: "Overview",
+            privacy: "Privacy",
+            remoteRepo: "Remote Repo Config",
+            remoteRepoEdit: "Remote Repo Config Edit"
+        },
         templates: {
             emptyPlaceholder: {
                 action: null,
