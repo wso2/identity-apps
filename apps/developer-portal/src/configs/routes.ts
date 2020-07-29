@@ -199,7 +199,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: false
     },
-    ...extensions,
     {
         component: null,
         icon: null,
@@ -379,4 +378,4 @@ export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
 export const dashboardLayoutRoutes = DASHBOARD_LAYOUT_ROUTES;
 export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
 export const errorLayoutRoutes = ERROR_LAYOUT_ROUTES;
-export const routes = [ ...DEFAULT_LAYOUT_ROUTES, ...DASHBOARD_LAYOUT_ROUTES ];
+export const routes = [ ...extensions, ...DEFAULT_LAYOUT_ROUTES, ...DASHBOARD_LAYOUT_ROUTES ];
