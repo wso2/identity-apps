@@ -30,6 +30,7 @@ import { addAlert } from "@wso2is/core/store";
 import { history } from "../../../helpers";
 import { AppConstants } from "../../../constants";
 import isEmpty from "lodash/isEmpty";
+import { ModalWithSidePanel } from "../..";
 
 /**
  * Specifies the template ID of SPAs.
@@ -191,7 +192,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 >
                     <Grid>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                 <Field
                                     name="name"
                                     label={ t(
@@ -211,7 +212,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                 <URLInput
                                     urlState={ callBackUrls }
                                     setURLState={ setCallBackUrls }
@@ -251,7 +252,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     return (
-        <Modal
+        <ModalWithSidePanel
             open={ true }
             className="wizard application-create-wizard"
             dimmer="blurring"
@@ -260,39 +261,66 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             closeOnEscape
             data-testid={ `${ testId }-modal` }
         >
-            <Modal.Header className="wizard-header">
-                { title }
-                { subTitle && <Heading as="h6">{ subTitle }</Heading> }
-            </Modal.Header>
-            <Modal.Content className="content-container" scrolling>
-                { resolveContent() }
-            </Modal.Content>
-            <Modal.Actions>
-                <Grid>
-                    <Grid.Row column={ 1 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ handleWizardClose }>
-                                Cancel
+            <ModalWithSidePanel.MainPanel>
+                <ModalWithSidePanel.Header className="wizard-header">
+                    { title }
+                    { subTitle && <Heading as="h6">{ subTitle }</Heading> }
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    { resolveContent() }
+                </ModalWithSidePanel.Content>
+                <ModalWithSidePanel.Actions>
+                    <Grid>
+                        <Grid.Row column={ 1 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <LinkButton floated="left" onClick={ handleWizardClose }>
+                                    Cancel
                             </LinkButton>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <PrimaryButton
-                                floated="right"
-                                onClick={ () => {
-                                    setSubmit();
-                                } }
-                                data-testid={ `${ testId }-next-button` }
-                            >
-                                { t("common:register") }
-                            </PrimaryButton>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Modal.Actions>
-            <div>
-
-            </div>
-        </Modal>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ () => {
+                                        setSubmit();
+                                    } }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
+                                    { t("common:register") }
+                                </PrimaryButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                </ModalWithSidePanel.Actions>
+            </ModalWithSidePanel.MainPanel>
+            <ModalWithSidePanel.SidePanel>
+                <ModalWithSidePanel.Header className="wizard-header">
+                    Guide
+                     <Heading as="h6">Use the following as the guidance</Heading>
+                </ModalWithSidePanel.Header>
+                <ModalWithSidePanel.Content>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
+                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
+                    consequatur culpa.
+                    <h4>Lorem Ipsum</h4>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
+                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
+                    consequatur culpa.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
+                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
+                    consequatur culpa.
+                    <h4>Lorem Ipsum</h4>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
+                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
+                    consequatur culpa.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
+                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
+                    consequatur culpa.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
+                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
+                    consequatur culpa.
+                </ModalWithSidePanel.Content>
+            </ModalWithSidePanel.SidePanel>
+        </ModalWithSidePanel>
     );
 };
 
