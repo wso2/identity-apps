@@ -32,13 +32,22 @@ import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
 
 /**
- * Specifies the template ID of SPAs.
+ * The template ID of SPAs.
  *
  * @constant
  *
  * @type {string}
  */
 const SPA_TEMPLATE_ID = "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7";
+
+/**
+ * The template ID of the Web application templates.
+ * 
+ * @constant 
+ * 
+ * @type {string}
+ */
+const WEB_APP_TEMPLATE_ID = "b9c5e11e-fc78-484b-9bec-015d247561b8";
 
 /**
  * Props for the Applications templates page.
@@ -195,6 +204,56 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         }
     };
 
+        /**
+     * Returns the minimal application creation wizard.
+     * 
+     * @return {ReactElement} The MainAppCreateWizard.
+     */
+    const minimalAppCreationWizard = (): ReactElement => {
+        return (
+            <MinimalAppCreateWizard
+                title={ selectedTemplate?.name }
+                subTitle={ selectedTemplate?.description }
+                closeWizard={ (): void => setShowWizard(false) }
+                template={ selectedTemplate }
+                addProtocol={ false }
+            />
+        );
+    };
+
+    /**
+     * Returns the application creation wizard.
+     * 
+     * @return {ReactElement} The ApplicationCreation Wizard.
+     */
+    const applicationCreationWizard = (): ReactElement => {
+        return (
+            <ApplicationCreateWizard
+                title={ selectedTemplate?.name }
+                subTitle={ selectedTemplate?.description }
+                closeWizard={ (): void => setShowWizard(false) }
+                template={ selectedTemplate }
+                addProtocol={ false }
+            />
+        )
+    }
+
+    /**
+     * Returns the appropriate wizard based on the selected template ID.
+     * 
+     * @return {ReactElement} The MainAppCreateWizard / ApplicationCreation
+     */
+    const resolveWizard = (): ReactElement => {
+        switch (selectedTemplate.id) {
+            case SPA_TEMPLATE_ID:
+                return minimalAppCreationWizard();
+            case WEB_APP_TEMPLATE_ID:
+                return minimalAppCreationWizard();
+            default:
+                return applicationCreationWizard();
+        }
+    }
+    
     return (
         <PageLayout
             title={ t("devPortal:pages.applicationTemplate.title") }
@@ -362,25 +421,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     )
             }
             {
-                showWizard && selectedTemplate.id == SPA_TEMPLATE_ID
-                    ? (
-                        <MinimalAppCreateWizard
-                            title={ selectedTemplate?.name }
-                            subTitle={ selectedTemplate?.description }
-                            closeWizard={ (): void => setShowWizard(false) }
-                            template={ selectedTemplate }
-                            addProtocol={ false }
-                        />
-                    )
-                    : showWizard && (
-                        <ApplicationCreateWizard
-                            title={ selectedTemplate?.name }
-                            subTitle={ selectedTemplate?.description }
-                            closeWizard={ (): void => setShowWizard(false) }
-                            template={ selectedTemplate }
-                            addProtocol={ false }
-                        />
-                    )
+                showWizard && resolveWizard()
             }
         </PageLayout>
     );
