@@ -558,17 +558,54 @@
             justify-content: space-between;
 
             .main-panel {
-                flex-grow: 6;
-                flex-shrink: 4;
+                flex-grow: 4;
                 width: 60%;
             }
 
             .side-panel {
                 border-left: whitesmoke solid 1px;
                 box-shadow: -4px 0px 10px -8px #d6d6d6;
-                flex-grow: 4;
-                flex-shrink: 6;
+                flex-grow: 1;
                 width: 40%;
+                position: relative;
+                transition: width ease-out 100ms;
+
+                .toggle-button-column {
+                    position: absolute;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    width: 40px;
+                    left: -20px;
+                    z-index: 99;
+
+                    .toggle-button {
+                        background: white;
+                        padding: 10px;
+                        border-radius: 4px;
+                        height: 50px;
+                        box-shadow: black 0px 0px 4px -2px;
+                        cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .side-panel-content {
+                    transition: opacity ease-out 100ms;
+
+                    &.visible {
+                        opacity: 1;
+                    }
+
+                    &.hidden {
+                        opacity: 0;
+                    }
+                }
+
+                &.closed {
+                    width: 0%;
+                }
             }
 
             .header:not(.ui) {
