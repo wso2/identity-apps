@@ -16,12 +16,8 @@
  * under the License.
  */
 
-import React, {
-    FunctionComponent,
-    PropsWithChildren,
-    ReactElement
-} from "react";
-import { Modal, ModalProps } from "semantic-ui-react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement } from "react";
+import { Divider, Modal, ModalProps } from "semantic-ui-react";
 
 interface ModalWithSidePanelSubComponentsInterface {
     MainPanel: typeof ModalWithSidePanelMainPanel;
@@ -34,40 +30,57 @@ interface ModalPanelSubComponentsInterface {
     Actions: typeof ModalWithSidePanelActions;
 }
 
-export const ModalWithSidePanel: FunctionComponent<ModalProps> &
+interface ComponentsPropsInterface {
+    className?: string;
+}
+export const ModalWithSidePanel: FunctionComponent<ModalProps & ComponentsPropsInterface> &
     ModalWithSidePanelSubComponentsInterface &
-    ModalPanelSubComponentsInterface = (props: ModalProps): ReactElement => {
-        return <Modal { ...props }>{ props?.children }</Modal>;
+    ModalPanelSubComponentsInterface = (props: ModalProps & ComponentsPropsInterface): ReactElement => {
+        return (
+            <Modal { ...props } className={ `modal-with-side-panel ${ props.className }` }>
+                <div className="panels">{ props?.children }</div>
+            </Modal>
+        );
     };
 
-export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<any>> = (
-    props: PropsWithChildren<any>
+export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+    props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div>{ props?.children }</div>;
+    return (
+        <>
+            <div className={ `header ${ props?.className }` }>{ props?.children }</div>
+            <Divider className="divider" />
+        </>
+    );
 };
 
-export const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<any>> = (
-    props: PropsWithChildren<any>
+export const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+    props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div>{ props?.children }</div>;
+    return <div className={ `content ${ props?.className }` }>{ props?.children }</div>;
 };
 
-export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<any>> = (
-    props: PropsWithChildren<any>
+export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+    props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div>{ props?.children }</div>;
+    return (
+        <>
+            <Divider className="divider" />
+            <div className={ `actions ${ props?.className }` }>{ props?.children }</div>
+        </>
+    );
 };
 
-export const ModalWithSidePanelMainPanel: FunctionComponent<PropsWithChildren<any>> = (
-    props: PropsWithChildren<any>
+export const ModalWithSidePanelMainPanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+    props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div>{ props?.children }</div>;
+    return <div className={ `main-panel ${ props?.className }` }>{ props?.children }</div>;
 };
 
-export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<any>> = (
-    props: PropsWithChildren<any>
+export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
+    props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div>{ props?.children }</div>;
+    return <div className={ `side-panel ${ props?.className }` }>{ props?.children }</div>;
 };
 
 ModalWithSidePanel.MainPanel = ModalWithSidePanelMainPanel;
