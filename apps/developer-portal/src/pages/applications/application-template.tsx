@@ -22,7 +22,7 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Dropdown, DropdownProps, Grid, Icon, Input } from "semantic-ui-react";
-import { ApplicationCreateWizard } from "../../components";
+import { ApplicationCreateWizard, MinimalAppCreateWizard } from "../../components";
 import { CustomApplicationTemplate } from "../../components/applications/meta";
 import { ApplicationTemplateIllustrations, EmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
@@ -30,6 +30,15 @@ import { history } from "../../helpers";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
+
+/**
+ * Specifies the template ID of SPAs.
+ *
+ * @constant
+ *
+ * @type {string}
+ */
+const SPA_TEMPLATE_ID = "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7";
 
 /**
  * Props for the Applications templates page.
@@ -353,15 +362,25 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     )
             }
             {
-                showWizard && (
-                    <ApplicationCreateWizard
-                        title={ selectedTemplate?.name }
-                        subTitle={ selectedTemplate?.description }
-                        closeWizard={ (): void => setShowWizard(false) }
-                        template={ selectedTemplate }
-                        addProtocol={ false }
-                    />
-                )
+                showWizard && selectedTemplate.id == SPA_TEMPLATE_ID
+                    ? (
+                        <MinimalAppCreateWizard
+                            title={ selectedTemplate?.name }
+                            subTitle={ selectedTemplate?.description }
+                            closeWizard={ (): void => setShowWizard(false) }
+                            template={ selectedTemplate }
+                            addProtocol={ false }
+                        />
+                    )
+                    : showWizard && (
+                        <ApplicationCreateWizard
+                            title={ selectedTemplate?.name }
+                            subTitle={ selectedTemplate?.description }
+                            closeWizard={ (): void => setShowWizard(false) }
+                            template={ selectedTemplate }
+                            addProtocol={ false }
+                        />
+                    )
             }
         </PageLayout>
     );
