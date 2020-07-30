@@ -181,6 +181,8 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         </p>
                         <h5>Name</h5>
                         <p>Provide a unique name for the application so that it can be easily identified.</p>
+                        <p>E.g. Zoom, Salesforce, etc.</p>
+
                         <h5>Protocol</h5>
                         <p>
                             The access configuration protocol which will be used to SSO (Single Sign On) to the
@@ -197,6 +199,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             After the authentication, we will only redirect to the above redirect URLs. You can also
                             specify more than one URL if needed.
                         </p>
+                        <p>E.g. https://www.conotoso.com/login</p>
                     </>
                 );
             case SPA_TEMPLATE_ID:
@@ -482,7 +485,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             </ModalWithSidePanel.MainPanel>
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header">
-                    Guide
+                    Help
                     <Heading as="h6">Use the following as a guidance</Heading>
                 </ModalWithSidePanel.Header>
                 <ModalWithSidePanel.Content>{ resolveHelpContent() }</ModalWithSidePanel.Content>
