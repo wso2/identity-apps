@@ -35,6 +35,7 @@ import {
 } from "./settings";
 import { getInboundProtocolConfig } from "../../api";
 import { ApplicationManagementConstants } from "../../constants";
+import { ComponentExtensionPlaceholder } from "../../extensions";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
@@ -44,7 +45,6 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { ApplicationManagementUtils } from "../../utils";
-import { ComponentExtensionPlaceholder } from "../../extensions/";
 
 /**
  * Proptypes for the applications edit component.
@@ -54,6 +54,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * Editing application.
      */
     application: ApplicationInterface;
+    /**
+     * Default active tab index.
+     */
+    defaultActiveIndex?: number;
     /**
      * Is the data still loading.
      */
@@ -89,6 +93,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const {
         application,
+        defaultActiveIndex,
         featureConfig,
         isLoading,
         onDelete,
@@ -408,7 +413,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading
-            ? <ResourceTab panes={ resolveTabPanes() }/>
+            ? <ResourceTab panes={ resolveTabPanes() } defaultActiveIndex={ defaultActiveIndex } />
             : <ContentLoader/>
     );
 };

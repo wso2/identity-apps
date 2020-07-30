@@ -126,6 +126,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     ] = useState<boolean>(false);
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
 
     /**
      * Fetch the application details on initial component load.
@@ -386,14 +387,21 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
     /**
      * Triggered when the application state search param in the URL changes.
+     * TODO: IMPORTANT - Refactor this code.
      */
     useEffect(() => {
         if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
+            if (isExtensionsAvailable) {
+                setDefaultActiveIndex(1);
+            }
+
             return;
         }
 
         if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
             === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && isExtensionsAvailable) {
+
+            setDefaultActiveIndex(0);
 
             if (helpPanelVisibilityGlobalState) {
                 dispatch(toggleHelpPanelVisibility(false));
@@ -803,6 +811,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             >
                 <EditApplication
                     application={ application }
+                    defaultActiveIndex={ defaultActiveIndex }
                     featureConfig={ featureConfig }
                     isLoading={ isApplicationRequestLoading }
                     onDelete={ handleApplicationDelete }
