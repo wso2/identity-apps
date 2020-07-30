@@ -91,6 +91,7 @@ export const common: CommonNS = {
     properties: "உடைமைகள்",
     ready: "தயார்",
     regenerate: "மீளுருவாக்கம்",
+    register: "பதிவு செய்",
     reject: " ிராகரி",
     release: "விடுவி",
     remove: "நீக்கு",
