@@ -18,6 +18,8 @@
 
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Divider, Icon, Modal, ModalProps } from "semantic-ui-react";
+import { GenericIcon, HelpPanel } from "@wso2is/react-components";
+import { SidePanelMiscIcons, HelpSidebarIcons } from "../../configs";
 
 interface ModalWithSidePanelSubComponentsInterface {
     MainPanel: typeof ModalWithSidePanelMainPanel;
@@ -84,17 +86,26 @@ export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<Co
 
     return (
         <div className={ `side-panel ${ props?.className ?? "" } ${ !sidePanelOpen && "closed" }` }>
-            <div className="toggle-button-column">
+            <div className={ `side-panel-content ${ sidePanelOpen ? "visible" : "hidden" }` }>{ props?.children }</div>
+            <div className={ `toggle-button-column ${ !sidePanelOpen && "closed" }` }>
                 <div
                     className="toggle-button"
                     onClick={ () => {
                         setSidePanelOpen(!sidePanelOpen);
                     } }
                 >
-                    <Icon name={ sidePanelOpen ? "chevron right" : "chevron left" } />
+                    <GenericIcon
+                        hoverable={ true }
+                        hoverType="circular"
+                        background={ false }
+                        transparent={ true }
+                        link={ true }
+                        icon={
+                            sidePanelOpen ? HelpSidebarIcons.actionPanel.close : HelpSidebarIcons.actionPanel.caretLeft
+                        }
+                    />
                 </div>
             </div>
-            <div className={ `side-panel-content ${ sidePanelOpen ? "visible" : "hidden" }` }>{ props?.children }</div>
         </div>
     );
 };
