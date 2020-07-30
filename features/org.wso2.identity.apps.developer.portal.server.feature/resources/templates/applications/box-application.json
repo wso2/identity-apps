@@ -1,0 +1,40 @@
+{
+    "id": "h9c5e23e-fc78-484b-9bec-015d242361b8",
+    "name": "Box",
+    "description": "Cloud content management and file sharing service for businesses.",
+    "image": "box",
+    "authenticationProtocol": "oidc",
+    "types": [
+        "Communication"
+    ],
+    "category": "CUSTOM",
+    "displayOrder": 11,
+    "application": {
+        "name": "",
+        "advancedConfigurations": {
+            "discoverableByEndUsers": false
+        },
+        "authenticationSequence": {
+            "type": "DEFAULT",
+            "steps": [
+                {
+                    "id": 1,
+                    "options": [
+                        {
+                            "idp": "LOCAL",
+                            "authenticator": "basic"
+                        }
+                    ]
+                }
+            ]
+        },
+        "inboundProtocolConfiguration": {
+            "oidc": {
+                "grantTypes": [
+                    "authorization_code"
+                ],
+                "publicClient": false
+            }
+        }
+    }
+}
