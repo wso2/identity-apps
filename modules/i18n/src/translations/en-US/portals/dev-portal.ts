@@ -707,7 +707,7 @@ export const devPortal: DevPortalNS = {
                         },
                         name: {
                             label: "Name",
-                            placeholder: "Enter a name for the application. E.g. Zoom, Salesforce, etc.",
+                            placeholder: "Enter a name for the application.",
                             validations: {
                                 empty: "This is a required field."
                             }
