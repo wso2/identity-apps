@@ -16,28 +16,38 @@
  * under the License.
  */
 
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
-import { Divider, Icon, Modal, ModalProps } from "semantic-ui-react";
-import { GenericIcon, HelpPanel } from "@wso2is/react-components";
-import { SidePanelMiscIcons, HelpSidebarIcons } from "../../configs";
+import { Divider, Modal, ModalProps } from "semantic-ui-react";
+import { HelpSidebarIcons } from "../../configs";
 
+/**
+ * Model of the sub components  of the `ModalWithSidePanel` component.
+ */
 interface ModalWithSidePanelSubComponentsInterface {
     MainPanel: typeof ModalWithSidePanelMainPanel;
     SidePanel: typeof ModalWithSidePanelSidePanel;
-}
-
-interface ModalPanelSubComponentsInterface {
     Header: typeof ModalWithSidePanelHeader;
     Content: typeof ModalWithSidePanelContent;
     Actions: typeof ModalWithSidePanelActions;
 }
 
+/**
+ * Proptypes of the components belonging to modal with side panel.
+ */
 interface ComponentsPropsInterface {
     className?: string;
 }
+
+/**
+ * The root component that encapsulates all the sub components.
+ *
+ * @param {ModalProps & ComponentsPropsInterface} props Props to be injected into the component.
+ *
+ * @return {ReactElement} A modal with a side panel.
+ */
 export const ModalWithSidePanel: FunctionComponent<ModalProps & ComponentsPropsInterface> &
-    ModalWithSidePanelSubComponentsInterface &
-    ModalPanelSubComponentsInterface = (props: ModalProps & ComponentsPropsInterface): ReactElement => {
+    ModalWithSidePanelSubComponentsInterface = (props: ModalProps & ComponentsPropsInterface): ReactElement => {
         return (
             <Modal { ...props } className={ `modal-with-side-panel ${ props.className ?? "" }` }>
                 <div className="panels">{ props?.children }</div>
@@ -45,6 +55,13 @@ export const ModalWithSidePanel: FunctionComponent<ModalProps & ComponentsPropsI
         );
     };
 
+/**
+ * The header of a panel.
+ *
+ * @param {PropsWithChildren<ComponentsPropsInterface>} props Props to be injected into the component.
+ *
+ * @return {ReactElement} The header.
+ */
 export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
@@ -56,12 +73,26 @@ export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<Compo
     );
 };
 
+/**
+ * The content of a panel.
+ *
+ * @param {PropsWithChildren<ComponentsPropsInterface>} props Props to be injected into the component.
+ *
+ * @return {ReactElement} The content section.
+ */
 export const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     return <div className={ `content ${ props?.className ?? "" }` }>{ props?.children }</div>;
 };
 
+/**
+ * The actions of a panel.
+ *
+ * @param {PropsWithChildren<ComponentsPropsInterface>} props Props to be injected into the component.
+ *
+ * @return {ReactElement} The actions section.
+ */
 export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
@@ -73,21 +104,35 @@ export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<Comp
     );
 };
 
+/**
+ * The main panel of the modal.
+ *
+ * @param {PropsWithChildren<ComponentsPropsInterface>} props Props to be injected into the component.
+ *
+ * @return {ReactElement} The main panel.
+ */
 export const ModalWithSidePanelMainPanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     return <div className={ `main-panel ${ props?.className ?? "" }` }>{ props?.children }</div>;
 };
 
+/**
+ * The side panel of the modal.
+ *
+ * @param {PropsWithChildren<ComponentsPropsInterface>} props Props to be injected into the component.
+ *
+ * @return {ReactElement} The side panel.
+ */
 export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
     const [ sidePanelOpen, setSidePanelOpen ] = useState(true);
 
     return (
-        <div className={ `side-panel ${ props?.className ?? "" } ${ !sidePanelOpen && "closed" }` }>
+        <div className={ `side-panel ${ props?.className ?? "" } ${ !sidePanelOpen ? "closed" : "" }` }>
             <div className={ `side-panel-content ${ sidePanelOpen ? "visible" : "hidden" }` }>{ props?.children }</div>
-            <div className={ `toggle-button-column ${ !sidePanelOpen && "closed" }` }>
+            <div className={ `toggle-button-column ${ !sidePanelOpen ? "closed" : "" }` }>
                 <div
                     className="toggle-button"
                     onClick={ () => {
@@ -110,6 +155,9 @@ export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<Co
     );
 };
 
+/**
+ * Attaches with sub components to teh `ModalWithSidePanel` component.
+ */
 ModalWithSidePanel.MainPanel = ModalWithSidePanelMainPanel;
 ModalWithSidePanel.SidePanel = ModalWithSidePanelSidePanel;
 ModalWithSidePanel.Header = ModalWithSidePanelHeader;
