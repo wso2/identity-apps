@@ -1,7 +1,7 @@
 {
     "id": "t565e11e-fc78-484b-9bec-015d2472008",
     "name": "Zoom",
-    "description": "Enterprise video communications.",
+    "description": "Enterprise video communications through online chat services.",
     "image": "zoom",
     "authenticationProtocol": "oidc",
     "types": [
