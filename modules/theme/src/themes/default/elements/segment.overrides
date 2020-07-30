@@ -524,13 +524,13 @@
 .ui.segment {
     &.protocol-cards {
         cursor: pointer;
-    }
 
-    &:hover{
-        transform: scale(1.02);
-    }
+        &:hover{
+            transform: scale(1.02);
+        }
 
-    &.active {
-        border-color: @primaryColor;
+        &.active {
+            border-color: @primaryColor;
+        }
     }
 }
