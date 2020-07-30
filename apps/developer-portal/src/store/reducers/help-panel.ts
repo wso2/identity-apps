@@ -23,8 +23,10 @@ import { HelpPanelActionTypes, HelpPanelActions } from "../actions/types";
  * Help panel reducer initial state.
  */
 const initialState: HelpPanelReducerStateInterface = {
+    activeTabIndex: 0,
     docStructure: null,
-    docURL: null
+    docURL: null,
+    visibility: false
 };
 
 /**
@@ -47,6 +49,16 @@ export const helpPanelReducer = (state: HelpPanelReducerStateInterface = initial
             return {
                 ...state,
                 docStructure: action.payload
+            };
+        case HelpPanelActionTypes.TOGGLE_HELP_PANEL_VISIBILITY:
+            return {
+                ...state,
+                visibility: action.payload
+            };
+        case HelpPanelActionTypes.SET_HELP_PANEL_ACTIVE_TAB_INDEX:
+            return {
+                ...state,
+                activeTabIndex: action.payload
             };
         default:
             return state;

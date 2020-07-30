@@ -46,8 +46,10 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
  * Help panel reducer state interface.
  */
 export interface HelpPanelReducerStateInterface {
+    activeTabIndex: number;
     docURL: string;
     docStructure: PortalDocumentationStructureInterface;
+    visibility: boolean;
 }
 
 /**
