@@ -558,7 +558,7 @@
 
             .side-panel {
                 border-left: whitesmoke solid 1px;
-                box-shadow: -4px 0px 25px -8px #d6d6d6;
+                box-shadow: -4px 0px 15px -8px #d6d6d6;
                 position: relative;
                 transition: width ease-out 100ms;
 
@@ -596,6 +596,11 @@
 
                     .content {
                         height: 568px;
+                        
+                        p {
+                            font-size: 0.9em;
+                            color: @doveGray;
+                        }
                     }
 
                     .header {
@@ -646,11 +651,6 @@
                 line-height: 1.4em;
                 overflow: auto;
                 height: 500px;
-
-                p {
-                    font-size: 0.9em;
-                    color: @doveGray;
-                }
             }
         }
     }
