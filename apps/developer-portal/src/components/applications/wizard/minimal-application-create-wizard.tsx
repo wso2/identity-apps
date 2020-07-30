@@ -244,7 +244,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 data.inboundProtocolConfiguration.oidc.callbackURLs = [
                                     buildCallBackUrlWithRegExp(url ? url : callBackUrls)
                                 ];
-                                data.description = ""
+                                data.description = "";
 
                                 createApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(
                                     data, template
