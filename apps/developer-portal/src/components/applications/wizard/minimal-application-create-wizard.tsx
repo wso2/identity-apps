@@ -36,6 +36,7 @@ import {
     ApplicationTemplateListItemInterface,
     MainApplicationInterface
 } from "../../../models";
+import { ApplicationManagementUtils } from "../../../utils";
 
 /**
  * Specifies the template ID of SPAs.
@@ -243,8 +244,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 data.inboundProtocolConfiguration.oidc.callbackURLs = [
                                     buildCallBackUrlWithRegExp(url ? url : callBackUrls)
                                 ];
+                                data.description = ""
 
-                                createApplication(data)
+                                createApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(
+                                    data, template
+                                ))
                                     .then((response) => {
                                         dispatch(
                                             addAlert({
