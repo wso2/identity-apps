@@ -45,6 +45,10 @@ export interface TextPropsInterface extends TestableComponentInterface {
      */
     muted?: boolean;
     /**
+     * Font size.
+     */
+    size?: number | string;
+    /**
      * Custom styles object.
      */
     styles?: object;
@@ -96,6 +100,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
         display,
         inline,
         muted,
+        size,
         styles,
         [ "data-testid" ]: testId,
         truncate,
@@ -136,6 +141,13 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
             modified = {
                 ...modified,
                 width: width.toString()
+            };
+        }
+        
+        if (size) {
+            modified = {
+                ...modified,
+                fontSize: typeof size === "number" ? `${ size }px` : size
             };
         }
 
