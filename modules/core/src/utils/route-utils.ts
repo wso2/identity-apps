@@ -80,9 +80,10 @@ export class RouteUtils {
      * displayed on the UI navigation panels.
      *
      * @param {RouteInterface[]} routes - Routes to evaluate.
+     * @param {string[]} hiddenRoutes - Set of hidden routes.
      * @return {RouteInterface[]} Filtered routes.
      */
-    public static sanitizeForUI<T>(routes: RouteInterface[]): RouteInterface[] {
+    public static sanitizeForUI<T>(routes: RouteInterface[], hiddenRoutes: string[] = []): RouteInterface[] {
 
         // Remove any redundant routes.
         const sanitize = (routeArr: RouteInterface[] | ChildRouteInterface[]) => {
@@ -97,7 +98,7 @@ export class RouteUtils {
                     if (isFurtherNested) {
                         route.children = sanitize(route.children);
                     } else {
-                        return route.children.some((item) => item.showOnSidePanel);
+                        return route.children.some((item) => item.showOnSidePanel && !hiddenRoutes.includes(item.id));
                     }
                 }
 
@@ -105,7 +106,7 @@ export class RouteUtils {
                     route.children = sanitize(route.children);
                 }
 
-                return route.showOnSidePanel;
+                return route.showOnSidePanel && !hiddenRoutes.includes(route.id);
             });
         };
 

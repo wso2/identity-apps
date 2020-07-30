@@ -387,7 +387,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Triggered when the application state search param in the URL changes. 
      */
     useEffect(() => {
-        if (!urlSearchParams.get("state")) {
+        if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
             return;
         }
 
@@ -397,7 +397,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 
             setTriggerSidebarOpen(true);
         }
-    }, [ urlSearchParams.get("state") ]);
+    }, [ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY) ]);
 
     /**
      * Retrieves application details from the API.
