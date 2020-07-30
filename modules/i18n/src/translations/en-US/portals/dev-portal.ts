@@ -237,7 +237,7 @@ export const devPortal: DevPortalNS = {
                                 heading: "Audience"
                             },
                             callbackURLs: {
-                                heading: "Callback URL(s)"
+                                heading: "Redirect URL(s)"
                             },
                             certificateAlias: {
                                 heading: "Certificate alias"
@@ -707,7 +707,7 @@ export const devPortal: DevPortalNS = {
                         },
                         name: {
                             label: "Name",
-                            placeholder: "Enter a name for the application. E.g. Zoom, Salesforce, etc.",
+                            placeholder: "Enter a name for the application.",
                             validations: {
                                 empty: "This is a required field."
                             }
@@ -747,10 +747,10 @@ export const devPortal: DevPortalNS = {
                 inboundOIDC: {
                     fields: {
                         callBackUrls: {
-                            hint: "After the authentication, we will only redirect to the above callback URLs " +
+                            hint: "After the authentication, we will only redirect to the above redirect URLs " +
                                 "and you can specify multiple URLs",
-                            label: "Callback URLs",
-                            placeholder: "Enter callback URLs",
+                            label: "Redirect URLs",
+                            placeholder: "Enter redirect URLs",
                             validations: {
                                 empty: "Please add valid URL."
                             }

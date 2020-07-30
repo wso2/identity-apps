@@ -91,6 +91,7 @@ export const common: CommonNS = {
     properties: "ගුණාංග",
     ready: "සූදානම්",
     regenerate: "නැවත උත්පාදනය කරන්න",
+    register: "ලියාපදිංචි වන්න",
     reject: "ප්\u200Dරතික්ෂේප කරන්න",
     release: "මුදා හැරීම",
     remove: "ඉවත් කරන්න",

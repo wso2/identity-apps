@@ -20,3 +20,4 @@ export * from "./advanced-search-with-basic-filters";
 export * from "./authenticator-accordion";
 export * from "./header";
 export * from "./upload-certificate";
+export * from "./modal-with-side-panel";

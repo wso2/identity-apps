@@ -34,6 +34,7 @@ import {
 } from "../themes/default/assets/images/icons/blocked-magnifier-icon.svg";
 import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
 import { ReactComponent as BuildingIcon } from "../themes/default/assets/images/icons/building-icon.svg";
+import { ReactComponent as CaretLeftIcon } from "../themes/default/assets/images/icons/caret-left-icon.svg";
 import { ReactComponent as CaretRightIcon } from "../themes/default/assets/images/icons/caret-right-icon.svg";
 import { ReactComponent as CertificateAvatar } from "../themes/default/assets/images/icons/certificate-avatar.svg";
 import {
@@ -273,8 +274,8 @@ export const IdentityProviderWizardStepIcons = {
 };
 
 export const OIDCScopeWizardStepIcons = {
-    general: DocumentIcon,
-    claimConfig: GearsIcon
+    claimConfig: GearsIcon,
+    general: DocumentIcon
 };
 
 export const AuthenticatorIcons = {
@@ -340,6 +341,8 @@ export const OperationIcons = {
 
 export const HelpSidebarIcons = {
     actionPanel: {
+        caretLeft: CaretLeftIcon,
+        caretRight: CaretRightIcon,
         close: CrossIcon,
         pin: PinIcon
     },

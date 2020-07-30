@@ -91,6 +91,7 @@ export interface CommonNS {
     properties: string;
     ready: string;
     regenerate: string;
+    register: string;
     removeAll: string;
     reject: string;
     release: string;
