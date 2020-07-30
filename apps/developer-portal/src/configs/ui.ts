@@ -342,6 +342,7 @@ export const OperationIcons = {
 export const HelpSidebarIcons = {
     actionPanel: {
         caretLeft: CaretLeftIcon,
+        caretRight: CaretRightIcon,
         close: CrossIcon,
         pin: PinIcon
     },
