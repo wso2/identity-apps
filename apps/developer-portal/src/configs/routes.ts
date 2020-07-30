@@ -48,6 +48,18 @@ const extensions = EXTENSION_ROUTES();
  */
 const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
     {
+        component: lazy(() => import("../pages/overview")),
+        icon: {
+            icon: SidePanelIcons.overview
+        },
+        id: "overview",
+        name: "devPortal:components.sidePanel.overview",
+        order: 1,
+        path: AppConstants.PATHS.get("OVERVIEW"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
         children: [
             {
                 component: lazy(() => import("../pages/applications/application-template")),
@@ -216,18 +228,6 @@ const DASHBOARD_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
     {
-        component: lazy(() => import("../pages/overview")),
-        icon: {
-            icon: SidePanelIcons.overview
-        },
-        id: "overview",
-        name: "devPortal:components.sidePanel.overview",
-        order: 1,
-        path: AppConstants.PATHS.get("OVERVIEW"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
         component: lazy(() => import("../pages/privacy")),
         icon: null,
         id: "privacy",
@@ -306,15 +306,6 @@ const APP_ROUTES: RouteInterface[] = [
         name: "Logout",
         path: window["AppUtils"].getConfig().routes.logout,
         protected: false,
-        showOnSidePanel: false
-    },
-    {
-        component: DefaultLayout,
-        icon: null,
-        id: "appRouteOverview",
-        name: "common:overview",
-        path: AppConstants.PATHS.get("OVERVIEW"),
-        protected: true,
         showOnSidePanel: false
     },
     {
