@@ -74,6 +74,10 @@ export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInter
      */
     triggerSidebarOpen?: boolean;
     /**
+     * Triggers the side bar to close.
+     */
+    triggerSidebarClose?: boolean;
+    /**
      * Tooltip for the unpin button.
      */
     unpinButtonTooltip?: string;
@@ -125,6 +129,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         triggerSidebarOpen,
         activeIndex,
         unpinButtonTooltip,
+        triggerSidebarClose,
         ...rest
     } = props;
 
@@ -161,6 +166,14 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
 
         setHelpSidebarVisibility(true);
     }, [ triggerSidebarOpen ]);
+
+    useEffect(() => {
+        if (!triggerSidebarClose) {
+            return;
+        }
+
+        setHelpSidebarVisibility(false);
+    }, [ triggerSidebarClose ]);
 
     useEffect(() => {
         if (isPinned) {

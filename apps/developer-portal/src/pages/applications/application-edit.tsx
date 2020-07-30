@@ -125,6 +125,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     ] = useState<boolean>(false);
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
     const [ triggerSidebarOpen, setTriggerSidebarOpen ] = useState<boolean>(false);
+    const [ triggerSidebarClose, setTriggerSidebarClose ] = useState<boolean>(false);
+    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
 
     /**
      * Fetch the application details on initial component load.
@@ -514,13 +516,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     handleTabChange={ handleTabChange }
                 />
                 ),
-            heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
+            //heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
+            heading: "Server Endpoints",
             hidden: application?.inboundProtocols?.length <= 0,
             icon: {
-                icon: HelpPanelIcons.tabs.whatsNext
+                icon: HelpPanelIcons.tabs.guide
             }
         },
-        {
+        // TODO : Should be removed after getting started flow is implemented.
+        /*{
             content: (
                 helpPanelSelectedProtocol
                     ? (
@@ -734,7 +738,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             icon: {
                 icon: HelpPanelIcons.tabs.sdks
             }
-        }
+        }*/
     ];
 
     return (
@@ -750,6 +754,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
             unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
             triggerSidebarOpen={ triggerSidebarOpen }
+            triggerSidebarClose={ triggerSidebarClose }
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }
@@ -795,6 +800,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     onUpdate={ handleApplicationUpdate }
                     template={ applicationTemplate }
                     data-testid={ testId }
+                    isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                 />
             </PageLayout>
         </HelpPanelLayout>
