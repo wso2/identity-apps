@@ -7,7 +7,7 @@
     "types": [
         "HR"
     ],
-    "category": "VENDOR",
+    "category": "CUSTOM",
     "displayOrder": 10,
     "application": {
         "name": "",

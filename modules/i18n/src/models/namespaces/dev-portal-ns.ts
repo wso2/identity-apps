@@ -1290,6 +1290,15 @@ export interface DevPortalNS {
         oidcScopesEdit: EditPage;
         overview: Page;
     };
+    componentExtensions: {
+        component: {
+            application: {
+                quickStart: {
+                    title: string;
+                };
+            }
+        }
+    }
     placeholders: {
         404: Placeholder;
         accessDenied: Placeholder;

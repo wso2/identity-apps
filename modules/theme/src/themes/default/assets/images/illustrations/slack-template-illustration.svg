@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" width="105" height="105" viewBox="0 0 105 105">
+  <g id="slack" transform="translate(-240 -152)">
+    <g id="Group_131" data-name="Group 131" transform="translate(0 -131)">
+      <rect id="Rectangle_219" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(295 283)" fill="#2db67e"/>
+      <path id="Rectangle_220" data-name="Rectangle 220" d="M11,0h0A11,11,0,0,1,22,11v0A11,11,0,0,1,11,22H0a0,0,0,0,1,0,0V11A11,11,0,0,1,11,0Z" transform="translate(323 311)" fill="#2db67e"/>
+    </g>
+    <g id="Group_132" data-name="Group 132" transform="translate(628 -88) rotate(90)">
+      <rect id="Rectangle_219-2" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(295 283)" fill="#ebb22f"/>
+      <path id="Rectangle_220-2" data-name="Rectangle 220" d="M11,0h0A11,11,0,0,1,22,11v0A11,11,0,0,1,11,22H0a0,0,0,0,1,0,0V11A11,11,0,0,1,11,0Z" transform="translate(323 311)" fill="#ebb22f"/>
+    </g>
+    <g id="Group_133" data-name="Group 133" transform="translate(240 207)">
+      <rect id="Rectangle_219-3" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(28 0)" fill="#df1d5a"/>
+      <path id="Rectangle_220-3" data-name="Rectangle 220" d="M11,0H22a0,0,0,0,1,0,0V11A11,11,0,0,1,11,22h0A11,11,0,0,1,0,11v0A11,11,0,0,1,11,0Z" transform="translate(0 0)" fill="#df1d5a"/>
+    </g>
+    <g id="Group_134" data-name="Group 134" transform="translate(240 202) rotate(-90)">
+      <rect id="Rectangle_219-4" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(0 0)" fill="#36c4f2"/>
+      <path id="Rectangle_220-4" data-name="Rectangle 220" d="M11,0h0A11,11,0,0,1,22,11v0A11,11,0,0,1,11,22H0a0,0,0,0,1,0,0V11A11,11,0,0,1,11,0Z" transform="translate(28 28)" fill="#36c4f2"/>
+    </g>
+  </g>
+</svg>
