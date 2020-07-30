@@ -80,13 +80,13 @@ Recent Application Card
           Template Card
 --------------------------------*/
 
-@templateCardDefaultWidth: 242px;
+@templateCardDefaultWidth: 220px;
 @templateCardRightSpacing: 30px;
 @templateCardHoverBoxShadow: @defaultCardHoverBoxShadow;
 @templateCardTransition: @defaultCardTransition;
 @templateCardBorder: @defaultCardBorder;
 @templateCardTextContainerPadding: 0.8em 1em;
-@templateCardHeaderFontSize: 1.2em;
+@templateCardHeaderFontSize: 1em;
 @templateCardHeaderFontWeight: 500;
 @templateCardHeaderLineHeight: 1.3em;
 @templateCardDescriptionFontSize: 0.8em;

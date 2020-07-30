@@ -165,6 +165,13 @@ export class ApplicationManagementUtils {
                 // Add on the custom application template to the application template list
                 applicationTemplates.unshift(CustomApplicationTemplate);
 
+                // Remove passive STS template.
+                applicationTemplates.map((template) => {
+                    if (template.name == "Passive STS web application") {
+                        applicationTemplates.splice(applicationTemplates.indexOf(template), 1);
+                    }
+                });
+
                 // Generate the technologies array.
                 applicationTemplates.forEach((template) => {
                     template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);

@@ -405,7 +405,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         tagsSectionTitle={ tagsSectionTitle }
                                         tags={
                                             type === "application"
-                                                ? template.types
+                                                ? null
                                                 : type === "idp"
                                                     ? template.services
                                                     : null

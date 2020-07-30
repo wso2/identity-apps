@@ -18,23 +18,11 @@
  * under the License.
 -->
 
-<svg xmlns="http://www.w3.org/2000/svg" width="105" height="105" viewBox="0 0 105 105">
-  <g id="slack" transform="translate(-240 -152)">
-    <g id="Group_131" data-name="Group 131" transform="translate(0 -131)">
-      <rect id="Rectangle_219" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(295 283)" fill="#2db67e"/>
-      <path id="Rectangle_220" data-name="Rectangle 220" d="M11,0h0A11,11,0,0,1,22,11v0A11,11,0,0,1,11,22H0a0,0,0,0,1,0,0V11A11,11,0,0,1,11,0Z" transform="translate(323 311)" fill="#2db67e"/>
-    </g>
-    <g id="Group_132" data-name="Group 132" transform="translate(628 -88) rotate(90)">
-      <rect id="Rectangle_219-2" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(295 283)" fill="#ebb22f"/>
-      <path id="Rectangle_220-2" data-name="Rectangle 220" d="M11,0h0A11,11,0,0,1,22,11v0A11,11,0,0,1,11,22H0a0,0,0,0,1,0,0V11A11,11,0,0,1,11,0Z" transform="translate(323 311)" fill="#ebb22f"/>
-    </g>
-    <g id="Group_133" data-name="Group 133" transform="translate(240 207)">
-      <rect id="Rectangle_219-3" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(28 0)" fill="#df1d5a"/>
-      <path id="Rectangle_220-3" data-name="Rectangle 220" d="M11,0H22a0,0,0,0,1,0,0V11A11,11,0,0,1,11,22h0A11,11,0,0,1,0,11v0A11,11,0,0,1,11,0Z" transform="translate(0 0)" fill="#df1d5a"/>
-    </g>
-    <g id="Group_134" data-name="Group 134" transform="translate(240 202) rotate(-90)">
-      <rect id="Rectangle_219-4" data-name="Rectangle 219" width="22" height="50" rx="11" transform="translate(0 0)" fill="#36c4f2"/>
-      <path id="Rectangle_220-4" data-name="Rectangle 220" d="M11,0h0A11,11,0,0,1,22,11v0A11,11,0,0,1,11,22H0a0,0,0,0,1,0,0V11A11,11,0,0,1,11,0Z" transform="translate(28 28)" fill="#36c4f2"/>
-    </g>
+<svg id="slack-illustration" class="icon" xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 105.002 104.999">
+  <g id="slack" transform="translate(-239.999 -152)">
+    <path d="M-11605-2198v-11a11,11,0,0,1,11-11,11,11,0,0,1,11,11,11,11,0,0,1-11,11Zm-28-11v-28a11,11,0,0,1,11-11,11,11,0,0,1,11,11v28a11,11,0,0,1-11,11A11,11,0,0,1-11633-2209Z" transform="translate(11928 2400)" fill="#2db67e"/>
+    <path d="M-11633-2340v-11h11a11,11,0,0,1,11,11,11,11,0,0,1-11,11A11,11,0,0,1-11633-2340Zm11-17a11,11,0,0,1-11-11,11,11,0,0,1,11-11h28a11,11,0,0,1,11,11,11,11,0,0,1-11,11Z" transform="translate(11928 2586)" fill="#ebb22f"/>
+    <path d="M-11605-2340v-28a11,11,0,0,1,11-11,11,11,0,0,1,11,11v28a11,11,0,0,1-11,11A11,11,0,0,1-11605-2340Zm-28-28a11,11,0,0,1,11-11h11v11a11,11,0,0,1-11,11A11,11,0,0,1-11633-2368Z" transform="translate(11873 2586)" fill="#df1d5a"/>
+    <path d="M-11622-2329a11,11,0,0,1-11-11,11,11,0,0,1,11-11h28a11,11,0,0,1,11,11,11,11,0,0,1-11,11Zm28-28a11,11,0,0,1-11-11,11,11,0,0,1,11-11,11,11,0,0,1,11,11v11Z" transform="translate(11873 2531)" fill="#36c4f2"/>
   </g>
 </svg>
