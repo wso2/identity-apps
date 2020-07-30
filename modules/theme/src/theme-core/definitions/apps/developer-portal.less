@@ -17,307 +17,217 @@
  *
  */
 
-@type: "app";
-@element: "developer-portal";
-
-@import (multiple) "../../theme.less";
-.loadVariables();
-
-/*-------------------------------
-            Pages
---------------------------------*/
-
-.developer-portal.page {
-    &.overview-page {
-        .jumbotron {
-            padding: @overviewPageJumbotronPadding;
-
-            &.with-animated-background {
-                -webkit-transition: @overviewPageJumbotronAnimatedBackgroundTransition;
-                -moz-transition: @overviewPageJumbotronAnimatedBackgroundTransition;
-                -o-transition: @overviewPageJumbotronAnimatedBackgroundTransition;
-                transition: @overviewPageJumbotronAnimatedBackgroundTransition;
-            }
-
-            &:hover {
-                &.with-animated-background {
-                    background-position-x: @overviewPageJumbotronAnimatedBackgroundHoverXPositionOffset;
-                    background-position-y: @overviewPageJumbotronAnimatedBackgroundHoverYPositionOffset;
-                }
-            }
-        }
-        .technology-showcase {
-            .labeled-card-wrapper {
-                &:not(:last-child) {
-                    margin-right: @overviewPageTechnologyShowcaseCardsMarginRight;
-                }
-
-                .labeled-card {
-                    .card-image-container {
-                        .theme-icon {
-                            svg.icon .path {
-                                transition: fill 0.5s ease;
-                            }
-                        }
-                    }
-                }
-
-                &:not(:hover) {
-                    .labeled-card {
-                        .card-image-container {
-                            .theme-icon {
-                                svg.icon .path {
-                                    fill: @iconDefaultBgColor;
-
-                                    &.stroke {
-                                        stroke: @iconDefaultBgColor;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    .card-label {
-                        color: @lightTextColor;
-                    }
-                }
-
-                &:hover {
-                    .card-label {
-                        color: darken(@lightTextColor, 40);
-                    }
-                }
-            }
-        }
-        .quick-links {
-            .ui.card {
-                max-width: @overviewPageQuickLinksCardMaxWidth;
-
-                .theme-icon {
-                    padding-top: 2em;
-                }
-                .content {
-                    border-top: none;
-                    padding: 1em 2em 1.5em 2em;
-
-                    .header {
-                        font-size: 1.1em;
-                    }
-                    .description {
-                        font-size: 0.9em;
-                    }
-                }
-            }
-        }
-    }
-}
-
-/*****************************************
+ @type    : "app";
+ @element : "developer-portal";
+ 
+ @import (multiple) '../../theme.less';
+ .loadVariables();
+ 
+ /*****************************************
              Sign on methods
  *****************************************/
-
-.sign-on-methods-tab-content {
-    .authentication-flow-section {
-        .main-content {
-            transition: width ease 500ms;
-        }
-
-        .authenticators-panel {
-            display: inline-block;
-            z-index: 9;
-
-            .drag-handle {
-                cursor: grab;
-
-                &:active,
-                &:focus {
-                    cursor: grabbing;
-                }
-            }
-
-            .authenticators-section {
-                .ui.accordion {
-                    .title {
-                        font-size: 0.9em;
-
-                        .caret-icon {
-                            transition: transform 0.1s ease-in-out;
-                        }
-                        &.active {
-                            .caret-icon {
-                                transform: rotate(90deg);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        .authentication-steps-section {
-            .authentication-step-container {
-                .step-header {
-                    display: inline-block;
-                }
-                .delete-button {
-                    display: inline-block;
-                    float: right;
-                    color: @nobel;
-
-                    &:hover {
-                        color: @black;
-                        cursor: pointer;
-                    }
-                }
-                .authentication-step {
-                    min-height: 120px;
-                    background-color: @whiteSmoke;
-                    padding: 15px;
-                    border-radius: @defaultBorderRadius;
-                }
-
-                .checkboxes {
-                    margin: 15px 0;
-
-                    .checkbox {
-                        &:not(:last-child) {
-                            margin-right: 20px;
-                        }
-                    }
-                }
-            }
-
-            .add-step-button {
-                padding-left: 0;
-            }
-        }
-        &.flex {
-            display: flex;
-
-            .main-content {
-                padding-right: 2em;
-            }
-        }
-    }
-
-    /**
+ 
+ .sign-on-methods-tab-content {
+     .authentication-flow-section {
+         .main-content {
+             transition: width ease 500ms;
+         }
+ 
+         .authenticators-panel {
+             display: inline-block;
+             z-index: 9;
+ 
+             .drag-handle {
+                 cursor: grab;
+ 
+                 &:active, &:focus {
+                     cursor: grabbing;
+                 }
+             }
+ 
+             .authenticators-section {
+                 .ui.accordion {
+                     .title {
+                         font-size: 0.9em;
+ 
+                         .caret-icon {
+                             transition: transform .1s ease-in-out;
+                         }
+                         &.active {
+                             .caret-icon {
+                                 transform: rotate(90deg);
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+ 
+         .authentication-steps-section {
+             .authentication-step-container {
+                 .step-header {
+                     display: inline-block;
+                 }
+                 .delete-button {
+                     display: inline-block;
+                     float: right;
+                     color: @nobel;
+ 
+                     &:hover {
+                         color: @black;
+                         cursor: pointer;
+                     }
+                 }
+                 .authentication-step {
+                     min-height: 120px;
+                     background-color: @whiteSmoke;
+                     padding: 15px;
+                     border-radius: @defaultBorderRadius;
+                 }
+ 
+                 .checkboxes {
+                     margin: 15px 0;
+ 
+                     .checkbox {
+                         &:not(:last-child) {
+                             margin-right: 20px;
+                         }
+                     }
+                 }
+             }
+ 
+             .add-step-button {
+                 padding-left: 0;
+             }
+         }
+         &.flex {
+             display: flex;
+ 
+             .main-content {
+                 padding-right: 2em;
+             }
+         }
+     }
+ 
+     /** 
         TODO: This styling is used by the SQL editor component as well.
         This should be refactored into a separate class.
      **/
-    .adaptive-scripts-section {
-        .script-editor-section {
-            border: @defaultBorderWidth solid @defaultBorderColor;
-            border-radius: @defaultBorderRadius;
+     .adaptive-scripts-section {
+         .script-editor-section {
+             border: @defaultBorderWidth solid @defaultBorderColor;
+             border-radius: @defaultBorderRadius;
+ 
+             .script-editor-container {
+                 transition: width ease-in-out 0.2s;
+ 
+                 .code-editor-wrapper {
+                     padding: 0;
+                     border: none;
+                 }
+ 
+                 .action-panel {
+                     border: none;
+ 
+                     .action {
+                         padding: 8px;
+ 
+                         i {
+                             margin-right: 0;
+                         }
+                     }
+                 }
+             }
 
-            .script-editor-container {
-                transition: width ease-in-out 0.2s;
-
-                .code-editor-wrapper {
-                    padding: 0;
-                    border: none;
-                }
-
-                .action-panel {
-                    border: none;
-
-                    .action {
-                        padding: 8px;
-
-                        i {
-                            margin-right: 0;
-                        }
-                    }
-                }
-            }
-
-            .script-templates-panel {
-                padding: 1em;
-                border: none;
-                box-shadow: none !important;
-
-                &.left {
-                    ~ .pusher {
+             .script-templates-panel {
+                 padding: 1em;
+                 border: none;
+                 box-shadow: none !important;
+ 
+                 &.left {
+                    ~.pusher {
                         display: flex;
                         justify-content: flex-end;
                     }
-                }
+                 }
 
-                .template-category-menu {
-                    margin-right: 0;
+                 .template-category-menu {
+                     margin-right: 0;
+ 
+                     > .item {
+                         padding: 0;
+ 
+                         .category-name {
+                             background: @white;
+                             padding: 0.9em 1em;
+                             border-radius: @defaultBorderRadius;
+                             border-left: 3px solid transparent;
+ 
+                             &.active {
+                                 box-shadow: 0 2px 3px 0 @darkGray;
+                                 border-left: 3px solid @primaryColor;
+                             }
+ 
+                             .caret-icon {
+                                 transition: transform .1s ease-in-out;
+                                 float: right;
+                             }
+                             &.active {
+                                 .caret-icon {
+                                     transform: rotate(90deg);
+                                 }
+                             }
+                         }
+ 
+                         .template-list {
+                             > .item {
+                                 background: darken(@white, 1);
+                                 margin: 0;
+                                 text-overflow: ellipsis;
+                                 white-space: nowrap;
+                                 overflow: hidden;
+                                 color: lighten(@textColor, 20);
+                                 font-size: 0.9em;
+ 
+                                 &:not(:last-child) {
+                                     border-bottom: 1px solid lighten(@defaultBorderColor, 30);
+                                     border-bottom-right-radius: 0;
+                                     border-bottom-left-radius: 0;
+                                 }
+ 
+                                 &:not(:first-child) {
+                                     border-top-right-radius: 0;
+                                     border-top-left-radius: 0;
+                                 }
+ 
+                                 .template-name {
+                                     display: inline-block;
+                                     width: 120px;
+                                     text-overflow: ellipsis;
+                                     white-space: nowrap;
+                                     overflow: hidden;
+                                 }
+ 
+                                 .add-button {
+                                     cursor: pointer;
+ 
+                                     &:hover {
+                                         color: @primaryColor;
+                                     }
+                                 }
 
-                    > .item {
-                        padding: 0;
-
-                        .category-name {
-                            background: @white;
-                            padding: 0.9em 1em;
-                            border-radius: @defaultBorderRadius;
-                            border-left: 3px solid transparent;
-
-                            &.active {
-                                box-shadow: 0 2px 3px 0 @darkGray;
-                                border-left: 3px solid @primaryColor;
-                            }
-
-                            .caret-icon {
-                                transition: transform 0.1s ease-in-out;
-                                float: right;
-                            }
-                            &.active {
-                                .caret-icon {
-                                    transform: rotate(90deg);
-                                }
-                            }
-                        }
-
-                        .template-list {
-                            > .item {
-                                background: darken(@white, 1);
-                                margin: 0;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                overflow: hidden;
-                                color: lighten(@textColor, 20);
-                                font-size: 0.9em;
-
-                                &:not(:last-child) {
-                                    border-bottom: 1px solid lighten(@defaultBorderColor, 30);
-                                    border-bottom-right-radius: 0;
-                                    border-bottom-left-radius: 0;
-                                }
-
-                                &:not(:first-child) {
-                                    border-top-right-radius: 0;
-                                    border-top-left-radius: 0;
-                                }
-
-                                .template-name {
-                                    display: inline-block;
-                                    width: 120px;
-                                    text-overflow: ellipsis;
-                                    white-space: nowrap;
-                                    overflow: hidden;
-                                }
-
-                                .add-button {
-                                    cursor: pointer;
-
-                                    &:hover {
-                                        color: @primaryColor;
-                                    }
-                                }
-
-                                &.active {
+                                 &.active {
                                     border-left: 2px solid @primaryColor;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
+                                 }
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+     }
+ }
+ 
 /*****************************************
         Email Template
 *****************************************/
@@ -327,7 +237,7 @@
         margin-bottom: 0px;
 
         .item {
-            background-color: #f8f8f8 !important;
+            background-color: #F8F8F8 !important;
             border-top: 1px solid #ccc !important;
             border-right: 1px solid #ccc !important;
             border-bottom-color: #ccc !important;
@@ -359,7 +269,7 @@
     .CodeMirror {
         height: 60vh;
     }
-
+    
     .render-view {
         overflow: hidden;
         padding-top: 56.25%;
@@ -403,34 +313,34 @@
         height: 40vh;
     }
 }
+ 
+ .empty-placeholder-center {
+     position: relative;
+     top: 50%;
+     -webkit-transform: translateY(-50%);
+     -ms-transform: translateY(-50%);
+     transform: translateY(-50%);
+ }
+ 
+ .claim-scrolling-list {
+     overflow-y: auto;
+     height: 250px;
+     overflow-x: hidden;
+     padding: 10px;
+ 
+     &.selected {
+         background-color: #f4f7f9;
+         height: 304px;
+     }
+ }
+ 
+ #claim-scroll::-webkit-scrollbar {
+     -webkit-appearance: none;
+     width: 2px;
+     height: 1px;
+ }
 
-.empty-placeholder-center {
-    position: relative;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-}
-
-.claim-scrolling-list {
-    overflow-y: auto;
-    height: 250px;
-    overflow-x: hidden;
-    padding: 10px;
-
-    &.selected {
-        background-color: #f4f7f9;
-        height: 304px;
-    }
-}
-
-#claim-scroll::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 2px;
-    height: 1px;
-}
-
-.local-dialect-direct {
+ .local-dialect-direct {
     padding: 1em;
     cursor: pointer;
     transition: 0.3s;
@@ -438,12 +348,12 @@
     &:hover {
         background-color: #f3f3f3;
     }
-}
-
-.loadUIOverrides();
+ }
+ 
+ .loadUIOverrides();
 
 .transfer-list-sub-content {
-    color: @darkGray;
+  color: @darkGray;
 }
 
 /*****************************************
@@ -499,183 +409,8 @@
 }
 
 /*****************************************
-   Adaptive Script Template Description
-*****************************************/
-.stepper {
-    display: grid;
-    grid-template-columns: 25px 1fr;
-    grid-template-rows: 25px 1fr;
-    grid-gap: 10px;
-    margin-bottom: 10px;
-
-    .step-number {
-        border-radius: 50%;
-        background-color: @primaryColor;
-        color: @white;
-        text-align: center;
-        padding: 5px;
-        height: 25px;
-        width: 25px;
-        font-size: 0.8em;
-    }
-
-    .step-text {
-        grid-row-start: 1;
-        grid-column-start: 2;
-        grid-row-end: 3;
-        padding-top: 5px;
-    }
-
-    .step-connector {
-        height: 100%;
-        min-height: 25px;
-        display: flex;
-        justify-content: center;
-
-        .step-line {
-            height: 100%;
-            width: 1px;
-            background-color: @paleGray;
-        }
-    }
-}
-
-/*****************************************
     Remote Repository Configuration
 *****************************************/
 .deployment-status {
     margin: 0 1em !important;
-}
-
-/*****************************************
-        Modal With Side Panel
-*****************************************/
-
-.ui.modal {
-    &.modal-with-side-panel {
-        .panels {
-            display: flex;
-            justify-content: space-between;
-
-            .main-panel {
-                flex-grow: 4;
-                width: 60%;
-            }
-
-            .side-panel {
-                border-left: whitesmoke solid 1px;
-                box-shadow: -4px 0px 10px -8px #d6d6d6;
-                flex-grow: 1;
-                width: 40%;
-                position: relative;
-                transition: width ease-out 100ms;
-
-                .toggle-button-column {
-                    position: absolute;
-                    display: flex;
-                    align-items: center;
-                    right: 30px;
-                    top: 30px;
-                    z-index: 99;
-                    width: 100%;
-                    justify-content: flex-end;
-
-                    &.closed {
-                        right: 0;
-                        justify-content: center;
-                    }
-
-                    .toggle-button {
-                        display: flex;
-                        align-items: center;
-                    }
-                }
-
-                .side-panel-content {
-                    transition: opacity ease-out 100ms;
-
-                    &.visible {
-                        opacity: 1;
-                    }
-
-                    &.hidden {
-                        opacity: 0;
-                    }
-
-                    .content {
-                        height: 568px;
-                    }
-
-                    .header {
-                        background-color: @lightGray;
-                    }
-                }
-
-                &.closed {
-                    width: 0%;
-                }
-            }
-
-            .header:not(.ui) {
-                font-weight: 400;
-                border-top-left-radius: 3px;
-                border-top-right-radius: 3px;
-                font-size: 1.43em;
-                line-height: 1.3 em;
-                padding: 30px;
-                height: 90px;
-                overflow: hidden;
-
-                h6 {
-                    text-overflow: ellipsis;
-                    width: 100%;
-                }
-            }
-
-            .actions {
-                border-bottom-left-radius: 3px;
-                border-bottom-right-radius: 3px;
-                font-size: 1.43em;
-                line-height: 1.3em;
-                padding: 30px;
-
-                .row {
-                    padding: 0;
-                }
-            }
-
-            .divider {
-                margin-top: 0;
-                margin-bottom: 0;
-            }
-
-            .content {
-                padding: 30px;
-                line-height: 1.4em;
-                overflow: auto;
-                height: 500px;
-
-                p {
-                    font-size: 0.9em;
-                    color: @doveGray;
-                }
-            }
-        }
-    }
-}
-
-@media only screen and (min-width: 992px) {
-    .ui.modal {
-        &.modal-with-side-panel {
-            width: 950px;
-        }
-    }
-}
-
-@media only screen and (min-width: 1200px) {
-    .ui.modal {
-        &.modal-with-side-panel {
-            width: 1100px;
-        }
-    }
 }
