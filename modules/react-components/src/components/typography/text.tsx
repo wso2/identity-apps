@@ -19,12 +19,15 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { ReactElement } from "react";
-import { Container, ContainerProps } from "semantic-ui-react";
 
 /**
  * Text component prop types.
  */
-export interface TextPropsInterface extends ContainerProps, TestableComponentInterface {
+export interface TextPropsInterface extends TestableComponentInterface {
+    /**
+     * Additional CSS classes.
+     */
+    className?: string;
     /**
      * Display style.
      */
@@ -143,7 +146,7 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
     };
 
     return (
-        <Container
+        <div
             style={ resolveInlineStyles(styles) }
             className={ classes }
             data-testid={ testId }
@@ -157,6 +160,5 @@ export const Text: React.FunctionComponent<TextPropsInterface> = (
  */
 Text.defaultProps = {
     compact: true,
-    "data-testid": "text",
-    fluid: true
+    "data-testid": "text"
 };
