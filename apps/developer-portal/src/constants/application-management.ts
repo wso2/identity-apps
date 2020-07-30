@@ -114,11 +114,10 @@ export class ApplicationManagementConstants {
      * @type {Map<string, string>}
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
-        .set("SAML web application", "SAML Web Application")
-        .set("OIDC web application", "OIDC Web Application")
-        .set("Single page application", "Single Page Application")
-        .set("Mobile application", "OIDC Mobile Application")
-        .set("Windows desktop application", "Windows Desktop Application")
+        .set("Web Application", "OIDC Web Application")
+        .set("Single Page Application", "Single Page Application")
+        .set("Mobile Application", "OIDC Mobile Application")
+        .set("Desktop Application", "Windows Desktop Application")
         .set("Slack", "OIDC Web Application")
         .set("Zoom", "OIDC Web Application")
         .set("Workday", "OIDC Web Application")
