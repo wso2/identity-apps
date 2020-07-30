@@ -146,7 +146,9 @@ export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<Co
                         transparent={ true }
                         link={ true }
                         icon={
-                            sidePanelOpen ? HelpSidebarIcons.actionPanel.close : HelpSidebarIcons.actionPanel.caretLeft
+                            sidePanelOpen
+                                ? HelpSidebarIcons.actionPanel.caretRight
+                                : HelpSidebarIcons.actionPanel.caretLeft
                         }
                     />
                 </div>
