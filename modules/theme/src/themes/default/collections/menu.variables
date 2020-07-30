@@ -82,8 +82,14 @@
 @listPaginationItemBorderRadius: @defaultBorderRadius;
 @listPaginationItemBackground: @lightPageBackground;
 @listPaginationItemColor: lighten(@textColor, 20);
-@listPaginationItemActiveColor: @textColor;
-@listPaginationItemActiveBorderColor: @secondaryColor;
+
+@listPaginationItemHoverColor: @primaryColor;
+@listPaginationItemHoverBorderColor: @lightBorderColor;
+@listPaginationItemHoverBackground: @lightPrimaryColor;
+
+@listPaginationItemActiveColor: @primaryColor;
+@listPaginationItemActiveBorderColor: @lightBorderColor;
+@listPaginationItemActiveBackground: @lightPrimaryColor;
 
 /*-------------------
     User Dropdown

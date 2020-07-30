@@ -54,6 +54,8 @@
 @accentColor2        : #f5385b;
 @accentColor3        : #00b7e1;
 
+@lightPrimaryColor   : lighten(@primaryColor, 40);
+
 /*-------------------
     Site Colors
 --------------------*/
@@ -77,6 +79,8 @@
 @paleGray         : #d6d6d6;
 @alabaster        : #fcfcfc;
 @doveGray         : #616161;
+@aliceBlue        : #f7fcff;
+@alabaster        : #f7f7f7;
 
 /*-------------------
         Page

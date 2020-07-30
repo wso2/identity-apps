@@ -390,9 +390,15 @@
             background: @listPaginationItemBackground;
             color: @listPaginationItemColor;
 
+            &:hover {
+                color: @listPaginationItemHoverColor;
+                border-color: @listPaginationItemHoverBorderColor;
+                background: @listPaginationItemHoverBackground;
+            }
             &.active {
                 color: @listPaginationItemActiveColor;
                 border-color: @listPaginationItemActiveBorderColor;
+                background: @listPaginationItemActiveBackground;
             }
             &:not(:last-child) {
                 margin-right: @listPaginationMarginRight;
