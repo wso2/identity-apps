@@ -70,6 +70,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Callback to see if tab extensions are available
+     */
+    isTabExtensionsAvailable: (isAvailable: boolean) => void;
 }
 
 /**
@@ -90,6 +94,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onDelete,
         onUpdate,
         template,
+        isTabExtensionsAvailable,
         [ "data-testid" ]: testId
     } = props;
 
@@ -104,6 +109,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [inboundProtocolList, setInboundProtocolList] = useState<string[]>([]);
     const [inboundProtocolConfig, setInboundProtocolConfig] = useState<any>(undefined);
     const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
+    const [tabPaneExtensions, setTabPaneExtensions] = useState<any>(undefined);
+
+    useEffect(() => {
+        if (tabPaneExtensions) {
+            isTabExtensionsAvailable(true);
+            return;
+        }
+
+        setTabPaneExtensions(ComponentExtensionPlaceholder({ 
+            component: "application", 
+            subComponent: "edit", 
+            type: "tab" 
+        })) ;
+    }, [tabPaneExtensions]);
 
     /**
      * Called on `availableInboundProtocols` prop update.
@@ -302,14 +321,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
 
-        const tabPanes = ComponentExtensionPlaceholder( { 
-            component: "application", 
-            subComponent: "edit", 
-            type: "tab" 
-        } );
-
-        if (tabPanes && tabPanes.length > 0) {
-            panes.push(...tabPanes);
+        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+            panes.push(...tabPaneExtensions);
         }
 
         if (featureConfig) {
