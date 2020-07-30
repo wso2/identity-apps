@@ -17,7 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { ContentLoader, EmphasizedSegment, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
+import {
+    ContentLoader,
+    EmphasizedSegment,
+    EmptyPlaceholder,
+    PageLayout,
+    TemplateGrid
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -276,9 +282,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                 data-testid="scope-mgt-claim-list-search-input"
                                 icon={ <Icon name="search"/> }
                                 onChange={ handleTemplateSearch }
-                                placeholder="Search template"
+                                placeholder="Search application type"
                                 floated="left"
                                 width={ 6 }
+                                style={ { width: "270px" } }
                             />
                             <Dropdown
                                 className="floated right"
@@ -314,13 +321,69 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                     showMoreButtonLabel: t("common:showMore")
                                 } }
                                 emptyPlaceholder={ (
-                                    <EmptyPlaceholder
-                                        image={ EmptyPlaceholderIllustrations.newList }
-                                        imageSize="tiny"
-                                        title={ t("devPortal:components.templates.emptyPlaceholder.title") }
-                                        subtitle={ [t("devPortal:components.templates.emptyPlaceholder.subtitles")] }
-                                        data-testid={ `${ testId }-quick-start-template-grid-empty-placeholder` }
-                                    />
+                                    <Grid centered>
+                                        <Grid.Row>
+                                            <Grid.Column>
+                                                <EmptyPlaceholder
+                                                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                                                    imageSize="tiny"
+                                                    title="No results found"
+                                                    subtitle={ ["We weren't able to find the type you" +
+                                                    " were looking for.", "Please try a different term or use one of" +
+                                                    " the following application types to create a new application."] }
+                                                    data-testid={ `${ testId }-quick-start-template-grid-empty-
+                                                    placeholder` }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                        <Grid.Row>
+                                            <Grid.Column textAlign="center">
+                                                <div>
+                                                    <TemplateGrid<ApplicationTemplateListItemInterface>
+                                                        type="application"
+                                                        templates={
+                                                            applicationTemplates
+                                                            && applicationTemplates instanceof Array
+                                                            && applicationTemplates.length > 0
+                                                                ? applicationTemplates.filter(
+                                                                (template) => template.category ===
+                                                                    ApplicationTemplateCategories.DEFAULT)
+                                                                : null
+                                                        }
+                                                        templateIcons={ ApplicationTemplateIllustrations }
+                                                        templateIconOptions={ {
+                                                            fill: "primary"
+                                                        } }
+                                                        templateIconSize="tiny"
+                                                        heading={ null }
+                                                        subHeading={ null }
+                                                        onTemplateSelect={ handleTemplateSelection }
+                                                        paginate={ true }
+                                                        paginationLimit={ 5 }
+                                                        paginationOptions={ {
+                                                            showLessButtonLabel: t("common:showLess"),
+                                                            showMoreButtonLabel: t("common:showMore")
+                                                        } }
+                                                        emptyPlaceholder={ (
+                                                            <EmptyPlaceholder
+                                                                image={ EmptyPlaceholderIllustrations.newList }
+                                                                imageSize="tiny"
+                                                                title={ t("devPortal:components.templates." +
+                                                                    "emptyPlaceholder." +
+                                                                    "title") }
+                                                                subtitle={ [t("devPortal:components.templates." +
+                                                                    "emptyPlaceholder.subtitles")] }
+                                                                data-testid={ `${ testId }-quick-start-template-grid-
+                                                                empty-placeholder` }
+                                                            />
+                                                        ) }
+                                                        tagsSectionTitle={ t("common:technologies") }
+                                                        data-testid={ `${ testId }-quick-start-template-grid` }
+                                                    />
+                                                </div>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
                                 ) }
                                 tagsSectionTitle={ t("common:technologies") }
                                 data-testid={ `${ testId }-quick-start-template-grid` }
