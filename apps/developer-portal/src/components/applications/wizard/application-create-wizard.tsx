@@ -42,7 +42,7 @@ import {
     updateAuthProtocolConfig
 } from "../../../api";
 import { ApplicationWizardStepIcons } from "../../../configs";
-import { AppConstants } from "../../../constants";
+import { AppConstants, ApplicationManagementConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import {
     ApplicationTemplateInterface,
@@ -221,8 +221,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
-                    history.push(AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id",
-                        createdAppID));
+                    history.push({
+                        pathname: AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", createdAppID),
+                        search: `?${ ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
+                            ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE }`
+                    });
 
                     return;
                 }

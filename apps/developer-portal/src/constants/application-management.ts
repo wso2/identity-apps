@@ -93,6 +93,20 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_DOCS_OVERVIEW = "Overview";
 
     /**
+     * Key for the URL search param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_URL_SEARCH_PARAM_KEY = "state";
+
+    /**
+     * Value for the URL search param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
+
+    /**
      * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
      * @remarks
      * If the template name is changed, this map has to be changed.

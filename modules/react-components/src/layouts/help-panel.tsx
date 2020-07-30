@@ -70,6 +70,10 @@ export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInter
      */
     tabs: HelpPanelPropsInterface["tabs"];
     /**
+     * Triggers the side bar to open.
+     */
+    triggerSidebarOpen?: boolean;
+    /**
      * Tooltip for the unpin button.
      */
     unpinButtonTooltip?: string;
@@ -118,6 +122,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         pinButtonTooltip,
         sidebarDirection,
         tabs,
+        triggerSidebarOpen,
         activeIndex,
         unpinButtonTooltip,
         ...rest
@@ -148,6 +153,14 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
 
         contentRef.current.style.width = "calc(100% - " + sidebarRef?.current?.clientWidth + "px)";
     }, [ helpSidebarVisibility ]);
+    
+    useEffect(() => {
+        if (!triggerSidebarOpen) {
+            return;
+        }
+
+        setHelpSidebarVisibility(true);
+    }, [ triggerSidebarOpen ]);
 
     useEffect(() => {
         if (isPinned) {

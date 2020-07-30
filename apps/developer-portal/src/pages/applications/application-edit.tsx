@@ -37,6 +37,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Divider, Grid, Label } from "semantic-ui-react";
 import { getApplicationDetails, updateApplicationConfigurations } from "../../api";
 import { EditApplication } from "../../components";
@@ -61,7 +62,7 @@ import { ApplicationManagementUtils, HelpPanelUtils } from "../../utils";
 /**
  * Proptypes for the applications edit page component.
  */
-type ApplicationEditPageInterface = TestableComponentInterface
+interface ApplicationEditPageInterface extends TestableComponentInterface, RouteComponentProps { }
 
 /**
  * Application Edit page component.
@@ -75,8 +76,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 ): ReactElement => {
 
     const {
+        location,
         [ "data-testid" ]: testId
     } = props;
+
+    const urlSearchParams = new URLSearchParams(location.search);
 
     const { t } = useTranslation();
 
@@ -120,6 +124,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
+    const [ triggerSidebarOpen, setTriggerSidebarOpen ] = useState<boolean>(false);
 
     /**
      * Fetch the application details on initial component load.
@@ -377,6 +382,22 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
     }, [applicationTemplateName, application]);
+
+    /**
+     * Triggered when the application state search param in the URL changes. 
+     */
+    useEffect(() => {
+        if (!urlSearchParams.get("state")) {
+            return;
+        }
+
+       
+        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
+            === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && !HelpPanelUtils.isPanelPinned()) {
+
+            setTriggerSidebarOpen(true);
+        }
+    }, [ urlSearchParams.get("state") ]);
 
     /**
      * Retrieves application details from the API.
@@ -728,6 +749,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
             unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            triggerSidebarOpen={ triggerSidebarOpen }
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }

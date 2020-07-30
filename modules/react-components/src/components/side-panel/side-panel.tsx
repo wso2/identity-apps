@@ -24,7 +24,6 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import classNames from "classnames";
-import _ from "lodash";
 import sortBy from "lodash/sortBy";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Container, Responsive, Sidebar } from "semantic-ui-react";
@@ -58,6 +57,10 @@ export interface CommonSidePanelPropsInterface extends TestableComponentInterfac
      * Hover type.
      */
     hoverType?: "highlighted" | "background";
+    /**
+     * Should the panel routes be ordered.
+     */
+    ordered?: boolean;
     /**
      * Side panel item onclick callback.
      * @param {RouteInterface | ChildRouteInterface} route - Clicked route.
@@ -133,6 +136,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         fluid,
         headerHeight,
         mobileSidePanelVisibility,
+        ordered,
         onSidePanelItemClick,
         onSidePanelPusherClick,
         routes,
@@ -179,7 +183,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         routesArray: RouteInterface[] | ChildRouteInterface[],
         route: RouteInterface | ChildRouteInterface): RouteInterface[] | ChildRouteInterface[] => {
 
-        return _.filter([ ...routesArray ], (evalRoute) => {
+        return [ ...routesArray ].filter((evalRoute) => {
             if (evalRoute.id === route.id) {
                 evalRoute.open = !evalRoute.open;
             }
@@ -209,7 +213,7 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
     const getCategorizedItems = (routes: RouteInterface[]): CategorizedRouteInterface => {
         const categorizedRoutes: CategorizedRouteInterface = {};
 
-        for (const route of sortBy(routes, "order")) {
+        for (const route of sortRoutes(routes, "order")) {
             if (route.category) {
                 if (categorizedRoutes[route.category]) {
                     categorizedRoutes[route.category].push(route);
@@ -221,6 +225,17 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
         }
 
         return categorizedRoutes;
+    };
+
+    /**
+     * Sorted routes based on the provided criteria.
+     *
+     * @param {RouteInterface[]} routes - Routes array.
+     * @param {"order"} criteria - Sorting criteria.
+     * @return {RouteInterface[]} Sorted routes.
+     */
+    const sortRoutes = (routes: RouteInterface[], criteria: "order" = "order"): RouteInterface[] => {
+        return sortBy(routes, criteria);
     };
 
     return (
@@ -236,7 +251,13 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                             { ...props }
                             type="mobile"
                             onSidePanelItemClick={ handleItemOnClick }
-                            routes={ categorized ? getCategorizedItems(items) : items }
+                            routes={
+                                categorized
+                                    ? getCategorizedItems(items)
+                                    : ordered
+                                        ? sortRoutes(items)
+                                        : items
+                            }
                             data-testid={ `${testId}-items` }
                             allowedScopes={ allowedScopes }
                         />
@@ -263,7 +284,13 @@ export const SidePanel: React.FunctionComponent<PropsWithChildren<SidePanelProps
                         { ...props }
                         type="desktop"
                         onSidePanelItemClick={ handleItemOnClick }
-                        routes={ categorized ? getCategorizedItems(items) : items }
+                        routes={
+                            categorized
+                                ? getCategorizedItems(items)
+                                : ordered
+                                    ? sortRoutes(items)
+                                    : items
+                        }
                         data-testid={ `${ testId }-items` }
                     />
                 </div>
@@ -284,6 +311,7 @@ SidePanel.defaultProps = {
     desktopContentTopSpacing: UIConstants.DEFAULT_DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING,
     fluid: false,
     hoverType: "highlighted",
+    ordered: true,
     showCategoryDividers: true,
     showEllipsis: true,
     sidePanelItemHeight: UIConstants.DEFAULT_SIDE_PANEL_ITEM_HEIGHT,

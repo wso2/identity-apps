@@ -1245,6 +1245,21 @@ export interface DevPortalNS {
                 };
             };
         };
+        sidePanel: {
+            applicationEdit: string;
+            applicationTemplates: string;
+            applications: string;
+            customize: string;
+            identityProviderEdit: string;
+            identityProviderTemplates: string;
+            identityProviders: string;
+            oidcScopes: string;
+            oidcScopesEdit: string;
+            overview: string;
+            privacy: string;
+            remoteRepo: string;
+            remoteRepoEdit: string;
+        };
         templates: {
             emptyPlaceholder: Placeholder;
         };

@@ -127,3 +127,9 @@ Recent Application Card
 @statCountCardHoverBoxShadow: @defaultCardHoverBoxShadow;
 @statCountCardTransition: @defaultCardTransition;
 @statCountCardBorder: @defaultCardBorder;
+
+/*-----------------------------
+      Relaxed Variation
+------------------------------*/
+
+@relaxedCardContentPadding: 2em 1.5em;

@@ -338,6 +338,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             ) }
             sidePanel={ (
                 <SidePanel
+                    ordered
                     caretIcon={ SidePanelMiscIcons.caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }

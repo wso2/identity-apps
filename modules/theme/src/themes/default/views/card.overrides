@@ -234,12 +234,22 @@
         transition: @basicCardTransition;
         border: @basicCardBorder;
         box-shadow: none;
-
+        
         &:hover {
             transform: none !important;
             text-decoration: none;
-            cursor: pointer !important;
-            box-shadow: @basicCardHoverBoxShadow !important;
+        }
+        &:not(.no-hover) {
+            &:hover {
+                cursor: pointer !important;
+                box-shadow: @basicCardHoverBoxShadow !important;
+            }
+        }
+        
+        &.no-hover {
+            &:hover {
+                box-shadow: none !important;
+            }
         }
     }
 }
@@ -607,6 +617,18 @@
             text-decoration: none;
             cursor: pointer;
             box-shadow: @statCountCardHoverBoxShadow;
+        }
+    }
+}
+
+/*-----------------------------
+      Relaxed Variation
+------------------------------*/
+
+.ui.card {
+    &.relaxed {
+        .content {
+            padding: @relaxedCardContentPadding;
         }
     }
 }
