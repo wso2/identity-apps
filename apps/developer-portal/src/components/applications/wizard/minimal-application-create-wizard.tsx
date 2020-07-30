@@ -217,7 +217,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             After the authentication, we will only redirect to the above redirect URLs. You can also
                             specify more than one URL if needed.
                         </p>
-                        <Message warning>NOTE: This is a required field</Message>
+                        <Message warning>Note: This field is required for a functional app.</Message>
                     </>
                 );
         }
@@ -397,7 +397,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <Form.Field>
+                                <Form.Field required>
                                     <label>
                                         { t(
                                             "devPortal:components.applications.forms.inboundOIDC." +

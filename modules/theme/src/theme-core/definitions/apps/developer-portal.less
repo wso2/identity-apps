@@ -556,16 +556,9 @@
             display: flex;
             justify-content: space-between;
 
-            .main-panel {
-                flex-grow: 4;
-                width: 60%;
-            }
-
             .side-panel {
                 border-left: whitesmoke solid 1px;
-                box-shadow: -4px 0px 10px -8px #d6d6d6;
-                flex-grow: 1;
-                width: 40%;
+                box-shadow: -4px 0px 15px -8px #d6d6d6;
                 position: relative;
                 transition: width ease-out 100ms;
 
@@ -603,6 +596,11 @@
 
                     .content {
                         height: 568px;
+                        
+                        p {
+                            font-size: 0.9em;
+                            color: @doveGray;
+                        }
                     }
 
                     .header {
@@ -611,7 +609,7 @@
                 }
 
                 &.closed {
-                    width: 0%;
+                    width: 65px;
                 }
             }
 
@@ -653,11 +651,38 @@
                 line-height: 1.4em;
                 overflow: auto;
                 height: 500px;
+            }
+        }
+    }
+}
 
-                p {
-                    font-size: 0.9em;
-                    color: @doveGray;
-                }
+@media only screen and (max-width: 767px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+
+            .main-panel {
+                width: 60%;
+                flex-grow: 1;
+            }
+
+            .side-panel {
+                width: 350px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+        .ui.modal {
+        &.modal-with-side-panel {
+
+            .main-panel {
+                width: 60%;
+                flex-grow: 1;
+            }
+
+            .side-panel {
+                width: 40%;
             }
         }
     }
@@ -666,7 +691,15 @@
 @media only screen and (min-width: 992px) {
     .ui.modal {
         &.modal-with-side-panel {
-            width: 950px;
+            width: auto;
+
+            .main-panel {
+                width: 600px;
+            }
+
+            .side-panel {
+                width: 350px;
+            }
         }
     }
 }
@@ -674,7 +707,15 @@
 @media only screen and (min-width: 1200px) {
     .ui.modal {
         &.modal-with-side-panel {
-            width: 1100px;
+            width: auto;
+
+            .main-panel {
+                width: 700px;
+            }
+
+            .side-panel {
+                width: 400px;
+            }
         }
     }
 }

@@ -147,8 +147,8 @@ export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<Co
                         link={ true }
                         icon={
                             sidePanelOpen
-                                ? HelpSidebarIcons.actionPanel.caretRight
-                                : HelpSidebarIcons.actionPanel.caretLeft
+                                ? HelpSidebarIcons.actionPanel.caretLeft
+                                : HelpSidebarIcons.actionPanel.caretRight
                         }
                     />
                 </div>
