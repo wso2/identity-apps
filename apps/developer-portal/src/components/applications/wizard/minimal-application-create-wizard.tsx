@@ -64,6 +64,9 @@ enum PROTOCOLS {
     SAML
 }
 
+/**
+ * Prop types of the `MinimalAppCreateWizard` component.
+ */
 interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface {
     title: string;
     closeWizard: () => void;
@@ -78,9 +81,15 @@ interface MinimalApplicationCreateWizardPropsInterface extends TestableComponent
     onUpdate?: (id: string) => void;
 }
 
+/**
+ * An app creation wizard with only the minimal features.
+ *
+ * @param {MinimalApplicationCreateWizardPropsInterface} props Props to be injected into the component.
+ */
 export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateWizardPropsInterface> = (
     props: MinimalApplicationCreateWizardPropsInterface
 ): ReactElement => {
+
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
     const [ templateSettings, setTemplateSettings ] = useState<MainApplicationInterface>(null);
@@ -92,6 +101,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const dispatch = useDispatch();
     const [ submit, setSubmit ] = useTrigger();
 
+    /**
+     * Close the wizard.
+     */
     const handleWizardClose = (): void => {
         closeWizard();
     };
@@ -115,6 +127,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         return callbackURL;
     };
 
+    /**
+     * Load application template data.
+     */
     useEffect(() => {
         getApplicationTemplateData(template.id)
             .then((response: ApplicationTemplateInterface) => {
@@ -149,6 +164,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             });
     }, []);
 
+    /**
+     * Resolves to teh right help panel content.
+     *
+     * @return {ReactElement} The appropriate help content.
+     */
     const resolveHelpContent = (): ReactElement => {
         switch (template.id) {
             case WEB_APP_TEMPLATE_ID:
@@ -200,6 +220,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
     };
 
+    /**
+     * Resolves to the applicable content of an application template.
+     *
+     * @return {ReactElement} The content relevant to a specified application template.
+     */
     const resolveContent = (): ReactElement => {
         if (template.id === SPA_TEMPLATE_ID || template.id === WEB_APP_TEMPLATE_ID) {
             return (
@@ -470,5 +495,5 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
  * Default props for the application creation wizard.
  */
 MinimalAppCreateWizard.defaultProps = {
-    "data-testid": "application-create-wizard"
+    "data-testid": "minimal-application-create-wizard"
 };
