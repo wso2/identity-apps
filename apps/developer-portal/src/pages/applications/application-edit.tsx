@@ -517,13 +517,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     handleTabChange={ handleTabChange }
                 />
                 ),
-            heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
+            //heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
+            heading: "Server Endpoints",
             hidden: application?.inboundProtocols?.length <= 0,
             icon: {
-                icon: HelpPanelIcons.tabs.whatsNext
+                icon: HelpPanelIcons.tabs.guide
             }
         },
-        {
+        // TODO : Should be removed after getting started flow is implemented.
+        /*{
             content: (
                 helpPanelSelectedProtocol
                     ? (
@@ -737,7 +739,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             icon: {
                 icon: HelpPanelIcons.tabs.sdks
             }
-        }
+        }*/
     ];
 
     return (
