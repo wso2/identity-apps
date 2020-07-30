@@ -545,3 +545,177 @@
 .deployment-status {
     margin: 0 1em !important;
 }
+
+/*****************************************
+        Modal With Side Panel
+*****************************************/
+
+.ui.modal {
+    &.modal-with-side-panel {
+        .panels {
+            display: flex;
+            justify-content: space-between;
+
+            .side-panel {
+                border-left: whitesmoke solid 1px;
+                box-shadow: -4px 0px 15px -8px #d6d6d6;
+                position: relative;
+                transition: width ease-out 100ms;
+
+                .toggle-button-column {
+                    position: absolute;
+                    display: flex;
+                    align-items: center;
+                    right: 30px;
+                    top: 30px;
+                    z-index: 99;
+                    width: 100%;
+                    justify-content: flex-end;
+
+                    &.closed {
+                        right: 0;
+                        justify-content: center;
+                    }
+
+                    .toggle-button {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .side-panel-content {
+                    transition: opacity ease-out 100ms;
+
+                    &.visible {
+                        opacity: 1;
+                    }
+
+                    &.hidden {
+                        opacity: 0;
+                    }
+
+                    .content {
+                        height: 568px;
+                        
+                        p {
+                            font-size: 0.9em;
+                            color: @doveGray;
+                        }
+                    }
+
+                    .header {
+                        background-color: @lightGray;
+                    }
+                }
+
+                &.closed {
+                    width: 65px;
+                }
+            }
+
+            .header:not(.ui) {
+                font-weight: 400;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                font-size: 1.43em;
+                line-height: 1.3 em;
+                padding: 30px;
+                height: 90px;
+                overflow: hidden;
+
+                h6 {
+                    text-overflow: ellipsis;
+                    width: 100%;
+                }
+            }
+
+            .actions {
+                border-bottom-left-radius: 3px;
+                border-bottom-right-radius: 3px;
+                font-size: 1.43em;
+                line-height: 1.3em;
+                padding: 30px;
+
+                .row {
+                    padding: 0;
+                }
+            }
+
+            .divider {
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            .content {
+                padding: 30px;
+                line-height: 1.4em;
+                overflow: auto;
+                height: 500px;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+
+            .main-panel {
+                width: 60%;
+                flex-grow: 1;
+            }
+
+            .side-panel {
+                width: 350px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+        .ui.modal {
+        &.modal-with-side-panel {
+
+            .main-panel {
+                width: 60%;
+                flex-grow: 1;
+            }
+
+            .side-panel {
+                width: 40%;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+            width: auto;
+
+            .main-panel {
+                width: 600px;
+            }
+
+            .side-panel {
+                width: 350px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+            width: auto;
+
+            .main-panel {
+                width: 700px;
+            }
+
+            .side-panel {
+                width: 400px;
+            }
+        }
+    }
+}

@@ -91,6 +91,7 @@ export const common: CommonNS = {
     properties: "Properties",
     ready: "Ready",
     regenerate: "Regenerate",
+    register: "Register",
     reject: "Reject",
     release: "Release",
     remove: "Remove",

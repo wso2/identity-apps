@@ -25,7 +25,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../../models";
-import { string } from "@hapi/joi";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.

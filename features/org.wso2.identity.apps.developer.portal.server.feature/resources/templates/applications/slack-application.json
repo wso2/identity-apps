@@ -1,7 +1,7 @@
 {
     "id": "z345e11e-fc78-484b-9bec-015d2475u341r",
     "name": "Slack",
-    "description": "Business communication platform.",
+    "description": "Business communication platform with persistent chat rooms.",
     "image": "slack",
     "authenticationProtocol": "oidc",
     "types": [

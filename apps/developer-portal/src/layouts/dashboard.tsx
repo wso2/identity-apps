@@ -58,6 +58,7 @@ import { UIConstants } from "../constants";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../models";
 import { AppState, store } from "../store";
+import { AppUtils } from "../utils";
 
 /**
  * Dashboard layout Prop types.
@@ -348,7 +349,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
+                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
