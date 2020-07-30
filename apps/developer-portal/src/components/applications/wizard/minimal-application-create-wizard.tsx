@@ -25,7 +25,7 @@ import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Segment } from "semantic-ui-react";
+import { Form, Grid, Message, Segment } from "semantic-ui-react";
 import { ModalWithSidePanel } from "../..";
 import { createApplication, getApplicationTemplateData } from "../../../api";
 import { ApplicationTemplateIllustrations } from "../../../configs";
@@ -149,6 +149,57 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             });
     }, []);
 
+    const resolveHelpContent = (): ReactElement => {
+        switch (template.id) {
+            case WEB_APP_TEMPLATE_ID:
+                return (
+                    <>
+                        <p>
+                            You have selected the Web Application template. An application with predefined set of
+                            recommended settings based on the selected protocol will be registered for you. Please fill
+                            the relevant fields to get started.
+                        </p>
+                        <h5>Name</h5>
+                        <p>Provide a unique name for the application so that it can be easily identified.</p>
+                        <h5>Protocol</h5>
+                        <p>
+                            The access configuration protocol which will be used to SSO (Single Sign On) to the
+                            application.
+                        </p>
+                        <Message info>
+                            <a href="#" target="_blank">
+                                Click here
+                            </a>{ " " }
+                            to learn more about supported protocols for agent-based single sign-on.
+                        </Message>
+                        <h5>Redirect URLs</h5>
+                        <p>
+                            After the authentication, we will only redirect to the above redirect URLs. You can also
+                            specify more than one URL if needed.
+                        </p>
+                    </>
+                );
+            case SPA_TEMPLATE_ID:
+                return (
+                    <>
+                        <p>
+                            You have selected the SIngle Page Application template. An application with predefined set
+                            of recommended settings and required OIDC protocol configurations will be registered for
+                            you. Please fill the relevant fields to get started with your application.
+                        </p>
+                        <h5>Name</h5>
+                        <p>Provide a unique name for the application so that it can be easily identified.</p>
+                        <h5>Redirect URLs</h5>
+                        <p>
+                            After the authentication, we will only redirect to the above redirect URLs. You can also
+                            specify more than one URL if needed.
+                        </p>
+                        <Message warning>NOTE: This is a required field</Message>
+                    </>
+                );
+        }
+    };
+
     const resolveContent = (): ReactElement => {
         if (template.id === SPA_TEMPLATE_ID || template.id === WEB_APP_TEMPLATE_ID) {
             return (
@@ -271,7 +322,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 >
                                                     <GenericIcon
                                                         transparent={ true }
-                                                        size="small"
+                                                        size="tiny"
                                                         icon={ ApplicationTemplateIllustrations.oidcWebApp }
                                                     />
                                                     OIDC
@@ -288,7 +339,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 >
                                                     <GenericIcon
                                                         transparent={ true }
-                                                        size="small"
+                                                        size="tiny"
                                                         icon={ ApplicationTemplateIllustrations.samlWebApp }
                                                     />
                                                     SAML
@@ -305,7 +356,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                 >
                                                     <GenericIcon
                                                         transparent={ true }
-                                                        size="small"
+                                                        size="tiny"
                                                         icon={ ApplicationTemplateIllustrations.passiveSTS }
                                                     />
                                                     Passive STS
@@ -318,36 +369,45 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         ) }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                <URLInput
-                                    urlState={ callBackUrls }
-                                    setURLState={ setCallBackUrls }
-                                    labelName={ t(
-                                        "devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label"
-                                    ) }
-                                    placeholder={ t(
-                                        "devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                        ".placeholder"
-                                    ) }
-                                    validationErrorMsg={ t(
-                                        "devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                        ".validations.empty"
-                                    ) }
-                                    validation={ (value: string) => {
-                                        return FormValidation.url(value);
-                                    } }
-                                    computerWidth={ 10 }
-                                    setShowError={ setShowURLError }
-                                    showError={ showURLError }
-                                    hint={ t(
-                                        "devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint"
-                                    ) }
-                                    addURLTooltip={ t("common:addURL") }
-                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                                    data-testid={ `${ testId }-callback-url-input` }
-                                    getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                                        submitUrl = submitFunction;
-                                    } }
-                                />
+                                <Form.Field>
+                                    <label>
+                                        { t(
+                                            "devPortal:components.applications.forms.inboundOIDC." +
+                                            "fields.callBackUrls.label"
+                                        ) }
+                                    </label>
+                                    <URLInput
+                                        urlState={ callBackUrls }
+                                        setURLState={ setCallBackUrls }
+                                        labelName={ "" }
+                                        placeholder={ t(
+                                            "devPortal:components.applications.forms.inboundOIDC." +
+                                            "fields.callBackUrls" +
+                                            ".placeholder"
+                                        ) }
+                                        validationErrorMsg={ t(
+                                            "devPortal:components.applications.forms.inboundOIDC." +
+                                            "fields.callBackUrls" +
+                                            ".validations.empty"
+                                        ) }
+                                        validation={ (value: string) => {
+                                            return FormValidation.url(value);
+                                        } }
+                                        computerWidth={ 10 }
+                                        setShowError={ setShowURLError }
+                                        showError={ showURLError }
+                                        hint={ t(
+                                            "devPortal:components.applications.forms.inboundOIDC." +
+                                            "fields.callBackUrls.hint"
+                                        ) }
+                                        addURLTooltip={ t("common:addURL") }
+                                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                        data-testid={ `${ testId }-callback-url-input` }
+                                        getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                            submitUrl = submitFunction;
+                                        } }
+                                    />
+                                </Form.Field>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -398,27 +458,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             <ModalWithSidePanel.SidePanel>
                 <ModalWithSidePanel.Header className="wizard-header">
                     Guide
-                    <Heading as="h6">Use the following as the guidance</Heading>
+                    <Heading as="h6">Use the following as a guidance</Heading>
                 </ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
-                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa.
-                    <h4>Lorem Ipsum</h4>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
-                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit
-                    possimus dolorem a! Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque
-                    quaerat pariatur consequatur culpa.
-                    <h4>Lorem Ipsum</h4>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit possimus dolorem a!
-                    Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque quaerat pariatur
-                    consequatur culpa. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dolorum velit
-                    possimus dolorem a! Porro velit adipisci ea, quasi asperiores quo? Libero esse alias non itaque
-                    quaerat pariatur consequatur culpa. Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere
-                    dolorum velit possimus dolorem a! Porro velit adipisci ea, quasi asperiores quo? Libero esse alias
-                    non itaque quaerat pariatur consequatur culpa.
-                </ModalWithSidePanel.Content>
+                <ModalWithSidePanel.Content>{ resolveHelpContent() }</ModalWithSidePanel.Content>
             </ModalWithSidePanel.SidePanel>
         </ModalWithSidePanel>
     );
