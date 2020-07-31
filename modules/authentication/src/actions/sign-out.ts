@@ -19,6 +19,8 @@
 import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
 import { endAuthenticatedSession, getSessionParameter } from "./session";
 import { CALLBACK_URL, ID_TOKEN } from "../constants";
+import { STORAGE } from "../constants/storage";
+import { SessionData } from "../models";
 
 /**
  * Execute user sign out request
@@ -28,35 +30,33 @@ import { CALLBACK_URL, ID_TOKEN } from "../constants";
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendSignOutRequest =  (callback?: () => void): Promise<any> => {
-    const logoutEndpoint = getEndSessionEndpoint();
+export function sendSignOutRequest(storage: STORAGE.sessionStorage): Promise<any>;
+export function sendSignOutRequest(storage: STORAGE, session: SessionData): Promise<any>;
+export function sendSignOutRequest(storage: STORAGE, session?: SessionData): Promise<any> {
+    const logoutEndpoint = getEndSessionEndpoint(storage, session);
 
     if (!logoutEndpoint || logoutEndpoint.trim().length === 0) {
         return Promise.reject(new Error("No logout endpoint found in the session."));
     }
 
-    const idToken = getSessionParameter(ID_TOKEN);
+    const idToken = getSessionParameter(ID_TOKEN, storage, session);
 
     if (!idToken || idToken.trim().length === 0) {
         return Promise.reject(new Error("Invalid id_token found in the session."));
     }
 
-    const callbackURL = getSessionParameter(CALLBACK_URL);
+    const callbackURL = getSessionParameter(CALLBACK_URL, storage, session);
 
     if (!callbackURL || callbackURL.trim().length === 0) {
         return Promise.reject(new Error("No callback URL found in the session."));
     }
 
-    endAuthenticatedSession();
-    resetOPConfiguration();
+    endAuthenticatedSession(storage, session);
+    resetOPConfiguration(storage, session);
 
-    if (callback) {
-        callback();
-    }
-
-    window.location.href = `${logoutEndpoint}?` + `id_token_hint=${idToken}` +
-        `&post_logout_redirect_uri=${callbackURL}`;
-};
+    window.location.href =
+        `${logoutEndpoint}?` + `id_token_hint=${idToken}` + `&post_logout_redirect_uri=${callbackURL}`;
+}
 
 /**
  * Handle sign out requests
@@ -66,14 +66,15 @@ export const sendSignOutRequest =  (callback?: () => void): Promise<any> => {
  * @returns {Promise<any>} sign out status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const handleSignOut = (callback?: () => void): Promise<any> => {
+export function handleSignOut(storage: STORAGE.sessionStorage): Promise<any>;
+export function handleSignOut(storage: STORAGE.webWorker, session: SessionData): Promise<any>;
+export function handleSignOut(storage: STORAGE, session?: SessionData): Promise<any> {
     if (sessionStorage.length === 0) {
         return Promise.reject(new Error("No login sessions."));
     } else {
-        return sendSignOutRequest(callback)
-            .catch((error) => {
-                // TODO: Handle error
-                throw error;
-            });
+        return sendSignOutRequest(storage, session).catch((error) => {
+            // TODO: Handle error
+            throw error;
+        });
     }
-};
+}
