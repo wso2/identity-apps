@@ -29,7 +29,7 @@ import { Form, Grid, Message, Segment } from "semantic-ui-react";
 import { ModalWithSidePanel } from "../..";
 import { createApplication, getApplicationTemplateData } from "../../../api";
 import { ApplicationTemplateIllustrations } from "../../../configs";
-import { AppConstants } from "../../../constants";
+import { AppConstants, ApplicationManagementConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import {
     ApplicationTemplateInterface,
@@ -270,9 +270,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             const location = response.headers.location;
                                             const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
-                                            history.push(
-                                                AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", createdAppID)
-                                            );
+                                            history.push({
+                                                pathname: AppConstants.PATHS.get("APPLICATION_EDIT")
+                                                    .replace(":id", createdAppID),
+                                                search: `?${
+                                                    ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
+                                                    ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE
+                                                }`
+                                            });
 
                                             return;
                                         }
