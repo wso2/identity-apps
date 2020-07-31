@@ -114,7 +114,7 @@ export class ApplicationManagementConstants {
      * @type {Map<string, string>}
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
-        .set("Web Application", "OIDC Web Application")
+        .set("Web Application", "Single Page Application")
         .set("Single Page Application", "Single Page Application")
         .set("Mobile Application", "OIDC Mobile Application")
         .set("Desktop Application", "Windows Desktop Application")
@@ -128,7 +128,7 @@ export class ApplicationManagementConstants {
      * @constant
      * @type {string}
      */
-    public static readonly SPA = "Single page application";
+    public static readonly SPA = "Single Page Application";
 
     // API errors
     public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
