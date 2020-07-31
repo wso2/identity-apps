@@ -30,7 +30,7 @@ import {
 } from "./constants";
 import { OAuthWorker as OAuthWorkerClass, OAuthWorkerInterface, SignInResponse } from "./models";
 import { OAuthWorker } from "./oauth-worker";
-import { generateFailureDTO, generateSuccessDTO } from "./utils/dto";
+import { generateFailureDTO, generateSuccessDTO } from "./utils";
 
 const ctx: OAuthWorkerClass<any> = self as any;
 
