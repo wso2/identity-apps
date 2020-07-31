@@ -40,7 +40,8 @@ import {
     OAuthSingletonInterface,
     ResponseMessage,
     SignInResponse,
-    UserInfo
+    UserInfo,
+    WebWorkerConfigInterface
 } from "./models";
 import WorkerFile from "./oauth.worker";
 
@@ -306,7 +307,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      *	}
      * ```
      */
-    const initialize = (config: ConfigInterface) => {
+    const initialize = (config: WebWorkerConfigInterface) => {
         if (config.authorizationType && typeof config.authorizationType !== "string") {
             return Promise.reject("The authorizationType must be a string");
         }
