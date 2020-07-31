@@ -35,18 +35,19 @@ import {
 } from "../constants";
 import { ConfigInterface } from "../models/client";
 import { STORAGE } from "../constants/storage";
+import { SessionData } from "..";
 
 /**
  * Checks whether openid configuration initiated.
  *
  * @returns {boolean}
  */
-export const isOPConfigInitiated = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): boolean => {
+export const isOPConfigInitiated = (storage: STORAGE, session: SessionData): boolean => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(OP_CONFIG_INITIATED) && getSessionParameter(OP_CONFIG_INITIATED) === "true";
+        return (
+            getSessionParameter(OP_CONFIG_INITIATED, storage, session) &&
+            getSessionParameter(OP_CONFIG_INITIATED, storage, session) === "true"
+        );
     } else {
         return session.get(OP_CONFIG_INITIATED) && session.get(OP_CONFIG_INITIATED) === "true";
     }
@@ -57,13 +58,9 @@ export const isOPConfigInitiated = (
  *
  * @param {string} authorizationEndpoint
  */
-export const setAuthorizeEndpoint = (
-    authorizationEndpoint: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setAuthorizeEndpoint = (authorizationEndpoint: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
+        setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint, storage, session);
     } else {
         session.set(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
     }
@@ -74,13 +71,9 @@ export const setAuthorizeEndpoint = (
  *
  * @param {string} tokenEndpoint
  */
-export const setTokenEndpoint = (
-    tokenEndpoint: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setTokenEndpoint = (tokenEndpoint: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint);
+        setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint, storage, session);
     } else {
         session.set(TOKEN_ENDPOINT, tokenEndpoint);
     }
@@ -91,13 +84,9 @@ export const setTokenEndpoint = (
  *
  * @param {string} endSessionEndpoint
  */
-export const setEndSessionEndpoint = (
-    endSessionEndpoint: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setEndSessionEndpoint = (endSessionEndpoint: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint);
+        setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint, storage, session);
     } else {
         session.set(END_SESSION_ENDPOINT, endSessionEndpoint);
     }
@@ -108,13 +97,9 @@ export const setEndSessionEndpoint = (
  *
  * @param jwksEndpoint
  */
-export const setJwksUri = (
-    jwksEndpoint,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setJwksUri = (jwksEndpoint, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(JWKS_ENDPOINT, jwksEndpoint);
+        setSessionParameter(JWKS_ENDPOINT, jwksEndpoint, storage, session);
     } else {
         session.set(JWKS_ENDPOINT, jwksEndpoint);
     }
@@ -125,13 +110,9 @@ export const setJwksUri = (
  *
  * @param {string} revokeTokenEndpoint
  */
-export const setRevokeTokenEndpoint = (
-    revokeTokenEndpoint: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint);
+        setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint, storage, session);
     } else {
         session.set(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint);
     }
@@ -140,12 +121,9 @@ export const setRevokeTokenEndpoint = (
 /**
  * Set openid configuration initiated.
  */
-export const setOPConfigInitiated = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setOPConfigInitiated = (storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(OP_CONFIG_INITIATED, "true");
+        setSessionParameter(OP_CONFIG_INITIATED, "true", storage, session);
     } else {
         session.set(OP_CONFIG_INITIATED, "true");
     }
@@ -154,13 +132,9 @@ export const setOPConfigInitiated = (
 /**
  * Set callback URL.
  */
-export const setCallbackURL = (
-    url: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setCallbackURL = (url: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(CALLBACK_URL, url);
+        setSessionParameter(CALLBACK_URL, url, storage, session);
     } else {
         session.set(CALLBACK_URL, url);
     }
@@ -169,13 +143,9 @@ export const setCallbackURL = (
 /**
  * Set OIDC Session IFrame URL.
  */
-export const setOIDCSessionIFrameURL = (
-    url: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setOIDCSessionIFrameURL = (url: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, url);
+        setSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, url, storage, session);
     } else {
         session.set(OIDC_SESSION_IFRAME_ENDPOINT, url);
     }
@@ -184,13 +154,9 @@ export const setOIDCSessionIFrameURL = (
 /**
  * Set tenant name.
  */
-export const setTenant = (
-    tenant: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setTenant = (tenant: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(TENANT, tenant);
+        setSessionParameter(TENANT, tenant, storage, session);
     } else {
         session.set(TENANT, tenant);
     }
@@ -201,13 +167,9 @@ export const setTenant = (
  *
  * @param issuer id_token issuer.
  */
-export const setIssuer = (
-    issuer,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setIssuer = (issuer, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(ISSUER, issuer);
+        setSessionParameter(ISSUER, issuer, storage, session);
     } else {
         session.set(ISSUER, issuer);
     }
@@ -218,13 +180,9 @@ export const setIssuer = (
  *
  * @param {string} clientID - Client ID of the application.
  */
-export const setClientID = (
-    clientID: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const setClientID = (clientID: string, storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        setSessionParameter(CLIENT_ID, clientID);
+        setSessionParameter(CLIENT_ID, clientID, storage, session);
     } else {
         session.set(CLIENT_ID, clientID);
     }
@@ -242,7 +200,7 @@ export const initOPConfiguration = (
     requestParams: ConfigInterface,
     forceInit: boolean,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
+    session: SessionData
 ): Promise<any> => {
     if (!forceInit && isValidOPConfig(requestParams.clientID, storage, session)) {
         return Promise.resolve();
@@ -305,21 +263,18 @@ export const initOPConfiguration = (
 /**
  * Reset openid provider configuration.
  */
-export const resetOPConfiguration = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): void => {
+export const resetOPConfiguration = (storage: STORAGE, session: SessionData): void => {
     if (storage === STORAGE.sessionStorage) {
-        removeSessionParameter(AUTHORIZATION_ENDPOINT);
-        removeSessionParameter(TOKEN_ENDPOINT);
-        removeSessionParameter(END_SESSION_ENDPOINT);
-        removeSessionParameter(JWKS_ENDPOINT);
-        removeSessionParameter(REVOKE_TOKEN_ENDPOINT);
-        removeSessionParameter(OP_CONFIG_INITIATED);
-        removeSessionParameter(ISSUER);
-        removeSessionParameter(CLIENT_ID);
-        removeSessionParameter(TENANT);
-        removeSessionParameter(CALLBACK_URL);
+        removeSessionParameter(AUTHORIZATION_ENDPOINT, storage, session);
+        removeSessionParameter(TOKEN_ENDPOINT, storage, session);
+        removeSessionParameter(END_SESSION_ENDPOINT, storage, session);
+        removeSessionParameter(JWKS_ENDPOINT, storage, session);
+        removeSessionParameter(REVOKE_TOKEN_ENDPOINT, storage, session);
+        removeSessionParameter(OP_CONFIG_INITIATED, storage, session);
+        removeSessionParameter(ISSUER, storage, session);
+        removeSessionParameter(CLIENT_ID, storage, session);
+        removeSessionParameter(TENANT, storage, session);
+        removeSessionParameter(CALLBACK_URL, storage, session);
     } else {
         session.clear();
     }
@@ -330,12 +285,9 @@ export const resetOPConfiguration = (
  *
  * @returns {string|null}
  */
-export const getAuthorizeEndpoint = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string | null => {
+export const getAuthorizeEndpoint = (storage: STORAGE, session: SessionData): string | null => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(AUTHORIZATION_ENDPOINT);
+        return getSessionParameter(AUTHORIZATION_ENDPOINT, storage, session);
     } else {
         return session.get(AUTHORIZATION_ENDPOINT);
     }
@@ -346,12 +298,9 @@ export const getAuthorizeEndpoint = (
  *
  * @returns {string|null}
  */
-export const getTokenEndpoint = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string | null => {
+export const getTokenEndpoint = (storage: STORAGE, session: SessionData): string | null => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(TOKEN_ENDPOINT);
+        return getSessionParameter(TOKEN_ENDPOINT, storage, session);
     } else {
         return session.get(TOKEN_ENDPOINT);
     }
@@ -362,12 +311,9 @@ export const getTokenEndpoint = (
  *
  * @returns {string|null}
  */
-export const getRevokeTokenEndpoint = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string | null => {
+export const getRevokeTokenEndpoint = (storage: STORAGE, session: SessionData): string | null => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(REVOKE_TOKEN_ENDPOINT);
+        return getSessionParameter(REVOKE_TOKEN_ENDPOINT, storage, session);
     } else {
         return session.get(REVOKE_TOKEN_ENDPOINT);
     }
@@ -378,12 +324,9 @@ export const getRevokeTokenEndpoint = (
  *
  * @returns {string|null}
  */
-export const getEndSessionEndpoint = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string | null => {
+export const getEndSessionEndpoint = (storage: STORAGE, session: SessionData): string | null => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(END_SESSION_ENDPOINT);
+        return getSessionParameter(END_SESSION_ENDPOINT, storage, session);
     } else {
         return session.get(END_SESSION_ENDPOINT);
     }
@@ -394,12 +337,9 @@ export const getEndSessionEndpoint = (
  *
  * @returns {string|null}
  */
-export const getJwksUri = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string | null => {
+export const getJwksUri = (storage: STORAGE, session: SessionData): string | null => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(JWKS_ENDPOINT);
+        return getSessionParameter(JWKS_ENDPOINT, storage, session);
     } else {
         return session.get(JWKS_ENDPOINT);
     }
@@ -410,12 +350,9 @@ export const getJwksUri = (
  *
  * @returns {string|null}
  */
-export const getUsername = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string | null => {
+export const getUsername = (storage: STORAGE, session: SessionData): string | null => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(USERNAME);
+        return getSessionParameter(USERNAME, storage, session);
     } else {
         return session.get(USERNAME);
     }
@@ -426,12 +363,9 @@ export const getUsername = (
  *
  * @returns {any}
  */
-export const getTenant = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string | null => {
+export const getTenant = (storage: STORAGE, session: SessionData): string | null => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(TENANT);
+        return getSessionParameter(TENANT, storage, session);
     } else {
         return session.get(TENANT);
     }
@@ -442,12 +376,9 @@ export const getTenant = (
  *
  * @returns {any}
  */
-export const getIssuer = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string => {
+export const getIssuer = (storage: STORAGE, session: SessionData): string => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(ISSUER);
+        return getSessionParameter(ISSUER, storage, session);
     } else {
         return session.get(ISSUER);
     }
@@ -458,12 +389,9 @@ export const getIssuer = (
  *
  * @return {string}
  */
-export const getClientID = (
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): string => {
+export const getClientID = (storage: STORAGE, session: SessionData): string => {
     if (storage === STORAGE.sessionStorage) {
-        return getSessionParameter(CLIENT_ID);
+        return getSessionParameter(CLIENT_ID, storage, session);
     } else {
         return session.get(CLIENT_ID);
     }
@@ -476,11 +404,7 @@ export const getClientID = (
  * @param {string} clientID - Client ID of the application.
  * @return {boolean}
  */
-export const isValidOPConfig = (
-    clientID: string,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): boolean => {
+export const isValidOPConfig = (clientID: string, storage: STORAGE, session: SessionData): boolean => {
     return (
         isOPConfigInitiated(storage, session) &&
         !!getClientID(storage, session) &&
