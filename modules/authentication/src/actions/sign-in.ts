@@ -44,11 +44,12 @@ import {
     SERVICE_RESOURCES,
     SESSION_STATE
 } from "../constants";
+import { STORAGE } from "../constants/storage";
+import { SessionData } from "../models";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
 import { AccountSwitchRequestParams } from "../models/oidc-request-params";
 import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
-import { STORAGE } from "../constants/storage";
 
 /**
  * Checks whether authorization code is present.
@@ -98,11 +99,20 @@ const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
  *
  * @param {ConfigInterface} requestParams request parameters required for authorization request.
  */
-export const sendAuthorizationRequest = (
+export function sendAuthorizationRequest(
+    requestParams: ConfigInterface,
+    storage: STORAGE.sessionStorage
+): Promise<never>;
+export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): Promise<never> | boolean => {
+    session: SessionData
+): Promise<never>;
+export function sendAuthorizationRequest(
+    requestParams: ConfigInterface,
+    storage: STORAGE,
+    session?: SessionData
+): Promise<never> {
     const authorizeEndpoint = getAuthorizeEndpoint(storage, session);
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
@@ -130,7 +140,7 @@ export const sendAuthorizationRequest = (
     if (requestParams.enablePKCE) {
         const codeVerifier = getCodeVerifier();
         const codeChallenge = getCodeChallenge(codeVerifier);
-        setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier);
+        setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier, storage, session);
         authorizeRequest += "&code_challenge_method=S256&code_challenge=" + codeChallenge;
     }
 
@@ -141,7 +151,7 @@ export const sendAuthorizationRequest = (
     document.location.href = authorizeRequest;
 
     return;
-};
+}
 
 /**
  * Validate id_token.
@@ -151,13 +161,26 @@ export const sendAuthorizationRequest = (
  * @returns {Promise<boolean>} whether token is valid.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const validateIdToken = (
+export function validateIdToken(
+    clientID: string,
+    idToken: string,
+    serverOrigin: string,
+    storage: STORAGE.sessionStorage
+): Promise<any>;
+export function validateIdToken(
     clientID: string,
     idToken: string,
     serverOrigin: string,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): Promise<any> => {
+    session: SessionData
+): Promise<any>;
+export function validateIdToken(
+    clientID: string,
+    idToken: string,
+    serverOrigin: string,
+    storage: STORAGE,
+    session?: SessionData
+): Promise<any> {
     const jwksEndpoint = getJwksUri(storage, session);
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
@@ -186,7 +209,7 @@ const validateIdToken = (
         .catch((error) => {
             return Promise.reject(error);
         });
-};
+}
 
 /**
  * Send token request.
@@ -194,11 +217,20 @@ const validateIdToken = (
  * @param {ConfigInterface} requestParams request parameters required for token request.
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
-export const sendTokenRequest = (
+export function sendTokenRequest(
+    requestParams: ConfigInterface,
+    storage: STORAGE.sessionStorage
+): Promise<TokenResponseInterface>;
+export function sendTokenRequest(
     requestParams: ConfigInterface,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): Promise<TokenResponseInterface> => {
+    session: SessionData
+): Promise<TokenResponseInterface>;
+export function sendTokenRequest(
+    requestParams: ConfigInterface,
+    storage: STORAGE,
+    session?: SessionData
+): Promise<TokenResponseInterface> {
     const tokenEndpoint = getTokenEndpoint(storage, session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -208,7 +240,7 @@ export const sendTokenRequest = (
     // Extract session state and set to the sessionStorage
     const sessionState = new URL(window.location.href).searchParams.get(SESSION_STATE);
     if (sessionState !== null && sessionState.length > 0) {
-        setSessionParameter(SESSION_STATE, sessionState);
+        setSessionParameter(SESSION_STATE, sessionState, storage, session);
     }
 
     const body = [];
@@ -229,8 +261,8 @@ export const sendTokenRequest = (
     body.push(`redirect_uri=${requestParams.callbackURL}`);
 
     if (requestParams.enablePKCE) {
-        body.push(`code_verifier=${getSessionParameter(PKCE_CODE_VERIFIER)}`);
-        removeSessionParameter(PKCE_CODE_VERIFIER);
+        body.push(`code_verifier=${getSessionParameter(PKCE_CODE_VERIFIER, storage, session)}`);
+        removeSessionParameter(PKCE_CODE_VERIFIER, storage, session);
     }
 
     return axios
@@ -249,7 +281,7 @@ export const sendTokenRequest = (
                 session
             ).then((valid) => {
                 if (valid) {
-                    setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams));
+                    setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams), storage, session);
 
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
@@ -269,7 +301,7 @@ export const sendTokenRequest = (
         .catch((error) => {
             return Promise.reject(error);
         });
-};
+}
 
 /**
  * Send refresh token request.
@@ -278,12 +310,23 @@ export const sendTokenRequest = (
  * @param {string} refreshToken
  * @returns {Promise<TokenResponseInterface>} refresh token response data or error.
  */
-export const sendRefreshTokenRequest = (
+export function sendRefreshTokenRequest(
+    requestParams: ConfigInterface,
+    refreshToken: string,
+    storage: STORAGE.sessionStorage
+): Promise<any>;
+export function sendRefreshTokenRequest(
     requestParams: ConfigInterface,
     refreshToken: string,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): Promise<TokenResponseInterface> => {
+    session: SessionData
+): Promise<any>;
+export function sendRefreshTokenRequest(
+    requestParams: ConfigInterface,
+    refreshToken: string,
+    storage: STORAGE,
+    session?: SessionData
+): Promise<any> {
     const tokenEndpoint = getTokenEndpoint(storage, session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -328,7 +371,7 @@ export const sendRefreshTokenRequest = (
         .catch((error) => {
             return Promise.reject(error);
         });
-};
+}
 
 /**
  * Send revoke token request.
@@ -338,12 +381,23 @@ export const sendRefreshTokenRequest = (
  * @returns {any}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendRevokeTokenRequest = (
+export function sendRevokeTokenRequest(
+    requestParams: ConfigInterface,
+    accessToken: string,
+    storage: STORAGE.sessionStorage
+): Promise<any>;
+export function sendRevokeTokenRequest(
     requestParams: ConfigInterface,
     accessToken: string,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): Promise<any> => {
+    session: SessionData
+): Promise<any>;
+export function sendRevokeTokenRequest(
+    requestParams: ConfigInterface,
+    accessToken: string,
+    storage: STORAGE,
+    session?: SessionData
+): Promise<any> {
     const revokeTokenEndpoint = getRevokeTokenEndpoint(storage, session);
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
@@ -372,7 +426,7 @@ export const sendRevokeTokenRequest = (
         .catch((error) => {
             return Promise.reject(error);
         });
-};
+}
 
 /**
  * Get user image from gravatar.com.
@@ -408,11 +462,20 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  * @param {string} clientHost client host.
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
-export const sendAccountSwitchRequest = (
+export function sendAccountSwitchRequest(
+    requestParams: AccountSwitchRequestParams,
+    storage: STORAGE.sessionStorage
+): Promise<any>;
+export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>
-): Promise<TokenResponseInterface> => {
+    session: SessionData
+): Promise<any>;
+export function sendAccountSwitchRequest(
+    requestParams: AccountSwitchRequestParams,
+    storage: STORAGE,
+    session?: SessionData
+): Promise<any> {
     const tokenEndpoint = getTokenEndpoint(storage, session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -433,7 +496,7 @@ export const sendAccountSwitchRequest = (
     body.push(`username=${requestParams.username}`);
     body.push(`userstore-domain=${requestParams["userstore-domain"]}`);
     body.push(`tenant-domain=${requestParams["tenant-domain"]}`);
-    body.push(`token=${getSessionParameter(ACCESS_TOKEN)}`);
+    body.push(`token=${getSessionParameter(ACCESS_TOKEN, storage, session)}`);
     body.push(`scope=${scope}`);
     body.push(`client_id=${requestParams.client_id}`);
 
@@ -471,7 +534,7 @@ export const sendAccountSwitchRequest = (
         .catch((error) => {
             return Promise.reject(error);
         });
-};
+}
 
 /**
  * Execute user sign in request
@@ -481,20 +544,17 @@ export const sendAccountSwitchRequest = (
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const sendSignInRequest = (
+export function sendSignInRequest(requestParams: ConfigInterface, storage: STORAGE.sessionStorage);
+export function sendSignInRequest(requestParams: ConfigInterface, storage: STORAGE, session: SessionData): Promise<any>;
+export function sendSignInRequest(
     requestParams: ConfigInterface,
     storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>,
-    callback?: () => void
-): Promise<any> => {
+    session?: SessionData
+): Promise<any> {
     if (hasAuthorizationCode()) {
         return sendTokenRequest(requestParams, storage, session)
             .then((response) => {
-                initUserSession(response, getAuthenticatedUser(response.idToken));
-
-                if (callback) {
-                    callback();
-                }
+                initUserSession(response, getAuthenticatedUser(response.idToken), storage, session);
 
                 return Promise.resolve("Sign In successful!");
             })
@@ -508,44 +568,29 @@ export const sendSignInRequest = (
     } else {
         sendAuthorizationRequest(requestParams, storage, session);
     }
-};
+}
 
-/**
- * Handle sign in requests
- *
- * @param {object} requestParams
- * @param {function} callback
- * @returns {Promise<any>} sign in status
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const handleSignIn = (
-    requestParams: ConfigInterface,
-    storage: STORAGE,
-    session: typeof storage extends STORAGE.sessionStorage ? null : Map<string, string>,
-    callback?: () => void
-): Promise<any> => {
-    if (getSessionParameter(ACCESS_TOKEN)) {
+export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE.sessionStorage): Promise<any>;
+export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session: SessionData): Promise<any>;
+export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session?: SessionData): Promise<any> {
+    if (getSessionParameter(ACCESS_TOKEN, storage, session)) {
         if (!isValidOPConfig(requestParams.clientID, storage, session)) {
-            endAuthenticatedSession();
+            endAuthenticatedSession(storage, session);
             resetOPConfiguration(storage, session);
             // TODO: Better to have a callback to clear this on the app side.
-            removeSessionParameter("auth_callback_url");
+            removeSessionParameter("auth_callback_url", storage, session);
 
             initOPConfiguration(requestParams, true, storage, session).then(() => {
-                sendSignInRequest(requestParams, storage, session, callback);
+                sendSignInRequest(requestParams, storage, session);
             });
 
             return;
         }
 
-        if (callback) {
-            callback();
-        }
-
         return Promise.resolve("Sign In successful!");
     } else {
         initOPConfiguration(requestParams, false, storage, session).then(() => {
-            sendSignInRequest(requestParams, storage, session, callback);
+            sendSignInRequest(requestParams, storage, session);
         });
     }
-};
+}
