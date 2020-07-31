@@ -46,6 +46,11 @@ export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInter
      */
     onHelpPanelPinToggle: () => void;
     /**
+     * Callback for help panel visibility change.
+     * @param {boolean} isVisible - Is sidebar visible.
+     */
+    onHelpPanelVisibilityChange?: (isVisible: boolean) => void;
+    /**
      * Flag to distinguish if the panel is pinned.
      */
     isPinned?: boolean;
@@ -70,14 +75,6 @@ export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInter
      */
     tabs: HelpPanelPropsInterface["tabs"];
     /**
-     * Triggers the side bar to open.
-     */
-    triggerSidebarOpen?: boolean;
-    /**
-     * Triggers the side bar to close.
-     */
-    triggerSidebarClose?: boolean;
-    /**
      * Tooltip for the unpin button.
      */
     unpinButtonTooltip?: string;
@@ -85,6 +82,10 @@ export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInter
      * Tabs active index.
      */
     activeIndex?: number;
+    /**
+     * Side panel external visibility state.
+     */
+    visible?: boolean;
 }
 
 /**
@@ -122,14 +123,14 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         enabled,
         icons,
         onHelpPanelPinToggle,
+        onHelpPanelVisibilityChange,
         isPinned,
         pinButtonTooltip,
         sidebarDirection,
         tabs,
-        triggerSidebarOpen,
         activeIndex,
         unpinButtonTooltip,
-        triggerSidebarClose,
+        visible,
         ...rest
     } = props;
 
@@ -160,20 +161,12 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
     }, [ helpSidebarVisibility ]);
     
     useEffect(() => {
-        if (!triggerSidebarOpen) {
+        if (visible === undefined) {
             return;
         }
 
-        setHelpSidebarVisibility(true);
-    }, [ triggerSidebarOpen ]);
-
-    useEffect(() => {
-        if (!triggerSidebarClose) {
-            return;
-        }
-
-        setHelpSidebarVisibility(false);
-    }, [ triggerSidebarClose ]);
+        setHelpSidebarVisibility(visible);
+    }, [ visible ]);
 
     useEffect(() => {
         if (isPinned) {
@@ -194,6 +187,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         });
 
         setHelpSidebarVisibility(true);
+        onHelpPanelVisibilityChange(true);
     };
 
     /**
@@ -210,6 +204,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
      */
     const handleHelpPanelToggle = () => {
         setHelpSidebarVisibility(!helpSidebarVisibility);
+        onHelpPanelVisibilityChange(!helpSidebarVisibility);
     };
 
     return (
@@ -259,6 +254,8 @@ HelpPanelLayout.defaultProps = {
     bordered: "left",
     enabled: true,
     icon: "labeled",
+    onHelpPanelClose: () => null,
+    onHelpPanelOpen: () => null,
     pinButtonTooltip: "Pin",
     raised: false,
     showLabelsOnSidebarMini: false,

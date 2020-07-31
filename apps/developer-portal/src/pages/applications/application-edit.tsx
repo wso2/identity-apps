@@ -56,7 +56,7 @@ import {
     emptyApplication
 } from "../../models";
 import { AppState } from "../../store";
-import { setHelpPanelDocsContentURL } from "../../store/actions";
+import { setHelpPanelDocsContentURL, toggleHelpPanelVisibility } from "../../store/actions";
 import { ApplicationManagementUtils, HelpPanelUtils } from "../../utils";
 
 /**
@@ -93,6 +93,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const helpPanelVisibilityGlobalState: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplateName, setApplicationTemplateName ] = useState<string>(undefined);
@@ -124,9 +125,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
-    const [ triggerSidebarOpen, setTriggerSidebarOpen ] = useState<boolean>(false);
-    const [ triggerSidebarClose, setTriggerSidebarClose ] = useState<boolean>(false);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
 
     /**
      * Fetch the application details on initial component load.
@@ -386,20 +386,36 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [applicationTemplateName, application]);
 
     /**
-     * Triggered when the application state search param in the URL changes. 
+     * Triggered when the application state search param in the URL changes.
+     * TODO: IMPORTANT - Refactor this code.
      */
     useEffect(() => {
         if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
+            if (isExtensionsAvailable) {
+                setDefaultActiveIndex(1);
+            }
+
             return;
         }
 
-       
+        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
+            === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && isExtensionsAvailable) {
+
+            setDefaultActiveIndex(0);
+
+            if (helpPanelVisibilityGlobalState) {
+                dispatch(toggleHelpPanelVisibility(false));
+            }
+
+            return;
+        }
+
         if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
             === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && !HelpPanelUtils.isPanelPinned()) {
 
-            setTriggerSidebarOpen(true);
+            toggleHelpPanelVisibility(true);
         }
-    }, [ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY) ]);
+    }, [ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY), isExtensionsAvailable ]);
 
     /**
      * Retrieves application details from the API.
@@ -753,8 +769,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
             unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
-            triggerSidebarOpen={ triggerSidebarOpen }
-            triggerSidebarClose={ triggerSidebarClose }
+            onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
+            visible={ helpPanelVisibilityGlobalState }
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }
@@ -794,6 +810,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             >
                 <EditApplication
                     application={ application }
+                    defaultActiveIndex={ defaultActiveIndex }
                     featureConfig={ featureConfig }
                     isLoading={ isApplicationRequestLoading }
                     onDelete={ handleApplicationDelete }
