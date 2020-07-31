@@ -21,14 +21,14 @@ import { ConfigInterface } from ".";
 import { SignInResponse, UserInfo } from "./message";
 
 export interface OAuthInterface {
-	httpRequest<T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
-	httpRequestAll<T = any>(configs: AxiosRequestConfig[]): Promise<AxiosResponse<T>[]>;
-	signOut(): Promise<boolean>;
-	signIn(): Promise<UserInfo>;
-	initialize(config: ConfigInterface): Promise<boolean>;
-	listenForAuthCode(): Promise<UserInfo>;
-	customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
-	revokeToken(): Promise<boolean>;
+    httpRequest<T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
+    httpRequestAll<T = any>(configs: AxiosRequestConfig[]): Promise<AxiosResponse<T>[]>;
+    signOut(): Promise<boolean>;
+    signIn(): Promise<UserInfo>;
+    initialize(config: ConfigInterface): Promise<boolean>;
+    listenForAuthCode(): Promise<UserInfo>;
+    customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
+    revokeToken(): Promise<boolean>;
 }
 
 export interface OAuthSingletonInterface {
@@ -42,3 +42,5 @@ export interface CustomGrantRequestParams {
     returnsSession: boolean;
     returnResponse: boolean;
 }
+
+export type SessionData = Map<string, string>;
