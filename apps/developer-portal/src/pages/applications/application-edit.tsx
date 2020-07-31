@@ -769,8 +769,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
             unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
-            onHelpPanelClose={ () => dispatch(toggleHelpPanelVisibility(false)) }
-            onHelpPanelOpen={ () => dispatch(toggleHelpPanelVisibility(true)) }
+            onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
             visible={ helpPanelVisibilityGlobalState }
         >
             <PageLayout

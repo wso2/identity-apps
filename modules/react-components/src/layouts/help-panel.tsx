@@ -46,13 +46,10 @@ export interface HelpPanelLayoutLayoutPropsInterface extends HelpPanelPropsInter
      */
     onHelpPanelPinToggle: () => void;
     /**
-     * Callback for help panel open.
+     * Callback for help panel visibility change.
+     * @param {boolean} isVisible - Is sidebar visible.
      */
-    onHelpPanelOpen?: () => void;
-    /**
-     * Callback for help panel open.
-     */
-    onHelpPanelClose?: () => void;
+    onHelpPanelVisibilityChange?: (isVisible: boolean) => void;
     /**
      * Flag to distinguish if the panel is pinned.
      */
@@ -126,8 +123,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         enabled,
         icons,
         onHelpPanelPinToggle,
-        onHelpPanelOpen,
-        onHelpPanelClose,
+        onHelpPanelVisibilityChange,
         isPinned,
         pinButtonTooltip,
         sidebarDirection,
@@ -169,19 +165,12 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
             return;
         }
 
-        if (visible) {
-            onHelpPanelOpen();
-        } else {
-            onHelpPanelClose();
-        }
-
         setHelpSidebarVisibility(visible);
     }, [ visible ]);
 
     useEffect(() => {
         if (isPinned) {
             setHelpSidebarVisibility(true);
-            onHelpPanelOpen();
         }
     }, [ isPinned ]);
 
@@ -198,7 +187,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
         });
 
         setHelpSidebarVisibility(true);
-        onHelpPanelOpen();
+        onHelpPanelVisibilityChange(true);
     };
 
     /**
@@ -214,13 +203,8 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
      * Handles the help panel toggle action.
      */
     const handleHelpPanelToggle = () => {
-        if (helpSidebarVisibility) {
-            onHelpPanelClose();
-        } else {
-            onHelpPanelOpen();
-        }
-
         setHelpSidebarVisibility(!helpSidebarVisibility);
+        onHelpPanelVisibilityChange(!helpSidebarVisibility);
     };
 
     return (
