@@ -361,6 +361,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                         transparent={ true }
                                                         size="tiny"
                                                         icon={ ApplicationTemplateIllustrations.oidcWebApp }
+                                                        fill="primary"
                                                     />
                                                     OIDC
                                                 </Segment>
@@ -378,6 +379,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                         transparent={ true }
                                                         size="tiny"
                                                         icon={ ApplicationTemplateIllustrations.samlWebApp }
+                                                        fill="primary"
                                                     />
                                                     SAML
                                                 </Segment>
@@ -395,6 +397,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                         transparent={ true }
                                                         size="tiny"
                                                         icon={ ApplicationTemplateIllustrations.passiveSTS }
+                                                        fill="primary"
                                                     />
                                                     Passive STS
                                                 </Segment>
