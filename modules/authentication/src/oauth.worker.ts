@@ -64,7 +64,7 @@ ctx.onmessage = ({ data, ports }) => {
                     .initOPConfiguration()
                     .then(() => {
                         oAuthWorker
-                            .sendSignInRequest()
+                            .signIn()
                             .then((response: SignInResponse) => {
                                 if (response.type === SIGNED_IN) {
                                     port.postMessage(
@@ -99,17 +99,11 @@ ctx.onmessage = ({ data, ports }) => {
 
                 break;
             }
-
-            oAuthWorker.setAuthorizationCode(data.data.code);
-
-            if (data.data.pkce) {
-                oAuthWorker.setPkceCodeVerifier(data.data.pkce);
-            }
             oAuthWorker
                 .initOPConfiguration()
                 .then(() => {
                     oAuthWorker
-                        .sendSignInRequest()
+                        .signIn()
                         .then((response: SignInResponse) => {
                             if (response.type === SIGNED_IN) {
                                 port.postMessage(
