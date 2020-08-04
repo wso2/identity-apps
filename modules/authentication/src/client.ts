@@ -50,7 +50,7 @@ const DEFAULT_SUPER_TENANT = "carbon.super";
  * Default configurations.
  */
 const DefaultConfig = {
-    autherizationType: AUTHENTICATION_TYPES.AUTHORIZATION_CODE_TYPE,
+    authorizationType: AUTHENTICATION_TYPES.AUTHORIZATION_CODE_TYPE,
     clientSecret: null,
     consentDenied: false,
     enablePKCE: true,
@@ -67,7 +67,7 @@ const DefaultConfig = {
  * @implements {ConfigInterface} - Configuration interface.
  */
 export class IdentityClient implements ConfigInterface {
-    public autherizationType!: string;
+    public authorizationType!: string;
     public callbackURL: string;
     public clientHost: string;
     public clientID: string;
@@ -83,18 +83,22 @@ export class IdentityClient implements ConfigInterface {
     constructor(UserConfig: ConfigInterface) {
         const resolve = (propertyName) => {
             if (Object.prototype.hasOwnProperty.call(UserConfig, propertyName)) {
-               return UserConfig[propertyName];
+                return UserConfig[propertyName];
             }
 
             if (Object.prototype.hasOwnProperty.call(DefaultConfig, propertyName)) {
                 return DefaultConfig[propertyName];
             }
 
-            throw new Error("\"" + propertyName + "\"" +
-                " is missing in your initialize configuration. Please fill all the mandotary properties");
+            throw new Error(
+                '"' +
+                    propertyName +
+                    '"' +
+                    " is missing in your initialize configuration. Please fill all the mandatory properties"
+            );
         };
 
-        this.autherizationType = resolve("autherizationType");
+        this.authorizationType = resolve("authorizationType");
         this.callbackURL = resolve("callbackURL");
         this.clientHost = resolve("clientHost");
         this.clientID = resolve("clientID");
@@ -115,7 +119,7 @@ export class IdentityClient implements ConfigInterface {
         return;
     }
 
-    public validateAuthnentication() {
+    public validateAuthentication() {
         // TODO: Implement
         return;
     }
@@ -128,18 +132,18 @@ export class IdentityClient implements ConfigInterface {
     /**
      * Sign-in method.
      *
-     * @param {() => void} [callback] - Callback method to run on successfull sign-in
+     * @param {() => void} [callback] - Callback method to run on successful sign-in
      * @returns {Promise<any>} promise.
      * @memberof IdentityClient
      */
-    public async signIn(callback?: () => void): Promise<any> {
-        return handleSignIn(this, callback);
+    public async signIn(): Promise<any> {
+        return handleSignIn(this, STORAGE.webWorker);
     }
 
     /**
      * Sign-out method.
      *
-     * @param {() => void} [callback] - Callback method to run on successfull sign-in
+     * @param {() => void} [callback] - Callback method to run on successful sign-in
      * @returns {Promise<any>} promise.
      * @memberof IdentityClient
      */
