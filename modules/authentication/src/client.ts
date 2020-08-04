@@ -91,10 +91,7 @@ export class IdentityClient implements ConfigInterface {
             }
 
             throw new Error(
-                '"' +
-                    propertyName +
-                    '"' +
-                    " is missing in your initialize configuration. Please fill all the mandatory properties"
+                `"${propertyName}" is missing in your configuration. Please fill all the mandatory properties`
             );
         };
 
@@ -137,7 +134,7 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signIn(): Promise<any> {
-        return handleSignIn(this, STORAGE.webWorker);
+        return handleSignIn(this, AUTHENTICATION_TYPES.STORAGE.sessionStorage);
     }
 
     /**
@@ -147,7 +144,7 @@ export class IdentityClient implements ConfigInterface {
      * @returns {Promise<any>} promise.
      * @memberof IdentityClient
      */
-    public async signOut(callback?: () => void): Promise<any> {
-        return handleSignOut(callback);
+    public async signOut(): Promise<any> {
+        return handleSignOut(AUTHENTICATION_TYPES.STORAGE.sessionStorage);
     }
 }
