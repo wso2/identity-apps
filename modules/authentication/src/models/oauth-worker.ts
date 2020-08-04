@@ -22,14 +22,11 @@ import { Message, SignInResponse, UserInfo } from "./message";
 import { CustomGrantRequestParams } from "./oauth";
 
 export interface OAuthWorkerInterface {
-    setIsOpConfigInitiated(status: boolean): void;
     isSignedIn(): boolean;
     doesTokenExist(): boolean;
-    setAuthorizationCode(authCode: string): void;
     initOPConfiguration(forceInit?: boolean): Promise<any>;
-    setPkceCodeVerifier(pkce: string): void;
-    generateAuthorizationCodeRequestURL(): string;
-    sendSignInRequest(): Promise<SignInResponse>;
+    // generateAuthorizationCodeRequestURL(): string;
+    signIn(): Promise<SignInResponse>;
     refreshAccessToken(): Promise<boolean>;
     signOut(): Promise<string>;
     httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse>;
