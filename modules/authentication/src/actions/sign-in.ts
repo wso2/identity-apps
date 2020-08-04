@@ -42,10 +42,11 @@ import {
     PKCE_CODE_VERIFIER,
     REQUEST_PARAMS,
     SERVICE_RESOURCES,
-    SESSION_STATE
+    SESSION_STATE,
+    AUTH_REQUIRED
 } from "../constants";
 import { STORAGE } from "../constants/storage";
-import { SessionData } from "../models";
+import { SessionData, SignInResponse } from "../models";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
 import { AccountSwitchRequestParams } from "../models/oidc-request-params";
@@ -86,7 +87,7 @@ export const getAuthorizationCode = (): string => {
  * @param {string} clientHost
  * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
  */
-const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
+export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
     return {
         Accept: "application/json",
         "Access-Control-Allow-Origin": clientHost,
@@ -107,12 +108,12 @@ export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
     storage: STORAGE,
     session: SessionData
-): Promise<never>;
+): Promise<SignInResponse>;
 export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
     storage: STORAGE,
     session?: SessionData
-): Promise<never> {
+): Promise<SignInResponse | never> {
     const authorizeEndpoint = getAuthorizeEndpoint(storage, session);
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
@@ -148,7 +149,15 @@ export function sendAuthorizationRequest(
         authorizeRequest += "&prompt=" + requestParams.prompt;
     }
 
-    document.location.href = authorizeRequest;
+    if (storage === STORAGE.webWorker) {
+        return Promise.resolve({
+            code: authorizeRequest,
+            pkce: getCodeVerifier(),
+            type: AUTH_REQUIRED
+        });
+    } else {
+        document.location.href = authorizeRequest;
+    }
 
     return;
 }
@@ -363,6 +372,8 @@ export function sendRefreshTokenRequest(
                         tokenType: response.data.token_type
                     };
 
+                    initUserSession(response.data, getAuthenticatedUser(response.data.idToken), storage, session);
+
                     return Promise.resolve(tokenResponse);
                 }
                 return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
@@ -560,13 +571,13 @@ export function sendSignInRequest(
             })
             .catch((error) => {
                 if (error.response && error.response.status === 400) {
-                    sendAuthorizationRequest(requestParams, storage, session);
+                    return sendAuthorizationRequest(requestParams, storage, session);
                 }
 
                 return Promise.reject(error);
             });
     } else {
-        sendAuthorizationRequest(requestParams, storage, session);
+        return sendAuthorizationRequest(requestParams, storage, session);
     }
 }
 
@@ -580,17 +591,15 @@ export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, s
             // TODO: Better to have a callback to clear this on the app side.
             removeSessionParameter("auth_callback_url", storage, session);
 
-            initOPConfiguration(requestParams, true, storage, session).then(() => {
-                sendSignInRequest(requestParams, storage, session);
+            return initOPConfiguration(requestParams, true, storage, session).then(() => {
+                return sendSignInRequest(requestParams, storage, session);
             });
-
-            return;
         }
 
         return Promise.resolve("Sign In successful!");
     } else {
-        initOPConfiguration(requestParams, false, storage, session).then(() => {
-            sendSignInRequest(requestParams, storage, session);
+        return initOPConfiguration(requestParams, false, storage, session).then(() => {
+            return sendSignInRequest(requestParams, storage, session);
         });
     }
 }
