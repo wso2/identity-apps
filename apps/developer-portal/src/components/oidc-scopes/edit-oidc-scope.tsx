@@ -25,8 +25,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Input, Popup, Segment, Table } from "semantic-ui-react";
 import { OIDCScopeAttributes } from "./oidc-scope-attributes";
-import { EmptyPlaceholderIllustrations } from "../../../../admin-portal/src/configs";
 import { updateOIDCScopeDetails } from "../../api";
+import { EmptyPlaceholderIllustrations } from "../../configs";
 import { OIDCScopesManagementConstants } from "../../constants";
 import { FeatureConfigInterface, OIDCScopesListInterface } from "../../models";
 
