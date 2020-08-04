@@ -18,51 +18,43 @@
 
 import axios, { AxiosError, AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
-    AUTH_REQUIRED,
+    getAuthenticatedUser as getAuthenticatedUserUtil,
+    getTokenRequestHeaders as getTokenRequestHeadersUtil,
+    handleSignIn,
+    handleSignOut,
+    initOPConfiguration as initOPConfigurationUtil,
+    initUserSession as initUserSessionUtil,
+    sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
+    sendRevokeTokenRequest as sendRevokeTokenRequestUtil,
+    validateIdToken as validateIdTokenUtil
+} from "./actions";
+import {
+    ACCESS_TOKEN,
+    AUTHORIZATION_ENDPOINT,
     CLIENT_ID_TAG,
     CLIENT_SECRET_TAG,
-    OIDC_SCOPE,
-    SCOPE_TAG,
-    SERVICE_RESOURCES,
-    SIGNED_IN,
-    TOKEN_TAG,
-    USERNAME_TAG,
-    ACCESS_TOKEN,
-    USERNAME,
-    SCOPE,
-    TOKEN_ENDPOINT,
-    AUTHORIZATION_ENDPOINT,
     DISPLAY_NAME,
     EMAIL,
-    OIDC_SESSION_IFRAME_ENDPOINT
+    OIDC_SCOPE,
+    OIDC_SESSION_IFRAME_ENDPOINT,
+    SCOPE_TAG,
+    SIGNED_IN,
+    STORAGE,
+    TOKEN_ENDPOINT,
+    TOKEN_TAG,
+    USERNAME,
+    USERNAME_TAG
 } from "./constants";
 import {
-    AuthenticatedUserInterface,
-    ConfigInterface,
     CustomGrantRequestParams,
     OAuthWorkerInterface,
     OAuthWorkerSingletonInterface,
-    ResponseModeTypes,
+    SessionData,
     SignInResponse,
-    TokenRequestHeader,
     TokenResponseInterface,
     UserInfo,
-    WebWorkerConfigInterface,
-    SessionData
+    WebWorkerConfigInterface
 } from "./models";
-import { getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken, handleSignOut } from "./actions";
-import {
-    sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
-    sendRevokeTokenRequest as sendRevokeTokenRequestUtil,
-    initOPConfiguration as initOPConfigurationUtil,
-    getTokenRequestHeaders as getTokenRequestHeadersUtil,
-    validateIdToken as validateIdTokenUtil,
-    handleSignIn,
-    sendSignOutRequest as sendSignOutRequestUtil,
-    initUserSession as initUserSessionUtil,
-    getAuthenticatedUser as getAuthenticatedUserUtil
-} from "./actions";
-import { STORAGE } from "./constants/storage";
 
 export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWorkerSingletonInterface {
     /**
