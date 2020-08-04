@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="padlock-icon" mlns="http://www.w3.org/2000/svg" width="14px" height="14px" viewBox="0 0 51.801 73.132">
+	<g id="lock" transform="translate(-28.594 -12.226)">
+		<path id="upper" class="path fill secondary" d="M54.494,12.226A19.83,19.83,0,0,0,34.688,32.032V44.221a1.523,1.523,0,0,0,1.523,1.523h6.094a1.524,1.524,0,0,0,1.524-1.523V32.032a10.665,10.665,0,1,1,21.33,0V44.221a1.524,1.524,0,0,0,1.523,1.523h6.094A1.524,1.524,0,0,0,74.3,44.221V32.032A19.828,19.828,0,0,0,54.494,12.226Z"/>
+		<path id="rounded-rect" class="path fill primary" d="M36.212,42.7H72.777A7.618,7.618,0,0,1,80.4,50.316V77.74a7.618,7.618,0,0,1-7.618,7.618H36.212a7.618,7.618,0,0,1-7.618-7.618V50.315A7.617,7.617,0,0,1,36.212,42.7Z"/>
+		<path id="middle" class="path fill white" d="M62.112,59.456a7.618,7.618,0,1,0-11,6.8L49.939,74.48a1.53,1.53,0,0,0,1.508,1.737h6.1a1.524,1.524,0,0,0,1.539-1.508,1.615,1.615,0,0,0-.016-.232l-1.177-8.228A7.646,7.646,0,0,0,62.112,59.456Z"/>
+	</g>
+</svg>

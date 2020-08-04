@@ -1,0 +1,39 @@
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="code-icon" height="14" viewBox="0 0 14 14" width="14" xmlns="http://www.w3.org/2000/svg">
+    <g id="icon-group">
+        <g id="code-icon" transform="translate(-121.649 -113.248)">
+            <g id="Group_9" transform="translate(122.063 117.248)">
+                <g id="Group_8" transform="translate(0 0)">
+                    <path id="Path_4" d="M123.259,120.524l2.43-2.429a.5.5,0,0,0-.7-.7l-2.78,2.78a.5.5,0,0,0,0,.7l2.78,2.78a.5.5,0,0,0,.7-.7Z" transform="translate(-122.063 -117.248)"/>
+                </g>
+            </g>
+            <g id="Group_11" transform="translate(131.574 117.248)">
+                <g id="Group_10" transform="translate(0 0)">
+                    <path id="Path_5" d="M317.5,120.173l-2.78-2.78a.5.5,0,1,0-.7.7l2.43,2.429-2.43,2.429a.5.5,0,0,0,.7.7l2.78-2.78A.5.5,0,0,0,317.5,120.173Z" transform="translate(-313.877 -117.248)"/>
+                </g>
+            </g>
+            <g id="Group_13" transform="translate(127.466 117.443)">
+                <g id="Group_12" transform="translate(0 0)">
+                    <path id="Path_6" d="M233.137,121.2a.5.5,0,0,0-.607.351l-1.485,5.54a.5.5,0,0,0,.958.257l1.484-5.54a.5.5,0,0,0-.351-.607Z" transform="translate(-231.028 -121.187)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

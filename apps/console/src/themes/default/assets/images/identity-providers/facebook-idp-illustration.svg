@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="facebook-idp-illustration" class="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="100"
+     height="100"
+     viewBox="0 0 158.617 171.65">
+    <g id="facebook" transform="translate(-262.922 -75.409)">
+        <path class="path fill primary" d="M126.483,29.958A48.061,48.061,0,1,0,46.094,80.049a36.472,36.472,0,0,1,9.059,25.568q-.062,1.867-.017,3.761A64.726,64.726,0,0,0,119,171.647,63.856,63.856,0,0,0,145.391,49.659a36.877,36.877,0,0,1-18.908-19.7Z"
+              transform="translate(237.101 75.412)" fill="#ff5000" opacity="0.1" />
+        <rect class="path fill primary" width="117" height="117" rx="19" transform="translate(282 97)" fill="#ff5000" opacity="0.2"/>
+        <rect width="114" height="114" rx="18" transform="translate(288 105)" fill="#f5f4f9"/>
+        <path class="path fill primary" d="M95.619,0H16.411A16.43,16.43,0,0,0,0,16.411V95.619A16.43,16.43,0,0,0,16.411,112.03h33.04v-39.6H36.322V52.733H49.451V39.385A19.714,19.714,0,0,1,69.143,19.693H89.055V39.385H69.143V52.733H89.055L85.773,72.425H69.143v39.6H95.619A16.43,16.43,0,0,0,112.03,95.619V16.411A16.43,16.43,0,0,0,95.619,0Zm0,0"
+              transform="translate(289 105)" fill="#ffa052" opacity="0.9"/>
+        <path class="path fill primary" d="M99,116H17A17,17,0,0,1,0,99V17A17,17,0,0,1,17,0H99a17,17,0,0,1,17,17V99a17,17,0,0,1-17,17ZM19,3A16.018,16.018,0,0,0,3,19V97a16.018,16.018,0,0,0,16,16H97a16.018,16.018,0,0,0,16-16V19A16.018,16.018,0,0,0,97,3Z"
+              transform="translate(287 104)" fill="#ff5000"/>
+        <path class="path fill primary" d="M432.755,180.351a1.8,1.8,0,0,1-1.279-.53l-3.977-3.977a1.809,1.809,0,0,1,0-2.559l3.977-3.977a1.809,1.809,0,0,1,2.559,0l3.977,3.977a1.809,1.809,0,0,1,0,2.559l-3.977,3.977a1.8,1.8,0,0,1-1.279.53Zm-1.418-5.784,1.418,1.418,1.418-1.418-1.418-1.418Z"
+              transform="translate(-17.002 -25.323)" fill="#ffa052" opacity="0.3"/>
+        <path class="path fill primary" d="M347.083,72.674a1.809,1.809,0,0,1-1.809-1.809,2.182,2.182,0,0,0-2.179-2.179,1.809,1.809,0,1,1,0-3.618,2.182,2.182,0,0,0,2.179-2.179,1.809,1.809,0,0,1,3.618,0,2.181,2.181,0,0,0,2.179,2.179,1.809,1.809,0,1,1,0,3.618,2.182,2.182,0,0,0-2.179,2.179A1.809,1.809,0,0,1,347.083,72.674Z"
+              transform="translate(33.685 23.421)" fill="#ffe783" opacity="0.3"/>
+        <path class="path fill primary" d="M53.06,332.889a1.809,1.809,0,0,1-1.809-1.809,2.182,2.182,0,0,0-2.179-2.179,1.809,1.809,0,1,1,0-3.618,2.182,2.182,0,0,0,2.179-2.179,1.809,1.809,0,1,1,3.618,0,2.182,2.182,0,0,0,2.179,2.179,1.809,1.809,0,0,1,0,3.618,2.181,2.181,0,0,0-2.179,2.179,1.809,1.809,0,0,1-1.809,1.809Z"
+              transform="translate(223.352 -151.669)" fill="#ffb18d" opacity="0.3"/>
+        <path class="path fill primary" d="M45.617,386.6a1.809,1.809,0,0,1-1.809-1.809,2.182,2.182,0,0,0-2.179-2.179,1.809,1.809,0,1,1,0-3.618,2.182,2.182,0,0,0,2.179-2.179,1.809,1.809,0,0,1,3.618,0,2.182,2.182,0,0,0,2.179,2.179,1.809,1.809,0,0,1,0,3.618,2.181,2.181,0,0,0-2.179,2.179,1.809,1.809,0,0,1-1.809,1.809Z"
+              transform="translate(223.102 -171.95)" fill="#ffe783" opacity="0.3"/>
+        <path class="path fill stroke primary" d="M3531.307-1395.548v-18.579c0-2.428-.686-10.776,8.9-10.776h18.828" transform="translate(-3233 1538.926)"
+              fill="none" stroke="#ffc136" stroke-linecap="round" stroke-width="4" style="fill-opacity: 0.7;"/>
+    </g>
+</svg>

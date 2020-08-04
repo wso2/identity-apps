@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg version="1.1" class="icon" id="associated-accounts-mini" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="101px" height="100px" viewBox="0 0 101 100" xml:space="preserve">
+	<g id="account_1_">
+		<path id="shield_1_" class="path fill blue" d="M98.045,16.476L71.175,2.158c-0.398-0.213-0.876-0.21-1.272,0.007L43.776,16.484   c-0.428,0.234-0.695,0.684-0.695,1.173v18.703c0.016,15.375,9.125,29.283,23.211,35.443l3.627,1.58   c0.338,0.147,0.725,0.147,1.063,0.001l4.087-1.765c14.348-6.026,23.682-20.069,23.684-35.63V17.657   C98.754,17.163,98.48,16.708,98.045,16.476z M45.756,36.359 M74.022,69.159" />
+		<g id="user_1_">
+			<g>
+				<path class="path fill white" d="M81.227,39.618c-1.589-1.587-3.478-2.763-5.541-3.474c2.209-1.521,3.66-4.067,3.66-6.946     c0-4.647-3.781-8.428-8.429-8.428c-4.647,0-8.427,3.78-8.427,8.428c0,2.879,1.451,5.425,3.659,6.946     c-2.062,0.711-3.952,1.887-5.541,3.474c-2.753,2.754-4.27,6.415-4.27,10.309h2.278c0-6.783,5.518-12.301,12.3-12.301     c6.783,0,12.301,5.518,12.301,12.301h2.278C85.496,46.033,83.98,42.372,81.227,39.618z M70.917,35.349     c-3.391,0-6.149-2.759-6.149-6.151s2.758-6.15,6.149-6.15c3.392,0,6.152,2.758,6.152,6.15S74.309,35.349,70.917,35.349z" />
+			</g>
+		</g>
+	</g>
+	<g id="account-shadow">
+		<defs>
+			<filter id="f1" x="0" y="0" width="200%" height="200%">
+				<feOffset result="offOut" in="SourceAlpha" dx="1" dy="1"/>
+				<feBlend in="SourceGraphic" in2="blurOut" mode="normal"/>
+				<feGaussianBlur result="blurOut" in="offOut" stdDeviation="1"/>
+				<feComponentTransfer>
+					<feFuncA type="linear" slope="0.3"/>
+				</feComponentTransfer>
+				<feMerge>
+					<feMergeNode></feMergeNode>
+					<feMergeNode in="SourceGraphic"></feMergeNode>
+				</feMerge>
+			</filter>
+		</defs>
+		<g>
+			<g>
+				<path id="shield_15_" filter="url(#f1)" class="path fill primary" d="M67.751,28.189l-31.323-16.69c-0.465-0.249-1.021-0.245-1.483,0.009L4.489,28.198     c-0.499,0.273-0.81,0.797-0.81,1.367v21.802C3.697,69.29,14.316,85.502,30.736,92.684l4.229,1.842     c0.394,0.172,0.845,0.172,1.24,0.001l4.764-2.057c16.726-7.025,27.606-23.395,27.608-41.535v-21.37     C68.577,28.99,68.258,28.459,67.751,28.189z M6.797,51.367 M39.747,89.601" />
+				<g id="user_13_">
+					<g>
+						<path class="path fill white" d="M48.145,55.166c-1.853-1.85-4.054-3.221-6.458-4.05c2.575-1.773,4.266-4.741,4.266-8.097       c0-5.418-4.407-9.824-9.825-9.824c-5.417,0-9.824,4.406-9.824,9.824c0,3.356,1.692,6.324,4.266,8.097       c-2.403,0.829-4.607,2.2-6.459,4.05c-3.209,3.21-4.977,7.479-4.977,12.018h2.655c0-7.907,6.432-14.339,14.338-14.339       c7.907,0,14.34,6.432,14.34,14.339h2.655C53.122,62.644,51.355,58.375,48.145,55.166z M36.127,50.188       c-3.953,0-7.169-3.216-7.169-7.17s3.216-7.169,7.169-7.169c3.954,0,7.171,3.215,7.171,7.169S40.082,50.188,36.127,50.188z" />
+					</g>
+				</g>
+			</g>
+		</g>
+	</g>
+</svg>

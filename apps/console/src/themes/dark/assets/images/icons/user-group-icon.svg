@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" id="user-group-icon" height="14px" width="14px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 41.183 40.325">
+    <g transform="translate(0 -4.923)">
+        <g id="Group_516" transform="translate(3.432 25.515)">
+            <g id="Group_515">
+                <path id="Path_89" class="path fill primary"
+                      d="M45.391,241.231a6.006,6.006,0,1,0,6.006,6.006A5.969,5.969,0,0,0,45.391,241.231Zm0,10.3a4.29,4.29,0,1,1,4.29-4.29A4.248,4.248,0,0,1,45.391,251.527Z"
+                      transform="translate(-39.385 -241.231)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_518" transform="translate(0 35.81)">
+            <g id="Group_517">
+                <path id="Path_90" class="path fill primary"
+                      d="M9.438,359.385A9.411,9.411,0,0,0,0,368.823H1.716a7.722,7.722,0,0,1,15.444,0h1.716A9.41,9.41,0,0,0,9.438,359.385Z"
+                      transform="translate(0 -359.385)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_520" transform="translate(25.74 25.515)">
+            <g id="Group_519">
+                <path id="Path_91" class="path fill primary"
+                      d="M301.391,241.231a6.006,6.006,0,1,0,6.006,6.006A5.969,5.969,0,0,0,301.391,241.231Zm0,10.3a4.29,4.29,0,1,1,4.29-4.29A4.248,4.248,0,0,1,301.391,251.527Z"
+                      transform="translate(-295.385 -241.231)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_522" transform="translate(22.308 35.81)">
+            <g id="Group_521">
+                <path id="Path_92" class="path fill primary"
+                      d="M265.438,359.385A9.411,9.411,0,0,0,256,368.823h1.716a7.722,7.722,0,0,1,15.444,0h1.716A9.41,9.41,0,0,0,265.438,359.385Z"
+                      transform="translate(-256 -359.385)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_524" transform="translate(14.586 4.923)">
+            <g id="Group_523" transform="translate(0 0)">
+                <path id="Path_93" class="path fill primary"
+                      d="M173.391,4.923a6.006,6.006,0,1,0,6.006,6.006A5.969,5.969,0,0,0,173.391,4.923Zm0,10.3a4.29,4.29,0,1,1,4.29-4.29A4.248,4.248,0,0,1,173.391,15.219Z"
+                      transform="translate(-167.385 -4.923)" fill="#464646"/>
+            </g>
+        </g>
+        <g id="Group_526" transform="translate(11.154 15.219)">
+            <g id="Group_525">
+                <path id="Path_94" class="path fill primary"
+                      d="M137.438,123.077A9.411,9.411,0,0,0,128,132.515h1.716a7.722,7.722,0,1,1,15.444,0h1.716A9.41,9.41,0,0,0,137.438,123.077Z"
+                      transform="translate(-128 -123.077)" fill="#464646"/>
+            </g>
+        </g>
+    </g>
+</svg>

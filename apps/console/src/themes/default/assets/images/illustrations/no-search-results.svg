@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="no-search-results" class="icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="351" height="201"
+     viewBox="0 0 351 201">
+    <defs>
+        <clipPath id="clip-No-search-results">
+            <rect width="351" height="201"/>
+        </clipPath>
+    </defs>
+    <g id="No-search-results" clip-path="url(#clip-No-search-results)">
+        <rect width="351" height="201" fill="#fff"/>
+        <g id="no-search-results-2" transform="translate(-6.095 1.356)">
+            <circle class="fill faded primary" id="Ellipse_8" cx="46" cy="46" r="46" transform="translate(137.095 48.644)"
+                    fill="rgba(255,80,0,0.09)"/>
+            <g id="magnifier" transform="translate(119.057 32.098)">
+                <path id="Path_178"
+                      d="M134.306,127.933l-32.918-32.76A57.089,57.089,0,0,0,115.564,57.48a57.678,57.678,0,1,0-19.883,43.372l32.918,32.76a4.091,4.091,0,0,0,2.853,1.2,3.966,3.966,0,0,0,2.853-1.2A4.028,4.028,0,0,0,134.306,127.933ZM8.129,57.48A49.671,49.671,0,1,1,57.777,106.92,49.584,49.584,0,0,1,8.129,57.48Z"
+                      transform="translate(-0.05 0)" fill="#c1c1c1"/>
+            </g>
+            <g id="smiley" transform="translate(144.039 77.005)">
+                <path id="Path_180"
+                      d="M170.389,287.245a22.336,22.336,0,0,0-19.066,10.8,2.778,2.778,0,1,0,4.766,2.856,16.67,16.67,0,0,1,28.62.035,2.778,2.778,0,1,0,4.773-2.844A22.328,22.328,0,0,0,170.389,287.245Z"
+                      transform="translate(-138.031 -261.713)" fill="#c1c1c1"/>
+                <path id="Path_181"
+                      d="M121.62,187.505a2.778,2.778,0,0,0-5.257-1.8,6.575,6.575,0,0,1-12.443,0,2.778,2.778,0,1,0-5.258,1.8,12.132,12.132,0,0,0,22.958.008Z"
+                      transform="translate(-98.512 -183.821)" fill="#c1c1c1"/>
+                <path id="Path_182"
+                      d="M309.376,183.977a2.779,2.779,0,0,0-3.528,1.729,6.575,6.575,0,0,1-12.443,0,2.778,2.778,0,0,0-5.258,1.8,12.132,12.132,0,0,0,22.959.008A2.778,2.778,0,0,0,309.376,183.977Z"
+                      transform="translate(-248.118 -183.821)" fill="#c1c1c1"/>
+            </g>
+            <g id="cross" transform="translate(53.481 44.038)">
+                <rect id="Rectangle_10" width="19.144" height="3.046" rx="1.523"
+                      transform="translate(2.154 0) rotate(45)" class="path fill tertiary"/>
+                <rect id="Rectangle_11" width="19.144" height="3.046" rx="1.523"
+                      transform="translate(15.691 2.154) rotate(135)" class="path fill tertiary"/>
+            </g>
+            <rect id="Rectangle_12" width="46.277" height="3.515" rx="1.757" transform="translate(153.023 3.568)"
+                  class="path fill tertiary"/>
+            <rect id="Rectangle_8" width="22.574" height="3.386" rx="1.693" transform="translate(326.179 94.06)"
+                  class="path fill tertiary"/>
+            <g id="Ellipse_6" transform="translate(287.803 87.297)" fill="none" class="path stroke tertiary" stroke-width="4">
+                <circle cx="7.901" cy="7.901" r="7.901" stroke="none"/>
+                <circle cx="7.901" cy="7.901" r="5.901" fill="none"/>
+            </g>
+            <g id="cross-2" transform="translate(265.921 32.991)">
+                <rect id="Rectangle_10-2" width="27.029" height="4.3" rx="2.15"
+                      transform="translate(3.041 0) rotate(45)" class="path fill tertiary"/>
+                <rect id="Rectangle_11-2" width="27.029" height="4.3" rx="2.15"
+                      transform="translate(22.153 3.041) rotate(135)" class="path fill tertiary"/>
+            </g>
+            <g id="Ellipse_5" transform="translate(14.656 146.434)" fill="none" class="path stroke tertiary" stroke-width="4">
+                <circle cx="9.594" cy="9.594" r="9.594" stroke="none"/>
+                <circle cx="9.594" cy="9.594" r="7.594" fill="none"/>
+            </g>
+            <rect id="Rectangle_9" width="44.02" height="3.386" rx="1.693" transform="translate(39.487 154.388)"
+                  class="path fill tertiary"/>
+            <g id="Ellipse_7" transform="translate(153.142 179.956)" fill="none" class="path stroke tertiary" stroke-width="5">
+                <circle cx="7.901" cy="7.901" r="7.901" stroke="none"/>
+                <circle cx="7.901" cy="7.901" r="5.401" fill="none"/>
+            </g>
+        </g>
+    </g>
+</svg>

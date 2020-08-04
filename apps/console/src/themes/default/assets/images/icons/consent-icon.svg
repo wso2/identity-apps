@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="consent-icon" class="icon" height="14px" width="14px" viewBox="-31 0 463 464" xmlns="http://www.w3.org/2000/svg">
+    <path d="m96.5 400v64h272c17.601562 0 32-14.398438 32-32v-32zm0 0" fill="#b4b4b5"/>
+    <path d="m328.5 0h-296c17.601562 0 32 14.398438 32 32v400c0 17.601562 14.398438 32 32 32s32-14.398438 32-32v-32h232v-368c0-17.601562-14.398438-32-32-32zm0 0" fill="#e9e9e9"/>
+    <g fill="#c4c4c4">
+        <path d="m272.5 248h64v16h-64zm0 0"/>
+        <path d="m88.5 248h168v16h-168zm0 0"/>
+        <path d="m176.5 280h160v16h-160zm0 0"/>
+        <path d="m88.5 280h72v16h-72zm0 0"/>
+        <path d="m232.5 344h104v16h-104zm0 0"/>
+        <path d="m88.5 344h128v16h-128zm0 0"/>
+    </g>
+    <path class="path fill primary" d="m202.898438 148.800781 5.601562 3.199219 5.601562-3.199219c26.398438-17.601562 42.398438-48 42.398438-80v-20.800781l-48-16-48 16v20.800781c0 32 16 61.597657 42.398438 80zm0 0" />
+    <path class="path fill white" d="m205.300781 118.398438-8.800781-13.597657c11.199219-8 19.199219-20 20-34.402343l16 1.601562c-1.601562 19.199219-12 36-27.199219 46.398438zm0 0"/>
+    <path d="m136.5 312h200v16h-200zm0 0" fill="#c4c4c4"/>
+    <path d="m88.5 312h32v16h-32zm0 0" fill="#c4c4c4"/>
+    <path d="m176.5 216h160v16h-160zm0 0" fill="#c4c4c4"/>
+    <path d="m88.5 216h72v16h-72zm0 0" fill="#c4c4c4"/>
+    <path d="m152.5 176h112v16h-112zm0 0" fill="#c4c4c4"/>
+    <path d="m32.5 0c17.601562 0 32 14.398438 32 32v56h-64v-56c0-17.601562 14.398438-32 32-32zm0 0" fill="#b4b4b5"/>
+</svg>

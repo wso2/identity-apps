@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="email-otp-icon" class="icon" height="14" width="14" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg">
+    <g id="Page-1" fill="none" fill-rule="evenodd">
+        <g id="135---Send" fill-rule="nonzero" transform="translate(-1)">
+            <path id="Shape" d="m17.07 44.93-15.43-6.3c-.35400402-.1430338-.59943859-.470646-.63722209-.8505801s.13832167-.7494674.45722209-.9594199l55.95-36.65c.4117773-.26721044.9545576-.20875717 1.3.14.0238109.03242169.0505935.06255215.08.09.1688652.22635653.2408154.51055978.2.79l-8.68 55.94c-.0495951.3111221-.2388522.5824362-.5137022.7364302s-.6050622.17373-.8962978.0535698l-16.92-6.91" fill="#f0c419"/>
+            <path id="Shape" d="m46.812 53.458c-.1292957.0002138-.2573786-.0249271-.377-.074l-8.764-3.579c-.5114157-.2087636-.7567636-.7925843-.548-1.304s.7925843-.7567636 1.304-.548l8.764 3.579c.4430009.1806068.6960316.649679.6036626 1.1190792-.092369.4694003-.504261.8076284-.9826626.8069208z" fill="#d25627"/>
+            <path id="Shape" d="m16 40.858c-.1296296.0003188-.2580599-.0248237-.378-.074l-7-2.858c-.51141568-.2087636-.75676364-.7925843-.548-1.304s.79258432-.7567636 1.304-.548l7 2.859c.4414652.1813404.6932586.6493706.6012985 1.1176859s-.5020407.8063775-.9792985.8073141z" fill="#d25627"/>
+            <path id="Shape" d="m58.71.31-26.71 50.69-.01.01h-.01l-6.98 6.57c-.4813731.3731333-1.1065393.5065863-1.6983146.3625357s-1.0856628-.5499047-1.3416854-1.1025357l-4.96-11.84.07-.07z" fill="#e57e25"/>
+        </g>
+    </g>
+</svg>

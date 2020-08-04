@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" id="security-questions-icon" height="14" width="14" 
+     xml:space="preserve" viewBox="0 0 420 420" y="0px" x="0px" version="1.1" class="icon">
+	<path class="path fill secondary" d="m 131.57034,172.98739 c -42.251166,0 -76.624668,30.90947 -76.624668,68.16809 v 109.53254 c 0,37.58816 34.743941,
+		68.16808 76.624668,68.16808 h 155.25349 c 41.88073,0 76.16336,-30.58497 76.62467,-67.93037 v -0.11867 -109.6514 c 0,-37.58817 -34.74394,-68.16809 
+		-76.62467,-68.16809 z m 0,36.49103 h 155.25349 c 19.68622,0 35.60674,13.88446 35.60674,31.67706 v 109.35423 c -0.22232,18.03542 -15.92052,31.85535 
+		-35.60674,31.85535 H 131.57034 c -19.68622,0 -35.606753,-13.88444 -35.606753,-31.67704 V 241.15548 c 0,-17.51358 15.606893,-31.67706 35.606753,
+		-31.67706 z" />
+	<path class="path fill primary" d="M 51.506579,160.21196" />
+	<path class="path fill primary" d="m 225.63097,0.16015625 c -69.96359,0 -126.928399,51.06790475 -126.928399,113.21728375 h 51.305799 c 0,-37.657745 33.39752,
+		-67.573781 75.6226,-67.573781 42.12081,0 75.55581,30.295455 75.55581,67.573781 0,16.67902 -10.21866,33.16988 -27.59022,46.11896 -17.37158,12.94908 
+		-41.21599,21.09824 -62.32854,21.09824 h -25.6529 v 73.04148 h 51.3058 v -31.67706 c 25.45026,-4.34396 49.86342,-12.73781 69.61022,-27.45742 26.40936,
+		-19.68602 45.96146,-48.20394 45.96146,-81.1242 0,-61.920218 -56.79375,-113.21728375 -126.86163,-113.21728375 z" />
+	<path class="path fill primary" d="m 232.78707,286.79661 c 0,-11.56303 -10.6032,-20.99601 -23.60067,-20.99601 -12.99747,0 -23.60067,9.43298 -23.60067,20.99601 
+		0,6.69438 3.76243,12.47589 9.23504,16.12737 l -5.47261,21.90889 h 39.67648 l -5.81465,-21.90889 c 5.47261,-3.65148 9.57708,-9.43299 9.57708,-16.12737 z"/>
+</svg>

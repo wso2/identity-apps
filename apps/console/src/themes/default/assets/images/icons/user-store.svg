@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg class="icon" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" version="1.1" viewBox="0 0 1024 1024">
+    <g>
+        <path class="path fill secondary" stroke-width="0.1" d="M253.815+324L253.815+515.268L967.062+515.268L967.062+324L253.815+324ZM281.964+352.149L938.913+352.149L938.913+487.119L281.964+487.119C281.964+465.281+281.964+373.987+281.964+352.149ZM855.117+387.01C837.099+387.01+822.493+401.616+822.493+419.634C822.493+437.652+837.099+452.258+855.117+452.258C873.134+452.258+887.74+437.652+887.74+419.634C887.74+401.616+873.134+387.01+855.117+387.01ZM253.815+552.366L253.815+743.634L967.062+743.634L967.062+552.366L253.815+552.366ZM281.964+580.515L938.913+580.515L938.913+715.485L281.964+715.485C281.964+693.647+281.964+602.353+281.964+580.515ZM855.117+615.376C837.099+615.376+822.493+629.982+822.493+648C822.493+666.018+837.099+680.624+855.117+680.624C873.134+680.624+887.74+666.018+887.74+648C887.74+629.982+873.134+615.376+855.117+615.376ZM253.815+780.732L253.815+972L967.062+972L967.062+780.732L253.815+780.732ZM281.964+808.881L938.913+808.881L938.913+943.851L281.964+943.851C281.964+922.013+281.964+830.719+281.964+808.881ZM855.117+843.742C837.099+843.742+822.493+858.348+822.493+876.366C822.493+894.384+837.099+908.99+855.117+908.99C873.134+908.99+887.74+894.384+887.74+876.366C887.74+858.348+873.134+843.742+855.117+843.742Z" stroke-linecap="round" opacity="1" stroke-linejoin="round"/>
+        <path class="path stroke secondary" stroke-width="21.53" d="M251.276+61L251.276+61C300.982+61+341.276+101.294+341.276+151L341.276+151C341.276+200.706+300.982+241+251.276+241L251.276+241C201.57+241+161.276+200.706+161.276+151L161.276+151C161.276+101.294+201.57+61+251.276+61Z" fill="none" stroke-linecap="round" opacity="1" stroke-linejoin="round"/>
+        <path class="path stroke secondary" stroke-width="21.53" d="M393.322+311.879C360.538+269.378+309.106+242+251.281+242C152.27+242+72+322.27+72+421.281L240.574+421.281" fill="none" stroke-linecap="round" opacity="1" stroke-linejoin="round"/>
+    </g>
+</svg>
