@@ -57,9 +57,11 @@ import { TokenRequestHeader, TokenResponseInterface } from "../models/token-resp
  *
  * @returns {boolean} true if authorization code is present.
  */
-export const hasAuthorizationCode = (): boolean => {
-    return !!getAuthorizationCode();
-};
+export function hasAuthorizationCode(storage: STORAGE.sessionStorage): boolean;
+export function hasAuthorizationCode(storage: STORAGE, session: SessionData): boolean;
+export function hasAuthorizationCode(storage: STORAGE.sessionStorage, session?: SessionData): boolean {
+    return !!getAuthorizationCode(storage, session);
+}
 
 /**
  * Resolves the authorization code.
@@ -69,17 +71,25 @@ export const hasAuthorizationCode = (): boolean => {
  *
  * @returns {string} Resolved authorization code.
  */
-export const getAuthorizationCode = (): string => {
-    if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
-        return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
-    }
+export function getAuthorizationCode(storage: STORAGE.sessionStorage): string;
+export function getAuthorizationCode(storage: STORAGE, session: SessionData): string;
+export function getAuthorizationCode(storage: STORAGE, session?: SessionData): string {
+    if (storage === STORAGE.sessionStorage) {
+        if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
+            return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
+        }
 
-    if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
-        return window.sessionStorage.getItem(AUTHORIZATION_CODE);
+        if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+            return window.sessionStorage.getItem(AUTHORIZATION_CODE);
+        }
+    } else {
+        if (session.get(AUTHORIZATION_CODE)) {
+            return session.get(AUTHORIZATION_CODE);
+        }
     }
 
     return null;
-};
+}
 
 /**
  * Get token request headers.
@@ -152,7 +162,7 @@ export function sendAuthorizationRequest(
     if (storage === STORAGE.webWorker) {
         return Promise.resolve({
             code: authorizeRequest,
-            pkce: getCodeVerifier(),
+            pkce: getSessionParameter(PKCE_CODE_VERIFIER, storage, session),
             type: AUTH_REQUIRED
         });
     } else {
@@ -259,7 +269,7 @@ export function sendTokenRequest(
         body.push(`client_secret=${requestParams.clientSecret}`);
     }
 
-    const code = getAuthorizationCode();
+    const code = getAuthorizationCode(storage, session);
     body.push(`code=${code}`);
 
     if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
@@ -562,7 +572,7 @@ export function sendSignInRequest(
     storage: STORAGE,
     session?: SessionData
 ): Promise<any> {
-    if (hasAuthorizationCode()) {
+    if (hasAuthorizationCode(storage, session)) {
         return sendTokenRequest(requestParams, storage, session)
             .then((response) => {
                 initUserSession(response, getAuthenticatedUser(response.idToken), storage, session);
