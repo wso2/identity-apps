@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
 import { store } from "../../core";
 import { UserListInterface } from "../models";
 
@@ -25,7 +25,7 @@ import { UserListInterface } from "../models";
  * Initialize an axios Http client.
  *
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * Retrieve the list of users that are currently in the system.
