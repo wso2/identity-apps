@@ -23,9 +23,9 @@ export enum STORAGE {
     /**
      * Store the session information in the session storage.
      */
-    sessionStorage,
+    sessionStorage = "sessionStorage",
     /**
      * Store the session information in the web worker.
      */
-    webWorker
+    webWorker = "webWorker"
 }
