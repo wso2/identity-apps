@@ -1,7 +1,7 @@
 {
-    "name": "@wso2is/console",
-    "version": "1.0.366",
-    "description": "WSO2 Identity Server Console",
+    "name": "@wso2is/admin-portal",
+    "version": "1.0.341",
+    "description": "WSO2 Identity Server Admin Portal",
     "author": "WSO2",
     "license": "Apache-2.0",
     "main": "index.js",
@@ -27,14 +27,14 @@
         "test": "jest --passWithNoTests"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.366",
-        "@wso2is/core": "^1.0.366",
-        "@wso2is/forms": "^1.0.366",
-        "@wso2is/http": "^1.0.366",
-        "@wso2is/i18n": "^1.0.366",
-        "@wso2is/react-components": "^1.0.366",
-        "@wso2is/theme": "^1.0.366",
-        "@wso2is/validation": "^1.0.366",
+        "@wso2is/authentication": "^1.0.341",
+        "@wso2is/core": "^1.0.341",
+        "@wso2is/forms": "^1.0.341",
+        "@wso2is/http": "^1.0.341",
+        "@wso2is/i18n": "^1.0.341",
+        "@wso2is/react-components": "^1.0.341",
+        "@wso2is/theme": "^1.0.341",
+        "@wso2is/validation": "^1.0.341",
         "country-language": "^0.1.7"
     },
     "devDependencies": {
@@ -43,22 +43,15 @@
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
-        "@types/file-saver": "*",
-        "@types/node-forge": "*",
-        "@types/react-beautiful-dnd": "*",
         "axios": "*",
         "css-loader": "*",
-        "file-saver": "*",
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
         "lodash": "*",
         "log": "*",
         "moment": "*",
-        "node-forge": "*",
-        "react-beautiful-dnd": "*",
         "react-color": "*",
-        "react-draggable": "*",
         "react-helmet": "*",
         "react-i18next": "*",
         "react-notification-system": "*",
@@ -70,7 +63,6 @@
         "redux-thunk": "*",
         "rimraf": "*",
         "style-loader": "*",
-        "thread-loader": "*",
-        "ua-parser-js": "*"
+        "thread-loader": "*"
     }
 }
