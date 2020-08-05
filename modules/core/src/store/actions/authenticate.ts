@@ -16,19 +16,8 @@
  * under the License.
  */
 
-import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys,
-    OIDCRequestParamsInterface,
-    OPConfigurationUtil,
-    SignInUtil,
-    SignOutUtil
-} from "@wso2is/authentication";
-import {
-    setSignOutRequestLoadingStatus,
-    setTokenRequestLoadingStatus,
-    setTokenRevokeRequestLoadingStatus
-} from "./loaders";
+import { AUTHORIZATION_ENDPOINT, Authenticate, OIDC_SESSION_IFRAME_ENDPOINT, STORAGE } from "@wso2is/authentication";
+import { setSignOutRequestLoadingStatus, setTokenRevokeRequestLoadingStatus } from "./loaders";
 import { getProfileInformation } from "./profile";
 import {
     CommonAuthenticateActionTypes,
@@ -36,9 +25,8 @@ import {
     SetSignInActionInterface,
     SetSignOutActionInterface
 } from "./types";
-import { CommonServiceResourcesEndpoints } from "../../configs";
+import { TokenConstants } from "../../constants";
 import { AuthenticatedUserInterface } from "../../models";
-import { ContextUtils } from "../../utils";
 
 /**
  * Redux action to set sign in.
@@ -78,72 +66,43 @@ export const resetAuthentication = (): ResetAuthenticationActionInterface => ({
  * @param {boolean} consentDenied - Flag to determine if the consent has been given to the application.
  * @return {(dispatch) => void}
  */
-export const handleSignIn = (clientID: string,
-                             clientHost: string,
-                             redirectURI: string,
-                             scopes: string[],
-                             consentDenied = false) => (dispatch) => {
-
-    const serverHost: string = ContextUtils.getRuntimeConfig().serverHost;
-
-    const sendSignInRequest = () => {
-
-        const tokenRequestParams: OIDCRequestParamsInterface = {
-            clientHost,
-            clientId: clientID,
-            clientSecret: null,
+export const handleSignIn = () => (dispatch) => {
+    const oAuth = new Authenticate(STORAGE.webWorker);
+    oAuth
+        .initialize({
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
-            redirectUri: redirectURI,
-            scope: scopes
-        };
-
-        if (consentDenied) {
-            tokenRequestParams.prompt = "login";
-        }
-
-        if (SignInUtil.hasAuthorizationCode()) {
-
-            dispatch(setTokenRequestLoadingStatus(true));
-
-            SignInUtil.sendTokenRequest(tokenRequestParams)
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
+            scope: [TokenConstants.SYSTEM_SCOPE],
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
+        })
+        .then(() => {
+            oAuth
+                .signIn()
                 .then((response) => {
-                    AuthenticateSessionUtil.initUserSession(
-                        response,
-                        SignInUtil.getAuthenticatedUser(response.idToken)
+                    dispatch(
+                        setSignIn({
+                            // eslint-disable-next-line @typescript-eslint/camelcase
+                            display_name: response.displayName,
+                            email: response.email,
+                            scope: response.allowedScopes,
+                            username: response.username
+                        })
                     );
-                    dispatch(setSignIn(null));
+                    sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
+                    sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
                     throw error;
-                })
-                .finally(() => {
-                    dispatch(setTokenRequestLoadingStatus(false));
                 });
-        } else {
-            SignInUtil.sendAuthorizationRequest(tokenRequestParams);
-        }
-    };
-
-    if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
-        dispatch(setSignIn(null));
-        dispatch(getProfileInformation());
-    } else {
-        OPConfigurationUtil.initOPConfiguration(CommonServiceResourcesEndpoints(serverHost).wellKnown, false)
-            .then(() => {
-                sendSignInRequest();
-            })
-            .catch(() => {
-                OPConfigurationUtil.setAuthorizeEndpoint(CommonServiceResourcesEndpoints(serverHost).authorize);
-                OPConfigurationUtil.setTokenEndpoint(CommonServiceResourcesEndpoints(serverHost).token);
-                OPConfigurationUtil.setRevokeTokenEndpoint(CommonServiceResourcesEndpoints(serverHost).revoke);
-                OPConfigurationUtil.setEndSessionEndpoint(CommonServiceResourcesEndpoints(serverHost).logout);
-                OPConfigurationUtil.setJwksUri(CommonServiceResourcesEndpoints(serverHost).jwks);
-                OPConfigurationUtil.setOPConfigInitiated();
-
-                sendSignInRequest();
-            });
-    }
+        })
+        .catch((error) => {
+            throw error;
+        });
 };
 
 /**
@@ -152,15 +111,14 @@ export const handleSignIn = (clientID: string,
  * @param {string} callbackURL - Login callback URL.
  * @return {(dispatch) => void}
  */
-export const handleSignOut = (callbackURL: string) => (dispatch) => {
-
+export const handleSignOut = () => (dispatch) => {
     dispatch(setSignOutRequestLoadingStatus(true));
 
-    SignOutUtil.sendSignOutRequest(callbackURL)
+    const oAuth = new Authenticate(STORAGE.webWorker);
+    oAuth
+        .signOut()
         .then(() => {
             dispatch(setSignOut());
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
         })
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         .catch((error) => {
@@ -179,18 +137,11 @@ export const handleSignOut = (callbackURL: string) => (dispatch) => {
  * @param {(error: Error) => void} onError - Callback to be fired on session end error.
  */
 export const endUserSession = (onSuccess: () => void, onError: (error: Error) => void) => (dispatch) => {
-
     dispatch(setTokenRevokeRequestLoadingStatus(true));
-
-    SignInUtil.sendRevokeTokenRequest(
-        JSON.parse(AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.REQUEST_PARAMS)),
-        AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)
-    )
+    const oAuth = new Authenticate(STORAGE.webWorker);
+    oAuth
+        .revokeToken()
         .then(() => {
-            // Clear out the session info.
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
-
             // Fire the on success callback.
             onSuccess();
         })
