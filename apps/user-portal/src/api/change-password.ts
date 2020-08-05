@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -28,7 +28,7 @@ import { store } from "../store";
  */
 const httpClient = AxiosHttpClient.getInstance();
 
-const httpRequest = OAuth.getInstance().httpRequest;
+const httpRequest = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * Updates the user's password.
