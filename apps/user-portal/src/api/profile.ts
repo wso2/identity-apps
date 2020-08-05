@@ -17,7 +17,7 @@
  */
 
 import { SignInUtil } from "@wso2is/authentication";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
 import axios from "axios";
 import _ from "lodash";
 import { ApplicationConstants } from "../constants";
@@ -31,7 +31,7 @@ import { toggleSCIMEnabled } from "../store/actions";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * Retrieve the user information of the currently authenticated user.
