@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
 import { store } from "../../core";
 import { PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
 
@@ -31,7 +31,7 @@ const RESOURCE_NOT_FOUND_ERROR_MESSAGE = "Resource not found.";
  *
  * @type { AxiosHttpClientInstance }
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * Fetches all userstores.
