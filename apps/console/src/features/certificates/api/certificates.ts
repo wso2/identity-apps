@@ -18,13 +18,13 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Certificate, HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
-import { store } from "../../core";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
+import { store } from "../store";
 
 /**
  * Initialize an axios Http client.
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * This returns the list of certificate aliases.
