@@ -21,7 +21,6 @@ import {
     API_CALL,
     API_CALL_ALL,
     AUTHORIZATION_CODE,
-    AUTH_CODE,
     AUTH_REQUIRED,
     CUSTOM_GRANT,
     INIT,
@@ -29,7 +28,8 @@ import {
     PKCE_CODE_VERIFIER,
     REVOKE_TOKEN,
     SIGNED_IN,
-    SIGN_IN
+    SIGN_IN,
+    GET_SCOPE
 } from "./constants";
 import {
     AuthCode,
@@ -217,6 +217,28 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
             });
     };
 
+    const getScope = (): Promise<string> => {
+        if (!initialized) {
+            return Promise.reject("The object has not been initialized yet");
+        }
+
+        if (!signedIn) {
+            return Promise.reject("You have not signed in yet");
+        }
+
+        const message: Message<null> = {
+            type: GET_SCOPE
+        };
+
+        return communicate<null, string>(message)
+            .then((response) => {
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    };
+
     /**
      *
      * Send the API request to the web worker and returns the response.
@@ -307,7 +329,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      *	}
      * ```
      */
-    const initialize = (config: WebWorkerConfigInterface) => {
+    const initialize = (config: WebWorkerConfigInterface): Promise<boolean> => {
         if (config.authorizationType && typeof config.authorizationType !== "string") {
             return Promise.reject("The authorizationType must be a string");
         }
@@ -385,6 +407,8 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
     };
 
     /**
+     * @private
+     *
      * Sends the authorization code and authenticates the user.
      *
      * @returns {Promise<UserInfo>} Promise that resolves on successful authentication.
@@ -394,10 +418,9 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
 
         const message: Message<AuthCode> = {
             data: {
-                code: authCode,
-                pkce: sessionStorage.getItem(PKCE_CODE_VERIFIER)
+                code: authCode
             },
-            type: AUTH_CODE
+            type: SIGN_IN
         };
 
         history.pushState({}, document.title, removeAuthorizationCode());
@@ -543,6 +566,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
 
         return {
             customGrant,
+            getScope,
             httpRequest,
             httpRequestAll,
             initialize,
