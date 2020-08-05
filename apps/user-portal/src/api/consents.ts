@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
 import { ConsentReceiptInterface, ConsentState, HttpMethods, UpdateReceiptInterface } from "../models";
 import { store } from "../store";
 
@@ -24,7 +24,7 @@ import { store } from "../store";
  * Initialize an axios Http client.
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * Fetches a list of consented applications of the currently authenticated user.
