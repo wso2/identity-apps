@@ -18,7 +18,7 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ApplicationManagementConstants } from "../constants";
@@ -44,7 +44,7 @@ import { ApplicationManagementUtils } from "../utils";
  * Get an axios instance.
  *
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * Gets the basic information about the application.
