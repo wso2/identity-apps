@@ -16,16 +16,16 @@
  * under the License.
  */
 
-import { OAuth, SignInResponse } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE, SignInResponse } from "@wso2is/authentication";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
 /**
  * OAuth object.
- * 
+ *
  * @type {OAuthSingletonInterface}
  */
-const oAuth = OAuth.getInstance();
+const oAuth = new Authenticate(STORAGE.webWorker);
 
 /**
  * Get an axios instance.
@@ -157,8 +157,8 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
         .customGrant({
             attachToken: false,
             data: {
-                "client_id": "{{clientId}}",
-                "grant_type": "account_switch",
+                clientId: "{{clientId}}",
+                grantType: "account_switch",
                 scope: "{{scope}}",
                 "tenant-domain": account.tenantDomain,
                 token: "{{token}}",
