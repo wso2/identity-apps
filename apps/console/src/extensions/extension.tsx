@@ -21,7 +21,7 @@ import React, { ReactElement, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import * as getConfig from "./config";
-import { EmptyPlaceholderIllustrations } from "../configs";
+import { EmptyPlaceholderIllustrations } from "../features/core";
 
 /**
  * Extension Interface.

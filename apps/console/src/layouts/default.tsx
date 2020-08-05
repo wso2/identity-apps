@@ -41,11 +41,14 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import { Header, ProtectedRoute } from "../components";
-import { defaultLayoutRoutes } from "../configs";
-import { UIConstants } from "../constants";
-import { ConfigReducerStateInterface } from "../models";
-import { AppState } from "../store";
+import {
+    AppState,
+    ConfigReducerStateInterface,
+    Header,
+    ProtectedRoute,
+    UIConstants,
+    defaultLayoutRoutes
+} from "../features/core";
 
 /**
  * Default page layout component Prop types.
