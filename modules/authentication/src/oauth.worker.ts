@@ -26,7 +26,8 @@ import {
     LOGOUT,
     REVOKE_TOKEN,
     SIGNED_IN,
-    SIGN_IN
+    SIGN_IN,
+    GET_SCOPE
 } from "./constants";
 import { OAuthWorker as OAuthWorkerClass, OAuthWorkerInterface, SignInResponse } from "./models";
 import { OAuthWorker } from "./oauth-worker";
@@ -52,17 +53,13 @@ ctx.onmessage = ({ data, ports }) => {
         case SIGN_IN:
             if (!oAuthWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
-            } else if (oAuthWorker.doesTokenExist()) {
-                port.postMessage(
-                    generateSuccessDTO({
-                        data: oAuthWorker.getUserInfo(),
-                        type: SIGNED_IN
-                    })
-                );
             } else {
                 oAuthWorker
                     .initOPConfiguration()
                     .then(() => {
+                        if (data.data.code) {
+                            oAuthWorker.setAuthCode(data.data.code);
+                        }
                         oAuthWorker
                             .signIn()
                             .then((response: SignInResponse) => {
@@ -91,44 +88,6 @@ ctx.onmessage = ({ data, ports }) => {
                         port.postMessage(generateFailureDTO(error));
                     });
             }
-
-            break;
-        case AUTH_CODE:
-            if (!oAuthWorker) {
-                port.postMessage(generateFailureDTO("Worker has not been initiated."));
-
-                break;
-            }
-            oAuthWorker
-                .initOPConfiguration()
-                .then(() => {
-                    oAuthWorker
-                        .signIn()
-                        .then((response: SignInResponse) => {
-                            if (response.type === SIGNED_IN) {
-                                port.postMessage(
-                                    generateSuccessDTO({
-                                        data: response.data,
-                                        type: SIGNED_IN
-                                    })
-                                );
-                            } else {
-                                port.postMessage(
-                                    generateSuccessDTO({
-                                        code: response.code,
-                                        pkce: response.pkce,
-                                        type: AUTH_REQUIRED
-                                    })
-                                );
-                            }
-                        })
-                        .catch((error) => {
-                            port.postMessage(generateFailureDTO(error));
-                        });
-                })
-                .catch((error) => {
-                    port.postMessage(generateFailureDTO(error));
-                });
 
             break;
         case API_CALL:
@@ -242,6 +201,22 @@ ctx.onmessage = ({ data, ports }) => {
                 .catch((error) => {
                     port.postMessage(generateFailureDTO(error));
                 });
+            break;
+        case GET_SCOPE:
+            if (!oAuthWorker) {
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
+
+                break;
+            }
+
+            if (!oAuthWorker.isSignedIn() && data.data.signInRequired) {
+                port.postMessage(generateFailureDTO("You have not signed in yet."));
+
+                break;
+            }
+
+            port.postMessage(oAuthWorker.getScope());
+
             break;
         default:
             port.postMessage(generateFailureDTO(`Unknown message type ${data?.type}`));
