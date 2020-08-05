@@ -25,7 +25,7 @@ export interface OAuthWorkerInterface {
     isSignedIn(): boolean;
     doesTokenExist(): boolean;
     initOPConfiguration(forceInit?: boolean): Promise<any>;
-    // generateAuthorizationCodeRequestURL(): string;
+    setAuthCode(authCode: string): void;
     signIn(): Promise<SignInResponse>;
     refreshAccessToken(): Promise<boolean>;
     signOut(): Promise<string>;
@@ -34,6 +34,7 @@ export interface OAuthWorkerInterface {
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
     getUserInfo(): UserInfo;
     revokeToken(): Promise<boolean>;
+    getScope(): string;
 }
 
 export interface OAuthWorkerSingletonInterface {
