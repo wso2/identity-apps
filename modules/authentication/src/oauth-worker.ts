@@ -43,7 +43,8 @@ import {
     TOKEN_ENDPOINT,
     TOKEN_TAG,
     USERNAME,
-    USERNAME_TAG
+    USERNAME_TAG,
+    AUTHORIZATION_CODE
 } from "./constants";
 import {
     CustomGrantRequestParams,
@@ -95,6 +96,15 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
     };
 
     /**
+     * Returns the allowed scopes.
+     *
+     * @return {string} Allowed scope.
+     */
+    const getScope = (): string => {
+        return allowedScope;
+    };
+
+    /**
      * Queries the OpenID endpoint to get the necessary API endpoints.
      *
      * @param {boolean} forceInit Determines if a OpenID-configuration initiation should be forced.
@@ -139,6 +149,15 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      */
     const revokeToken = (): Promise<boolean> => {
         return sendRevokeTokenRequestUtil(authConfig, session.get(ACCESS_TOKEN), STORAGE.webWorker, session);
+    };
+
+    /**
+     * Saves the passed authorization code on the session
+     *
+     * @param {string} authCode The authorization code.
+     */
+    const setAuthCode = (authCode: string): void => {
+        session.set(AUTHORIZATION_CODE, authCode);
     };
 
     /**
@@ -411,6 +430,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
         return {
             customGrant,
             doesTokenExist,
+            getScope,
             getUserInfo,
             httpRequest,
             httpRequestAll,
@@ -418,6 +438,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
             isSignedIn,
             refreshAccessToken,
             revokeToken,
+            setAuthCode,
             signIn,
             signOut
         };
