@@ -17,7 +17,7 @@
  */
 
 import { Claim, HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { Authenticate, STORAGE } from "@wso2is/authentication";
 import { store } from "../../core";
 import { AddExternalClaim } from "../models";
 
@@ -25,7 +25,7 @@ import { AddExternalClaim } from "../models";
  * Get an axios instance.
  *
  */
-const httpClient= OAuth.getInstance().httpRequest;
+const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
 
 /**
  * Add a local claim.
