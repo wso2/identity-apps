@@ -35,14 +35,10 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { ListItemProps } from "semantic-ui-react";
-import { deleteOIDCScope } from "../../api";
-import { AppConstants, ApplicationManagementConstants } from "../../constants";
-import { history } from "../../helpers";
-import {
-    ConfigReducerStateInterface,
-    OIDCScopesListInterface
-} from "../../models";
-import { AppState } from "../../store";
+import { ApplicationManagementConstants } from "../../applications";
+import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../core";
+import { deleteOIDCScope } from "../api";
+import { OIDCScopesListInterface } from "../models";
 
 /**
  *

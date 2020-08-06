@@ -25,12 +25,10 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, Icon } from "semantic-ui-react";
-import { getOIDCScopesList } from "../../api";
-import { OIDCScopeList } from "../../components/oidc-scopes";
-import { OIDCScopeCreateWizard } from "../../components/oidc-scopes/wizards";
-import { AdvancedSearchWithBasicFilters } from "../../components/shared";
-import { FeatureConfigInterface, OIDCScopesListInterface } from "../../models";
-import { AppState } from "../../store";
+import { AppState, FeatureConfigInterface } from "../../core";
+import { getOIDCScopesList } from "../api";
+import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
+import { OIDCScopesListInterface } from "../models";
 
 const OIDC_SCOPE_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {
