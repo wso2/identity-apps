@@ -37,9 +37,9 @@ import {
     commonConfigReducerInitialState,
     commonGlobalReducerInitialState,
     commonProfileReducerInitialState,
-    commonRequestLoadersInitialState
+    commonRequestLoadersInitialState,
+    helpPanelReducer
 } from "./reducers";
-import { helpPanelReducer } from "./reducers";
 import { applicationReducer } from "../../applications";
 import { commonAuthenticateReducerInitialState } from "../../authentication";
 import { identityProviderReducer } from "../../identity-providers";
