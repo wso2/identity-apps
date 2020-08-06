@@ -17,3 +17,5 @@
  */
 
 export * from "./extension";
+export * from "./extension-menu";
+export * from "./component-extension";
