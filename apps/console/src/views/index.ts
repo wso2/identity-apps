@@ -16,4 +16,5 @@
  * under the License.
  */
 
-export * from "./privacy";
+export * from "./admin";
+export * from "./developer";

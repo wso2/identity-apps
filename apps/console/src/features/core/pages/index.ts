@@ -16,4 +16,6 @@
  * under the License.
  */
 
+export * from "./customize";
 export * from "./errors";
+export * from "./privacy";

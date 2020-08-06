@@ -31,34 +31,59 @@ export class AppConstants {
     private constructor() { }
 
     /**
+     * Base path for Admin features.
+     * @type {string}
+     */
+    public static readonly ADMIN_VIEW_BASE_PATH: string = "/admin";
+
+    /**
+     * Base path for Developer features.
+     * @type {string}
+     */
+    public static readonly DEVELOPER_VIEW_BASE_PATH: string =  "/developer";
+
+    /**
      * App routing paths.
      * @constant
      * @type {Map<string, string>}
      */
     public static readonly PATHS: Map<string, string> = new Map<string, string>()
-        .set("CERTIFICATES", "/certificates")
-        .set("CLAIM_DIALECTS", "/claim-dialects")
-        .set("EMAIL_TEMPLATES", "/email-templates")
-        .set("EMAIL_TEMPLATE", "/email-templates/:typeId")
-        .set("EMAIL_TEMPLATE_ADD", "/email-templates/:typeId/add-template")
-        .set("EMAIL_TEMPLATE_LOCALE_ADD", "/email-templates/:typeId/add-template/:templateId")
-        .set("EXTERNAL_DIALECT_EDIT", "/edit-external-dialect/:id")
-        .set("GROUPS", "/groups")
-        .set("GROUP_EDIT", "/groups/:id")
-        .set("LOCAL_CLAIMS", "/local-claims")
-        .set("LOCAL_CLAIMS_EDIT", "/edit-local-claims/:id")
-        .set("OVERVIEW", "/overview")
+        .set("ADMIN_OVERVIEW", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/overview`)
+        .set("APPLICATIONS", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/applications`)
+        .set("APPLICATION_TEMPLATES", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/applications/templates`)
+        .set("APPLICATION_EDIT", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/applications/:id`)
+        .set("CERTIFICATES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/certificates`)
+        .set("CLAIM_DIALECTS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/claim-dialects`)
+        .set("CUSTOMIZE", "/customize")
+        .set("DEVELOPER_OVERVIEW", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/overview`)
+        .set("EMAIL_TEMPLATES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates`)
+        .set("EMAIL_TEMPLATE", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:typeId`)
+        .set("EMAIL_TEMPLATE_ADD", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:typeId/add-template`)
+        .set("EMAIL_TEMPLATE_LOCALE_ADD", `${
+            AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:typeId/add-template/:templateId`)
+        .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/edit-external-dialect/:id`)
+        .set("GROUPS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/groups`)
+        .set("GROUP_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/groups/:id`)
+        .set("IDP", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/identity-providers`)
+        .set("IDP_TEMPLATES", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/identity-providers/templates`)
+        .set("IDP_EDIT", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/identity-providers/:id`)
+        .set("LOCAL_CLAIMS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/local-claims`)
+        .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/edit-local-claims/:id`)
+        .set("OIDC_SCOPES", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/oidc-scopes`)
+        .set("OIDC_SCOPES_EDIT", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/oidc-scopes/:id`)
         .set("PAGE_NOT_FOUND", "/404")
         .set("PRIVACY", "/privacy")
-        .set("ROLES", "/roles")
-        .set("ROLE_EDIT", "/roles/:id")
-        .set("GOVERNANCE_CONNECTORS", "/governance-connectors/:id")
+        .set("REMOTE_REPO_CONFIG", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/remote-repository-config`)
+        .set("REMOTE_REPO_CONFIG_EDIT", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/remote-repository-config/:id`)
+        .set("ROLES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/roles`)
+        .set("ROLE_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/roles/:id`)
+        .set("GOVERNANCE_CONNECTORS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/governance-connectors/:id`)
         .set("UNAUTHORIZED", "/unauthorized")
-        .set("USERS", "/users")
-        .set("USER_EDIT", "/users/:id")
-        .set("USERSTORES", "/user-stores")
-        .set("USERSTORES_EDIT", "/edit-user-store/:id")
-        .set("USERSTORE_TEMPLATES", "/userstore-templates");
+        .set("USERS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/users`)
+        .set("USER_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/users/:id`)
+        .set("USERSTORES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/user-stores`)
+        .set("USERSTORES_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/edit-user-store/:id`)
+        .set("USERSTORE_TEMPLATES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/userstore-templates`);
 
     /**
      * Name of the app config file for the admin portal.

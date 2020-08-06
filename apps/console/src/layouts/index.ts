@@ -20,4 +20,3 @@ export * from "./app";
 export * from "./auth";
 export * from "./default";
 export * from "./error";
-export * from "./dashboard";
