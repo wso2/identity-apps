@@ -16,8 +16,19 @@
  * under the License.
  */
 
+import { DocumentationConstants } from "@wso2is/core/constants";
+import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { I18nConstants, ServerConfigurationsConstants } from "../constants";
+import { getApplicationsResourceEndpoints } from "../../applications";
+import { getAttributesResourceEndpoints } from "../../attributes";
+import { getCertificatesResourceEndpoints } from "../../certificates";
+import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
+import { getIDPResourceEndpoints } from "../../identity-providers";
+import { getRolesResourceEndpoints } from "../../roles";
+import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
+import { getUsersResourceEndpoints } from "../../users";
+import { getUserstoreResourceEndpoints } from "../../userstores";
+import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
@@ -50,6 +61,24 @@ export class Config {
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
             developerApp: window["AppUtils"].getConfig().developerApp,
+            documentation: {
+                baseURL: window["AppUtils"].getConfig().documentation?.baseURL
+                    ?? DocumentationConstants.GITHUB_API_BASE_URL,
+                contentBaseURL: window["AppUtils"].getConfig().documentation?.contentBaseURL
+                    ?? DocumentationConstants.DEFAULT_CONTENT_BASE_URL,
+                githubOptions: {
+                    branch: window["AppUtils"].getConfig().documentation?.githubOptions?.branch
+                        ?? DocumentationConstants.DEFAULT_BRANCH
+                },
+                imagePrefixURL: window["AppUtils"].getConfig().documentation?.imagePrefixURL
+                    ?? DocumentationConstants.DEFAULT_IMAGE_PREFIX_URL,
+                provider: window["AppUtils"].getConfig().documentation?.provider
+                    ?? DocumentationProviders.GITHUB,
+                structureFileType: window["AppUtils"].getConfig().documentation?.structureFileType
+                    ?? DocumentationStructureFileTypes.YAML,
+                structureFileURL: window["AppUtils"].getConfig().documentation?.structureFileURL
+                    ?? DocumentationConstants.DEFAULT_STRUCTURE_FILE_URL
+            },
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -82,51 +111,19 @@ export class Config {
      */
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
-            accountDisabling: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-                }/connectors/${ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID}`,
-            accountLocking: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-                }/connectors/${ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID}`,
-            accountRecovery: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
-                }/connectors/${ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID}`,
-            bulk: `${this.getDeploymentConfig().serverHost}/scim2/Bulk`,
-            captchaForSSOLogin: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-                }/connectors/${ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID}`,
-            certificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs`,
-            claims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects`,
-            clientCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/client-certs`,
-            emailTemplateType: `${this.getDeploymentConfig().serverHost}/api/server/v1/email/template-types`,
-            externalClaims:`${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/{}/claims`,
-            governanceConnectorCategories: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance`,
-            groups: `${this.getDeploymentConfig().serverHost}/scim2/Groups`,
-            localClaims: `${this.getDeploymentConfig().serverHost}/api/server/v1/claim-dialects/local/claims`,
-            loginPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_LOGIN_POLICIES_ID
-                }`,
+            ...getApplicationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getAttributesResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getIDPResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getRolesResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getUsersResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
-            passwordHistory: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-                }/connectors/${ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID}`,
-            passwordPolicies: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-                }`,
-            passwordPolicy: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID
-                }/connectors/${ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID}`,
-            permission: `${this.getDeploymentConfig().serverHost}/api/server/v1/permission-management/permissions`,
-            publicCertificates: `${this.getDeploymentConfig().serverHost}/api/server/v1/keystores/certs/public`,
-            requestPathAuthenticators:
-                `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`,
-            selfSignUp: `${this.getDeploymentConfig().serverHost}/api/server/v1/identity-governance/${
-                ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID
-                }/connectors/${ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID}`,
-            serverConfigurations: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs`,
-            userStores: `${this.getDeploymentConfig().serverHost}/api/server/v1/userstores`,
-            users: `${this.getDeploymentConfig().serverHost}/scim2/Users`
+            saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,
+            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }
 
@@ -141,6 +138,8 @@ export class Config {
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             appName: window["AppUtils"].getConfig().ui.appName,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
+            doNotDeleteApplications: window["doNotDeleteApplications"] || [],
+            doNotDeleteIdentityProviders: window["doNotDeleteIdentityProviders"] || [],
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
             productName: window["AppUtils"].getConfig().ui.productName
