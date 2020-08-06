@@ -23,10 +23,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import { listClientCertificates } from "../../api";
-import { AdvancedSearchWithBasicFilters, CertificatesList } from "../../components";
-import { UIConstants } from "../../constants";
-import { filterList, sortList } from "../../utils";
+import { AdvancedSearchWithBasicFilters, filterList, sortList, UIConstants } from "../../core";
+import { listClientCertificates } from "../api";
+import { CertificatesList } from "../components";
 
 /**
  * Props for the Certificates Truststore page.

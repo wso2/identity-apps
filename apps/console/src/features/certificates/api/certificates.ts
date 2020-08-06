@@ -19,7 +19,7 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Certificate, HttpMethods } from "@wso2is/core/models";
 import { OAuth } from "@wso2is/oauth-web-worker";
-import { store } from "../store";
+import { store } from "../../core";
 
 /**
  * Initialize an axios Http client.

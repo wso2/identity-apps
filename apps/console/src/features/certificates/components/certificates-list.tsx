@@ -43,16 +43,14 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Modal } from "semantic-ui-react";
+import { AppState, EmptyPlaceholderIllustrations, FeatureConfigInterface, UIConstants } from "../../core";
 import {
     deleteKeystoreCertificate,
     retrieveCertificateAlias,
     retrieveClientCertificate,
     retrievePublicCertificate
-} from "../../api";
-import { CertificateIllustrations, EmptyPlaceholderIllustrations } from "../../configs";
-import { UIConstants } from "../../constants";
-import { FeatureConfigInterface } from "../../models";
-import { AppState } from "../../store";
+} from "../api";
+import { CertificateIllustrations } from "../configs";
 
 /**
  * @constant

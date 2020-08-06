@@ -26,9 +26,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { CertificateSummary } from "./wizard";
-import { createKeystoreCertificate } from "../../api";
-import { ImportCertificateWizardStepIcons } from "../../configs";
-import { UploadCertificate } from "../shared";
+import { UploadCertificate } from "../../core";
+import { createKeystoreCertificate } from "../api";
+import { ImportCertificateWizardStepIcons } from "../configs";
 
 /**
  * Prop types of the `ImportCertificate` component.

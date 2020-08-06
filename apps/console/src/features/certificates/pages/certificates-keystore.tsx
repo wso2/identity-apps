@@ -25,12 +25,16 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { listCertificateAliases } from "../../api";
-import { AdvancedSearchWithBasicFilters, CertificatesList, ImportCertificate } from "../../components";
-import { UIConstants } from "../../constants";
-import { FeatureConfigInterface } from "../../models";
-import { AppState } from "../../store";
-import { filterList, sortList } from "../../utils";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    filterList,
+    sortList
+} from "../../core";
+import { listCertificateAliases } from "../api";
+import { CertificatesList, ImportCertificate } from "../components";
 
 /**
  * Props for the Certificates Keystore page.
