@@ -37,31 +37,37 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { Divider, Grid, Label } from "semantic-ui-react";
 import {
     AppConstants,
-    AppState,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
     FeatureConfigInterface,
     HelpPanelActionIcons,
-    HelpPanelUtils,
     PortalDocumentationStructureInterface,
-    TechnologyLogos,
     history,
-    setHelpPanelDocsContentURL
+    AppState,
+    setHelpPanelDocsContentURL,
+    toggleHelpPanelVisibility,
+    HelpPanelUtils,
+    TechnologyLogos
 } from "../../core";
 import { getApplicationDetails, updateApplicationConfigurations } from "../api";
 import { EditApplication, HelpPanelOverview, SamplesGuideComponent } from "../components";
 import { HelpPanelIcons, InboundProtocolLogos } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
-import { ApplicationInterface, ApplicationTemplateListItemInterface, emptyApplication } from "../models";
+import {
+    ApplicationInterface,
+    ApplicationTemplateListItemInterface,
+    emptyApplication
+} from "../models";
 import { ApplicationManagementUtils } from "../utils";
 
 /**
  * Proptypes for the applications edit page component.
  */
-type ApplicationEditPageInterface = TestableComponentInterface
+interface ApplicationEditPageInterface extends TestableComponentInterface, RouteComponentProps { }
 
 /**
  * Application Edit page component.
@@ -75,8 +81,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
 ): ReactElement => {
 
     const {
+        location,
         [ "data-testid" ]: testId
     } = props;
+
+    const urlSearchParams = new URLSearchParams(location.search);
 
     const { t } = useTranslation();
 
@@ -89,6 +98,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const helpPanelVisibilityGlobalState: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
     const [ applicationTemplateName, setApplicationTemplateName ] = useState<string>(undefined);
@@ -120,6 +130,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
+    const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
+    const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
 
     /**
      * Fetch the application details on initial component load.
@@ -379,6 +391,38 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [applicationTemplateName, application]);
 
     /**
+     * Triggered when the application state search param in the URL changes.
+     * TODO: IMPORTANT - Refactor this code.
+     */
+    useEffect(() => {
+        if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
+            if (isExtensionsAvailable) {
+                setDefaultActiveIndex(1);
+            }
+
+            return;
+        }
+
+        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
+            === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && isExtensionsAvailable) {
+
+            setDefaultActiveIndex(0);
+
+            if (helpPanelVisibilityGlobalState) {
+                dispatch(toggleHelpPanelVisibility(false));
+            }
+
+            return;
+        }
+
+        if (urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)
+            === ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE && !HelpPanelUtils.isPanelPinned()) {
+
+            toggleHelpPanelVisibility(true);
+        }
+    }, [ urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY), isExtensionsAvailable ]);
+
+    /**
      * Retrieves application details from the API.
      *
      * @param {string} id - Application id.
@@ -493,13 +537,15 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     handleTabChange={ handleTabChange }
                 />
                 ),
-            heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
+            //heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
+            heading: "Server Endpoints",
             hidden: application?.inboundProtocols?.length <= 0,
             icon: {
-                icon: HelpPanelIcons.tabs.whatsNext
+                icon: HelpPanelIcons.tabs.guide
             }
         },
-        {
+        // TODO : Should be removed after getting started flow is implemented.
+        /*{
             content: (
                 helpPanelSelectedProtocol
                     ? (
@@ -713,7 +759,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             icon: {
                 icon: HelpPanelIcons.tabs.sdks
             }
-        }
+        }*/
     ];
 
     return (
@@ -731,6 +777,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
             unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
+            visible={ helpPanelVisibilityGlobalState }
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }
@@ -770,12 +818,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             >
                 <EditApplication
                     application={ application }
+                    defaultActiveIndex={ defaultActiveIndex }
                     featureConfig={ featureConfig }
                     isLoading={ isApplicationRequestLoading }
                     onDelete={ handleApplicationDelete }
                     onUpdate={ handleApplicationUpdate }
                     template={ applicationTemplate }
                     data-testid={ testId }
+                    isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                 />
             </PageLayout>
         </HelpPanelLayout>

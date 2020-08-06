@@ -21,6 +21,7 @@ import {
     GenericIcon,
     Jumbotron,
     LabeledCard,
+    PageLayout,
     PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -52,190 +53,192 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
     const { t } = useTranslation();
 
     return (
-        <div className="developer-portal page overview-page">
-            <Jumbotron
-                bordered
-                background="accent1"
-                className="with-animated-background"
-                heading={ t("devPortal:components.overview.banner.heading") }
-                subHeading={ t("devPortal:components.overview.banner.subHeading") }
-                textAlign="center"
-                matchedPadding={ false }
-                borderRadius={ 10 }
-                style={ {
-                    backgroundImage: `url(${ OverviewPageImages.jumbotron.background })`
-                } }
-                data-testid={ `${ testId }-jumbotron` }
-            >
-                <PrimaryButton
-                    basic
-                    onClick={ () => window.open(UIConstants.IS_DOC_URLS.get("5.11.0"), "_blank") }
+        <PageLayout contentTopMargin={ false }>
+            <div className="developer-portal page overview-page">
+                <Jumbotron
+                    bordered
+                    background="accent1"
+                    className="with-animated-background"
+                    heading={ t("devPortal:components.overview.banner.heading") }
+                    subHeading={ t("devPortal:components.overview.banner.subHeading") }
+                    textAlign="center"
+                    matchedPadding={ false }
+                    borderRadius={ 10 }
+                    style={ {
+                        backgroundImage: `url(${ OverviewPageImages.jumbotron.background })`
+                    } }
+                    data-testid={ `${ testId }-jumbotron` }
                 >
-                    { t("common:documentation") }
-                </PrimaryButton>
-            </Jumbotron>
-            <Divider className="x3" hidden />
-            <Card.Group className="technology-showcase" centered>
-                <LabeledCard
-                    basic
-                    background="transparent"
-                    label={ t("devPortal:technologies.angular") }
-                    imageSize="x50"
-                    image={ TechnologyLogos.angular }
-                    imageOptions={ {
-                        fill: false
-                    } }
-                    padding="none"
-                    raiseOnHover={ false }
-                />
-                <LabeledCard
-                    basic
-                    background="transparent"
-                    label={ t("devPortal:technologies.react") }
-                    imageSize="x50"
-                    image={ TechnologyLogos.react }
-                    imageOptions={ {
-                        fill: false
-                    } }
-                    padding="none"
-                    raiseOnHover={ false }
-                />
-                <LabeledCard
-                    basic
-                    background="transparent"
-                    label={ t("devPortal:technologies.windows") }
-                    imageSize="x50"
-                    image={ TechnologyLogos.windows }
-                    imageOptions={ {
-                        fill: false
-                    } }
-                    padding="none"
-                    raiseOnHover={ false }
-                />
-                <LabeledCard
-                    basic
-                    background="transparent"
-                    label={ t("devPortal:technologies.ios") }
-                    imageSize="x50"
-                    image={ TechnologyLogos.ios }
-                    imageOptions={ {
-                        fill: false
-                    } }
-                    padding="none"
-                    raiseOnHover={ false }
-                />
-                <LabeledCard
-                    basic
-                    background="transparent"
-                    label={ t("devPortal:technologies.python") }
-                    imageSize="x50"
-                    image={ TechnologyLogos.python }
-                    imageOptions={ {
-                        fill: false
-                    } }
-                    padding="none"
-                    raiseOnHover={ false }
-                />
-                <LabeledCard
-                    basic
-                    background="transparent"
-                    label={ t("devPortal:technologies.java") }
-                    imageSize="x50"
-                    image={ TechnologyLogos.java }
-                    imageOptions={ {
-                        fill: false
-                    } }
-                    padding="none"
-                    raiseOnHover={ false }
-                />
-                <LabeledCard
-                    basic
-                    background="transparent"
-                    label={ t("devPortal:technologies.android") }
-                    imageSize="x50"
-                    image={ TechnologyLogos.android }
-                    imageOptions={ {
-                        fill: false
-                    } }
-                    padding="none"
-                    raiseOnHover={ false }
-                />
-            </Card.Group>
-            <Divider className="x3" hidden />
-            <Divider />
-            <Divider className="x3" hidden />
-            <Card.Group className="quick-links" centered>
-                <Card
-                    className="basic-card"
-                    link={ false }
-                    as="div"
-                    onClick={ () => history.push(AppConstants.PATHS.get("APPLICATIONS")) }
-                >
-                    <GenericIcon
-                        square
-                        fill="default"
-                        size="x50"
-                        icon={ OverviewPageImages.quickLinks.applications }
-                        relaxed="very"
-                        transparent
+                    <PrimaryButton
+                        basic
+                        onClick={ () => window.open(UIConstants.IS_DOC_URLS.get("5.11.0"), "_blank") }
+                    >
+                        { t("common:documentation") }
+                    </PrimaryButton>
+                </Jumbotron>
+                <Divider className="x3" hidden />
+                <Card.Group className="technology-showcase" centered>
+                    <LabeledCard
+                        basic
+                        background="transparent"
+                        label={ t("devPortal:technologies.angular") }
+                        imageSize="x50"
+                        image={ TechnologyLogos.angular }
+                        imageOptions={ {
+                            fill: false
+                        } }
+                        padding="none"
+                        raiseOnHover={ false }
                     />
-                    <Card.Content textAlign="center">
-                        <Card.Header>
-                            { t("devPortal:components.overview.quickLinks.cards.applications.heading") }
-                        </Card.Header>
-                        <Card.Description>
-                            { t("devPortal:components.overview.quickLinks.cards.applications.subHeading") }
-                        </Card.Description>
-                    </Card.Content>
-                </Card>
-                <Card
-                    className="basic-card"
-                    link={ false }
-                    as="div"
-                    onClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
-                >
-                    <GenericIcon
-                        square
-                        fill="default"
-                        size="x50"
-                        icon={ OverviewPageImages.quickLinks.idp }
-                        relaxed="very"
-                        transparent
+                    <LabeledCard
+                        basic
+                        background="transparent"
+                        label={ t("devPortal:technologies.react") }
+                        imageSize="x50"
+                        image={ TechnologyLogos.react }
+                        imageOptions={ {
+                            fill: false
+                        } }
+                        padding="none"
+                        raiseOnHover={ false }
                     />
-                    <Card.Content textAlign="center">
-                        <Card.Header>
-                            { t("devPortal:components.overview.quickLinks.cards.idps.heading") }
-                        </Card.Header>
-                        <Card.Description>
-                            { t("devPortal:components.overview.quickLinks.cards.idps.subHeading") }
-                        </Card.Description>
-                    </Card.Content>
-                </Card>
-                <Card
-                    className="basic-card"
-                    link={ false }
-                    as="div"
-                    onClick={ () => history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG")) }
-                >
-                    <GenericIcon
-                        square
-                        fill="default"
-                        size="x50"
-                        icon={ OverviewPageImages.quickLinks.remoteFetch }
-                        relaxed="very"
-                        transparent
+                    <LabeledCard
+                        basic
+                        background="transparent"
+                        label={ t("devPortal:technologies.windows") }
+                        imageSize="x50"
+                        image={ TechnologyLogos.windows }
+                        imageOptions={ {
+                            fill: false
+                        } }
+                        padding="none"
+                        raiseOnHover={ false }
                     />
-                    <Card.Content textAlign="center">
-                        <Card.Header>
-                            { t("devPortal:components.overview.quickLinks.cards.remoteFetch.heading") }
-                        </Card.Header>
-                        <Card.Description>
-                            { t("devPortal:components.overview.quickLinks.cards.remoteFetch.subHeading") }
-                        </Card.Description>
-                    </Card.Content>
-                </Card>
-            </Card.Group>
-        </div>
+                    <LabeledCard
+                        basic
+                        background="transparent"
+                        label={ t("devPortal:technologies.ios") }
+                        imageSize="x50"
+                        image={ TechnologyLogos.ios }
+                        imageOptions={ {
+                            fill: false
+                        } }
+                        padding="none"
+                        raiseOnHover={ false }
+                    />
+                    <LabeledCard
+                        basic
+                        background="transparent"
+                        label={ t("devPortal:technologies.python") }
+                        imageSize="x50"
+                        image={ TechnologyLogos.python }
+                        imageOptions={ {
+                            fill: false
+                        } }
+                        padding="none"
+                        raiseOnHover={ false }
+                    />
+                    <LabeledCard
+                        basic
+                        background="transparent"
+                        label={ t("devPortal:technologies.java") }
+                        imageSize="x50"
+                        image={ TechnologyLogos.java }
+                        imageOptions={ {
+                            fill: false
+                        } }
+                        padding="none"
+                        raiseOnHover={ false }
+                    />
+                    <LabeledCard
+                        basic
+                        background="transparent"
+                        label={ t("devPortal:technologies.android") }
+                        imageSize="x50"
+                        image={ TechnologyLogos.android }
+                        imageOptions={ {
+                            fill: false
+                        } }
+                        padding="none"
+                        raiseOnHover={ false }
+                    />
+                </Card.Group>
+                <Divider className="x3" hidden />
+                <Divider style={ { marginLeft: "15em", marginRight: "15em" } } />
+                <Divider className="x3" hidden />
+                <Card.Group className="quick-links" centered>
+                    <Card
+                        className="basic-card"
+                        link={ false }
+                        as="div"
+                        onClick={ () => history.push(AppConstants.PATHS.get("APPLICATIONS")) }
+                    >
+                        <GenericIcon
+                            square
+                            fill="default"
+                            size="x50"
+                            icon={ OverviewPageImages.quickLinks.applications }
+                            relaxed="very"
+                            transparent
+                        />
+                        <Card.Content textAlign="center">
+                            <Card.Header>
+                                { t("devPortal:components.overview.quickLinks.cards.applications.heading") }
+                            </Card.Header>
+                            <Card.Description>
+                                { t("devPortal:components.overview.quickLinks.cards.applications.subHeading") }
+                            </Card.Description>
+                        </Card.Content>
+                    </Card>
+                    <Card
+                        className="basic-card"
+                        link={ false }
+                        as="div"
+                        onClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
+                    >
+                        <GenericIcon
+                            square
+                            fill="default"
+                            size="x50"
+                            icon={ OverviewPageImages.quickLinks.idp }
+                            relaxed="very"
+                            transparent
+                        />
+                        <Card.Content textAlign="center">
+                            <Card.Header>
+                                { t("devPortal:components.overview.quickLinks.cards.idps.heading") }
+                            </Card.Header>
+                            <Card.Description>
+                                { t("devPortal:components.overview.quickLinks.cards.idps.subHeading") }
+                            </Card.Description>
+                        </Card.Content>
+                    </Card>
+                    <Card
+                        className="basic-card"
+                        link={ false }
+                        as="div"
+                        onClick={ () => history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG")) }
+                    >
+                        <GenericIcon
+                            square
+                            fill="default"
+                            size="x50"
+                            icon={ OverviewPageImages.quickLinks.remoteFetch }
+                            relaxed="very"
+                            transparent
+                        />
+                        <Card.Content textAlign="center">
+                            <Card.Header>
+                                { t("devPortal:components.overview.quickLinks.cards.remoteFetch.heading") }
+                            </Card.Header>
+                            <Card.Description>
+                                { t("devPortal:components.overview.quickLinks.cards.remoteFetch.subHeading") }
+                            </Card.Description>
+                        </Card.Content>
+                    </Card>
+                </Card.Group>
+            </div>
+        </PageLayout>
     );
 };
 

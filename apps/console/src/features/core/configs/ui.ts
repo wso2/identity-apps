@@ -28,6 +28,7 @@ import {
 import { ReactComponent as BoxIcon } from "../../../themes/default/assets/images/icons/box-icon.svg";
 import { ReactComponent as BriefcaseIcon } from "../../../themes/default/assets/images/icons/briefcase-icon.svg";
 import { ReactComponent as CaretRightIcon } from "../../../themes/default/assets/images/icons/caret-right-icon.svg";
+import { ReactComponent as CaretLeftIcon } from "../../../themes/default/assets/images/icons/caret-left-icon.svg";
 import {
     ReactComponent as CertificateAvatar
 } from "../../../themes/default/assets/images/icons/certificate-avatar.svg";
@@ -159,7 +160,9 @@ export const OperationIcons = {
 
 export const HelpPanelActionIcons = {
     close: CrossIcon,
-    pin: PinIcon
+    pin: PinIcon,
+    caretLeft: CaretLeftIcon,
+    caretRight: CaretRightIcon
 };
 
 export const CertificateIllustrations = {

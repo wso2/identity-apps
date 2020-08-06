@@ -93,6 +93,20 @@ export class ApplicationManagementConstants {
     public static readonly APPLICATION_DOCS_OVERVIEW = "Overview";
 
     /**
+     * Key for the URL search param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_URL_SEARCH_PARAM_KEY = "state";
+
+    /**
+     * Value for the URL search param for application state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
+
+    /**
      * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
      * @remarks
      * If the template name is changed, this map has to be changed.
@@ -100,18 +114,21 @@ export class ApplicationManagementConstants {
      * @type {Map<string, string>}
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
-        .set("SAML web application", "SAML Web Application")
-        .set("OIDC web application", "OIDC Web Application")
-        .set("Single page application", "Single Page Application")
-        .set("Mobile application", "OIDC Mobile Application")
-        .set("Windows desktop application", "Windows Desktop Application");
+        .set("Web Application", "Single Page Application")
+        .set("Single Page Application", "Single Page Application")
+        .set("Mobile Application", "OIDC Mobile Application")
+        .set("Desktop Application", "Windows Desktop Application")
+        .set("Slack", "OIDC Web Application")
+        .set("Zoom", "OIDC Web Application")
+        .set("Workday", "OIDC Web Application")
+        .set("Box", "OIDC Web Application");
 
     /**
      * Key for the SPA template.
      * @constant
      * @type {string}
      */
-    public static readonly SPA = "Single page application";
+    public static readonly SPA = "Single Page Application";
 
     // API errors
     public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +

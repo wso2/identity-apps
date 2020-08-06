@@ -33,6 +33,7 @@ import {
   ProvisioningSettings,
   SignOnMethods
 } from "./settings";
+import { ComponentExtensionPlaceholder } from "../../../extensions";
 import { AppState, FeatureConfigInterface } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
@@ -53,6 +54,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      */
     application: ApplicationInterface;
     /**
+     * Default active tab index.
+     */
+    defaultActiveIndex?: number;
+    /**
      * Is the data still loading.
      */
     isLoading?: boolean;
@@ -68,6 +73,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
+    /**
+     * Callback to see if tab extensions are available
+     */
+    isTabExtensionsAvailable: (isAvailable: boolean) => void;
 }
 
 /**
@@ -83,11 +92,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const {
         application,
+        defaultActiveIndex,
         featureConfig,
         isLoading,
         onDelete,
         onUpdate,
         template,
+        isTabExtensionsAvailable,
         [ "data-testid" ]: testId
     } = props;
 
@@ -102,6 +113,20 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [inboundProtocolList, setInboundProtocolList] = useState<string[]>([]);
     const [inboundProtocolConfig, setInboundProtocolConfig] = useState<any>(undefined);
     const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
+    const [tabPaneExtensions, setTabPaneExtensions] = useState<any>(undefined);
+
+    useEffect(() => {
+        if (tabPaneExtensions) {
+            isTabExtensionsAvailable(true);
+            return;
+        }
+
+        setTabPaneExtensions(ComponentExtensionPlaceholder({ 
+            component: "application", 
+            subComponent: "edit", 
+            type: "tab" 
+        })) ;
+    }, [tabPaneExtensions]);
 
     /**
      * Called on `availableInboundProtocols` prop update.
@@ -300,6 +325,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const resolveTabPanes = (): any[] => {
         const panes: any[] = [];
 
+        if (tabPaneExtensions && tabPaneExtensions.length > 0) {
+            panes.push(...tabPaneExtensions);
+        }
+
         if (featureConfig) {
             if (isFeatureEnabled(featureConfig?.applications,
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
@@ -383,7 +412,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading
-            ? <ResourceTab panes={ resolveTabPanes() }/>
+            ? <ResourceTab panes={ resolveTabPanes() } defaultActiveIndex={ defaultActiveIndex } />
             : <ContentLoader/>
     );
 };

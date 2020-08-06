@@ -33,16 +33,10 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import {
-    AdvancedSearchWithBasicFilters,
-    AppConstants,
-    AppState,
-    FeatureConfigInterface,
-    UIConstants,
-    history
-} from "../../core";
+import { AdvancedSearchWithBasicFilters, AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
+import { ApplicationListInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
     {

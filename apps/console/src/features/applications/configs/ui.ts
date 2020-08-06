@@ -51,6 +51,9 @@ import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
 import {
+    ReactComponent as BoxTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/box-template-illustration.svg";
+import {
     ReactComponent as CustomApplicationTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/custom-app-illustration.svg";
 import {
@@ -66,14 +69,23 @@ import {
     ReactComponent as SAMLWebAppTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/saml-web-app-template-illustration.svg";
 import {
+    ReactComponent as SlackTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/slack-template-illustration.svg";
+import {
     ReactComponent as SPATemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/spa-template-illustration.svg";
 import {
     ReactComponent as WindowsTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/windows-template-illustration.svg";
 import {
+    ReactComponent as WorkdayTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/workday-template-illustration.svg";
+import {
     ReactComponent as WSTrustTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/ws-trust-template-illustration.svg";
+import {
+    ReactComponent as ZoomTemplateIllustration
+} from "../../../themes/default/assets/images/illustrations/zoom-template-illustration.svg";
 import OIDCLogo from "../../../themes/default/assets/images/protocols/oidc.png";
 import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
 import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
@@ -105,7 +117,11 @@ export const ApplicationTemplateIllustrations = {
     samlWebApp: SAMLWebAppTemplateIllustration,
     spa: SPATemplateIllustration,
     windowsNative: WindowsTemplateIllustration,
-    wsTrust: WSTrustTemplateIllustration
+    wsTrust: WSTrustTemplateIllustration,
+    slack: SlackTemplateIllustration,
+    zoom: ZoomTemplateIllustration,
+    workday: WorkdayTemplateIllustration,
+    box: BoxTemplateIllustration
 };
 
 export const ApplicationWizardStepIcons = {

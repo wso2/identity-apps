@@ -26,17 +26,16 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Form, Grid, Message, Segment } from "semantic-ui-react";
-import { ModalWithSidePanel } from "../..";
-import { createApplication, getApplicationTemplateData } from "../../../api";
-import { ApplicationTemplateIllustrations } from "../../../configs";
-import { AppConstants, ApplicationManagementConstants } from "../../../constants";
-import { history } from "../../../helpers";
+import { AppConstants, ModalWithSidePanel, history } from "../../../core";
+import { createApplication, getApplicationTemplateData } from "../../api";
+import { ApplicationTemplateIllustrations } from "../../configs";
+import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
     MainApplicationInterface
-} from "../../../models";
-import { ApplicationManagementUtils } from "../../../utils";
+} from "../../models";
+import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Specifies the template ID of SPAs.

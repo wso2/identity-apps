@@ -24,8 +24,8 @@ import {
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ApplicationsResourceEndpointsInterface } from "../../applications";
-import { AttributesResourceEndpointsInterface } from "../../attributes";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
+import { ClaimResourceEndpointsInterface } from "../../claims";
 import { IDPResourceEndpointsInterface } from "../../identity-providers";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
@@ -43,6 +43,10 @@ export type ConfigInterface = CommonConfigInterface<
  * Application configuration interface.
  */
 export interface FeatureConfigInterface {
+    /**
+     * Application management feature.
+     */
+    applications?: FeatureAccessConfigInterface;
     /**
      * Attribute dialects(Claim dialects) feature.
      */
@@ -63,6 +67,10 @@ export interface FeatureConfigInterface {
      * Groups feature.
      */
     groups?: FeatureAccessConfigInterface;
+    /**
+     * Identity provider management feature.
+     */
+    identityProviders?: FeatureAccessConfigInterface;
     /**
      * Role management feature.
      */
@@ -115,7 +123,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
 /**
  * Service resource endpoints config.
  */
-export interface ServiceResourceEndpointsInterface extends AttributesResourceEndpointsInterface,
+export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpointsInterface,
     CertificatesResourceEndpointsInterface,
     ServerConfigurationsResourceEndpointsInterface,
     UsersResourceEndpointsInterface,

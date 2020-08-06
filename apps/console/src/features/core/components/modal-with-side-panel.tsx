@@ -19,7 +19,7 @@
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
 import { Divider, Modal, ModalProps } from "semantic-ui-react";
-import { HelpSidebarIcons } from "../../configs";
+import { HelpPanelActionIcons } from "../configs";
 
 /**
  * Model of the sub components  of the `ModalWithSidePanel` component.
@@ -147,8 +147,8 @@ export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<Co
                         link={ true }
                         icon={
                             sidePanelOpen
-                                ? HelpSidebarIcons.actionPanel.caretLeft
-                                : HelpSidebarIcons.actionPanel.caretRight
+                                ? HelpPanelActionIcons.caretLeft
+                                : HelpPanelActionIcons.caretRight
                         }
                     />
                 </div>
