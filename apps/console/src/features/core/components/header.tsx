@@ -38,11 +38,11 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
-import { ComponentPlaceholder } from "../../extensions";
-import { history } from "../../helpers";
-import { ConfigReducerStateInterface } from "../../models";
-import { AppState } from "../../store";
-import { CommonUtils } from "../../utils";
+import { ComponentPlaceholder } from "../../../extensions";
+import { history } from "../helpers";
+import { ConfigReducerStateInterface } from "../models";
+import { AppState } from "../store";
+import { CommonUtils } from "../utils";
 
 /**
  * Dashboard layout Prop types.
