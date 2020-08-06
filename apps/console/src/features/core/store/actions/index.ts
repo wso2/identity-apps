@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./authenticate";
-export * from "./governance-connector";
+export * from "./help-panel";

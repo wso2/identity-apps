@@ -34,13 +34,16 @@ import { System } from "react-notification-system";
 import { combineReducers } from "redux";
 import { reducer as formReducer } from "redux-form";
 import {
-    commonAuthenticateReducerInitialState,
     commonConfigReducerInitialState,
     commonGlobalReducerInitialState,
     commonProfileReducerInitialState,
-    commonRequestLoadersInitialState
+    commonRequestLoadersInitialState,
+    helpPanelReducer
 } from "./reducers";
-import { governanceConnectorReducer } from "./reducers/governance-connector";
+import { applicationReducer } from "../../applications";
+import { commonAuthenticateReducerInitialState } from "../../authentication";
+import { identityProviderReducer } from "../../identity-providers";
+import { governanceConnectorReducer } from "../../server-configurations";
 import {
     DeploymentConfigInterface,
     FeatureConfigInterface,
@@ -54,6 +57,7 @@ import {
  * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
 export const reducers = combineReducers({
+    application: applicationReducer,
     auth: commonAuthenticateReducer(commonAuthenticateReducerInitialState),
     config: commonConfigReducer<
         DeploymentConfigInterface,
@@ -65,6 +69,8 @@ export const reducers = combineReducers({
     form: formReducer,
     global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),
     governanceConnector: governanceConnectorReducer,
+    helpPanel: helpPanelReducer,
+    identityProvider: identityProviderReducer,
     loaders: commonRequestLoadersReducer(commonRequestLoadersInitialState),
     profile: commonProfileReducer<
         ProfileInfoInterface,

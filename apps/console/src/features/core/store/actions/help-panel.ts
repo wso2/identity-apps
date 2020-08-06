@@ -18,10 +18,8 @@
 
 import {
     HelpPanelActionTypes,
-    SetHelpPanelActiveTabIndexActionInterface,
     SetHelpPanelDocStructureActionInterface,
-    SetHelpPanelDocsContentURLActionInterface,
-    ToggleHelpPanelVisibilityActionInterface
+    SetHelpPanelDocsContentURLActionInterface
 } from "./types";
 import { PortalDocumentationStructureInterface } from "../../models";
 
@@ -47,26 +45,4 @@ export const setHelpPanelDocStructure = (
 ): SetHelpPanelDocStructureActionInterface => ({
     payload: structure,
     type: HelpPanelActionTypes.SET_HELP_PANEL_DOC_STRUCTURE
-});
-
-/**
- * Redux action to toggle help panel visibility.
- *
- * @param {boolean} isVisible - Should side panel be visible.
- * @return {ToggleHelpPanelVisibilityActionInterface} An action of type `TOGGLE_HELP_PANEL_VISIBILITY`
- */
-export const toggleHelpPanelVisibility = (isVisible: boolean): ToggleHelpPanelVisibilityActionInterface => ({
-    payload: isVisible,
-    type: HelpPanelActionTypes.TOGGLE_HELP_PANEL_VISIBILITY
-});
-
-/**
- * Redux action to set the help panel active tab index.
- *
- * @param {number} tabIndex - The active tab index.
- * @return {SetHelpPanelActiveTabIndexActionInterface} An action of type `SET_HELP_PANEL_ACTIVE_TAB_INDEX`
- */
-export const setHelpPanelActiveTabIndex = (tabIndex: number): SetHelpPanelActiveTabIndexActionInterface => ({
-    payload: tabIndex,
-    type: HelpPanelActionTypes.SET_HELP_PANEL_ACTIVE_TAB_INDEX
 });

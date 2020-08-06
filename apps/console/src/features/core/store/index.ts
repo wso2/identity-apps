@@ -52,3 +52,4 @@ const configureStore = (): Store<any, AnyAction> & Store<AppState & {}, AppActio
 };
 
 export const store = configureStore();
+export * from "./actions";

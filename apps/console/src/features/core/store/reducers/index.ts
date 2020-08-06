@@ -16,4 +16,8 @@
  * under the License.
  */
 
-export * from "./governance-connector";
+export * from "./config";
+export * from "./global";
+export * from "./help-panel";
+export * from "./loaders";
+export * from "./profile";
