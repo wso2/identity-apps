@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getRolesList } from "@wso2is/core/api";
+import { getRolesList, getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
@@ -25,12 +25,9 @@ import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteRoleById, getUserStoreList, searchRoleList } from "../../api";
-import { AdvancedSearchWithBasicFilters } from "../../components";
-import { RoleList } from "../../components/roles";
-import { CreateRoleWizard } from "../../components/roles/create-role-wizard";
-import { UIConstants } from "../../constants";
-import { SearchRoleInterface } from "../../models"
+import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
+// TODO: Implement own logic/schemas/components for groups.
+import { CreateRoleWizard, RoleList, SearchRoleInterface, deleteRoleById, searchRoleList } from "../../roles";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
