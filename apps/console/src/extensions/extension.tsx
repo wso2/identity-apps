@@ -21,7 +21,7 @@ import React, { ReactElement, Suspense, lazy } from "react";
 import { useTranslation } from "react-i18next";
 import { Placeholder } from "semantic-ui-react";
 import * as getConfig from "./config";
-import { EmptyPlaceholderIllustrations } from "../features/core";
+import { EmptyPlaceholderIllustrations } from "../configs";
 
 /**
  * Extension Interface.
@@ -62,10 +62,10 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
                         image={ EmptyPlaceholderIllustrations.genericError }
                         imageSize="tiny"
                         subtitle={ [
-                            t("adminPortal:placeholders.genericError.subtitles.0"),
-                            t("adminPortal:placeholders.genericError.subtitles.1")
+                            t("devPortal:placeholders.genericError.subtitles.0"),
+                            t("devPortal:placeholders.genericError.subtitles.1")
                         ] }
-                        title={ t("adminPortal:placeholders.genericError.title") }
+                        title={ t("devPortal:placeholders.genericError.title") }
                     />
                 ) }
             >
