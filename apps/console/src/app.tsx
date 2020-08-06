@@ -33,18 +33,19 @@ import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
-import { ProtectedRoute } from "./components";
-import { Config, baseRoutes } from "./configs";
-import { AppConstants } from "./constants";
-import { history } from "./helpers";
 import {
+    AppConstants,
+    AppState,
+    Config,
     ConfigReducerStateInterface,
     DeploymentConfigInterface,
     FeatureConfigInterface,
+    ProtectedRoute,
     ServiceResourceEndpointsInterface,
-    UIConfigInterface
-} from "./models";
-import { AppState } from "./store";
+    UIConfigInterface,
+    baseRoutes,
+    history
+} from "./features/core";
 
 /**
  * Main App component.
