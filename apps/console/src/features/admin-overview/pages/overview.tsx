@@ -33,13 +33,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
-import { getUserStores, getUsersList } from "../api";
-import { RoleList, UsersList } from "../components";
+import { AppConstants, AppState, UIConstants, history } from "../../core";
+import { RoleList } from "../../roles";
+import { UserListInterface, UsersList, getUsersList } from "../../users";
+import { QueryParams, getUserStores } from "../../userstores";
 import { OverviewPageIllustrations } from "../configs";
-import { AppConstants, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { QueryParams, UserListInterface } from "../models";
-import { AppState } from "../store";
 
 /**
  * Proptypes for the overview page component.
