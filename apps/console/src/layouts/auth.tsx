@@ -19,8 +19,7 @@
 import { AuthLayout as AuthLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ProtectedRoute } from "../components";
-import { authLayoutRoutes } from "../configs";
+import { ProtectedRoute, authLayoutRoutes } from "../features/core";
 
 /**
  * Auth layout props interface.

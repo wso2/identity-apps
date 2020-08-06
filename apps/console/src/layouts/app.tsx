@@ -19,8 +19,7 @@
 import { AppLayout as AppLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ProtectedRoute } from "../components";
-import { appRoutes } from "../configs";
+import { ProtectedRoute, appRoutes } from "../features/core";
 
 /**
  * Implementation of the Main app layout skeleton.

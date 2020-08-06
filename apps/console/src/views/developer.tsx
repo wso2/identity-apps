@@ -48,18 +48,29 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import { Header, ProtectedRoute } from "../components";
-import { SidePanelIcons, SidePanelMiscIcons, routes } from "../configs";
-import { AppConstants, UIConstants } from "../constants";
-import { history } from "../helpers";
-import { ConfigReducerStateInterface, FeatureConfigInterface, GovernanceConnectorCategoryInterface } from "../models";
-import { AppState, store } from "../store";
-import { GovernanceConnectorUtils } from "../utils";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    FeatureConfigInterface,
+    Header,
+    ProtectedRoute,
+    SidePanelMiscIcons,
+    UIConstants,
+    history,
+    developerViewRoutes,
+    store
+} from "../features/core";
+import {
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorUtils,
+    SidePanelIcons
+} from "../features/server-configurations";
 
 /**
- * Dashboard layout Prop types.
+ * Developer View Prop types.
  */
-interface DashboardLayoutPropsInterface {
+interface DeveloperViewPropsInterface {
     /**
      * Is layout fluid.
      */
@@ -67,14 +78,14 @@ interface DashboardLayoutPropsInterface {
 }
 
 /**
- * Implementation of the Dashboard layout skeleton.
+ * Parent component for Developer features inherited from Dashboard layout skeleton.
  *
- * @param {DashboardLayoutPropsInterface} props - Props injected to the component.
+ * @param {DeveloperViewPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> = (
-    props: DashboardLayoutPropsInterface
+export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
+    props: DeveloperViewPropsInterface
 ): ReactElement => {
 
     const { fluid } = props;
@@ -95,8 +106,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
         (state: AppState) => state.governanceConnector.categories);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
-    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(routes);
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(routes[ 0 ]);
+    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(developerViewRoutes);
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(developerViewRoutes[ 0 ]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
@@ -108,7 +119,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(routes, featureConfig, allowedScopes));
+        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(developerViewRoutes, featureConfig,
+            allowedScopes));
 
         if (isEmpty(profileInfo)) {
             dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
@@ -149,7 +161,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 
                     filteredRoutesClone.unshift({
                         category: "adminPortal:components.sidePanel.categories.configurations",
-                        component: lazy(() => import("../pages/configurations/governance-connectors")),
+                        component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
                         exact: true,
                         icon: {
                             icon: SidePanelIcons.connectors[ category.name ] ?? SidePanelIcons.connectors.default
@@ -223,7 +235,7 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
             }
         };
 
-        recurse(routes);
+        recurse(developerViewRoutes);
 
         return activeRoute;
     };
@@ -407,8 +419,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
                         (state.copyrightText && state.copyrightText !== "")
                             ? state.copyrightText
                             : config.ui.appCopyright
-                                ? config.ui.appCopyright
-                                : null
+                            ? config.ui.appCopyright
+                            : null
                     }
                     fixed="bottom"
                     fluid={ !isMobileViewport ? fluid : false }
@@ -431,8 +443,8 @@ export const DashboardLayout: FunctionComponent<DashboardLayoutPropsInterface> =
 };
 
 /**
- * Default props for the dashboard layout.
+ * Default props for the Developer View.
  */
-DashboardLayout.defaultProps = {
+DeveloperView.defaultProps = {
     fluid: true
 };
