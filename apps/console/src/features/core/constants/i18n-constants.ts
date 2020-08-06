@@ -39,7 +39,15 @@ export class I18nConstants {
      * @type {string}
      * @default
      */
-    public static readonly PORTAL_NAMESPACE: string = I18nModuleConstants.ADMIN_PORTAL_NAMESPACE;
+    public static readonly ADMIN_PORTAL_NAMESPACE: string = I18nModuleConstants.ADMIN_PORTAL_NAMESPACE;
+
+    /**
+     * Namespace for the developer portal.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly DEV_PORTAL_NAMESPACE: string = I18nModuleConstants.DEV_PORTAL_NAMESPACE;
 
     /**
      * Common namespace.
@@ -57,7 +65,8 @@ export class I18nConstants {
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
-        [ I18nConstants.PORTAL_NAMESPACE, "portals" ]
+        [ I18nConstants.ADMIN_PORTAL_NAMESPACE, "portals" ],
+        [ I18nConstants.DEV_PORTAL_NAMESPACE, "portals" ]
     ]);
 
     /**
@@ -82,7 +91,7 @@ export class I18nConstants {
                 store.getState().config.i18n
             )
         },
-        ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.PORTAL_NAMESPACE ]
+        ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.ADMIN_PORTAL_NAMESPACE, I18nConstants.DEV_PORTAL_NAMESPACE ]
     };
 
     /**
