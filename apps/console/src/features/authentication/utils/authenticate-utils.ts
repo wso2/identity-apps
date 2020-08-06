@@ -26,7 +26,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
-import { store } from "../store";
+import { store } from "../../core";
 import { handleSignIn } from "../store/actions";
 
 /**

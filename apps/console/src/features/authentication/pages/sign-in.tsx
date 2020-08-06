@@ -19,11 +19,8 @@
 import { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"; 
 import { RouteComponentProps } from "react-router";
-import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
-import { ConfigReducerStateInterface } from "../../models";
-import { AppState } from "../../store";
-import { handleSignIn } from "../../store/actions";
+import { AppState, history, AppConstants, ConfigReducerStateInterface } from "../../core";
+import { handleSignIn } from "../store";
 
 /**
  * Virtual component used to handle Sign in action.

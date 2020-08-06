@@ -32,8 +32,7 @@ import {
 import { I18n } from "@wso2is/i18n";
 import { AUTHORIZATION_ENDPOINT, OAuth, OIDC_SESSION_IFRAME_ENDPOINT } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
-import { history } from "../../helpers";
-import { store } from "../index";
+import { history, store } from "../../../core";
 
 /**
  *  Gets profile information by making an API call

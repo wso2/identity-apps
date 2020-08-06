@@ -18,8 +18,8 @@
 
 import { FunctionComponent, ReactElement, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../store";
-import { handleSignOut } from "../../store/actions";
+import { AppState } from "../../core";
+import { handleSignOut } from "../store/actions";
 
 /**
  * Virtual component used to handle Sign in action.
