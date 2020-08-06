@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { ReactComponent as DocumentIcon } from "../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as GearsIcon } from "../themes/default/assets/images/icons/gears-icon.svg";
+import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 
 export const OIDCScopeWizardStepIcons = {
     claimConfig: GearsIcon,

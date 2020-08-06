@@ -124,6 +124,8 @@ export interface ServiceResourceEndpointsInterface extends AttributesResourceEnd
     ApplicationsResourceEndpointsInterface,
     IDPResourceEndpointsInterface {
 
-  // TODO: Remove this endpoint and use ID token to get the details
-  me: string;
+    // TODO: Remove this endpoint and use ID token to get the details
+    me: string;
+    saml2Meta: string;
+    wellKnown: string;
 }

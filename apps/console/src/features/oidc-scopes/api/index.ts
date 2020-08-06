@@ -16,7 +16,4 @@
  * under the License.
  */
 
-export * from "./application";
-export * from "./identity-provider";
-export * from "./remote-repo-config";
 export * from "./oidc-scopes";

@@ -118,7 +118,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: true
     },
-/*    {
+    {
         children: [
             {
                 component: lazy(() =>
@@ -170,7 +170,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         path: AppConstants.PATHS.get("OIDC_SCOPES"),
         protected: true,
         showOnSidePanel: true
-    },*/
+    },
     {
         component: lazy(() => import("../pages/customize")),
         icon: {

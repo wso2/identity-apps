@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { DocumentationConstants } from "@wso2is/core/constants";
+import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { getApplicationsResourceEndpoints } from "../../applications";
 import { getAttributesResourceEndpoints } from "../../attributes";
@@ -59,6 +61,24 @@ export class Config {
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
             developerApp: window["AppUtils"].getConfig().developerApp,
+            documentation: {
+                baseURL: window["AppUtils"].getConfig().documentation?.baseURL
+                    ?? DocumentationConstants.GITHUB_API_BASE_URL,
+                contentBaseURL: window["AppUtils"].getConfig().documentation?.contentBaseURL
+                    ?? DocumentationConstants.DEFAULT_CONTENT_BASE_URL,
+                githubOptions: {
+                    branch: window["AppUtils"].getConfig().documentation?.githubOptions?.branch
+                        ?? DocumentationConstants.DEFAULT_BRANCH
+                },
+                imagePrefixURL: window["AppUtils"].getConfig().documentation?.imagePrefixURL
+                    ?? DocumentationConstants.DEFAULT_IMAGE_PREFIX_URL,
+                provider: window["AppUtils"].getConfig().documentation?.provider
+                    ?? DocumentationProviders.GITHUB,
+                structureFileType: window["AppUtils"].getConfig().documentation?.structureFileType
+                    ?? DocumentationStructureFileTypes.YAML,
+                structureFileURL: window["AppUtils"].getConfig().documentation?.structureFileURL
+                    ?? DocumentationConstants.DEFAULT_STRUCTURE_FILE_URL
+            },
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -102,8 +122,8 @@ export class Config {
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
-            requestPathAuthenticators:
-                `${this.getDeploymentConfig().serverHost}/api/server/v1/configs/authenticators?type=REQUEST_PATH`
+            saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,
+            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
         };
     }
 
@@ -118,6 +138,8 @@ export class Config {
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             appName: window["AppUtils"].getConfig().ui.appName,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
+            doNotDeleteApplications: window["doNotDeleteApplications"] || [],
+            doNotDeleteIdentityProviders: window["doNotDeleteIdentityProviders"] || [],
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
             productName: window["AppUtils"].getConfig().ui.productName
