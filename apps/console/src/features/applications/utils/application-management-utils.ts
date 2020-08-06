@@ -22,7 +22,7 @@ import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
 import _ from "lodash";
-import { DocPanelUICardInterface, store } from "../../core";
+import { DocPanelUICardInterface, TechnologyLogos, store } from "../../core";
 import {
     getApplicationTemplateList,
     getAvailableInboundProtocols,
@@ -30,7 +30,6 @@ import {
     getSAMLApplicationConfigurations
 } from "../api";
 import { CustomApplicationTemplate } from "../components";
-import { TechnologyLogos } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationTemplateListInterface,

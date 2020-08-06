@@ -84,21 +84,7 @@ import WSTrustLogo from "../../../themes/default/assets/images/protocols/ws-trus
 import { ReactComponent as FacebookLogo } from "../../../themes/default/assets/images/social/facebook.svg";
 import { ReactComponent as GoogleLogo } from "../../../themes/default/assets/images/social/google.svg";
 import { ReactComponent as TwitterLogo } from "../../../themes/default/assets/images/social/twitter.svg";
-import { ReactComponent as AndroidLogo } from "../../../themes/default/assets/images/technologies/android-logo.svg";
-import { ReactComponent as AngularLogo } from "../../../themes/default/assets/images/technologies/angular-logo.svg";
-import { ReactComponent as AppleLogo } from "../../../themes/default/assets/images/technologies/apple-logo.svg";
-import { ReactComponent as CSharpLogo } from "../../../themes/default/assets/images/technologies/c-sharp-logo.svg";
-import { ReactComponent as CordovaLogo } from "../../../themes/default/assets/images/technologies/cordova-logo.svg";
-import { ReactComponent as DotNetLogo } from "../../../themes/default/assets/images/technologies/dotnet-logo.svg";
-import { ReactComponent as HTMLLogo } from "../../../themes/default/assets/images/technologies/html-logo.svg";
-import { ReactComponent as JavaLogo } from "../../../themes/default/assets/images/technologies/java-logo.svg";
-import { ReactComponent as JavaScriptLogo } from "../../../themes/default/assets/images/technologies/javascript-logo.svg";
 import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
-import { ReactComponent as NodeJSLogo } from "../../../themes/default/assets/images/technologies/nodejs-logo.svg";
-import { ReactComponent as PythonLogo } from "../../../themes/default/assets/images/technologies/python-logo.svg";
-import { ReactComponent as ReactLogo } from "../../../themes/default/assets/images/technologies/react-logo.svg";
-import { ReactComponent as VueLogo } from "../../../themes/default/assets/images/technologies/vue-logo.svg";
-import { ReactComponent as WindowsLogo } from "../../../themes/default/assets/images/technologies/windows-logo.svg";
 import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
 import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
 import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
@@ -127,26 +113,6 @@ export const ApplicationTemplateIllustrations = {
     spa: SPATemplateIllustration,
     windowsNative: WindowsTemplateIllustration,
     wsTrust: WSTrustTemplateIllustration
-};
-
-export const TechnologyLogos = {
-    android: AndroidLogo,
-    angular: AngularLogo,
-    apple: AppleLogo,
-    cSharp: CSharpLogo,
-    cordova: CordovaLogo,
-    dotNet: DotNetLogo,
-    html: HTMLLogo,
-    ios: AppleLogo,
-    java: JavaLogo,
-    javascript: JavaScriptLogo,
-    nodejs: NodeJSLogo,
-    openidconnect: OIDCLogo,
-    python: PythonLogo,
-    react: ReactLogo,
-    saml: SamlLogo,
-    vue: VueLogo,
-    windows: WindowsLogo
 };
 
 export const ApplicationWizardStepIcons = {

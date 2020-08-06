@@ -47,12 +47,13 @@ import {
     HelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
+    TechnologyLogos,
     history,
     setHelpPanelDocsContentURL
 } from "../../core";
 import { getApplicationDetails, updateApplicationConfigurations } from "../api";
 import { EditApplication, HelpPanelOverview, SamplesGuideComponent } from "../components";
-import { HelpPanelIcons, InboundProtocolLogos, TechnologyLogos } from "../configs";
+import { HelpPanelIcons, InboundProtocolLogos } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationInterface, ApplicationTemplateListItemInterface, emptyApplication } from "../models";
 import { ApplicationManagementUtils } from "../utils";
