@@ -23,6 +23,14 @@ import {
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { ApplicationsResourceEndpointsInterface } from "../../applications";
+import { AttributesResourceEndpointsInterface } from "../../attributes";
+import { CertificatesResourceEndpointsInterface } from "../../certificates";
+import { IDPResourceEndpointsInterface } from "../../identity-providers";
+import { RolesResourceEndpointsInterface } from "../../roles";
+import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
+import { UsersResourceEndpointsInterface } from "../../users";
+import { UserstoreResourceEndpointsInterface } from "../../userstores";
 
 export type ConfigInterface = CommonConfigInterface<
     CommonDeploymentConfigInterface,
@@ -93,36 +101,31 @@ interface ExternalAppConfigInterface {
 /**
  * Portal UI config interface inheriting the common configs from core module.
  */
-export type UIConfigInterface = CommonUIConfigInterface;
+export interface UIConfigInterface extends CommonUIConfigInterface {
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteApplications?: string[];
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteIdentityProviders?: string[];
+}
 
 /**
  * Service resource endpoints config.
  */
-export interface ServiceResourceEndpointsInterface {
-    accountDisabling: string;
-    accountLocking: string;
-    accountRecovery: string;
-    bulk: string;
-    captchaForSSOLogin: string;
-    certificates: string;
-    claims: string;
-    clientCertificates: string;
-    emailTemplateType: string;
-    externalClaims: string;
-    governanceConnectorCategories: string;
-    groups: string;
-    localClaims: string;
-    loginPolicies: string;
+export interface ServiceResourceEndpointsInterface extends AttributesResourceEndpointsInterface,
+    CertificatesResourceEndpointsInterface,
+    ServerConfigurationsResourceEndpointsInterface,
+    UsersResourceEndpointsInterface,
+    UserstoreResourceEndpointsInterface,
+    RolesResourceEndpointsInterface,
+    ApplicationsResourceEndpointsInterface,
+    IDPResourceEndpointsInterface {
+
     // TODO: Remove this endpoint and use ID token to get the details
     me: string;
-    passwordHistory: string;
-    passwordPolicies: string;
-    passwordPolicy: string;
-    permission: string;
-    publicCertificates: string;
-    requestPathAuthenticators: string;
-    selfSignUp: string;
-    serverConfigurations: string;
-    userStores: string;
-    users: string;
+    saml2Meta: string;
+    wellKnown: string;
 }
