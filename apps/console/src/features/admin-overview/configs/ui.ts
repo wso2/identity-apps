@@ -20,7 +20,6 @@ import { ReactComponent as BriefcaseIcon } from "../../../themes/default/assets/
 import { ReactComponent as CertificateIcon } from "../../../themes/default/assets/images/icons/certificate-icon.svg";
 import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
 import { ReactComponent as CogwheelIcon } from "../../../themes/default/assets/images/icons/cog-wheel-icon.svg";
-import { ReactComponent as DashboardIcon } from "../../../themes/default/assets/images/icons/dashboard-icon.svg";
 import { ReactComponent as DatabaseIcon } from "../../../themes/default/assets/images/icons/database-icon.svg";
 import { ReactComponent as PaperRocketIcon } from "../../../themes/default/assets/images/icons/paper-rocket-icon.svg";
 import { ReactComponent as UserGroupIcon } from "../../../themes/default/assets/images/icons/user-group-icon.svg";
@@ -28,10 +27,6 @@ import { ReactComponent as UserIcon } from "../../../themes/default/assets/image
 import {
     ReactComponent as SecurityIllustration
 } from "../../../themes/default/assets/images/illustrations/security-illustration.svg";
-
-export const SidePanelIcons = {
-    overview: DashboardIcon
-};
 
 export const OverviewPageIllustrations = {
     jumbotronIllustration: SecurityIllustration,
