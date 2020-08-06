@@ -21,9 +21,9 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Grid, Modal } from "semantic-ui-react";
 import { DeploymentStatus } from "./remote-deployment-status";
-import { getConfigDeploymentDetails } from "../../api";
-import { ApplicationWizardStepIcons } from "../../configs";
-import { InterfaceConfigDetails, InterfaceRemoteRepoConfig } from "../../models";
+import { getConfigDeploymentDetails } from "../api";
+import { RemoteRepoDetailsWizardStepIcons } from "../configs";
+import { InterfaceConfigDetails, InterfaceRemoteRepoConfig } from "../models";
 
 interface InterfaceRemoteRepoDetailProps {
     repoObject: InterfaceRemoteRepoConfig;
@@ -55,7 +55,7 @@ export const RemoteRepoDetails: FunctionComponent<InterfaceRemoteRepoDetailProps
         content: (
             <DeploymentStatus statusObject={ configDetailObject } />
         ),
-        icon: ApplicationWizardStepIcons.general
+        icon: RemoteRepoDetailsWizardStepIcons.general
     }];
     
     return (

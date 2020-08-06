@@ -16,19 +16,19 @@
  * under the License.
  */
 
-import {  AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/dist/src/models";
+import {  AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { RemoteRepoConfigDetails } from "./remote-repo-config-details";
-import { ApplicationWizardStepIcons } from "../../../configs";
-import { createRemoteRepoConfig } from "../../../api";
-import { InterfaceRemoteRepoConfigDetails, InterfaceRemoteConfigForm } from "../../../models";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { useTranslation } from "react-i18next";
+import { createRemoteRepoConfig } from "../../api";
+import { CreateRemoteRepoWizardStepIcons } from "../../configs";
+import { InterfaceRemoteConfigForm, InterfaceRemoteRepoConfigDetails } from "../../models";
 
 interface CreateRemoteRepoConfigProps extends TestableComponentInterface {
     closeWizard: () => void;
@@ -119,7 +119,7 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
                 data-testid={ `${ testId }-form` }
             />
         ),
-        icon: ApplicationWizardStepIcons.general,
+        icon: CreateRemoteRepoWizardStepIcons.general,
         title: "Remote Repository General Configurations"
     }];
 

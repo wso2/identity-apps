@@ -16,18 +16,17 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
-import { RemoteRepoEdit } from "../../components";
-import { history } from "../../helpers";
-import { getRemoteRepoConfig, deleteRemoteRepoConfig, updateRemoteRepoConfig } from "../../api/remote-repo-config";
-import { InterfaceRemoteConfigDetails, InterfaceRemoteRepoConfig, InterfaceEditDetails } from "../../models";
 import { AxiosResponse } from "axios";
-import { AppConstants } from "../../constants";
-import { AlertLevels, AlertInterface } from "@wso2is/core/dist/src/models";
-import { useDispatch } from "react-redux";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { addAlert } from "@wso2is/core/dist/src/store";
+import { useDispatch } from "react-redux";
+import { AppConstants, history } from "../../core";
+import { deleteRemoteRepoConfig, getRemoteRepoConfig, updateRemoteRepoConfig } from "../api";
+import { RemoteRepoEdit } from "../components";
+import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../models";
 
 const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();

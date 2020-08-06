@@ -19,7 +19,7 @@
 import { CodeEditor } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { Label, Segment } from "semantic-ui-react";
-import { InterfaceConfigDetails, InterfaceRemoteFetchStatus } from "../../models";
+import { InterfaceConfigDetails, InterfaceRemoteFetchStatus } from "../models";
 
 interface InterfaceDeployementStatusProps {
     statusObject: InterfaceConfigDetails;

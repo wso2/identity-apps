@@ -16,11 +16,11 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { TestableComponentInterface } from "@wso2is/core/dist/src/models";
-import { Forms, Field, FormValue } from "@wso2is/forms";
-import { Grid, GridRow, GridColumn } from "semantic-ui-react";
 import { useTranslation } from "react-i18next";
+import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 
 interface RemoteRepoConfigDetailsProps extends TestableComponentInterface {
     onSubmit: (values: any) => void;

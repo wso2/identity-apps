@@ -16,18 +16,17 @@
  * under the License.
  */
 
-import { ListLayout, PageLayout } from "@wso2is/react-components";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { ListLayout, PageLayout } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { deleteRemoteRepoConfig, getRemoteRepoConfigList } from "../../api";
-import { CreateRemoteRepoConfig, RemoteRepoList } from "../../components";
-import { UIConstants } from "../../constants";
-import { InterfaceRemoteRepoConfig, InterfaceRemoteRepoListResponse } from "../../models";
-import { triggerConfigDeployment } from "../../api/remote-repo-config";
+import { useDispatch } from "react-redux";
+import { UIConstants } from "../../core";
+import { deleteRemoteRepoConfig, getRemoteRepoConfigList, triggerConfigDeployment } from "../api";
+import { CreateRemoteRepoConfig, RemoteRepoList } from "../components";
+import { InterfaceRemoteRepoConfig, InterfaceRemoteRepoListResponse } from "../models";
 
 const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();

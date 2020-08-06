@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./extension";
-export * from "./extension-menu";
+export * from "./ui";

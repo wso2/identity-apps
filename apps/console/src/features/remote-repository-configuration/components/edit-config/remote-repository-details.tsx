@@ -21,7 +21,7 @@ import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } fro
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../../models";
+import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../models";
 
 interface RemoteConfigDetailProps {
     configObject: InterfaceRemoteConfigDetails;
