@@ -21,9 +21,9 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { updateRoleDetails } from "../../../api";
-import { PRIMARY_DOMAIN } from "../../../constants";
-import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../../models";
+import { updateRoleDetails } from "../../api";
+import { PRIMARY_DOMAIN } from "../../constants";
+import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../models";
 import { AddRoleUsers } from "../create-role-wizard";
 
 interface RoleUserDetailsProps {

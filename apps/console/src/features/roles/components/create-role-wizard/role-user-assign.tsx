@@ -34,10 +34,8 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { getUsersList } from "../../../api";
-import { EmptyPlaceholderIllustrations } from "../../../configs";
-import { UIConstants } from "../../../constants";
-import { UserBasicInterface } from "../../../models";
+import { EmptyPlaceholderIllustrations, UIConstants } from "../../../core";
+import { UserBasicInterface, getUsersList } from "../../../users";
 
 /**
  * Proptypes for the application consents list component.

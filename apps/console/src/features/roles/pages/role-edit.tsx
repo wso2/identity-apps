@@ -20,10 +20,10 @@ import { RolesInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { getRoleById } from "../../api";
-import { EditRole } from "../../components/roles/edit-role";
-import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../../constants";
-import { history } from "../../helpers";
+import { history } from "../../core";
+import { EditRole } from "../../roles";
+import { getRoleById } from "../api";
+import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../constants";
 
 const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 

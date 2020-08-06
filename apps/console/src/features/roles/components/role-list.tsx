@@ -29,9 +29,8 @@ import {
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Image, Label, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../configs";
-import { APPLICATION_DOMAIN, GROUP_VIEW_PATH, INTERNAL_DOMAIN, ROLE_VIEW_PATH, UIConstants } from "../../constants";
-import { history } from "../../helpers";
+import { EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
+import { APPLICATION_DOMAIN, GROUP_VIEW_PATH, INTERNAL_DOMAIN, ROLE_VIEW_PATH } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -263,7 +262,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 className="roles-list"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: defaultListItemLimit,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
                 fill={ !showPlaceholders() }
@@ -399,7 +398,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
  */
 RoleList.defaultProps = {
     actionsColumnWidth: 3,
-    defaultListItemLimit: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
     descriptionColumnWidth: 3,
     metaColumnWidth: 10,
     selection: false,

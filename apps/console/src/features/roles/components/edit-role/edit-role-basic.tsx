@@ -29,15 +29,11 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, Input, InputOnChangeData, Label } from "semantic-ui-react"
-import { deleteRoleById, updateRoleDetails } from "../../../api";
-import {
-    GROUP_VIEW_PATH,
-    PRIMARY_USERSTORE_PROPERTY_VALUES,
-    ROLE_VIEW_PATH
-} from "../../../constants";
-import { history } from "../../../helpers";
-import { PatchRoleDataInterface } from "../../../models";
-import { validateInputAgainstRegEx } from "../../../utils";
+import { history } from "../../../core";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
+import { deleteRoleById, updateRoleDetails } from "../../api";
+import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../../constants";
+import { PatchRoleDataInterface } from "../../models";
 
 /**
  * Interface to contain props needed for component

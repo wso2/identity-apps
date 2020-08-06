@@ -23,8 +23,8 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { getPermissionList, getPermissionsForRole } from "../../../api";
-import { Permission } from "../../../models";
+import { getPermissionList, getPermissionsForRole } from "../../api";
+import { Permission } from "../../models";
 import { addPath } from "../role-utils";
 
 /**

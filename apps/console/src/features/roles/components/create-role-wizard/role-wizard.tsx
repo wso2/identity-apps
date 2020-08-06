@@ -24,11 +24,11 @@ import React, { FunctionComponent, ReactElement, useState, useEffect } from "rea
 import { Modal, Grid, Icon } from "semantic-ui-react";
 import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { useTrigger } from "@wso2is/forms";
-import { RolesWizardStepIcons } from "../../../configs";
+import { RolesWizardStepIcons } from "../../configs";
 import { RoleBasics } from "./role-basics";
 import { PermissionList } from "./role-permisson";
-import { createRole, updateRolePermissions } from "../../../api";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../../models";
+import { createRole, updateRolePermissions } from "../../api";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { AddRoleUsers } from "./role-user-assign";

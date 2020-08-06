@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { BasicRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
-import { history } from "../../../helpers";
+import { history } from "../../../core";
 
 /**
  * Captures props needed for edit role component

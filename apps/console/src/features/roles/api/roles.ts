@@ -18,8 +18,8 @@
 
 import { HttpMethods } from "@wso2is/core/models";
 import { OAuth } from "@wso2is/oauth-web-worker";
+import { store } from "../../core";
 import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
-import { store } from "../store";
 
 /**
  * Initialize an axios Http client.

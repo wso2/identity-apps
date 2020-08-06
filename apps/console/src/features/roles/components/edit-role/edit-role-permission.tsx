@@ -21,8 +21,8 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { updateRolePermissions } from "../../../api";
-import { Permission } from "../../../models";
+import { updateRolePermissions } from "../../api";
+import { Permission } from "../../models";
 import { PermissionList } from "../create-role-wizard";
 
 /**

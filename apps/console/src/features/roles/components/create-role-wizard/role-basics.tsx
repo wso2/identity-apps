@@ -21,16 +21,21 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import { getUserStoreList, searchRoleList } from "../../../api";
+// TODO: use `getUserStores()` function from Userstores features.
+import { getUserStoreList } from "../../../users";
+import {
+    PRIMARY_USERSTORE_PROPERTY_VALUES,
+    USERSTORE_REGEX_PROPERTIES,
+    getUserstoreRegEx,
+    validateInputAgainstRegEx
+} from "../../../userstores";
+import { searchRoleList } from "../../api";
 import {
     APPLICATION_DOMAIN,
     INTERNAL_DOMAIN,
-    PRIMARY_DOMAIN,
-    PRIMARY_USERSTORE_PROPERTY_VALUES,
-    USERSTORE_REGEX_PROPERTIES
-} from "../../../constants";
-import { CreateRoleFormData, SearchRoleInterface } from "../../../models";
-import { getUserstoreRegEx, validateInputAgainstRegEx } from "../../../utils";
+    PRIMARY_DOMAIN
+} from "../../constants";
+import { CreateRoleFormData, SearchRoleInterface } from "../../models";
 
 /**
  * Interface to capture role basics props.

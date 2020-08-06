@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Permission, PermissionObject } from "../../models/permission"
+import { Permission, PermissionObject } from "../models"
 
 /**
  * A Util method to create an array of permission object with heirarchy.
@@ -51,4 +51,4 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[],
     }
     
     return permissionTreeArray;
-}
+};

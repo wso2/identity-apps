@@ -25,12 +25,13 @@ import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { deleteRoleById, getUserStoreList, searchRoleList } from "../../api";
-import { AdvancedSearchWithBasicFilters } from "../../components";
-import { RoleList } from "../../components/roles";
-import { CreateRoleWizard } from "../../components/roles/create-role-wizard";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, UIConstants } from "../../constants";
-import { SearchRoleInterface } from "../../models"
+import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
+import { CreateRoleWizard, RoleList } from "../../roles";
+// TODO: use `getUserStores()` function from Userstores features.
+import { getUserStoreList } from "../../users";
+import { deleteRoleById, searchRoleList } from "../api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
+import { SearchRoleInterface } from "../models";
 
 const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
     {
