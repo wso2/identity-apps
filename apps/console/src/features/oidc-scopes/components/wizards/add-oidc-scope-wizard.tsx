@@ -27,10 +27,10 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddOIDCScopeForm } from "./add-oidc-scope-form";
 import { OIDCScopeAttributesList } from "./oidc-scope-attribute-list";
-import { createOIDCScope } from "../../../api";
-import { OIDCScopeWizardStepIcons } from "../../../configs";
-import { OIDCScopesManagementConstants } from "../../../constants";
-import { OIDCScopesListInterface } from "../../../models";
+import { createOIDCScope } from "../../api";
+import { OIDCScopeWizardStepIcons } from "../../configs";
+import { OIDCScopesManagementConstants } from "../../constants";
+import { OIDCScopesListInterface } from "../../models";
 
 /**
  * Interface for the wizard state.

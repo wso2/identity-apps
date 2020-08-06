@@ -25,10 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Input, Popup, Segment, Table } from "semantic-ui-react";
 import { OIDCScopeAttributes } from "./oidc-scope-attributes";
-import { updateOIDCScopeDetails } from "../../api";
-import { EmptyPlaceholderIllustrations } from "../../configs";
-import { OIDCScopesManagementConstants } from "../../constants";
-import { FeatureConfigInterface, OIDCScopesListInterface } from "../../models";
+import { EmptyPlaceholderIllustrations, FeatureConfigInterface } from "../../core";
+import { updateOIDCScopeDetails } from "../api";
+import { OIDCScopesManagementConstants } from "../constants";
+import { OIDCScopesListInterface } from "../models";
 
 /**
  * Proptypes for the OIDC scope edit component.

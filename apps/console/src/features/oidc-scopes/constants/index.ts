@@ -16,6 +16,4 @@
  * under the License.
  */
 
-export * from "./oidc-scopes-list";
-export * from "./edit-oidc-scope";
-export * from "./oidc-scope-attributes";
+export * from "./oidc-scopes-management";

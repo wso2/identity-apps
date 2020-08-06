@@ -20,9 +20,9 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosError, AxiosResponse } from "axios";
+import { store } from "../../core";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
-import { store } from "../store";
 
 /**
  * Get an axios instance.

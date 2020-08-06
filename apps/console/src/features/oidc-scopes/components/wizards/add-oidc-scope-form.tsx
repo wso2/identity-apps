@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";

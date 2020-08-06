@@ -22,11 +22,10 @@ import { AnimatedAvatar, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { getOIDCScopeDetails } from "../../api";
-import { EditOIDCScope } from "../../components/oidc-scopes";
-import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
-import { OIDCScopesListInterface } from "../../models";
+import { AppConstants, history } from "../../core";
+import { getOIDCScopeDetails } from "../api";
+import { EditOIDCScope } from "../components";
+import { OIDCScopesListInterface } from "../models";
 
 /**
  * Proptypes for the OIDC scopes edit page component.

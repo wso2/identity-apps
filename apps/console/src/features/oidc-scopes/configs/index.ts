@@ -16,11 +16,4 @@
  * under the License.
  */
 
-/**
- * @remarks
- * Always keep the `app.ts` import at the top of the order, to avoid
- * potential circular dependencies.
- */
-export * from "./app";
-export * from "./routes";
 export * from "./ui";
