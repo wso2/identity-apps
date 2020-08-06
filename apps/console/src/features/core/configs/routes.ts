@@ -190,7 +190,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
 const ADMIN_VIEW_ROUTES: RouteInterface[] = [
     {
         category: "adminPortal:components.sidePanel.categories.general",
-        component: lazy(() => import("../../overview/pages/overview")),
+        component: lazy(() => import("../../admin-overview/pages/overview")),
         icon: {
             icon: SidePanelIcons.overview
         },
