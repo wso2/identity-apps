@@ -71,15 +71,9 @@ export const OperationIcons = {
     minimize: MinimizeIcon
 };
 
-export const HelpSidebarIcons = {
-    actionPanel: {
-        close: CrossIcon,
-        pin: PinIcon
-    },
-    mini: {
-        SDKs: BoxIcon,
-        docs: DocumentIcon
-    }
+export const HelpPanelActionIcons = {
+    close: CrossIcon,
+    pin: PinIcon
 };
 
 export const CertificateIllustrations = {

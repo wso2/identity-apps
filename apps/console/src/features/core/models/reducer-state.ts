@@ -24,6 +24,7 @@ import {
     ServiceResourceEndpointsInterface,
     UIConfigInterface
 } from "./config";
+import { PortalDocumentationStructureInterface } from "./help-panel";
 
 /**
  * Portal config reducer state interface.
@@ -34,3 +35,11 @@ export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
     UIConfigInterface>;
+
+/**
+ * Help panel reducer state interface.
+ */
+export interface HelpPanelReducerStateInterface {
+    docURL: string;
+    docStructure: PortalDocumentationStructureInterface;
+}

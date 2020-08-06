@@ -39,7 +39,10 @@ import {
     commonProfileReducerInitialState,
     commonRequestLoadersInitialState
 } from "./reducers";
+import { helpPanelReducer } from "./reducers";
+import { applicationReducer } from "../../applications";
 import { commonAuthenticateReducerInitialState } from "../../authentication";
+import { identityProviderReducer } from "../../identity-providers";
 import { governanceConnectorReducer } from "../../server-configurations";
 import {
     DeploymentConfigInterface,
@@ -54,6 +57,7 @@ import {
  * @type {Reducer<any>} Root reducer to be used when creating the store.
  */
 export const reducers = combineReducers({
+    application: applicationReducer,
     auth: commonAuthenticateReducer(commonAuthenticateReducerInitialState),
     config: commonConfigReducer<
         DeploymentConfigInterface,
@@ -65,6 +69,8 @@ export const reducers = combineReducers({
     form: formReducer,
     global: commonGlobalReducer<AlertInterface, System, SupportedLanguagesMeta>(commonGlobalReducerInitialState),
     governanceConnector: governanceConnectorReducer,
+    helpPanel: helpPanelReducer,
+    identityProvider: identityProviderReducer,
     loaders: commonRequestLoadersReducer(commonRequestLoadersInitialState),
     profile: commonProfileReducer<
         ProfileInfoInterface,

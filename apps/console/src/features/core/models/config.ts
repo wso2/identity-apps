@@ -23,8 +23,10 @@ import {
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
+import { ApplicationsResourceEndpointsInterface } from "../../applications";
 import { AttributesResourceEndpointsInterface } from "../../attributes";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
+import { IDPResourceEndpointsInterface } from "../../identity-providers";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
 import { UsersResourceEndpointsInterface } from "../../users";
@@ -99,7 +101,16 @@ interface ExternalAppConfigInterface {
 /**
  * Portal UI config interface inheriting the common configs from core module.
  */
-export type UIConfigInterface = CommonUIConfigInterface;
+export interface UIConfigInterface extends CommonUIConfigInterface {
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteApplications?: string[];
+    /**
+     * Application(SPs) that shouldn't be allowed to delete.
+     */
+    doNotDeleteIdentityProviders?: string[];
+}
 
 /**
  * Service resource endpoints config.
@@ -109,8 +120,10 @@ export interface ServiceResourceEndpointsInterface extends AttributesResourceEnd
     ServerConfigurationsResourceEndpointsInterface,
     UsersResourceEndpointsInterface,
     UserstoreResourceEndpointsInterface,
-    RolesResourceEndpointsInterface {
+    RolesResourceEndpointsInterface,
+    ApplicationsResourceEndpointsInterface,
+    IDPResourceEndpointsInterface {
+
   // TODO: Remove this endpoint and use ID token to get the details
   me: string;
-  requestPathAuthenticators: string;
 }

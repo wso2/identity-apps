@@ -17,4 +17,5 @@
  */
 
 export * from "./config";
+export * from "./help-panel";
 export * from "./reducer-state";
