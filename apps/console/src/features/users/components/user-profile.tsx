@@ -30,10 +30,9 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Form, Grid, Input, Segment } from "semantic-ui-react";
-import { deleteUser, updateUserInfo } from "../../api";
-import { history } from "../../helpers";
-import { AppState } from "../../store";
+import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
+import { AppState, history } from "../../core";
+import { deleteUser, updateUserInfo } from "../api";
 
 /**
  * Prop types for the basic details component.

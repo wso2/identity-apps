@@ -25,11 +25,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
-import { deleteUser, getUserStoreList, getUsersList } from "../../api";
-import { AddUserWizard, AdvancedSearchWithBasicFilters, UsersList, UsersListOptionsComponent } from "../../components";
-import { UIConstants, UserConstants } from "../../constants";
-import { UserListInterface } from "../../models";
-import { AppState, store } from "../../store";
+import { AdvancedSearchWithBasicFilters, AppState, UIConstants, store } from "../../core";
+import { deleteUser, getUserStoreList, getUsersList } from "../api";
+import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
+import { UserConstants } from "../constants";
+import { UserListInterface } from "../models";
 
 /**
  * Users info page.

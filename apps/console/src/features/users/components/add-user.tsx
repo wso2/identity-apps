@@ -25,10 +25,14 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
-import { getUserStoreList, getUsersList } from "../../api";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../constants";
-import { BasicUserDetailsInterface } from "../../models";
-import { getUserstoreRegEx, validateInputAgainstRegEx } from "../../utils";
+import {
+    PRIMARY_USERSTORE_PROPERTY_VALUES,
+    USERSTORE_REGEX_PROPERTIES,
+    getUserstoreRegEx,
+    validateInputAgainstRegEx
+} from "../../userstores";
+import { getUserStoreList, getUsersList } from "../api";
+import { BasicUserDetailsInterface } from "../models";
 
 /**
  * Proptypes for the add user component.

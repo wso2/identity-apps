@@ -30,10 +30,8 @@ import {
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Grid, Icon, List, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../configs";
-import { AppConstants, UIConstants } from "../../constants";
-import { history } from "../../helpers";
-import { UserBasicInterface, UserListInterface } from "../../models";
+import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
+import { UserBasicInterface, UserListInterface } from "../models";
 
 /**
  * Prop types for the liked accounts component.
@@ -271,7 +269,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 className="application-list"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: defaultListItemLimit,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "circular"
                 } }
                 fill={ !showPlaceholders() }
@@ -392,7 +390,6 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
  */
 UsersList.defaultProps = {
     actionsColumnWidth: 3,
-    defaultListItemLimit: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
     descriptionColumnWidth: 3,
     metaColumnWidth: 10,
     showListItemActions: true,

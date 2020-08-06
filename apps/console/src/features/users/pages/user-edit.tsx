@@ -22,9 +22,9 @@ import { PageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { getUserDetails } from "../../api";
-import { EditUser } from "../../components";
-import { history } from "../../helpers";
+import { history } from "../../core";
+import { getUserDetails } from "../api";
+import { EditUser } from "../components";
 
 /**
  * User Edit page.

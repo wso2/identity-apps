@@ -21,8 +21,7 @@ import { LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
-import { getRoleById } from "../../api";
-import { PermissionList } from "../roles";
+import { PermissionList, getRoleById } from "../../roles";
 
 /**
  * Proptypes for the user role permission component.
