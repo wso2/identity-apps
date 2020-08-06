@@ -26,9 +26,8 @@ import {
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Card, Divider } from "semantic-ui-react";
-import { OverviewPageImages, TechnologyLogos } from "../configs";
-import { AppConstants, UIConstants } from "../constants";
-import { history } from "../helpers";
+import { AppConstants, TechnologyLogos, UIConstants, history } from "../../core";
+import { OverviewPageImages } from "../configs";
 
 /**
  * Proptypes for the overview page component.
