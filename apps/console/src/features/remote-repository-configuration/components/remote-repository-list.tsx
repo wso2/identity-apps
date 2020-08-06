@@ -27,10 +27,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon } from "semantic-ui-react";
 import { RemoteRepoDetails } from "./remote-repository-details";
-import { EmptyPlaceholderIllustrations } from "../../configs";
-import { AppConstants, UIConstants } from "../../constants";
-import { history } from "../../helpers";
-import { InterfaceRemoteRepoConfig } from "../../models";
+import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
+import { InterfaceRemoteRepoConfig } from "../models";
 
 interface RemoteRepoListProp {
     repoObjectList: InterfaceRemoteRepoConfig[];
@@ -124,13 +122,12 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
                                 }
                                 actions={ [
                                     {
-                                        hidden: repoObject.lastDeployed == undefined,
                                         icon: "eye",
                                         onClick: () => {
                                             setCurrentDetailsConfig(repoObject);
                                             setShowConfigDetailsModal(true);
                                         },
-                                        popupText: "View Status",
+                                        popupText: "Trigger Config",
                                         type: "button"
                                     },
                                     {

@@ -19,7 +19,7 @@
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { RemoteConfigDetail } from "./remote-repository-details";
-import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../../models";
+import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../models";
 
 interface RemoteRepoEditProps {
     configId?: string;

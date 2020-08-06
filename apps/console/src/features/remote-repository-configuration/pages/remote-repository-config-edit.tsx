@@ -23,15 +23,11 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { deleteRemoteRepoConfig, getRemoteRepoConfig, updateRemoteRepoConfig } from "../../api/remote-repo-config";
-import { RemoteRepoEdit } from "../../components";
-import { AppConstants } from "../../constants";
-import { history } from "../../helpers";
-import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../../models";
+import { AppConstants, history } from "../../core";
+import { deleteRemoteRepoConfig, getRemoteRepoConfig, updateRemoteRepoConfig } from "../api";
+import { RemoteRepoEdit } from "../components";
+import { InterfaceEditDetails, InterfaceRemoteConfigDetails } from "../models";
 
-/**
- * Remote Repository Configuration Edit Page.
- */
 const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -88,11 +84,6 @@ const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
         history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG"));
     };
 
-    /**
-     * Util method to update the changed configuration.
-     * @param id - config id
-     * @param values - changed values
-     */
     const handleOnConfigUpdate = (id: string, values: InterfaceEditDetails): void => {
         updateRemoteRepoConfig(id, values).then(() => {
             handleAlerts({
@@ -109,15 +100,12 @@ const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
     
     return (
         <PageLayout
-            title={ remoteConfig ? 
-                t("devPortal:components.remoteConfig.pageTitles.editPage.title") + remoteConfig.remoteFetchName 
-                : t("devPortal:components.remoteConfig.pageTitles.editPage.title")
-            }
+            title={ remoteConfig ? remoteConfig.remoteFetchName : "" }
             contentTopMargin={ true }
-            description={ t("devPortal:components.remoteConfig.pageTitles.editPage.description") }
+            description={ "Edit remote repository configurations." }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("devPortal:components.remoteConfig.pageTitles.editPage.backLink")
+                text: "Back to configs"
             } }
             titleTextAlign="left"
             bottomMargin={ false }
