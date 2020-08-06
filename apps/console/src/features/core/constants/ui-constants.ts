@@ -82,4 +82,11 @@ export class UIConstants {
      * @type {string}
      */
     public static readonly DEFAULT_THEME: string = "default";
+
+    /**
+     * Product Documentation URLs.
+     * @type {Map<string, string>}
+     */
+    public static readonly IS_DOC_URLS: Map<string, string> = new Map<string, string>()
+        .set("5.11.0", "https://is.docs.wso2.com/en/5.11.0/")
 }
