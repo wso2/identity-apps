@@ -18,12 +18,12 @@
 
 module.exports = () => {
     return {
+        routes: [
+        ],
         sections: {
             components: {
                 "example": "./components/example.tsx"
             }
-        },
-        routes: [
-        ]
+        }
     };
 };
