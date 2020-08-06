@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./routing-constants";
 export * from "./user-constants";

@@ -19,4 +19,3 @@
 export * from "./identity-provider-constants";
 export * from "./identity-provider-management-constants";
 export * from "./documentation-constants";
-export * from "./routing-constants";

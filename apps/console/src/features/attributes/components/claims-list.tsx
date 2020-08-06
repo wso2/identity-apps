@@ -42,10 +42,16 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Image, List, Popup } from "semantic-ui-react";
 import { EditExternalClaim } from "./edit";
-import { AppState, EmptyPlaceholderIllustrations, FeatureConfigInterface, UIConstants, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    EmptyPlaceholderIllustrations,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "../../core";
 import { UserStoreListItem, getUserStores } from "../../userstores";
 import { deleteAClaim, deleteADialect, deleteAnExternalClaim } from "../api";
-import { RoutingConstants } from "../constants";
 import { AddExternalClaim } from "../models";
 
 /**
@@ -564,7 +570,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                             {
                                                 icon: "pencil alternate",
                                                 onClick: () => {
-                                                    history.push(RoutingConstants.PATHS.get("LOCAL_CLAIMS_EDIT")
+                                                    history.push(AppConstants.PATHS.get("LOCAL_CLAIMS_EDIT")
                                                         .replace(":id", claim?.id))
                                                 },
                                                 popupText: t("common:edit"),
@@ -668,7 +674,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                 {
                                                     icon: "pencil alternate",
                                                     onClick: () => {
-                                                        history.push(RoutingConstants.PATHS.get("EXTERNAL_DIALECT_EDIT")
+                                                        history.push(AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT")
                                                             .replace(":id", dialect.id));
                                                     },
                                                     popupText: t("common:edit"),

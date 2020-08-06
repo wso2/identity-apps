@@ -17,4 +17,3 @@
  */
 
 export * from "./role-constants";
-export * from "./routing-constants";

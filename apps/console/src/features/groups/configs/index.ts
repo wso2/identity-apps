@@ -16,5 +16,4 @@
  * under the License.
  */
 
-export * from "./routes";
 export * from "./ui";

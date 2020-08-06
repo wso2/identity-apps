@@ -16,7 +16,6 @@
  * under the License.
  */
 
-export * from "./configs";
 export * from "./pages";
 export * from "./store";
 export * from "./utils";

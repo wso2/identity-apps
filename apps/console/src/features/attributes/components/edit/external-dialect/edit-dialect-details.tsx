@@ -24,9 +24,8 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { history } from "../../../../core";
+import { AppConstants, history } from "../../../../core";
 import { updateADialect } from "../../../api";
-import { RoutingConstants } from "../../../constants";
 
 /**
  * Prop types for the `EditDialectDetails` component
@@ -72,7 +71,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                             ".updateDialect.success.message")
                                     }));
                                     history.push(
-                                        RoutingConstants.PATHS.get("EXTERNAL_DIALECT_EDIT")
+                                        AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT")
                                             .replace(":id", window.btoa(dialectURI).replace(/=/g, ""))
                                     );
                                 })

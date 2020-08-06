@@ -25,10 +25,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
-import { history } from "../../core";
+import { AppConstants, history } from "../../core";
 import { addUserStore } from "../api";
 import { AddUserstoreWizardStepIcons } from "../configs";
-import { RoutingConstants, USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
+import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
 import {
     CategorizedProperties,
     UserStorePostData,
@@ -116,7 +116,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             onClose();
 
-            history.push(RoutingConstants.PATHS.get("USERSTORES"));
+            history.push(AppConstants.PATHS.get("USERSTORES"));
         }).catch(error => {
             dispatch(addAlert({
                 description: error?.description ?? t("adminPortal:components.userstores.notifications.addUserstore" +

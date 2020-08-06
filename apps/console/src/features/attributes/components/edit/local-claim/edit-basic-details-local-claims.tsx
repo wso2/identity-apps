@@ -30,9 +30,8 @@ import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } f
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Form, Grid, Popup } from "semantic-ui-react";
-import { history } from "../../../../core";
+import { AppConstants, history } from "../../../../core";
 import { deleteAClaim, updateAClaim } from "../../../api";
-import { RoutingConstants } from "../../../constants";
 
 /**
  * Prop types for `EditBasicDetailsLocalClaims` component
@@ -127,7 +126,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
      */
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(() => {
-            history.push(RoutingConstants.PATHS.get("LOCAL_CLAIMS"));
+            history.push(AppConstants.PATHS.get("LOCAL_CLAIMS"));
             dispatch(addAlert(
                 {
                     description: t("adminPortal:components.claims.local.notifications.deleteClaim.success.description"),

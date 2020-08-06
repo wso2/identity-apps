@@ -18,4 +18,3 @@
 
 export * from "./application-management";
 export * from "./documentation-constants";
-export * from "./routing-constants";
