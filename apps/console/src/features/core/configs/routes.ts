@@ -301,7 +301,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         category: "adminPortal:components.sidePanel.categories.attributes",
         children: [
             {
-                component: lazy(() => import("../../attributes/pages/local-claims-edit")),
+                component: lazy(() => import("../../claims/pages/local-claims-edit")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
@@ -314,7 +314,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: lazy(() => import("../../attributes/pages/local-claims")),
+                component: lazy(() => import("../../claims/pages/local-claims")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
@@ -327,7 +327,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: lazy(() => import("../../attributes/pages/external-dialect-edit")),
+                component: lazy(() => import("../../claims/pages/external-dialect-edit")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
@@ -340,7 +340,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: lazy(() => import("../../attributes/pages/claim-dialects")),
+        component: lazy(() => import("../../claims/pages/claim-dialects")),
         exact: true,
         icon: {
             icon: SidePanelIcons.claims

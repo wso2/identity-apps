@@ -20,8 +20,8 @@ import { DocumentationConstants } from "@wso2is/core/constants";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { getApplicationsResourceEndpoints } from "../../applications";
-import { getAttributesResourceEndpoints } from "../../attributes";
 import { getCertificatesResourceEndpoints } from "../../certificates";
+import { getClaimResourceEndpoints } from "../../claims";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getRolesResourceEndpoints } from "../../roles";
@@ -112,7 +112,7 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             ...getApplicationsResourceEndpoints(this.getDeploymentConfig().serverHost),
-            ...getAttributesResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getIDPResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getEmailTemplatesResourceEndpoints(this.getDeploymentConfig().serverHost),

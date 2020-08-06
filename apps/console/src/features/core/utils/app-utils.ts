@@ -18,6 +18,8 @@
 
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
+import cloneDeep from "lodash/cloneDeep";
+import isEmpty from "lodash/isEmpty";
 import { store } from "../store";
 
 /**
@@ -68,5 +70,45 @@ export class AppUtils {
             ...JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName)),
             [ username ]: preferences
         }));
+    }
+
+    /**
+     * Get the consensually hidden routes.
+     *
+     * @return {string[]}
+     */
+    public static getHiddenRoutes(): string[] {
+
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences)) {
+            return [];
+        }
+
+        if (isEmpty(userPreferences) || isEmpty(userPreferences.identityAppsSettings?.devPortal?.hiddenRoutes)) {
+            return [];
+        }
+
+        return userPreferences.identityAppsSettings?.devPortal?.hiddenRoutes;
+    }
+
+    /**
+     * Set a consensually hidden route.
+     *
+     * @param {string} routeId - Route ID.
+     */
+    public static setHiddenRoute(routeId: string): void {
+        const userPreferences: StorageIdentityAppsSettingsInterface = AppUtils.getUserPreferences();
+
+        if (isEmpty(userPreferences)) {
+            return;
+        }
+
+        const hiddenRoutes = this.getHiddenRoutes();
+
+        const newPref: StorageIdentityAppsSettingsInterface = cloneDeep(userPreferences);
+        newPref.identityAppsSettings.devPortal.hiddenRoutes = [ ...hiddenRoutes, routeId ];
+
+        this.setUserPreferences(newPref);
     }
 }

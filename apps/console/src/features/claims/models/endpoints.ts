@@ -17,9 +17,9 @@
  */
 
 /**
- * Interface for the Attributes Management feature resource endpoints.
+ * Interface for the Claim Management feature resource endpoints.
  */
-export interface AttributesResourceEndpointsInterface {
+export interface ClaimResourceEndpointsInterface {
     claims: string;
     externalClaims: string;
     localClaims: string;

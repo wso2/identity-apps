@@ -49,23 +49,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import {
-    AppConstants,
     AppState,
+    AppUtils,
     ConfigReducerStateInterface,
     FeatureConfigInterface,
     Header,
     ProtectedRoute,
     SidePanelMiscIcons,
     UIConstants,
-    history,
     developerViewRoutes,
+    history,
     store
 } from "../features/core";
-import {
-    GovernanceConnectorCategoryInterface,
-    GovernanceConnectorUtils,
-    SidePanelIcons
-} from "../features/server-configurations";
 
 /**
  * Developer View Prop types.
@@ -102,12 +97,9 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-    const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
-        (state: AppState) => state.governanceConnector.categories);
-    const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(developerViewRoutes);
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(developerViewRoutes[ 0 ]);
+    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(developerViewRoutes[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
@@ -125,63 +117,15 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         if (isEmpty(profileInfo)) {
             dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
         }
-    }, []);
+    }, [ featureConfig ]);
 
     useEffect(() => {
-        if (headerHeight === document.getElementById("app-header").offsetHeight) {
-            return;
-        }
         setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
     });
 
     useEffect(() => {
-        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
-            return;
-        }
         setFooterHeight(document.getElementById("app-footer").offsetHeight);
     });
-
-    useEffect(() => {
-        if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
-            if (!governanceConnectorRoutesAdded) {
-
-                const filteredRoutesClone = [ ...filteredRoutes ];
-
-                governanceConnectorCategories.map(category => {
-                    let subCategoryExists = false;
-                    category.connectors?.map(connector => {
-                        if (connector.subCategory !== "DEFAULT") {
-                            subCategoryExists = true;
-                            return;
-                        }
-                    });
-                    if (subCategoryExists) {
-                        // TODO: Implement sub category handling logic here.
-                    }
-
-                    filteredRoutesClone.unshift({
-                        category: "adminPortal:components.sidePanel.categories.configurations",
-                        component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
-                        exact: true,
-                        icon: {
-                            icon: SidePanelIcons.connectors[ category.name ] ?? SidePanelIcons.connectors.default
-                        },
-                        id: category.id,
-                        name: category.name,
-                        order: 6,
-                        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
-                        protected: true,
-                        showOnSidePanel: true
-                    });
-                });
-
-                setFilteredRoutes(filteredRoutesClone);
-                setGovernanceConnectorRoutesAdded(true);
-            }
-        } else {
-            GovernanceConnectorUtils.getGovernanceConnectors();
-        }
-    }, [ governanceConnectorCategories ]);
 
     /**
      * Checks if the URL path is similar to the path of the route that's passed in.
@@ -362,6 +306,11 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             })
     };
 
+    /**
+     * Handles alert system initialize.
+     *
+     * @param system - Alert system object.
+     */
     const handleAlertSystemInitialize = (system) => {
         dispatch(initializeAlertSystem(system));
     };
@@ -393,7 +342,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             ) }
             sidePanel={ (
                 <SidePanel
-                    categorized
+                    ordered
                     caretIcon={ SidePanelMiscIcons.caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }
@@ -403,7 +352,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
+                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }

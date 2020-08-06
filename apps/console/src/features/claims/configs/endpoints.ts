@@ -16,15 +16,15 @@
  * under the License.
  */
 
-import { AttributesResourceEndpointsInterface } from "../models";
+import { ClaimResourceEndpointsInterface } from "../models";
 
 /**
- * Get the resource endpoints for the Attributes Management feature.
+ * Get the resource endpoints for the Claim Management feature.
  *
  * @param {string} serverHost - Server Host.
- * @return {AttributesResourceEndpointsInterface}
+ * @return {ClaimResourceEndpointsInterface}
  */
-export const getAttributesResourceEndpoints = (serverHost: string): AttributesResourceEndpointsInterface => {
+export const getClaimResourceEndpoints = (serverHost: string): ClaimResourceEndpointsInterface => {
     return {
         claims: `${ serverHost }/api/server/v1/claim-dialects`,
         externalClaims:`${ serverHost }/api/server/v1/claim-dialects/{}/claims`,
