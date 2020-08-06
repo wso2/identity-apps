@@ -23,10 +23,10 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
-import { getConnectorCategory } from "../../api";
-import { DynamicGovernanceConnector } from "../../components";
-import { history } from "../../helpers";
-import { GovernanceConnectorCategoryInterface } from "../../models";
+import { history } from "../../core";
+import { getConnectorCategory } from "../api";
+import { DynamicGovernanceConnector } from "../components";
+import { GovernanceConnectorCategoryInterface } from "../models";
 
 /**
  * Props for the Server Configurations page.
