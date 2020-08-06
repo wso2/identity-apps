@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../../models";
+import { TypeProperty, UserStorePostData, UserStoreProperty } from "../../models";
 
 /**
  * Prop types of the `SummaryUserStores` component

@@ -21,7 +21,7 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
-import { TypeProperty } from "../../../models";
+import { TypeProperty } from "../../models";
 
 /**
  * Prop types of the `GroupDetails` component 

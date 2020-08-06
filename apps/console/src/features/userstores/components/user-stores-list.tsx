@@ -35,12 +35,17 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, Image } from "semantic-ui-react";
-import { deleteUserStore } from "../../api";
-import { DatabaseAvatarGraphic, EmptyPlaceholderIllustrations } from "../../configs";
-import { AppConstants, UIConstants } from "../../constants";
-import { history } from "../../helpers";
-import { FeatureConfigInterface, UserStoreListItem } from "../../models";
-import { AppState } from "../../store";
+import {
+    AppConstants,
+    AppState,
+    EmptyPlaceholderIllustrations,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "../../core";
+import { deleteUserStore } from "../api";
+import { DatabaseAvatarGraphic } from "../configs";
+import { UserStoreListItem } from "../models";
 
 /**
  * Prop types of the `UserStoresList` component

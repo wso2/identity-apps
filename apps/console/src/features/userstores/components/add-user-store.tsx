@@ -25,17 +25,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { GeneralDetailsUserstore, GroupDetails, SummaryUserStores, UserDetails } from "./wizards";
-import { addUserStore } from "../../api";
-import { AddUserstoreWizardStepIcons } from "../../configs";
-import { AppConstants, USERSTORE_TYPE_DISPLAY_NAMES } from "../../constants";
-import { history } from "../../helpers";
+import { AppConstants, history } from "../../core";
+import { addUserStore } from "../api";
+import { AddUserstoreWizardStepIcons } from "../configs";
+import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
 import {
     CategorizedProperties,
     UserStorePostData,
     UserStoreProperty,
     UserstoreType
-} from "../../models";
-import { reOrganizeProperties } from "../../utils";
+} from "../models";
+import { reOrganizeProperties } from "../utils";
 
 /**
  * Prop types of the `AddUserStore` component

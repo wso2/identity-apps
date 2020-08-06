@@ -24,17 +24,17 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
-import { getAType, getAUserStore } from "../../api";
+import { history } from "../../core";
+import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
     EditConnectionDetails,
     EditGroupDetails,
     EditUserDetails
-} from "../../components";
-import { DatabaseAvatarGraphic } from "../../configs";
-import { history } from "../../helpers";
-import { CategorizedProperties, UserStore, UserstoreType } from "../../models";
-import { reOrganizeProperties } from "../../utils";
+} from "../components";
+import { DatabaseAvatarGraphic } from "../configs";
+import { CategorizedProperties, UserStore, UserstoreType } from "../models";
+import { reOrganizeProperties } from "../utils";
 
 /**
  * Props for the Userstores edit page.

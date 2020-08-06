@@ -25,8 +25,8 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
-import { patchUserStore } from "../../../api";
-import { RequiredBinary, TypeProperty, UserstoreType } from "../../../models";
+import { patchUserStore } from "../../api";
+import { RequiredBinary, TypeProperty, UserstoreType } from "../../models";
 
 /**
  * Prop types of `EditGroupDetails` component

@@ -26,8 +26,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
-import { deleteUserStore, patchUserStore, updateUserStore } from "../../../api";
-import { RequiredBinary, TypeProperty, UserStore } from "../../../models";
+import { deleteUserStore, patchUserStore, updateUserStore } from "../../api";
+import { RequiredBinary, TypeProperty, UserStore } from "../../models";
 
 /**
  * Prop types of `EditBasicDetailsUserStore` component

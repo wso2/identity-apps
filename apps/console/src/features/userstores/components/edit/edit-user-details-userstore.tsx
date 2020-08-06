@@ -23,16 +23,15 @@ import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-comp
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Grid, Icon } from "semantic-ui-react";
+import { Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
-import { patchUserStore, testConnection } from "../../../api";
-import { JDBC } from "../../../constants";
-import { RequiredBinary, TestConnection, TypeProperty, UserstoreType } from "../../../models";
+import { patchUserStore } from "../../api";
+import { RequiredBinary, TypeProperty, UserstoreType } from "../../models";
 
 /**
- * Prop types of `EditConnectionDetails` component
+ * Prop types of `EditUserDetails` component
  */
-interface EditConnectionDetailsPropsInterface extends TestableComponentInterface {
+interface EditUserDetailsPropsInterface extends TestableComponentInterface {
     /**
      * Initiates an update
      */
@@ -52,88 +51,29 @@ interface EditConnectionDetailsPropsInterface extends TestableComponentInterface
 }
 
 /**
- * This renders the edit connection details pane.
+ * This renders the edit userstore user details pane.
  *
- * @param {EditConnectionDetailsPropsInterface} props - Props injected to the component.
+ * @param {EditUserDetailsPropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsPropsInterface> = (
-    props: EditConnectionDetailsPropsInterface
+export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> = (
+    props: EditUserDetailsPropsInterface
 ): ReactElement => {
 
     const {
         update,
         id,
         properties,
-        type,
         [ "data-testid" ]: testId
     } = props;
 
-    const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
     const [ showMore, setShowMore ] = useState(false);
-    const [ connectionFailed, setConnectionFailed ] = useState(false);
-    const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
-    const [ isTesting, setIsTesting ] = useState(false);
     const [ sql, setSql ] = useState<Map<string, string>>(null);
 
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
-
-    /**
-     * Enum containing the icons a test connection button can have 
-     */
-    enum TestButtonIcon {
-        TESTING = "spinner",
-        FAILED = "remove",
-        SUCCESSFUL = "check",
-        INITIAL = "bolt"
-    }
-
-    /**
-     * This returns of the icon for the test button.
-     * 
-     * @returns {TestButtonIcon} The icon of the test button.
-     */
-    const findTestButtonIcon = (): TestButtonIcon => {
-        if (isTesting) {
-            return TestButtonIcon.TESTING
-        } else if (connectionSuccessful) {
-            return TestButtonIcon.SUCCESSFUL
-        } else if (connectionFailed) {
-            return TestButtonIcon.FAILED
-        } else {
-            return TestButtonIcon.INITIAL
-        }
-    };
-
-    /**
-     * Enum containing the colors the test button can have
-     */
-    enum TestButtonColor {
-        TESTING,
-        INITIAL,
-        SUCCESSFUL,
-        FAILED
-    }
-
-    /**
-     * This finds the right color for the test button
-     * 
-     * @return {TestButtonColor} The color of the test button.
-     */
-    const findTestButtonColor = (): TestButtonColor => {
-        if (isTesting) {
-            return TestButtonColor.TESTING
-        } else if (connectionSuccessful) {
-            return TestButtonColor.SUCCESSFUL
-        } else if (connectionFailed) {
-            return TestButtonColor.FAILED
-        } else {
-            return TestButtonColor.INITIAL
-        }
-    };
 
     useEffect(() => {
         if (properties) {
@@ -253,9 +193,6 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     return (
         <EmphasizedSegment>
             <Forms
-                onChange={ (isPure: boolean, values: Map<string, FormValue>) => {
-                    setFormValue(values);
-                } }
                 onSubmit={ onSubmitHandler }
             >
                 <Grid>
@@ -279,7 +216,11 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     required={ true }
                                                     label={ name }
                                                     requiredErrorMessage={
-                                                        `${property.description.split("#")[ 0 ]} is  required`
+                                                        t("adminPortal:components.userstores.forms." +
+                                                            "custom.requiredErrorMessage",
+                                                            {
+                                                                name: property.description.split("#")[ 0 ]
+                                                            })
                                                     }
                                                     showPassword={ t("common:showPassword") }
                                                     hidePassword={ t("common:hidePassword") }
@@ -309,6 +250,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
+                                                        toggle
                                                         placeholder={
                                                             t("adminPortal:components.userstores.forms." +
                                                                 "custom.placeholder",
@@ -316,7 +258,6 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                                     name: property.description.split("#")[ 0 ]
                                                                 })
                                                         }
-                                                        toggle
                                                         data-testid={ `${ testId }-form-toggle-${ property.name }` }
                                                     />
                                                 ) :
@@ -351,93 +292,12 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     
                         </Grid.Column>
                     </Grid.Row>
-                    { type.typeName.includes(JDBC) && (
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 8 }>
-                                <Button
-                                    className="test-button"
-                                    basic
-                                    type="button"
-                                    color={
-                                        findTestButtonColor() === TestButtonColor.SUCCESSFUL
-                                            ? "green"
-                                            : findTestButtonColor() === TestButtonColor.FAILED
-                                                ? "red"
-                                                : null
-                                    }
-                                    onClick={
-                                        () => {
-                                            setIsTesting(true);
-                                            if (type.typeName.includes(JDBC)) {
-                                                const testData: TestConnection = {
-                                                    connectionPassword: formValue?.get("password").toString()
-                                                        ?? properties?.required
-                                                            .find(property => property.name === "password")?.value,
-                                                    connectionURL: formValue?.get("url").toString()
-                                                        ?? properties?.required
-                                                            .find(property => property.name === "url")?.value,
-                                                    driverName: formValue?.get("driverName").toString()
-                                                        ?? properties?.required
-                                                            .find(property => property.name === "driverName")?.value,
-                                                    username: formValue?.get("userName").toString()
-                                                        ?? properties?.required
-                                                            .find(property => property.name === "userName")?.value
-                                                };
-                                                testConnection(testData).then(() => {
-                                                    dispatch(addAlert({
-                                                        description: t("adminPortal:components.userstores" +
-                                                            ".notifications.testConnection.success.description"),
-                                                        level: AlertLevels.SUCCESS,
-                                                        message: t("adminPortal:components.userstores.notifications." +
-                                                            "testConnection.success.message")
-                                                    }));
-                                                    setIsTesting(false);
-                                                    setConnectionFailed(false);
-                                                    setConnectionSuccessful(true);
-                                                }).catch((error) => {
-                                                    dispatch(addAlert({
-                                                        description: error?.description
-                                                            || t("adminPortal:components.userstores.notifications." +
-                                                                "testConnection.genericError.description"),
-                                                        level: AlertLevels.ERROR,
-                                                        message: error?.message || t("adminPortal:components." +
-                                                            "userstores.notifications.testConnection.genericError" +
-                                                            ".message")
-                                                    }));
-                                                    setIsTesting(false);
-                                                    setConnectionSuccessful(false);
-                                                    setConnectionFailed(true);
-                                                })
-                                            }
-                                        }
-                                    }
-                                    data-testid={ `${ testId }-test-connection-button` }
-                                >
-                                    <Icon
-                                        size="small"
-                                        loading={ isTesting }
-                                        name={ findTestButtonIcon() }
-                                        color={
-                                            findTestButtonColor() === TestButtonColor.SUCCESSFUL
-                                                ? "green"
-                                                : findTestButtonColor() === TestButtonColor.FAILED
-                                                    ? "red"
-                                                    : null
-                                        }
-                                    />
-                                    { t("adminPortal:components.userstores.forms.connection.testButton")}
-                        </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    ) }
                 </Grid>
     
-                {
-                    (properties?.optional.nonSql.length > 0
-                        || properties?.optional.sql.delete.length > 0
-                        || properties?.optional.sql.insert.length > 0
-                        || properties?.optional.sql.select.length > 0
-                        || properties?.optional.sql.update.length > 0)
+                { (properties?.optional.sql.delete.length > 0
+                    || properties?.optional.sql.insert.length > 0
+                    || properties?.optional.sql.select.length > 0
+                    || properties?.optional.sql.update.length > 0)
                     && (
                         <Grid columns={ 1 }>
                             <Grid.Column width={ 8 } textAlign="center">
@@ -451,56 +311,30 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                 </LinkButton>
                             </Grid.Column>
                         </Grid>
+                    ) }
     
-                    )
-                }
+                { showMore && properties?.optional.nonSql.length > 0 &&
+                    (
+                        <Grid>
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column width={ 8 }>
+                                    {
+                                        properties?.optional?.nonSql.map((property: TypeProperty, index: number) => {
+                                            const name = property.description.split("#")[ 0 ];
+                                            const isPassword = property.attributes
+                                                .find(attribute => attribute.name === "type").value === "password";
+                                            const toggle = property.attributes
+                                                .find(attribute => attribute.name === "type")?.value === "boolean";
     
-                { showMore && properties?.optional.nonSql.length > 0 && (
-                    <Grid>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column width={ 8 }>
-                                {
-                                    properties?.optional.nonSql?.map((property: TypeProperty, index: number) => {
-                                        const name = property.description.split("#")[ 0 ];
-                                        const isPassword = property.attributes
-                                            .find(attribute => attribute.name === "type").value === "password";
-                                        const toggle = property.attributes
-                                            .find(attribute => attribute.name === "type")?.value === "boolean";
-    
-                                        return (
-                                            isPassword
-                                                ? (
-                                                    <Field
-                                                        name={ property.name }
-                                                        type="password"
-                                                        key={ index }
-                                                        required={ false }
-                                                        label={ name }
-                                                        requiredErrorMessage={
-                                                            `${property.description.split("#")[ 0 ]} is  required`
-                                                        }
-                                                        showPassword={ t("common:showPassword") }
-                                                        hidePassword={ t("common:hidePassword") }
-                                                        placeholder={
-                                                            t("adminPortal:components.userstores.forms." +
-                                                                "custom.placeholder",
-                                                                {
-                                                                    name: property.description.split("#")[ 0 ]
-                                                                })
-                                                        }
-                                                        data-testid={ `${ testId }-form--non-sql-password-input-${
-                                                            property.name }` }
-                                                    />
-                                                )
-                                                : toggle
+                                            return (
+                                                isPassword
                                                     ? (
                                                         <Field
                                                             name={ property.name }
-                                                            value={ property.value ?? property.defaultValue }
-                                                            type="toggle"
+                                                            type="password"
                                                             key={ index }
                                                             required={ false }
-                                                            label={ property.description.split("#")[ 0 ] }
+                                                            label={ name }
                                                             requiredErrorMessage={
                                                                 t("adminPortal:components.userstores.forms." +
                                                                     "custom.requiredErrorMessage",
@@ -508,6 +342,8 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                             }
+                                                            showPassword={ t("common:showPassword") }
+                                                            hidePassword={ t("common:hidePassword") }
                                                             placeholder={
                                                                 t("adminPortal:components.userstores.forms." +
                                                                     "custom.placeholder",
@@ -515,44 +351,72 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                                         name: property.description.split("#")[ 0 ]
                                                                     })
                                                             }
-                                                            toggle
-                                                            data-testid={ `${ testId }-form--non-sql-toggle-${
-                                                                property.name }` }
-                                                        />
-                                                    ) :
-                                                    (
-                                                        <Field
-                                                            name={ property.name }
-                                                            value={ property.value ?? property.defaultValue }
-                                                            type="text"
-                                                            key={ index }
-                                                            required={ false }
-                                                            label={ property.description.split("#")[ 0 ] }
-                                                            requiredErrorMessage={
-                                                                t("adminPortal:components.userstores.forms." +
-                                                                    "custom.requiredErrorMessage",
-                                                                    {
-                                                                        name: property.description.split("#")[ 0 ]
-                                                                    })
-                                                            }
-                                                            placeholder={
-                                                                t("adminPortal:components.userstores.forms." +
-                                                                    "custom.placeholder",
-                                                                    {
-                                                                        name: property.description.split("#")[ 0 ]
-                                                                    })
-                                                            }
-                                                            data-testid={ `${ testId }-form--non-sql-text-input-${
+                                                            data-testid={ `${ testId }-form-non-sql-password-input-${
                                                                 property.name }` }
                                                         />
                                                     )
-                                        );
-                                    })
-                                }
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                ) }
+                                                    : toggle
+                                                        ? (
+                                                            <Field
+                                                                name={ property.name }
+                                                                value={ property.value ?? property.defaultValue }
+                                                                type="toggle"
+                                                                key={ index }
+                                                                required={ false }
+                                                                label={ property.description.split("#")[ 0 ] }
+                                                                requiredErrorMessage={
+                                                                    t("adminPortal:components.userstores.forms.edit." +
+                                                                        "connection.custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                toggle
+                                                                placeholder={
+                                                                    t("adminPortal:components.userstores.forms." +
+                                                                        "custom.placeholder",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                data-testid={ `${ testId }-form-non-sql-toggle-${
+                                                                    property.name }` }
+                                                            />
+                                                        )
+                                                        : (
+                                                            <Field
+                                                                name={ property.name }
+                                                                value={ property.value ?? property.defaultValue }
+                                                                type="text"
+                                                                key={ index }
+                                                                required={ false }
+                                                                label={ property.description.split("#")[ 0 ] }
+                                                                requiredErrorMessage={
+                                                                    t("adminPortal:components.userstores.forms.edit." +
+                                                                        "connection.custom.requiredErrorMessage",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                placeholder={
+                                                                    t("adminPortal:components.userstores.forms." +
+                                                                        "custom.placeholder",
+                                                                        {
+                                                                            name: property.description.split("#")[ 0 ]
+                                                                        })
+                                                                }
+                                                                data-testid={ `${ testId }-form-non-sql-text-input-${
+                                                                    property.name }` }
+                                                            />
+                                                        )
+                                            );
+                                        })
+                                    }
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    )
+                }
                 { showMore
                     && (properties?.optional.sql.delete.length > 0
                         || properties?.optional.sql.insert.length > 0
@@ -578,7 +442,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                 <Grid columns={ 1 }>
                     <Grid.Column width={ 8 }>
                         <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
-                            { t("common:update") }
+                            Update
                         </PrimaryButton>
                     </Grid.Column>
                 </Grid>
@@ -590,6 +454,6 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 /**
  * Default props for the component.
  */
-EditConnectionDetails.defaultProps = {
-    "data-testid": "userstore-connection-details-edit"
+EditUserDetails.defaultProps = {
+    "data-testid": "userstore-user-details-edit"
 };

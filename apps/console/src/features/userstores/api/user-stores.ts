@@ -18,8 +18,8 @@
 
 import { HttpMethods } from "@wso2is/core/models";
 import { OAuth } from "@wso2is/oauth-web-worker";
+import { store } from "../../core";
 import { PatchData, QueryParams, TestConnection, UserStorePostData } from "../models";
-import { store } from "../store";
 
 /**
  * The error code that is returned when there is no item in the list.

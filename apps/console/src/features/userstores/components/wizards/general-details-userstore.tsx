@@ -21,9 +21,9 @@ import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
-import { testConnection } from "../../../api";
-import { JDBC } from "../../../constants";
-import { TestConnection, TypeProperty, UserstoreType } from "../../../models";
+import { testConnection } from "../../api";
+import { JDBC } from "../../constants";
+import { TestConnection, TypeProperty, UserstoreType } from "../../models";
 
 /**
  * Prop types of the `GeneralDetails` component 

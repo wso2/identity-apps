@@ -17,7 +17,9 @@
  */
 
 import _ from "lodash";
-import { getAUserStore, getUserStoreList } from "../api";
+// TODO: use `getUserStores()` function from Userstores features.
+import { getUserStoreList } from "../../users";
+import { getAUserStore } from "../api";
 import {
     CategorizedProperties,
     TypeProperty,

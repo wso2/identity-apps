@@ -22,17 +22,12 @@ import { EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-compon
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { getAType, getUserstoreTypes } from "../../api";
-import { AddUserStore } from "../../components";
-import { EmptyPlaceholderIllustrations, UserstoreTemplateIllustrations } from "../../configs";
-import {
-    AppConstants,
-    USERSTORE_TYPE_DISPLAY_NAMES,
-    USERSTORE_TYPE_IMAGES,
-    USER_STORE_TYPE_DESCRIPTIONS
-} from "../../constants";
-import { history } from "../../helpers";
-import { TypeResponse, UserstoreType } from "../../models";
+import { AppConstants, EmptyPlaceholderIllustrations, history } from "../../core";
+import { getAType, getUserstoreTypes } from "../api";
+import { AddUserStore } from "../components";
+import { UserstoreTemplateIllustrations } from "../configs";
+import { USERSTORE_TYPE_DISPLAY_NAMES, USERSTORE_TYPE_IMAGES, USER_STORE_TYPE_DESCRIPTIONS } from "../constants";
+import { TypeResponse, UserstoreType } from "../models";
 
 /**
  * Props for the Userstore templates page.

@@ -25,13 +25,19 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { getUserStores } from "../../api";
-import { AdvancedSearchWithBasicFilters, UserStoresList } from "../../components";
-import { AppConstants, UIConstants } from "../../constants";
-import { history } from "../../helpers";
-import { FeatureConfigInterface, QueryParams, UserStoreListItem } from "../../models";
-import { AppState } from "../../store";
-import { filterList, sortList } from "../../utils";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppConstants,
+    AppState,
+    FeatureConfigInterface,
+    UIConstants,
+    filterList,
+    history,
+    sortList
+} from "../../core";
+import { getUserStores } from "../api";
+import { UserStoresList } from "../components";
+import { QueryParams, UserStoreListItem } from "../models";
 
 /**
  * Props for the Userstore page.
