@@ -25,10 +25,10 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid } from "semantic-ui-react";
-import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../../api";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
-import { history } from "../../../helpers";
-import { EmailTemplate, EmailTemplateType } from "../../../models";
+import { history } from "../../../core";
+import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
+import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
+import { EmailTemplate, EmailTemplateType } from "../../models";
 import { EmailTemplateEditor } from "../email-code-editor";
 
 interface AddLocaleTemplatePropsInterface extends TestableComponentInterface {

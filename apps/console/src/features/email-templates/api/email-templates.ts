@@ -19,8 +19,8 @@
 import { HttpMethods } from "@wso2is/core/models";
 import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { store } from "../../core";
 import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../models";
-import { store } from "../store";
 
 /**
  * Initialize an axios Http client.

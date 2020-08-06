@@ -23,9 +23,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
 import { EmailTemplateEditor } from "./email-code-editor";
-import { getTemplateDetails } from "../../api";
-import { ViewLocaleTemplateWizardStepIcons } from "../../configs";
-import { EmailTemplate } from "../../models";
+import { getTemplateDetails } from "../api";
+import { ViewLocaleTemplateWizardStepIcons } from "../configs";
+import { EmailTemplate } from "../models";
 
 interface ViewLocaleTemplatePropsInterface extends TestableComponentInterface {
     onCloseHandler: () => void;

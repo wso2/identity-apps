@@ -28,10 +28,10 @@ import {
 import React, { FunctionComponent , ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Image } from "semantic-ui-react";
-import { EmailTemplateIllustrations } from "../../configs";
-import { EMAIL_TEMPLATE_VIEW_PATH, UIConstants } from "../../constants";
-import { history } from "../../helpers";
-import { EmailTemplateType } from "../../models";
+import { history, UIConstants } from "../../core";
+import { EmailTemplateIllustrations } from "../configs";
+import { EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
+import { EmailTemplateType } from "../models";
 
 interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     onDelete: (templateId: string) => void;

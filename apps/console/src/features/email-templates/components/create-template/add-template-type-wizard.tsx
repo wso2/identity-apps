@@ -26,10 +26,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { AddEmailTemplateType } from "./add-template-type";
-import { createNewTemplateType } from "../../../api";
-import { AddEmailTemplateTypeWizardStepIcons } from "../../../configs";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../../../constants";
-import { history } from "../../../helpers";
+import { history } from "../../../core";
+import { createNewTemplateType } from "../../api";
+import { AddEmailTemplateTypeWizardStepIcons } from "../../configs";
+import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
 
 interface EmailTemplateTypeWizardProps extends TestableComponentInterface {
     onCloseHandler: () => void;

@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EMAIL_STARTER_TEMPLATE } from "../../../constants";
+import { EMAIL_STARTER_TEMPLATE } from "../../constants";
 
 interface EmailTemplateEditorPropsInterface extends TestableComponentInterface {
     htmlContent: string;
