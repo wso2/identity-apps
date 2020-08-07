@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AUTHORIZATION_ENDPOINT, Authenticate, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
+import { AUTHORIZATION_ENDPOINT, IdentityClient, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
 import { setSignOutRequestLoadingStatus, setTokenRevokeRequestLoadingStatus } from "./loaders";
 import { getProfileInformation } from "./profile";
 import {
@@ -67,7 +67,7 @@ export const resetAuthentication = (): ResetAuthenticationActionInterface => ({
  * @return {(dispatch) => void}
  */
 export const handleSignIn = () => (dispatch) => {
-    const oAuth = Authenticate.getInstance();
+    const oAuth = IdentityClient.getInstance();
     oAuth
         .initialize({
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
@@ -115,7 +115,7 @@ export const handleSignIn = () => (dispatch) => {
 export const handleSignOut = () => (dispatch) => {
     dispatch(setSignOutRequestLoadingStatus(true));
 
-    const oAuth = Authenticate.getInstance();
+    const oAuth = IdentityClient.getInstance();
     oAuth
         .signOut()
         .then(() => {
@@ -139,7 +139,7 @@ export const handleSignOut = () => (dispatch) => {
  */
 export const endUserSession = (onSuccess: () => void, onError: (error: Error) => void) => (dispatch) => {
     dispatch(setTokenRevokeRequestLoadingStatus(true));
-    const oAuth = Authenticate.getInstance();
+    const oAuth = IdentityClient.getInstance();
     oAuth
         .revokeToken()
         .then(() => {

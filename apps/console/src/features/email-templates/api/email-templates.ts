@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { Authenticate, Storage } from "@wso2is/authentication";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../models";
@@ -25,7 +25,7 @@ import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../model
 /**
  * Initialize an axios Http client.
  */
-const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Get all email template types

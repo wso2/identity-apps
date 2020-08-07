@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, SignInResponse } from "@wso2is/authentication";
+import { IdentityClient, SignInResponse } from "@wso2is/authentication";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import _ from "lodash";
 import { CommonServiceResourcesEndpoints } from "../configs";
@@ -38,7 +38,7 @@ import { ContextUtils, ProfileUtils } from "../utils";
 /**
  * auth instance.
  */
-const auth = Authenticate.getInstance();
+const auth = IdentityClient.getInstance();
 /**
  * Get an http client instance.
  *

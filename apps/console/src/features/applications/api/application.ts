@@ -18,7 +18,7 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { Authenticate } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ApplicationManagementConstants } from "../constants";
@@ -44,9 +44,9 @@ import { ApplicationManagementUtils } from "../utils";
  * Get an axios instance.
  *
  */
-const httpClient = Authenticate.getInstance()
-    .httpRequest.bind(Authenticate.getInstance())
-    .bind(Authenticate.getInstance());
+const httpClient = IdentityClient.getInstance()
+    .httpRequest.bind(IdentityClient.getInstance())
+    .bind(IdentityClient.getInstance());
 /**
  * Gets the basic information about the application.
  *

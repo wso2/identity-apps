@@ -17,7 +17,7 @@
  */
 
 import { AxiosHttpClient } from "@wso2is/http";
-import { Authenticate, Storage } from "@wso2is/authentication";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -28,7 +28,7 @@ import { store } from "../store";
  */
 const httpClient = AxiosHttpClient.getInstance();
 
-const httpRequest = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
+const httpRequest = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Updates the user's password.

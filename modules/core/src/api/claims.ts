@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, Storage } from "@wso2is/authentication";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ClaimConstants } from "../constants";
@@ -34,7 +34,7 @@ const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
  * Get an axios instance.
  *
  */
-const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Fetch all local claims.

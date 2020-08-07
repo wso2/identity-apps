@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AUTHORIZATION_ENDPOINT, Authenticate, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
+import { AUTHORIZATION_ENDPOINT, IdentityClient, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
 import { TokenConstants } from "@wso2is/core/constants";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
@@ -180,7 +180,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-    const oAuth = Authenticate.getInstance();
+    const oAuth = IdentityClient.getInstance();
     oAuth
         .initialize({
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
@@ -223,7 +223,7 @@ export const handleSignIn = () => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    const oAuth = Authenticate.getInstance();
+    const oAuth = IdentityClient.getInstance();
     oAuth
         .signOut()
         .then(() => {

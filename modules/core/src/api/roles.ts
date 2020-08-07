@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, Storage } from "@wso2is/authentication";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { RoleConstants } from "../constants";
@@ -29,7 +29,7 @@ import { ContextUtils } from "../utils";
  * Initialize an axios Http client.
  *
  */
-const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Retrieve the list of groups that are currently in the system.

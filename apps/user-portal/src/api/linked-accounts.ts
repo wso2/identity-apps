@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, Storage, SignInResponse } from "@wso2is/authentication";
+import { IdentityClient, Storage, SignInResponse } from "@wso2is/authentication";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {OAuthSingletonInterface}
  */
-const oAuth = Authenticate.getInstance();
+const oAuth = IdentityClient.getInstance();
 
 /**
  * Get an axios instance.
