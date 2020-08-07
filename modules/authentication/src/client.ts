@@ -17,10 +17,16 @@
  */
 
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { OAuth } from ".";
-import { handleSignIn, handleSignOut } from "./actions";
 import * as AUTHENTICATION_TYPES from "./constants";
-import { ConfigInterface, CustomGrantRequestParams, OAuthInterface, ResponseModeTypes } from "./models";
+import {
+    ConfigInterface,
+    CustomGrantRequestParams,
+    ResponseModeTypes,
+    ServiceResourcesType,
+    WebWorkerClientInterface
+} from "./models";
+import { handleSignIn, handleSignOut } from "./utils";
+import { WebWorkerClient } from "./worker";
 
 /**
  * The login scope.
@@ -80,9 +86,9 @@ export class IdentityClient implements ConfigInterface {
     public scope!: string[];
     public serverOrigin: string;
     public storage: AUTHENTICATION_TYPES.Storage;
-
+    public endpoints?: ServiceResourcesType;
     private static instance: IdentityClient;
-    private client: OAuthInterface;
+    private client: WebWorkerClientInterface;
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
@@ -125,11 +131,12 @@ export class IdentityClient implements ConfigInterface {
             this.responseMode = resolve("responseMode");
             this.scope = resolve("scope");
             this.serverOrigin = resolve("serverOrigin");
+            this.endpoints = resolve("endpoints");
 
             Object.assign(this, config);
             return Promise.resolve(true);
         } else {
-            this.client = OAuth.getInstance();
+            this.client = WebWorkerClient.getInstance();
             return this.client
                 .initialize(config)
                 .then(() => {

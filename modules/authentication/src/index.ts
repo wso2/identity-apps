@@ -17,13 +17,13 @@
  *
  */
 
-import * as actionCrypto from "./actions/crypto";
-import * as actionOPConfiguration from "./actions/op-config";
-import * as actionSession from "./actions/session-storage";
-import * as actionSignIn from "./actions/sign-in";
-import * as actionSignOut from "./actions/sign-out";
 import * as constantToken from "./constants/token";
 import * as constantUser from "./constants/user";
+import * as actionCrypto from "./utils/crypto";
+import * as actionOPConfiguration from "./utils/op-config";
+import * as actionSession from "./utils/session-storage";
+import * as actionSignIn from "./utils/sign-in";
+import * as actionSignOut from "./utils/sign-out";
 
 /**
  * Export Utils & Keys
@@ -46,7 +46,6 @@ export * from "./models/client";
  * Export Client SDK
  */
 export * from "./client";
-export * from "./oauth";
 export * from "./models";
 export * from "./constants/endpoints";
 export * from "./constants/storage";

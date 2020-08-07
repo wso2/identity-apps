@@ -16,15 +16,7 @@
  * under the License.
  */
 
-interface ServiceResourcesType {
-    authorize: string;
-    jwks: string;
-    logout: string;
-    oidcSessionIFrame: string;
-    revoke: string;
-    token: string;
-    wellKnown: string;
-}
+import { ServiceResourcesType } from "../models";
 
 export const SERVICE_RESOURCES: ServiceResourcesType = {
     authorize: "/oauth2/authorize",

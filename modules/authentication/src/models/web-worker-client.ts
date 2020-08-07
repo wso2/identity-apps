@@ -20,7 +20,7 @@ import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ConfigInterface } from ".";
 import { SignInResponse, UserInfo } from "./message";
 
-export interface OAuthInterface {
+export interface WebWorkerClientInterface {
     httpRequest<T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>>;
     httpRequestAll<T = any>(configs: AxiosRequestConfig[]): Promise<AxiosResponse<T>[]>;
     signOut(): Promise<boolean>;
@@ -31,8 +31,8 @@ export interface OAuthInterface {
     revokeToken(): Promise<boolean>;
 }
 
-export interface OAuthSingletonInterface {
-    getInstance(): OAuthInterface;
+export interface WebWorkerSingletonClientInterface {
+    getInstance(): WebWorkerClientInterface;
 }
 
 export interface CustomGrantRequestParams {

@@ -18,16 +18,6 @@
 
 import axios, { AxiosError, AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
-    getAuthenticatedUser as getAuthenticatedUserUtil,
-    getTokenRequestHeaders as getTokenRequestHeadersUtil,
-    handleSignIn,
-    handleSignOut,
-    initUserSession as initUserSessionUtil,
-    sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
-    sendRevokeTokenRequest as sendRevokeTokenRequestUtil,
-    validateIdToken as validateIdTokenUtil
-} from "./actions";
-import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
     AUTHORIZATION_ENDPOINT,
@@ -46,19 +36,29 @@ import {
     TOKEN_TAG,
     USERNAME,
     USERNAME_TAG
-} from "./constants";
+} from "../constants";
 import {
     CustomGrantRequestParams,
-    OAuthWorkerInterface,
-    OAuthWorkerSingletonInterface,
     SessionData,
     SignInResponse,
     TokenResponseInterface,
     UserInfo,
-    WebWorkerConfigInterface
-} from "./models";
+    WebWorkerConfigInterface,
+    WebWorkerInterface,
+    WebWorkerSingletonInterface
+} from "../models";
+import {
+    getAuthenticatedUser as getAuthenticatedUserUtil,
+    getTokenRequestHeaders as getTokenRequestHeadersUtil,
+    handleSignIn,
+    handleSignOut,
+    initUserSession as initUserSessionUtil,
+    sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
+    sendRevokeTokenRequest as sendRevokeTokenRequestUtil,
+    validateIdToken as validateIdTokenUtil
+} from "../utils";
 
-export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWorkerSingletonInterface {
+export const WebWorker: WebWorkerSingletonInterface = (function(): WebWorkerSingletonInterface {
     /**
      * Values to be set when initializing the library.
      */
@@ -68,7 +68,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
 
     let refreshTimer: NodeJS.Timeout;
 
-    let instance: OAuthWorkerInterface;
+    let instance: WebWorkerInterface;
 
     const session: SessionData = new Map<string, string>();
 
@@ -403,7 +403,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      *
      * @returns {OAuthWorkerInterface} Returns the object containing
      */
-    function Constructor(config: WebWorkerConfigInterface): OAuthWorkerInterface {
+    function Constructor(config: WebWorkerConfigInterface): WebWorkerInterface {
         authConfig = { ...config };
 
         httpClient = axios.create({
@@ -440,7 +440,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
     }
 
     return {
-        getInstance: (config: WebWorkerConfigInterface): OAuthWorkerInterface => {
+        getInstance: (config: WebWorkerConfigInterface): WebWorkerInterface => {
             if (instance) {
                 return instance;
             } else {

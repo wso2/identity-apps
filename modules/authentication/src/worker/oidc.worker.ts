@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { WebWorker } from "./web-worker";
 import {
     API_CALL,
     API_CALL_ALL,
@@ -26,14 +27,13 @@ import {
     REVOKE_TOKEN,
     SIGNED_IN,
     SIGN_IN
-} from "./constants";
-import { OAuthWorker as OAuthWorkerClass, OAuthWorkerInterface, SignInResponse } from "./models";
-import { OAuthWorker } from "./oauth-worker";
-import { generateFailureDTO, generateSuccessDTO } from "./utils";
+} from "../constants";
+import { SignInResponse, WebWorkerClass, WebWorkerInterface } from "../models";
+import { generateFailureDTO, generateSuccessDTO } from "../utils";
 
-const ctx: OAuthWorkerClass<any> = self as any;
+const ctx: WebWorkerClass<any> = self as any;
 
-let oAuthWorker: OAuthWorkerInterface;
+let oAuthWorker: WebWorkerInterface;
 
 ctx.onmessage = ({ data, ports }) => {
     const port = ports[0];
@@ -41,7 +41,7 @@ ctx.onmessage = ({ data, ports }) => {
     switch (data.type) {
         case INIT:
             try {
-                oAuthWorker = OAuthWorker.getInstance(data.data);
+                oAuthWorker = WebWorker.getInstance(data.data);
                 port.postMessage(generateSuccessDTO());
             } catch (error) {
                 port.postMessage(generateFailureDTO(error));

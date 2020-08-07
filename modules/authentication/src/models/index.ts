@@ -25,3 +25,4 @@ export * from "./authenticated-user";
 export * from "./oauth";
 export * from "./oauth-worker";
 export * from "./session";
+export * from "./endpoints";

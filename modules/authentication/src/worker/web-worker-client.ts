@@ -17,6 +17,7 @@
  */
 
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import WorkerFile from "./oidc.worker";
 import {
     API_CALL,
     API_CALL_ALL,
@@ -30,20 +31,19 @@ import {
     SESSION_STATE,
     SIGNED_IN,
     SIGN_IN
-} from "./constants";
+} from "../constants";
 import {
     AuthCode,
     ConfigInterface,
     CustomGrantRequestParams,
     Message,
-    OAuthInterface,
-    OAuthSingletonInterface,
     ResponseMessage,
     SignInResponse,
     UserInfo,
-    WebWorkerConfigInterface
-} from "./models";
-import WorkerFile from "./oauth.worker";
+    WebWorkerClientInterface,
+    WebWorkerConfigInterface,
+    WebWorkerSingletonClientInterface
+} from "../models";
 
 /**
  * This is a singleton class that allows authentication using the OAuth 2.0 protocol.
@@ -86,7 +86,7 @@ import WorkerFile from "./oauth.worker";
  *
  * ```
  */
-export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterface {
+export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): WebWorkerSingletonClientInterface {
     /**
      * The private member variable that holds the reference to the web worker.
      */
@@ -94,7 +94,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
     /**
      * The private member variable that holds the instance of this class.
      */
-    let instance: OAuthInterface;
+    let instance: WebWorkerClientInterface;
     /**
      * The private boolean member variable that specifies if the `initialize()` method has been called or not.
      */
@@ -542,7 +542,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      *
      * @returns {OAuthInterface} OAuthInterface object
      */
-    function Constructor(): OAuthInterface {
+    function Constructor(): WebWorkerClientInterface {
         worker = new WorkerFile();
 
         return {
@@ -558,7 +558,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
     }
 
     return {
-        getInstance: (): OAuthInterface => {
+        getInstance: (): WebWorkerClientInterface => {
             if (instance) {
                 return instance;
             } else {

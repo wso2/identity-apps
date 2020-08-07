@@ -19,9 +19,9 @@
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ConfigInterface } from "./client";
 import { Message, SignInResponse, UserInfo } from "./message";
-import { CustomGrantRequestParams } from "./oauth";
+import { CustomGrantRequestParams } from "./web-worker-client";
 
-export interface OAuthWorkerInterface {
+export interface WebWorkerInterface {
     isSignedIn(): boolean;
     doesTokenExist(): boolean;
     setAuthCode(authCode: string, sessionState: string, pkce?: string): void;
@@ -35,14 +35,14 @@ export interface OAuthWorkerInterface {
     revokeToken(): Promise<boolean>;
 }
 
-export interface OAuthWorkerSingletonInterface {
-    getInstance(config: ConfigInterface): OAuthWorkerInterface;
+export interface WebWorkerSingletonInterface {
+    getInstance(config: ConfigInterface): WebWorkerInterface;
 }
 
-interface OAuthEvent<T> extends MessageEvent {
+interface WebWorkerEvent<T> extends MessageEvent {
     data: Message<T>;
 }
 
-export class OAuthWorker<T> extends Worker {
-    public onmessage: (this: OAuthWorker<T>, event: OAuthEvent<T>) => void;
+export class WebWorkerClass<T> extends Worker {
+    public onmessage: (this: WebWorkerClass<T>, event: WebWorkerEvent<T>) => void;
 }

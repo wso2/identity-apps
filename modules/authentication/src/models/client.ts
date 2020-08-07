@@ -16,8 +16,9 @@
  * under the License.
  */
 
-import { SessionData } from "./oauth";
+import { ServiceResourcesType } from ".";
 import { ResponseModeTypes } from "./oidc-request-params";
+import { SessionData } from "./web-worker-client";
 import { Storage } from "../constants";
 
 /**
@@ -37,6 +38,7 @@ export interface ConfigInterface {
     serverOrigin: string;
     storage?: Storage;
     session?: SessionData;
+    endpoints?: ServiceResourcesType;
 }
 
 export interface WebWorkerConfigInterface extends ConfigInterface {
