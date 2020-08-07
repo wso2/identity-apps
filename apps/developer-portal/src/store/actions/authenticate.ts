@@ -32,7 +32,8 @@ import {
 } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
-import { history, store } from "../../../core";
+import { history } from "../../helpers";
+import { store } from "../index";
 
 /**
  *  Gets profile information by making an API call
@@ -50,9 +51,9 @@ export const getProfileInformation = () => (dispatch): void => {
                 dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.genericError.description"),
+                            "devPortal:notifications.getProfileInfo.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.message")
+                        message: I18n.instance.t("devPortal:notifications.getProfileInfo.genericError.message")
                     })
                 );
 
@@ -76,7 +77,7 @@ export const getProfileInformation = () => (dispatch): void => {
                                 addAlert<AlertInterface>({
                                     description: error.response.data.description,
                                     level: AlertLevels.ERROR,
-                                    message: I18n.instance.t("adminPortal:notifications.getProfileSchema.error.message")
+                                    message: I18n.instance.t("devPortal:notifications.getProfileSchema.error.message")
                                 })
                             );
                         }
@@ -84,10 +85,10 @@ export const getProfileInformation = () => (dispatch): void => {
                         dispatch(
                             addAlert<AlertInterface>({
                                 description: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.description"),
+                                    "devPortal:notifications.getProfileSchema.genericError.description"),
                                 level: AlertLevels.ERROR,
                                 message: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.message")
+                                    "devPortal:notifications.getProfileSchema.genericError.message")
                             })
                         );
                     })
@@ -103,12 +104,12 @@ export const getProfileInformation = () => (dispatch): void => {
                 dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.error.description",
+                            "devPortal:notifications.getProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.error.message"
+                            "devPortal:notifications.getProfileInfo.error.message"
                         )
                     })
                 );
@@ -118,9 +119,9 @@ export const getProfileInformation = () => (dispatch): void => {
 
             dispatch(
                 addAlert({
-                    description: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.description"),
+                    description: I18n.instance.t("devPortal:notifications.getProfileInfo.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.message")
+                    message: I18n.instance.t("devPortal:notifications.getProfileInfo.genericError.message")
                 })
             );
         })
@@ -176,7 +177,7 @@ export const handleSignIn = () => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    const oAuth = Authenticate.getInstance();
+    const oAuth = new Authenticate(STORAGE.webWorker);
     oAuth
         .signOut()
         .then(() => {

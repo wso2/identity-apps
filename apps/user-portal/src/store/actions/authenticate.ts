@@ -180,7 +180,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
  * Handle user sign-in
  */
 export const handleSignIn = () => (dispatch) => {
-    const oAuth = new Authenticate(STORAGE.webWorker);
+    const oAuth = Authenticate.getInstance();
     oAuth
         .initialize({
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
@@ -190,7 +190,8 @@ export const handleSignIn = () => (dispatch) => {
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
-            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            storage: STORAGE.webWorker
         })
         .then(() => {
             oAuth
@@ -222,7 +223,7 @@ export const handleSignIn = () => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    const oAuth = new Authenticate(STORAGE.webWorker);
+    const oAuth = Authenticate.getInstance();
     oAuth
         .signOut()
         .then(() => {

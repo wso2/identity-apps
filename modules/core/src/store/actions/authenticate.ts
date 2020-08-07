@@ -67,7 +67,7 @@ export const resetAuthentication = (): ResetAuthenticationActionInterface => ({
  * @return {(dispatch) => void}
  */
 export const handleSignIn = () => (dispatch) => {
-    const oAuth = new Authenticate(STORAGE.webWorker);
+    const oAuth = Authenticate.getInstance();
     oAuth
         .initialize({
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
@@ -77,7 +77,8 @@ export const handleSignIn = () => (dispatch) => {
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
-            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            storage: STORAGE.webWorker
         })
         .then(() => {
             oAuth
@@ -114,7 +115,7 @@ export const handleSignIn = () => (dispatch) => {
 export const handleSignOut = () => (dispatch) => {
     dispatch(setSignOutRequestLoadingStatus(true));
 
-    const oAuth = new Authenticate(STORAGE.webWorker);
+    const oAuth = Authenticate.getInstance();
     oAuth
         .signOut()
         .then(() => {
@@ -138,7 +139,7 @@ export const handleSignOut = () => (dispatch) => {
  */
 export const endUserSession = (onSuccess: () => void, onError: (error: Error) => void) => (dispatch) => {
     dispatch(setTokenRevokeRequestLoadingStatus(true));
-    const oAuth = new Authenticate(STORAGE.webWorker);
+    const oAuth = Authenticate.getInstance();
     oAuth
         .revokeToken()
         .then(() => {
