@@ -272,6 +272,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
      */
     function Constructor(config: WebWorkerConfigInterface): WebWorkerInterface {
         authConfig = { ...config };
+        authConfig.session = session;
 
         httpClient = axios.create({
             withCredentials: true

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, Storage } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -30,7 +30,7 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
 /**
  * Method that sends multiple api requests at once.
  */
-const httpRequestAll = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance())All;
+const httpRequestAll = IdentityClient.getInstance().httpRequestAll.bind(IdentityClient.getInstance());
 
 /**
  * Fetch the configured security questions of the user.
