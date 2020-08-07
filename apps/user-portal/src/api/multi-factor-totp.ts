@@ -17,7 +17,7 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { Authenticate, STORAGE } from "@wso2is/authentication";
+import { Authenticate, Storage } from "@wso2is/authentication";
 import { store } from "../store";
 
 /**

@@ -34,7 +34,7 @@ import {
     USERNAME
 } from "../constants";
 import { ConfigInterface } from "../models/client";
-import { STORAGE } from "../constants/storage";
+import { Storage } from "../constants/storage";
 import { SessionData } from "..";
 
 /**
@@ -42,8 +42,8 @@ import { SessionData } from "..";
  *
  * @returns {boolean}
  */
-export const isOPConfigInitiated = (storage: STORAGE, session: SessionData): boolean => {
-    if (storage === STORAGE.sessionStorage) {
+export const isOPConfigInitiated = (storage: Storage, session: SessionData): boolean => {
+    if (storage === Storage.sessionStorage) {
         return (
             getSessionParameter(OP_CONFIG_INITIATED, storage, session) &&
             getSessionParameter(OP_CONFIG_INITIATED, storage, session) === "true"
@@ -58,8 +58,8 @@ export const isOPConfigInitiated = (storage: STORAGE, session: SessionData): boo
  *
  * @param {string} authorizationEndpoint
  */
-export const setAuthorizeEndpoint = (authorizationEndpoint: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setAuthorizeEndpoint = (authorizationEndpoint: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint, storage, session);
     } else {
         session.set(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
@@ -71,8 +71,8 @@ export const setAuthorizeEndpoint = (authorizationEndpoint: string, storage: STO
  *
  * @param {string} tokenEndpoint
  */
-export const setTokenEndpoint = (tokenEndpoint: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setTokenEndpoint = (tokenEndpoint: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint, storage, session);
     } else {
         session.set(TOKEN_ENDPOINT, tokenEndpoint);
@@ -84,8 +84,8 @@ export const setTokenEndpoint = (tokenEndpoint: string, storage: STORAGE, sessio
  *
  * @param {string} endSessionEndpoint
  */
-export const setEndSessionEndpoint = (endSessionEndpoint: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setEndSessionEndpoint = (endSessionEndpoint: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint, storage, session);
     } else {
         session.set(END_SESSION_ENDPOINT, endSessionEndpoint);
@@ -97,8 +97,8 @@ export const setEndSessionEndpoint = (endSessionEndpoint: string, storage: STORA
  *
  * @param jwksEndpoint
  */
-export const setJwksUri = (jwksEndpoint, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setJwksUri = (jwksEndpoint, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(JWKS_ENDPOINT, jwksEndpoint, storage, session);
     } else {
         session.set(JWKS_ENDPOINT, jwksEndpoint);
@@ -110,8 +110,8 @@ export const setJwksUri = (jwksEndpoint, storage: STORAGE, session: SessionData)
  *
  * @param {string} revokeTokenEndpoint
  */
-export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint, storage, session);
     } else {
         session.set(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint);
@@ -121,8 +121,8 @@ export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string, storage: STO
 /**
  * Set openid configuration initiated.
  */
-export const setOPConfigInitiated = (storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setOPConfigInitiated = (storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(OP_CONFIG_INITIATED, "true", storage, session);
     } else {
         session.set(OP_CONFIG_INITIATED, "true");
@@ -132,8 +132,8 @@ export const setOPConfigInitiated = (storage: STORAGE, session: SessionData): vo
 /**
  * Set callback URL.
  */
-export const setCallbackURL = (url: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setCallbackURL = (url: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(CALLBACK_URL, url, storage, session);
     } else {
         session.set(CALLBACK_URL, url);
@@ -143,8 +143,8 @@ export const setCallbackURL = (url: string, storage: STORAGE, session: SessionDa
 /**
  * Set OIDC Session IFrame URL.
  */
-export const setOIDCSessionIFrameURL = (url: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setOIDCSessionIFrameURL = (url: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, url, storage, session);
     } else {
         session.set(OIDC_SESSION_IFRAME_ENDPOINT, url);
@@ -154,8 +154,8 @@ export const setOIDCSessionIFrameURL = (url: string, storage: STORAGE, session: 
 /**
  * Set tenant name.
  */
-export const setTenant = (tenant: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setTenant = (tenant: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(TENANT, tenant, storage, session);
     } else {
         session.set(TENANT, tenant);
@@ -167,8 +167,8 @@ export const setTenant = (tenant: string, storage: STORAGE, session: SessionData
  *
  * @param issuer id_token issuer.
  */
-export const setIssuer = (issuer, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setIssuer = (issuer, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(ISSUER, issuer, storage, session);
     } else {
         session.set(ISSUER, issuer);
@@ -180,8 +180,8 @@ export const setIssuer = (issuer, storage: STORAGE, session: SessionData): void 
  *
  * @param {string} clientID - Client ID of the application.
  */
-export const setClientID = (clientID: string, storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const setClientID = (clientID: string, storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         setSessionParameter(CLIENT_ID, clientID, storage, session);
     } else {
         session.set(CLIENT_ID, clientID);
@@ -199,7 +199,7 @@ export const setClientID = (clientID: string, storage: STORAGE, session: Session
 export const initOPConfiguration = (
     requestParams: ConfigInterface,
     forceInit: boolean,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<any> => {
     if (!forceInit && isValidOPConfig(requestParams.clientID, storage, session)) {
@@ -263,8 +263,8 @@ export const initOPConfiguration = (
 /**
  * Reset openid provider configuration.
  */
-export const resetOPConfiguration = (storage: STORAGE, session: SessionData): void => {
-    if (storage === STORAGE.sessionStorage) {
+export const resetOPConfiguration = (storage: Storage, session: SessionData): void => {
+    if (storage === Storage.sessionStorage) {
         removeSessionParameter(AUTHORIZATION_ENDPOINT, storage, session);
         removeSessionParameter(TOKEN_ENDPOINT, storage, session);
         removeSessionParameter(END_SESSION_ENDPOINT, storage, session);
@@ -285,8 +285,8 @@ export const resetOPConfiguration = (storage: STORAGE, session: SessionData): vo
  *
  * @returns {string|null}
  */
-export const getAuthorizeEndpoint = (storage: STORAGE, session: SessionData): string | null => {
-    if (storage === STORAGE.sessionStorage) {
+export const getAuthorizeEndpoint = (storage: Storage, session: SessionData): string | null => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(AUTHORIZATION_ENDPOINT, storage, session);
     } else {
         return session.get(AUTHORIZATION_ENDPOINT);
@@ -298,8 +298,8 @@ export const getAuthorizeEndpoint = (storage: STORAGE, session: SessionData): st
  *
  * @returns {string|null}
  */
-export const getTokenEndpoint = (storage: STORAGE, session: SessionData): string | null => {
-    if (storage === STORAGE.sessionStorage) {
+export const getTokenEndpoint = (storage: Storage, session: SessionData): string | null => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(TOKEN_ENDPOINT, storage, session);
     } else {
         return session.get(TOKEN_ENDPOINT);
@@ -311,8 +311,8 @@ export const getTokenEndpoint = (storage: STORAGE, session: SessionData): string
  *
  * @returns {string|null}
  */
-export const getRevokeTokenEndpoint = (storage: STORAGE, session: SessionData): string | null => {
-    if (storage === STORAGE.sessionStorage) {
+export const getRevokeTokenEndpoint = (storage: Storage, session: SessionData): string | null => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(REVOKE_TOKEN_ENDPOINT, storage, session);
     } else {
         return session.get(REVOKE_TOKEN_ENDPOINT);
@@ -324,8 +324,8 @@ export const getRevokeTokenEndpoint = (storage: STORAGE, session: SessionData): 
  *
  * @returns {string|null}
  */
-export const getEndSessionEndpoint = (storage: STORAGE, session: SessionData): string | null => {
-    if (storage === STORAGE.sessionStorage) {
+export const getEndSessionEndpoint = (storage: Storage, session: SessionData): string | null => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(END_SESSION_ENDPOINT, storage, session);
     } else {
         return session.get(END_SESSION_ENDPOINT);
@@ -337,8 +337,8 @@ export const getEndSessionEndpoint = (storage: STORAGE, session: SessionData): s
  *
  * @returns {string|null}
  */
-export const getJwksUri = (storage: STORAGE, session: SessionData): string | null => {
-    if (storage === STORAGE.sessionStorage) {
+export const getJwksUri = (storage: Storage, session: SessionData): string | null => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(JWKS_ENDPOINT, storage, session);
     } else {
         return session.get(JWKS_ENDPOINT);
@@ -350,8 +350,8 @@ export const getJwksUri = (storage: STORAGE, session: SessionData): string | nul
  *
  * @returns {string|null}
  */
-export const getUsername = (storage: STORAGE, session: SessionData): string | null => {
-    if (storage === STORAGE.sessionStorage) {
+export const getUsername = (storage: Storage, session: SessionData): string | null => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(USERNAME, storage, session);
     } else {
         return session.get(USERNAME);
@@ -363,8 +363,8 @@ export const getUsername = (storage: STORAGE, session: SessionData): string | nu
  *
  * @returns {any}
  */
-export const getTenant = (storage: STORAGE, session: SessionData): string | null => {
-    if (storage === STORAGE.sessionStorage) {
+export const getTenant = (storage: Storage, session: SessionData): string | null => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(TENANT, storage, session);
     } else {
         return session.get(TENANT);
@@ -376,8 +376,8 @@ export const getTenant = (storage: STORAGE, session: SessionData): string | null
  *
  * @returns {any}
  */
-export const getIssuer = (storage: STORAGE, session: SessionData): string => {
-    if (storage === STORAGE.sessionStorage) {
+export const getIssuer = (storage: Storage, session: SessionData): string => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(ISSUER, storage, session);
     } else {
         return session.get(ISSUER);
@@ -389,8 +389,8 @@ export const getIssuer = (storage: STORAGE, session: SessionData): string => {
  *
  * @return {string}
  */
-export const getClientID = (storage: STORAGE, session: SessionData): string => {
-    if (storage === STORAGE.sessionStorage) {
+export const getClientID = (storage: Storage, session: SessionData): string => {
+    if (storage === Storage.sessionStorage) {
         return getSessionParameter(CLIENT_ID, storage, session);
     } else {
         return session.get(CLIENT_ID);
@@ -404,7 +404,7 @@ export const getClientID = (storage: STORAGE, session: SessionData): string => {
  * @param {string} clientID - Client ID of the application.
  * @return {boolean}
  */
-export const isValidOPConfig = (clientID: string, storage: STORAGE, session: SessionData): boolean => {
+export const isValidOPConfig = (clientID: string, storage: Storage, session: SessionData): boolean => {
     return (
         isOPConfigInitiated(storage, session) &&
         !!getClientID(storage, session) &&

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, STORAGE } from "@wso2is/authentication";
+import { Authenticate, Storage } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { UserstoreConstants } from "../constants";

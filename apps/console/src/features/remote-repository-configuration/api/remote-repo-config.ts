@@ -18,7 +18,7 @@
 
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { Authenticate, STORAGE } from "@wso2is/authentication";
+import { Authenticate, Storage } from "@wso2is/authentication";
 import { store } from "../../core";
 import { 
     InterfaceConfigDetails,

@@ -19,13 +19,17 @@
 /**
  * Specifies where the session information should be stored.
  */
-export enum STORAGE {
+export enum Storage {
+    /**
+     * Stores teh session information in the local storage
+     */
+    LocalStorage = "localStorage",
     /**
      * Store the session information in the session storage.
      */
-    sessionStorage = "sessionStorage",
+    SessionStorage = "sessionStorage",
     /**
      * Store the session information in the web worker.
      */
-    webWorker = "webWorker"
+    WebWorker = "webWorker"
 }

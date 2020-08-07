@@ -46,7 +46,7 @@ import {
     AUTH_REQUIRED,
     SIGNED_IN
 } from "../constants";
-import { STORAGE } from "../constants/storage";
+import { Storage } from "../constants/storage";
 import { SessionData, SignInResponse } from "../models";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
@@ -58,9 +58,9 @@ import { TokenRequestHeader, TokenResponseInterface } from "../models/token-resp
  *
  * @returns {boolean} true if authorization code is present.
  */
-export function hasAuthorizationCode(storage: STORAGE.sessionStorage): boolean;
-export function hasAuthorizationCode(storage: STORAGE, session: SessionData): boolean;
-export function hasAuthorizationCode(storage: STORAGE.sessionStorage, session?: SessionData): boolean {
+export function hasAuthorizationCode(storage: Storage.sessionStorage): boolean;
+export function hasAuthorizationCode(storage: Storage, session: SessionData): boolean;
+export function hasAuthorizationCode(storage: Storage.sessionStorage, session?: SessionData): boolean {
     return !!getAuthorizationCode(storage, session);
 }
 
@@ -72,10 +72,10 @@ export function hasAuthorizationCode(storage: STORAGE.sessionStorage, session?: 
  *
  * @returns {string} Resolved authorization code.
  */
-export function getAuthorizationCode(storage: STORAGE.sessionStorage): string;
-export function getAuthorizationCode(storage: STORAGE, session: SessionData): string;
-export function getAuthorizationCode(storage: STORAGE, session?: SessionData): string {
-    if (storage === STORAGE.sessionStorage) {
+export function getAuthorizationCode(storage: Storage.sessionStorage): string;
+export function getAuthorizationCode(storage: Storage, session: SessionData): string;
+export function getAuthorizationCode(storage: Storage, session?: SessionData): string {
+    if (storage === Storage.sessionStorage) {
         if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
             return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
         }
@@ -113,16 +113,16 @@ export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader =
  */
 export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE.sessionStorage
+    storage: Storage.sessionStorage
 ): Promise<never>;
 export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<SignInResponse>;
 export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE,
+    storage: Storage,
     session?: SessionData
 ): Promise<SignInResponse | never> {
     const authorizeEndpoint = getAuthorizeEndpoint(storage, session);
@@ -160,7 +160,7 @@ export function sendAuthorizationRequest(
         authorizeRequest += "&prompt=" + requestParams.prompt;
     }
 
-    if (storage === STORAGE.webWorker) {
+    if (storage === Storage.webWorker) {
         return Promise.resolve({
             code: authorizeRequest,
             pkce: getSessionParameter(PKCE_CODE_VERIFIER, storage, session),
@@ -185,20 +185,20 @@ export function validateIdToken(
     clientID: string,
     idToken: string,
     serverOrigin: string,
-    storage: STORAGE.sessionStorage
+    storage: Storage.sessionStorage
 ): Promise<any>;
 export function validateIdToken(
     clientID: string,
     idToken: string,
     serverOrigin: string,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<any>;
 export function validateIdToken(
     clientID: string,
     idToken: string,
     serverOrigin: string,
-    storage: STORAGE,
+    storage: Storage,
     session?: SessionData
 ): Promise<any> {
     const jwksEndpoint = getJwksUri(storage, session);
@@ -239,16 +239,16 @@ export function validateIdToken(
  */
 export function sendTokenRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE.sessionStorage
+    storage: Storage.sessionStorage
 ): Promise<TokenResponseInterface>;
 export function sendTokenRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<TokenResponseInterface>;
 export function sendTokenRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE,
+    storage: Storage,
     session?: SessionData
 ): Promise<TokenResponseInterface> {
     const tokenEndpoint = getTokenEndpoint(storage, session);
@@ -259,7 +259,7 @@ export function sendTokenRequest(
 
     // Extract session state and set to the sessionStorage
     const sessionState =
-        storage === STORAGE.webWorker
+        storage === Storage.webWorker
             ? session.get(SESSION_STATE)
             : new URL(window.location.href).searchParams.get(SESSION_STATE);
     if (sessionState !== null && sessionState.length > 0) {
@@ -274,14 +274,14 @@ export function sendTokenRequest(
     }
 
     const code =
-        storage === STORAGE.webWorker ? session.get(AUTHORIZATION_CODE) : getAuthorizationCode(storage, session);
+        storage === Storage.webWorker ? session.get(AUTHORIZATION_CODE) : getAuthorizationCode(storage, session);
     body.push(`code=${code}`);
 
-    if (storage === STORAGE.sessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+    if (storage === Storage.sessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
         window.sessionStorage.removeItem(AUTHORIZATION_CODE);
     }
 
-    if (storage === STORAGE.webWorker && session.get(AUTHORIZATION_CODE)) {
+    if (storage === Storage.webWorker && session.get(AUTHORIZATION_CODE)) {
         session.delete(AUTHORIZATION_CODE);
     }
 
@@ -341,18 +341,18 @@ export function sendTokenRequest(
 export function sendRefreshTokenRequest(
     requestParams: ConfigInterface,
     refreshToken: string,
-    storage: STORAGE.sessionStorage
+    storage: Storage.sessionStorage
 ): Promise<any>;
 export function sendRefreshTokenRequest(
     requestParams: ConfigInterface,
     refreshToken: string,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<any>;
 export function sendRefreshTokenRequest(
     requestParams: ConfigInterface,
     refreshToken: string,
-    storage: STORAGE,
+    storage: Storage,
     session?: SessionData
 ): Promise<any> {
     const tokenEndpoint = getTokenEndpoint(storage, session);
@@ -414,18 +414,18 @@ export function sendRefreshTokenRequest(
 export function sendRevokeTokenRequest(
     requestParams: ConfigInterface,
     accessToken: string,
-    storage: STORAGE.sessionStorage
+    storage: Storage.sessionStorage
 ): Promise<any>;
 export function sendRevokeTokenRequest(
     requestParams: ConfigInterface,
     accessToken: string,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<any>;
 export function sendRevokeTokenRequest(
     requestParams: ConfigInterface,
     accessToken: string,
-    storage: STORAGE,
+    storage: Storage,
     session?: SessionData
 ): Promise<any> {
     const revokeTokenEndpoint = getRevokeTokenEndpoint(storage, session);
@@ -494,16 +494,16 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  */
 export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
-    storage: STORAGE.sessionStorage
+    storage: Storage.sessionStorage
 ): Promise<any>;
 export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<any>;
 export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
-    storage: STORAGE,
+    storage: Storage,
     session?: SessionData
 ): Promise<any> {
     const tokenEndpoint = getTokenEndpoint(storage, session);
@@ -576,16 +576,16 @@ export function sendAccountSwitchRequest(
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function sendSignInRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE.sessionStorage
+    storage: Storage.sessionStorage
 ): Promise<SignInResponse>;
 export function sendSignInRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE,
+    storage: Storage,
     session: SessionData
 ): Promise<SignInResponse>;
 export function sendSignInRequest(
     requestParams: ConfigInterface,
-    storage: STORAGE,
+    storage: Storage,
     session?: SessionData
 ): Promise<SignInResponse> {
     if (hasAuthorizationCode(storage, session)) {
@@ -608,9 +608,9 @@ export function sendSignInRequest(
     }
 }
 
-export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE.sessionStorage): Promise<any>;
-export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session: SessionData): Promise<any>;
-export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session?: SessionData): Promise<any> {
+export function handleSignIn(requestParams: ConfigInterface, storage: Storage.sessionStorage): Promise<any>;
+export function handleSignIn(requestParams: ConfigInterface, storage: Storage, session: SessionData): Promise<any>;
+export function handleSignIn(requestParams: ConfigInterface, storage: Storage, session?: SessionData): Promise<any> {
     if (getSessionParameter(ACCESS_TOKEN, storage, session)) {
         if (!isValidOPConfig(requestParams.clientID, storage, session)) {
             endAuthenticatedSession(storage, session);

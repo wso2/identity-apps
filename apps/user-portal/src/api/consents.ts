@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, STORAGE } from "@wso2is/authentication";
+import { Authenticate, Storage } from "@wso2is/authentication";
 import { ConsentReceiptInterface, ConsentState, HttpMethods, UpdateReceiptInterface } from "../models";
 import { store } from "../store";
 
@@ -35,7 +35,7 @@ const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getI
 export const fetchConsentedApps = (state: ConsentState, username): Promise<any> => {
 
     const userName = username.split("@");
-    
+
     if (userName.length > 1) {
         userName.pop();
     }

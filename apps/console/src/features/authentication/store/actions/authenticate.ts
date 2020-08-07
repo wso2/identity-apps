@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AUTHORIZATION_ENDPOINT, Authenticate, OIDC_SESSION_IFRAME_ENDPOINT, STORAGE } from "@wso2is/authentication";
+import { AUTHORIZATION_ENDPOINT, Authenticate, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -144,7 +144,7 @@ export const handleSignIn = () => (dispatch) => {
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-            storage: STORAGE.webWorker
+            storage: Storage.webWorker
         })
         .then(() => {
             oAuth

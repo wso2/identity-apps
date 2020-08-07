@@ -18,18 +18,18 @@
 
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { IdentityClient } from ".";
-import { STORAGE } from "./constants";
+import { Storage } from "./constants";
 import { ConfigInterface, CustomGrantRequestParams, OAuthInterface, WebWorkerConfigInterface } from "./models";
 import { OAuth } from "./oauth";
 
-const isWorker = (client: IdentityClient | OAuthInterface, storage: STORAGE): client is OAuthInterface => {
-    return storage === STORAGE.webWorker;
+const isWorker = (client: IdentityClient | OAuthInterface, storage: Storage): client is OAuthInterface => {
+    return storage === Storage.webWorker;
 };
 
 const NOT_AVAILABLE_ERROR = 'This is available only when the storage is set to "webWorker"';
 
 export class Authenticate {
-    private storage: STORAGE;
+    private storage: Storage;
     private authenticatingClient: IdentityClient | OAuthInterface;
     private static instance: Authenticate;
 
@@ -47,9 +47,9 @@ export class Authenticate {
     }
 
     public async initialize(config: ConfigInterface | WebWorkerConfigInterface) {
-        this.storage = config?.storage ?? STORAGE.sessionStorage;
+        this.storage = config?.storage ?? Storage.sessionStorage;
 
-        if (this.storage === STORAGE.sessionStorage) {
+        if (this.storage === Storage.sessionStorage) {
             this.authenticatingClient = new IdentityClient(config);
             return Promise.resolve(true);
         } else {

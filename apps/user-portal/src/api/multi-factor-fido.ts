@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, STORAGE } from "@wso2is/authentication";
+import { Authenticate, Storage } from "@wso2is/authentication";
 import { Decode, Encode } from "../helpers/base64-utils";
 import { HttpMethods } from "../models";
 import { store } from "../store";

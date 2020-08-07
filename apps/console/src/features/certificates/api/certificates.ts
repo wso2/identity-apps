@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { Authenticate } from "@wso2is/authentication";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Certificate, HttpMethods } from "@wso2is/core/models";
-import { Authenticate, STORAGE } from "@wso2is/authentication";
 import { store } from "../store";
 
 /**

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Authenticate, STORAGE, SignInResponse } from "@wso2is/authentication";
+import { Authenticate, Storage, SignInResponse } from "@wso2is/authentication";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 

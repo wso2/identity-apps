@@ -134,7 +134,7 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signIn(): Promise<any> {
-        return handleSignIn(this, AUTHENTICATION_TYPES.STORAGE.sessionStorage);
+        return handleSignIn(this, AUTHENTICATION_TYPES.Storage.sessionStorage);
     }
 
     /**
@@ -145,6 +145,6 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signOut(): Promise<any> {
-        return handleSignOut(AUTHENTICATION_TYPES.STORAGE.sessionStorage);
+        return handleSignOut(AUTHENTICATION_TYPES.Storage.sessionStorage);
     }
 }

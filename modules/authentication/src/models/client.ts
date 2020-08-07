@@ -17,7 +17,7 @@
  */
 
 import { ResponseModeTypes } from "./oidc-request-params";
-import { STORAGE } from "../constants";
+import { Storage } from "../constants";
 
 /**
  * SDK Client config parameters.
@@ -34,7 +34,7 @@ export interface ConfigInterface {
     responseMode?: ResponseModeTypes;
     scope?: string[];
     serverOrigin: string;
-    storage?: STORAGE;
+    storage?: Storage;
 }
 
 export interface WebWorkerConfigInterface extends ConfigInterface {
