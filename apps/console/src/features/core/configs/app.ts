@@ -120,6 +120,8 @@ export class Config {
             ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUsersResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
+            documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
+            documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
             // TODO: Remove this endpoint and use ID token to get the details
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
             saml2Meta: `${this.getDeploymentConfig().serverHost}/identity/metadata/saml2`,

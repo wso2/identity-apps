@@ -26,14 +26,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AuthenticatorSettings, GeneralSettings, OutboundProvisioningSettings, WizardSummary } from "./steps";
-import { AppState, history } from "../../../core";
+import { AppConstants, AppState, history } from "../../../core";
 import {
     createIdentityProvider,
     getFederatedAuthenticatorMetadata,
     getOutboundProvisioningConnectorMetadata
 } from "../../api";
 import { IdentityProviderWizardStepIcons } from "../../configs";
-import { IdentityProviderConstants } from "../../constants";
 import {
     AuthenticatorPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -159,13 +158,13 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 if (!_.isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
-                    history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_EDIT").replace(":id",
+                    history.push(AppConstants.PATHS.get("IDP_EDIT").replace(":id",
                         createdIdpID));
                     return;
                 }
 
                 // Fallback to identity providers page, if the location header is not present.
-                history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDERS"));
+                history.push(AppConstants.PATHS.get("IDP"));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

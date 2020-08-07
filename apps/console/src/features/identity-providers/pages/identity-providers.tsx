@@ -35,6 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
+    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     HelpPanelActionIcons,
@@ -47,7 +48,7 @@ import {
 import { getIdentityProviderList } from "../api";
 import { IdentityProviderList, handleGetIDPListCallError } from "../components";
 import { HelpPanelIcons } from "../configs";
-import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
+import { IdentityProviderManagementConstants } from "../constants";
 import { IdentityProviderListResponseInterface } from "../models";
 
 /**
@@ -296,7 +297,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     && (
                         <PrimaryButton
                             onClick={ (): void => {
-                                history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"));
+                                history.push(AppConstants.PATHS.get("IDP_TEMPLATES"));
                             } }
                             data-testid={ `${ testId }-add-button` }
                         >
@@ -352,7 +353,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                         isLoading={ isIdPListRequestLoading }
                         list={ idpList }
                         onEmptyListPlaceholderActionClick={
-                            () => history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDER_TEMPLATES"))
+                            () => history.push(AppConstants.PATHS.get("IDP_TEMPLATES"))
                         }
                         onIdentityProviderDelete={ handleIdentityProviderDelete }
                         onSearchQueryClear={ handleSearchQueryClear }

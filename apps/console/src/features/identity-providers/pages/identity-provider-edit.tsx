@@ -40,12 +40,12 @@ import {
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
     history,
-    setHelpPanelDocsContentURL
+    setHelpPanelDocsContentURL, AppConstants
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
 import { HelpPanelIcons } from "../configs";
-import { IdentityProviderConstants, IdentityProviderManagementConstants } from "../constants";
+import { IdentityProviderManagementConstants } from "../constants";
 import {
     IdentityProviderInterface,
     emptyIdentityProvider
@@ -171,14 +171,14 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDERS"));
+        history.push(AppConstants.PATHS.get("IDP"));
     };
 
     /**
      * Called when an idp is deleted.
      */
     const handleIdentityProviderDelete = (): void => {
-        history.push(IdentityProviderConstants.PATHS.get("IDENTITY_PROVIDERS"));
+        history.push(AppConstants.PATHS.get("IDP"));
     };
 
     /**

@@ -35,7 +35,7 @@ export const IDENTITY_PROVIDER_PAGE_PATH = "/identity-providers";
 /**
  * Class containing app constants.
  */
-export class IdentityProviderConstants {
+export class  {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -55,14 +55,4 @@ export class IdentityProviderConstants {
     public static readonly IDENTITY_PROVIDER_MGT_CONFIG_PATHS: any = {
         META: "configs/identity-provider-mgt.meta.json"
     };
-
-    /**
-     * Identity provider Paths.
-     * @constant
-     * @type {Map<string, string>}
-     */
-    public static readonly PATHS: Map<string, string> = new Map<string, string>()
-        .set("IDENTITY_PROVIDERS", "/identity-providers")
-        .set("IDENTITY_PROVIDER_TEMPLATES", "/identity-providers/templates")
-        .set("IDENTITY_PROVIDER_EDIT", "/identity-providers/:id");
 }
