@@ -3,7 +3,7 @@
         "path": "/user-portal/overview"
     },
     "appBaseName": "console",
-    "clientID": "ADMIN_PORTAL",
+    "clientID": "CONSOLE",
     "debug": false,
     "adminApp": {
         "basePath": "/admin",
