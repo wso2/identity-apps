@@ -43,7 +43,8 @@ import {
     REQUEST_PARAMS,
     SERVICE_RESOURCES,
     SESSION_STATE,
-    AUTH_REQUIRED
+    AUTH_REQUIRED,
+    SIGNED_IN
 } from "../constants";
 import { STORAGE } from "../constants/storage";
 import { SessionData, SignInResponse } from "../models";
@@ -257,7 +258,10 @@ export function sendTokenRequest(
     }
 
     // Extract session state and set to the sessionStorage
-    const sessionState = new URL(window.location.href).searchParams.get(SESSION_STATE);
+    const sessionState =
+        storage === STORAGE.webWorker
+            ? session.get(SESSION_STATE)
+            : new URL(window.location.href).searchParams.get(SESSION_STATE);
     if (sessionState !== null && sessionState.length > 0) {
         setSessionParameter(SESSION_STATE, sessionState, storage, session);
     }
@@ -269,11 +273,16 @@ export function sendTokenRequest(
         body.push(`client_secret=${requestParams.clientSecret}`);
     }
 
-    const code = getAuthorizationCode(storage, session);
+    const code =
+        storage === STORAGE.webWorker ? session.get(AUTHORIZATION_CODE) : getAuthorizationCode(storage, session);
     body.push(`code=${code}`);
 
-    if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+    if (storage === STORAGE.sessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
         window.sessionStorage.removeItem(AUTHORIZATION_CODE);
+    }
+
+    if (storage === STORAGE.webWorker && session.get(AUTHORIZATION_CODE)) {
+        session.delete(AUTHORIZATION_CODE);
     }
 
     body.push("grant_type=authorization_code");
@@ -565,19 +574,27 @@ export function sendAccountSwitchRequest(
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function sendSignInRequest(requestParams: ConfigInterface, storage: STORAGE.sessionStorage);
-export function sendSignInRequest(requestParams: ConfigInterface, storage: STORAGE, session: SessionData): Promise<any>;
+export function sendSignInRequest(
+    requestParams: ConfigInterface,
+    storage: STORAGE.sessionStorage
+): Promise<SignInResponse>;
+export function sendSignInRequest(
+    requestParams: ConfigInterface,
+    storage: STORAGE,
+    session: SessionData
+): Promise<SignInResponse>;
 export function sendSignInRequest(
     requestParams: ConfigInterface,
     storage: STORAGE,
     session?: SessionData
-): Promise<any> {
+): Promise<SignInResponse> {
     if (hasAuthorizationCode(storage, session)) {
         return sendTokenRequest(requestParams, storage, session)
             .then((response) => {
                 initUserSession(response, getAuthenticatedUser(response.idToken), storage, session);
-
-                return Promise.resolve("Sign In successful!");
+                return Promise.resolve({
+                    type: SIGNED_IN
+                } as SignInResponse);
             })
             .catch((error) => {
                 if (error.response && error.response.status === 400) {
@@ -594,6 +611,7 @@ export function sendSignInRequest(
 export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE.sessionStorage): Promise<any>;
 export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session: SessionData): Promise<any>;
 export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session?: SessionData): Promise<any> {
+    console.log("Handle sign in");
     if (getSessionParameter(ACCESS_TOKEN, storage, session)) {
         if (!isValidOPConfig(requestParams.clientID, storage, session)) {
             endAuthenticatedSession(storage, session);
@@ -601,15 +619,26 @@ export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, s
             // TODO: Better to have a callback to clear this on the app side.
             removeSessionParameter("auth_callback_url", storage, session);
 
-            return initOPConfiguration(requestParams, true, storage, session).then(() => {
-                return sendSignInRequest(requestParams, storage, session);
-            });
+            return initOPConfiguration(requestParams, true, storage, session)
+                .then(() => {
+                    return sendSignInRequest(requestParams, storage, session);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
         }
 
         return Promise.resolve("Sign In successful!");
     } else {
-        return initOPConfiguration(requestParams, false, storage, session).then(() => {
-            return sendSignInRequest(requestParams, storage, session);
-        });
+        console.log("SIgn in init");
+        return initOPConfiguration(requestParams, false, storage, session)
+            .then((response) => {
+                console.log("init done", response);
+                return sendSignInRequest(requestParams, storage, session);
+            })
+            .catch((error) => {
+                console.log(error);
+                return Promise.reject(error);
+            });
     }
 }
