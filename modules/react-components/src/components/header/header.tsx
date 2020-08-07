@@ -218,9 +218,13 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Menu.Item>
                     )
                 }
+                { children }
                 { (
-                    <Menu.Menu position="right" data-testid={ `${ testId }-user-dropdown-container` }>
-                        { children }
+                    <Menu.Menu
+                        position="right"
+                        className="user-dropdown-wrapper"
+                        data-testid={ `${ testId }-user-dropdown-container` }
+                    >
                         {
                             showUserDropdown && (
                                 <Dropdown
