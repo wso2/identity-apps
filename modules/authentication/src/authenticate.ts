@@ -29,20 +29,32 @@ const isWorker = (client: IdentityClient | OAuthInterface, storage: STORAGE): cl
 const NOT_AVAILABLE_ERROR = 'This is available only when the storage is set to "webWorker"';
 
 export class Authenticate {
-    public storage: STORAGE;
+    private storage: STORAGE;
     private authenticatingClient: IdentityClient | OAuthInterface;
+    private static instance: Authenticate;
 
-    constructor(storage: STORAGE) {
-        this.storage = storage;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {}
+
+    public static getInstance(): Authenticate {
+        if (this.instance) {
+            return this.instance;
+        }
+
+        this.instance = new Authenticate();
+
+        return this.instance;
     }
 
     public async initialize(config: ConfigInterface | WebWorkerConfigInterface) {
+        this.storage = config?.storage ?? STORAGE.sessionStorage;
+
         if (this.storage === STORAGE.sessionStorage) {
             this.authenticatingClient = new IdentityClient(config);
             return Promise.resolve(true);
         } else {
             this.authenticatingClient = OAuth.getInstance();
-            this.authenticatingClient
+            return this.authenticatingClient
                 .initialize(config)
                 .then(() => {
                     return Promise.resolve(true);
@@ -54,28 +66,22 @@ export class Authenticate {
     }
 
     public async signIn(): Promise<any> {
-        if (isWorker(this.authenticatingClient, this.storage)) {
-            return this.authenticatingClient.signIn();
-        } else {
-            return this.authenticatingClient.signIn();
-        }
-    }
-    public async signOut(): Promise<any> {
-        if (isWorker(this.authenticatingClient, this.storage)) {
-            return this.authenticatingClient.signOut();
-        } else {
-            return this.authenticatingClient.signOut();
-        }
-    }
-    public async httpRequest<T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> {
-        if (isWorker(this.authenticatingClient, this.storage)) {
-            return this.authenticatingClient.httpRequest(config);
-        } else {
-            return Promise.reject(NOT_AVAILABLE_ERROR);
-        }
+        return this.authenticatingClient.signIn();
     }
 
-    public async httpRequestAll<T = any>(config: AxiosRequestConfig[]): Promise<AxiosResponse<T>[]> {
+    public async signOut(): Promise<any> {
+        return this.authenticatingClient.signOut();
+    }
+
+    public async httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
+        if (isWorker(this.authenticatingClient, this.storage)) {
+            return this.authenticatingClient.httpRequest(config);
+        }
+
+        return Promise.reject(NOT_AVAILABLE_ERROR);
+    }
+
+    public async httpRequestAll(config: AxiosRequestConfig[]): Promise<AxiosResponse[]> {
         if (isWorker(this.authenticatingClient, this.storage)) {
             return this.authenticatingClient.httpRequestAll(config);
         } else {
@@ -94,14 +100,6 @@ export class Authenticate {
     public async revokeToken(): Promise<any> {
         if (isWorker(this.authenticatingClient, this.storage)) {
             return this.authenticatingClient.revokeToken();
-        } else {
-            return Promise.reject(NOT_AVAILABLE_ERROR);
-        }
-    }
-
-    public async getScope(): Promise<string> {
-        if (isWorker(this.authenticatingClient, this.storage)) {
-            return this.authenticatingClient.getScope();
         } else {
             return Promise.reject(NOT_AVAILABLE_ERROR);
         }
