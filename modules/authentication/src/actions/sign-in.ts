@@ -38,12 +38,12 @@ import {
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
+    AUTH_REQUIRED,
     OIDC_SCOPE,
     PKCE_CODE_VERIFIER,
     REQUEST_PARAMS,
     SERVICE_RESOURCES,
     SESSION_STATE,
-    AUTH_REQUIRED,
     SIGNED_IN
 } from "../constants";
 import { Storage } from "../constants/storage";
@@ -58,10 +58,8 @@ import { TokenRequestHeader, TokenResponseInterface } from "../models/token-resp
  *
  * @returns {boolean} true if authorization code is present.
  */
-export function hasAuthorizationCode(storage: Storage.SessionStorage): boolean;
-export function hasAuthorizationCode(storage: Storage, session: SessionData): boolean;
-export function hasAuthorizationCode(storage: Storage.SessionStorage, session?: SessionData): boolean {
-    return !!getAuthorizationCode(storage, session);
+export function hasAuthorizationCode(requestParams: ConfigInterface): boolean {
+    return !!getAuthorizationCode(requestParams);
 }
 
 /**
@@ -72,10 +70,8 @@ export function hasAuthorizationCode(storage: Storage.SessionStorage, session?: 
  *
  * @returns {string} Resolved authorization code.
  */
-export function getAuthorizationCode(storage: Storage.SessionStorage): string;
-export function getAuthorizationCode(storage: Storage, session: SessionData): string;
-export function getAuthorizationCode(storage: Storage, session?: SessionData): string {
-    if (storage === Storage.SessionStorage) {
+export function getAuthorizationCode(requestParams: ConfigInterface): string {
+    if (requestParams.storage === Storage.SessionStorage) {
         if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
             return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
         }
@@ -84,8 +80,8 @@ export function getAuthorizationCode(storage: Storage, session?: SessionData): s
             return window.sessionStorage.getItem(AUTHORIZATION_CODE);
         }
     } else {
-        if (session.get(AUTHORIZATION_CODE)) {
-            return session.get(AUTHORIZATION_CODE);
+        if (requestParams.session.get(AUTHORIZATION_CODE)) {
+            return requestParams.session.get(AUTHORIZATION_CODE);
         }
     }
 
@@ -111,21 +107,8 @@ export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader =
  *
  * @param {ConfigInterface} requestParams request parameters required for authorization request.
  */
-export function sendAuthorizationRequest(
-    requestParams: ConfigInterface,
-    storage: Storage.SessionStorage
-): Promise<never>;
-export function sendAuthorizationRequest(
-    requestParams: ConfigInterface,
-    storage: Storage,
-    session: SessionData
-): Promise<SignInResponse>;
-export function sendAuthorizationRequest(
-    requestParams: ConfigInterface,
-    storage: Storage,
-    session?: SessionData
-): Promise<SignInResponse | never> {
-    const authorizeEndpoint = getAuthorizeEndpoint(storage, session);
+export function sendAuthorizationRequest(requestParams: ConfigInterface): Promise<SignInResponse | never> {
+    const authorizeEndpoint = getAuthorizeEndpoint(requestParams.storage, requestParams.session);
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid authorize endpoint found."));
@@ -152,7 +135,7 @@ export function sendAuthorizationRequest(
     if (requestParams.enablePKCE) {
         const codeVerifier = getCodeVerifier();
         const codeChallenge = getCodeChallenge(codeVerifier);
-        setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier, storage, session);
+        setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier, requestParams.storage, requestParams.session);
         authorizeRequest += "&code_challenge_method=S256&code_challenge=" + codeChallenge;
     }
 
@@ -160,10 +143,10 @@ export function sendAuthorizationRequest(
         authorizeRequest += "&prompt=" + requestParams.prompt;
     }
 
-    if (storage === Storage.WebWorker) {
+    if (requestParams.storage === Storage.WebWorker) {
         return Promise.resolve({
             code: authorizeRequest,
-            pkce: getSessionParameter(PKCE_CODE_VERIFIER, storage, session),
+            pkce: getSessionParameter(PKCE_CODE_VERIFIER, requestParams.storage, requestParams.session),
             type: AUTH_REQUIRED
         });
     } else {
@@ -181,27 +164,8 @@ export function sendAuthorizationRequest(
  * @returns {Promise<boolean>} whether token is valid.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function validateIdToken(
-    clientID: string,
-    idToken: string,
-    serverOrigin: string,
-    storage: Storage.SessionStorage
-): Promise<any>;
-export function validateIdToken(
-    clientID: string,
-    idToken: string,
-    serverOrigin: string,
-    storage: Storage,
-    session: SessionData
-): Promise<any>;
-export function validateIdToken(
-    clientID: string,
-    idToken: string,
-    serverOrigin: string,
-    storage: Storage,
-    session?: SessionData
-): Promise<any> {
-    const jwksEndpoint = getJwksUri(storage, session);
+export function validateIdToken(idToken: string, requestParams: ConfigInterface): Promise<any> {
+    const jwksEndpoint = getJwksUri(requestParams.storage, requestParams.session);
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
         return Promise.reject("Invalid JWKS URI found.");
@@ -214,16 +178,16 @@ export function validateIdToken(
                 return Promise.reject(new Error("Failed to load public keys from JWKS URI: " + jwksEndpoint));
             }
 
-            const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
+            const jwk = getJWKForTheIdToken(idToken.split(".")[ 0 ], response.data.keys);
 
-            let issuer = getIssuer(storage, session);
+            let issuer = getIssuer(requestParams.storage, requestParams.session);
 
             if (!issuer || issuer.trim().length === 0) {
-                issuer = serverOrigin + SERVICE_RESOURCES.token;
+                issuer = requestParams.serverOrigin + SERVICE_RESOURCES.token;
             }
 
             return Promise.resolve(
-                isValidIdToken(idToken, jwk, clientID, issuer, getAuthenticatedUser(idToken).username)
+                isValidIdToken(idToken, jwk, requestParams.clientID, issuer, getAuthenticatedUser(idToken).username)
             );
         })
         .catch((error) => {
@@ -237,21 +201,8 @@ export function validateIdToken(
  * @param {ConfigInterface} requestParams request parameters required for token request.
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
-export function sendTokenRequest(
-    requestParams: ConfigInterface,
-    storage: Storage.SessionStorage
-): Promise<TokenResponseInterface>;
-export function sendTokenRequest(
-    requestParams: ConfigInterface,
-    storage: Storage,
-    session: SessionData
-): Promise<TokenResponseInterface>;
-export function sendTokenRequest(
-    requestParams: ConfigInterface,
-    storage: Storage,
-    session?: SessionData
-): Promise<TokenResponseInterface> {
-    const tokenEndpoint = getTokenEndpoint(storage, session);
+export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenResponseInterface> {
+    const tokenEndpoint = getTokenEndpoint(requestParams.storage, requestParams.session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
@@ -259,38 +210,42 @@ export function sendTokenRequest(
 
     // Extract session state and set to the sessionStorage
     const sessionState =
-        storage === Storage.WebWorker
-            ? session.get(SESSION_STATE)
+        requestParams.storage === Storage.WebWorker
+            ? requestParams.session.get(SESSION_STATE)
             : new URL(window.location.href).searchParams.get(SESSION_STATE);
     if (sessionState !== null && sessionState.length > 0) {
-        setSessionParameter(SESSION_STATE, sessionState, storage, session);
+        setSessionParameter(SESSION_STATE, sessionState, requestParams.storage, requestParams.session);
     }
 
     const body = [];
-    body.push(`client_id=${requestParams.clientID}`);
+    body.push(`client_id=${ requestParams.clientID }`);
 
     if (requestParams.clientSecret && requestParams.clientSecret.trim().length > 0) {
-        body.push(`client_secret=${requestParams.clientSecret}`);
+        body.push(`client_secret=${ requestParams.clientSecret }`);
     }
 
     const code =
-        storage === Storage.WebWorker ? session.get(AUTHORIZATION_CODE) : getAuthorizationCode(storage, session);
-    body.push(`code=${code}`);
+        requestParams.storage === Storage.WebWorker
+            ? requestParams.session.get(AUTHORIZATION_CODE)
+            : getAuthorizationCode(requestParams);
+    body.push(`code=${ code }`);
 
-    if (storage === Storage.SessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+    if (requestParams.storage === Storage.SessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
         window.sessionStorage.removeItem(AUTHORIZATION_CODE);
     }
 
-    if (storage === Storage.WebWorker && session.get(AUTHORIZATION_CODE)) {
-        session.delete(AUTHORIZATION_CODE);
+    if (requestParams.storage === Storage.WebWorker && requestParams.session.get(AUTHORIZATION_CODE)) {
+        requestParams.session.delete(AUTHORIZATION_CODE);
     }
 
     body.push("grant_type=authorization_code");
-    body.push(`redirect_uri=${requestParams.callbackURL}`);
+    body.push(`redirect_uri=${ requestParams.callbackURL }`);
 
     if (requestParams.enablePKCE) {
-        body.push(`code_verifier=${getSessionParameter(PKCE_CODE_VERIFIER, storage, session)}`);
-        removeSessionParameter(PKCE_CODE_VERIFIER, storage, session);
+        body.push(
+            `code_verifier=${ getSessionParameter(PKCE_CODE_VERIFIER, requestParams.storage, requestParams.session) }`
+        );
+        removeSessionParameter(PKCE_CODE_VERIFIER, requestParams.storage, requestParams.session);
     }
 
     return axios
@@ -301,15 +256,14 @@ export function sendTokenRequest(
                     new Error("Invalid status code received in the token response: " + response.status)
                 );
             }
-            return validateIdToken(
-                requestParams.clientID,
-                response.data.id_token,
-                requestParams.serverOrigin,
-                storage,
-                session
-            ).then((valid) => {
+            return validateIdToken(response.data.id_token, requestParams).then((valid) => {
                 if (valid) {
-                    setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams), storage, session);
+                    setSessionParameter(
+                        REQUEST_PARAMS,
+                        JSON.stringify(requestParams),
+                        requestParams.storage,
+                        requestParams.session
+                    );
 
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
@@ -362,8 +316,8 @@ export function sendRefreshTokenRequest(
     }
 
     const body = [];
-    body.push(`client_id=${requestParams.clientID}`);
-    body.push(`refresh_token=${refreshToken}`);
+    body.push(`client_id=${ requestParams.clientID }`);
+    body.push(`refresh_token=${ refreshToken }`);
     body.push("grant_type=refresh_token");
 
     return axios
@@ -374,13 +328,7 @@ export function sendRefreshTokenRequest(
                     new Error("Invalid status code received in the refresh token response: " + response.status)
                 );
             }
-            return validateIdToken(
-                requestParams.clientID,
-                response.data.id_token,
-                requestParams.serverOrigin,
-                storage,
-                session
-            ).then((valid) => {
+            return validateIdToken(response.data.id_token, requestParams).then((valid) => {
                 if (valid) {
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
@@ -411,32 +359,16 @@ export function sendRefreshTokenRequest(
  * @returns {any}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function sendRevokeTokenRequest(
-    requestParams: ConfigInterface,
-    accessToken: string,
-    storage: Storage.SessionStorage
-): Promise<any>;
-export function sendRevokeTokenRequest(
-    requestParams: ConfigInterface,
-    accessToken: string,
-    storage: Storage,
-    session: SessionData
-): Promise<any>;
-export function sendRevokeTokenRequest(
-    requestParams: ConfigInterface,
-    accessToken: string,
-    storage: Storage,
-    session?: SessionData
-): Promise<any> {
-    const revokeTokenEndpoint = getRevokeTokenEndpoint(storage, session);
+export function sendRevokeTokenRequest(requestParams: ConfigInterface, accessToken: string): Promise<any> {
+    const revokeTokenEndpoint = getRevokeTokenEndpoint(requestParams.storage, requestParams.session);
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
         return Promise.reject("Invalid revoke token endpoint found.");
     }
 
     const body = [];
-    body.push(`client_id=${requestParams.clientID}`);
-    body.push(`token=${accessToken}`);
+    body.push(`client_id=${ requestParams.clientID }`);
+    body.push(`token=${ accessToken }`);
     body.push("token_type_hint=access_token");
 
     return axios
@@ -475,7 +407,7 @@ export const getGravatar = (emailAddress: string): string => {
  * @returns {AuthenticatedUserInterface} authenticated user.
  */
 export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterface => {
-    const payload = JSON.parse(atob(idToken.split(".")[1]));
+    const payload = JSON.parse(atob(idToken.split(".")[ 1 ]));
     const emailAddress = payload.email ? payload.email : null;
 
     return {
@@ -494,19 +426,9 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  */
 export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
-    storage: Storage.SessionStorage
-): Promise<any>;
-export function sendAccountSwitchRequest(
-    requestParams: AccountSwitchRequestParams,
-    storage: Storage,
-    session: SessionData
-): Promise<any>;
-export function sendAccountSwitchRequest(
-    requestParams: AccountSwitchRequestParams,
-    storage: Storage,
-    session?: SessionData
+    config: ConfigInterface
 ): Promise<any> {
-    const tokenEndpoint = getTokenEndpoint(storage, session);
+    const tokenEndpoint = getTokenEndpoint(config.storage, config.session);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
@@ -523,12 +445,12 @@ export function sendAccountSwitchRequest(
 
     const body = [];
     body.push("grant_type=account_switch");
-    body.push(`username=${requestParams.username}`);
-    body.push(`userstore-domain=${requestParams["userstore-domain"]}`);
-    body.push(`tenant-domain=${requestParams["tenant-domain"]}`);
-    body.push(`token=${getSessionParameter(ACCESS_TOKEN, storage, session)}`);
-    body.push(`scope=${scope}`);
-    body.push(`client_id=${requestParams.client_id}`);
+    body.push(`username=${ requestParams.username }`);
+    body.push(`userstore-domain=${ requestParams[ "userstore-domain" ] }`);
+    body.push(`tenant-domain=${ requestParams[ "tenant-domain" ] }`);
+    body.push(`token=${ getSessionParameter(ACCESS_TOKEN, config.storage, config.session) }`);
+    body.push(`scope=${ scope }`);
+    body.push(`client_id=${ requestParams.client_id }`);
 
     return axios
         .post(tokenEndpoint, body.join("&"), { headers: getTokenRequestHeaders(requestParams.clientHost) })
@@ -539,13 +461,7 @@ export function sendAccountSwitchRequest(
                 );
             }
 
-            return validateIdToken(
-                requestParams.client_id,
-                response.data.id_token,
-                requestParams.serverOrigin,
-                storage,
-                session
-            ).then((valid) => {
+            return validateIdToken(response.data.id_token, config).then((valid) => {
                 if (valid) {
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
@@ -574,53 +490,43 @@ export function sendAccountSwitchRequest(
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function sendSignInRequest(
-    requestParams: ConfigInterface,
-    storage: Storage.SessionStorage
-): Promise<SignInResponse>;
-export function sendSignInRequest(
-    requestParams: ConfigInterface,
-    storage: Storage,
-    session: SessionData
-): Promise<SignInResponse>;
-export function sendSignInRequest(
-    requestParams: ConfigInterface,
-    storage: Storage,
-    session?: SessionData
-): Promise<SignInResponse> {
-    if (hasAuthorizationCode(storage, session)) {
-        return sendTokenRequest(requestParams, storage, session)
+export function sendSignInRequest(requestParams: ConfigInterface): Promise<SignInResponse> {
+    if (hasAuthorizationCode(requestParams)) {
+        return sendTokenRequest(requestParams)
             .then((response) => {
-                initUserSession(response, getAuthenticatedUser(response.idToken), storage, session);
+                initUserSession(
+                    response,
+                    getAuthenticatedUser(response.idToken),
+                    requestParams.storage,
+                    requestParams.session
+                );
                 return Promise.resolve({
                     type: SIGNED_IN
                 } as SignInResponse);
             })
             .catch((error) => {
                 if (error.response && error.response.status === 400) {
-                    return sendAuthorizationRequest(requestParams, storage, session);
+                    return sendAuthorizationRequest(requestParams);
                 }
 
                 return Promise.reject(error);
             });
     } else {
-        return sendAuthorizationRequest(requestParams, storage, session);
+        return sendAuthorizationRequest(requestParams);
     }
 }
 
-export function handleSignIn(requestParams: ConfigInterface, storage: Storage.SessionStorage): Promise<any>;
-export function handleSignIn(requestParams: ConfigInterface, storage: Storage, session: SessionData): Promise<any>;
-export function handleSignIn(requestParams: ConfigInterface, storage: Storage, session?: SessionData): Promise<any> {
-    if (getSessionParameter(ACCESS_TOKEN, storage, session)) {
-        if (!isValidOPConfig(requestParams.clientID, storage, session)) {
-            endAuthenticatedSession(storage, session);
-            resetOPConfiguration(storage, session);
+export function handleSignIn(requestParams: ConfigInterface): Promise<any> {
+    if (getSessionParameter(ACCESS_TOKEN, requestParams.storage, requestParams.session)) {
+        if (!isValidOPConfig(requestParams.clientID, requestParams.storage, requestParams.session)) {
+            endAuthenticatedSession(requestParams.storage, requestParams.session);
+            resetOPConfiguration(requestParams.storage, requestParams.session);
             // TODO: Better to have a callback to clear this on the app side.
-            removeSessionParameter("auth_callback_url", storage, session);
+            removeSessionParameter("auth_callback_url", requestParams.storage, requestParams.session);
 
-            return initOPConfiguration(requestParams, true, storage, session)
+            return initOPConfiguration(requestParams, true, requestParams.storage, requestParams.session)
                 .then(() => {
-                    return sendSignInRequest(requestParams, storage, session);
+                    return sendSignInRequest(requestParams);
                 })
                 .catch((error) => {
                     return Promise.reject(error);
@@ -629,9 +535,9 @@ export function handleSignIn(requestParams: ConfigInterface, storage: Storage, s
 
         return Promise.resolve("Sign In successful!");
     } else {
-        return initOPConfiguration(requestParams, false, storage, session)
+        return initOPConfiguration(requestParams, false, requestParams.storage, requestParams.session)
             .then(() => {
-                return sendSignInRequest(requestParams, storage, session);
+                return sendSignInRequest(requestParams);
             })
             .catch((error) => {
                 return Promise.reject(error);
