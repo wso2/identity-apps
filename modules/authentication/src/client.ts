@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { handleSignIn } from "./actions/sign-in";
-import { handleSignOut } from "./actions/sign-out";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { OAuth } from ".";
+import { handleSignIn, handleSignOut } from "./actions";
 import * as AUTHENTICATION_TYPES from "./constants";
-import { ConfigInterface } from "./models/client";
-import { ResponseModeTypes } from "./models/oidc-request-params";
+import { ConfigInterface, CustomGrantRequestParams, OAuthInterface, ResponseModeTypes } from "./models";
 
 /**
  * The login scope.
@@ -55,9 +55,11 @@ const DefaultConfig = {
     consentDenied: false,
     enablePKCE: true,
     responseMode: null,
-    scope: [LOGIN_SCOPE, HUMAN_TASK_SCOPE],
+    scope: [ LOGIN_SCOPE, HUMAN_TASK_SCOPE ],
     tenant: DEFAULT_SUPER_TENANT
 };
+
+const NOT_AVAILABLE_ERROR = "This is available only when the storage is set to \"webWorker\"";
 
 /**
  * IdentityClient class constructor.
@@ -77,38 +79,66 @@ export class IdentityClient implements ConfigInterface {
     public responseMode!: ResponseModeTypes;
     public scope!: string[];
     public serverOrigin: string;
-    public tenant!: string;
-    public tenantPath!: string;
+    public storage: AUTHENTICATION_TYPES.Storage;
 
-    constructor(UserConfig: ConfigInterface) {
-        const resolve = (propertyName) => {
-            if (Object.prototype.hasOwnProperty.call(UserConfig, propertyName)) {
-                return UserConfig[propertyName];
-            }
+    private static instance: IdentityClient;
+    private client: OAuthInterface;
 
-            if (Object.prototype.hasOwnProperty.call(DefaultConfig, propertyName)) {
-                return DefaultConfig[propertyName];
-            }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
 
-            throw new Error(
-                `"${propertyName}" is missing in your configuration. Please fill all the mandatory properties`
-            );
-        };
+    public static getInstance() {
+        if (this.instance) {
+            return this.instance;
+        }
 
-        this.authorizationType = resolve("authorizationType");
-        this.callbackURL = resolve("callbackURL");
-        this.clientHost = resolve("clientHost");
-        this.clientID = resolve("clientID");
-        this.clientSecret = resolve("clientSecret");
-        this.consentDenied = resolve("consentDenied");
-        this.enablePKCE = resolve("enablePKCE");
-        this.responseMode = resolve("responseMode");
-        this.scope = resolve("scope");
-        this.serverOrigin = resolve("serverOrigin");
-        this.tenant = resolve("tenant");
-        this.tenantPath = resolve("tenantPath");
+        this.instance = new IdentityClient();
 
-        Object.assign(this, UserConfig);
+        return this.instance;
+    }
+
+    public initialize(config: ConfigInterface) {
+        this.storage = config?.storage ?? AUTHENTICATION_TYPES.Storage.SessionStorage;
+
+        if (this.storage === AUTHENTICATION_TYPES.Storage.SessionStorage) {
+            const resolve = (propertyName) => {
+                if (Object.prototype.hasOwnProperty.call(config, propertyName)) {
+                    return config[ propertyName ];
+                }
+
+                if (Object.prototype.hasOwnProperty.call(DefaultConfig, propertyName)) {
+                    return DefaultConfig[ propertyName ];
+                }
+
+                throw new Error(
+                    `"${ propertyName }" is missing in your configuration. Please fill all the mandatory properties`
+                );
+            };
+
+            this.authorizationType = resolve("authorizationType");
+            this.callbackURL = resolve("callbackURL");
+            this.clientHost = resolve("clientHost");
+            this.clientID = resolve("clientID");
+            this.clientSecret = resolve("clientSecret");
+            this.consentDenied = resolve("consentDenied");
+            this.enablePKCE = resolve("enablePKCE");
+            this.responseMode = resolve("responseMode");
+            this.scope = resolve("scope");
+            this.serverOrigin = resolve("serverOrigin");
+
+            Object.assign(this, config);
+            return Promise.resolve(true);
+        } else {
+            this.client = OAuth.getInstance();
+            return this.client
+                .initialize(config)
+                .then(() => {
+                    return Promise.resolve(true);
+                })
+                .catch(() => {
+                    return Promise.reject(false);
+                });
+        }
     }
 
     public getUserInfo() {
@@ -134,6 +164,9 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signIn(): Promise<any> {
+        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this.client.signIn();
+        }
         return handleSignIn(this);
     }
 
@@ -145,6 +178,38 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signOut(): Promise<any> {
+        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this.client.signOut();
+        }
         return handleSignOut(this);
+    }
+
+    public async httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
+        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this.client.httpRequest(config);
+        }
+
+        return Promise.reject(NOT_AVAILABLE_ERROR);
+    }
+
+    public async httpRequestAll(config: AxiosRequestConfig[]): Promise<AxiosResponse[]> {
+        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this.client.httpRequestAll(config);
+        }
+        return Promise.reject(NOT_AVAILABLE_ERROR);
+    }
+
+    public async customGrant(requestParams: CustomGrantRequestParams): Promise<any> {
+        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this.client.customGrant(requestParams);
+        }
+        return Promise.reject(NOT_AVAILABLE_ERROR);
+    }
+
+    public async revokeToken(): Promise<any> {
+        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this.client.revokeToken();
+        }
+        return Promise.reject(NOT_AVAILABLE_ERROR);
     }
 }
