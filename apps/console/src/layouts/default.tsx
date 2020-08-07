@@ -18,13 +18,10 @@
 
 import { AlertInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     Alert,
     ContentLoader,
     DefaultLayout as DefaultLayoutSkeleton,
-    Footer,
-    ThemeContext,
     TopLoadingBar
 } from "@wso2is/react-components";
 import React, {
@@ -32,18 +29,16 @@ import React, {
     ReactElement,
     Suspense,
     SyntheticEvent,
-    useContext,
     useEffect,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import {
     AppState,
-    ConfigReducerStateInterface,
+    Footer,
     Header,
     ProtectedRoute,
     UIConstants,
@@ -75,13 +70,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const dispatch = useDispatch();
 
-    const { t } = useTranslation();
-
-    const { state } = useContext(ThemeContext);
-
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
@@ -91,17 +79,17 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (headerHeight === document.getElementById("app-header").offsetHeight) {
+        if (headerHeight === document.getElementById("app-header")?.offsetHeight) {
             return;
         }
-        setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
+        setHeaderHeight(document.getElementById("app-header")?.offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
     });
 
     useEffect(() => {
-        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
+        if (footerHeight === document.getElementById("app-footer")?.offsetHeight) {
             return;
         }
-        setFooterHeight(document.getElementById("app-footer").offsetHeight);
+        setFooterHeight(document.getElementById("app-footer")?.offsetHeight);
     });
 
     /**
@@ -121,18 +109,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
         }
 
         setIsMobileViewport(false);
-    };
-
-    /**
-     * Handles language switch action.
-     *
-     * @param {string} language - Selected language.
-     */
-    const handleLanguageSwitch = (language: string): void => {
-        I18n.instance.changeLanguage(language)
-            .catch((error) => {
-                throw new LanguageChangeException(language, error)
-            })
     };
 
     const handleAlertSystemInitialize = (system) => {
@@ -171,24 +147,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
             footer={ (
                 <Footer
                     showLanguageSwitcher
-                    currentLanguage={ I18n.instance?.language }
-                    supportedLanguages={ supportedI18nLanguages }
-                    onLanguageChange={ handleLanguageSwitch }
-                    copyright={ state.copyrightText && state.copyrightText !== "" ?
-                        state.copyrightText
-                        :
-                        config.ui.appCopyright
-                            ? config.ui.appCopyright
-                            : null
-                    }
-                    fixed="bottom"
                     fluid={ !isMobileViewport ? fluid : false }
-                    links={ [
-                        {
-                            name: t("common:privacy"),
-                            to: "/privacy"
-                        }
-                    ] }
                 />
             ) }
         >

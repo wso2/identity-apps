@@ -20,14 +20,12 @@ import { getProfileInfo } from "@wso2is/core/api";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
-import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import {
     Alert,
     ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
     Footer,
     SidePanel,
-    ThemeContext,
     TopLoadingBar
 } from "@wso2is/react-components";
 import cloneDeep from "lodash/cloneDeep";
@@ -38,8 +36,6 @@ import React, {
     ReactNode,
     Suspense,
     SyntheticEvent,
-    lazy,
-    useContext,
     useEffect,
     useState
 } from "react";
@@ -51,7 +47,6 @@ import { Responsive } from "semantic-ui-react";
 import {
     AppState,
     AppUtils,
-    ConfigReducerStateInterface,
     FeatureConfigInterface,
     Header,
     ProtectedRoute,
@@ -84,14 +79,12 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 ): ReactElement => {
 
     const { fluid } = props;
-    const { state } = useContext(ThemeContext);
+
     const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
@@ -296,17 +289,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     };
 
     /**
-     * Handles language switch action.
-     * @param {string} language - Selected language.
-     */
-    const handleLanguageSwitch = (language: string): void => {
-        I18n.instance.changeLanguage(language)
-            .catch((error) => {
-                throw new LanguageChangeException(language, error)
-            })
-    };
-
-    /**
      * Handles alert system initialize.
      *
      * @param system - Alert system object.
@@ -361,24 +343,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             footer={ (
                 <Footer
                     showLanguageSwitcher
-                    currentLanguage={ I18n.instance?.language }
-                    supportedLanguages={ supportedI18nLanguages }
-                    onLanguageChange={ handleLanguageSwitch }
-                    copyright={
-                        (state.copyrightText && state.copyrightText !== "")
-                            ? state.copyrightText
-                            : config.ui.appCopyright
-                            ? config.ui.appCopyright
-                            : null
-                    }
-                    fixed="bottom"
                     fluid={ !isMobileViewport ? fluid : false }
-                    links={ [
-                        {
-                            name: t("common:privacy"),
-                            to: "/privacy"
-                        }
-                    ] }
                 />
             ) }
         >
