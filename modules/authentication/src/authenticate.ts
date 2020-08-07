@@ -23,7 +23,7 @@ import { ConfigInterface, CustomGrantRequestParams, OAuthInterface, WebWorkerCon
 import { OAuth } from "./oauth";
 
 const isWorker = (client: IdentityClient | OAuthInterface, storage: Storage): client is OAuthInterface => {
-    return storage === Storage.webWorker;
+    return storage === Storage.WebWorker;
 };
 
 const NOT_AVAILABLE_ERROR = 'This is available only when the storage is set to "webWorker"';

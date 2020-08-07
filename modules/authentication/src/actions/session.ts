@@ -50,7 +50,7 @@ const semaphore = new Semaphore(1);
 export function removeSessionParameter(key: string, storage: Storage.SessionStorage): void;
 export function removeSessionParameter(key: string, storage: Storage, session: SessionData): void;
 export function removeSessionParameter(key: string, storage: Storage, session?: SessionData): void {
-    if (storage === Storage.webWorker) {
+    if (storage === Storage.WebWorker) {
         session.delete(key);
     } else {
         sessionStorage.removeItem(key);
@@ -66,7 +66,7 @@ export function removeSessionParameter(key: string, storage: Storage, session?: 
 export function setSessionParameter(key: string, value: string, storage: Storage.SessionStorage): void;
 export function setSessionParameter(key: string, value: string, storage: Storage, session: SessionData): void;
 export function setSessionParameter(key: string, value: string, storage: Storage, session?: SessionData): void {
-    if (storage === Storage.webWorker) {
+    if (storage === Storage.WebWorker) {
         session.set(key, value);
     } else {
         sessionStorage.setItem(key, value);
@@ -82,7 +82,7 @@ export function setSessionParameter(key: string, value: string, storage: Storage
 export function getSessionParameter(key: string, storage: Storage.SessionStorage): string | null;
 export function getSessionParameter(key: string, storage: Storage, session: SessionData): string | null;
 export function getSessionParameter(key: string, storage: Storage, session?: SessionData): string | null {
-    if (storage === Storage.webWorker) {
+    if (storage === Storage.WebWorker) {
         return session.get(key);
     }
 

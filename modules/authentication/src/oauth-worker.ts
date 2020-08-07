@@ -101,7 +101,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * @returns {Promise<SignInResponse>} A promise that resolves with the Sign In response.
      */
     const signIn = (): Promise<SignInResponse> => {
-        return handleSignIn(authConfig, Storage.webWorker, session)
+        return handleSignIn(authConfig, Storage.WebWorker, session)
             .then((response) => {
                 if (response.type === SIGNED_IN) {
                     return Promise.resolve({
@@ -130,7 +130,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * @returns {Promise<boolean>} A promise that resolves with `true` if refreshing is successful.
      */
     const refreshAccessToken = (): Promise<boolean> => {
-        return sendRefreshTokenRequestUtil(authConfig, session.get(ACCESS_TOKEN), Storage.webWorker, session);
+        return sendRefreshTokenRequestUtil(authConfig, session.get(ACCESS_TOKEN), Storage.WebWorker, session);
     };
 
     /**
@@ -139,7 +139,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * @returns {Promise<boolean>} A promise that resolves with `true` if sign out is successful.
      */
     const signOut = (): Promise<string> => {
-        return handleSignOut(Storage.webWorker, session);
+        return handleSignOut(Storage.WebWorker, session);
     };
 
     /**
@@ -148,7 +148,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * @returns {Promise<boolean>} A promise that resolves with `true` if revoking is successful.
      */
     const revokeToken = (): Promise<boolean> => {
-        return sendRevokeTokenRequestUtil(authConfig, session.get(ACCESS_TOKEN), Storage.webWorker, session);
+        return sendRevokeTokenRequestUtil(authConfig, session.get(ACCESS_TOKEN), Storage.WebWorker, session);
     };
 
     /**
@@ -340,7 +340,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
                             authConfig.clientID,
                             response.data.id_token,
                             authConfig.serverOrigin,
-                            Storage.webWorker,
+                            Storage.WebWorker,
                             session
                         ).then((valid) => {
                             if (valid) {
@@ -355,7 +355,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
                                 initUserSessionUtil(
                                     tokenResponse,
                                     getAuthenticatedUserUtil(tokenResponse.idToken),
-                                    Storage.webWorker,
+                                    Storage.WebWorker,
                                     session
                                 );
 

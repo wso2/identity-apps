@@ -144,7 +144,7 @@ export const handleSignIn = () => (dispatch) => {
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-            storage: Storage.webWorker
+            storage: Storage.WebWorker
         })
         .then(() => {
             oAuth

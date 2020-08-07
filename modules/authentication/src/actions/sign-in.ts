@@ -160,7 +160,7 @@ export function sendAuthorizationRequest(
         authorizeRequest += "&prompt=" + requestParams.prompt;
     }
 
-    if (storage === Storage.webWorker) {
+    if (storage === Storage.WebWorker) {
         return Promise.resolve({
             code: authorizeRequest,
             pkce: getSessionParameter(PKCE_CODE_VERIFIER, storage, session),
@@ -259,7 +259,7 @@ export function sendTokenRequest(
 
     // Extract session state and set to the sessionStorage
     const sessionState =
-        storage === Storage.webWorker
+        storage === Storage.WebWorker
             ? session.get(SESSION_STATE)
             : new URL(window.location.href).searchParams.get(SESSION_STATE);
     if (sessionState !== null && sessionState.length > 0) {
@@ -274,14 +274,14 @@ export function sendTokenRequest(
     }
 
     const code =
-        storage === Storage.webWorker ? session.get(AUTHORIZATION_CODE) : getAuthorizationCode(storage, session);
+        storage === Storage.WebWorker ? session.get(AUTHORIZATION_CODE) : getAuthorizationCode(storage, session);
     body.push(`code=${code}`);
 
     if (storage === Storage.SessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
         window.sessionStorage.removeItem(AUTHORIZATION_CODE);
     }
 
-    if (storage === Storage.webWorker && session.get(AUTHORIZATION_CODE)) {
+    if (storage === Storage.WebWorker && session.get(AUTHORIZATION_CODE)) {
         session.delete(AUTHORIZATION_CODE);
     }
 

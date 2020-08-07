@@ -73,7 +73,7 @@ export function sendSignOutRequest(storage: Storage, session?: SessionData): Pro
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function handleSignOut(storage: Storage.SessionStorage): Promise<any>;
-export function handleSignOut(storage: Storage.webWorker, session: SessionData): Promise<any>;
+export function handleSignOut(storage: Storage.WebWorker, session: SessionData): Promise<any>;
 export function handleSignOut(storage: Storage, session?: SessionData): Promise<any> {
     if (storage === Storage.SessionStorage && sessionStorage.length === 0) {
         return Promise.reject(new Error("No login sessions."));
