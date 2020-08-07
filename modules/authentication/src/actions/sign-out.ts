@@ -17,7 +17,7 @@
  */
 
 import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
-import { endAuthenticatedSession, getSessionParameter } from "./session";
+import { endAuthenticatedSession, getSessionParameter } from "./session-storage";
 import { CALLBACK_URL, ID_TOKEN } from "../constants";
 import { Storage } from "../constants/storage";
 import { SessionData } from "../models";

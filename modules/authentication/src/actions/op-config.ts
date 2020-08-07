@@ -17,7 +17,7 @@
  */
 
 import axios from "axios";
-import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session";
+import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session-storage";
 import {
     AUTHORIZATION_ENDPOINT,
     CALLBACK_URL,

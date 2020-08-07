@@ -19,6 +19,6 @@
 export * from "./crypto";
 export * from "./dto";
 export * from "./op-config";
-export * from "./session";
+export * from "./session-storage";
 export * from "./sign-in";
 export * from "./sign-out";

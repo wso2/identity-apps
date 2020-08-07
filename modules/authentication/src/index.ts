@@ -19,7 +19,7 @@
 
 import * as actionCrypto from "./actions/crypto";
 import * as actionOPConfiguration from "./actions/op-config";
-import * as actionSession from "./actions/session";
+import * as actionSession from "./actions/session-storage";
 import * as actionSignIn from "./actions/sign-in";
 import * as actionSignOut from "./actions/sign-out";
 import * as constantToken from "./constants/token";

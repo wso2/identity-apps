@@ -34,7 +34,7 @@ import {
     initUserSession,
     removeSessionParameter,
     setSessionParameter
-} from "./session";
+} from "./session-storage";
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,

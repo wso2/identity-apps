@@ -28,14 +28,16 @@ import {
     REFRESH_TOKEN,
     REQUEST_PARAMS,
     SCOPE,
+    Storage,
     TOKEN_TYPE,
     USERNAME
 } from "../constants";
-import { AuthenticatedUserInterface } from "../models/authenticated-user";
-import { SessionInterface } from "../models/session";
-import { TokenResponseInterface } from "../models/token-response";
-import { Storage } from "../constants/storage";
-import { SessionData } from "../models";
+import {
+    AuthenticatedUserInterface,
+    SessionData,
+    SessionInterface,
+    TokenResponseInterface
+}from "../models";
 
 /**
  * Semaphore used for synchronizing the refresh token requests.
@@ -50,10 +52,18 @@ const semaphore = new Semaphore(1);
 export function removeSessionParameter(key: string, storage: Storage.SessionStorage): void;
 export function removeSessionParameter(key: string, storage: Storage, session: SessionData): void;
 export function removeSessionParameter(key: string, storage: Storage, session?: SessionData): void {
-    if (storage === Storage.WebWorker) {
-        session.delete(key);
-    } else {
-        sessionStorage.removeItem(key);
+    switch (storage) {
+        case Storage.WebWorker:
+            session.delete(key);
+            break;
+        case Storage.SessionStorage:
+            sessionStorage.removeItem(key);
+            break;
+        case Storage.LocalStorage:
+            localStorage.removeItem(key);
+            break;
+        default:
+            sessionStorage.removeItem(key);
     }
 }
 
@@ -66,10 +76,18 @@ export function removeSessionParameter(key: string, storage: Storage, session?: 
 export function setSessionParameter(key: string, value: string, storage: Storage.SessionStorage): void;
 export function setSessionParameter(key: string, value: string, storage: Storage, session: SessionData): void;
 export function setSessionParameter(key: string, value: string, storage: Storage, session?: SessionData): void {
-    if (storage === Storage.WebWorker) {
-        session.set(key, value);
-    } else {
-        sessionStorage.setItem(key, value);
+    switch (storage) {
+        case Storage.WebWorker:
+            session.set(key, value);
+            break;
+        case Storage.SessionStorage:
+            sessionStorage.setItem(key, value);
+            break;
+        case Storage.LocalStorage:
+            localStorage.setItem(key, value);
+            break;
+        default:
+            sessionStorage.setItem(key, value);
     }
 }
 
@@ -82,11 +100,16 @@ export function setSessionParameter(key: string, value: string, storage: Storage
 export function getSessionParameter(key: string, storage: Storage.SessionStorage): string | null;
 export function getSessionParameter(key: string, storage: Storage, session: SessionData): string | null;
 export function getSessionParameter(key: string, storage: Storage, session?: SessionData): string | null {
-    if (storage === Storage.WebWorker) {
-        return session.get(key);
+    switch (storage) {
+        case Storage.WebWorker:
+            return session.get(key);
+        case Storage.SessionStorage:
+            return sessionStorage.getItem(key);
+        case Storage.LocalStorage:
+            return localStorage.getItem(key);
+        default:
+            return sessionStorage.getItem(key);
     }
-
-    return sessionStorage.getItem(key);
 }
 
 /**
