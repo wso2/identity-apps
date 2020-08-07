@@ -19,9 +19,15 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { lazy } from "react";
 import { SidePanelIcons } from "./ui";
+import { EXTENSION_ROUTES } from "../../../extensions";
 import { AppLayout, AuthLayout, DefaultLayout, ErrorLayout } from "../../../layouts";
 import { AdminView, DeveloperView } from "../../../views";
 import { AppConstants } from "../constants";
+
+/**
+ * Load extension routes if available.
+ */
+const extensions = EXTENSION_ROUTES();
 
 /**
  * Developer View Routes array.
@@ -193,7 +199,8 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         path: AppConstants.PATHS.get("CUSTOMIZE"),
         protected: true,
         showOnSidePanel: false
-    }
+    },
+    ...extensions
 ];
 
 /**
