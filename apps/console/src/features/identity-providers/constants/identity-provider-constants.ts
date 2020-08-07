@@ -35,7 +35,7 @@ export const IDENTITY_PROVIDER_PAGE_PATH = "/identity-providers";
 /**
  * Class containing app constants.
  */
-export class  {
+export class IdentityProviderConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside

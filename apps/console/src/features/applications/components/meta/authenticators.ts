@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { AuthenticatorIcons } from "../../../configs";
-import { StrictGenericAuthenticatorInterface } from "../../../models";
+import { StrictGenericAuthenticatorInterface } from "../../../identity-providers";
+import { AuthenticatorIcons } from "../../configs";
 
 export const getSelectedLocalAuthenticators = (): StrictGenericAuthenticatorInterface[] => {
     return [

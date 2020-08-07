@@ -17,7 +17,7 @@
  */
 
 import { IdentityProviderActionTypes, SetAvailableAuthenticatorsMetaInterface } from "./types";
-import { FederatedAuthenticatorListItemInterface } from "../../../models";
+import { FederatedAuthenticatorListItemInterface } from "../../models";
 
 /**
  * Redux action to set the list of available authenticators.

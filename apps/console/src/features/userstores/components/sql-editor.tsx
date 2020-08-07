@@ -21,7 +21,7 @@ import { CodeEditor, Heading, LinkButton, PrimaryButton } from "@wso2is/react-co
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Accordion, Checkbox, Icon, Menu, Popup, Segment, Sidebar } from "semantic-ui-react";
-import { RequiredBinary } from "../../models";
+import { RequiredBinary } from "../models";
 
 interface SqlEditorPropsInterface extends TestableComponentInterface {
     onChange: (name: string, value: string) => void;
