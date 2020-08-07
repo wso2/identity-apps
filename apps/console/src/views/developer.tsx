@@ -24,7 +24,6 @@ import {
     Alert,
     ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
-    Footer,
     SidePanel,
     TopLoadingBar
 } from "@wso2is/react-components";
@@ -48,6 +47,7 @@ import {
     AppState,
     AppUtils,
     FeatureConfigInterface,
+    Footer,
     Header,
     ProtectedRoute,
     SidePanelMiscIcons,
@@ -318,6 +318,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
+                    activeView="DEVELOPER"
                     fluid={ !isMobileViewport ? fluid : false }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 />

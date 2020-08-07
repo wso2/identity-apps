@@ -2,11 +2,16 @@
     "accountApp": {
         "path": "/user-portal/overview"
     },
-    "appBaseName": "admin-portal",
+    "appBaseName": "console",
     "clientID": "ADMIN_PORTAL",
     "debug": false,
+    "adminApp": {
+        "displayName": "Admin",
+        "path": "/admin/overview"
+    },
     "developerApp": {
-        "path": "/developer-portal/overview"
+        "displayName": "Developer",
+        "path": "/developer/overview"
     },
     "i18nResourcePath": "",
     "loginCallbackPath": "/login",
@@ -14,7 +19,7 @@
     "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
-        "home": "/overview",
+        "home": "/developer/overview",
         "login": "/login",
         "logout": "/logout"
     },
@@ -26,10 +31,28 @@
     },
     "ui": {
         "appCopyright": "WSO2 Identity Server",
-        "appTitle": "Admin | WSO2 Identity Server",
-        "appName": "Admin",
+        "appTitle": "Console | WSO2 Identity Server",
+        "appName": "Console",
         "appLogoPath": "/assets/images/logo.svg",
         "features": {
+            "applications": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_application_mgt_create"
+                    ],
+                    "read": [
+                        "internal_application_mgt_view"
+                    ],
+                    "update": [
+                        "internal_application_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_application_mgt_delete"
+                    ]
+                }
+            },
             "attributeDialects": {
                 "enabled": true,
                 "disabledFeatures": [],
@@ -117,6 +140,24 @@
                     ],
                     "delete": [
                         "internal_role_mgt_delete"
+                    ]
+                }
+            },
+            "identityProviders": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [
+                        "internal_idp_create"
+                    ],
+                    "read": [
+                        "internal_idp_view"
+                    ],
+                    "update": [
+                        "internal_idp_update"
+                    ],
+                    "delete": [
+                        "internal_idp_delete"
                     ]
                 }
             },

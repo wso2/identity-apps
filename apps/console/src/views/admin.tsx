@@ -24,7 +24,6 @@ import {
     Alert,
     ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
-    Footer,
     SidePanel,
     TopLoadingBar
 } from "@wso2is/react-components";
@@ -49,6 +48,7 @@ import {
     AppConstants,
     AppState,
     FeatureConfigInterface,
+    Footer,
     Header,
     ProtectedRoute,
     SidePanelIcons,
@@ -367,6 +367,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             onLayoutOnUpdate={ handleLayoutOnUpdate }
             header={ (
                 <Header
+                    activeView="ADMIN"
                     fluid={ !isMobileViewport ? fluid : false }
                     onSidePanelToggleClick={ handleSidePanelToggleClick }
                 />

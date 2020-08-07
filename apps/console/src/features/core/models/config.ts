@@ -90,11 +90,15 @@ export interface FeatureConfigInterface {
  */
 export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
     /**
+     * Configs of the Admin app.
+     */
+    adminApp: ExternalAppConfigInterface;
+    /**
      * Configs of the user portal app.
      */
     accountApp: ExternalAppConfigInterface;
     /**
-     * Configs of the developer portal app.
+     * Configs of the developer app.
      */
     developerApp: ExternalAppConfigInterface;
 }
@@ -103,6 +107,13 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
  * Interface for defining settings and configs of an external app.
  */
 interface ExternalAppConfigInterface {
+    /**
+     * Display name for the app.
+     */
+    displayName: string;
+    /**
+     * Access path/URL for the app.
+     */
     path: string;
 }
 

@@ -37,7 +37,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Image } from "semantic-ui-react";
+import { Image, Menu } from "semantic-ui-react";
 import { ComponentPlaceholder } from "../../../extensions";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
@@ -47,7 +47,12 @@ import { CommonUtils } from "../utils";
 /**
  * Dashboard layout Prop types.
  */
-type HeaderPropsInterface = Omit<ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo">
+interface HeaderPropsInterface extends Omit<ReusableHeaderPropsInterface, "basicProfileInfo" | "profileInfo"> {
+    /**
+     * Active view.
+     */
+    activeView?: "ADMIN" | "DEVELOPER";
+}
 
 /**
  * Implementation of the Reusable Header component.
@@ -60,6 +65,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
 ): ReactElement => {
 
     const {
+        activeView,
         fluid,
         onSidePanelToggleClick,
         ...rest
@@ -177,6 +183,22 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             onSidePanelToggleClick={ onSidePanelToggleClick }
             { ...rest }
         >
+            <Menu.Menu position="left" className="portal-switches" secondary>
+                <Menu.Item
+                    name={ config.deployment.developerApp.displayName }
+                    active={ activeView === "DEVELOPER" }
+                    onClick={ () => {
+                        history.push(config.deployment.developerApp.path);
+                    } }
+                />
+                <Menu.Item
+                    name={ config.deployment.adminApp.displayName }
+                    active={ activeView === "ADMIN" }
+                    onClick={ () => {
+                        history.push(config.deployment.adminApp.path);
+                    } }
+                />
+            </Menu.Menu>
             <div className="header-extensions">
                 <ComponentPlaceholder section="feedback-button" type="component"/>
             </div>

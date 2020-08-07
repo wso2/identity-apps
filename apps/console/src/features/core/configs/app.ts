@@ -53,6 +53,7 @@ export class Config {
     public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
             accountApp: window["AppUtils"].getConfig().accountApp,
+            adminApp: window["AppUtils"].getConfig().adminApp,
             appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,
