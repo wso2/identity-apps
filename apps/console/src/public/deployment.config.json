@@ -6,10 +6,12 @@
     "clientID": "ADMIN_PORTAL",
     "debug": false,
     "adminApp": {
+        "basePath": "/admin",
         "displayName": "Admin",
         "path": "/admin/overview"
     },
     "developerApp": {
+        "basePath": "/developer",
         "displayName": "Developer",
         "path": "/developer/overview"
     },

@@ -34,13 +34,13 @@ export class AppConstants {
      * Base path for Admin features.
      * @type {string}
      */
-    public static readonly ADMIN_VIEW_BASE_PATH: string = "/admin";
+    public static readonly ADMIN_VIEW_BASE_PATH: string = window["AppUtils"].getConfig().adminApp.basePath;
 
     /**
      * Base path for Developer features.
      * @type {string}
      */
-    public static readonly DEVELOPER_VIEW_BASE_PATH: string =  "/developer";
+    public static readonly DEVELOPER_VIEW_BASE_PATH: string = window["AppUtils"].getConfig().developerApp.basePath;
 
     /**
      * App routing paths.

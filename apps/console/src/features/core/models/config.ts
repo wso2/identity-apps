@@ -108,6 +108,10 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
  */
 interface ExternalAppConfigInterface {
     /**
+     * App base path. ex: `/account`, `/admin` etc.
+     */
+    basePath: string;
+    /**
      * Display name for the app.
      */
     displayName: string;
