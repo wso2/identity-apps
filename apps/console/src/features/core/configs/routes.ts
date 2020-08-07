@@ -94,6 +94,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "applications",
         name: "common:applications",
+        order: 2,
         path: AppConstants.PATHS.get("APPLICATIONS"),
         protected: true,
         showOnSidePanel: true
@@ -132,6 +133,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "identityProviders",
         name: "common:identityProviders",
+        order: 3,
         path: AppConstants.PATHS.get("IDP"),
         protected: true,
         showOnSidePanel: true
@@ -159,6 +161,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "remote-repo",
         name: "Remote Repo Config",
+        order: 4,
         path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
         protected: true,
         showOnSidePanel: true
@@ -185,6 +188,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "oidcScopes",
         name: "OIDC Scopes",
+        order: 5,
         path: AppConstants.PATHS.get("OIDC_SCOPES"),
         protected: true,
         showOnSidePanel: true
@@ -314,7 +318,6 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "editLocalClaims",
-                level: 2,
                 name: "adminPortal:components.sidePanel.editLocalClaims",
                 path: AppConstants.PATHS.get("LOCAL_CLAIMS_EDIT"),
                 protected: true,
@@ -327,7 +330,6 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "localDialect",
-                level: 2,
                 name: "adminPortal:components.sidePanel.localDialect",
                 path: AppConstants.PATHS.get("LOCAL_CLAIMS"),
                 protected: true,
@@ -340,7 +342,6 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                     icon: SidePanelIcons.childIcon
                 },
                 id: "editExternalDialect",
-                level: 2,
                 name: "adminPortal:components.sidePanel.editExternalDialect",
                 path: AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT"),
                 protected: true,
@@ -542,24 +543,6 @@ const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
  */
 const APP_ROUTES: RouteInterface[] = [
     {
-        component: AdminView,
-        icon: null,
-        id: "admin",
-        name: "Admin",
-        path: AppConstants.ADMIN_VIEW_BASE_PATH,
-        protected: false,
-        showOnSidePanel: false
-    },
-    {
-        component: DeveloperView,
-        icon: null,
-        id: "developer",
-        name: "Developer",
-        path: AppConstants.DEVELOPER_VIEW_BASE_PATH,
-        protected: false,
-        showOnSidePanel: false
-    },
-    {
         component: AuthLayout,
         icon: null,
         id: "appRouteLogin",
@@ -604,6 +587,24 @@ const APP_ROUTES: RouteInterface[] = [
         name: "Error",
         path: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
         protected: true,
+        showOnSidePanel: false
+    },
+    {
+        component: AdminView,
+        icon: null,
+        id: "admin",
+        name: "Admin",
+        path: AppConstants.ADMIN_VIEW_BASE_PATH,
+        protected: false,
+        showOnSidePanel: false
+    },
+    {
+        component: DeveloperView,
+        icon: null,
+        id: "developer",
+        name: "Developer",
+        path: AppConstants.DEVELOPER_VIEW_BASE_PATH,
+        protected: false,
         showOnSidePanel: false
     }
 ];
