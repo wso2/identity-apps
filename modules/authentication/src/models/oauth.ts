@@ -29,7 +29,6 @@ export interface OAuthInterface {
     listenForAuthCode(): Promise<UserInfo>;
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
     revokeToken(): Promise<boolean>;
-    getScope(): Promise<string>;
 }
 
 export interface OAuthSingletonInterface {
