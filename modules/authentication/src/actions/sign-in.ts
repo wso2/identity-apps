@@ -611,7 +611,6 @@ export function sendSignInRequest(
 export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE.sessionStorage): Promise<any>;
 export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session: SessionData): Promise<any>;
 export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, session?: SessionData): Promise<any> {
-    console.log("Handle sign in");
     if (getSessionParameter(ACCESS_TOKEN, storage, session)) {
         if (!isValidOPConfig(requestParams.clientID, storage, session)) {
             endAuthenticatedSession(storage, session);
@@ -630,14 +629,11 @@ export function handleSignIn(requestParams: ConfigInterface, storage: STORAGE, s
 
         return Promise.resolve("Sign In successful!");
     } else {
-        console.log("SIgn in init");
         return initOPConfiguration(requestParams, false, storage, session)
-            .then((response) => {
-                console.log("init done", response);
+            .then(() => {
                 return sendSignInRequest(requestParams, storage, session);
             })
             .catch((error) => {
-                console.log(error);
                 return Promise.reject(error);
             });
     }

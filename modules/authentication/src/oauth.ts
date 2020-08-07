@@ -226,7 +226,6 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      * @returns {Promise<AxiosResponse>} A promise that resolves with the response data.
      */
     const httpRequest = <T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
-        console.log("oauth");
         if (!initialized) {
             return Promise.reject("The object has not been initialized yet");
         }
@@ -374,11 +373,8 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
             type: INIT
         };
 
-        console.log("Oauth");
-
         return communicate<ConfigInterface, null>(message)
             .then(() => {
-                console.log("Oauth inited");
                 initialized = true;
 
                 return Promise.resolve(true);
@@ -414,7 +410,6 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
 
         return communicate<AuthCode, SignInResponse>(message)
             .then((response) => {
-                console.log(response);
                 if (response.type === SIGNED_IN) {
                     signedIn = true;
                     return Promise.resolve(response.data);
@@ -455,7 +450,6 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      * @returns {Promise<UserInfo>} A promise that resolves when authentication is successful.
      */
     const signIn = (): Promise<UserInfo> => {
-        console.log(initialized, "SIgn In");
         if (initialized) {
             if (hasAuthorizationCode()) {
                 return sendAuthorizationCode();
@@ -467,7 +461,6 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
 
                 return communicate<null, SignInResponse>(message)
                     .then((response) => {
-                        console.log("sign in resp");
                         if (response.type === SIGNED_IN) {
                             signedIn = true;
 

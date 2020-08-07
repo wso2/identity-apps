@@ -22,7 +22,6 @@ import {
     getTokenRequestHeaders as getTokenRequestHeadersUtil,
     handleSignIn,
     handleSignOut,
-    initOPConfiguration as initOPConfigurationUtil,
     initUserSession as initUserSessionUtil,
     sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
     sendRevokeTokenRequest as sendRevokeTokenRequestUtil,
@@ -102,7 +101,6 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * @returns {Promise<SignInResponse>} A promise that resolves with the Sign In response.
      */
     const signIn = (): Promise<SignInResponse> => {
-        console.log("SIgn in oauth wroker");
         return handleSignIn(authConfig, STORAGE.webWorker, session)
             .then((response) => {
                 if (response.type === SIGNED_IN) {
@@ -411,7 +409,6 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * @returns {OAuthWorkerInterface} Returns the object containing
      */
     function Constructor(config: WebWorkerConfigInterface): OAuthWorkerInterface {
-        console.log("worker init");
         authConfig = { ...config };
 
         httpClient = axios.create({

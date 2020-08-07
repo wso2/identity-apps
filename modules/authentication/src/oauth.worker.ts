@@ -40,7 +40,6 @@ ctx.onmessage = ({ data, ports }) => {
 
     switch (data.type) {
         case INIT:
-            console.log("init called");
             try {
                 oAuthWorker = OAuthWorker.getInstance(data.data);
                 port.postMessage(generateSuccessDTO());
