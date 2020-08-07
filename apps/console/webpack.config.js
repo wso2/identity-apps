@@ -44,7 +44,7 @@ module.exports = (env) => {
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
 
     const basename = deploymentConfig.appBaseName;
-    const devServerPort = 9002;
+    const devServerPort = 9001;
     const publicPath = `/${ basename }`;
 
     // Build configurations.
