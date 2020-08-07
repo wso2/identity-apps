@@ -167,12 +167,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         "_blank", "noopener")
                 },
                 {
-                    icon: "arrow right",
-                    name: t("adminPortal:components.header.links.devPortalNav"),
-                    onClick: () => window.open(window[ "AppUtils" ].getConfig().developerApp.path,
-                        "_blank", "noopener")
-                },
-                {
                     icon: "power off",
                     name: t("common:logout"),
                     onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
