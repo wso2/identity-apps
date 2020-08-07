@@ -54,8 +54,14 @@ export function sendSignOutRequest(storage: STORAGE, session?: SessionData): Pro
     endAuthenticatedSession(storage, session);
     resetOPConfiguration(storage, session);
 
-    window.location.href =
+    const logoutCallback =
         `${logoutEndpoint}?` + `id_token_hint=${idToken}` + `&post_logout_redirect_uri=${callbackURL}`;
+
+    if (storage === STORAGE.sessionStorage) {
+        window.location.href = logoutCallback;
+    } else {
+        return Promise.resolve(logoutCallback);
+    }
 }
 
 /**
@@ -69,12 +75,11 @@ export function sendSignOutRequest(storage: STORAGE, session?: SessionData): Pro
 export function handleSignOut(storage: STORAGE.sessionStorage): Promise<any>;
 export function handleSignOut(storage: STORAGE.webWorker, session: SessionData): Promise<any>;
 export function handleSignOut(storage: STORAGE, session?: SessionData): Promise<any> {
-    if (sessionStorage.length === 0) {
+    if (storage === STORAGE.sessionStorage && sessionStorage.length === 0) {
+        return Promise.reject(new Error("No login sessions."));
+    } else if (session.size === 0) {
         return Promise.reject(new Error("No login sessions."));
     } else {
-        return sendSignOutRequest(storage, session).catch((error) => {
-            // TODO: Handle error
-            throw error;
-        });
+        return sendSignOutRequest(storage, session);
     }
 }
