@@ -44,15 +44,22 @@
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
+        "@types/file-saver": "*",
+        "@types/node-forge": "*",
+        "@types/react-beautiful-dnd": "*",
         "axios": "*",
         "css-loader": "*",
+        "file-saver": "*",
         "fork-ts-checker-webpack-plugin": "*",
         "history": "*",
         "i18next": "*",
         "lodash": "*",
         "log": "*",
         "moment": "*",
+        "node-forge": "*",
+        "react-beautiful-dnd": "*",
         "react-color": "*",
+        "react-draggable": "*",
         "react-helmet": "*",
         "react-i18next": "*",
         "react-notification-system": "*",
@@ -64,6 +71,7 @@
         "redux-thunk": "*",
         "rimraf": "*",
         "style-loader": "*",
-        "thread-loader": "*"
+        "thread-loader": "*",
+        "ua-parser-js": "*"
     }
 }
