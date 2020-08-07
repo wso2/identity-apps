@@ -26,8 +26,7 @@ import {
     LOGOUT,
     REVOKE_TOKEN,
     SIGNED_IN,
-    SIGN_IN,
-    GET_SCOPE
+    SIGN_IN
 } from "../constants";
 
 export interface ResponseMessage<T> {
@@ -59,6 +58,8 @@ export interface UserInfo {
 
 export interface AuthCode {
     code: string;
+    sessionState: string;
+    pkce?: string;
 }
 
 export type MessageType =
@@ -69,5 +70,4 @@ export type MessageType =
     | typeof API_CALL
     | typeof API_CALL_ALL
     | typeof CUSTOM_GRANT
-    | typeof REVOKE_TOKEN
-    | typeof GET_SCOPE;
+    | typeof REVOKE_TOKEN;
