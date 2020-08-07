@@ -35,10 +35,10 @@ export const shouldResolveAppLogoFilePath = (path: string): boolean => {
  * Resolves the app logo file path.
  *
  * @example
- * // returns "https://localhost:9443/developer-portal/assets/images/logo.jpg"
- * resolveAppLogoFilePath("/assets/images/logo.jpg", "https://localhost:9443/developer-portal/");
+ * // returns "https://localhost:9443/sample-portal/assets/images/logo.jpg"
+ * resolveAppLogoFilePath("/assets/images/logo.jpg", "https://localhost:9443/sample-portal/");
  * // returns "http://builtwithreact.io/img/logo.svg"
- * resolveAppLogoFilePath("http://builtwithreact.io/img/logo.svg", "https://localhost:9443/developer-portal/");
+ * resolveAppLogoFilePath("http://builtwithreact.io/img/logo.svg", "https://localhost:9443/sample-portal/");
  *
  * @param {string} path - Given app logo path in config.
  *

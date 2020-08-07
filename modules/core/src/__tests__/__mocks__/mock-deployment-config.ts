@@ -19,10 +19,10 @@
 /* eslint-disable sort-keys */
 export const deploymentConfigMock = {
     accountApp: {
-        path: "/user-portal/overview"
+        path: "/account-portal/overview"
     },
-    appBaseName: "developer-portal",
-    clientID: "DEVELOPER_PORTAL",
+    appBaseName: "sample-portal",
+    clientID: "SAMPLE_PORTAL",
     debug: false,
     i18nResourcePath: "",
     loginCallbackPath: "/login",
@@ -34,7 +34,7 @@ export const deploymentConfigMock = {
     },
     ui: {
         appCopyright: "WSO2 Identity Server",
-        appTitle: "WSO2 Identity Server Developer Dashboard",
+        appTitle: "WSO2 Identity Server Sample Dashboard",
         appName: "Identity Server",
         appLogoPath: "/assets/images/logo.svg"
     }

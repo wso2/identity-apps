@@ -49,22 +49,22 @@ describe("App logo path resolver helper function", () => {
 
     test("Should properly resolve relative paths", () => {
         const path = deploymentConfigMock.ui.appLogoPath;
-        const prefix = "https://localhost:9443/developer-portal/";
+        const prefix = "https://localhost:9443/sample-portal/";
 
         expect(resolveAppLogoFilePath(path, prefix))
-            .toEqual("https://localhost:9443/developer-portal/assets/images/logo.svg");
+            .toEqual("https://localhost:9443/sample-portal/assets/images/logo.svg");
     });
 
     test("Should return the same path for hosted URLs", () => {
         const path = "http://builtwithreact.io/img/logo.svg";
-        const prefix = "https://localhost:9443/developer-portal/";
+        const prefix = "https://localhost:9443/sample-portal/";
 
         expect(resolveAppLogoFilePath(path, prefix)).toEqual(path);
     });
 
     test("Should return the same url for data URLs", () => {
         const path = "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==";
-        const prefix = "https://localhost:9443/developer-portal/";
+        const prefix = "https://localhost:9443/sample-portal/";
 
         expect(resolveAppLogoFilePath(path, prefix)).toEqual(path);
     });
