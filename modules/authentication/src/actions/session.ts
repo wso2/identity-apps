@@ -52,9 +52,9 @@ export function removeSessionParameter(key: string, storage: STORAGE, session: S
 export function removeSessionParameter(key: string, storage: STORAGE, session?: SessionData): void {
     if (storage === STORAGE.webWorker) {
         session.delete(key);
+    } else {
+        sessionStorage.removeItem(key);
     }
-
-    sessionStorage.removeItem(key);
 }
 
 /**
@@ -68,8 +68,9 @@ export function setSessionParameter(key: string, value: string, storage: STORAGE
 export function setSessionParameter(key: string, value: string, storage: STORAGE, session?: SessionData): void {
     if (storage === STORAGE.webWorker) {
         session.set(key, value);
+    } else {
+        sessionStorage.setItem(key, value);
     }
-    sessionStorage.setItem(key, value);
 }
 
 /**
