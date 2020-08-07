@@ -50,4 +50,3 @@ export * from "./oauth";
 export * from "./models";
 export * from "./constants/endpoints";
 export * from "./constants/storage";
-export * from "./authenticate";
