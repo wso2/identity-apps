@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { SessionData } from "./oauth";
 import { ResponseModeTypes } from "./oidc-request-params";
 import { Storage } from "../constants";
-import { SessionData } from "./oauth";
 
 /**
  * SDK Client config parameters.
