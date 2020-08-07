@@ -30,7 +30,7 @@ import { SessionData } from "../models";
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function sendSignOutRequest(storage: Storage.sessionStorage): Promise<any>;
+export function sendSignOutRequest(storage: Storage.SessionStorage): Promise<any>;
 export function sendSignOutRequest(storage: Storage, session: SessionData): Promise<any>;
 export function sendSignOutRequest(storage: Storage, session?: SessionData): Promise<any> {
     const logoutEndpoint = getEndSessionEndpoint(storage, session);
@@ -57,7 +57,7 @@ export function sendSignOutRequest(storage: Storage, session?: SessionData): Pro
     const logoutCallback =
         `${logoutEndpoint}?` + `id_token_hint=${idToken}` + `&post_logout_redirect_uri=${callbackURL}`;
 
-    if (storage === Storage.sessionStorage) {
+    if (storage === Storage.SessionStorage) {
         window.location.href = logoutCallback;
     } else {
         return Promise.resolve(logoutCallback);
@@ -72,10 +72,10 @@ export function sendSignOutRequest(storage: Storage, session?: SessionData): Pro
  * @returns {Promise<any>} sign out status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function handleSignOut(storage: Storage.sessionStorage): Promise<any>;
+export function handleSignOut(storage: Storage.SessionStorage): Promise<any>;
 export function handleSignOut(storage: Storage.webWorker, session: SessionData): Promise<any>;
 export function handleSignOut(storage: Storage, session?: SessionData): Promise<any> {
-    if (storage === Storage.sessionStorage && sessionStorage.length === 0) {
+    if (storage === Storage.SessionStorage && sessionStorage.length === 0) {
         return Promise.reject(new Error("No login sessions."));
     } else if (session.size === 0) {
         return Promise.reject(new Error("No login sessions."));

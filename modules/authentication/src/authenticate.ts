@@ -47,9 +47,9 @@ export class Authenticate {
     }
 
     public async initialize(config: ConfigInterface | WebWorkerConfigInterface) {
-        this.storage = config?.storage ?? Storage.sessionStorage;
+        this.storage = config?.storage ?? Storage.SessionStorage;
 
-        if (this.storage === Storage.sessionStorage) {
+        if (this.storage === Storage.SessionStorage) {
             this.authenticatingClient = new IdentityClient(config);
             return Promise.resolve(true);
         } else {

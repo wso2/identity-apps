@@ -58,9 +58,9 @@ import { TokenRequestHeader, TokenResponseInterface } from "../models/token-resp
  *
  * @returns {boolean} true if authorization code is present.
  */
-export function hasAuthorizationCode(storage: Storage.sessionStorage): boolean;
+export function hasAuthorizationCode(storage: Storage.SessionStorage): boolean;
 export function hasAuthorizationCode(storage: Storage, session: SessionData): boolean;
-export function hasAuthorizationCode(storage: Storage.sessionStorage, session?: SessionData): boolean {
+export function hasAuthorizationCode(storage: Storage.SessionStorage, session?: SessionData): boolean {
     return !!getAuthorizationCode(storage, session);
 }
 
@@ -72,10 +72,10 @@ export function hasAuthorizationCode(storage: Storage.sessionStorage, session?: 
  *
  * @returns {string} Resolved authorization code.
  */
-export function getAuthorizationCode(storage: Storage.sessionStorage): string;
+export function getAuthorizationCode(storage: Storage.SessionStorage): string;
 export function getAuthorizationCode(storage: Storage, session: SessionData): string;
 export function getAuthorizationCode(storage: Storage, session?: SessionData): string {
-    if (storage === Storage.sessionStorage) {
+    if (storage === Storage.SessionStorage) {
         if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
             return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
         }
@@ -113,7 +113,7 @@ export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader =
  */
 export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): Promise<never>;
 export function sendAuthorizationRequest(
     requestParams: ConfigInterface,
@@ -185,7 +185,7 @@ export function validateIdToken(
     clientID: string,
     idToken: string,
     serverOrigin: string,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): Promise<any>;
 export function validateIdToken(
     clientID: string,
@@ -239,7 +239,7 @@ export function validateIdToken(
  */
 export function sendTokenRequest(
     requestParams: ConfigInterface,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): Promise<TokenResponseInterface>;
 export function sendTokenRequest(
     requestParams: ConfigInterface,
@@ -277,7 +277,7 @@ export function sendTokenRequest(
         storage === Storage.webWorker ? session.get(AUTHORIZATION_CODE) : getAuthorizationCode(storage, session);
     body.push(`code=${code}`);
 
-    if (storage === Storage.sessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
+    if (storage === Storage.SessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
         window.sessionStorage.removeItem(AUTHORIZATION_CODE);
     }
 
@@ -341,7 +341,7 @@ export function sendTokenRequest(
 export function sendRefreshTokenRequest(
     requestParams: ConfigInterface,
     refreshToken: string,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): Promise<any>;
 export function sendRefreshTokenRequest(
     requestParams: ConfigInterface,
@@ -414,7 +414,7 @@ export function sendRefreshTokenRequest(
 export function sendRevokeTokenRequest(
     requestParams: ConfigInterface,
     accessToken: string,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): Promise<any>;
 export function sendRevokeTokenRequest(
     requestParams: ConfigInterface,
@@ -494,7 +494,7 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  */
 export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): Promise<any>;
 export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
@@ -576,7 +576,7 @@ export function sendAccountSwitchRequest(
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function sendSignInRequest(
     requestParams: ConfigInterface,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): Promise<SignInResponse>;
 export function sendSignInRequest(
     requestParams: ConfigInterface,
@@ -608,7 +608,7 @@ export function sendSignInRequest(
     }
 }
 
-export function handleSignIn(requestParams: ConfigInterface, storage: Storage.sessionStorage): Promise<any>;
+export function handleSignIn(requestParams: ConfigInterface, storage: Storage.SessionStorage): Promise<any>;
 export function handleSignIn(requestParams: ConfigInterface, storage: Storage, session: SessionData): Promise<any>;
 export function handleSignIn(requestParams: ConfigInterface, storage: Storage, session?: SessionData): Promise<any> {
     if (getSessionParameter(ACCESS_TOKEN, storage, session)) {

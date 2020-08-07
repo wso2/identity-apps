@@ -47,7 +47,7 @@ const semaphore = new Semaphore(1);
  *
  * @param {string} key.
  */
-export function removeSessionParameter(key: string, storage: Storage.sessionStorage): void;
+export function removeSessionParameter(key: string, storage: Storage.SessionStorage): void;
 export function removeSessionParameter(key: string, storage: Storage, session: SessionData): void;
 export function removeSessionParameter(key: string, storage: Storage, session?: SessionData): void {
     if (storage === Storage.webWorker) {
@@ -63,7 +63,7 @@ export function removeSessionParameter(key: string, storage: Storage, session?: 
  * @param {string} key.
  * @param value value.
  */
-export function setSessionParameter(key: string, value: string, storage: Storage.sessionStorage): void;
+export function setSessionParameter(key: string, value: string, storage: Storage.SessionStorage): void;
 export function setSessionParameter(key: string, value: string, storage: Storage, session: SessionData): void;
 export function setSessionParameter(key: string, value: string, storage: Storage, session?: SessionData): void {
     if (storage === Storage.webWorker) {
@@ -79,7 +79,7 @@ export function setSessionParameter(key: string, value: string, storage: Storage
  * @param {string} key.
  * @returns {string | null} parameter value or null.
  */
-export function getSessionParameter(key: string, storage: Storage.sessionStorage): string | null;
+export function getSessionParameter(key: string, storage: Storage.SessionStorage): string | null;
 export function getSessionParameter(key: string, storage: Storage, session: SessionData): string | null;
 export function getSessionParameter(key: string, storage: Storage, session?: SessionData): string | null {
     if (storage === Storage.webWorker) {
@@ -92,7 +92,7 @@ export function getSessionParameter(key: string, storage: Storage, session?: Ses
 /**
  * End authenticated user session.
  */
-export function endAuthenticatedSession(storage: Storage.sessionStorage): void;
+export function endAuthenticatedSession(storage: Storage.SessionStorage): void;
 export function endAuthenticatedSession(storage: Storage, session: SessionData): void;
 export function endAuthenticatedSession(storage: Storage, session?: SessionData): void {
     removeSessionParameter(ACCESS_TOKEN, storage, session);
@@ -116,7 +116,7 @@ export function endAuthenticatedSession(storage: Storage, session?: SessionData)
 export function initUserSession(
     tokenResponse: TokenResponseInterface,
     authenticatedUser: AuthenticatedUserInterface,
-    storage: Storage.sessionStorage
+    storage: Storage.SessionStorage
 ): void;
 export function initUserSession(
     tokenResponse: TokenResponseInterface,
@@ -148,7 +148,7 @@ export function initUserSession(
  *
  * @returns {SessionInterface} session object.
  */
-export function getAllSessionParameters(storage: Storage.sessionStorage): SessionInterface;
+export function getAllSessionParameters(storage: Storage.SessionStorage): SessionInterface;
 export function getAllSessionParameters(storage: Storage, session: SessionData): SessionInterface;
 export function getAllSessionParameters(storage: Storage, session?: SessionData): SessionInterface {
     return {
@@ -169,7 +169,7 @@ export function getAllSessionParameters(storage: Storage, session?: SessionData)
  *
  * @returns {Promise<string>} access token.
  */
-export function getAccessToken(storage: Storage.sessionStorage): Promise<string>;
+export function getAccessToken(storage: Storage.SessionStorage): Promise<string>;
 export function getAccessToken(storage: Storage, session: SessionData): Promise<string>;
 export function getAccessToken(storage: Storage, session?: SessionData): Promise<string> {
     const accessToken = getSessionParameter(ACCESS_TOKEN, storage, session);
