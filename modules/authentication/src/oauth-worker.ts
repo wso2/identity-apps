@@ -29,6 +29,7 @@ import {
 } from "./actions";
 import {
     ACCESS_TOKEN,
+    AUTHORIZATION_CODE,
     AUTHORIZATION_ENDPOINT,
     CLIENT_ID_TAG,
     CLIENT_SECRET_TAG,
@@ -36,17 +37,15 @@ import {
     EMAIL,
     OIDC_SCOPE,
     OIDC_SESSION_IFRAME_ENDPOINT,
+    PKCE_CODE_VERIFIER,
+    SCOPE,
     SCOPE_TAG,
+    SESSION_STATE,
     SIGNED_IN,
-    Storage,
     TOKEN_ENDPOINT,
     TOKEN_TAG,
     USERNAME,
-    USERNAME_TAG,
-    AUTHORIZATION_CODE,
-    SESSION_STATE,
-    PKCE_CODE_VERIFIER,
-    SCOPE
+    USERNAME_TAG
 } from "./constants";
 import {
     CustomGrantRequestParams,
