@@ -29,7 +29,7 @@ import {
     REVOKE_TOKEN,
     SIGNED_IN,
     SIGN_IN,
-    GET_SCOPE
+    SESSION_STATE
 } from "./constants";
 import {
     AuthCode,
@@ -217,28 +217,6 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
             });
     };
 
-    const getScope = (): Promise<string> => {
-        if (!initialized) {
-            return Promise.reject("The object has not been initialized yet");
-        }
-
-        if (!signedIn) {
-            return Promise.reject("You have not signed in yet");
-        }
-
-        const message: Message<null> = {
-            type: GET_SCOPE
-        };
-
-        return communicate<null, string>(message)
-            .then((response) => {
-                return Promise.resolve(response);
-            })
-            .catch((error) => {
-                return Promise.reject(error);
-            });
-    };
-
     /**
      *
      * Send the API request to the web worker and returns the response.
@@ -248,6 +226,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      * @returns {Promise<AxiosResponse>} A promise that resolves with the response data.
      */
     const httpRequest = <T = any>(config: AxiosRequestConfig): Promise<AxiosResponse<T>> => {
+        console.log("oauth");
         if (!initialized) {
             return Promise.reject("The object has not been initialized yet");
         }
@@ -395,8 +374,11 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
             type: INIT
         };
 
+        console.log("Oauth");
+
         return communicate<ConfigInterface, null>(message)
             .then(() => {
+                console.log("Oauth inited");
                 initialized = true;
 
                 return Promise.resolve(true);
@@ -415,10 +397,13 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      */
     const sendAuthorizationCode = (): Promise<UserInfo> => {
         const authCode = getAuthorizationCode();
+        const sessionState = new URL(window.location.href).searchParams.get(SESSION_STATE);
 
         const message: Message<AuthCode> = {
             data: {
-                code: authCode
+                code: authCode,
+                pkce: sessionStorage.getItem(PKCE_CODE_VERIFIER),
+                sessionState: sessionState
             },
             type: SIGN_IN
         };
@@ -429,6 +414,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
 
         return communicate<AuthCode, SignInResponse>(message)
             .then((response) => {
+                console.log(response);
                 if (response.type === SIGNED_IN) {
                     signedIn = true;
                     return Promise.resolve(response.data);
@@ -469,6 +455,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
      * @returns {Promise<UserInfo>} A promise that resolves when authentication is successful.
      */
     const signIn = (): Promise<UserInfo> => {
+        console.log(initialized, "SIgn In");
         if (initialized) {
             if (hasAuthorizationCode()) {
                 return sendAuthorizationCode();
@@ -480,6 +467,7 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
 
                 return communicate<null, SignInResponse>(message)
                     .then((response) => {
+                        console.log("sign in resp");
                         if (response.type === SIGNED_IN) {
                             signedIn = true;
 
@@ -566,7 +554,6 @@ export const OAuth: OAuthSingletonInterface = (function(): OAuthSingletonInterfa
 
         return {
             customGrant,
-            getScope,
             httpRequest,
             httpRequestAll,
             initialize,
