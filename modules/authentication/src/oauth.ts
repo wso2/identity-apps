@@ -27,9 +27,9 @@ import {
     LOGOUT,
     PKCE_CODE_VERIFIER,
     REVOKE_TOKEN,
+    SESSION_STATE,
     SIGNED_IN,
-    SIGN_IN,
-    SESSION_STATE
+    SIGN_IN
 } from "./constants";
 import {
     AuthCode,

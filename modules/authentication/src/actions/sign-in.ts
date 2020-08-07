@@ -47,7 +47,7 @@ import {
     SIGNED_IN
 } from "../constants";
 import { Storage } from "../constants/storage";
-import { SessionData, SignInResponse } from "../models";
+import { SignInResponse } from "../models";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
 import { AccountSwitchRequestParams } from "../models/oidc-request-params";
@@ -108,7 +108,7 @@ export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader =
  * @param {ConfigInterface} requestParams request parameters required for authorization request.
  */
 export function sendAuthorizationRequest(requestParams: ConfigInterface): Promise<SignInResponse | never> {
-    const authorizeEndpoint = getAuthorizeEndpoint(requestParams.storage, requestParams.session);
+    const authorizeEndpoint = getAuthorizeEndpoint(requestParams);
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid authorize endpoint found."));
@@ -135,7 +135,7 @@ export function sendAuthorizationRequest(requestParams: ConfigInterface): Promis
     if (requestParams.enablePKCE) {
         const codeVerifier = getCodeVerifier();
         const codeChallenge = getCodeChallenge(codeVerifier);
-        setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier, requestParams.storage, requestParams.session);
+        setSessionParameter(PKCE_CODE_VERIFIER, codeVerifier, requestParams);
         authorizeRequest += "&code_challenge_method=S256&code_challenge=" + codeChallenge;
     }
 
@@ -146,7 +146,7 @@ export function sendAuthorizationRequest(requestParams: ConfigInterface): Promis
     if (requestParams.storage === Storage.WebWorker) {
         return Promise.resolve({
             code: authorizeRequest,
-            pkce: getSessionParameter(PKCE_CODE_VERIFIER, requestParams.storage, requestParams.session),
+            pkce: getSessionParameter(PKCE_CODE_VERIFIER, requestParams),
             type: AUTH_REQUIRED
         });
     } else {
@@ -165,7 +165,7 @@ export function sendAuthorizationRequest(requestParams: ConfigInterface): Promis
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function validateIdToken(idToken: string, requestParams: ConfigInterface): Promise<any> {
-    const jwksEndpoint = getJwksUri(requestParams.storage, requestParams.session);
+    const jwksEndpoint = getJwksUri(requestParams);
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
         return Promise.reject("Invalid JWKS URI found.");
@@ -180,7 +180,7 @@ export function validateIdToken(idToken: string, requestParams: ConfigInterface)
 
             const jwk = getJWKForTheIdToken(idToken.split(".")[ 0 ], response.data.keys);
 
-            let issuer = getIssuer(requestParams.storage, requestParams.session);
+            let issuer = getIssuer(requestParams);
 
             if (!issuer || issuer.trim().length === 0) {
                 issuer = requestParams.serverOrigin + SERVICE_RESOURCES.token;
@@ -202,7 +202,7 @@ export function validateIdToken(idToken: string, requestParams: ConfigInterface)
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
 export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenResponseInterface> {
-    const tokenEndpoint = getTokenEndpoint(requestParams.storage, requestParams.session);
+    const tokenEndpoint = getTokenEndpoint(requestParams);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
@@ -214,7 +214,7 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
             ? requestParams.session.get(SESSION_STATE)
             : new URL(window.location.href).searchParams.get(SESSION_STATE);
     if (sessionState !== null && sessionState.length > 0) {
-        setSessionParameter(SESSION_STATE, sessionState, requestParams.storage, requestParams.session);
+        setSessionParameter(SESSION_STATE, sessionState, requestParams);
     }
 
     const body = [];
@@ -243,9 +243,9 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
 
     if (requestParams.enablePKCE) {
         body.push(
-            `code_verifier=${ getSessionParameter(PKCE_CODE_VERIFIER, requestParams.storage, requestParams.session) }`
+            `code_verifier=${ getSessionParameter(PKCE_CODE_VERIFIER, requestParams) }`
         );
-        removeSessionParameter(PKCE_CODE_VERIFIER, requestParams.storage, requestParams.session);
+        removeSessionParameter(PKCE_CODE_VERIFIER, requestParams);
     }
 
     return axios
@@ -261,8 +261,7 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
                     setSessionParameter(
                         REQUEST_PARAMS,
                         JSON.stringify(requestParams),
-                        requestParams.storage,
-                        requestParams.session
+                        requestParams
                     );
 
                     const tokenResponse: TokenResponseInterface = {
@@ -294,22 +293,9 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
  */
 export function sendRefreshTokenRequest(
     requestParams: ConfigInterface,
-    refreshToken: string,
-    storage: Storage.SessionStorage
-): Promise<any>;
-export function sendRefreshTokenRequest(
-    requestParams: ConfigInterface,
-    refreshToken: string,
-    storage: Storage,
-    session: SessionData
-): Promise<any>;
-export function sendRefreshTokenRequest(
-    requestParams: ConfigInterface,
-    refreshToken: string,
-    storage: Storage,
-    session?: SessionData
+    refreshToken: string
 ): Promise<any> {
-    const tokenEndpoint = getTokenEndpoint(storage, session);
+    const tokenEndpoint = getTokenEndpoint(requestParams);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject("Invalid token endpoint found.");
@@ -339,7 +325,7 @@ export function sendRefreshTokenRequest(
                         tokenType: response.data.token_type
                     };
 
-                    initUserSession(response.data, getAuthenticatedUser(response.data.idToken), storage, session);
+                    initUserSession(response.data, getAuthenticatedUser(response.data.idToken), requestParams);
 
                     return Promise.resolve(tokenResponse);
                 }
@@ -360,7 +346,7 @@ export function sendRefreshTokenRequest(
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function sendRevokeTokenRequest(requestParams: ConfigInterface, accessToken: string): Promise<any> {
-    const revokeTokenEndpoint = getRevokeTokenEndpoint(requestParams.storage, requestParams.session);
+    const revokeTokenEndpoint = getRevokeTokenEndpoint(requestParams);
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
         return Promise.reject("Invalid revoke token endpoint found.");
@@ -428,7 +414,7 @@ export function sendAccountSwitchRequest(
     requestParams: AccountSwitchRequestParams,
     config: ConfigInterface
 ): Promise<any> {
-    const tokenEndpoint = getTokenEndpoint(config.storage, config.session);
+    const tokenEndpoint = getTokenEndpoint(config);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
         return Promise.reject(new Error("Invalid token endpoint found."));
@@ -448,7 +434,7 @@ export function sendAccountSwitchRequest(
     body.push(`username=${ requestParams.username }`);
     body.push(`userstore-domain=${ requestParams[ "userstore-domain" ] }`);
     body.push(`tenant-domain=${ requestParams[ "tenant-domain" ] }`);
-    body.push(`token=${ getSessionParameter(ACCESS_TOKEN, config.storage, config.session) }`);
+    body.push(`token=${ getSessionParameter(ACCESS_TOKEN, config) }`);
     body.push(`scope=${ scope }`);
     body.push(`client_id=${ requestParams.client_id }`);
 
@@ -497,8 +483,7 @@ export function sendSignInRequest(requestParams: ConfigInterface): Promise<SignI
                 initUserSession(
                     response,
                     getAuthenticatedUser(response.idToken),
-                    requestParams.storage,
-                    requestParams.session
+                    requestParams
                 );
                 return Promise.resolve({
                     type: SIGNED_IN
@@ -517,14 +502,14 @@ export function sendSignInRequest(requestParams: ConfigInterface): Promise<SignI
 }
 
 export function handleSignIn(requestParams: ConfigInterface): Promise<any> {
-    if (getSessionParameter(ACCESS_TOKEN, requestParams.storage, requestParams.session)) {
-        if (!isValidOPConfig(requestParams.clientID, requestParams.storage, requestParams.session)) {
-            endAuthenticatedSession(requestParams.storage, requestParams.session);
-            resetOPConfiguration(requestParams.storage, requestParams.session);
+    if (getSessionParameter(ACCESS_TOKEN, requestParams)) {
+        if (!isValidOPConfig(requestParams)) {
+            endAuthenticatedSession(requestParams);
+            resetOPConfiguration(requestParams);
             // TODO: Better to have a callback to clear this on the app side.
-            removeSessionParameter("auth_callback_url", requestParams.storage, requestParams.session);
+            removeSessionParameter("auth_callback_url", requestParams);
 
-            return initOPConfiguration(requestParams, true, requestParams.storage, requestParams.session)
+            return initOPConfiguration(requestParams, true)
                 .then(() => {
                     return sendSignInRequest(requestParams);
                 })
@@ -535,7 +520,7 @@ export function handleSignIn(requestParams: ConfigInterface): Promise<any> {
 
         return Promise.resolve("Sign In successful!");
     } else {
-        return initOPConfiguration(requestParams, false, requestParams.storage, requestParams.session)
+        return initOPConfiguration(requestParams, false)
             .then(() => {
                 return sendSignInRequest(requestParams);
             })

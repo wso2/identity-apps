@@ -34,10 +34,10 @@ import {
 } from "../constants";
 import {
     AuthenticatedUserInterface,
-    SessionData,
+    ConfigInterface,
     SessionInterface,
     TokenResponseInterface
-}from "../models";
+} from "../models";
 
 /**
  * Semaphore used for synchronizing the refresh token requests.
@@ -49,12 +49,10 @@ const semaphore = new Semaphore(1);
  *
  * @param {string} key.
  */
-export function removeSessionParameter(key: string, storage: Storage.SessionStorage): void;
-export function removeSessionParameter(key: string, storage: Storage, session: SessionData): void;
-export function removeSessionParameter(key: string, storage: Storage, session?: SessionData): void {
-    switch (storage) {
+export function removeSessionParameter(key: string, requestParams: ConfigInterface): void {
+    switch (requestParams.storage) {
         case Storage.WebWorker:
-            session.delete(key);
+            requestParams.session.delete(key);
             break;
         case Storage.SessionStorage:
             sessionStorage.removeItem(key);
@@ -73,23 +71,21 @@ export function removeSessionParameter(key: string, storage: Storage, session?: 
  * @param {string} key.
  * @param value value.
  */
-export function setSessionParameter(key: string, value: string, storage: Storage.SessionStorage): void;
-export function setSessionParameter(key: string, value: string, storage: Storage, session: SessionData): void;
-export function setSessionParameter(key: string, value: string, storage: Storage, session?: SessionData): void {
-    switch (storage) {
-        case Storage.WebWorker:
-            session.set(key, value);
-            break;
-        case Storage.SessionStorage:
-            sessionStorage.setItem(key, value);
-            break;
-        case Storage.LocalStorage:
-            localStorage.setItem(key, value);
-            break;
-        default:
-            sessionStorage.setItem(key, value);
-    }
-}
+export function setSessionParameter(key: string, value: string, requestParams: ConfigInterface): void {
+           switch (requestParams.storage) {
+               case Storage.WebWorker:
+                   requestParams.session.set(key, value);
+                   break;
+               case Storage.SessionStorage:
+                   sessionStorage.setItem(key, value);
+                   break;
+               case Storage.LocalStorage:
+                   localStorage.setItem(key, value);
+                   break;
+               default:
+                   sessionStorage.setItem(key, value);
+           }
+       }
 
 /**
  * Get parameter from session storage.
@@ -97,38 +93,34 @@ export function setSessionParameter(key: string, value: string, storage: Storage
  * @param {string} key.
  * @returns {string | null} parameter value or null.
  */
-export function getSessionParameter(key: string, storage: Storage.SessionStorage): string | null;
-export function getSessionParameter(key: string, storage: Storage, session: SessionData): string | null;
-export function getSessionParameter(key: string, storage: Storage, session?: SessionData): string | null {
-    switch (storage) {
-        case Storage.WebWorker:
-            return session.get(key);
-        case Storage.SessionStorage:
-            return sessionStorage.getItem(key);
-        case Storage.LocalStorage:
-            return localStorage.getItem(key);
-        default:
-            return sessionStorage.getItem(key);
-    }
-}
+export function getSessionParameter(key: string, requestParams: ConfigInterface): string | null {
+           switch (requestParams.storage) {
+               case Storage.WebWorker:
+                   return requestParams.session.get(key);
+               case Storage.SessionStorage:
+                   return sessionStorage.getItem(key);
+               case Storage.LocalStorage:
+                   return localStorage.getItem(key);
+               default:
+                   return sessionStorage.getItem(key);
+           }
+       }
 
 /**
  * End authenticated user session.
  */
-export function endAuthenticatedSession(storage: Storage.SessionStorage): void;
-export function endAuthenticatedSession(storage: Storage, session: SessionData): void;
-export function endAuthenticatedSession(storage: Storage, session?: SessionData): void {
-    removeSessionParameter(ACCESS_TOKEN, storage, session);
-    removeSessionParameter(ACCESS_TOKEN_EXPIRE_IN, storage, session);
-    removeSessionParameter(ACCESS_TOKEN_ISSUED_AT, storage, session);
-    removeSessionParameter(DISPLAY_NAME, storage, session);
-    removeSessionParameter(EMAIL, storage, session);
-    removeSessionParameter(ID_TOKEN, storage, session);
-    removeSessionParameter(REFRESH_TOKEN, storage, session);
-    removeSessionParameter(SCOPE, storage, session);
-    removeSessionParameter(TOKEN_TYPE, storage, session);
-    removeSessionParameter(USERNAME, storage, session);
-}
+export function endAuthenticatedSession(requestParams: ConfigInterface): void {
+           removeSessionParameter(ACCESS_TOKEN, requestParams);
+           removeSessionParameter(ACCESS_TOKEN_EXPIRE_IN, requestParams);
+           removeSessionParameter(ACCESS_TOKEN_ISSUED_AT, requestParams);
+           removeSessionParameter(DISPLAY_NAME, requestParams);
+           removeSessionParameter(EMAIL, requestParams);
+           removeSessionParameter(ID_TOKEN, requestParams);
+           removeSessionParameter(REFRESH_TOKEN, requestParams);
+           removeSessionParameter(SCOPE, requestParams);
+           removeSessionParameter(TOKEN_TYPE, requestParams);
+           removeSessionParameter(USERNAME, requestParams);
+       }
 
 /**
  * Initialize authenticated user session.
@@ -139,31 +131,19 @@ export function endAuthenticatedSession(storage: Storage, session?: SessionData)
 export function initUserSession(
     tokenResponse: TokenResponseInterface,
     authenticatedUser: AuthenticatedUserInterface,
-    storage: Storage.SessionStorage
-): void;
-export function initUserSession(
-    tokenResponse: TokenResponseInterface,
-    authenticatedUser: AuthenticatedUserInterface,
-    storage: Storage,
-    session: SessionData
-): void;
-export function initUserSession(
-    tokenResponse: TokenResponseInterface,
-    authenticatedUser: AuthenticatedUserInterface,
-    storage: Storage,
-    session?: SessionData
+    requestParams: ConfigInterface
 ): void {
-    endAuthenticatedSession(storage, session);
-    setSessionParameter(ACCESS_TOKEN, tokenResponse.accessToken, storage, session);
-    setSessionParameter(ACCESS_TOKEN_EXPIRE_IN, tokenResponse.expiresIn, storage, session);
-    setSessionParameter(ACCESS_TOKEN_ISSUED_AT, (Date.now() / 1000).toString(), storage, session);
-    setSessionParameter(DISPLAY_NAME, authenticatedUser.displayName, storage, session);
-    setSessionParameter(EMAIL, authenticatedUser.email, storage, session);
-    setSessionParameter(ID_TOKEN, tokenResponse.idToken, storage, session);
-    setSessionParameter(SCOPE, tokenResponse.scope, storage, session);
-    setSessionParameter(REFRESH_TOKEN, tokenResponse.refreshToken, storage, session);
-    setSessionParameter(TOKEN_TYPE, tokenResponse.tokenType, storage, session);
-    setSessionParameter(USERNAME, authenticatedUser.username, storage, session);
+    endAuthenticatedSession(requestParams);
+    setSessionParameter(ACCESS_TOKEN, tokenResponse.accessToken, requestParams);
+    setSessionParameter(ACCESS_TOKEN_EXPIRE_IN, tokenResponse.expiresIn, requestParams);
+    setSessionParameter(ACCESS_TOKEN_ISSUED_AT, (Date.now() / 1000).toString(), requestParams);
+    setSessionParameter(DISPLAY_NAME, authenticatedUser.displayName, requestParams);
+    setSessionParameter(EMAIL, authenticatedUser.email, requestParams);
+    setSessionParameter(ID_TOKEN, tokenResponse.idToken, requestParams);
+    setSessionParameter(SCOPE, tokenResponse.scope, requestParams);
+    setSessionParameter(REFRESH_TOKEN, tokenResponse.refreshToken, requestParams);
+    setSessionParameter(TOKEN_TYPE, tokenResponse.tokenType, requestParams);
+    setSessionParameter(USERNAME, authenticatedUser.username, requestParams);
 }
 
 /**
@@ -171,80 +151,74 @@ export function initUserSession(
  *
  * @returns {SessionInterface} session object.
  */
-export function getAllSessionParameters(storage: Storage.SessionStorage): SessionInterface;
-export function getAllSessionParameters(storage: Storage, session: SessionData): SessionInterface;
-export function getAllSessionParameters(storage: Storage, session?: SessionData): SessionInterface {
-    return {
-        accessToken: getSessionParameter(ACCESS_TOKEN, storage, session),
-        displayName: getSessionParameter(DISPLAY_NAME, storage, session),
-        email: getSessionParameter(EMAIL, storage, session),
-        expiresIn: getSessionParameter(ACCESS_TOKEN_ISSUED_AT, storage, session),
-        idToken: getSessionParameter(ID_TOKEN, storage, session),
-        refreshToken: getSessionParameter(REFRESH_TOKEN, storage, session),
-        scope: getSessionParameter(SCOPE, storage, session),
-        tokenType: getSessionParameter(TOKEN_TYPE, storage, session),
-        username: getSessionParameter(USERNAME, storage, session)
-    };
-}
+export function getAllSessionParameters(requestParams: ConfigInterface): SessionInterface {
+           return {
+               accessToken: getSessionParameter(ACCESS_TOKEN, requestParams),
+               displayName: getSessionParameter(DISPLAY_NAME, requestParams),
+               email: getSessionParameter(EMAIL, requestParams),
+               expiresIn: getSessionParameter(ACCESS_TOKEN_ISSUED_AT, requestParams),
+               idToken: getSessionParameter(ID_TOKEN, requestParams),
+               refreshToken: getSessionParameter(REFRESH_TOKEN, requestParams),
+               scope: getSessionParameter(SCOPE, requestParams),
+               tokenType: getSessionParameter(TOKEN_TYPE, requestParams),
+               username: getSessionParameter(USERNAME, requestParams)
+           };
+       }
 
 /**
  * Get access token.
  *
  * @returns {Promise<string>} access token.
  */
-export function getAccessToken(storage: Storage.SessionStorage): Promise<string>;
-export function getAccessToken(storage: Storage, session: SessionData): Promise<string>;
-export function getAccessToken(storage: Storage, session?: SessionData): Promise<string> {
-    const accessToken = getSessionParameter(ACCESS_TOKEN, storage, session);
-    const expiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN, storage, session);
-    const issuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT, storage, session);
+export function getAccessToken(requestParams: ConfigInterface): Promise<string> {
+           const accessToken = getSessionParameter(ACCESS_TOKEN, requestParams);
+           const expiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN, requestParams);
+           const issuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT, requestParams);
 
-    if (
-        !accessToken ||
-        accessToken.trim().length === 0 ||
-        !expiresIn ||
-        expiresIn.length === 0 ||
-        !issuedAt ||
-        issuedAt.length === 0
-    ) {
-        endAuthenticatedSession(storage, session);
+           if (
+               !accessToken ||
+               accessToken.trim().length === 0 ||
+               !expiresIn ||
+               expiresIn.length === 0 ||
+               !issuedAt ||
+               issuedAt.length === 0
+           ) {
+               endAuthenticatedSession(requestParams);
 
-        return Promise.reject(new Error("Invalid user session."));
-    }
+               return Promise.reject(new Error("Invalid user session."));
+           }
 
-    function getValidityPeriod(): number {
-        const currentExpiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN, storage, session);
-        const currentIssuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT, storage, session);
+           function getValidityPeriod(): number {
+               const currentExpiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN, requestParams);
+               const currentIssuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT, requestParams);
 
-        return parseInt(currentIssuedAt, 10) + parseInt(currentExpiresIn, 10) - Math.floor(Date.now() / 1000);
-    }
+               return parseInt(currentIssuedAt, 10) + parseInt(currentExpiresIn, 10) - Math.floor(Date.now() / 1000);
+           }
 
-    let validityPeriod = getValidityPeriod();
+           let validityPeriod = getValidityPeriod();
 
-    if (validityPeriod <= 300) {
-        return semaphore.use(() => {
-            validityPeriod = getValidityPeriod();
-            if (validityPeriod <= 300) {
-                const requestParams = JSON.parse(getSessionParameter(REQUEST_PARAMS, storage, session));
-                return sendRefreshTokenRequest(
-                    requestParams,
-                    getSessionParameter(REFRESH_TOKEN, storage, session),
-                    storage,
-                    session
-                )
-                    .then((tokenResponse) => {
-                        const authenticatedUser = getAuthenticatedUser(tokenResponse.idToken);
-                        initUserSession(tokenResponse, authenticatedUser, storage, session);
-                        return Promise.resolve(tokenResponse.accessToken);
-                    })
-                    .catch((error) => {
-                        return Promise.reject(error);
-                    });
-            } else {
-                return Promise.resolve(getSessionParameter(ACCESS_TOKEN, storage, session));
-            }
-        });
-    } else {
-        return Promise.resolve(accessToken);
-    }
-}
+           if (validityPeriod <= 300) {
+               return semaphore.use(() => {
+                   validityPeriod = getValidityPeriod();
+                   if (validityPeriod <= 300) {
+                       const requestParameters = JSON.parse(getSessionParameter(REQUEST_PARAMS, requestParams));
+                       return sendRefreshTokenRequest(
+                           requestParameters,
+                           getSessionParameter(REFRESH_TOKEN, requestParams)
+                       )
+                           .then((tokenResponse) => {
+                               const authenticatedUser = getAuthenticatedUser(tokenResponse.idToken);
+                               initUserSession(tokenResponse, authenticatedUser, requestParams);
+                               return Promise.resolve(tokenResponse.accessToken);
+                           })
+                           .catch((error) => {
+                               return Promise.reject(error);
+                           });
+                   } else {
+                       return Promise.resolve(getSessionParameter(ACCESS_TOKEN, requestParams));
+                   }
+               });
+           } else {
+               return Promise.resolve(accessToken);
+           }
+       }

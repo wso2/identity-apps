@@ -20,7 +20,7 @@ import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
 import { endAuthenticatedSession, getSessionParameter } from "./session-storage";
 import { CALLBACK_URL, ID_TOKEN } from "../constants";
 import { Storage } from "../constants/storage";
-import { SessionData } from "../models";
+import { ConfigInterface } from "../models";
 
 /**
  * Execute user sign out request
@@ -30,34 +30,32 @@ import { SessionData } from "../models";
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function sendSignOutRequest(storage: Storage.SessionStorage): Promise<any>;
-export function sendSignOutRequest(storage: Storage, session: SessionData): Promise<any>;
-export function sendSignOutRequest(storage: Storage, session?: SessionData): Promise<any> {
-    const logoutEndpoint = getEndSessionEndpoint(storage, session);
+export function sendSignOutRequest(requestParams: ConfigInterface): Promise<any> {
+    const logoutEndpoint = getEndSessionEndpoint(requestParams);
 
     if (!logoutEndpoint || logoutEndpoint.trim().length === 0) {
         return Promise.reject(new Error("No logout endpoint found in the session."));
     }
 
-    const idToken = getSessionParameter(ID_TOKEN, storage, session);
+    const idToken = getSessionParameter(ID_TOKEN, requestParams);
 
     if (!idToken || idToken.trim().length === 0) {
         return Promise.reject(new Error("Invalid id_token found in the session."));
     }
 
-    const callbackURL = getSessionParameter(CALLBACK_URL, storage, session);
+    const callbackURL = getSessionParameter(CALLBACK_URL, requestParams);
 
     if (!callbackURL || callbackURL.trim().length === 0) {
         return Promise.reject(new Error("No callback URL found in the session."));
     }
 
-    endAuthenticatedSession(storage, session);
-    resetOPConfiguration(storage, session);
+    endAuthenticatedSession(requestParams);
+    resetOPConfiguration(requestParams);
 
     const logoutCallback =
         `${logoutEndpoint}?` + `id_token_hint=${idToken}` + `&post_logout_redirect_uri=${callbackURL}`;
 
-    if (storage === Storage.SessionStorage) {
+    if (requestParams.storage === Storage.SessionStorage) {
         window.location.href = logoutCallback;
     } else {
         return Promise.resolve(logoutCallback);
@@ -72,14 +70,12 @@ export function sendSignOutRequest(storage: Storage, session?: SessionData): Pro
  * @returns {Promise<any>} sign out status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function handleSignOut(storage: Storage.SessionStorage): Promise<any>;
-export function handleSignOut(storage: Storage.WebWorker, session: SessionData): Promise<any>;
-export function handleSignOut(storage: Storage, session?: SessionData): Promise<any> {
-    if (storage === Storage.SessionStorage && sessionStorage.length === 0) {
+export function handleSignOut(requestParams: ConfigInterface): Promise<any> {
+    if (requestParams.storage === Storage.SessionStorage && sessionStorage.length === 0) {
         return Promise.reject(new Error("No login sessions."));
-    } else if (session.size === 0) {
-        return Promise.reject(new Error("No login sessions."));
-    } else {
-        return sendSignOutRequest(storage, session);
-    }
+    } else if (requestParams.session.size === 0) {
+               return Promise.reject(new Error("No login sessions."));
+           } else {
+               return sendSignOutRequest(requestParams);
+           }
 }
