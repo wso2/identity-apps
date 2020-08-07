@@ -24,7 +24,7 @@ import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from
 /**
  * Initialize an axios Http client.
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Retrieve Role details for a give role id.

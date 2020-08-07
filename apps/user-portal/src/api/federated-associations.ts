@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * This function calls the federated association API endpoint and gets the list of federated associations

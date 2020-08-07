@@ -25,14 +25,14 @@ import { store } from "../store";
  *
  * @type {OAuthSingletonInterface}
  */
-const oAuth = new Authenticate(STORAGE.webWorker);
+const oAuth = Authenticate.getInstance();
 
 /**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = oAuth.httpRequest;
+const httpClient = oAuth.httpRequest.bind(oAuth);
 
 /**
  * Retrieve the user account associations of the currently authenticated user.

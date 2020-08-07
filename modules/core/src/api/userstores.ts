@@ -29,7 +29,7 @@ import { ContextUtils } from "../utils";
  * Get an axios instance.
  *
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Retrieve the list of user stores that are currently in the system.

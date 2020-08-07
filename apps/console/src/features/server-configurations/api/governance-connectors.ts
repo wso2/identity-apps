@@ -27,7 +27,7 @@ import { ServerConfigurationsConstants } from "../constants";
  * Initialize an axios Http client.
  *
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 export const getData = (url: string): Promise<any> => {
     const requestConfig = {

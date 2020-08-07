@@ -38,12 +38,12 @@ import { ContextUtils, ProfileUtils } from "../utils";
 /**
  * auth instance.
  */
-const auth = new Authenticate(STORAGE.webWorker);
+const auth = Authenticate.getInstance();
 /**
  * Get an http client instance.
  *
  */
-const httpClient = auth.httpRequest;
+const httpClient = auth.httpRequest.bind(auth);
 
 /**
  * Get Gravatar image using the email address.

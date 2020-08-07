@@ -25,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Fetches the list of pending approvals from the list.

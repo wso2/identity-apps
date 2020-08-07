@@ -34,7 +34,7 @@ const RESOURCE_NOT_FOUND_ERROR_CODE = "CMT-50017";
  * Get an axios instance.
  *
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Fetch all local claims.

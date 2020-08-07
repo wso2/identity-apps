@@ -24,7 +24,7 @@ import { store } from "../store";
  * Initialize an axios Http client.
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Fetches a list of consented applications of the currently authenticated user.

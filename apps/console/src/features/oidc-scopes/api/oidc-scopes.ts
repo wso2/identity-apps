@@ -28,7 +28,7 @@ import { OIDCScopesListInterface } from "../models";
  * Get an axios instance.
  *
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Get the OIDC scopes in the system.

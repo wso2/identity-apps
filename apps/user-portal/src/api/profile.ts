@@ -31,7 +31,7 @@ import { toggleSCIMEnabled } from "../store/actions";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Retrieve the user information of the currently authenticated user.

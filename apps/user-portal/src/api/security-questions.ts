@@ -25,12 +25,12 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Method that sends multiple api requests at once.
  */
-const httpRequestAll = new Authenticate(STORAGE.webWorker).httpRequestAll;
+const httpRequestAll = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance())All;
 
 /**
  * Fetch the configured security questions of the user.

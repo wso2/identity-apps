@@ -31,7 +31,7 @@ const RESOURCE_NOT_FOUND_ERROR_MESSAGE = "Resource not found.";
  *
  * @type { AxiosHttpClientInstance }
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Fetches all userstores.

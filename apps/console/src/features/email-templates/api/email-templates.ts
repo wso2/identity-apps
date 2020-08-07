@@ -25,7 +25,7 @@ import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../model
 /**
  * Initialize an axios Http client.
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Get all email template types

@@ -28,7 +28,7 @@ import { store } from "../store";
  */
 const httpClient = AxiosHttpClient.getInstance();
 
-const httpRequest = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpRequest = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Updates the user's password.

@@ -44,7 +44,7 @@ import {
  * Get an axios instance.
  *
  */
-const httpClient = new Authenticate(STORAGE.webWorker).httpRequest;
+const httpClient = Authenticate.getInstance().httpRequest.bind(Authenticate.getInstance());
 
 /**
  * Creates Identity Provider.
