@@ -16,9 +16,6 @@
  * under the License.
  */
 
-export const ROLE_VIEW_PATH = "/roles/";
-export const GROUP_VIEW_PATH = "/groups/";
-
 export const APPLICATION_DOMAIN = "Application";
 export const INTERNAL_DOMAIN = "Internal";
 export const PRIMARY_DOMAIN = "Primary";

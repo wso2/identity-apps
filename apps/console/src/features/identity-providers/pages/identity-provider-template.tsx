@@ -37,6 +37,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import {
+    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
@@ -279,7 +280,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         if (availableAuthenticators) {
             dispatch(setAvailableAuthenticatorsMeta(undefined));
         }
-        history.push("/identity-providers");
+        history.push(AppConstants.PATHS.get("IDP"));
     };
 
     /**

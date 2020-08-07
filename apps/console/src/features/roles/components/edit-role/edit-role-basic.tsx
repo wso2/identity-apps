@@ -29,10 +29,9 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, Input, InputOnChangeData, Label } from "semantic-ui-react"
-import { history } from "../../../core";
+import { AppConstants, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
 import { deleteRoleById, updateRoleDetails } from "../../api";
-import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../../constants";
 import { PatchRoleDataInterface } from "../../models";
 
 /**
@@ -141,9 +140,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     : t("adminPortal:components.roles.notifications.deleteRole.success.message")
             });
             if (isGroup) {
-                history.push(GROUP_VIEW_PATH);
+                history.push(AppConstants.PATHS.get("GROUPS"));
             } else {
-                history.push(ROLE_VIEW_PATH);
+                history.push(AppConstants.PATHS.get("ROLES"));
             }
         });
     };

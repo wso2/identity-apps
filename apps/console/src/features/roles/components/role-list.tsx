@@ -29,8 +29,8 @@ import {
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Image, Label, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
-import { APPLICATION_DOMAIN, GROUP_VIEW_PATH, INTERNAL_DOMAIN, ROLE_VIEW_PATH } from "../constants";
+import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -125,9 +125,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
 
     const handleRoleEdit = (roleId: string) => {
         if (isGroup) {
-            history.push(GROUP_VIEW_PATH + roleId);
+            history.push(AppConstants.PATHS.get("GROUP_EDIT").replace(":id", roleId));
         } else {
-            history.push(ROLE_VIEW_PATH + roleId);
+            history.push(AppConstants.PATHS.get("ROLE_EDIT").replace(":id", roleId));
         }
     };
 

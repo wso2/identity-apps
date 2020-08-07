@@ -16,8 +16,6 @@
  * under the License.
  */
 
-export const EMAIL_TEMPLATE_VIEW_PATH = "/email-templates/";
-
 /**
  * A Boilerplate template to start email template editing.
  */

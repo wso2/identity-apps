@@ -25,9 +25,8 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid } from "semantic-ui-react";
-import { history } from "../../../core";
+import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
 import { EmailTemplate, EmailTemplateType } from "../../models";
 import { EmailTemplateEditor } from "../email-code-editor";
 
@@ -139,7 +138,8 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                         "adminPortal:components.emailTemplates.notifications.createTemplate.success.message"
                     )
                 });
-                history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
+
+                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE").replace(":id", templateTypeId));
             }
         }).catch((error: AxiosError) => {
             handleAlerts({

@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { Image } from "semantic-ui-react";
-import { history } from "../../core";
+import { AppConstants, history } from "../../core";
 import { getAType, getAUserStore } from "../api";
 import {
     EditBasicDetailsUserStore,
@@ -201,7 +201,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             description={ t("adminPortal:components.userstores.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
-                    history.push("/user-stores");
+                    history.push(AppConstants.PATHS.get("USERSTORES"));
                 },
                 text: t ("adminPortal:components.userstores.pageLayout.edit.back")
             } }

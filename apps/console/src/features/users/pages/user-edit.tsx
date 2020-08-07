@@ -22,7 +22,7 @@ import { PageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { history } from "../../core";
+import { AppConstants, history } from "../../core";
 import { getUserDetails } from "../api";
 import { EditUser } from "../components";
 
@@ -75,7 +75,7 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     const handleBackButtonClick = () => {
-        history.push("/users");
+        history.push(AppConstants.PATHS.get("USERS"));
     };
 
     return (

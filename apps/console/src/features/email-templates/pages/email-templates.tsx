@@ -24,10 +24,9 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { history, UIConstants } from "../../core";
+import { AppConstants, UIConstants, history } from "../../core";
 import { deleteLocaleTemplate, getEmailTemplate } from "../api";
 import { EmailTemplateList } from "../components";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
 import { EmailTemplate, EmailTemplateDetails } from "../models";
 
 /**
@@ -132,14 +131,14 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
      * Util to handle back button event.
      */
     const handleBackButtonClick = () => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH);
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES"));
     };
 
     /**
      * Util to handle back button event.
      */
     const handleAddNewTemplate = () => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId + "/add-template");
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD").replace(":id", templateTypeId));
     };
 
     /**

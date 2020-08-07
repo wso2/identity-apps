@@ -20,10 +20,9 @@ import { RolesInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { history } from "../../core";
+import { AppConstants, history } from "../../core";
 import { EditRole } from "../../roles";
 import { getRoleById } from "../api";
-import { GROUP_VIEW_PATH, ROLE_VIEW_PATH } from "../constants";
 
 const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
@@ -71,9 +70,9 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const handleBackButtonClick = () => {
         if (isGroup) {
-            history.push(GROUP_VIEW_PATH);
+            history.push(AppConstants.PATHS.get("GROUPS"));
         } else {
-            history.push(ROLE_VIEW_PATH);
+            history.push(AppConstants.PATHS.get("ROLES"));
         }
     };
     

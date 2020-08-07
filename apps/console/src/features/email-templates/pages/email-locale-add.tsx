@@ -22,10 +22,9 @@ import { AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { history } from "../../core";
+import { AppConstants, history } from "../../core";
 import { getEmailTemplate } from "../api";
 import { AddLocaleTemplate } from "../components";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
 import { EmailTemplateDetails } from "../models";
 
 /**
@@ -61,7 +60,7 @@ const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
      * Util to handle back button event.
      */
     const handleBackButtonClick = () => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId);
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE").replace(":id", templateTypeId));
     };
 
     useEffect(() => {

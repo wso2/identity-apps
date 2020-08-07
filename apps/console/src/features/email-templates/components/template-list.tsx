@@ -29,9 +29,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Flag, FlagNameValues, Icon } from "semantic-ui-react";
 import { ViewLocaleTemplate } from "./view-template";
-import { history, UIConstants } from "../../core";
+import { AppConstants, UIConstants, history } from "../../core";
 import { EmailTemplateIllustrations } from "../configs";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../constants";
 import { EmailTemplate } from "../models";
 
 interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
@@ -73,7 +72,9 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
     const [ currentDeletingTemplate, setCurrentDeletingTemplate ] = useState<EmailTemplate>(undefined);
 
     const handleEditTemplate = (templateTypeId: string, templateId: string) => {
-        history.push(EMAIL_TEMPLATE_VIEW_PATH + templateTypeId + "/add-template/" + templateId);
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_LOCALE_ADD")
+            .replace(":type", templateTypeId)
+            .replace(":id",  templateId));
     };
 
     /**

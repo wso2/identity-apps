@@ -31,7 +31,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
-import { AppState, history } from "../../core";
+import { AppConstants, AppState, history } from "../../core";
 import { deleteUser, updateUserInfo } from "../api";
 
 /**
@@ -163,7 +163,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         "adminPortal:components.users.notifications.deleteUser.success.message"
                     )
                 });
-                history.push("/users");
+                history.push(AppConstants.PATHS.get("USERS"));
             });
     };
 

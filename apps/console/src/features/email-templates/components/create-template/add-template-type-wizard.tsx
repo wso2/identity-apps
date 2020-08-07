@@ -26,10 +26,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
 import { AddEmailTemplateType } from "./add-template-type";
-import { history } from "../../../core";
+import { AppConstants, history } from "../../../core";
 import { createNewTemplateType } from "../../api";
 import { AddEmailTemplateTypeWizardStepIcons } from "../../configs";
-import { EMAIL_TEMPLATE_VIEW_PATH } from "../../constants";
 
 interface EmailTemplateTypeWizardProps extends TestableComponentInterface {
     onCloseHandler: () => void;
@@ -97,7 +96,8 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                     )
                 });
             }
-            history.push(EMAIL_TEMPLATE_VIEW_PATH + response.data?.id);
+
+            history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE").replace(":id", response.data?.id));
             onCloseHandler();
         }).catch(error => {
             handleAlerts({
