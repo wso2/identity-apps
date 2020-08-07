@@ -44,7 +44,10 @@ import {
     TOKEN_TAG,
     USERNAME,
     USERNAME_TAG,
-    AUTHORIZATION_CODE
+    AUTHORIZATION_CODE,
+    SESSION_STATE,
+    PKCE_CODE_VERIFIER,
+    SCOPE
 } from "./constants";
 import {
     CustomGrantRequestParams,
@@ -62,8 +65,6 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * Values to be set when initializing the library.
      */
     let authConfig: WebWorkerConfigInterface;
-
-    let allowedScope: string;
 
     let httpClient: AxiosInstance;
 
@@ -96,32 +97,33 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
     };
 
     /**
-     * Returns the allowed scopes.
-     *
-     * @return {string} Allowed scope.
-     */
-    const getScope = (): string => {
-        return allowedScope;
-    };
-
-    /**
-     * Queries the OpenID endpoint to get the necessary API endpoints.
-     *
-     * @param {boolean} forceInit Determines if a OpenID-configuration initiation should be forced.
-     *
-     * @returns {Promise<any>} A promise that resolves with the endpoint data.
-     */
-    const initOPConfiguration = (forceInit?: boolean): Promise<any> => {
-        return initOPConfigurationUtil(authConfig, forceInit, STORAGE.webWorker, session);
-    };
-
-    /**
      * Sends a sign in request.
      *
      * @returns {Promise<SignInResponse>} A promise that resolves with the Sign In response.
      */
     const signIn = (): Promise<SignInResponse> => {
-        return handleSignIn(authConfig, STORAGE.webWorker, session);
+        console.log("SIgn in oauth wroker");
+        return handleSignIn(authConfig, STORAGE.webWorker, session)
+            .then((response) => {
+                if (response.type === SIGNED_IN) {
+                    return Promise.resolve({
+                        data: {
+                            allowedScopes: session.get(SCOPE),
+                            authorizationEndpoint: session.get(AUTHORIZATION_ENDPOINT),
+                            displayName: session.get(DISPLAY_NAME),
+                            email: session.get(EMAIL),
+                            oidcSessionIframe: session.get(OIDC_SESSION_IFRAME_ENDPOINT),
+                            username: session.get(USERNAME)
+                        },
+                        type: response.type
+                    });
+                }
+
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
     };
 
     /**
@@ -156,8 +158,10 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      *
      * @param {string} authCode The authorization code.
      */
-    const setAuthCode = (authCode: string): void => {
+    const setAuthCode = (authCode: string, sessionState: string, pkce: string): void => {
         session.set(AUTHORIZATION_CODE, authCode);
+        session.set(SESSION_STATE, sessionState);
+        session.set(PKCE_CODE_VERIFIER, pkce);
     };
 
     /**
@@ -388,7 +392,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      */
     const getUserInfo = (): UserInfo => {
         return {
-            allowedScopes: allowedScope,
+            allowedScopes: session.get(SCOPE),
             authorizationEndpoint: session.get(AUTHORIZATION_ENDPOINT),
             displayName: session.get(DISPLAY_NAME),
             email: session.get(EMAIL),
@@ -407,6 +411,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
      * @returns {OAuthWorkerInterface} Returns the object containing
      */
     function Constructor(config: WebWorkerConfigInterface): OAuthWorkerInterface {
+        console.log("worker init");
         authConfig = { ...config };
 
         httpClient = axios.create({
@@ -430,11 +435,9 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWork
         return {
             customGrant,
             doesTokenExist,
-            getScope,
             getUserInfo,
             httpRequest,
             httpRequestAll,
-            initOPConfiguration,
             isSignedIn,
             refreshAccessToken,
             revokeToken,
