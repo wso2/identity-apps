@@ -21,44 +21,34 @@ import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
     AUTHORIZATION_ENDPOINT,
-    CLIENT_ID_TAG,
-    CLIENT_SECRET_TAG,
     DISPLAY_NAME,
     EMAIL,
-    OIDC_SCOPE,
     OIDC_SESSION_IFRAME_ENDPOINT,
     PKCE_CODE_VERIFIER,
     SCOPE,
-    SCOPE_TAG,
     SESSION_STATE,
     SIGNED_IN,
-    TOKEN_ENDPOINT,
-    TOKEN_TAG,
-    USERNAME,
-    USERNAME_TAG
+    USERNAME
 } from "../constants";
 import {
     CustomGrantRequestParams,
     SessionData,
     SignInResponse,
-    TokenResponseInterface,
     UserInfo,
     WebWorkerConfigInterface,
     WebWorkerInterface,
     WebWorkerSingletonInterface
 } from "../models";
 import {
-    getAuthenticatedUser as getAuthenticatedUserUtil,
-    getTokenRequestHeaders as getTokenRequestHeadersUtil,
+    customGrant as customGrantUtil,
+    getUserInfo as getUserInfoUtil,
     handleSignIn,
     handleSignOut,
-    initUserSession as initUserSessionUtil,
     sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
-    sendRevokeTokenRequest as sendRevokeTokenRequestUtil,
-    validateIdToken as validateIdTokenUtil
+    sendRevokeTokenRequest as sendRevokeTokenRequestUtil
 } from "../utils";
 
-export const WebWorker: WebWorkerSingletonInterface = (function(): WebWorkerSingletonInterface {
+export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSingletonInterface {
     /**
      * Values to be set when initializing the library.
      */
@@ -261,137 +251,14 @@ export const WebWorker: WebWorkerSingletonInterface = (function(): WebWorkerSing
         }
     };
 
-    /**
-     * Replaces template tags with actual values.
-     *
-     * @param {string} text Input string.
-     * @param {string} scope Scope.
-     *
-     * @returns String with template tags replaced with actual values.
-     */
-    const replaceTemplateTags = (text: string, scope: string): string => {
-        return text
-            .replace(TOKEN_TAG, session.get(ACCESS_TOKEN))
-            .replace(USERNAME_TAG, session.get(USERNAME))
-            .replace(SCOPE_TAG, scope)
-            .replace(CLIENT_ID_TAG, authConfig.clientID)
-            .replace(CLIENT_SECRET_TAG, authConfig.clientSecret);
-    };
-
-    /**
-     * Allows using custom grant types.
-     *
-     * @param {CustomGrantRequestParams} requestParams The request parameters.
-     *
-     * @returns {Promise<boolean|AxiosResponse>} A promise that resolves with a boolean value or the request response
-     * if the the `returnResponse` attribute in the `requestParams` object is set to `true`.
-     */
     const customGrant = (
         requestParams: CustomGrantRequestParams
     ): Promise<SignInResponse | boolean | AxiosResponse> => {
-        if (!session.get(TOKEN_ENDPOINT) || session.get(TOKEN_ENDPOINT).trim().length === 0) {
-            return Promise.reject(new Error("Invalid token endpoint found."));
-        }
-
-        let scope = OIDC_SCOPE;
-
-        if (authConfig.scope && authConfig.scope.length > 0) {
-            if (!authConfig.scope.includes(OIDC_SCOPE)) {
-                authConfig.scope.push(OIDC_SCOPE);
-            }
-            scope = authConfig.scope.join(" ");
-        }
-
-        let data: string = "";
-
-        Object.entries(requestParams.data).map(([key, value], index: number) => {
-            const newValue = replaceTemplateTags(value as string, scope);
-            data += `${key}=${newValue}${index !== Object.entries(requestParams.data).length - 1 ? "&" : ""}`;
-        });
-
-        const requestConfig: AxiosRequestConfig = {
-            data: data,
-            headers: {
-                ...getTokenRequestHeadersUtil(authConfig.clientHost)
-            },
-            method: "POST",
-            url: session.get(TOKEN_ENDPOINT)
-        };
-
-        if (requestParams.attachToken) {
-            requestConfig.headers = {
-                ...requestConfig.headers,
-                Authorization: `Bearer ${session.get(ACCESS_TOKEN)}`
-            };
-        }
-
-        return axios(requestConfig)
-            .then(
-                (response: AxiosResponse): Promise<boolean | AxiosResponse | SignInResponse> => {
-                    if (response.status !== 200) {
-                        return Promise.reject(
-                            new Error("Invalid status code received in the token response: " + response.status)
-                        );
-                    }
-
-                    if (requestParams.returnsSession) {
-                        return validateIdTokenUtil(
-                            authConfig.clientID,
-                            response.data.id_token
-                        ).then((valid) => {
-                            if (valid) {
-                                const tokenResponse: TokenResponseInterface = {
-                                    accessToken: response.data.access_token,
-                                    expiresIn: response.data.expires_in,
-                                    idToken: response.data.id_token,
-                                    refreshToken: response.data.refresh_token,
-                                    scope: response.data.scope,
-                                    tokenType: response.data.token_type
-                                };
-                                initUserSessionUtil(
-                                    tokenResponse,
-                                    getAuthenticatedUserUtil(tokenResponse.idToken),
-                                    authConfig
-                                );
-
-                                if (requestParams.returnResponse) {
-                                    return Promise.resolve({
-                                        data: getUserInfo(),
-                                        type: SIGNED_IN
-                                    } as SignInResponse);
-                                } else {
-                                    return Promise.resolve(true);
-                                }
-                            }
-
-                            return Promise.reject(
-                                new Error("Invalid id_token in the token response: " + response.data.id_token)
-                            );
-                        });
-                    } else {
-                        return requestParams.returnResponse ? Promise.resolve(response) : Promise.resolve(true);
-                    }
-                }
-            )
-            .catch((error: any) => {
-                return Promise.reject(error);
-            });
+        return customGrantUtil(requestParams, authConfig);
     };
 
-    /**
-     * Returns email, username, display name and allowed scopes.
-     *
-     * @returns {UserInfo} User information.
-     */
     const getUserInfo = (): UserInfo => {
-        return {
-            allowedScopes: session.get(SCOPE),
-            authorizationEndpoint: session.get(AUTHORIZATION_ENDPOINT),
-            displayName: session.get(DISPLAY_NAME),
-            email: session.get(EMAIL),
-            oidcSessionIframe: session.get(OIDC_SESSION_IFRAME_ENDPOINT),
-            username: session.get(USERNAME)
-        };
+        return getUserInfoUtil(authConfig);
     };
 
     /**
@@ -414,7 +281,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function(): WebWorkerSing
             (config) => {
                 config.headers = {
                     ...config.headers,
-                    Authorization: `Bearer ${session.get(ACCESS_TOKEN)}`
+                    Authorization: `Bearer ${ session.get(ACCESS_TOKEN) }`
                 };
 
                 return config;

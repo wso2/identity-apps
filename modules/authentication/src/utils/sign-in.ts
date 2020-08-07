@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import axios from "axios";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import {
     getAuthorizeEndpoint,
@@ -38,16 +38,28 @@ import {
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
+    AUTHORIZATION_ENDPOINT,
     AUTH_REQUIRED,
+    CLIENT_ID_TAG,
+    CLIENT_SECRET_TAG,
+    DISPLAY_NAME,
+    EMAIL,
     OIDC_SCOPE,
+    OIDC_SESSION_IFRAME_ENDPOINT,
     PKCE_CODE_VERIFIER,
     REQUEST_PARAMS,
+    SCOPE,
+    SCOPE_TAG,
     SERVICE_RESOURCES,
     SESSION_STATE,
-    SIGNED_IN
+    SIGNED_IN,
+    TOKEN_ENDPOINT,
+    TOKEN_TAG,
+    USERNAME,
+    USERNAME_TAG
 } from "../constants";
 import { Storage } from "../constants/storage";
-import { SignInResponse } from "../models";
+import { CustomGrantRequestParams, SignInResponse, UserInfo } from "../models";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
 import { AccountSwitchRequestParams } from "../models/oidc-request-params";
@@ -242,9 +254,7 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
     body.push(`redirect_uri=${ requestParams.callbackURL }`);
 
     if (requestParams.enablePKCE) {
-        body.push(
-            `code_verifier=${ getSessionParameter(PKCE_CODE_VERIFIER, requestParams) }`
-        );
+        body.push(`code_verifier=${ getSessionParameter(PKCE_CODE_VERIFIER, requestParams) }`);
         removeSessionParameter(PKCE_CODE_VERIFIER, requestParams);
     }
 
@@ -258,11 +268,7 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
             }
             return validateIdToken(response.data.id_token, requestParams).then((valid) => {
                 if (valid) {
-                    setSessionParameter(
-                        REQUEST_PARAMS,
-                        JSON.stringify(requestParams),
-                        requestParams
-                    );
+                    setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams), requestParams);
 
                     const tokenResponse: TokenResponseInterface = {
                         accessToken: response.data.access_token,
@@ -291,10 +297,7 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
  * @param {string} refreshToken
  * @returns {Promise<TokenResponseInterface>} refresh token response data or error.
  */
-export function sendRefreshTokenRequest(
-    requestParams: ConfigInterface,
-    refreshToken: string
-): Promise<any> {
+export function sendRefreshTokenRequest(requestParams: ConfigInterface, refreshToken: string): Promise<any> {
     const tokenEndpoint = getTokenEndpoint(requestParams);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -480,11 +483,7 @@ export function sendSignInRequest(requestParams: ConfigInterface): Promise<SignI
     if (hasAuthorizationCode(requestParams)) {
         return sendTokenRequest(requestParams)
             .then((response) => {
-                initUserSession(
-                    response,
-                    getAuthenticatedUser(response.idToken),
-                    requestParams
-                );
+                initUserSession(response, getAuthenticatedUser(response.idToken), requestParams);
                 return Promise.resolve({
                     type: SIGNED_IN
                 } as SignInResponse);
@@ -529,3 +528,129 @@ export function handleSignIn(requestParams: ConfigInterface): Promise<any> {
             });
     }
 }
+/**
+ * Replaces template tags with actual values.
+ *
+ * @param {string} text Input string.
+ * @param {string} scope Scope.
+ *
+ * @returns String with template tags replaced with actual values.
+ */
+const replaceTemplateTags = (text: string, authConfig: ConfigInterface): string => {
+    let scope = OIDC_SCOPE;
+
+    if (authConfig.scope && authConfig.scope.length > 0) {
+        if (!authConfig.scope.includes(OIDC_SCOPE)) {
+            authConfig.scope.push(OIDC_SCOPE);
+        }
+        scope = authConfig.scope.join(" ");
+    }
+
+    return text
+        .replace(TOKEN_TAG, authConfig.session.get(ACCESS_TOKEN))
+        .replace(USERNAME_TAG, authConfig.session.get(USERNAME))
+        .replace(SCOPE_TAG, scope)
+        .replace(CLIENT_ID_TAG, authConfig.clientID)
+        .replace(CLIENT_SECRET_TAG, authConfig.clientSecret);
+};
+
+/**
+ * Allows using custom grant types.
+ *
+ * @param {CustomGrantRequestParams} requestParams The request parameters.
+ *
+ * @returns {Promise<boolean|AxiosResponse>} A promise that resolves with a boolean value or the request response
+ * if the the `returnResponse` attribute in the `requestParams` object is set to `true`.
+ */
+export const customGrant = (
+    requestParams: CustomGrantRequestParams,
+    authConfig: ConfigInterface
+): Promise<SignInResponse | boolean | AxiosResponse> => {
+    if (!authConfig.session.get(TOKEN_ENDPOINT) || authConfig.session.get(TOKEN_ENDPOINT).trim().length === 0) {
+        return Promise.reject(new Error("Invalid token endpoint found."));
+    }
+
+    let data: string = "";
+
+    Object.entries(requestParams.data).map(([ key, value ], index: number) => {
+        const newValue = replaceTemplateTags(value as string, authConfig);
+        data += `${ key }=${ newValue }${ index !== Object.entries(requestParams.data).length - 1 ? "&" : "" }`;
+    });
+
+    const requestConfig: AxiosRequestConfig = {
+        data: data,
+        headers: {
+            ...getTokenRequestHeaders(authConfig.clientHost)
+        },
+        method: "POST",
+        url: authConfig.session.get(TOKEN_ENDPOINT)
+    };
+
+    if (requestParams.attachToken) {
+        requestConfig.headers = {
+            ...requestConfig.headers,
+            Authorization: `Bearer ${ authConfig.session.get(ACCESS_TOKEN) }`
+        };
+    }
+
+    return axios(requestConfig)
+        .then(
+            (response: AxiosResponse): Promise<boolean | AxiosResponse | SignInResponse> => {
+                if (response.status !== 200) {
+                    return Promise.reject(
+                        new Error("Invalid status code received in the token response: " + response.status)
+                    );
+                }
+
+                if (requestParams.returnsSession) {
+                    return validateIdToken(authConfig.clientID, response.data.id_token).then((valid) => {
+                        if (valid) {
+                            const tokenResponse: TokenResponseInterface = {
+                                accessToken: response.data.access_token,
+                                expiresIn: response.data.expires_in,
+                                idToken: response.data.id_token,
+                                refreshToken: response.data.refresh_token,
+                                scope: response.data.scope,
+                                tokenType: response.data.token_type
+                            };
+                            initUserSession(tokenResponse, getAuthenticatedUser(tokenResponse.idToken), authConfig);
+
+                            if (requestParams.returnResponse) {
+                                return Promise.resolve({
+                                    data: getUserInfo(authConfig),
+                                    type: SIGNED_IN
+                                } as SignInResponse);
+                            } else {
+                                return Promise.resolve(true);
+                            }
+                        }
+
+                        return Promise.reject(
+                            new Error("Invalid id_token in the token response: " + response.data.id_token)
+                        );
+                    });
+                } else {
+                    return requestParams.returnResponse ? Promise.resolve(response) : Promise.resolve(true);
+                }
+            }
+        )
+        .catch((error: any) => {
+            return Promise.reject(error);
+        });
+};
+
+/**
+ * Returns email, username, display name and allowed scopes.
+ *
+ * @returns {UserInfo} User information.
+ */
+export const getUserInfo = (config: ConfigInterface): UserInfo => {
+    return {
+        allowedScopes: config.session.get(SCOPE),
+        authorizationEndpoint: config.session.get(AUTHORIZATION_ENDPOINT),
+        displayName: config.session.get(DISPLAY_NAME),
+        email: config.session.get(EMAIL),
+        oidcSessionIframe: config.session.get(OIDC_SESSION_IFRAME_ENDPOINT),
+        username: config.session.get(USERNAME)
+    };
+};
