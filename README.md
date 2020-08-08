@@ -77,13 +77,13 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 > **Hint!** Can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
 6. In the system, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `USER_PORTAL`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
 
-*USER PORTAL*
+**User Portal**
 
 ```
 regexp=(https://localhost:9443/user-portal/login|https://localhost:9443/user-portal/logout|https://localhost:9000/user-portal/login|https://localhost:9000/user-portal/logout)
 ```
 
-*CONSOLE*
+**Console**
 
 ```
 regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout)
