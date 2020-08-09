@@ -44,6 +44,10 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
      * Top announcement component.
      */
     announcement?: ReactNode;
+    /**
+     * Set of extensions.
+     */
+    extensions?: HeaderExtension[];
     // TODO: Add proper type interface.
     basicProfileInfo: any;
     brand?: React.ReactNode;
@@ -63,6 +67,20 @@ export interface HeaderPropsInterface extends TestableComponentInterface {
     userDropdownIcon?: any;
     userDropdownInfoAction?: React.ReactNode;
     userDropdownLinks?: HeaderLinkInterface[];
+}
+
+/**
+ * Header extension interface.
+ */
+interface HeaderExtension {
+    /**
+     * Component to render.
+     */
+    component: ReactNode;
+    /**
+     * Float direction.
+     */
+    floated: "left" | "right";
 }
 
 /**
@@ -115,6 +133,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         basicProfileInfo,
         children,
         className,
+        extensions,
         fixed,
         fluid,
         isProfileInfoLoading,
@@ -218,13 +237,41 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         </Menu.Item>
                     )
                 }
+                {
+                    extensions && (
+                        extensions instanceof Array
+                        && extensions.length > 0
+                        && extensions.some((extension: HeaderExtension) => extension.floated === "left")
+                        && (
+                            <Menu.Menu
+                                position="left"
+                                className="header-extensions left"
+                                data-testid={ `${ testId }-left-extensions` }
+                            >
+                                {
+                                    extensions.map((extension: HeaderExtension) => 
+                                        extension.floated === "left" && extension.component)
+                                }
+                            </Menu.Menu>
+                        )
+                    )
+                }
                 { children }
                 { (
                     <Menu.Menu
                         position="right"
-                        className="user-dropdown-wrapper"
+                        className="header-extensions right"
                         data-testid={ `${ testId }-user-dropdown-container` }
                     >
+                        {
+                            extensions && (
+                                extensions instanceof Array
+                                && extensions.length > 0
+                                && extensions.some((extension: HeaderExtension) => extension.floated === "right")
+                                && extensions.map((extension: HeaderExtension) => 
+                                    extension.floated === "right" && extension.component)
+                            )
+                        }
                         {
                             showUserDropdown && (
                                 <Dropdown

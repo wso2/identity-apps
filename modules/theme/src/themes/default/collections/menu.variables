@@ -33,7 +33,10 @@
 @appHeaderHeight: 60px;
 @appHeaderBoxShadow: none;
 
-@userDropdownWrapperMarginLeft: 0 !important;
+@appHeaderPortalSwitchExtensionBackgroundColor: transparent !important;
+@appHeaderPortalSwitchExtensionColor: @lightTextColor !important;
+@appHeaderPortalSwitchExtensionActiveColor: @textColor !important;
+@appHeaderPortalSwitchExtensionActiveBorderBottom: 3px solid @primaryColor;
 
 /*-------------------
       App Footer
@@ -101,10 +104,3 @@
 @userDropdownPadding: 8px;
 @userDropdownLinkMargin: 8px 0;
 @userDropdownLinkedAccountMargin: 8px 0;
-
-/*-------------------
-      Extensions
---------------------*/
-
-@headerExtensionsDisplay: flex;
-@headerExtensionsAlignItems: center;

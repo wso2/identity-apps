@@ -157,6 +157,39 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             ) }
             brandLink={ config.deployment.appHomePath }
             basicProfileInfo={ profileInfo }
+            extensions={ [
+                {
+                    component: (
+                        <>
+                            <Menu.Item
+                                name={ config.deployment.developerApp.displayName }
+                                active={ activeView === "DEVELOPER" }
+                                className="portal-switch"
+                                onClick={ () => {
+                                    history.push(config.deployment.developerApp.path);
+                                } }
+                            />
+                            <Menu.Item
+                                name={ config.deployment.adminApp.displayName }
+                                active={ activeView === "ADMIN" }
+                                className="portal-switch"
+                                onClick={ () => {
+                                    history.push(config.deployment.adminApp.path);
+                                } }
+                            />
+                        </>
+                    ),
+                    floated: "left"
+                },
+                {
+                    component: (
+                        <Menu.Item>
+                            <ComponentPlaceholder section="feedback-button" type="component"/>
+                        </Menu.Item>
+                    ),
+                    floated: "right"
+                }
+            ] }
             fluid={ fluid }
             isProfileInfoLoading={ isProfileInfoLoading }
             userDropdownLinks={ [
@@ -176,27 +209,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             showUserDropdown={ true }
             onSidePanelToggleClick={ onSidePanelToggleClick }
             { ...rest }
-        >
-            <Menu.Menu position="left" className="portal-switches" secondary>
-                <Menu.Item
-                    name={ config.deployment.developerApp.displayName }
-                    active={ activeView === "DEVELOPER" }
-                    onClick={ () => {
-                        history.push(config.deployment.developerApp.path);
-                    } }
-                />
-                <Menu.Item
-                    name={ config.deployment.adminApp.displayName }
-                    active={ activeView === "ADMIN" }
-                    onClick={ () => {
-                        history.push(config.deployment.adminApp.path);
-                    } }
-                />
-            </Menu.Menu>
-            <div className="header-extensions">
-                <ComponentPlaceholder section="feedback-button" type="component"/>
-            </div>
-        </ReusableHeader>
+        />
     );
 };
 

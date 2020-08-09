@@ -39,12 +39,14 @@
             height: auto;
         }
         .header-extensions {
-            display: @headerExtensionsDisplay;
-            align-items: @headerExtensionsAlignItems;
-        }
-        .right.menu {
-            &.user-dropdown-wrapper {
-                margin-left: @userDropdownWrapperMarginLeft;        
+            .item.portal-switch {
+                background: @appHeaderPortalSwitchExtensionBackgroundColor;
+                color: @appHeaderPortalSwitchExtensionColor;
+                    
+                &.active {
+                    color: @appHeaderPortalSwitchExtensionActiveColor;
+                    border-bottom: @appHeaderPortalSwitchExtensionActiveBorderBottom;
+                }
             }
         }
         .user-dropdown {
