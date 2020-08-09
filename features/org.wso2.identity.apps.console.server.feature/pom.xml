@@ -87,6 +87,7 @@
                                         <include>p2.inf</include>
                                         <include>build.properties</include>
                                         <include>console.war</include>
+                                        <include>**/*.json</include>
                                         <include>**/*.j2</include>
                                     </includes>
                                 </resource>
