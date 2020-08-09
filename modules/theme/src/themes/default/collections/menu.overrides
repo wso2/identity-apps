@@ -42,6 +42,11 @@
             display: @headerExtensionsDisplay;
             align-items: @headerExtensionsAlignItems;
         }
+        .right.menu {
+            &.user-dropdown-wrapper {
+                margin-left: @userDropdownWrapperMarginLeft;        
+            }
+        }
         .user-dropdown {
             &:hover, &:active, &:focus {
                 background: transparent;

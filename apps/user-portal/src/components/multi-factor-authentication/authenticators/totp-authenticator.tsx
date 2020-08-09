@@ -27,8 +27,6 @@ import { EnterCode, MFAIcons, QRCodeScan } from "../../../configs";
 import { AlertLevels } from "../../../models";
 import { AppState } from "../../../store";
 import { ThemeIcon } from "../../shared";
-import { CertificateIllustrations } from "../../../../../admin-portal/src/configs";
-import { GenericIcon } from "@wso2is/react-components";
 
 export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Element => {
 

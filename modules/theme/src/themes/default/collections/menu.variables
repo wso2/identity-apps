@@ -33,6 +33,8 @@
 @appHeaderHeight: 60px;
 @appHeaderBoxShadow: none;
 
+@userDropdownWrapperMarginLeft: 0 !important;
+
 /*-------------------
       App Footer
 --------------------*/

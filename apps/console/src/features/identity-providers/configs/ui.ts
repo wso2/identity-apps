@@ -1,0 +1,162 @@
+/**
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+import BasicAuthIcon from "../../../themes/default/assets/images/authenticators/basic-auth.png";
+import { ReactComponent as EmailOTPIcon } from "../../../themes/default/assets/images/authenticators/email-otp.svg";
+import FIDOLogo from "../../../themes/default/assets/images/authenticators/fido.png";
+import { ReactComponent as SMSOTPIcon } from "../../../themes/default/assets/images/authenticators/sms-otp.svg";
+import TOTPIcon from "../../../themes/default/assets/images/authenticators/totp.png";
+import SalesforceLogo from "../../../themes/default/assets/images/connectors/salesforce.png";
+import SCIMLogo from "../../../themes/default/assets/images/connectors/scim.png";
+import SPMLLogo from "../../../themes/default/assets/images/connectors/spml.png";
+import {
+    ReactComponent as CertificateColoredIcon
+} from "../../../themes/default/assets/images/icons/certificate-colored-icon.svg";
+import { ReactComponent as ClockColoredIcon } from "../../../themes/default/assets/images/icons/clock-colored-icon.svg";
+import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
+import { ReactComponent as LockShieldIcon } from "../../../themes/default/assets/images/icons/lock-shield.svg";
+import {
+    ReactComponent as MagnifierColoredIcon
+} from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
+import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
+import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
+import {
+    ReactComponent as AuthenticationCapabilityIcon
+} from "../../../themes/default/assets/images/identity-provider-capabilities/authentication.svg";
+import {
+    ReactComponent as ProvisionCapabilityIcon
+} from "../../../themes/default/assets/images/identity-provider-capabilities/provision.svg";
+import {
+    ReactComponent as ExpertModeIdPIcon
+} from "../../../themes/default/assets/images/identity-providers/expert-idp-illustration.svg";
+import {
+    ReactComponent as FacebookIdPIcon
+} from "../../../themes/default/assets/images/identity-providers/facebook-idp-illustration.svg";
+import {
+    ReactComponent as GithubIdPIcon
+} from "../../../themes/default/assets/images/identity-providers/github-idp-illustration.svg";
+import {
+    ReactComponent as GoogleIdPIcon
+} from "../../../themes/default/assets/images/identity-providers/google-idp-illustration.svg";
+import {
+    ReactComponent as IWAKerberosIdPIllustration
+} from "../../../themes/default/assets/images/identity-providers/iwa-idp-illustration.svg";
+import {
+    ReactComponent as MicrosoftIdPIllustration
+} from "../../../themes/default/assets/images/identity-providers/microsoft-idp-illustration.svg";
+import {
+    ReactComponent as Office365IdPIllustration
+} from "../../../themes/default/assets/images/identity-providers/office365-idp-illustration.svg";
+import {
+    ReactComponent as TwitterIdPIllustration
+} from "../../../themes/default/assets/images/identity-providers/twitter-idp-illustration.svg";
+import {
+    ReactComponent as YahooIdPIllustration
+} from "../../../themes/default/assets/images/identity-providers/yahoo-idp-illustration.svg";
+import OIDCLogo from "../../../themes/default/assets/images/protocols/oidc.png";
+import OpenIDLogo from "../../../themes/default/assets/images/protocols/openid.png";
+import SamlLogo from "../../../themes/default/assets/images/protocols/saml.png";
+import WSFedLogo from "../../../themes/default/assets/images/protocols/ws-fed.png";
+import { ReactComponent as FacebookLogo } from "../../../themes/default/assets/images/social/facebook.svg";
+import { ReactComponent as GoogleLogo } from "../../../themes/default/assets/images/social/google.svg";
+import { ReactComponent as TwitterLogo } from "../../../themes/default/assets/images/social/twitter.svg";
+import { ReactComponent as JWTLogo } from "../../../themes/default/assets/images/technologies/jwt-logo.svg";
+import { ReactComponent as MicrosoftLogo } from "../../../themes/default/assets/images/third-party/microsoft-logo.svg";
+import { ReactComponent as Office365Logo } from "../../../themes/default/assets/images/third-party/office-365-logo.svg";
+import { ReactComponent as YahooLogo } from "../../../themes/default/assets/images/third-party/yahoo-logo.svg";
+import { SupportedServices } from "../models";
+
+
+export const AddIDPCertificateWizardStepIcons = {
+    general: DocumentIcon
+};
+
+export const IdentityProviderWizardStepIcons = {
+    authenticatorSettings: GearsIcon,
+    general: DocumentIcon,
+    outboundProvisioningSettings: GearsIcon,
+    summary: ReportIcon
+};
+
+export const AuthenticatorIcons = {
+    basic: BasicAuthIcon,
+    default: LockShieldIcon,
+    emailOTP: EmailOTPIcon,
+    facebook: FacebookLogo,
+    fido: FIDOLogo,
+    google: GoogleLogo,
+    identifierFirst: MagnifierColoredIcon,
+    jwtBasic: JWTLogo,
+    microsoft: MicrosoftLogo,
+    office365: Office365Logo,
+    sessionExecutor: ClockColoredIcon,
+    smsOTP: SMSOTPIcon,
+    totp: TOTPIcon,
+    twitter: TwitterLogo,
+    x509: CertificateColoredIcon,
+    yahoo: YahooLogo
+};
+
+export const ConnectorIcons = {
+    google: GoogleIdPIcon,
+    salesforce: SalesforceLogo,
+    scim: SCIMLogo,
+    spml: SPMLLogo
+};
+
+export const IdPIcons = {
+    emailOTP: EmailOTPIcon,
+    expert: ExpertModeIdPIcon,
+    facebook: FacebookIdPIcon,
+    github: GithubIdPIcon,
+    google: GoogleIdPIcon,
+    iwaKerberos: IWAKerberosIdPIllustration,
+    microsoft: MicrosoftIdPIllustration,
+    office365: Office365IdPIllustration,
+    oidc: OIDCLogo,
+    saml: SamlLogo,
+    smsOTP: SMSOTPIcon,
+    twitter: TwitterIdPIllustration,
+    wsFed: WSFedLogo,
+    yahoo: YahooIdPIllustration
+};
+
+export const IdPTemplateDocsIcons = {
+    facebook: FacebookIdPIcon,
+    google: GoogleIdPIcon,
+    manualsetup: ExpertModeIdPIcon,
+    openidconnect: OpenIDLogo
+};
+
+export const IdPCapabilityIcons = {
+    [ SupportedServices.AUTHENTICATION ]: AuthenticationCapabilityIcon,
+    [ SupportedServices.PROVISIONING ]: ProvisionCapabilityIcon
+};
+
+export const OutboundProvisioningConnectorWizard = {
+    connectorDetails: DocumentIcon,
+    connectorSelection: GearsIcon,
+    summary: ReportIcon
+};
+
+export const HelpPanelIcons = {
+    tabs: {
+        docs: OpenBookIcon
+    }
+};

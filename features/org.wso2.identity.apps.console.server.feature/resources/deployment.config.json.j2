@@ -1,0 +1,356 @@
+{
+    "accountApp": {
+        {% if console.applications.account_app.configs is defined %}
+        {% for key, value in console.applications.account_app.configs.items() %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "adminApp": {
+        {% if console.applications.admin_app.configs is defined %}
+        {% for key, value in console.applications.admin_app.configs.items() %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "appBaseName": "{{ console.app_base_name }}",
+    "clientID": "{{ console.client_id }}",
+    "debug": {{ console.debug.enable }},
+    "developerApp": {
+        {% if console.applications.developer_app.configs is defined %}
+        {% for key, value in console.applications.developer_app.configs.items() %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "documentation": {
+        "baseURL": "{{ console.documentation.base_url }}",
+        "contentBaseURL": "{{ console.documentation.content_base_url }}",
+        "githubOptions": {
+            {% if console.documentation.github_options is defined %}
+            {% for option, value in console.documentation.github_options.items() %}
+                "{{ option }}": "{{ value }}"{{ "," if not loop.last }}
+            {% endfor %}
+            {% endif %}
+        },
+        "imagePrefixURL": "{{ console.documentation.image_prefix_url }}",
+        "provider": "{{ console.documentation.provider }}",
+        "structureFileType": "{{ console.documentation.structure_file_type }}",
+        "structureFileURL": "{{ console.documentation.structure_file_url }}"
+    },
+    "i18nResourcePath": "{{ console.i18n_resource_path }}",
+    "loginCallbackPath": "{{ console.login_callback_path }}",
+    "logoutCallbackPath": "{{ console.logout_callback_path }}",
+    "productVersion": "{{ product.version }}",
+    {% if console.server_origin is defined %}
+    "serverOrigin": "{{ console.server_origin }}",
+    {% endif %}
+    "routePaths": {
+        {% if console.route_paths is defined %}
+        {% for path, value in console.route_paths.items() %}
+            "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "session": {
+        {% if console.session.params is defined %}
+        {% for param, value in console.session.params.items() %}
+            "{{ param }}": {{ value }}{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "ui": {
+        "announcements": [
+            {% if console.ui.announcements is defined %}
+            {% for announcement in console.ui.announcements %}
+            {
+            {% for key, value in announcement.items() %}
+            {% if value is number %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            }{{ "," if not loop.last }}
+            {% endfor %}
+            {% endif %}
+        ],
+        "appCopyright": "{{ console.ui.app_copyright }}",
+        "appTitle": "{{ console.ui.app_title }}",
+        "appName": "{{ console.ui.app_name }}",
+        "appLogoPath": "{{ console.ui.app_logo_path }}",
+        "features": {
+            "applications": {
+                "disabledFeatures": [
+                    {% if console.applications.disabled_features is defined %}
+                    {% for feature in console.applications.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.applications.enabled }},
+                "scopes": {
+                    {% if console.applications.scopes is defined %}
+                    {% for operation, scopes in console.applications.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "attributeDialects": {
+                "disabledFeatures": [
+                    {% if console.attribute_dialects.disabled_features is defined %}
+                    {% for feature in console.attribute_dialects.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.attribute_dialects.enabled }},
+                "scopes": {
+                    {% if console.attribute_dialects.scopes is defined %}
+                    {% for operation, scopes in console.attribute_dialects.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "certificates": {
+                "disabledFeatures": [
+                    {% if console.certificates.disabled_features is defined %}
+                    {% for feature in console.certificates.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.certificates.enabled }},
+                "scopes": {
+                    {% if console.certificates.scopes is defined %}
+                    {% for operation, scopes in console.certificates.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "emailTemplates": {
+                "disabledFeatures": [
+                    {% if console.email_templates.disabled_features is defined %}
+                    {% for feature in console.email_templates.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.email_templates.enabled }},
+                "scopes": {
+                    {% if console.email_templates.scopes is defined %}
+                    {% for operation, scopes in console.email_templates.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "generalConfigurations": {
+                "disabledFeatures": [
+                    {% if console.general_configurations.disabled_features is defined %}
+                    {% for feature in console.general_configurations.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.general_configurations.enabled }},
+                "scopes": {
+                    {% if console.general_configurations.scopes is defined %}
+                    {% for operation, scopes in console.general_configurations.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "groups": {
+                "disabledFeatures": [
+                    {% if console.groups.disabled_features is defined %}
+                    {% for feature in console.groups.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.groups.enabled }},
+                "scopes": {
+                    {% if console.groups.scopes is defined %}
+                    {% for operation, scopes in console.groups.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "identityProviders": {
+                "disabledFeatures": [
+                    {% if console.identity_providers.disabled_features is defined %}
+                    {% for feature in console.identity_providers.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.identity_providers.enabled }},
+                "scopes": {
+                    {% if console.identity_providers.scopes is defined %}
+                    {% for operation, scopes in console.identity_providers.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "roles": {
+                "disabledFeatures": [
+                    {% if console.roles.disabled_features is defined %}
+                    {% for feature in console.roles.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if console.roles.scopes is defined %}
+                    {% for operation, scopes in console.roles.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "users": {
+                "disabledFeatures": [
+                    {% if console.users.disabled_features is defined %}
+                    {% for feature in console.users.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.users.enabled }},
+                "scopes": {
+                    {% if console.users.scopes is defined %}
+                    {% for operation, scopes in console.users.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "userStores": {
+                "disabledFeatures": [
+                    {% if console.user_stores.disabled_features is defined %}
+                    {% for feature in console.user_stores.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.user_stores.enabled }},
+                "scopes": {
+                    {% if console.user_stores.scopes is defined %}
+                    {% for operation, scopes in console.user_stores.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            }
+        },
+        "gravatarConfig": {
+           {% if console.gravatar.configs is defined %}
+           {% for key, value in console.gravatar.configs.items() %}
+               "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+           {% endfor %}
+           {% endif %}
+        },
+        "productName": "{{ console.ui.product_name }}",
+        "theme": {
+            "name": "{{ console.theme }}"
+        }
+    }
+}

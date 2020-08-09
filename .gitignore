@@ -99,12 +99,10 @@ modules/react-components/.cache
 apps/*/build/
 apps/*/src/main/webapp/libs/themes
 apps/user-portal/src/main/
-apps/developer-portal/src/main/
-apps/admin-portal/src/main/
+apps/console/src/main/
 apps/*/cache
 apps/user-portal/src/themes/
-apps/developer-portal/src/themes/
-apps/admin-portal/src/themes/
+apps/console/src/themes/
 
 .classpath
 .settings

@@ -51,12 +51,12 @@ export interface CommonConfigInterface<T, S, U, V, W> {
 export interface CommonDeploymentConfigInterface {
     /**
      * Base name of the application (tenant qualified).
-     * ex: `/t/wos2.com/developer-portal`
+     * ex: `/t/wos2.com/sample-portal`
      */
     appBaseName: string;
     /**
      * Base name without tenant.
-     * ex: `/developer-portal`
+     * ex: `/sample-portal`
      */
     appBaseNameWithoutTenant: string;
     /**
@@ -88,7 +88,7 @@ export interface CommonDeploymentConfigInterface {
     documentation?: DocumentationInterface;
     /**
      * Callback to directed on successful login.
-     * ex: `/developer-portal/login`
+     * ex: `/sample-portal/login`
      */
     loginCallbackUrl: string;
     /**
