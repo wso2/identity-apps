@@ -60,31 +60,6 @@ export const getUsersList = (count: number, startIndex: number, filter: string, 
 };
 
 /**
- * Retrieve the list of user stores that are currently in the system.
- *
- * @returns {Promise<any>} a promise containing the user store list.
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getUserStoreList = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.userStores
-    };
-
-    return httpClient(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
  * Add new user.
  *
  * @param data request payload

@@ -28,7 +28,9 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
-import { addUser, addUserRole } from "../../api";
+import { getGroupList, updateGroupDetails } from "../../../groups/api";
+import { updateRoleDetails } from "../../../roles/api";
+import { addUser } from "../../api";
 import { UserWizardStepIcons } from "../../configs";
 import { AddUserWizardStateInterface, UserDetailsInterface, createEmptyUserDetails } from "../../models";
 import { AddUser } from "../add-user";
@@ -101,15 +103,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ initialGroupList, setInitialGroupList ] = useState<RolesInterface[]>([]);
     const [ initialTempGroupList, setInitialTempGroupList ] = useState<RolesInterface[]>([]);
 
-    const [ applicationRoles, setApplicationRoles ] = useState<RolesInterface[]>([]);
-    const [ internalRoles, setInternalRoles ] = useState<RolesInterface[]>([]);
-    const [ isInternalRolesSet, setIsInternalRolesSet ] = useState<boolean>(false);
-    const [ isApplicationRolesSet, setIsApplicationRolesSet ] = useState<boolean>(false);
-
-    const [ viewGroupPermissions, setViewGroupPermissions ] = useState<boolean>(false);
-    const [ selectedGroupId, setSelectedGroupId ] = useState<string>();
-    const [ isGroupSelected, setGroupSelection ] = useState<boolean>(false);
-
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
@@ -130,16 +123,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email ]);
 
     useEffect(() => {
-        if (!selectedGroupId) {
-            return;
-        }
-
-        if (isGroupSelected) {
-            setViewGroupPermissions(true);
-        }
-    }, [ isGroupSelected ]);
-
-    useEffect(() => {
         if (!selectedRoleId) {
             return;
         }
@@ -150,32 +133,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ isRoleSelected ]);
 
     useEffect(() => {
-        if (applicationRoles.length === 0) {
-            getRolesList("Application")
+        if (initialRoleList.length === 0) {
+            getRolesList(null)
                 .then((response) => {
-                    setApplicationRoles(response.data.Resources);
-                    setIsApplicationRolesSet(true);
+                    setRoleList(response.data.Resources);
+                    setInitialRoleList(response.data.Resources);
                 });
         }
 
     }, []);
-
-    useEffect(() => {
-        if (internalRoles.length === 0) {
-            getRolesList("Internal")
-                .then((response) => {
-                    setInternalRoles(response.data.Resources);
-                    setIsInternalRolesSet(true);
-                });
-        }
-    }, []);
-
-    useEffect(() => {
-        if (internalRoles.length > 0 && applicationRoles.length > 0) {
-            setRoleList(_.concat(applicationRoles, internalRoles));
-            setInitialRoleList(_.concat(applicationRoles, internalRoles));
-        }
-    }, [ isInternalRolesSet, isApplicationRolesSet ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -197,21 +163,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.domain ]);
 
     const getGroupListForDomain = (domain: string) => {
-        getRolesList(domain)
+        getGroupList(domain)
             .then((response) => {
                 setGroupsList(response.data.Resources);
                 setInitialGroupList(response.data.Resources);
             });
-    };
-
-    const handleViewGroupPermission = () => {
-        setViewGroupPermissions(!viewGroupPermissions);
-        setGroupSelection(false);
-    };
-
-    const handleGroupIdSet = (groupId) => {
-        setSelectedGroupId(groupId);
-        setGroupSelection(true);
     };
 
     const handleViewRolePermission = () => {
@@ -283,7 +239,26 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         const roleIds = [];
         const groupIds = [];
 
-        const data = {
+        // Payload for the update role request.
+        const roleData = {
+            Operations: [
+                {
+                    op: "add",
+                    value: {
+                        users: [
+                            {
+                                display: user.userName,
+                                value: user.id
+                            }
+                        ]
+                    }
+                }
+            ],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+        };
+
+        // Payload for the update group request.
+        const groupData = {
             Operations: [
                 {
                     op: "add",
@@ -306,7 +281,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             });
 
             for (const roleId of roleIds) {
-                addUserRole(data, roleId)
+                updateRoleDetails(roleId, roleData)
                     .catch((error) => {
                         if (!error.response || error.response.status === 401) {
                             dispatch(addAlert({
@@ -352,7 +327,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             });
 
             for (const groupId of groupIds) {
-                addUserRole(data, groupId)
+                updateGroupDetails(groupId, groupData)
                     .catch((error) => {
                         if (!error.response || error.response.status === 401) {
                             dispatch(addAlert({
@@ -571,29 +546,23 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         },
         {
             content: (
-                viewGroupPermissions
-                     ? <RolePermissions
-                            data-testid={ `${ testId }-group-permission` }
-                            handleNavigateBack={ handleViewGroupPermission }
-                            roleId={ selectedGroupId }
-                        />
-                     : <AddUserGroup
-                            triggerSubmit={ submitGroupList }
-                            onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
-                            initialValues={
-                                {
-                                    initialGroupList: initialGroupList,
-                                    groupList: groupList,
-                                    tempGroupList: tempGroupList,
-                                    initialTempGroupList: initialTempGroupList
-                                }
-                            }
-                            handleGroupListChange={ (groups) => handleGroupListChange(groups) }
-                            handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
-                            handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
-                            handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
-                            handleSetGroupId={ (groupId) => handleGroupIdSet(groupId) }
-                        />
+                <AddUserGroup
+                    triggerSubmit={ submitGroupList }
+                    onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
+                    initialValues={
+                        {
+                            initialGroupList: initialGroupList,
+                            groupList: groupList,
+                            tempGroupList: tempGroupList,
+                            initialTempGroupList: initialTempGroupList
+                        }
+                    }
+                    handleGroupListChange={ (groups) => handleGroupListChange(groups) }
+                    handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
+                    handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
+                    handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+                    handleSetGroupId={ (groupId) => handleGroupIdSet(groupId) }
+                />
             ),
             icon: UserWizardStepIcons.groups,
             title: t("adminPortal:components.user.modals.addUserWizard.steps.groups")
