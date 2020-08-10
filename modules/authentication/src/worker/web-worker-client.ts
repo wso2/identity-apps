@@ -28,6 +28,10 @@ import {
     INIT,
     LOGOUT,
     PKCE_CODE_VERIFIER,
+    REQUEST_ERROR,
+    REQUEST_FINISH,
+    REQUEST_START,
+    REQUEST_SUCCESS,
     SESSION_STATE,
     SIGNED_IN,
     SIGN_IN
@@ -36,6 +40,7 @@ import {
     AuthCode,
     ConfigInterface,
     CustomGrantRequestParams,
+    HttpClient,
     Message,
     ResponseMessage,
     SignInResponse,
@@ -103,6 +108,10 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
      * The private boolean member variable that specifies if the user is signed in or not.
      */
     let signedIn: boolean = false;
+    /**
+     * HttpClient handlers
+     */
+    let httpClientHandlers: HttpClient;
 
     /**
      * @private
@@ -367,6 +376,27 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
         if (typeof config.serverOrigin !== "string") {
             return Promise.reject("serverOrigin must be a string");
         }
+
+        httpClientHandlers = { ...config.httpClient };
+
+        worker.onmessage = ({ data }) => {
+            switch (data.type) {
+                case REQUEST_ERROR:
+                    httpClientHandlers?.requestErrorCallback(data.data);
+                    break;
+                case REQUEST_FINISH:
+                    httpClientHandlers?.requestFinishCallback();
+                    break;
+                case REQUEST_START:
+                    httpClientHandlers?.requestStartCallback();
+                    break;
+                case REQUEST_SUCCESS:
+                    httpClientHandlers?.requestSuccessCallback(data.data);
+                    break;
+            }
+        };
+
+        delete config.httpClient;
 
         const message: Message<ConfigInterface> = {
             data: config,
