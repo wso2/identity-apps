@@ -177,7 +177,7 @@ export const handleSignIn = () => (dispatch) => {
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    const oAuth = new IdentityClient(Storage.WebWorker);
+    const oAuth = IdentityClient.getInstance();
     oAuth
         .signOut()
         .then(() => {
