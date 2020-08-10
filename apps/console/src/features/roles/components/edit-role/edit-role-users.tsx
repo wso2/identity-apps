@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { updateRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../models";
-import { AddRoleUsers } from "../create-role-wizard";
+import { AddRoleUsers } from "../wizard";
 
 interface RoleUserDetailsProps {
     roleObject: RolesInterface;

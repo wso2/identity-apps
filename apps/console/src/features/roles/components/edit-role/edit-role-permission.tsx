@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { updateRolePermissions } from "../../api";
 import { Permission } from "../../models";
-import { PermissionList } from "../create-role-wizard";
+import { PermissionList } from "../wizard";
 
 /**
  * Interface to capture permission edit props.

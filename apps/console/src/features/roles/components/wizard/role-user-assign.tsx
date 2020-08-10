@@ -329,19 +329,13 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         >
             <Modal.Header>
                 {
-                    isGroup
-                        ? t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
-                            { type: "Group" })
-                        : t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
-                            { type: "Role" })
+                    t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                        { type: "Role" })
                 }
                 <Heading subHeading ellipsis as="h6">
-                    { 
-                        isGroup
-                            ? t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
-                                { type: "group" })
-                            : t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
-                                { type: "role" })
+                    {
+                        t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                            { type: "role" })
                     }
                 </Heading>
             </Modal.Header>
@@ -365,6 +359,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
+                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders." +
+                            "roles.selected", { type: "users" }) }
                     >
                         {
                             usersList?.map((user, index)=> {
@@ -394,6 +390,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
+                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders." +
+                            "roles.selected", { type: "users" }) }
                     >
                         {
                             tempUserList?.map((user, index)=> {
@@ -507,10 +505,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             title={ t("adminPortal:components.roles.edit.users.list." +
                                                 "emptyPlaceholder.title") }
                                             subtitle={ [
-                                                isGroup
-                                                    ? t("adminPortal:components.roles.edit.users.list." +
-                                                    "emptyPlaceholder.subtitles", { type: "group" })
-                                                    : t("adminPortal:components.roles.edit.users.list." +
+                                                t("adminPortal:components.roles.edit.users.list." +
                                                     "emptyPlaceholder.subtitles", { type: "role" })
                                             ] }
                                             action={
@@ -562,6 +557,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                                     data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
+                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                        "emptyPlaceholders.roles.unselected", { type: "users" }) }
                                 >
                                     {
                                         usersList?.map((user, index)=> {
@@ -592,6 +589,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                                     data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
+                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                        "emptyPlaceholders.roles.unselected", { type: "users" }) }
                                 >
                                     {
                                         tempUserList?.map((user, index)=> {
@@ -614,21 +613,21 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 </TransferList>
                             </TransferComponent>
                         </Grid.Row>
-                    { isEdit && 
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button
-                                    data-testid={ `${ testId }-update-user-list-button` }
-                                    primary
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                >
-                                    { t("common.update") }
-                                </Button>
-                            </Grid.Column>
-                        </Grid.Row>
-                    }
+                        { isEdit &&
+                            <Grid.Row columns={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Button
+                                        data-testid={ `${ testId }-update-user-list-button` }
+                                        primary
+                                        type="submit"
+                                        size="small"
+                                        className="form-button"
+                                    >
+                                        { t("common.update") }
+                                    </Button>
+                                </Grid.Column>
+                            </Grid.Row>
+                        }
                     </Grid>
                 </Forms>
             }

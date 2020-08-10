@@ -15,24 +15,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/* eslint-disable */
-//TODO Temporary disable of lint due to merge conflicts
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement, useState, useEffect } from "react";
-import { Modal, Grid, Icon } from "semantic-ui-react";
-import { Heading, Steps, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { useTrigger } from "@wso2is/forms";
-import { RolesWizardStepIcons } from "../../configs";
-import { RoleBasics } from "./role-basics";
-import { PermissionList } from "./role-permisson";
-import { createRole, updateRolePermissions } from "../../api";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models";
+import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { AddRoleUsers } from "./role-user-assign";
+import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AssignGroupsUsers } from "./assign-groups-users";
+import { RoleBasics } from "./role-basics";
+import { PermissionList } from "./role-permisson";
 import { CreateRoleSummary } from "./role-sumary";
+import { getGroupList } from "../../../groups/api";
+import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
+import { createRole } from "../../api";
+import { RolesWizardStepIcons } from "../../configs";
+import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models";
 
 /**
  * Interface which captures create role props.
@@ -52,7 +52,8 @@ interface CreateRoleProps extends TestableComponentInterface {
 enum WizardStepsFormTypes {
     BASIC_DETAILS = "BasicDetails",
     PERM_LIST = "PermissionList",
-    USER_LIST = "RoleUserList",
+    USER_LIST = "UserList",
+    GROUP_LIST = "GroupList",
     SUMMARY = "summary"
 }
 
@@ -84,12 +85,18 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const [ currentStep, setCurrentWizardStep ] = useState<number>(initStep);
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ wizardState, setWizardState ] = useState<WizardStateInterface>(undefined);
-    const [ selectedUserStore, setSelectedUserStrore ] = useState<string>('');
+    const [ selectedUserStore, setSelectedUserStrore ] = useState<string>("");
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
     const [ submitRoleUserList, setSubmitRoleUserList ] = useTrigger();
+    const [ submitGroupsList, setSubmitGroupsList ] = useTrigger();
     const [ submitPermissionList, setSubmitPermissionList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
+
+    const [ groupList, setGroupList ] = useState<GroupsInterface[]>([]);
+    const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
+    const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
+    const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -104,143 +111,97 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         setPartiallyCompletedStep(undefined);
     }, [ partiallyCompletedStep ]);
 
+    useEffect(() => {
+        if (groupList.length < 1) {
+            getGroupList(null)
+                .then((response) => {
+                    setGroupList(response.data.Resources);
+                });
+        }
+    }, []);
+
     /**
      * Method to handle create role action when create role wizard finish action is triggered.
      *
      * @param basicData - basic data required to create role.
      */
     const addRole = (basicData: any): void => {
-        const members: CreateRoleMemberInterface[] = [];
-        const users = basicData.RoleUserList;
-        if (users.length > 0) {
-            users.forEach(user => {
-                members.push({
-                    value: user.id,
-                    display: user.userName
+
+        const users: CreateRoleMemberInterface[] = [];
+        const groups: CreateGroupMemberInterface[] = [];
+        const permissions: string[] = [];
+
+        if (basicData?.UserList?.length > 0) {
+            basicData.UserList.forEach(user => {
+                users.push({
+                    display: user.userName,
+                    value: user.id
                 })
             })
         }
-        
+
+        if (basicData?.GroupList?.length > 0) {
+            basicData.GroupList.forEach(group => {
+                groups.push({
+                    display: group.displayName,
+                    value: group.id
+                })
+            })
+        }
+
+        if (basicData?.PermissionList?.length > 0) {
+            basicData.PermissionList.forEach(permission => {
+                permissions.push(permission.fullPath);
+            })
+        }
+
         const roleData: CreateRoleInterface = {
             "schemas": [
-                "urn:ietf:params:scim:schemas:core:2.0:Group"
+                "urn:ietf:params:scim:schemas:extension:2.0:Role"
             ],
             "displayName": basicData.BasicDetails.domain + "/" + basicData.BasicDetails.roleName,
-            "members" : members
+            "users" : users,
+            "groups": groups,
+            "permissions": permissions
         };
 
-        /**
-         * Create Role API Call. 
-         * Note : Once create role API is successful, the permission API will be called 
-         *        to add the selected permissions to the created role.
-         */
+        // Create Role API Call.
         createRole(roleData).then(response => {
             if (response.status === 201) {
-                const createdRoleId = response.data.id;
-                const permData: string[] = [];
-
-                if (basicData.PermissionList) {
-                    basicData.PermissionList.forEach(perm => {
-                        permData.push(perm.fullPath);
+                dispatch(
+                    addAlert({
+                        description: t("adminPortal:components.roles.notifications.createRole.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.roles.notifications.createRole.success.message")
                     })
-                }
-
-                updateRolePermissions(createdRoleId, permData).then(() => {
-                    dispatch(
-                        addAlert({
-                            description: isAddGroup ? 
-                                t("adminPortal:components.groups.notifications.createGroup.success.description") :
-                                t("adminPortal:components.roles.notifications.createRole.success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: isAddGroup ? 
-                                t("adminPortal:components.groups.notifications.createGroup.success.message") :
-                                t("adminPortal:components.roles.notifications.createRole.success.message")
-                        })
-                    );
-                }).catch(error => {
-                    if (!error.response || error.response.status === 401) {
-                        dispatch(
-                            addAlert({
-                                description: isAddGroup ? 
-                                    t("adminPortal:components.groups.notifications.createPermission.error.description") :
-                                    t("adminPortal:components.roles.notifications.createPermission.error.description"),
-                                level: AlertLevels.ERROR,
-                                message: isAddGroup ? 
-                                    t("adminPortal:components.groups.notifications.createPermission.error.message") :
-                                    t("adminPortal:components.roles.notifications.createPermission.error.message")
-                            })
-                        );
-                    } else if (error.response && error.response.data.detail) {
-                        dispatch(
-                            addAlert({
-                                description: isAddGroup ? 
-                                    t("adminPortal:components.groups.notifications.createPermission.error.description",
-                                    { description: error.response.data.detail }) : 
-                                    t("adminPortal:components.roles.notifications.createPermission.error.description",
-                                    { description: error.response.data.detail }),
-                                level: AlertLevels.ERROR,
-                                message: isAddGroup ? 
-                                    t("adminPortal:components.groups.notifications.createPermission.error.message") :
-                                    t("adminPortal:components.roles.notifications.createPermission.error.message")
-                            })
-                        );
-                    } else {
-                        dispatch(
-                            addAlert({
-                                description: isAddGroup ? 
-                                    t("adminPortal:components.groups.notifications.createPermission.genericError."+
-                                    "description") : 
-                                    t("adminPortal:components.roles.notifications.createPermission.genericError."+
-                                    "description"),
-                                level: AlertLevels.ERROR,
-                                message: isAddGroup ? 
-                                    t("adminPortal:components.groups.notifications.createPermission.genericError."+
-                                    "message") : 
-                                    t("adminPortal:components.roles.notifications.createPermission.genericError."+
-                                    "message")
-                            })
-                        );
-                    }
-                })
+                );
             }
+
             updateList();
             closeWizard();
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
                 dispatch(
                     addAlert({
-                        description: isAddGroup ? 
-                            t("adminPortal:components.groups.notifications.createGroup.error.description") :
-                            t("adminPortal:components.roles.notifications.createRole.error.description"),
+                        description: t("adminPortal:components.roles.notifications.createRole.error.description"),
                         level: AlertLevels.ERROR,
-                        message: isAddGroup ? 
-                            t("adminPortal:components.groups.notifications.createGroup.error.message") :
-                            t("adminPortal:components.roles.notifications.createRole.error.message")
+                        message: t("adminPortal:components.roles.notifications.createRole.error.message")
                     })
                 );
             } else if (error.response && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: isAddGroup ? 
-                            t("adminPortal:components.groups.notifications.createGroup.error.description",
-                            { description: error.response.data.detail }) : 
-                            t("adminPortal:components.roles.notifications.createRole.error.description",
+                        description: t("adminPortal:components.roles.notifications.createRole.error.description",
                             { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
-                        message: isAddGroup ? 
-                            t("adminPortal:components.groups.notifications.createGroup.error.message") :
-                            t("adminPortal:components.roles.notifications.createRole.error.message")
+                        message: t("adminPortal:components.roles.notifications.createRole.error.message")
                     })
                 );
             } else {
                 dispatch(addAlert({
-                    description: isAddGroup ? 
-                        t("adminPortal:components.groups.notifications.createGroup.genericError.description") :
-                        t("adminPortal:components.roles.notifications.createRole.genericError.description"),
+                    description: t("adminPortal:components.roles.notifications.createRole.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: isAddGroup ? 
-                        t("adminPortal:components.groups.notifications.createGroup.genericError.message") :
-                        t("adminPortal:components.roles.notifications.createRole.genericError.message")
+                    message: t("adminPortal:components.roles.notifications.createRole.genericError.message")
                 }));
             }
         });
@@ -278,14 +239,30 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             setSelectedUserStrore(values.domain);
         }
         setCurrentWizardStep(currentStep + 1);
-        setWizardState({...wizardState, [ formType ]: values});
+        setWizardState({ ...wizardState, [ formType ]: values });
+    };
+
+    const handleGroupListChange = (groupList) => {
+        setGroupList(groupList);
+    };
+
+    const handleInitialGroupListChange = (groupList) => {
+        setInitialGroupList(groupList);
+    };
+
+    const handleAddedGroupListChange = (newGroupList) => {
+        setTempGroupList(newGroupList);
+    };
+
+    const handleAddedGroupInitialListChange = (newGroupList) => {
+        setInitialTempGroupList(newGroupList);
     };
 
     // Create role wizard steps
     const WIZARD_STEPS = [{
         content: (
             <RoleBasics
-                data-testid={ isAddGroup ? "add-group-form" : "add-role-form" }
+                data-testid="add-role-form"
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ submitGeneralSettings }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
@@ -297,7 +274,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     },{
         content: (
             <PermissionList
-                data-testid={ isAddGroup ? "new-group-permissions" : "new-role-permissions" }
+                data-testid="new-role-permissions"
                 isEdit={ false }
                 triggerSubmit={ submitPermissionList }
                 initialValues={ wizardState && wizardState[ WizardStepsFormTypes.PERM_LIST ] }
@@ -308,22 +285,35 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.1")
     },{
         content: (
-            <AddRoleUsers
-                data-testid={ isAddGroup ? "new-group" : "new-role" }
-                isEdit={ false }
-                isGroup={ isAddGroup }
-                triggerSubmit={ submitRoleUserList }
-                userStore={ selectedUserStore }
-                initialValues={ wizardState && wizardState[ WizardStepsFormTypes.USER_LIST ] }
-                onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
+            <AssignGroupsUsers
+                data-testid="role-mgt-assign-users-and-groups"
+                onUsersSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes?.USER_LIST) }
+                onGroupsSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes?.GROUP_LIST) }
+                initialUsersList={ wizardState && wizardState[ WizardStepsFormTypes?.USER_LIST ] }
+                initialGroupList={
+                    {
+                        initialGroupList: initialGroupList,
+                        initialTempGroupList: initialTempGroupList,
+                        groupList: groupList,
+                        tempGroupList: tempGroupList
+                    }
+                }
+                submitUserList={ submitRoleUserList }
+                submitGroupList={ submitGroupsList }
+                onRoleUpdate={ updateList }
+                selectedUserStore={ selectedUserStore }
+                handleAddedGroupInitialListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
+                handleAddedGroupListChange={ (groups) => handleAddedGroupListChange(groups) }
+                handleGroupListChange={ (groups) => handleGroupListChange(groups) }
+                handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
             />
         ),
         icon: RolesWizardStepIcons.assignUser,
-        title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.2")
+        title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.4")
     },{
         content: (
             <CreateRoleSummary
-                data-testid={ isAddGroup ? "add-group-summary" : "add-role-summary" }
+                data-testid="add-role-summary"
                 isAddGroup={ isAddGroup }
                 triggerSubmit={ finishSubmit }
                 onSubmit={ handleRoleWizardFinish }
@@ -346,6 +336,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 setSubmitPermissionList();
                 break;
             case 2:
+                setSubmitGroupsList();
                 setSubmitRoleUserList();
                 break;
             case 3:
@@ -371,16 +362,10 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             data-testid={ testId }
         >
             <Modal.Header className="wizard-header">
-                {
-                    isAddGroup ?
-                        t("adminPortal:components.roles.addRoleWizard.heading", { type: "Group" }) :
-                        t("adminPortal:components.roles.addRoleWizard.heading", { type: "Role" })
-                }
+                { t("adminPortal:components.roles.addRoleWizard.heading", { type: "Role" }) }
                 <Heading as="h6">
                     {
-                        isAddGroup ?
-                            t("adminPortal:components.roles.addRoleWizard.subHeading", { type: "group" }) :
-                            t("adminPortal:components.roles.addRoleWizard.subHeading", { type: "role" })
+                        t("adminPortal:components.roles.addRoleWizard.subHeading", { type: "role" })
                     }
                 </Heading>
             </Modal.Header>

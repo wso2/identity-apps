@@ -26,7 +26,7 @@ import { RolesResourceEndpointsInterface } from "../models";
  */
 export const getRolesResourceEndpoints = (serverHost: string): RolesResourceEndpointsInterface => {
     return {
-        groups: `${ serverHost }/scim2/Groups`,
+        roles: `${ serverHost }/scim2/Roles`,
         permission: `${ serverHost }/api/server/v1/permission-management/permissions`
     }
 };

@@ -63,11 +63,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <BasicRoleDetails
-                        data-testid={
-                            isGroup
-                                ? "group-mgt-edit-group-basic"
-                                : "role-mgt-edit-role-basic"
-                        }
+                        data-testid="role-mgt-edit-role-basic"
                         isGroup={ isGroup }
                         roleObject={ roleObject }
                         onRoleUpdate={ onRoleUpdate }
@@ -79,12 +75,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <RolePermissionDetails
-                        data-testid={
-                            isGroup
-                                ? "group-mgt-edit-group-permissions"
-                                : "role-mgt-edit-role-permissions"
-                        }
-                        isGroup={ isGroup }
+                        data-testid="role-mgt-edit-role-permissions"
+                        isGroup={ false }
                         roleObject={ roleObject }
                         onRoleUpdate={ onRoleUpdate }
                     />
@@ -95,12 +87,8 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <RoleUserDetails
-                        data-testid={
-                            isGroup
-                                ? "group-mgt-edit-group-users"
-                                : "role-mgt-edit-role-users"
-                        }
-                        isGroup={ isGroup }
+                        data-testid="role-mgt-edit-role-users"
+                        isGroup={ false }
                         roleObject={ roleObject }
                         onRoleUpdate={ onRoleUpdate }
                     />

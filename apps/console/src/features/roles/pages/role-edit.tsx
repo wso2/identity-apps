@@ -39,11 +39,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
         getRoleById(roleId)
             .then(response => {
                 if (response.status === 200) {
-                    const role = response.data;
-                    if (!role.displayName.includes("Application/") && !role.displayName.includes("Internal/")) {
-                        setIsGroup(true);
-                    }
-                    setRoleObject(role);
+                    setRoleObject(response.data);
                 }
             }).catch(() => {
                 // TODO: handle error
@@ -69,27 +65,20 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     const handleBackButtonClick = () => {
-        if (isGroup) {
-            history.push(AppConstants.PATHS.get("GROUPS"));
-        } else {
-            history.push(AppConstants.PATHS.get("ROLES"));
-        }
+        history.push(AppConstants.PATHS.get("ROLES"));
     };
     
     return (
         <PageLayout
             isLoading={ isRoleDetailsRequestLoading }
             title={
-                roleObject && roleObject.displayName ?
-                    roleObject.displayName :
+                roleObject && roleObject?.displayName ?
+                    roleObject?.displayName :
                     t("adminPortal:pages.rolesEdit.title")
             }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text:
-                    isGroup
-                        ? t("adminPortal:pages.rolesEdit.backButton", { type: "groups" })
-                        : t("adminPortal:pages.rolesEdit.backButton", { type: "roles" })
+                text: t("adminPortal:pages.rolesEdit.backButton", { type: "roles" })
             } }
             titleTextAlign="left"
             bottomMargin={ false }

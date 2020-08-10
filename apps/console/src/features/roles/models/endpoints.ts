@@ -20,6 +20,6 @@
  * Interface for the Role Management feature resource endpoints.
  */
 export interface RolesResourceEndpointsInterface {
-    groups: string;
+    roles: string;
     permission: string;
 }
