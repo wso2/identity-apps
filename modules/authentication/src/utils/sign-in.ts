@@ -603,7 +603,7 @@ export const customGrant = (
                 }
 
                 if (requestParams.returnsSession) {
-                    return validateIdToken(authConfig.clientID, response.data.id_token).then((valid) => {
+                    return validateIdToken(response.data.id_token, authConfig).then((valid) => {
                         if (valid) {
                             const tokenResponse: TokenResponseInterface = {
                                 accessToken: response.data.access_token,
@@ -613,6 +613,7 @@ export const customGrant = (
                                 scope: response.data.scope,
                                 tokenType: response.data.token_type
                             };
+
                             initUserSession(tokenResponse, getAuthenticatedUser(tokenResponse.idToken), authConfig);
 
                             if (requestParams.returnResponse) {
