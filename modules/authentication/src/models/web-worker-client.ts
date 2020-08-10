@@ -28,7 +28,7 @@ export interface WebWorkerClientInterface {
     initialize(config: ConfigInterface): Promise<boolean>;
     listenForAuthCode(): Promise<UserInfo>;
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
-    revokeToken(): Promise<boolean>;
+    endUserSession(): Promise<boolean>;
 }
 
 export interface WebWorkerSingletonClientInterface {
