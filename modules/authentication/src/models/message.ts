@@ -22,6 +22,7 @@ import {
     AUTH_CODE,
     AUTH_REQUIRED,
     CUSTOM_GRANT,
+    END_USER_SESSION,
     INIT,
     LOGOUT,
     REVOKE_TOKEN,
@@ -70,4 +71,5 @@ export type MessageType =
     | typeof API_CALL
     | typeof API_CALL_ALL
     | typeof CUSTOM_GRANT
-    | typeof REVOKE_TOKEN;
+    | typeof REVOKE_TOKEN
+    | typeof END_USER_SESSION;
