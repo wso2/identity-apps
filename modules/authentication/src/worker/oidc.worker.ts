@@ -22,9 +22,9 @@ import {
     API_CALL_ALL,
     AUTH_REQUIRED,
     CUSTOM_GRANT,
+    END_USER_SESSION,
     INIT,
     LOGOUT,
-    REVOKE_TOKEN,
     SIGNED_IN,
     SIGN_IN
 } from "../constants";
@@ -171,7 +171,7 @@ ctx.onmessage = ({ data, ports }) => {
                 });
 
             break;
-        case REVOKE_TOKEN:
+        case END_USER_SESSION:
             if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
@@ -185,7 +185,7 @@ ctx.onmessage = ({ data, ports }) => {
             }
 
             webWorker
-                .revokeToken()
+                .endUserSession()
                 .then((response) => {
                     port.postMessage(generateSuccessDTO(response));
                 })
