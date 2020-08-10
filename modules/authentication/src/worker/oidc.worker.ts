@@ -33,7 +33,7 @@ import { generateFailureDTO, generateSuccessDTO } from "../utils";
 
 const ctx: WebWorkerClass<any> = self as any;
 
-let oAuthWorker: WebWorkerInterface;
+let webWorker: WebWorkerInterface;
 
 ctx.onmessage = ({ data, ports }) => {
     const port = ports[0];
@@ -41,7 +41,7 @@ ctx.onmessage = ({ data, ports }) => {
     switch (data.type) {
         case INIT:
             try {
-                oAuthWorker = WebWorker.getInstance(data.data);
+                webWorker = WebWorker.getInstance(data.data);
                 port.postMessage(generateSuccessDTO());
             } catch (error) {
                 port.postMessage(generateFailureDTO(error));
@@ -49,13 +49,13 @@ ctx.onmessage = ({ data, ports }) => {
 
             break;
         case SIGN_IN:
-            if (!oAuthWorker) {
+            if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
             } else {
                 if (data?.data?.code) {
-                    oAuthWorker.setAuthCode(data.data.code, data?.data?.sessionState, data?.data?.pkce);
+                    webWorker.setAuthCode(data.data.code, data?.data?.sessionState, data?.data?.pkce);
                 }
-                oAuthWorker
+                webWorker
                     .signIn()
                     .then((response: SignInResponse) => {
                         if (response.type === SIGNED_IN) {
@@ -82,16 +82,16 @@ ctx.onmessage = ({ data, ports }) => {
 
             break;
         case API_CALL:
-            if (!oAuthWorker) {
+            if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
-            if (!oAuthWorker.isSignedIn()) {
+            if (!webWorker.isSignedIn()) {
                 port.postMessage(generateFailureDTO("You have not signed in yet."));
             } else {
-                oAuthWorker
+                webWorker
                     .httpRequest(data.data)
                     .then((response) => {
                         port.postMessage(generateSuccessDTO(response));
@@ -103,16 +103,16 @@ ctx.onmessage = ({ data, ports }) => {
 
             break;
         case API_CALL_ALL:
-            if (!oAuthWorker) {
+            if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
-            if (!oAuthWorker.isSignedIn()) {
+            if (!webWorker.isSignedIn()) {
                 port.postMessage(generateFailureDTO("You have not signed in yet."));
             } else {
-                oAuthWorker
+                webWorker
                     .httpRequestAll(data.data)
                     .then((response) => {
                         port.postMessage(generateSuccessDTO(response));
@@ -124,16 +124,16 @@ ctx.onmessage = ({ data, ports }) => {
 
             break;
         case LOGOUT:
-            if (!oAuthWorker) {
+            if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
-            if (!oAuthWorker.isSignedIn()) {
+            if (!webWorker.isSignedIn()) {
                 port.postMessage(generateFailureDTO("You have not signed in yet."));
             } else {
-                oAuthWorker
+                webWorker
                     .signOut()
                     .then((response) => {
                         if (response) {
@@ -149,19 +149,19 @@ ctx.onmessage = ({ data, ports }) => {
 
             break;
         case CUSTOM_GRANT:
-            if (!oAuthWorker) {
+            if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
-            if (!oAuthWorker.isSignedIn() && data.data.signInRequired) {
+            if (!webWorker.isSignedIn() && data.data.signInRequired) {
                 port.postMessage(generateFailureDTO("You have not signed in yet."));
 
                 break;
             }
 
-            oAuthWorker
+            webWorker
                 .customGrant(data.data)
                 .then((response) => {
                     port.postMessage(generateSuccessDTO(response));
@@ -172,19 +172,19 @@ ctx.onmessage = ({ data, ports }) => {
 
             break;
         case REVOKE_TOKEN:
-            if (!oAuthWorker) {
+            if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
 
                 break;
             }
 
-            if (!oAuthWorker.isSignedIn() && data.data.signInRequired) {
+            if (!webWorker.isSignedIn() && data.data.signInRequired) {
                 port.postMessage(generateFailureDTO("You have not signed in yet."));
 
                 break;
             }
 
-            oAuthWorker
+            webWorker
                 .revokeToken()
                 .then((response) => {
                     port.postMessage(generateSuccessDTO(response));
