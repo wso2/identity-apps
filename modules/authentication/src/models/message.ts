@@ -25,6 +25,10 @@ import {
     END_USER_SESSION,
     INIT,
     LOGOUT,
+    REQUEST_ERROR,
+    REQUEST_FINISH,
+    REQUEST_START,
+    REQUEST_SUCCESS,
     REVOKE_TOKEN,
     SIGNED_IN,
     SIGN_IN
@@ -72,4 +76,8 @@ export type MessageType =
     | typeof API_CALL_ALL
     | typeof CUSTOM_GRANT
     | typeof REVOKE_TOKEN
-    | typeof END_USER_SESSION;
+    | typeof END_USER_SESSION
+    | typeof REQUEST_ERROR
+    | typeof REQUEST_FINISH
+    | typeof REQUEST_START
+    | typeof REQUEST_SUCCESS;
