@@ -71,9 +71,8 @@ export class HttpUtils {
             error.response &&
             error.response.request &&
             error.response.request.responseURL &&
-            error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint(Storage.SessionStorage)
+            error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint(Storage.SessionStorage, null)
         ) {
-
             if (error.response.status === 400) {
                 history.push(window["AppUtils"].getConfig().routes.logout);
                 return;
