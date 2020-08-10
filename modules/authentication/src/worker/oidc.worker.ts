@@ -222,7 +222,7 @@ ctx.onmessage = ({ data, ports }) => {
 
             break;
         default:
-            port.postMessage(generateFailureDTO(`Unknown message type ${data?.type}`));
+            port?.postMessage(generateFailureDTO(`Unknown message type ${data?.type}`));
     }
 };
 
