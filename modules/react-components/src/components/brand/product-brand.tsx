@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ProductReleaseTypes, TestableComponentInterface } from "@wso2is/core/models";
+import { ProductReleaseTypes, ProductVersionConfigInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, ReactNode } from "react";
@@ -52,27 +52,9 @@ export interface ProductBrandPropsInterface extends TestableComponentInterface {
      */
     version?: string;
     /**
-     * Product version UI settings.
+     * Product version config settings.
      */
-    versionUISettings?: ProductVersionUIInterface;
-}
-
-/**
- * Product version interface for UI.
- */
-export interface ProductVersionUIInterface {
-    /**
-     * Show snapshot label.
-     */
-    allowSnapshot?: boolean;
-    /**
-     * Color for the release label.
-     */
-    labelColor?: SemanticCOLORS | "auto" | "primary" | "secondary";
-    /**
-     * Text case.
-     */
-    textCase?: "lowercase" | "uppercase";
+    versionUISettings?: ProductVersionConfigInterface;
 }
 
 /**
@@ -123,7 +105,7 @@ export const ProductBrand: FunctionComponent<PropsWithChildren<ProductBrandProps
                 || versionUISettings.labelColor === "primary"
                 || versionUISettings.labelColor === "secondary")) {
 
-            return versionUISettings.labelColor;
+            return versionUISettings.labelColor as SemanticCOLORS;
         }
 
         if (versionUISettings.labelColor === "primary" || versionUISettings.labelColor === "secondary") {
