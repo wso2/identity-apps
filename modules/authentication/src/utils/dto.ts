@@ -43,6 +43,7 @@ export const generateFailureDTO = (error?: any): ResponseMessage<string> => {
     if (error.toJSON) {
         delete error.toJSON;
     }
+
     return {
         error: JSON.stringify(error ?? ""),
         success: false
