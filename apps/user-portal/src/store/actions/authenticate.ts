@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { AUTHORIZATION_ENDPOINT, IdentityClient, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
+import {
+    AUTHORIZATION_ENDPOINT,
+    IdentityClient,
+    OIDC_SESSION_IFRAME_ENDPOINT,
+    ServiceResourcesType,
+    Storage,
+    TOKEN_ENDPOINT
+}from "@wso2is/authentication";
 import { TokenConstants } from "@wso2is/core/constants";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
@@ -33,7 +40,13 @@ import {
     LinkedAccountInterface,
     ProfileSchema
 } from "../../models";
-import { getProfileCompletion } from "../../utils";
+import {
+    getProfileCompletion,
+    onHttpRequestError,
+    onHttpRequestFinish,
+    onHttpRequestStart,
+    onHttpRequestSuccess
+} from "../../utils";
 import { store } from "../index";
 
 /**
@@ -188,6 +201,13 @@ export const handleSignIn = () => (dispatch) => {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
+            httpClient: {
+                isHandlerEnabled: true,
+                requestErrorCallback: onHttpRequestError,
+                requestFinishCallback: onHttpRequestFinish,
+                requestStartCallback: onHttpRequestStart,
+                requestSuccessCallback: onHttpRequestSuccess
+            },
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -206,8 +226,15 @@ export const handleSignIn = () => (dispatch) => {
                             username: response.username
                         })
                     );
-                    sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
-                    sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
+
+                    oAuth.getServiceEndpoints().then((response: ServiceResourcesType) => {
+                        sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
+                        sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
+                        sessionStorage.setItem(TOKEN_ENDPOINT, response.token)
+                    }).catch(error => {
+                        throw error;
+                    })
+
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
