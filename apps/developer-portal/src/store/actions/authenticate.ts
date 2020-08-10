@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { AUTHORIZATION_ENDPOINT, IdentityClient, OIDC_SESSION_IFRAME_ENDPOINT, Storage } from "@wso2is/authentication";
+import {
+    AUTHORIZATION_ENDPOINT,
+    IdentityClient,
+    OIDC_SESSION_IFRAME_ENDPOINT,
+    ServiceResourcesType,
+    Storage,
+    TOKEN_ENDPOINT
+} from "@wso2is/authentication";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
@@ -33,6 +40,7 @@ import {
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { history } from "../../helpers";
+import { HttpUtils } from "../../utils";
 import { store } from "../index";
 
 /**
@@ -142,6 +150,13 @@ export const handleSignIn = () => (dispatch) => {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
+            httpClient: {
+                isHandlerEnabled: true,
+                requestErrorCallback: HttpUtils.onHttpRequestError,
+                requestFinishCallback: HttpUtils.onHttpRequestFinish,
+                requestStartCallback: HttpUtils.onHttpRequestStart,
+                requestSuccessCallback: HttpUtils.onHttpRequestSuccess
+            },
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -160,8 +175,13 @@ export const handleSignIn = () => (dispatch) => {
                             username: response.username
                         })
                     );
-                    sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
-                    sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
+
+                    oAuth.getServiceEndpoints().then((response: ServiceResourcesType) => {
+                        sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
+                        sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
+                        sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+                    });
+
                     dispatch(getProfileInformation());
                 })
                 .catch((error) => {
