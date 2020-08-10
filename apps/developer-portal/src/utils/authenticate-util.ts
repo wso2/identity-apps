@@ -23,13 +23,14 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { AxiosError } from "axios";
-import { store } from "../../core";
+import { store } from "../store";
 import { handleSignIn } from "../store/actions";
 
 /**
  * Utility class for authenticate operations.
  */
 export class AuthenticateUtils {
+
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -37,7 +38,7 @@ export class AuthenticateUtils {
      * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() {}
+    private constructor() { }
 
     /**
      * Clears the session related information and sign out from the session.
@@ -45,7 +46,7 @@ export class AuthenticateUtils {
     public static endUserSession(): void {
         const auth = IdentityClient.getInstance();
 
-        auth.IdentityClient()
+        auth.endUserSession()
             .then(() => {
                 store.dispatch(handleSignIn());
             })
@@ -53,11 +54,12 @@ export class AuthenticateUtils {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(
                         addAlert<AlertInterface>({
-                            description: I18n.instance.t("adminPortal:notifications.endSession.error.description", {
-                                description: error.response.data.detail
-                            }),
+                            description: I18n.instance.t(
+                                "devPortal:notifications.endSession.error.description",
+                                { description: error.response.data.detail }
+                            ),
                             level: AlertLevels.ERROR,
-                            message: I18n.instance.t("adminPortal:notifications.endSession.error.message")
+                            message: I18n.instance.t("devPortal:notifications.endSession.error.message")
                         })
                     );
 
@@ -66,9 +68,9 @@ export class AuthenticateUtils {
 
                 store.dispatch(
                     addAlert<AlertInterface>({
-                        description: I18n.instance.t("adminPortal:notifications.endSession.genericError.description"),
+                        description: I18n.instance.t("devPortal:notifications.endSession.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:notifications.endSession.genericError.message")
+                        message: I18n.instance.t("devPortal:notifications.endSession.genericError.message")
                     })
                 );
             });

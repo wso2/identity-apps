@@ -31,7 +31,7 @@ import { handleSignIn } from "../store/actions";
  * Clears the session related information and sign out from the session.
  */
 export const endUserSession = (): void => {
-    SignInUtil.sendRevokeTokenRequest(
+    /*     SignInUtil.sendRevokeTokenRequest(
         JSON.parse(AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.REQUEST_PARAMS)),
         AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)
     )
@@ -43,7 +43,7 @@ export const endUserSession = (): void => {
         })
         .catch(() => {
             // TODO: Add a notification message.
-        });
+        }); */
 };
 
 /**
