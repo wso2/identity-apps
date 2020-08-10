@@ -46,7 +46,7 @@ export const endUserSession = (): void => {
  * @return {boolean}
  */
 export const hasLoginPermission = (): boolean => {
-    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
+    const scopes = store.getState().authenticate.scopexw.split(" ");
     return scopes.includes(TokenConstants.LOGIN_SCOPE);
 };
 

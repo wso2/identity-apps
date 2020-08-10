@@ -17,7 +17,6 @@
  *
  */
 
-import { AuthenticateSessionUtil, AuthenticateTokenKeys, Storage } from "@wso2is/authentication";
 import { TokenConstants } from "../constants";
 
 /**
@@ -38,11 +37,8 @@ export class AuthenticateUtils {
      *
      * @return {boolean} True or false.
      */
-    public static hasLoginPermission(): boolean {
-        const scopes = AuthenticateSessionUtil.getSessionParameter(
-            AuthenticateTokenKeys.SCOPE,
-            Storage.SessionStorage
-        ).split(" ");
+    public static hasLoginPermission(allowedScopes: string): boolean {
+        const scopes = allowedScopes.split(" ");
         return scopes.includes(TokenConstants.LOGIN_SCOPE);
     }
 
