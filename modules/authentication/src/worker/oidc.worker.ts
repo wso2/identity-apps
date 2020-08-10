@@ -25,11 +25,16 @@ import {
     END_USER_SESSION,
     INIT,
     LOGOUT,
+    REQUEST_ERROR,
+    REQUEST_FINISH,
+    REQUEST_START,
+    REQUEST_SUCCESS,
     SIGNED_IN,
     SIGN_IN
 } from "../constants";
-import { SignInResponse, WebWorkerClass, WebWorkerInterface } from "../models";
+import { SignInResponse, WebWorkerClass, WebWorkerConfigInterface, WebWorkerInterface } from "../models";
 import { generateFailureDTO, generateSuccessDTO } from "../utils";
+import { AxiosResponse, AxiosError } from "axios";
 
 const ctx: WebWorkerClass<any> = self as any;
 
@@ -41,7 +46,15 @@ ctx.onmessage = ({ data, ports }) => {
     switch (data.type) {
         case INIT:
             try {
-                webWorker = WebWorker.getInstance(data.data);
+                const config: WebWorkerConfigInterface = { ...data.data };
+                config.httpClient = {
+                    ...config.httpClient,
+                    requestErrorCallback: onRequestErrorCallback,
+                    requestFinishCallback: onRequestFinishCallback,
+                    requestStartCallback: onRequestStartCallback,
+                    requestSuccessCallback: onRequestSuccessCallback
+                };
+                webWorker = WebWorker.getInstance(config);
                 port.postMessage(generateSuccessDTO());
             } catch (error) {
                 port.postMessage(generateFailureDTO(error));
@@ -196,6 +209,24 @@ ctx.onmessage = ({ data, ports }) => {
         default:
             port.postMessage(generateFailureDTO(`Unknown message type ${data?.type}`));
     }
+};
+
+const onRequestStartCallback = () => {
+    ctx.postMessage({ type: REQUEST_START });
+};
+
+const onRequestSuccessCallback = (response: AxiosResponse) => {
+    ctx.postMessage({ data: JSON.stringify(response ?? ""), type: REQUEST_SUCCESS });
+};
+
+const onRequestFinishCallback = () => {
+    ctx.postMessage({ type: REQUEST_FINISH });
+};
+
+const onRequestErrorCallback = (error: AxiosError) => {
+    const errorObject = { ...error };
+    delete errorObject.toJSON;
+    ctx.postMessage({ data: JSON.stringify(errorObject ?? ""), type: REQUEST_ERROR });
 };
 
 export default {} as typeof Worker & { new (): Worker };
