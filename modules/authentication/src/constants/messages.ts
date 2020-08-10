@@ -26,3 +26,4 @@ export const API_CALL = "api-call";
 export const API_CALL_ALL = "api-call-all";
 export const CUSTOM_GRANT = "custom-grant";
 export const REVOKE_TOKEN = "revoke-token";
+export const END_USER_SESSION = "end-user-session";
