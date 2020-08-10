@@ -21,36 +21,11 @@ import * as AUTHENTICATION_TYPES from "./constants";
 import {
     ConfigInterface,
     CustomGrantRequestParams,
-    ResponseModeTypes,
-    ServiceResourcesType,
-    WebWorkerClientInterface
+    WebWorkerClientInterface,
+    WebWorkerConfigInterface
 } from "./models";
-import { handleSignIn, handleSignOut } from "./utils";
+import { customGrant as customGrantUtil, handleSignIn, handleSignOut } from "./utils";
 import { WebWorkerClient } from "./worker";
-
-/**
- * The login scope.
- * @constant
- * @type {string}
- * @default
- */
-const LOGIN_SCOPE = "internal_login";
-
-/**
- * Human task scope.
- * @constant
- * @type {string}
- * @default
- */
-const HUMAN_TASK_SCOPE = "internal_humantask_view";
-
-/**
- * Super Tenant Identifier.
- * @constant
- * @type {string}
- * @default
- */
-const DEFAULT_SUPER_TENANT = "carbon.super";
 
 /**
  * Default configurations.
@@ -61,8 +36,7 @@ const DefaultConfig = {
     consentDenied: false,
     enablePKCE: true,
     responseMode: null,
-    scope: [ LOGIN_SCOPE, HUMAN_TASK_SCOPE ],
-    tenant: DEFAULT_SUPER_TENANT
+    scope: [ AUTHENTICATION_TYPES.OIDC_SCOPE ]
 };
 
 const NOT_AVAILABLE_ERROR = "This is available only when the storage is set to \"webWorker\"";
@@ -74,70 +48,37 @@ const NOT_AVAILABLE_ERROR = "This is available only when the storage is set to \
  * @class IdentityClient
  * @implements {ConfigInterface} - Configuration interface.
  */
-export class IdentityClient implements ConfigInterface {
-    public authorizationType!: string;
-    public callbackURL: string;
-    public clientHost: string;
-    public clientID: string;
-    public clientSecret!: string;
-    public consentDenied!: boolean;
-    public enablePKCE!: boolean;
-    public responseMode!: ResponseModeTypes;
-    public scope!: string[];
-    public serverOrigin: string;
-    public storage: AUTHENTICATION_TYPES.Storage;
-    public endpoints?: ServiceResourcesType;
-    private static instance: IdentityClient;
-    private client: WebWorkerClientInterface;
+export class IdentityClient {
+    private _authConfig: ConfigInterface | WebWorkerConfigInterface;
+    private static _instance: IdentityClient;
+    private _client: WebWorkerClientInterface;
+
+    private _storage: AUTHENTICATION_TYPES.Storage;
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     public static getInstance() {
-        if (this.instance) {
-            return this.instance;
+        if (this._instance) {
+            return this._instance;
         }
 
-        this.instance = new IdentityClient();
+        this._instance = new IdentityClient();
 
-        return this.instance;
+        return this._instance;
     }
 
     public initialize(config: ConfigInterface) {
-        this.storage = config?.storage ?? AUTHENTICATION_TYPES.Storage.SessionStorage;
+        this._storage = config.storage ?? AUTHENTICATION_TYPES.Storage.SessionStorage;
 
-        if (this.storage === AUTHENTICATION_TYPES.Storage.SessionStorage) {
-            const resolve = (propertyName) => {
-                if (Object.prototype.hasOwnProperty.call(config, propertyName)) {
-                    return config[ propertyName ];
-                }
+        if (config.storage === AUTHENTICATION_TYPES.Storage.SessionStorage) {
+            this._authConfig = { ...DefaultConfig, ...config };
 
-                if (Object.prototype.hasOwnProperty.call(DefaultConfig, propertyName)) {
-                    return DefaultConfig[ propertyName ];
-                }
-
-                throw new Error(
-                    `"${ propertyName }" is missing in your configuration. Please fill all the mandatory properties`
-                );
-            };
-
-            this.authorizationType = resolve("authorizationType");
-            this.callbackURL = resolve("callbackURL");
-            this.clientHost = resolve("clientHost");
-            this.clientID = resolve("clientID");
-            this.clientSecret = resolve("clientSecret");
-            this.consentDenied = resolve("consentDenied");
-            this.enablePKCE = resolve("enablePKCE");
-            this.responseMode = resolve("responseMode");
-            this.scope = resolve("scope");
-            this.serverOrigin = resolve("serverOrigin");
-            this.endpoints = resolve("endpoints");
-
-            Object.assign(this, config);
             return Promise.resolve(true);
         } else {
-            this.client = WebWorkerClient.getInstance();
-            return this.client
+            this._client = WebWorkerClient.getInstance();
+
+            return this._client
                 .initialize(config)
                 .then(() => {
                     return Promise.resolve(true);
@@ -171,10 +112,11 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signIn(): Promise<any> {
-        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
-            return this.client.signIn();
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.signIn();
         }
-        return handleSignIn(this);
+
+        return handleSignIn(this._authConfig);
     }
 
     /**
@@ -185,38 +127,42 @@ export class IdentityClient implements ConfigInterface {
      * @memberof IdentityClient
      */
     public async signOut(): Promise<any> {
-        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
-            return this.client.signOut();
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.signOut();
         }
-        return handleSignOut(this);
+
+        return handleSignOut(this._authConfig);
     }
 
     public async httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
-        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
-            return this.client.httpRequest(config);
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.httpRequest(config);
         }
 
         return Promise.reject(NOT_AVAILABLE_ERROR);
     }
 
     public async httpRequestAll(config: AxiosRequestConfig[]): Promise<AxiosResponse[]> {
-        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
-            return this.client.httpRequestAll(config);
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.httpRequestAll(config);
         }
+
         return Promise.reject(NOT_AVAILABLE_ERROR);
     }
 
     public async customGrant(requestParams: CustomGrantRequestParams): Promise<any> {
-        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
-            return this.client.customGrant(requestParams);
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.customGrant(requestParams);
         }
-        return Promise.reject(NOT_AVAILABLE_ERROR);
+
+        return customGrantUtil(requestParams, this._authConfig);
     }
 
     public async revokeToken(): Promise<any> {
-        if (this.storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
-            return this.client.revokeToken();
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.revokeToken();
         }
+
         return Promise.reject(NOT_AVAILABLE_ERROR);
     }
 }
