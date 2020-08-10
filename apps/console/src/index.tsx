@@ -17,7 +17,7 @@
  */
 
 import { setSupportedI18nLanguages } from "@wso2is/core/store";
-import { HttpUtils as CommonHttpUtils, ContextUtils, StringUtils } from "@wso2is/core/utils";
+import { ContextUtils, StringUtils } from "@wso2is/core/utils";
 import {
     I18n,
     I18nInstanceInitException,
@@ -36,14 +36,6 @@ import { Config, HttpUtils, UIConstants, store } from "./features/core";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
-
-// Set up the Http client.
-CommonHttpUtils.setupHttpClient(
-    true,
-    HttpUtils.onHttpRequestStart,
-    HttpUtils.onHttpRequestSuccess,
-    HttpUtils.onHttpRequestError,
-    HttpUtils.onHttpRequestFinish);
 
 // Set up the i18n module.
 I18n.init({
