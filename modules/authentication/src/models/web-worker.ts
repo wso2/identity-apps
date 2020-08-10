@@ -32,7 +32,7 @@ export interface WebWorkerInterface {
     httpRequestAll(configs: AxiosRequestConfig[]): Promise<AxiosResponse[]>;
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
     getUserInfo(): UserInfo;
-    revokeToken(): Promise<boolean>;
+    endUserSession(): Promise<boolean>;
 }
 
 export interface WebWorkerSingletonInterface {
