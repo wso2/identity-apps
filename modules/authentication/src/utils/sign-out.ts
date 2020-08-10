@@ -71,9 +71,9 @@ export function sendSignOutRequest(requestParams: ConfigInterface): Promise<any>
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function handleSignOut(requestParams: ConfigInterface): Promise<any> {
-    if (requestParams.storage === Storage.SessionStorage && sessionStorage.length === 0) {
+    if (requestParams.storage !== Storage.WebWorker && sessionStorage.length === 0) {
         return Promise.reject(new Error("No login sessions."));
-    } else if (requestParams.session.size === 0) {
+    } else if (requestParams?.session?.size === 0) {
                return Promise.reject(new Error("No login sessions."));
            } else {
                return sendSignOutRequest(requestParams);
