@@ -273,7 +273,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                                     <TransferListItem
                                         handleItemChange={ () => handleAssignedItemCheckboxChange(role) }
                                         key={ index }
-                                        listItem={ roleName?.length > 0 ? roleName[1] : role?.displayName }
+                                        listItem={ roleName?.length > 1 ? roleName[1] : role?.displayName }
                                         listItemId={ role.id }
                                         listItemIndex={ index }
                                         listItemTypeLabel={ createItemLabel(role.displayName) }

@@ -99,11 +99,11 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
     /**
      * Util method to validate if the provided role name exists in the system.
      *
-     * @param roleName - new role name user entered.
+     * @param groupName - new role name user entered.
      */
-    const validateGroupName = (roleName: string): void => {
+    const validateGroupName = (groupName: string): void => {
         const searchData: SearchGroupInterface = {
-            filter: "displayName eq " + roleName,
+            filter: "displayName eq " + groupName,
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
             ],

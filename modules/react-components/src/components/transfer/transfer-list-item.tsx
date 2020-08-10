@@ -76,7 +76,10 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
         <Table.Row key={ listItemIndex }>
             <Table.Cell id={ listItemId } collapsing>
                 <Checkbox
-                    data-testid={ `${ testId }-${ listItem.replace(" ", "-") }-checkbox` }
+                    data-testid={
+                        `${ testId }-${ listItem?.split(" ").length > 0
+                            ? listItem?.replace(" ", "-")
+                            : listItem }-checkbox` }
                     checked={ isItemChecked }
                     onChange={ handleItemChange }
                     onClick={ handleItemClick }
@@ -116,8 +119,10 @@ export const TransferListItem: FunctionComponent<TransferListItemPropsInterface>
                             content="View permissions"
                             trigger={
                                 <Icon
-                                    data-testid={ `${ testId }-${ listItem?.replace(" ", "-") }
-                                    -icon` }
+                                    data-testid={
+                                        `${ testId }-${ listItem?.split(" ").length > 0
+                                            ? listItem?.replace(" ", "-")
+                                            : listItem }-icon` }
                                     color="grey"
                                     name="key"
                                     onClick={ handleOpenPermissionModal }

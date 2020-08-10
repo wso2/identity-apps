@@ -22,13 +22,9 @@ import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-import {
-    PRIMARY_USERSTORE_PROPERTY_VALUES,
-    USERSTORE_REGEX_PROPERTIES,
-    getUserstoreRegEx,
-    validateInputAgainstRegEx
-} from "../../../userstores";
-import { searchRoleList } from "../../api";
+import { SharedUserStoreConstants } from "../../../core/constants";
+import { SharedUserStoreUtils } from "../../../core/utils";
+import { searchGroupList } from "../../../groups/api";
 import {
     APPLICATION_DOMAIN,
     INTERNAL_DOMAIN,
@@ -68,7 +64,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState<string>(PRIMARY_DOMAIN);
+    const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     /**
@@ -116,7 +112,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             startIndex: 1
         };
 
-        searchRoleList(searchData)
+        // TODO: Change the following to search from role list when the API is ready.
+        searchGroupList(searchData)
             .then((response) => {
                 setIsValidRoleName(response?.data?.totalResults === 0);
             });
@@ -140,15 +137,16 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const validateRoleNamePattern = async (roleName: string): Promise<void> => {
         let userStoreRegEx = "";
         if (userStore !== PRIMARY_DOMAIN) {
-            await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
+            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
+                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
                 .then((response) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
                 })
         } else {
-            userStoreRegEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
+            userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         }
-        setIsRoleNamePatternValid(validateInputAgainstRegEx(roleName, userStoreRegEx));
+        setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(roleName, userStoreRegEx));
     };
 
     /**
