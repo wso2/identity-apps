@@ -161,7 +161,7 @@ export interface ProductVersionConfigInterface {
     /**
      * Override the parent POM version.
      */
-    override?: string;
+    versionOverride?: string;
     /**
      * Text case.
      */
