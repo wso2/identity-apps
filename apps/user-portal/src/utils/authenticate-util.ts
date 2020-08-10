@@ -20,8 +20,7 @@
 import {
     AuthenticateSessionUtil,
     AuthenticateTokenKeys,
-    OPConfigurationUtil,
-    SignInUtil
+    IdentityClient
 } from "@wso2is/authentication";
 import * as TokenConstants from "../constants";
 import { store } from "../store";
@@ -31,19 +30,14 @@ import { handleSignIn } from "../store/actions";
  * Clears the session related information and sign out from the session.
  */
 export const endUserSession = (): void => {
-    /*     SignInUtil.sendRevokeTokenRequest(
-        JSON.parse(AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.REQUEST_PARAMS)),
-        AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)
-    )
+    const auth = IdentityClient.getInstance();
+    auth.endUserSession()
         .then(() => {
-            // Clear out the session info.
-            AuthenticateSessionUtil.endAuthenticatedSession();
-            OPConfigurationUtil.resetOPConfiguration();
             store.dispatch(handleSignIn());
         })
         .catch(() => {
             // TODO: Add a notification message.
-        }); */
+        });
 };
 
 /**
