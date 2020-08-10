@@ -9,7 +9,7 @@
         "WSO2 Identity Apps",
         "authentication"
     ],
-    "main": "src/index.ts",
+    "main": "dist/main.js",
     "scripts": {
         "lint": "tslint -t stylish --project .",
         "build": "rimraf dist && webpack -p --env.NODE_ENV=production"
