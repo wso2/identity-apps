@@ -157,8 +157,10 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
         .customGrant({
             attachToken: false,
             data: {
-                clientId: "{{clientId}}",
-                grantType: "account_switch",
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                client_id: "{{clientId}}",
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                grant_type: "account_switch",
                 scope: "{{scope}}",
                 "tenant-domain": account.tenantDomain,
                 token: "{{token}}",
