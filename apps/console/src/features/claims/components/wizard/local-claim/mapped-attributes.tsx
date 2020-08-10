@@ -16,13 +16,12 @@
 * under the License.
 */
 
+import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
-// TODO: use `getUserStores()` function from Userstores features.
-import { getUserStoreList } from "../../../../users";
 import { UserStoreListItem } from "../../../../userstores";
 
 /**

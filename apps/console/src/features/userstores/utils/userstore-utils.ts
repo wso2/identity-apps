@@ -16,9 +16,8 @@
  * under the License.
  */
 
+import { getUserStoreList } from "@wso2is/core/api";
 import _ from "lodash";
-// TODO: use `getUserStores()` function from Userstores features.
-import { getUserStoreList } from "../../users";
 import { getAUserStore } from "../api";
 import {
     CategorizedProperties,

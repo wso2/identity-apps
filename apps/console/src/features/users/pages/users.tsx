@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getUserStoreList } from "@wso2is/core/api";
 import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -26,7 +27,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, AppState, UIConstants, store } from "../../core";
-import { deleteUser, getUserStoreList, getUsersList } from "../api";
+import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserConstants } from "../constants";
 import { UserListInterface } from "../models";

@@ -38,6 +38,7 @@ import { RoleList } from "../../roles";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";
 import { OverviewPageIllustrations } from "../configs";
+import {GroupList} from "../../groups/components";
 
 /**
  * Proptypes for the overview page component.
@@ -235,11 +236,10 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("GROUPS")) }
                     showExtraContent={ groupList instanceof Array && groupList.length > 0 }
                 >
-                    <RoleList
+                    <GroupList
                         selection
                         defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
                         data-testid="group-mgt-groups-list"
-                        isGroup={ true }
                         isLoading={ isGroupsListRequestLoading }
                         onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.PATHS.get("GROUPS")) }
                         showListItemActions={ false }
@@ -247,7 +247,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         descriptionColumnWidth={ 14 }
                         metaColumnWidth={ 1 }
                         showMetaContent={ false }
-                        roleList={ groupList }
+                        groupList={ groupList }
                     />
                 </StatsInsightsWidget>
             </Grid.Column>
