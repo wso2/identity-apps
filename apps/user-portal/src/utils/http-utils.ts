@@ -17,7 +17,7 @@
  *
  */
 
-import { OPConfigurationUtil } from "@wso2is/authentication";
+import { OPConfigurationUtil, Storage } from "@wso2is/authentication";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
@@ -77,10 +77,12 @@ export const onHttpRequestError = (error: any): null => {
     // Terminate the session if the token endpoint returns a bad request(400)
     // The token binding feature will return a 400 status code when the session
     // times out.
-    if (error.response && error.response.request
-        && error.response.request.responseURL
-        && error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint()) {
-
+    if (
+        error.response &&
+        error.response.request &&
+        error.response.request.responseURL &&
+        error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint(Storage.SessionStorage)
+    ) {
         if (error.response.status === 400) {
             history.push(window["AppUtils"].getConfig().routes.logout);
             return;
