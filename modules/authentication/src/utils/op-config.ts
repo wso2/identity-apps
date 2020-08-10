@@ -60,11 +60,7 @@ export const isOPConfigInitiated = (requestParams: ConfigInterface): boolean => 
  * @param {string} authorizationEndpoint
  */
 export const setAuthorizeEndpoint = (authorizationEndpoint: string, requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint, requestParams);
-    } else {
-        requestParams.session.set(AUTHORIZATION_ENDPOINT, authorizationEndpoint);
-    }
+    setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint, requestParams);
 };
 
 /**
@@ -73,11 +69,7 @@ export const setAuthorizeEndpoint = (authorizationEndpoint: string, requestParam
  * @param {string} tokenEndpoint
  */
 export const setTokenEndpoint = (tokenEndpoint: string, requestParams): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint, requestParams);
-    } else {
-        requestParams.session.set(TOKEN_ENDPOINT, tokenEndpoint);
-    }
+    setSessionParameter(TOKEN_ENDPOINT, tokenEndpoint, requestParams);
 };
 
 /**
@@ -86,11 +78,7 @@ export const setTokenEndpoint = (tokenEndpoint: string, requestParams): void => 
  * @param {string} endSessionEndpoint
  */
 export const setEndSessionEndpoint = (endSessionEndpoint: string, requestParams): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint, requestParams);
-    } else {
-        requestParams.session.set(END_SESSION_ENDPOINT, endSessionEndpoint);
-    }
+    setSessionParameter(END_SESSION_ENDPOINT, endSessionEndpoint, requestParams);
 };
 
 /**
@@ -99,11 +87,7 @@ export const setEndSessionEndpoint = (endSessionEndpoint: string, requestParams)
  * @param jwksEndpoint
  */
 export const setJwksUri = (jwksEndpoint, requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(JWKS_ENDPOINT, jwksEndpoint, requestParams);
-    } else {
-        requestParams.session.set(JWKS_ENDPOINT, jwksEndpoint);
-    }
+    setSessionParameter(JWKS_ENDPOINT, jwksEndpoint, requestParams);
 };
 
 /**
@@ -112,44 +96,28 @@ export const setJwksUri = (jwksEndpoint, requestParams: ConfigInterface): void =
  * @param {string} revokeTokenEndpoint
  */
 export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string, requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint, requestParams);
-    } else {
-        requestParams.session.set(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint);
-    }
+    setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint, requestParams);
 };
 
 /**
  * Set openid configuration initiated.
  */
 export const setOPConfigInitiated = (requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(OP_CONFIG_INITIATED, "true", requestParams);
-    } else {
-        requestParams.session.set(OP_CONFIG_INITIATED, "true");
-    }
+    setSessionParameter(OP_CONFIG_INITIATED, "true", requestParams);
 };
 
 /**
  * Set callback URL.
  */
 export const setCallbackURL = (url: string, requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(CALLBACK_URL, url, requestParams);
-    } else {
-        requestParams.session.set(CALLBACK_URL, url);
-    }
+    setSessionParameter(CALLBACK_URL, url, requestParams);
 };
 
 /**
  * Set OIDC Session IFrame URL.
  */
 export const setOIDCSessionIFrameURL = (url: string, requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, url, requestParams);
-    } else {
-        requestParams.session.set(OIDC_SESSION_IFRAME_ENDPOINT, url);
-    }
+    setSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, url, requestParams);
 };
 
 /**
@@ -158,11 +126,7 @@ export const setOIDCSessionIFrameURL = (url: string, requestParams: ConfigInterf
  * @param issuer id_token issuer.
  */
 export const setIssuer = (issuer, requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(ISSUER, issuer, requestParams);
-    } else {
-        requestParams.session.set(ISSUER, issuer);
-    }
+    setSessionParameter(ISSUER, issuer, requestParams);
 };
 
 /**
@@ -171,11 +135,7 @@ export const setIssuer = (issuer, requestParams: ConfigInterface): void => {
  * @param {string} clientID - Client ID of the application.
  */
 export const setClientID = (requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        setSessionParameter(CLIENT_ID, requestParams.clientID, requestParams);
-    } else {
-        requestParams.session.set(CLIENT_ID, requestParams.clientID);
-    }
+    setSessionParameter(CLIENT_ID, requestParams.clientID, requestParams);
 };
 
 /**
@@ -246,7 +206,7 @@ export const initOPConfiguration = (requestParams: ConfigInterface, forceInit: b
             setClientID(requestParams);
             setOIDCSessionIFrameURL(
                 requestParams.serverOrigin + requestParams.endpoints.oidcSessionIFrame ??
-                SERVICE_RESOURCES.oidcSessionIFrame,
+                    SERVICE_RESOURCES.oidcSessionIFrame,
                 requestParams
             );
             setCallbackURL(requestParams.callbackURL, requestParams);
@@ -255,9 +215,9 @@ export const initOPConfiguration = (requestParams: ConfigInterface, forceInit: b
             return Promise.resolve(
                 new Error(
                     "Initialized OpenID Provider configuration from default configuration." +
-                    "Because failed to access wellknown endpoint: " +
-                    serverHost +
-                    SERVICE_RESOURCES.wellKnown
+                        "Because failed to access wellknown endpoint: " +
+                        serverHost +
+                        SERVICE_RESOURCES.wellKnown
                 )
             );
         });
@@ -289,11 +249,7 @@ export const resetOPConfiguration = (requestParams: ConfigInterface): void => {
  * @returns {string|null}
  */
 export const getAuthorizeEndpoint = (requestParams: ConfigInterface): string | null => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(AUTHORIZATION_ENDPOINT, requestParams);
-    } else {
-        return requestParams.session.get(AUTHORIZATION_ENDPOINT);
-    }
+    return getSessionParameter(AUTHORIZATION_ENDPOINT, requestParams);
 };
 
 /**
@@ -302,11 +258,7 @@ export const getAuthorizeEndpoint = (requestParams: ConfigInterface): string | n
  * @returns {string|null}
  */
 export const getTokenEndpoint = (requestParams: ConfigInterface): string | null => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(TOKEN_ENDPOINT, requestParams);
-    } else {
-        return requestParams.session.get(TOKEN_ENDPOINT);
-    }
+    return getSessionParameter(TOKEN_ENDPOINT, requestParams);
 };
 
 /**
@@ -315,11 +267,7 @@ export const getTokenEndpoint = (requestParams: ConfigInterface): string | null 
  * @returns {string|null}
  */
 export const getRevokeTokenEndpoint = (requestParams: ConfigInterface): string | null => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(REVOKE_TOKEN_ENDPOINT, requestParams);
-    } else {
-        return requestParams.session.get(REVOKE_TOKEN_ENDPOINT);
-    }
+    return getSessionParameter(REVOKE_TOKEN_ENDPOINT, requestParams);
 };
 
 /**
@@ -328,11 +276,7 @@ export const getRevokeTokenEndpoint = (requestParams: ConfigInterface): string |
  * @returns {string|null}
  */
 export const getEndSessionEndpoint = (requestParams: ConfigInterface): string | null => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(END_SESSION_ENDPOINT, requestParams);
-    } else {
-        return requestParams.session.get(END_SESSION_ENDPOINT);
-    }
+    return getSessionParameter(END_SESSION_ENDPOINT, requestParams);
 };
 
 /**
@@ -341,11 +285,7 @@ export const getEndSessionEndpoint = (requestParams: ConfigInterface): string | 
  * @returns {string|null}
  */
 export const getJwksUri = (requestParams: ConfigInterface): string | null => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(JWKS_ENDPOINT, requestParams);
-    } else {
-        return requestParams.session.get(JWKS_ENDPOINT);
-    }
+    return getSessionParameter(JWKS_ENDPOINT, requestParams);
 };
 
 /**
@@ -354,11 +294,7 @@ export const getJwksUri = (requestParams: ConfigInterface): string | null => {
  * @returns {string|null}
  */
 export const getUsername = (requestParams: ConfigInterface): string | null => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(USERNAME, requestParams);
-    } else {
-        return requestParams.session.get(USERNAME);
-    }
+    return getSessionParameter(USERNAME, requestParams);
 };
 
 /**
@@ -367,11 +303,7 @@ export const getUsername = (requestParams: ConfigInterface): string | null => {
  * @returns {any}
  */
 export const getTenant = (requestParams): string | null => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(TENANT, requestParams);
-    } else {
-        return requestParams.session.get(TENANT);
-    }
+    return getSessionParameter(TENANT, requestParams);
 };
 
 /**
@@ -380,11 +312,7 @@ export const getTenant = (requestParams): string | null => {
  * @returns {any}
  */
 export const getIssuer = (requestParams: ConfigInterface): string => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(ISSUER, requestParams);
-    } else {
-        return requestParams.session.get(ISSUER);
-    }
+    return getSessionParameter(ISSUER, requestParams);
 };
 
 /**
@@ -393,11 +321,7 @@ export const getIssuer = (requestParams: ConfigInterface): string => {
  * @return {string}
  */
 export const getClientID = (requestParams: ConfigInterface): string => {
-    if (requestParams.storage === Storage.SessionStorage) {
-        return getSessionParameter(CLIENT_ID, requestParams);
-    } else {
-        return requestParams.session.get(CLIENT_ID);
-    }
+    return getSessionParameter(CLIENT_ID, requestParams);
 };
 
 /**
