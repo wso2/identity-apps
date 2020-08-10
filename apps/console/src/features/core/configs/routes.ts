@@ -204,7 +204,16 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: false
     },
-    ...extensions
+    {
+        component: null,
+        icon: null,
+        id: "404",
+        name: "404",
+        path: "*",
+        protected: true,
+        redirectTo: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
+        showOnSidePanel: false
+    }
 ];
 
 /**
@@ -472,6 +481,16 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS"),
         protected: true,
         showOnSidePanel: false
+    },
+    {
+        component: null,
+        icon: null,
+        id: "404",
+        name: "404",
+        path: "*",
+        protected: true,
+        redirectTo: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
+        showOnSidePanel: false
     }
 ];
 
@@ -629,5 +648,5 @@ export const baseRoutes = BASE_ROUTES;
 export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
 export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
 export const errorLayoutRoutes = ERROR_LAYOUT_ROUTES;
-export const developerViewRoutes = DEVELOPER_VIEW_ROUTES;
+export const developerViewRoutes = [ ...extensions, ...DEVELOPER_VIEW_ROUTES ];
 export const adminViewRoutes = ADMIN_VIEW_ROUTES;
