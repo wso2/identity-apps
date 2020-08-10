@@ -265,7 +265,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
-                component: lazy(() => import("../../roles/pages/role-edit")),
+                component: lazy(() => import("../../groups/pages/group-edit")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon

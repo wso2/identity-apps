@@ -23,6 +23,7 @@ import { getApplicationsResourceEndpoints } from "../../applications";
 import { getCertificatesResourceEndpoints } from "../../certificates";
 import { getClaimResourceEndpoints } from "../../claims";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
+import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
@@ -121,6 +122,7 @@ export class Config {
             ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUsersResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
             documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
             // TODO: Remove this endpoint and use ID token to get the details

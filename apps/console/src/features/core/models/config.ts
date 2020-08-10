@@ -26,6 +26,7 @@ import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ApplicationsResourceEndpointsInterface } from "../../applications";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims";
+import { GroupsResourceEndpointsInterface } from "../../groups";
 import { IDPResourceEndpointsInterface } from "../../identity-providers";
 import { RolesResourceEndpointsInterface } from "../../roles";
 import { ServerConfigurationsResourceEndpointsInterface } from "../../server-configurations";
@@ -140,6 +141,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
  */
 export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpointsInterface,
     CertificatesResourceEndpointsInterface,
+    GroupsResourceEndpointsInterface,
     ServerConfigurationsResourceEndpointsInterface,
     UsersResourceEndpointsInterface,
     UserstoreResourceEndpointsInterface,
