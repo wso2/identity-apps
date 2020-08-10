@@ -24,6 +24,7 @@ interface CommonServiceResourceEndpointsInterface {
     claims: string;
     externalClaims: string;
     groups: string;
+    roles: string;
     jwks: string;
     localClaims: string;
     logout: string;
@@ -48,6 +49,7 @@ export const CommonServiceResourcesEndpoints = (serverHost: string): CommonServi
     logout: `${serverHost}/oidc/logout`,
     me: `${serverHost}/scim2/Me`,
     profileSchemas: `${serverHost}/scim2/Schemas`,
+    roles: `${serverHost}/scim2/Roles`,
     revoke: `${serverHost}/oauth2/revoke`,
     token: `${serverHost}/oauth2/token`,
     userstores: `${serverHost}/api/server/v1/userstores`,
