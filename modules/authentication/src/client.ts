@@ -24,7 +24,13 @@ import {
     WebWorkerClientInterface,
     WebWorkerConfigInterface
 } from "./models";
-import { customGrant as customGrantUtil, handleSignIn, handleSignOut } from "./utils";
+import {
+    customGrant as customGrantUtil,
+    getSessionParameter,
+    handleSignIn,
+    handleSignOut,
+    sendRevokeTokenRequest
+} from "./utils";
 import { WebWorkerClient } from "./worker";
 
 /**
@@ -36,7 +42,7 @@ const DefaultConfig = {
     consentDenied: false,
     enablePKCE: true,
     responseMode: null,
-    scope: [ AUTHENTICATION_TYPES.OIDC_SCOPE ]
+    scope: [AUTHENTICATION_TYPES.OIDC_SCOPE]
 };
 
 const NOT_AVAILABLE_ERROR = "This is available only when the storage is set to \"webWorker\"";
@@ -56,7 +62,7 @@ export class IdentityClient {
     private _storage: AUTHENTICATION_TYPES.Storage;
 
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
+    private constructor() {}
 
     public static getInstance() {
         if (this._instance) {
@@ -158,11 +164,14 @@ export class IdentityClient {
         return customGrantUtil(requestParams, this._authConfig);
     }
 
-    public async revokeToken(): Promise<any> {
+    public async endUserSession(): Promise<any> {
         if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
-            return this._client.revokeToken();
+            return this._client.endUserSession();
         }
 
-        return Promise.reject(NOT_AVAILABLE_ERROR);
+        return sendRevokeTokenRequest(
+            this._authConfig,
+            getSessionParameter(AUTHENTICATION_TYPES.ACCESS_TOKEN, this._authConfig)
+        );
     }
 }
