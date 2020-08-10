@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AxiosError, AxiosResponse } from "axios";
 import { ServiceResourcesType } from ".";
 import { ResponseModeTypes } from "./oidc-request-params";
 import { SessionData } from "./web-worker-client";
@@ -39,8 +40,17 @@ export interface ConfigInterface {
     storage?: Storage;
     session?: SessionData;
     endpoints?: ServiceResourcesType;
+    httpClient?: HttpClient;
 }
 
 export interface WebWorkerConfigInterface extends ConfigInterface {
     baseUrls: string[];
+}
+
+export interface HttpClient {
+    isHandlerEnabled: boolean;
+    requestStartCallback: () => void;
+    requestSuccessCallback: (response: AxiosResponse) => void;
+    requestErrorCallback: (error: AxiosError) => void;
+    requestFinishCallback: () => void;
 }
