@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import axios, { AxiosError, AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
@@ -30,6 +30,7 @@ import {
     SIGNED_IN,
     USERNAME
 } from "../constants";
+import { AxiosHttpClient, AxiosHttpClientInstance } from "../http-client";
 import {
     CustomGrantRequestParams,
     SessionData,
@@ -56,7 +57,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
      */
     let authConfig: WebWorkerConfigInterface;
 
-    let httpClient: AxiosInstance;
+    let httpClient: AxiosHttpClientInstance;
 
     let refreshTimer: NodeJS.Timeout;
 
@@ -176,7 +177,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
         });
 
         if (matches) {
-            return httpClient(config)
+            return httpClient.request(config)
                 .then((response: AxiosResponse) => {
                     return Promise.resolve(response);
                 })
@@ -223,7 +224,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
         });
 
         const httpRequests: AxiosPromise[] = configs.map((config: AxiosRequestConfig) => {
-            return httpClient(config);
+            return httpClient.request(config);
         });
 
         if (matches) {
@@ -283,22 +284,24 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
         authConfig = { ...config };
         authConfig.session = session;
 
-        httpClient = axios.create({
-            withCredentials: true
-        });
+        httpClient = AxiosHttpClient.getInstance();
 
-        httpClient.interceptors.request.use(
-            (config) => {
-                config.headers = {
-                    ...config.headers,
-                    Authorization: `Bearer ${ session.get(ACCESS_TOKEN) }`
-                };
+        const startCallback = (request: AxiosRequestConfig): void => {
+            request.headers = {
+                ...request.headers,
+                Authorization: `Bearer ${ session.get(ACCESS_TOKEN) }`
+            };
 
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
+            config.httpClient?.requestStartCallback && config.httpClient?.requestStartCallback();
+
+        };
+
+        httpClient.init(
+            true,
+            startCallback,
+            config.httpClient?.requestSuccessCallback ?? null,
+            config.httpClient?.requestErrorCallback ?? null,
+            config.httpClient?.requestFinishCallback ?? null
         );
 
         return {
