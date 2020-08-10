@@ -41,9 +41,11 @@ import {
 } from "../models";
 import {
     customGrant as customGrantUtil,
+    endAuthenticatedSession,
     getUserInfo as getUserInfoUtil,
     handleSignIn,
     handleSignOut,
+    resetOPConfiguration,
     sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
     sendRevokeTokenRequest as sendRevokeTokenRequestUtil
 } from "../utils";
@@ -136,8 +138,15 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
      *
      * @returns {Promise<boolean>} A promise that resolves with `true` if revoking is successful.
      */
-    const revokeToken = (): Promise<boolean> => {
-        return sendRevokeTokenRequestUtil(authConfig, session.get(ACCESS_TOKEN));
+    const endUserSession = (): Promise<boolean> => {
+        return sendRevokeTokenRequestUtil(authConfig, session.get(ACCESS_TOKEN)).then(() => {
+            endAuthenticatedSession(authConfig);
+            resetOPConfiguration(authConfig);
+
+            return Promise.resolve(true);
+        }).catch(error => {
+            return Promise.reject(error);
+        });
     };
 
     /**
@@ -295,12 +304,12 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
         return {
             customGrant,
             doesTokenExist,
+            endUserSession,
             getUserInfo,
             httpRequest,
             httpRequestAll,
             isSignedIn,
             refreshAccessToken,
-            revokeToken,
             setAuthCode,
             signIn,
             signOut

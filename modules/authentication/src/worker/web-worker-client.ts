@@ -24,10 +24,10 @@ import {
     AUTHORIZATION_CODE,
     AUTH_REQUIRED,
     CUSTOM_GRANT,
+    END_USER_SESSION,
     INIT,
     LOGOUT,
     PKCE_CODE_VERIFIER,
-    REVOKE_TOKEN,
     SESSION_STATE,
     SIGNED_IN,
     SIGN_IN
@@ -517,13 +517,13 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
      *
      * @returns {Promise<boolean>} A promise that resolves when revoking is completed.
      */
-    const revokeToken = (): Promise<boolean> => {
+    const endUserSession = (): Promise<boolean> => {
         if (!signedIn) {
             return Promise.reject("You have not signed in yet");
         }
 
         const message: Message<null> = {
-            type: REVOKE_TOKEN
+            type: END_USER_SESSION
         };
 
         return communicate<null, boolean>(message)
@@ -547,11 +547,11 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
 
         return {
             customGrant,
+            endUserSession,
             httpRequest,
             httpRequestAll,
             initialize,
             listenForAuthCode,
-            revokeToken,
             signIn,
             signOut
         };
