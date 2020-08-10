@@ -561,7 +561,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
                     handleInitialTempListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
                     handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
-                    handleSetGroupId={ (groupId) => handleGroupIdSet(groupId) }
+                    handleSetGroupId={ null }
                 />
             ),
             icon: UserWizardStepIcons.groups,

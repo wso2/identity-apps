@@ -34,11 +34,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { AppConstants, AppState, UIConstants, history } from "../../core";
-import { RoleList } from "../../roles";
+import { GroupList } from "../../groups/components";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";
 import { OverviewPageIllustrations } from "../configs";
-import {GroupList} from "../../groups/components";
 
 /**
  * Proptypes for the overview page component.
