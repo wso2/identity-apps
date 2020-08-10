@@ -89,8 +89,8 @@ export class IdentityClient {
                 .then(() => {
                     return Promise.resolve(true);
                 })
-                .catch(() => {
-                    return Promise.reject(false);
+                .catch((error) => {
+                    return Promise.reject(error);
                 });
         }
     }
