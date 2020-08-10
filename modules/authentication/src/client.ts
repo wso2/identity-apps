@@ -22,14 +22,16 @@ import {
     ConfigInterface,
     CustomGrantRequestParams,
     WebWorkerClientInterface,
-    WebWorkerConfigInterface
+    WebWorkerConfigInterface,
+    ServiceResourcesType
 } from "./models";
 import {
     customGrant as customGrantUtil,
     getSessionParameter,
     handleSignIn,
     handleSignOut,
-    sendRevokeTokenRequest
+    sendRevokeTokenRequest,
+    getServiceEndpoints
 } from "./utils";
 import { WebWorkerClient } from "./worker";
 
@@ -173,5 +175,13 @@ export class IdentityClient {
             this._authConfig,
             getSessionParameter(AUTHENTICATION_TYPES.ACCESS_TOKEN, this._authConfig)
         );
+    }
+
+    public async getServiceEndpoints(): Promise<ServiceResourcesType> {
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.getServiceEndpoints();
+        }
+
+        return Promise.resolve(getServiceEndpoints(this._authConfig));
     }
 }
