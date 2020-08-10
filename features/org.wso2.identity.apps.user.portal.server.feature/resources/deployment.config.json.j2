@@ -181,6 +181,17 @@
             }
         },
         "productName": "{{ user_portal.ui.product_name }}",
+        "productVersionConfig": {
+            {% if console.product_version.configs.items() is defined %}
+            {% for key, value in console.product_version.configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
         "theme": {
             "name": "{{ user_portal.theme }}"
         }

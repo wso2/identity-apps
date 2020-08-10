@@ -145,7 +145,8 @@ export class Config {
             doNotDeleteIdentityProviders: window["doNotDeleteIdentityProviders"] || [],
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
-            productName: window["AppUtils"].getConfig().ui.productName
+            productName: window["AppUtils"].getConfig().ui.productName,
+            productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig
         };
     }
 }

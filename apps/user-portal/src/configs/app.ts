@@ -107,6 +107,7 @@ export class Config {
             copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             features: window["AppUtils"].getConfig().ui.features,
             productName: window["AppUtils"].getConfig().ui.productName,
+            productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             titleText: window["AppUtils"].getConfig().appTitle
         };
     }
