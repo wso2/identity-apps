@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AxiosError, AxiosResponse } from "axios";
 import { WebWorker } from "./web-worker";
 import {
     API_CALL,
@@ -23,6 +24,7 @@ import {
     AUTH_REQUIRED,
     CUSTOM_GRANT,
     END_USER_SESSION,
+    GET_SERVICE_ENDPOINTS,
     INIT,
     LOGOUT,
     REQUEST_ERROR,
@@ -34,7 +36,6 @@ import {
 } from "../constants";
 import { SignInResponse, WebWorkerClass, WebWorkerConfigInterface, WebWorkerInterface } from "../models";
 import { generateFailureDTO, generateSuccessDTO } from "../utils";
-import { AxiosResponse, AxiosError } from "axios";
 
 const ctx: WebWorkerClass<any> = self as any;
 
@@ -205,6 +206,20 @@ ctx.onmessage = ({ data, ports }) => {
                 .catch((error) => {
                     port.postMessage(generateFailureDTO(error));
                 });
+            break;
+        case GET_SERVICE_ENDPOINTS:
+            if (!webWorker) {
+                port.postMessage(generateFailureDTO("Worker has not been initiated."));
+
+                break;
+            }
+
+            webWorker.getServiceEndpoints().then(response => {
+                port.postMessage(generateSuccessDTO(response));
+            }).catch(error => {
+                port.postMessage(generateFailureDTO(error));
+            });
+
             break;
         default:
             port.postMessage(generateFailureDTO(`Unknown message type ${data?.type}`));

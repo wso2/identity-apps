@@ -33,6 +33,7 @@ import {
 import { AxiosHttpClient, AxiosHttpClientInstance } from "../http-client";
 import {
     CustomGrantRequestParams,
+    ServiceResourcesType,
     SessionData,
     SignInResponse,
     UserInfo,
@@ -43,6 +44,7 @@ import {
 import {
     customGrant as customGrantUtil,
     endAuthenticatedSession,
+    getServiceEndpoints as getServiceEndpointsUtil,
     getUserInfo as getUserInfoUtil,
     handleSignIn,
     handleSignOut,
@@ -271,6 +273,10 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
         return getUserInfoUtil(authConfig);
     };
 
+    const getServiceEndpoints = (): Promise<ServiceResourcesType> => {
+        return Promise.resolve(getServiceEndpointsUtil(authConfig));
+    }
+
     /**
      * @constructor
      *
@@ -308,6 +314,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
             customGrant,
             doesTokenExist,
             endUserSession,
+            getServiceEndpoints,
             getUserInfo,
             httpRequest,
             httpRequestAll,

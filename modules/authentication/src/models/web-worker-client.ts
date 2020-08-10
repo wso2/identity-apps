@@ -18,6 +18,7 @@
 
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { ConfigInterface } from ".";
+import { ServiceResourcesType } from "./endpoints";
 import { SignInResponse, UserInfo } from "./message";
 
 export interface WebWorkerClientInterface {
@@ -29,6 +30,7 @@ export interface WebWorkerClientInterface {
     listenForAuthCode(): Promise<UserInfo>;
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
     endUserSession(): Promise<boolean>;
+    getServiceEndpoints(): Promise<ServiceResourcesType>;
 }
 
 export interface WebWorkerSingletonClientInterface {

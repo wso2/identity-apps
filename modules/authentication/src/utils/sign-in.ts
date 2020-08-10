@@ -38,14 +38,12 @@ import {
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
-    AUTHORIZATION_ENDPOINT,
     AUTH_REQUIRED,
     CLIENT_ID_TAG,
     CLIENT_SECRET_TAG,
     DISPLAY_NAME,
     EMAIL,
     OIDC_SCOPE,
-    OIDC_SESSION_IFRAME_ENDPOINT,
     PKCE_CODE_VERIFIER,
     REQUEST_PARAMS,
     SCOPE,
@@ -648,10 +646,8 @@ export const customGrant = (
 export const getUserInfo = (config: ConfigInterface): UserInfo => {
     return {
         allowedScopes: config.session.get(SCOPE),
-        authorizationEndpoint: config.session.get(AUTHORIZATION_ENDPOINT),
         displayName: config.session.get(DISPLAY_NAME),
         email: config.session.get(EMAIL),
-        oidcSessionIframe: config.session.get(OIDC_SESSION_IFRAME_ENDPOINT),
         username: config.session.get(USERNAME)
     };
 };

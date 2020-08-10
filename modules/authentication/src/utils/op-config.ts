@@ -34,7 +34,7 @@ import {
     TOKEN_ENDPOINT,
     USERNAME
 } from "../constants";
-import { ConfigInterface } from "../models/client";
+import { ConfigInterface, ServiceResourcesType } from "../models";
 
 /**
  * Checks whether openid configuration initiated.
@@ -243,6 +243,18 @@ export const resetOPConfiguration = (requestParams: ConfigInterface): void => {
     }
 };
 
+export const getServiceEndpoints = (authConfig: ConfigInterface): ServiceResourcesType => {
+    return ({
+        authorize: getAuthorizeEndpoint(authConfig),
+        jwks: getJwksUri(authConfig),
+        logout: getEndSessionEndpoint(authConfig),
+        oidcSessionIFrame: getOIDCSessionIFrameURL(authConfig),
+        revoke: getRevokeTokenEndpoint(authConfig),
+        token: getTokenEndpoint(authConfig),
+        wellKnown: SERVICE_RESOURCES.wellKnown
+    });
+}
+
 /**
  * Get OAuth2 authorize endpoint.
  *
@@ -269,6 +281,10 @@ export const getTokenEndpoint = (requestParams: ConfigInterface): string | null 
 export const getRevokeTokenEndpoint = (requestParams: ConfigInterface): string | null => {
     return getSessionParameter(REVOKE_TOKEN_ENDPOINT, requestParams);
 };
+
+export const getOIDCSessionIFrameURL = (requestParams: ConfigInterface): string | null => {
+    return getSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, requestParams);
+}
 
 /**
  * Get OIDC end session endpoint.

@@ -23,6 +23,7 @@ import {
     AUTH_REQUIRED,
     CUSTOM_GRANT,
     END_USER_SESSION,
+    GET_SERVICE_ENDPOINTS,
     INIT,
     LOGOUT,
     REQUEST_ERROR,
@@ -57,8 +58,6 @@ export interface UserInfo {
     username: string;
     displayName: string;
     allowedScopes: string;
-    authorizationEndpoint: string;
-    oidcSessionIframe: string;
 }
 
 export interface AuthCode {
@@ -80,4 +79,5 @@ export type MessageType =
     | typeof REQUEST_ERROR
     | typeof REQUEST_FINISH
     | typeof REQUEST_START
-    | typeof REQUEST_SUCCESS;
+    | typeof REQUEST_SUCCESS
+    | typeof GET_SERVICE_ENDPOINTS;

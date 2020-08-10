@@ -25,6 +25,7 @@ import {
     AUTH_REQUIRED,
     CUSTOM_GRANT,
     END_USER_SESSION,
+    GET_SERVICE_ENDPOINTS,
     INIT,
     LOGOUT,
     PKCE_CODE_VERIFIER,
@@ -43,6 +44,7 @@ import {
     HttpClient,
     Message,
     ResponseMessage,
+    ServiceResourcesType,
     SignInResponse,
     UserInfo,
     WebWorkerClientInterface,
@@ -382,7 +384,7 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
         worker.onmessage = ({ data }) => {
             switch (data.type) {
                 case REQUEST_ERROR:
-                    httpClientHandlers?.requestErrorCallback(data.data);
+                    httpClientHandlers?.requestErrorCallback(JSON.parse(data.data ?? ""));
                     break;
                 case REQUEST_FINISH:
                     httpClientHandlers?.requestFinishCallback();
@@ -391,7 +393,7 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
                     httpClientHandlers?.requestStartCallback();
                     break;
                 case REQUEST_SUCCESS:
-                    httpClientHandlers?.requestSuccessCallback(data.data);
+                    httpClientHandlers?.requestSuccessCallback(JSON.parse(data.data ?? ""));
                     break;
             }
         };
@@ -565,6 +567,18 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             });
     };
 
+    const getServiceEndpoints = (): Promise<ServiceResourcesType> => {
+        const message: Message<null> = {
+            type: GET_SERVICE_ENDPOINTS
+        };
+
+        return communicate<null, ServiceResourcesType>(message).then(response => {
+            return Promise.resolve(response);
+        }).catch(error => {
+            return Promise.reject(error);
+        })
+    }
+
     /**
      * @constructor
      *
@@ -578,6 +592,7 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
         return {
             customGrant,
             endUserSession,
+            getServiceEndpoints,
             httpRequest,
             httpRequestAll,
             initialize,
