@@ -201,22 +201,18 @@ export const handleSignIn = () => (dispatch) => {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
-            httpClient: {
-                isHandlerEnabled: true,
-                requestErrorCallback: onHttpRequestError,
-                requestFinishCallback: onHttpRequestFinish,
-                requestStartCallback: onHttpRequestStart,
-                requestSuccessCallback: onHttpRequestSuccess
-            },
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
             storage: Storage.WebWorker
         })
         .then(() => {
-            oAuth
-                .signIn()
-                .then((response) => {
+            oAuth.onHttpRequestError(onHttpRequestError);
+            oAuth.onHttpRequestFinish(onHttpRequestFinish);
+            oAuth.onHttpRequestStart(onHttpRequestStart);
+            oAuth.onHttpRequestSuccess(onHttpRequestSuccess);
+            oAuth.onSignIn(() => {
+                oAuth.getUserInfo().then(response => {
                     dispatch(
                         setSignIn({
                             // eslint-disable-next-line @typescript-eslint/camelcase
@@ -226,20 +222,25 @@ export const handleSignIn = () => (dispatch) => {
                             username: response.username
                         })
                     );
-
-                    oAuth.getServiceEndpoints().then((response: ServiceResourcesType) => {
-                        sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
-                        sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
-                        sessionStorage.setItem(TOKEN_ENDPOINT, response.token)
-                    }).catch(error => {
-                        throw error;
-                    })
-
-                    dispatch(getProfileInformation());
-                })
-                .catch((error) => {
+                }).catch(error => {
                     throw error;
                 });
+
+                oAuth
+                    .getServiceEndpoints()
+                    .then((response: ServiceResourcesType) => {
+                        sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
+                        sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
+                        sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+                    })
+                    .catch((error) => {
+                        throw error;
+                    });
+
+                dispatch(getProfileInformation());
+            });
+
+            oAuth.signIn();
         })
         .catch((error) => {
             throw error;

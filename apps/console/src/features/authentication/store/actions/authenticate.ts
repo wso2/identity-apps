@@ -46,19 +46,18 @@ import { HttpUtils } from "../../utils";
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = () => (dispatch): void => {
-
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
     // Get the profile info.
     // TODO: Add the function to handle SCIM disabled error.
     getProfileInfo(null, store.getState().config.ui.gravatarConfig)
         .then((infoResponse: ProfileInfoInterface) => {
-
             if (infoResponse.responseStatus !== 200) {
                 dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.genericError.description"),
+                            "adminPortal:notifications.getProfileInfo.genericError.description"
+                        ),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t("adminPortal:notifications.getProfileInfo.genericError.message")
                     })
@@ -78,7 +77,6 @@ export const getProfileInformation = () => (dispatch): void => {
                         dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
                     })
                     .catch((error: IdentityAppsApiException) => {
-
                         if (error?.response?.data?.description) {
                             dispatch(
                                 addAlert<AlertInterface>({
@@ -92,10 +90,12 @@ export const getProfileInformation = () => (dispatch): void => {
                         dispatch(
                             addAlert<AlertInterface>({
                                 description: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.description"),
+                                    "adminPortal:notifications.getProfileSchema.genericError.description"
+                                ),
                                 level: AlertLevels.ERROR,
                                 message: I18n.instance.t(
-                                    "adminPortal:notifications.getProfileSchema.genericError.message")
+                                    "adminPortal:notifications.getProfileSchema.genericError.message"
+                                )
                             })
                         );
                     })
@@ -110,14 +110,11 @@ export const getProfileInformation = () => (dispatch): void => {
             if (error.response && error.response.data && error.response.data.detail) {
                 dispatch(
                     addAlert({
-                        description: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.error.description",
-                            { description: error.response.data.detail }
-                        ),
+                        description: I18n.instance.t("adminPortal:notifications.getProfileInfo.error.description", {
+                            description: error.response.data.detail
+                        }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t(
-                            "adminPortal:notifications.getProfileInfo.error.message"
-                        )
+                        message: I18n.instance.t("adminPortal:notifications.getProfileInfo.error.message")
                     })
                 );
 
@@ -149,22 +146,20 @@ export const handleSignIn = () => (dispatch) => {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
-            httpClient: {
-                isHandlerEnabled: true,
-                requestErrorCallback: HttpUtils.onHttpRequestError,
-                requestFinishCallback: HttpUtils.onHttpRequestFinish,
-                requestStartCallback: HttpUtils.onHttpRequestStart,
-                requestSuccessCallback: HttpUtils.onHttpRequestSuccess
-            },
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
             storage: Storage.WebWorker
         })
         .then(() => {
-            oAuth
-                .signIn()
-                .then((response) => {
+            oAuth.onHttpRequestError(HttpUtils.onHttpRequestError);
+            oAuth.onHttpRequestFinish(HttpUtils.onHttpRequestFinish);
+            oAuth.onHttpRequestStart(HttpUtils.onHttpRequestStart);
+            oAuth.onHttpRequestSuccess(HttpUtils.onHttpRequestSuccess);
+
+            oAuth.onSignIn();
+            oAuth.signIn(() => {
+                oAuth.getUserInfo().then((response) => {
                     dispatch(
                         setSignIn({
                             // eslint-disable-next-line @typescript-eslint/camelcase
@@ -187,10 +182,8 @@ export const handleSignIn = () => (dispatch) => {
                         });
 
                     dispatch(getProfileInformation());
-                })
-                .catch((error) => {
-                    throw error;
                 });
+            });
         })
         .catch((error) => {
             throw error;
