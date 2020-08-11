@@ -32,6 +32,7 @@ export interface ApplicationBasicInterface {
     name: string;
     description?: string;
     accessUrl?: string;
+    templateId?: string;
 }
 
 /**
