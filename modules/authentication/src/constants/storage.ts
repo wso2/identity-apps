@@ -21,7 +21,7 @@
  */
 export enum Storage {
     /**
-     * Stores teh session information in the local storage
+     * Stores the session information in the local storage
      */
     LocalStorage = "localStorage",
     /**
