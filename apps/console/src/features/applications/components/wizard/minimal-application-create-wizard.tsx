@@ -35,7 +35,6 @@ import {
     ApplicationTemplateListItemInterface,
     MainApplicationInterface
 } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
 
 /**
  * Specifies the template ID of SPAs.
@@ -244,10 +243,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                     buildCallBackUrlWithRegExp(url ? url : callBackUrls)
                                 ];
                                 data.description = "";
+                                data.templateId = template.id;
 
-                                createApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(
-                                    data, template
-                                ))
+                                createApplication(data)
                                     .then((response) => {
                                         dispatch(
                                             addAlert({

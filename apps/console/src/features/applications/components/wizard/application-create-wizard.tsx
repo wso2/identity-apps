@@ -54,7 +54,6 @@ import {
     emptyApplication
 } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
-import { ApplicationManagementUtils } from "../../utils";
 import {
     OAuthProtocolTemplate,
     OAuthProtocolTemplateItem,
@@ -152,7 +151,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
     const [submitOAuth, setSubmitOauth] = useTrigger();
     const [finishSubmit, setFinishSubmit] = useTrigger();
-    const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(undefined);
+    const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(template);
     const [triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit] = useState<boolean>(false);
     const [selectedCustomInboundProtocol, setSelectedCustomInboundProtocol] = useState<boolean>(false);
 
@@ -205,7 +204,16 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param {MainApplicationInterface} application - The application to be created.
      */
     const createNewApplication = (application: MainApplicationInterface): void => {
-        createApplication(application)
+        
+        let submittingApplication = application;
+
+        // Add template mapping.
+        submittingApplication = {
+            ...submittingApplication,
+            templateId: selectedTemplate.id
+        };
+
+        createApplication(submittingApplication)
             .then((response) => {
                 dispatch(addAlert({
                     description: t("devPortal:components.applications.notifications.addApplication.success" +
@@ -302,11 +310,11 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
         for (const [key, value] of Object.entries(values)) {
             customApplication = {
                 ...customApplication,
-                [key]: value
+                [ key ]: value
             }
         }
 
-        createNewApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(customApplication, template));
+        createNewApplication(customApplication);
     };
 
     /**
@@ -417,7 +425,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             delete application.inboundProtocolConfiguration.oidc;
         }
 
-        createNewApplication(ApplicationManagementUtils.prefixTemplateNameToDescription(application, selectedTemplate));
+        createNewApplication(application);
     };
 
     /**
@@ -453,7 +461,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     />
                 );
             case WizardStepsFormTypes.GENERAL_SETTINGS:
-                if (template.id === "custom-application") {
+                if (selectedTemplate.id === "custom-application") {
                     return (
                         <GeneralSettingsWizardForm
                             triggerSubmit={ submitGeneralSettings }
@@ -670,17 +678,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             setWizardSteps(NEW_STEPS);
         }
     }, [addProtocol]);
-
-    /**
-     * Set selected template if passed.
-     */
-    useEffect(() => {
-
-        if (template) {
-            setSelectedTemplate(template)
-        }
-    }, [template]);
-
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`

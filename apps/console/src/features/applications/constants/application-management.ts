@@ -55,15 +55,6 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings");
 
     /**
-     * Splitter token to split the description to extract the template.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly APPLICATION_DESCRIPTION_SPLITTER: string = ":::";
-
-
-    /**
      * Key for the `Edit Application` tag in the docs structure object.
      * @constant
      * @type {string}
