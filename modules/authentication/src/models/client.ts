@@ -40,7 +40,6 @@ export interface ConfigInterface {
     storage?: Storage;
     session?: SessionData;
     endpoints?: ServiceResourcesType;
-    httpClient?: HttpClient;
 }
 
 export interface WebWorkerConfigInterface extends ConfigInterface {
@@ -53,4 +52,8 @@ export interface HttpClient {
     requestSuccessCallback: (response: AxiosResponse) => void;
     requestErrorCallback: (error: AxiosError) => void;
     requestFinishCallback: () => void;
+}
+
+export interface WebWorkerClientConfigInterface extends WebWorkerConfigInterface {
+    httpClient: HttpClient;
 }
