@@ -156,9 +156,7 @@ export const handleSignIn = () => (dispatch) => {
             oAuth.onHttpRequestFinish(HttpUtils.onHttpRequestFinish);
             oAuth.onHttpRequestStart(HttpUtils.onHttpRequestStart);
             oAuth.onHttpRequestSuccess(HttpUtils.onHttpRequestSuccess);
-
-            oAuth.onSignIn();
-            oAuth.signIn(() => {
+            oAuth.onSignIn(() => {
                 oAuth.getUserInfo().then((response) => {
                     dispatch(
                         setSignIn({
@@ -184,6 +182,9 @@ export const handleSignIn = () => (dispatch) => {
                     dispatch(getProfileInformation());
                 });
             });
+
+            oAuth.signIn();
+
         })
         .catch((error) => {
             throw error;
