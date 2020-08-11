@@ -32,3 +32,4 @@ export const REQUEST_SUCCESS = "request-success";
 export const REQUEST_ERROR = "request-error";
 export const REQUEST_FINISH = "request-finish";
 export const GET_SERVICE_ENDPOINTS = "get-service-endpoints";
+export const GET_USER_INFO = "get-user-info";

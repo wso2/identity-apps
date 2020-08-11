@@ -27,6 +27,7 @@ import {
     ConfigInterface,
     CustomGrantRequestParams,
     ServiceResourcesType,
+    UserInfo,
     WebWorkerClientInterface,
     WebWorkerConfigInterface
 } from "./models";
@@ -34,6 +35,7 @@ import {
     customGrant as customGrantUtil,
     getServiceEndpoints,
     getSessionParameter,
+    getUserInfo as getUserInfoUtil,
     handleSignIn,
     handleSignOut,
     sendRevokeTokenRequest
@@ -127,9 +129,12 @@ export class IdentityClient {
         }
     }
 
-    public getUserInfo() {
-        // TODO: Implement
-        return;
+    public getUserInfo(): Promise<UserInfo> {
+        if (this._storage === AUTHENTICATION_TYPES.Storage.WebWorker) {
+            return this._client.getUserInfo();
+        }
+
+        return Promise.resolve(getUserInfoUtil(this._authConfig));
     }
 
     public validateAuthentication() {

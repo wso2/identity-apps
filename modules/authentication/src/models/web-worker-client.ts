@@ -37,6 +37,7 @@ export interface WebWorkerClientInterface {
     onHttpRequestStart(callback: () => void): void;
 
     onHttpRequestFinish(callback: () => void): void;
+    getUserInfo(): Promise<UserInfo>;
 }
 
 export interface WebWorkerSingletonClientInterface {

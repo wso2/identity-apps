@@ -26,6 +26,7 @@ import {
     CUSTOM_GRANT,
     END_USER_SESSION,
     GET_SERVICE_ENDPOINTS,
+    GET_USER_INFO,
     INIT,
     LOGOUT,
     PKCE_CODE_VERIFIER,
@@ -587,6 +588,20 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             });
     };
 
+      const getUserInfo = (): Promise<UserInfo> => {
+          const message: Message<null> = {
+              type: GET_USER_INFO
+          };
+
+          return communicate<null, UserInfo>(message)
+              .then((response) => {
+                  return Promise.resolve(response);
+              })
+              .catch((error) => {
+                  return Promise.reject(error);
+              });
+      };
+
     const onHttpRequestSuccess = (callback: (response: AxiosResponse) => void): void => {
         if (callback && typeof callback === "function") {
             httpClientHandlers.requestSuccessCallback = callback;
@@ -625,6 +640,7 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             customGrant,
             endUserSession,
             getServiceEndpoints,
+            getUserInfo,
             httpRequest,
             httpRequestAll,
             initialize,

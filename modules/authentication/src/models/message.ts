@@ -24,6 +24,7 @@ import {
     CUSTOM_GRANT,
     END_USER_SESSION,
     GET_SERVICE_ENDPOINTS,
+    GET_USER_INFO,
     INIT,
     LOGOUT,
     REQUEST_ERROR,
@@ -80,4 +81,5 @@ export type MessageType =
     | typeof REQUEST_FINISH
     | typeof REQUEST_START
     | typeof REQUEST_SUCCESS
-    | typeof GET_SERVICE_ENDPOINTS;
+    | typeof GET_SERVICE_ENDPOINTS
+    | typeof GET_USER_INFO;
