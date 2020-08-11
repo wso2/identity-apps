@@ -34,7 +34,7 @@ import {
     SIGNED_IN,
     SIGN_IN
 } from "../constants";
-import { SignInResponse, WebWorkerClass, WebWorkerConfigInterface, WebWorkerInterface } from "../models";
+import { SignInResponse, WebWorkerClass, WebWorkerClientConfigInterface, WebWorkerInterface } from "../models";
 import { generateFailureDTO, generateSuccessDTO } from "../utils";
 
 const ctx: WebWorkerClass<any> = self as any;
@@ -47,7 +47,7 @@ ctx.onmessage = ({ data, ports }) => {
     switch (data.type) {
         case INIT:
             try {
-                const config: WebWorkerConfigInterface = { ...data.data };
+                const config: WebWorkerClientConfigInterface = { ...data.data };
                 config.httpClient = {
                     ...config.httpClient,
                     requestErrorCallback: onRequestErrorCallback,
