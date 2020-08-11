@@ -8,7 +8,8 @@
         "Communication", "Community"
     ],
     "category": "CUSTOM",
-    "displayOrder": 8,
+    "displayOrder": 7,
+    "templateGroup": "",
     "application": {
         "name": "",
         "advancedConfigurations": {

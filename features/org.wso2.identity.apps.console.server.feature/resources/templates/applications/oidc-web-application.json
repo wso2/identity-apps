@@ -9,6 +9,7 @@
     ],
     "category": "DEFAULT",
     "displayOrder": 1,
+    "templateGroup": "web-application",
     "application": {
         "name": "",
         "advancedConfigurations": {

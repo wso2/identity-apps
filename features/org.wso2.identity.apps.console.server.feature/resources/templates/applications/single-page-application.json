@@ -9,6 +9,7 @@
     ],
     "category": "DEFAULT",
     "displayOrder": 3,
+    "templateGroup": "spa",
     "application": {
         "name": "",
         "advancedConfigurations": {
