@@ -123,9 +123,9 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t("adminPortal:components.userstores.notifications.addUserstore" +
-                    ".genericError.description")
-            }))
-        })
+                    ".genericError.message")
+            }));
+        });
     };
 
     /**
@@ -162,28 +162,28 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             return {
                 name: property.name,
                 value: generalDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         const userProperties: UserStoreProperty[] = properties.user.required.map(property => {
             return {
                 name: property.name,
                 value: userDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         const groupProperties: UserStoreProperty[] = properties.group.required.map(property => {
             return {
                 name: property.name,
                 value: groupDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         const basicProperties: UserStoreProperty[] = properties.basic.required.map(property => {
             return {
                 name: property.name,
                 value: generalDetailsData.get(property.name)?.toString()
-            }
+            };
         });
 
         return [ ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
@@ -206,7 +206,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 />
             ),
             icon: AddUserstoreWizardStepIcons.general,
-            title: t ("adminPortal:components.userstores.wizard.steps.general")
+            title: t("adminPortal:components.userstores.wizard.steps.general")
         },
         {
             content: (
@@ -315,7 +315,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 <Grid>
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                            <LinkButton floated="left" onClick={ () => onClose() }>{t("common:cancel")}</LinkButton>
+                            <LinkButton floated="left" onClick={ () => onClose() }>{ t("common:cancel") }</LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
@@ -349,7 +349,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 </Grid>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };
 
 /**

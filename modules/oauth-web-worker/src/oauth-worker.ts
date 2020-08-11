@@ -16,13 +16,7 @@
  * under the License.
  */
 
-import axios, {
-    AxiosError,
-    AxiosInstance,
-    AxiosPromise,
-    AxiosRequestConfig,
-    AxiosResponse
-} from "axios";
+import axios, { AxiosError, AxiosInstance, AxiosPromise, AxiosRequestConfig, AxiosResponse } from "axios";
 import {
     AUTH_REQUIRED,
     CLIENT_ID_TAG,
@@ -48,7 +42,7 @@ import {
 } from "./models";
 import { getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken } from "./utils";
 
-export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWorkerSingletonInterface {
+export const OAuthWorker: OAuthWorkerSingletonInterface = (function(): OAuthWorkerSingletonInterface {
     /**
      * Values to be set when initializing the library.
      */
@@ -292,7 +286,9 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
         userName = authenticatedUser.username;
 
         refreshTimer = setTimeout(() => {
-            refreshAccessToken().then().catch();
+            refreshAccessToken()
+                .then()
+                .catch();
         }, (parseInt(accessTokenExpiresIn) - 10) * 1000);
     };
 
@@ -710,7 +706,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
                                         return Promise.resolve(response);
                                     })
                                     .catch((error) => {
-                                        return Promise.reject(error?.response);
+                                        return Promise.reject(error);
                                     });
                             })
                             .catch((error) => {
@@ -718,7 +714,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
                             });
                     }
 
-                    return Promise.reject(error?.response);
+                    return Promise.reject(error);
                 });
         } else {
             return Promise.reject("The provided URL is illegal.");
@@ -763,7 +759,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
                                         return Promise.resolve(response);
                                     })
                                     .catch((error) => {
-                                        return Promise.reject(error?.response);
+                                        return Promise.reject(error);
                                     });
                             })
                             .catch((error) => {
@@ -771,7 +767,7 @@ export const OAuthWorker: OAuthWorkerSingletonInterface = (function (): OAuthWor
                             });
                     }
 
-                    return Promise.reject(error?.response);
+                    return Promise.reject(error);
                 });
         } else {
             return Promise.reject("The provided URL is illegal.");

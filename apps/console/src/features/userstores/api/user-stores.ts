@@ -43,7 +43,7 @@ const httpClient = OAuth.getInstance().httpRequest;
 export const getUserStores = (params: QueryParams): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
@@ -73,7 +73,7 @@ export const getUserStores = (params: QueryParams): Promise<any> => {
 export const getUserstoreTypes = (): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
@@ -103,7 +103,7 @@ export const getUserstoreTypes = (): Promise<any> => {
 export const getAType = (id: string, params: QueryParams): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json",
             params
@@ -134,7 +134,7 @@ export const getAType = (id: string, params: QueryParams): Promise<any> => {
 export const getAUserStore = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
@@ -164,7 +164,7 @@ export const getAUserStore = (id: string): Promise<any> => {
 export const deleteUserStore = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
@@ -226,7 +226,7 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
@@ -253,17 +253,16 @@ export const addUserStore = (data: UserStorePostData): Promise<any> => {
  *
  * @return {Promise<any>} response.
  */
-export const updateUserStore = (id: string,data: UserStorePostData): Promise<any> => {
+export const updateUserStore = (id: string, data: UserStorePostData): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
         url: `${store.getState().config.endpoints.userStores}/${id}`
-        
     };
     return httpClient(requestConfig)
         .then((response) => {
@@ -288,7 +287,7 @@ export const testConnection = (data: TestConnection): Promise<any> => {
     const requestConfig = {
         data,
         headers: {
-            "Accept": "application/json",
+            Accept: "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },

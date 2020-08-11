@@ -2423,8 +2423,8 @@ export const adminPortal: AdminPortalNS = {
                 emptyList: {
                     action: "New Userstore",
                     subtitles: "There are currently no userstores available."
-                        + "You can add a new userstore easily by following the"
-                        + "steps in the userstore creation wizard." + "Please try a different search term.",
+                        + "You can add a new userstore easily by following the "
+                        + "steps in the userstore creation wizard.",
                     title: "Add a new Userstore"
                 },
                 emptySearch: {
