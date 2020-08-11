@@ -608,7 +608,7 @@ export const userPortal: UserPortalNS = {
                 }
             },
             fido: {
-                description: "IdentityClient yourself by connecting a biometric device or a FIDO key",
+                description: "Authenticate yourself by connecting a biometric device or a FIDO key",
                 form: {
                     label: "Security Device",
                     placeholder: "Enter a device name",
