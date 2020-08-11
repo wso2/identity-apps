@@ -8,7 +8,8 @@
         "HR"
     ],
     "category": "CUSTOM",
-    "displayOrder": 10,
+    "templateGroup": "",
+    "displayOrder": 8,
     "application": {
         "name": "",
         "advancedConfigurations": {

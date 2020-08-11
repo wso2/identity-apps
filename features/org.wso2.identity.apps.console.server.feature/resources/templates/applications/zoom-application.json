@@ -9,6 +9,7 @@
     ],
     "category": "CUSTOM",
     "displayOrder": 9,
+    "templateGroup": "",
     "application": {
         "name": "",
         "advancedConfigurations": {

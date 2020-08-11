@@ -9,6 +9,7 @@
     ],
     "category": "DEFAULT",
     "displayOrder": 4,
+    "templateGroup": "desktop",
     "application": {
         "name": "",
         "advancedConfigurations": {
