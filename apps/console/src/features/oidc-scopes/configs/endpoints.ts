@@ -16,5 +16,16 @@
  * under the License.
  */
 
-export * from "./endpoints";
-export * from "./oidc-scopes";
+import { ScopesResourceEndpointsInterface } from "../models";
+
+/**
+ * Get the resource endpoints for the Scope Management feature.
+ *
+ * @param {string} serverHost - Server Host.
+ * @return {ScopesResourceEndpointsInterface}
+ */
+export const getScopesResourceEndpoints = (serverHost: string): ScopesResourceEndpointsInterface => {
+    return {
+        oidcScopes: `${ serverHost }/api/server/v1/oidc/scopes`
+    }
+};
