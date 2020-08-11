@@ -37,6 +37,7 @@ import {
     SessionData,
     SignInResponse,
     UserInfo,
+    WebWorkerClientConfigInterface,
     WebWorkerConfigInterface,
     WebWorkerInterface,
     WebWorkerSingletonInterface
@@ -60,8 +61,6 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
     let authConfig: WebWorkerConfigInterface;
 
     let httpClient: AxiosHttpClientInstance;
-
-    let refreshTimer: NodeJS.Timeout;
 
     let instance: WebWorkerInterface;
 
@@ -185,8 +184,6 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
                 })
                 .catch((error: AxiosError) => {
                     if (error?.response?.status === 401) {
-                        clearTimeout(refreshTimer);
-                        refreshTimer = null;
 
                         return refreshAccessToken()
                             .then(() => {
@@ -237,8 +234,6 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
                 })
                 .catch((error: AxiosError) => {
                     if (error?.response?.status === 401) {
-                        clearTimeout(refreshTimer);
-                        refreshTimer = null;
 
                         return refreshAccessToken()
                             .then(() => {
@@ -286,7 +281,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
      *
      * @returns {OAuthWorkerInterface} Returns the object containing
      */
-    function Constructor(config: WebWorkerConfigInterface): WebWorkerInterface {
+    function Constructor(config: WebWorkerClientConfigInterface): WebWorkerInterface {
         authConfig = { ...config };
         authConfig.session = session;
 
@@ -295,7 +290,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
         const startCallback = (request: AxiosRequestConfig): void => {
             request.headers = {
                 ...request.headers,
-                Authorization: `Bearer ${ session.get(ACCESS_TOKEN) }`
+                Authorization: `Bearer ${ session?.get(ACCESS_TOKEN) }`
             };
 
             config.httpClient?.requestStartCallback && config.httpClient?.requestStartCallback();
@@ -327,7 +322,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
     }
 
     return {
-        getInstance: (config: WebWorkerConfigInterface): WebWorkerInterface => {
+        getInstance: (config: WebWorkerClientConfigInterface): WebWorkerInterface => {
             if (instance) {
                 return instance;
             } else {
