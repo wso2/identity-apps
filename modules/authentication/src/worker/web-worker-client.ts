@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import WorkerFile from "./oidc.worker";
 import {
     API_CALL,
@@ -379,26 +379,32 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             return Promise.reject("serverOrigin must be a string");
         }
 
-        httpClientHandlers = { ...config.httpClient };
+        httpClientHandlers = {
+            isHandlerEnabled: true,
+            requestErrorCallback: null,
+            requestFinishCallback: null,
+            requestStartCallback: null,
+            requestSuccessCallback: null
+        };
 
         worker.onmessage = ({ data }) => {
             switch (data.type) {
                 case REQUEST_ERROR:
-                    httpClientHandlers?.requestErrorCallback(JSON.parse(data.data ?? ""));
+                    httpClientHandlers?.requestErrorCallback &&
+                        httpClientHandlers?.requestErrorCallback(JSON.parse(data.data ?? ""));
                     break;
                 case REQUEST_FINISH:
-                    httpClientHandlers?.requestFinishCallback();
+                    httpClientHandlers?.requestFinishCallback && httpClientHandlers?.requestFinishCallback();
                     break;
                 case REQUEST_START:
-                    httpClientHandlers?.requestStartCallback();
+                    httpClientHandlers?.requestStartCallback && httpClientHandlers?.requestStartCallback();
                     break;
                 case REQUEST_SUCCESS:
-                    httpClientHandlers?.requestSuccessCallback(JSON.parse(data.data ?? ""));
+                    httpClientHandlers?.requestSuccessCallback &&
+                        httpClientHandlers?.requestSuccessCallback(JSON.parse(data.data ?? ""));
                     break;
             }
         };
-
-        delete config.httpClient;
 
         const message: Message<ConfigInterface> = {
             data: config,
@@ -572,12 +578,38 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             type: GET_SERVICE_ENDPOINTS
         };
 
-        return communicate<null, ServiceResourcesType>(message).then(response => {
-            return Promise.resolve(response);
-        }).catch(error => {
-            return Promise.reject(error);
-        })
-    }
+        return communicate<null, ServiceResourcesType>(message)
+            .then((response) => {
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    };
+
+    const onHttpRequestSuccess = (callback: (response: AxiosResponse) => void): void => {
+        if (callback && typeof callback === "function") {
+            httpClientHandlers.requestSuccessCallback = callback;
+        }
+    };
+
+    const onHttpRequestError = (callback: (response: AxiosError) => void): void => {
+        if (callback && typeof callback === "function") {
+            httpClientHandlers.requestErrorCallback = callback;
+        }
+    };
+
+    const onHttpRequestStart = (callback: () => void): void => {
+        if (callback && typeof callback === "function") {
+            httpClientHandlers.requestStartCallback = callback;
+        }
+    };
+
+    const onHttpRequestFinish = (callback: () => void): void => {
+        if (callback && typeof callback === "function") {
+            httpClientHandlers.requestFinishCallback = callback;
+        }
+    };
 
     /**
      * @constructor
@@ -597,6 +629,10 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             httpRequestAll,
             initialize,
             listenForAuthCode,
+            onHttpRequestError,
+            onHttpRequestFinish,
+            onHttpRequestStart,
+            onHttpRequestSuccess,
             signIn,
             signOut
         };
