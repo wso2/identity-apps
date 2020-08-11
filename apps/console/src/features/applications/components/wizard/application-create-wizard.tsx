@@ -20,7 +20,12 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import get from "lodash/get";
+import has from "lodash/has";
+import isEmpty from "lodash/isEmpty";
+import merge from "lodash/merge";
+import set from "lodash/set";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -224,7 +229,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
                 // The created resource's id is sent as a location header.
                 // If that's available, navigate to the edit page.
-                if (!_.isEmpty(response.headers.location)) {
+                if (!isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
@@ -362,10 +367,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             }
         } else {
             setCurrentWizardStep(currentWizardStep + 1);
-            if (_.has(wizardState, formType)) {
-                setWizardState(_.set(wizardState, formType, values));
+            if (has(wizardState, formType)) {
+                setWizardState(set(wizardState, formType, values));
             } else {
-                setWizardState(_.merge(wizardState, { [formType]: values }));
+                setWizardState(merge(wizardState, { [formType]: values }));
             }
         }
     };
@@ -386,12 +391,12 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 configName = "wsTrust";
             }
 
-            summary = _.get(wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS],
+            summary = get(wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS],
                 ("inboundProtocolConfiguration." + configName));
 
             if (selectedTemplate.id !== DefaultProtocolTemplate.SAML && !selectedCustomInboundProtocol) {
-                summary = _.merge(
-                    _.cloneDeep(templateSettings.inboundProtocolConfiguration[configName]),
+                summary = merge(
+                    cloneDeep(templateSettings.inboundProtocolConfiguration[configName]),
                     summary
                 );
             }
@@ -409,7 +414,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 };
             }
 
-            return _.merge(_.cloneDeep(templateSettings), summary);
+            return merge(cloneDeep(templateSettings), summary);
         }
     };
 
@@ -608,7 +613,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
                 setWizardSteps(NEW_STEPS.splice(1, 1));
             } else {
-                setWizardState(_.merge(wizardState,
+                setWizardState(merge(wizardState,
                     {
                         [WizardStepsFormTypes.PROTOCOL_SELECTION]: selectedTemplate.authenticationProtocol
                     }));

@@ -21,7 +21,10 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
-import _ from "lodash";
+import camelCase from "lodash/camelCase";
+import intersectionBy from "lodash/intersectionBy";
+import startCase from "lodash/startCase";
+import unionBy from "lodash/unionBy";
 import { DocPanelUICardInterface, TechnologyLogos, store } from "../../core";
 import {
     getApplicationTemplateList,
@@ -33,9 +36,7 @@ import { CustomApplicationTemplate } from "../components";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationTemplateListInterface,
-    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    MainApplicationInterface,
     SAMLApplicationConfigurationInterface,
     emptySAMLAppConfiguration
 } from "../models";
@@ -72,10 +73,10 @@ export class ApplicationManagementUtils {
         return getAvailableInboundProtocols(customOnly)
             .then((response) => {
                 // Filter meta based on the available protocols.
-                const filteredMeta = _.intersectionBy(meta, response, "name");
+                const filteredMeta = intersectionBy(meta, response, "name");
 
                 store.dispatch(
-                    setAvailableInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(filteredMeta,
+                    setAvailableInboundAuthProtocolMeta(unionBy<AuthProtocolMetaListItemInterface>(filteredMeta,
                         response, "name"))
                 );
             })
@@ -113,10 +114,10 @@ export class ApplicationManagementUtils {
         return getAvailableInboundProtocols(customOnly)
             .then((response) => {
                 // Filter meta based on the available protocols.
-                const filteredMeta = _.intersectionBy(meta, response, "name");
+                const filteredMeta = intersectionBy(meta, response, "name");
 
                 store.dispatch(
-                    setAvailableCustomInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(
+                    setAvailableCustomInboundAuthProtocolMeta(unionBy<AuthProtocolMetaListItemInterface>(
                         filteredMeta,
                         response,
                         "name")
@@ -210,7 +211,7 @@ export class ApplicationManagementUtils {
             }
 
             return {
-                displayName: _.startCase(technology),
+                displayName: startCase(technology),
                 logo,
                 name: technology
             }
@@ -339,8 +340,8 @@ export class ApplicationManagementUtils {
             samples.push({
                 displayName: key,
                 docs: value.toString(),
-                image: _.camelCase(key).toLowerCase(),
-                name: _.camelCase(key).toLowerCase()
+                image: camelCase(key).toLowerCase(),
+                name: camelCase(key).toLowerCase()
             })
         }
 
