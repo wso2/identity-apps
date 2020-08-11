@@ -851,6 +851,8 @@ export interface AdminPortalNS {
                     1: string;
                     2: string;
                     3: string;
+                    4: string;
+                    5: string;
                 };
             };
             advancedSearch: {
@@ -986,6 +988,14 @@ export interface AdminPortalNS {
                 };
                 emptyPlaceholders: {
                     default: string;
+                    groups: {
+                        unselected: string;
+                        selected: string;
+                    };
+                    roles: {
+                        unselected: string;
+                        selected: string;
+                    };
                     users: {
                         roles: {
                             unselected: string;

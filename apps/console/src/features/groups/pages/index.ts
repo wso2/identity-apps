@@ -17,3 +17,4 @@
  */
 
 export * from "./groups";
+export * from "./group-edit";

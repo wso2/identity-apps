@@ -16,7 +16,12 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
+    LoadableComponentInterface,
+    RoleListInterface,
+    RolesInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
@@ -29,8 +34,8 @@ import {
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Image, Label, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
-import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../constants";
+import {AppConstants, EmptyPlaceholderIllustrations, history} from "../../core";
+import { APPLICATION_DOMAIN, ROLE_VIEW_PATH } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -48,7 +53,7 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
     /**
      * Roles list.
      */
-    roleList: RolesInterface[];
+    roleList: RoleListInterface;
     /**
      * Role delete callback.
      * @param {RolesInterface} role - Deleting role.
@@ -104,7 +109,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         descriptionColumnWidth,
         defaultListItemLimit,
         handleRoleDelete,
-        isGroup,
         isLoading,
         onEmptyListPlaceholderActionClick,
         onListItemClick,
@@ -124,71 +128,37 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
 
     const handleRoleEdit = (roleId: string) => {
-        if (isGroup) {
-            history.push(AppConstants.PATHS.get("GROUP_EDIT").replace(":id", roleId));
-        } else {
-            history.push(AppConstants.PATHS.get("ROLE_EDIT").replace(":id", roleId));
-        }
+        history.push(AppConstants.PATHS.get("ROLE_EDIT").replace(":id", roleId));
     };
 
     /**
      * Util method to generate listing header content.
-     * 
+     *
      * @param displayName - display name of the role/group
      *
      * @returns - React element if containing a prefix or the string
      */
     const generateHeaderContent = (displayName: string): ReactElement | string => {
-        if (isGroup) {
-            if (displayName.indexOf("/") !== -1){
-                return (
-                    <>
-                        <Label
-                            data-testid={ `${ testId }-group-${ displayName.split("/")[0] }-label` }
-                            content={ displayName.split("/")[0] }
-                            size="mini"
-                            color="olive"
-                            className={ "group-label" }
-                        />
-                        { "/ " + displayName.split("/")[1] }
-                    </>
-                )
-            } else {
-                return (
-                    <>
-                        <Label
-                            data-testid={ `${ testId }-group-${ displayName }-label` }
-                            content={ "Primary" }
-                            size="mini"
-                            color="teal"
-                            className={ "primary-label" }
-                        />
-                        { "/ " + displayName }
-                    </>
-                );
-            }
+        if (displayName.includes(APPLICATION_DOMAIN)) {
+            return  <>
+                <Label
+                    data-testid={ `${ testId }-role-${ displayName.split("/")[1] }-label` }
+                    content={ "Application" }
+                    size="mini"
+                    className={ "application-label" }
+                />
+                { "/ " + displayName.split("/")[1] }
+            </>
         } else {
-            if (displayName.includes(APPLICATION_DOMAIN)) {
-                return  <>
-                            <Label
-                                data-testid={ `${ testId }-role-${ displayName.split("/")[1] }-label` }
-                                content={ "Application" }
-                                size="mini"
-                                className={ "application-label" }
-                            />
-                            { "/ " + displayName.split("/")[1] }
-                        </>
-            } else if (displayName.includes(INTERNAL_DOMAIN)) {
-                return <>
-                            <Label
-                                data-testid={ `${ testId }-role-${ displayName.split("/")[1] }-label` }
-                                content={ "Internal" }
-                                size="mini"
-                                className={ "internal-label" }
-                            />
-                            { "/ " + displayName.split("/")[1] }
-                        </>
-            }
+            return <>
+                <Label
+                    data-testid={ `${ testId }-role-${ displayName }-label` }
+                    content={ "Internal" }
+                    size="mini"
+                    className={ "internal-label" }
+                />
+                { "/ " + displayName }
+            </>
         }
     };
 
@@ -223,7 +193,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             );
         }
 
-        if (roleList?.length === 0) {
+        if (roleList?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-list-empty-placeholder` }
@@ -234,20 +204,20 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         >
                             <Icon name="add"/>
                             { t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.action",
-                                { type: isGroup ? "Group" : "Role" })}
+                                { type: "Role" })}
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
                     title={ t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.title",
-                        { type: isGroup ? "group" : "role" }) }
+                        { type: "role" }) }
                     subtitle={ [
                         t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
-                            { type: isGroup ? "groups" : "roles" }),
+                            { type: "roles" }),
                         t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
-                            { type: isGroup ? "group" : "role" }),
+                            { type: "role" }),
                         t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
-                            { type: isGroup ? "group" : "role" })
+                            { type: "role" })
                     ] }
                 />
             );
@@ -262,7 +232,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 className="roles-list"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit,
                     imageType: "square"
                 } }
                 fill={ !showPlaceholders() }
@@ -271,10 +241,10 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 selection={ selection }
             >
                 {
-                    roleList && roleList instanceof Array && roleList.length > 0
-                        ? roleList.map((role, index) => (
+                    roleList?.Resources && roleList?.Resources instanceof Array && roleList?.Resources.length > 0
+                        ? roleList?.Resources?.map((role, index) => (
                             <ResourceListItem
-                                data-testid={ `${ testId }-list-item-${ role.displayName }` }
+                                data-testid={ `${ testId }-list-item-${ role?.displayName }` }
                                 key={ index }
                                 actionsFloated="right"
                                 actions={
@@ -282,13 +252,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                         ? [
                                             {
                                                 icon: "pencil alternate",
-                                                onClick: () => handleRoleEdit(role.id),
-                                                popupText:
-                                                    isGroup
-                                                        ? t("adminPortal:components.roles.list.popups.edit",
-                                                        { type: "Group" })
-                                                        : t("adminPortal:components.roles.list.popups.edit",
-                                                        { type: "Role" }),
+                                                onClick: () => handleRoleEdit(role?.id),
+                                                popupText: t("adminPortal:components.roles.list.popups.edit",
+                                                    { type: "Role" }),
                                                 type: "button"
                                             },
                                             {
@@ -297,12 +263,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                                     setCurrentDeletedRole(role);
                                                     setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                                                 },
-                                                popupText:
-                                                    isGroup
-                                                        ? t("adminPortal:components.roles.list.popups.delete",
-                                                        { type: "Group" })
-                                                        : t("adminPortal:components.roles.list.popups.delete",
-                                                        { type: "Role" }),
+                                                popupText: t("adminPortal:components.roles.list.popups.delete",
+                                                    { type: "Role" }),
                                                 type: "button"
                                             }
                                         ]
@@ -318,14 +280,14 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                                     >
                                         <AnimatedAvatar/>
                                         <span className="claims-letter">
-                                            { role.displayName[ 0 ].toLocaleUpperCase() }
+                                            { role?.displayName[ 0 ].toLocaleUpperCase() }
                                         </span>
                                     </Image>
                                 ) }
-                                itemHeader={ generateHeaderContent(role.displayName) }
+                                itemHeader={ generateHeaderContent(role?.displayName) }
                                 metaContent={
                                     showMetaContent
-                                        ? CommonUtils.humanizeDateDifference(role.meta.created)
+                                        ? CommonUtils.humanizeDateDifference(role?.meta?.created)
                                         : null
                                 }
                                 metaColumnWidth={ metaColumnWidth }
@@ -347,47 +309,47 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 }
             </ResourceList>
             {
-                showRoleDeleteConfirmation && 
-                    <ConfirmationModal
-                        data-testid={ `${ testId }-delete-item-confirmation-modal` }
-                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
-                        open={ showRoleDeleteConfirmation }
-                        assertion={ currentDeletedRole.displayName }
-                        assertionHint={ 
-                            (
-                                <p>
-                                    <Trans
-                                        i18nKey={ "adminPortal:components.roles.list.confirmations.deleteItem." +
-                                        "assertionHint" }
-                                        tOptions={ { roleName: currentDeletedRole.displayName } }
-                                    >
-                                        Please type <strong>{ currentDeletedRole.displayName }</strong> to confirm.
-                                    </Trans>
-                                </p>
-                            )
-                        }
-                        assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
-                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={ (): void => { 
-                            handleRoleDelete(currentDeletedRole);
-                            setShowDeleteConfirmationModal(false);
-                        } }
-                    >
-                        <ConfirmationModal.Header>
-                            { t("adminPortal:components.roles.list.confirmations.deleteItem.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
-                            { t("adminPortal:components.roles.list.confirmations.deleteItem.message",
-                                { type: isGroup ? "group" : "role" }) }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            { t("adminPortal:components.roles.list.confirmations.deleteItem.content",
-                                { type: isGroup ? "group" : "role" }) }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
+                showRoleDeleteConfirmation &&
+                <ConfirmationModal
+                    data-testid={ `${ testId }-delete-item-confirmation-modal` }
+                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                    type="warning"
+                    open={ showRoleDeleteConfirmation }
+                    assertion={ currentDeletedRole.displayName }
+                    assertionHint={
+                        (
+                            <p>
+                                <Trans
+                                    i18nKey={ "adminPortal:components.roles.list.confirmations.deleteItem." +
+                                    "assertionHint" }
+                                    tOptions={ { roleName: currentDeletedRole.displayName } }
+                                >
+                                    Please type <strong>{ currentDeletedRole.displayName }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        )
+                    }
+                    assertionType="input"
+                    primaryAction="Confirm"
+                    secondaryAction="Cancel"
+                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                    onPrimaryActionClick={ (): void => {
+                        handleRoleDelete(currentDeletedRole);
+                        setShowDeleteConfirmationModal(false);
+                    } }
+                >
+                    <ConfirmationModal.Header>
+                        { t("adminPortal:components.roles.list.confirmations.deleteItem.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("adminPortal:components.roles.list.confirmations.deleteItem.message",
+                            { type: "role" }) }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("adminPortal:components.roles.list.confirmations.deleteItem.content",
+                            { type: "role" }) }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
             }
         </>
     );

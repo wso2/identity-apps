@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { RolesMemberInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import {
     Button,
@@ -34,30 +34,28 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, UIConstants } from "../../../core";
-import { UserBasicInterface, getUsersList } from "../../../users";
+import { EmptyPlaceholderIllustrations, UIConstants, UserBasicInterface, getUsersList } from "../../../core";
+import { GroupsMemberInterface } from "../../models";
 
 /**
  * Proptypes for the application consents list component.
  */
-interface AddRoleUserProps extends TestableComponentInterface {
+interface AddGroupUserProps extends TestableComponentInterface {
     triggerSubmit?: boolean;
     onSubmit?: (values: any) => void;
-    assignedUsers?: RolesMemberInterface[];
+    assignedUsers?: GroupsMemberInterface[];
     isEdit: boolean;
-    isGroup: boolean;
     userStore?: string;
     initialValues?: UserBasicInterface[];
 }
 
-export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
+export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGroupUserProps): ReactElement => {
     const {
         triggerSubmit,
         onSubmit,
         assignedUsers,
         isEdit,
         initialValues,
-        isGroup,
         userStore,
         [ "data-testid" ]: testId
     } = props;
@@ -72,15 +70,15 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
-    
+
     const [ isSelectAllUnAssignedUsers, setIsSelectAllUnAssignedUsers ] = useState<boolean>(false);
     const [ isSelectAllAssignedUsers, setIsSelectAllAssignedUsers ] = useState<boolean>(false);
-    
+
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<UserBasicInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
-    
+
 
     useEffect(() => {
         if (isSelectAllUnAssignedUsers) {
@@ -133,7 +131,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) => 
+                        selectedUserList.sort((userObject, comparedUserObject) =>
                             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
@@ -152,7 +150,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) => 
+                        selectedUserList.sort((userObject, comparedUserObject) =>
                             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setUsersList(responseUsers.filter(function(user) {
@@ -202,29 +200,26 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent.values());
-            if (isGroup) {
-                getList(listItemLimit, listOffset, null, attributes, userStore);
-            } else {
-                getList(listItemLimit, listOffset, null, attributes, null);
-            }
+            getList(listItemLimit, listOffset, null, attributes, userStore);
+
         }
     }, [ listOffset, listItemLimit ]);
 
     const handleUnassignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedUnassignedListItems ];
+        const checkedGroups = [ ...checkedUnassignedListItems ];
 
-        if (checkedRoles.includes(role)) {
-            checkedRoles.splice(checkedRoles.indexOf(role), 1);
-            setCheckedUnassignedListItems(checkedRoles);
+        if (checkedGroups.includes(role)) {
+            checkedGroups.splice(checkedGroups.indexOf(role), 1);
+            setCheckedUnassignedListItems(checkedGroups);
         } else {
-            checkedRoles.push(role);
-            setCheckedUnassignedListItems(checkedRoles);
+            checkedGroups.push(role);
+            setCheckedUnassignedListItems(checkedGroups);
         }
     };
 
     const handleSearchFieldChange = (e, { value }) => {
         let isMatch = false;
-        const filteredRoleList: UserBasicInterface[] = [];
+        const filteredGroupList: UserBasicInterface[] = [];
 
         if (!_.isEmpty(value)) {
             const re = new RegExp(_.escapeRegExp(value), "i");
@@ -232,8 +227,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             usersList && usersList.map((user) => {
                 isMatch = re.test(user.userName);
                 if (isMatch) {
-                    filteredRoleList.push(user);
-                    setUsersList(filteredRoleList);
+                    filteredGroupList.push(user);
+                    setUsersList(filteredGroupList);
                 }
             });
         } else {
@@ -242,31 +237,31 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     };
 
     const handleAssignedItemCheckboxChange = (role) => {
-        const checkedRoles = [ ...checkedAssignedListItems ];
+        const checkedGroups = [ ...checkedAssignedListItems ];
 
-        if (checkedRoles.includes(role)) {
-            checkedRoles.splice(checkedRoles.indexOf(role), 1);
-            setCheckedAssignedListItems(checkedRoles);
+        if (checkedGroups.includes(role)) {
+            checkedGroups.splice(checkedGroups.indexOf(role), 1);
+            setCheckedAssignedListItems(checkedGroups);
         } else {
-            checkedRoles.push(role);
-            setCheckedAssignedListItems(checkedRoles);
+            checkedGroups.push(role);
+            setCheckedAssignedListItems(checkedGroups);
         }
     };
 
     const addUser = () => {
-        const addedRoles = [ ...tempUserList ];
+        const addedGroups = [ ...tempUserList ];
 
         if (checkedUnassignedListItems?.length > 0) {
             checkedUnassignedListItems.map((user) => {
                 if (!(tempUserList.includes(user))) {
-                    addedRoles.push(user);
+                    addedGroups.push(user);
                 }
             });
         }
         setUsersList(usersList.filter(user => (
             checkedUnassignedListItems.indexOf(user) === -1
         )));
-        setTempUserList(addedRoles);
+        setTempUserList(addedGroups);
         setIsSelectAllUnAssignedUsers(false);
     };
 
@@ -329,19 +324,13 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         >
             <Modal.Header>
                 {
-                    isGroup
-                        ? t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
-                            { type: "Group" })
-                        : t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
-                            { type: "Role" })
+                    t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                        { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
-                    { 
-                        isGroup
-                            ? t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
-                                { type: "group" })
-                            : t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
-                                { type: "role" })
+                    {
+                       t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                            { type: "group" })
                     }
                 </Heading>
             </Modal.Header>
@@ -365,12 +354,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
+                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                            "emptyPlaceholders.groups.unselected", { type: "users" }) }
                     >
                         {
                             usersList?.map((user, index)=> {
                                 return (
                                     <TransferListItem
-                                        handleItemChange={ () => 
+                                        handleItemChange={ () =>
                                             handleUnassignedItemCheckboxChange(user)
                                         }
                                         key={ index }
@@ -394,12 +385,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
+                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                            "emptyPlaceholders.groups.selected", { type: "users" }) }
                     >
                         {
                             tempUserList?.map((user, index)=> {
                                 return (
                                     <TransferListItem
-                                        handleItemChange={ () => 
+                                        handleItemChange={ () =>
                                             handleAssignedItemCheckboxChange(user)
                                         }
                                         key={ index }
@@ -425,7 +418,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 </LinkButton>
                 <PrimaryButton
                     data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
-                    onClick={ () => { 
+                    onClick={ () => {
                         handleAddUserSubmit()
                     } }
                 >
@@ -507,11 +500,8 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                             title={ t("adminPortal:components.roles.edit.users.list." +
                                                 "emptyPlaceholder.title") }
                                             subtitle={ [
-                                                isGroup
-                                                    ? t("adminPortal:components.roles.edit.users.list." +
+                                                t("adminPortal:components.roles.edit.users.list." +
                                                     "emptyPlaceholder.subtitles", { type: "group" })
-                                                    : t("adminPortal:components.roles.edit.users.list." +
-                                                    "emptyPlaceholder.subtitles", { type: "role" })
                                             ] }
                                             action={
                                                 <PrimaryButton
@@ -562,12 +552,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                                     data-testid={ `${ testId }-update-unselected-users-select-all-checkbox` }
+                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                        "emptyPlaceholders.groups.unselected", { type: "users" }) }
                                 >
                                     {
                                         usersList?.map((user, index)=> {
                                             return (
                                                 <TransferListItem
-                                                    handleItemChange={ () => 
+                                                    handleItemChange={ () =>
                                                         handleUnassignedItemCheckboxChange(user)
                                                     }
                                                     key={ index }
@@ -592,12 +584,14 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                                     data-testid={ `${ testId }-update-selected-users-select-all-checkbox` }
+                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                        "emptyPlaceholders.groups.selected", { type: "users" }) }
                                 >
                                     {
                                         tempUserList?.map((user, index)=> {
                                             return (
                                                 <TransferListItem
-                                                    handleItemChange={ () => 
+                                                    handleItemChange={ () =>
                                                         handleAssignedItemCheckboxChange(user)
                                                     }
                                                     key={ index }
@@ -614,7 +608,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 </TransferList>
                             </TransferComponent>
                         </Grid.Row>
-                    { isEdit && 
+                        { isEdit &&
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Button
@@ -628,7 +622,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 </Button>
                             </Grid.Column>
                         </Grid.Row>
-                    }
+                        }
                     </Grid>
                 </Forms>
             }

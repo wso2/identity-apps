@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { getRolesList, getUserStoreList } from "@wso2is/core/api";
-import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
+import { getUserStoreList } from "@wso2is/core/api";
+import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
@@ -26,10 +26,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
-// TODO: Implement own logic/schemas/components for groups.
-import { CreateRoleWizard, RoleList, SearchRoleInterface, deleteRoleById, searchRoleList } from "../../roles";
+import { deleteGroupById, getGroupList, searchGroupList } from "../api";
+import { GroupList } from "../components";
+import { CreateGroupWizard } from "../components/wizard";
+import { GroupsInterface, SearchGroupInterface } from "../models";
 
-const ROLES_SORTING_OPTIONS: DropdownItemProps[] = [
+const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
     {
         key: 1,
         text: "Name",
@@ -56,8 +58,6 @@ const GroupsPage = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    // TODO: Check the usage and delete if not required.
-    const [ roleList, setRoleList ] = useState<RoleListInterface>();
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
@@ -73,7 +73,7 @@ const GroupsPage = (): ReactElement => {
     const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
     const [ paginatedGroups, setPaginatedGroups ] = useState<RolesInterface[]>([]);
 
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(ROLES_SORTING_OPTIONS[ 0 ]);
+    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
     useEffect(() => {
         if(searchQuery == "") {
@@ -97,12 +97,12 @@ const GroupsPage = (): ReactElement => {
     const getGroups = () => {
         setGroupsListRequestLoading(true);
 
-        getRolesList(userStore)
+        getGroupList(userStore)
             .then((response) => {
                 if (response.status === 200) {
-                    const roleResources = response.data.Resources;
-                    if (roleResources && roleResources instanceof Array && roleResources.length !== 0) {
-                        const updatedResources = roleResources.filter((role: RolesInterface) => {
+                    const groupResources = response.data.Resources;
+                    if (groupResources && groupResources instanceof Array && groupResources.length !== 0) {
+                        const updatedResources = groupResources.filter((role: GroupsInterface) => {
                             return !role.displayName.includes("Application/")
                                 && !role.displayName.includes("Internal/");
                         });
@@ -113,7 +113,6 @@ const GroupsPage = (): ReactElement => {
                         setPaginatedGroups([]);
                         setIsEmptyResults(true);
                     }
-                    setRoleList(response.data);
                 }
             })
             .finally(() => {
@@ -126,17 +125,17 @@ const GroupsPage = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-                {
-                    key: -2,
-                    text: "All user stores",
-                    value: null
-                },
-                {
-                    key: -1,
-                    text: "Primary",
-                    value: "primary"
-                }
-            ];
+            {
+                key: -2,
+                text: "All user stores",
+                value: null
+            },
+            {
+                key: -1,
+                text: "Primary",
+                value: "primary"
+            }
+        ];
 
         let storeOption = {
             key: null,
@@ -172,13 +171,13 @@ const GroupsPage = (): ReactElement => {
      * @param {DropdownProps} data - Dropdown data.
      */
     const handleListSortingStrategyOnChange = (event: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
-        setListSortingStrategy(_.find(ROLES_SORTING_OPTIONS, (option) => {
+        setListSortingStrategy(_.find(GROUPS_SORTING_OPTIONS, (option) => {
             return data.value === option.value;
         }));
     };
 
     const searchRoleListHandler = (searchQuery: string) => {
-        const searchData: SearchRoleInterface = {
+        const searchData: SearchGroupInterface = {
             filter: searchQuery,
             schemas: [
                 "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
@@ -188,7 +187,7 @@ const GroupsPage = (): ReactElement => {
 
         setSearchQuery(searchQuery);
 
-        searchRoleList(searchData).then(response => {
+        searchGroupList(searchData).then(response => {
             if (response.status === 200) {
                 const results = response.data.Resources;
                 let updatedResults = [];
@@ -244,7 +243,7 @@ const GroupsPage = (): ReactElement => {
      * @param role - Role which needs to be deleted
      */
     const handleOnDelete = (role: RolesInterface): void => {
-        deleteRoleById(role.id).then(() => {
+        deleteGroupById(role.id).then(() => {
             handleAlerts({
                 description: t(
                     "adminPortal:components.groups.notifications.deleteGroup.success.description"
@@ -255,7 +254,7 @@ const GroupsPage = (): ReactElement => {
                 )
             });
             setListUpdated(true);
-        }).catch(error => {
+        }).catch(() => {
             handleAlerts({
                 description: t(
                     "adminPortal:components.groups.notifications.deleteGroup.genericError.description"
@@ -359,22 +358,20 @@ const GroupsPage = (): ReactElement => {
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
             >
-                <RoleList
+                <GroupList
                     data-testid="group-mgt-groups-list"
-                    handleRoleDelete={ handleOnDelete }
-                    isGroup={ true }
+                    handleGroupDelete={ handleOnDelete }
                     isLoading={ isGroupsListRequestLoading }
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
                     onSearchQueryClear={ handleSearchQueryClear }
-                    roleList={ paginatedGroups }
+                    groupList={ paginatedGroups }
                     searchQuery={ searchQuery }
                 />
             </ListLayout>
             {
                 showWizard && (
-                    <CreateRoleWizard
+                    <CreateGroupWizard
                         data-testid="group-mgt-create-group-wizard"
-                        isAddGroup
                         closeWizard={ () => setShowWizard(false) }
                         updateList={ () => setListUpdated(true) }
                     />

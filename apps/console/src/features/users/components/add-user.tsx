@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { getUserStoreList } from "@wso2is/core/api";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { generate } from "generate-password";
@@ -31,7 +32,7 @@ import {
     getUserstoreRegEx,
     validateInputAgainstRegEx
 } from "../../userstores";
-import { getUserStoreList, getUsersList } from "../api";
+import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
 
 /**

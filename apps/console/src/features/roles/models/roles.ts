@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { CreateGroupMemberInterface } from "../../groups/models";
+
 /**
  * Interface to store data for create role api.
  */
@@ -23,6 +25,9 @@ export interface CreateRoleInterface {
     schemas?: string[];
     displayName?: string;
     members?: CreateRoleMemberInterface[];
+    users?: CreateRoleMemberInterface[];
+    groups?: CreateGroupMemberInterface[];
+    permissions?: string[];
 }
 
 /**

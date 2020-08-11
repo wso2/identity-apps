@@ -38,7 +38,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.groups + "/" + roleId
+        url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
     return httpClient(requestConfig).then((response) => {
@@ -46,7 +46,7 @@ export const getRoleById = (roleId: string): Promise<any> => {
     }).catch((error) => {
         return Promise.reject(error);
     });
-}
+};
 
 /**
  * Update Data of the matched ID or the role
@@ -62,7 +62,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
             "Content-Type": "application/json"
         },
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.groups + "/" + roleId
+        url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
     return httpClient(requestConfig).then((response) => {
@@ -70,7 +70,7 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
     }).catch((error) => {
         return Promise.reject(error);
     });
-}
+};
 
 /**
  * Retrieve a list of matched roles according to the search query.
@@ -85,7 +85,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.groups + "/.search"
+        url: store.getState().config.endpoints.roles + "/.search"
     };
 
     return httpClient(requestConfig).then((response) => {
@@ -93,7 +93,7 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
     }).catch((error) => {
         return Promise.reject(error)
     })
-}
+};
 
 /**
  * Delete a selected role with a given role ID.
@@ -101,7 +101,6 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
  * @param roleId - Id of the role which needs to be deleted.
  * @returns {Promise<any>} a promise containing the status of the delete.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const deleteRoleById = (roleId: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -109,7 +108,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.groups + "/" + roleId
+        url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
     return httpClient(requestConfig).then((response) => {
@@ -117,7 +116,7 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
     }).catch((error) => {
         return Promise.reject(error)
     })
-}
+};
 
 /**
  * Create a role in the system with role data given by user.
@@ -132,7 +131,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.groups
+        url: store.getState().config.endpoints.roles
     };
 
     return httpClient(requestConfig).then((response) => {
@@ -140,7 +139,7 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
     }).catch((error) => {
         return Promise.reject(error)
     });
-}
+};
 
 /**
  * Add or Update permission for the given Role using the role ID.
@@ -164,7 +163,7 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
     }).catch((error) => {
         return Promise.reject(error)
     });
-}
+};
 
 /**
  * Retrieve a list of all the permissions from the system.
@@ -186,7 +185,7 @@ export const getPermissionList = (): Promise<any> => {
     }).catch((error) => {
         return Promise.reject(error);
     });
-}
+};
 
 /**
  * Retrieve the list of permissions available for a given Role Id.
@@ -208,4 +207,28 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
     }).catch((error) => {
         return Promise.reject(error);
     });
-}
+};
+
+/**
+ * Update Data of the matched ID or the role
+ *
+ * @param roleId role id to update role details
+ * @param roleData Data that needs to be updated.
+ */
+export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Promise<any> => {
+    const requestConfig = {
+        data: roleData,
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.PATCH,
+        url: store.getState().config.endpoints.roles + "/" + roleId
+    };
+
+    return httpClient(requestConfig).then((response) => {
+        return Promise.resolve(response);
+    }).catch((error) => {
+        return Promise.reject(error);
+    });
+};

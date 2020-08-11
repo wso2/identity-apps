@@ -267,7 +267,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     listItemIndex={ index }
                                     listItemTypeLabel={ createGroupLabel(group?.displayName) }
                                     isItemChecked={ checkedUnassignedListItems.includes(group) }
-                                    showSecondaryActions={ true }
+                                    showSecondaryActions={ false }
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups"
                                 />

@@ -16,20 +16,15 @@
  * under the License.
  */
 
+import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
-// TODO: use `getUserStores()` function from Userstores features.
-import { getUserStoreList } from "../../../users";
-import {
-    PRIMARY_USERSTORE_PROPERTY_VALUES,
-    USERSTORE_REGEX_PROPERTIES,
-    getUserstoreRegEx,
-    validateInputAgainstRegEx
-} from "../../../userstores";
-import { searchRoleList } from "../../api";
+import { SharedUserStoreConstants } from "../../../core/constants";
+import { SharedUserStoreUtils } from "../../../core/utils";
+import { searchGroupList } from "../../../groups/api";
 import {
     APPLICATION_DOMAIN,
     INTERNAL_DOMAIN,
@@ -69,7 +64,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
     const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState<string>(PRIMARY_DOMAIN);
+    const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     /**
@@ -117,7 +112,8 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             startIndex: 1
         };
 
-        searchRoleList(searchData)
+        // TODO: Change the following to search from role list when the API is ready.
+        searchGroupList(searchData)
             .then((response) => {
                 setIsValidRoleName(response?.data?.totalResults === 0);
             });
@@ -141,15 +137,16 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     const validateRoleNamePattern = async (roleName: string): Promise<void> => {
         let userStoreRegEx = "";
         if (userStore !== PRIMARY_DOMAIN) {
-            await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
+            await SharedUserStoreUtils.getUserStoreRegEx(userStore,
+                SharedUserStoreConstants.USERSTORE_REGEX_PROPERTIES.RolenameRegEx)
                 .then((response) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
                 })
         } else {
-            userStoreRegEx = PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
+            userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         }
-        setIsRoleNamePatternValid(validateInputAgainstRegEx(roleName, userStoreRegEx));
+        setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(roleName, userStoreRegEx));
     };
 
     /**
@@ -229,21 +226,15 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             data-testid={ `${ testId }-domain-dropdown` }
                             type="dropdown"
                             label={
-                                isAddGroup ?
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain.label." +
-                                        "group") :
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain.label." +
-                                        "role")
+                               t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
+                                   "label.role")
                             }
                             name="domain"
-                            children={ isAddGroup ? userStoreOptions : roleDomains }
-                            placeholder={ t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
-                                "placeholder") }
+                            children={ roleDomains }
+                            placeholder={ t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                "domain.placeholder") }
                             requiredErrorMessage={
-                                isAddGroup ?
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
-                                        "validation.empty.group") :
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
+                                t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
                                         "validation.empty.role")
                             }
                             required={ true }
@@ -262,45 +253,30 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                             type="text"
                             name="rolename"
                             label={
-                                isAddGroup ?
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName.label",
-                                        { type: "Group" }) :
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName.label",
-                                        { type: "Role" })
+                                t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                        "roleName.label",{ type: "Role" })
                             }
                             placeholder={
-                                isAddGroup ?
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
-                                        "placeholder", { type: "Group" }) :
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                                         "placeholder", { type: "Role" })
                             }
                             required={ true }
                             requiredErrorMessage={ 
-                                isAddGroup ?
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
-                                        "validations.empty", { type: "Group" }) :
-                                    t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
+                                t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                                         "validations.empty", { type: "Role" })
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (isValidRoleName === false) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        isAddGroup ?
-                                            t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
-                                                "roleName.validations.duplicate", { type: "Group" }) :
-                                            t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                        t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
                                                 "roleName.validations.duplicate", { type: "Role" })
                                     );
                                 }
                                 if (!isRoleNamePatternValid) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        isAddGroup ?
-                                            t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
-                                                "roleName.validations.invalid", { type: "group" }) :
-                                            t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
+                                        t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
                                                 "roleName.validations.invalid", { type: "role" })
                                     );
                                 }

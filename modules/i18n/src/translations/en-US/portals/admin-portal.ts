@@ -1408,7 +1408,9 @@ export const adminPortal: AdminPortalNS = {
                     0: "Basic Details",
                     1: "Permission Selection",
                     2: "Assign Users",
-                    3: "Summary"
+                    3: "Summary",
+                    4: "Groups & Users",
+                    5: "Assign Roles"
                 }
             },
             advancedSearch: {
@@ -1683,6 +1685,14 @@ export const adminPortal: AdminPortalNS = {
             list: {
                 emptyPlaceholders: {
                     default: "There are no items in this list at the moment.",
+                    groups: {
+                        selected: "There are no {{type}} assigned to this group.",
+                        unselected: "There are no {{type}} available to assign to this group."
+                    },
+                    roles: {
+                        selected: "There are no {{type}} assigned with this role.",
+                        unselected: "There are no {{type}} available to assign with this role."
+                    },
                     users: {
                         roles: {
                             selected: "There are no {{type}} assigned to this user.",
