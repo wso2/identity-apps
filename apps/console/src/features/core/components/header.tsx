@@ -152,7 +152,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             ? state.productName
                             : config.ui.productName
                     }
-                    version={ config.deployment.productVersion }
+                    version={ config.ui.productVersionConfig?.versionOverride ?? config.deployment.productVersion }
+                    versionUISettings={ {
+                        allowSnapshot: config.ui.productVersionConfig?.allowSnapshot,
+                        labelColor: config.ui.productVersionConfig?.labelColor,
+                        textCase: config.ui.productVersionConfig?.textCase
+                    } }
                 />
             ) }
             brandLink={ config.deployment.appHomePath }

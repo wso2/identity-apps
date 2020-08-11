@@ -93,6 +93,7 @@ var AppUtils = AppUtils || (function() {
                 logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
                     _config.logoutCallbackPath,
                 productVersion: _config.productVersion,
+                productVersionConfig: _config.ui.productVersionConfig,
                 routes: _config.routePaths,
                 serverOrigin: _config.serverOrigin,
                 serverOriginWithTenant: _config.serverOrigin + this.getTenantPath(),

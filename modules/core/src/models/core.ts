@@ -145,3 +145,25 @@ export enum ProductReleaseTypes {
      */
     RC = "rc"
 }
+
+/**
+ * Product version configurations interface.
+ */
+export interface ProductVersionConfigInterface {
+    /**
+     * Show snapshot label.
+     */
+    allowSnapshot?: boolean;
+    /**
+     * Color for the release label.
+     */
+    labelColor?: "auto" | "primary" | "secondary" | string;
+    /**
+     * Override the parent POM version.
+     */
+    versionOverride?: string;
+    /**
+     * Text case.
+     */
+    textCase?: "lowercase" | "uppercase";
+}

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ProductVersionConfigInterface } from "./core";
 import { DocumentationProviders, DocumentationStructureFileTypes } from "./documentation";
 import { GravatarConfig } from "./profile";
 
@@ -197,6 +198,11 @@ export interface CommonUIConfigInterface {
      * ex: `Identity Server`
      */
     productName: string;
+    /**
+     * Product version UI configurations.
+     * ex: allowSnapshot, override etc.
+     */
+    productVersionConfig?: ProductVersionConfigInterface;
 }
 
 /**
