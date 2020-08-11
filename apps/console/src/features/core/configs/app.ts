@@ -25,6 +25,7 @@ import { getClaimResourceEndpoints } from "../../claims";
 import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers";
+import { getScopesResourceEndpoints } from "../../oidc-scopes";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getUsersResourceEndpoints } from "../../users";
@@ -122,6 +123,7 @@ export class Config {
             ...getServerConfigurationsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUsersResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getScopesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
             documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
