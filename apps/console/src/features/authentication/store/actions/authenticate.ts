@@ -40,7 +40,7 @@ import {
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { history, store } from "../../../core";
-import { HttpUtils } from "../../utils";
+import { HttpUtils } from "../../../core/utils/http-utils";
 
 /**
  *  Gets profile information by making an API call

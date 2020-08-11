@@ -10,7 +10,6 @@
         "authentication"
     ],
     "main": "dist/main.js",
-    "module": "src/index.ts",
     "scripts": {
         "lint": "tslint -t stylish --project .",
         "build": "rimraf dist && webpack -p --env.NODE_ENV=production"
