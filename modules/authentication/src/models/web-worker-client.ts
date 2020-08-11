@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { ConfigInterface } from ".";
 import { ServiceResourcesType } from "./endpoints";
 import { SignInResponse, UserInfo } from "./message";
@@ -31,6 +31,12 @@ export interface WebWorkerClientInterface {
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
     endUserSession(): Promise<boolean>;
     getServiceEndpoints(): Promise<ServiceResourcesType>;
+    onHttpRequestSuccess(callback: (response: AxiosResponse) => void): void;
+    onHttpRequestError(callback: (response: AxiosError) => void): void;
+
+    onHttpRequestStart(callback: () => void): void;
+
+    onHttpRequestFinish(callback: () => void): void;
 }
 
 export interface WebWorkerSingletonClientInterface {
