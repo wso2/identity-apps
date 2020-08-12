@@ -22,7 +22,7 @@ import axios from "axios";
 import _ from "lodash";
 import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
-import { BasicProfileInterface, HttpMethods, MultiValue, ProfileSchema } from "../models";
+import { BasicProfileInterface, HttpMethods, MultiValue, ProfileSchema, ReadOnlyUserStatus } from "../models";
 import { store } from "../store";
 import { toggleSCIMEnabled } from "../store/actions";
 
@@ -38,7 +38,6 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const getUserInfo = (): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -59,6 +58,37 @@ export const getUserInfo = (): Promise<any> => {
         })
         .catch((error) => {
             return Promise.reject(error);
+        });
+};
+
+/**
+ * Retrieve the user read only status of the currently authenticated user.
+ *
+ * @return {Promise<any>} a promise containing the response.
+ */
+export const getUserReadOnlyStatus = (): Promise<ReadOnlyUserStatus> => {
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.isReadOnlyUser
+    };
+
+    return httpClient(requestConfig)
+        .then((response) => {
+            if (response.status !== 200) {
+                return Promise.reject(
+                    new Error(`Failed get user read only status from:
+                ${store.getState().config.endpoints.user}`)
+                );
+            }
+            return Promise.resolve(response?.data);
+        })
+        .catch((error) => {
+            console.log(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
@@ -197,7 +227,7 @@ export const updateProfileInfo = (info: object): Promise<any> => {
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            return Promise.reject(error?.response?.data);
         });
 };
 
