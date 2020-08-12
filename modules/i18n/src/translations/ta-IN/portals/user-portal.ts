@@ -1096,6 +1096,12 @@ export const userPortal: UserPortalNS = {
                         message: "பயனர் விபரம் பெறப்பட்டுவிட்டது"
                     }
                 },
+                getUserReadOnlyStatus: {
+                    genericError: {
+                        description: "பயனரின் படிக்க-மட்டும் நிலையை மீட்டெடுக்கும்போது தவறேற்பட்டுவிட்டது",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது !!!"
+                    }
+                },
                 updateProfileInfo: {
                     error: {
                         description: "பயனர் சுயவிபரத்தை புதுப்பிக்கும் பொழுது தவறேற்பட்டுவிட்டது",
