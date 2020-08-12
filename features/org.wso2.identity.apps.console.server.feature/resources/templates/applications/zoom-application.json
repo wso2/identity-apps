@@ -7,7 +7,7 @@
     "types": [
         "Communication"
     ],
-    "category": "CUSTOM",
+    "category": "VENDOR",
     "displayOrder": 9,
     "templateGroup": "",
     "application": {
