@@ -48,7 +48,8 @@ export interface BasicProfileInterface {
     userImage?: string;
     userName?: string;
     /* eslint-disable @typescript-eslint/no-explicit-any */
-    [key: string]: any;
+    [ key: string ]: any;
+    isReadOnly: boolean;
 }
 
 /**
@@ -149,6 +150,17 @@ export interface ProfileReducerStateInterface {
 }
 
 /**
+ * Model of the is read only user status.
+ */
+export interface ReadOnlyUserStatus {
+    id: string;
+    schemas: string[];
+    "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
+        isReadOnlyUser: boolean;
+    };
+}
+
+/**
  * Empty profile completion object.
  *
  * @return {ProfileCompletion}
@@ -166,14 +178,18 @@ export const emptyProfileCompletion = (): ProfileCompletion => ({
         completedCount: 0,
         incompleteAttributes: [],
         totalCount: 0
-    },
+    }
 });
 
 export const createEmptyProfile = (): BasicProfileInterface => ({
     email: "",
     emails: [],
+    isReadOnly: true,
     isSecurity: false,
-    name: { givenName: "", familyName: "" },
+    name: {
+        familyName: "",
+        givenName: ""
+    },
     organisation: "",
     phoneNumbers: [],
     profileUrl: "",
