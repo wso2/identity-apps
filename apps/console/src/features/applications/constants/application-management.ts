@@ -106,14 +106,14 @@ export class ApplicationManagementConstants {
      * @type {Map<string, string>}
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
-        .set("Web Application", "Single Page Application")
-        .set("Single Page Application", "Single Page Application")
-        .set("Mobile Application", "OIDC Mobile Application")
-        .set("Desktop Application", "Windows Desktop Application")
-        .set("Slack", "OIDC Web Application")
-        .set("Zoom", "OIDC Web Application")
-        .set("Workday", "OIDC Web Application")
-        .set("Box", "OIDC Web Application");
+        .set("b9c5e11e-fc78-484b-9bec-015d247561b8", "Single Page Application") // OIDC Web application Template
+        .set("6a90e4b0-fbff-42d7-bfde-1efd98f07cd7", "Single Page Application") // SPA Template
+        .set("44a2d9d9-bc0c-4b54-85df-1cf08f4002ec", "OIDC Mobile Application") // OIDC Mobile application Template
+        .set("df929521-6768-44f5-8586-624126ec3f8b", "Windows Desktop Application") // Windows Desktop Template
+        .set("z345e11e-fc78-484b-9bec-015d2475u341r", "OIDC Web Application") // Slack Template
+        .set("t565e11e-fc78-484b-9bec-015d2472008", "OIDC Web Application") // Zoom Template
+        .set("r565e11e-fc78-484b-9bec-015d24753456", "OIDC Web Application") // Workday Template
+        .set("h9c5e23e-fc78-484b-9bec-015d242361b8", "OIDC Web Application"); // Box Template
 
     /**
      * Set of internal application which are forbidden from deleting.

@@ -321,6 +321,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     list?.applications && list.applications instanceof Array && list.applications.length > 0
                         ? list.applications.map((app: ApplicationListItemInterface, index: number) => {
 
+                            // TODO: Get the support from listing API to retrieve the templateId.
                             const template = applicationTemplates
                                 && applicationTemplates instanceof Array
                                 && applicationTemplates.length > 0

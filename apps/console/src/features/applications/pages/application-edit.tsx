@@ -101,7 +101,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const helpPanelVisibilityGlobalState: boolean = useSelector((state: AppState) => state.helpPanel.visibility);
 
     const [ application, setApplication ] = useState<ApplicationInterface>(emptyApplication);
-    const [ applicationTemplateName, setApplicationTemplateName ] = useState<string>(undefined);
     const [ applicationTemplate, setApplicationTemplate ] = useState<ApplicationTemplateListItemInterface>(undefined);
     const [ isApplicationRequestLoading, setApplicationRequestLoading ] = useState<boolean>(false);
     const [ helpPanelDocContent, setHelpPanelDocContent ] = useState<string>(undefined);
@@ -159,36 +158,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     }, [ featureConfig ]);
 
     /**
-     * Set the template once application templates list is available in redux.
-     */
-    useEffect(() => {
-        if (applicationTemplates === undefined) {
-
-            setApplicationTemplateRequestLoadingStatus(true);
-
-            ApplicationManagementUtils.getApplicationTemplates()
-                .finally(() => {
-                    setApplicationTemplateRequestLoadingStatus(false);
-                });
-
-            return;
-        }
-
-        if (applicationTemplateName
-            && !_.isEmpty(applicationTemplates)
-            && applicationTemplates instanceof Array
-            && applicationTemplates.length > 0) {
-
-            setApplicationTemplate(applicationTemplates.find(
-                (template) => template.name === applicationTemplateName));
-        }
-    }, [ applicationTemplateName, applicationTemplates ]);
-
-    /**
      * Set the default doc content URL for the tab.
      */
     useEffect(() => {
-        if (!applicationTemplateName) {
+        if (!applicationTemplate) {
             return;
         }
 
@@ -199,24 +172,26 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        dispatch(setHelpPanelDocsContentURL(editApplicationDocs[
-            ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-            .get(applicationTemplateName) ]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW]));
-    }, [ applicationTemplateName, helpPanelDocStructure ]);
+        dispatch(
+            setHelpPanelDocsContentURL(editApplicationDocs[ 
+                ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
+                    .get(applicationTemplate.id) ]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
+        );
+    }, [ applicationTemplate, helpPanelDocStructure ]);
 
     /**
      * Filter application samples based on the template type.
      */
     useEffect(() => {
-        if (!applicationTemplateName) {
+        if (!applicationTemplate) {
             return;
         }
-        const templateName = ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
-            .get(applicationTemplateName);
+        const mappedKey = ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
+            .get(applicationTemplate.id);
 
-        const samplesDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSampleDocsKey(templateName));
-        const SDKDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSDKDocsKey(templateName));
-        const configDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getConfigDocsKey(templateName));
+        const samplesDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSampleDocsKey(mappedKey));
+        const SDKDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSDKDocsKey(mappedKey));
+        const configDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getConfigDocsKey(mappedKey));
 
         if (!samplesDocs) {
             return;
@@ -244,7 +219,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         setSDKS(sdks.filter((item) => item.name !== "overview"));
         setSamples(samples.filter((item) => item.name !== "overview"));
         setConfigs(configs.filter((item) => item.name !== "overview"));
-    }, [ applicationTemplateName, helpPanelDocStructure ]);
+    }, [ applicationTemplate, helpPanelDocStructure ]);
 
     /**
      * Called when help panel doc URL status changes.
@@ -357,8 +332,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Remove template name if multiple protocols configured.
      */
     useEffect(() => {
-        if (applicationTemplateName && (application?.inboundProtocols?.length > 1)) {
-            updateApplicationConfigurations(application.id, { description: application.description })
+        if (applicationTemplate && (application?.inboundProtocols?.length > 1)) {
+            updateApplicationConfigurations(application.id, { templateId: "" })
                 .then(() => {
                     handleApplicationUpdate(application.id)
                 })
@@ -388,7 +363,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 })
         }
 
-    }, [applicationTemplateName, application]);
+    }, [ applicationTemplate, application ]);
 
     /**
      * Triggered when the application state search param in the URL changes.
@@ -433,17 +408,13 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         getApplicationDetails(id)
             .then((response: ApplicationInterface) => {
 
-                const [
-                    templateName,
-                    description
-                ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(response.description);
+                const template = applicationTemplates
+                    && applicationTemplates instanceof Array
+                    && applicationTemplates.length > 0
+                    && applicationTemplates.find((template) => template.id === response.templateId);
 
-                setApplicationTemplateName(templateName);
-
-                setApplication({
-                    ...response,
-                    description
-                });
+                setApplicationTemplate(template);
+                setApplication(response);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -532,7 +503,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         {
             content: (
                 <HelpPanelOverview
-                    applicationType={ applicationTemplateName }
+                    applicationType={ applicationTemplate?.name }
                     inboundProtocols={ application?.inboundProtocols }
                     handleTabChange={ handleTabChange }
                 />
