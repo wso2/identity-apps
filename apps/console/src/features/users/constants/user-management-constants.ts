@@ -19,7 +19,7 @@
 /**
  * Class containing app constants which can be used across several applications.
  */
-export class UserConstants {
+export class UserManagementConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -54,4 +54,16 @@ export class UserConstants {
      */
     public static readonly DEFAULT_USER_LIST_ATTRIBUTES = [ "name", "emails", "userName", "id", "profileUrl",
         "meta.lastModified" ];
+
+    /**
+     * Set of keys used to enable/disable features.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("USER_CREATE", "users.create")
+        .set("USER_UPDATE", "users.update")
+        .set("USER_DELETE", "users.delete")
+        .set("USER_READ", "users.read")
 }

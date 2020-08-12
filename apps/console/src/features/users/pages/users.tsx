@@ -26,10 +26,17 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, AppState, UIConstants, store } from "../../core";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    SharedUserStoreUtils,
+    UIConstants,
+    store
+} from "../../core";
 import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
-import { UserConstants } from "../constants";
+import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
 /**
@@ -41,6 +48,8 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -54,6 +63,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ userStore, setUserStore ] = useState(undefined);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
+    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
 
     const username = useSelector((state: AppState) => state.auth.username);
     const tenantName = store.getState().config.deployment.tenant;
@@ -72,13 +82,19 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     useEffect(() => {
+        SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
+            setReadOnlyUserStoresList(response);
+        });
+    }, [ userStore ]);
+
+    useEffect(() => {
         if(CommonHelpers.lookupKey(tenantSettings, username) !== null) {
             const userSettings = CommonHelpers.lookupKey(tenantSettings, username);
             const userPreferences = userSettings[1];
             const tempColumns = new Map<string, string> ();
 
             if (userPreferences.identityAppsSettings.userPreferences.userListColumns.length < 1) {
-                const metaColumns = UserConstants.DEFAULT_USER_LIST_ATTRIBUTES;
+                const metaColumns = UserManagementConstants.DEFAULT_USER_LIST_ATTRIBUTES;
                 setUserMetaColumns(metaColumns);
                 metaColumns.map((column) => {
                     if (column === "id") {
@@ -409,6 +425,8 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }
                     data-testid="user-mgt-user-list"
+                    readOnlyUserStores={ readOnlyUserStoresList }
+                    featureConfig={ featureConfig }
                 />
                 {
                     showWizard && (

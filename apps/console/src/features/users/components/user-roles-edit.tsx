@@ -17,7 +17,12 @@
  */
 
 import { getRolesList } from "@wso2is/core/api";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, RolesMemberInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    ProfileInfoInterface,
+    RolesMemberInterface
+} from "@wso2is/core/models";
 import {
     EmphasizedSegment,
     EmptyPlaceholder,
@@ -30,6 +35,7 @@ import {
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
     Button,
     Divider,
@@ -43,13 +49,26 @@ import {
 } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard";
-import { EmptyPlaceholderIllustrations } from "../../core";
+import { AppState, EmptyPlaceholderIllustrations } from "../../core";
 import { updateUserRoles } from "../api";
 
 interface UserRolesPropsInterface {
+    /**
+     * User profile
+     */
     user: ProfileInfoInterface;
+    /**
+     * On alert fired callback.
+     */
     onAlertFired: (alert: AlertInterface) => void;
+    /**
+     * Handle user update callback.
+     */
     handleUserUpdate: (userId: string) => void;
+    /**
+     * Show if the user is read only.
+     */
+    isReadOnly?: boolean;
 }
 
 /**
@@ -70,8 +89,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const {
         onAlertFired,
         user,
-        handleUserUpdate
+        handleUserUpdate,
+        isReadOnly
     } = props;
+
+    const { t } = useTranslation();
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ roleList, setRoleList ] = useState<any>([]);
@@ -101,8 +124,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const [ isSelected, setSelection ] = useState(false);
 
     const [ assignedRoles, setAssignedRoles ] = useState([]);
-
-    const { t } = useTranslation();
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -776,13 +797,17 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 floated="left"
                                                 size="small"
                                             />
-                                            <Button
-                                                data-testid="user-mgt-roles-list-update-button"
-                                                size="medium"
-                                                icon="pencil"
-                                                floated="right"
-                                                onClick={ handleOpenAddNewGroupModal }
-                                            />
+                                            {
+                                                !isReadOnly && (
+                                                    <Button
+                                                        data-testid="user-mgt-roles-list-update-button"
+                                                        size="medium"
+                                                        icon="pencil"
+                                                        floated="right"
+                                                        onClick={ handleOpenAddNewGroupModal }
+                                                    />
+                                                )
+                                            }
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row>
@@ -877,13 +902,15 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 "roleList.emptyListPlaceholder.subTitle.2")
                                         ] }
                                         action={
-                                            <PrimaryButton
-                                                data-testid="user-mgt-user-empty-roles-list-assign-group-button"
-                                                onClick={ handleOpenAddNewGroupModal }
-                                                icon="plus"
-                                            >
-                                                Assign Role
-                                            </PrimaryButton>
+                                            !isReadOnly && (
+                                                <PrimaryButton
+                                                    data-testid="user-mgt-user-empty-roles-list-assign-group-button"
+                                                    onClick={ handleOpenAddNewGroupModal }
+                                                    icon="plus"
+                                                >
+                                                    Assign Role
+                                                </PrimaryButton>
+                                            )
                                         }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         imageSize="tiny"
