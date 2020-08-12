@@ -19,10 +19,9 @@
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {AppConstants, history, SharedUserStoreUtils} from "../../core";
+import { AppConstants, SharedUserStoreUtils, history } from "../../core";
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
-import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {

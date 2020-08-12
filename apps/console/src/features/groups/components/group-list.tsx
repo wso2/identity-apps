@@ -25,7 +25,8 @@ import {
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList, ResourceListActionInterface,
+    ResourceList,
+    ResourceListActionInterface,
     ResourceListItem
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
