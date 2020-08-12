@@ -18,8 +18,8 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
-import _ from "lodash";
 import get from "lodash/get";
+import take from "lodash/take";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
@@ -208,7 +208,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
 
     useEffect(() => {
         if (paginate && !isShowMoreClicked) {
-            setTemplateList(_.take(templates, paginationLimit));
+            setTemplateList(take(templates, paginationLimit));
 
             return;
         }
@@ -221,7 +221,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
             if (paginate && !isShowMoreClicked) {
                 let balanceLimit = (paginationLimit - templates.length);
                 balanceLimit = (balanceLimit < 0) ? 0 : balanceLimit;
-                setSecondaryTemplateList(_.take(secondaryTemplates, balanceLimit));
+                setSecondaryTemplateList(take(secondaryTemplates, balanceLimit));
 
                 return;
             }
@@ -276,11 +276,11 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
      */
     const viewLessTemplates = (): void => {
         setIsShowMoreClicked(false);
-        setTemplateList(_.take(templates, paginationLimit));
+        setTemplateList(take(templates, paginationLimit));
         if (secondaryTemplates) {
             let balanceLimit = (paginationLimit - templates.length);
             balanceLimit = (balanceLimit < 0) ? 0 : balanceLimit;
-            setSecondaryTemplateList(_.take(secondaryTemplates, balanceLimit));
+            setSecondaryTemplateList(take(secondaryTemplates, balanceLimit));
         }
     };
 
