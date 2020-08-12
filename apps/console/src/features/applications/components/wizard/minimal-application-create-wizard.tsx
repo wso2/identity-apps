@@ -18,7 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
 import { GenericIcon, Heading, LinkButton, PrimaryButton, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash/isEmpty";
@@ -223,6 +223,97 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     };
 
     /**
+     * Handles form submission.
+     *
+     * @param {Map<string, FormValue>} values - Form Values.
+     */
+    const handleFormSubmit = (values: Map<string, FormValue>): void => {
+        submitUrl((url: string) => {
+            if (isEmpty(callBackUrls) && isEmpty(url)) {
+                setShowURLError(true);
+            } else {
+                const data = { ...templateSettings };
+
+                data.name = values.get("name").toString();
+                data.inboundProtocolConfiguration.oidc.callbackURLs = [
+                    buildCallBackUrlWithRegExp(url ? url : callBackUrls)
+                ];
+                data.description = "";
+                data.templateId = template.id;
+
+                createApplication(data)
+                    .then((response) => {
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "devPortal:components.applications.notifications." +
+                                    "addApplication.success.description"
+                                ),
+                                level: AlertLevels.SUCCESS,
+                                message: t(
+                                    "devPortal:components.applications.notifications." +
+                                    "addApplication.success.message"
+                                )
+                            })
+                        );
+
+                        // The created resource's id is sent as a location header.
+                        // If that's available, navigate to the edit page.
+                        if (!isEmpty(response.headers.location)) {
+                            const location = response.headers.location;
+                            const createdAppID = location.substring(location.lastIndexOf("/") + 1);
+
+                            history.push({
+                                pathname: AppConstants.PATHS.get("APPLICATION_EDIT")
+                                    .replace(":id", createdAppID),
+                                search: `?${
+                                    ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
+                                    ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE
+                                    }`
+                            });
+
+                            return;
+                        }
+
+                        // Fallback to applications page, if the location header is not present.
+                        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+                    })
+                    .catch((error) => {
+                        if (error.response && error.response.data && error.response.data.description) {
+                            dispatch(
+                                addAlert({
+                                    description: error.response.data.description,
+                                    level: AlertLevels.ERROR,
+                                    message: t(
+                                        "devPortal:components.applications.notifications." +
+                                        "addApplication.error.message"
+                                    )
+                                })
+                            );
+
+                            return;
+                        }
+
+                        dispatch(
+                            addAlert({
+                                description: t(
+                                    "devPortal:components.applications.notifications." +
+                                    "addApplication.genericError" +
+                                    ".description"
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: t(
+                                    "devPortal:components.applications.notifications." +
+                                    "addApplication.genericError.message"
+                                )
+                            })
+                        );
+                    });
+            }
+        });
+    };
+
+    /**
      * Resolves to the applicable content of an application template.
      *
      * @return {ReactElement} The content relevant to a specified application template.
@@ -231,91 +322,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         if (template.id === SPA_TEMPLATE_ID || template.id === WEB_APP_TEMPLATE_ID) {
             return (
                 <Forms
-                    onSubmit={ (values) => {
-                        submitUrl((url: string) => {
-                            if (isEmpty(callBackUrls) && isEmpty(url)) {
-                                setShowURLError(true);
-                            } else {
-                                const data = { ...templateSettings };
-
-                                data.name = values.get("name").toString();
-                                data.inboundProtocolConfiguration.oidc.callbackURLs = [
-                                    buildCallBackUrlWithRegExp(url ? url : callBackUrls)
-                                ];
-                                data.description = "";
-                                data.templateId = template.id;
-
-                                createApplication(data)
-                                    .then((response) => {
-                                        dispatch(
-                                            addAlert({
-                                                description: t(
-                                                    "devPortal:components.applications.notifications." +
-                                                    "addApplication.success.description"
-                                                ),
-                                                level: AlertLevels.SUCCESS,
-                                                message: t(
-                                                    "devPortal:components.applications.notifications." +
-                                                    "addApplication.success.message"
-                                                )
-                                            })
-                                        );
-
-                                        // The created resource's id is sent as a location header.
-                                        // If that's available, navigate to the edit page.
-                                        if (!isEmpty(response.headers.location)) {
-                                            const location = response.headers.location;
-                                            const createdAppID = location.substring(location.lastIndexOf("/") + 1);
-
-                                            history.push({
-                                                pathname: AppConstants.PATHS.get("APPLICATION_EDIT")
-                                                    .replace(":id", createdAppID),
-                                                search: `?${
-                                                    ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
-                                                    ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE
-                                                }`
-                                            });
-
-                                            return;
-                                        }
-
-                                        // Fallback to applications page, if the location header is not present.
-                                        history.push(AppConstants.PATHS.get("APPLICATIONS"));
-                                    })
-                                    .catch((error) => {
-                                        if (error.response && error.response.data && error.response.data.description) {
-                                            dispatch(
-                                                addAlert({
-                                                    description: error.response.data.description,
-                                                    level: AlertLevels.ERROR,
-                                                    message: t(
-                                                        "devPortal:components.applications.notifications." +
-                                                        "addApplication.error.message"
-                                                    )
-                                                })
-                                            );
-
-                                            return;
-                                        }
-
-                                        dispatch(
-                                            addAlert({
-                                                description: t(
-                                                    "devPortal:components.applications.notifications." +
-                                                    "addApplication.genericError" +
-                                                    ".description"
-                                                ),
-                                                level: AlertLevels.ERROR,
-                                                message: t(
-                                                    "devPortal:components.applications.notifications." +
-                                                    "addApplication.genericError.message"
-                                                )
-                                            })
-                                        );
-                                    });
-                            }
-                        });
-                    } }
+                    onSubmit={ (values: Map<string, FormValue>) => handleFormSubmit(values) }
                     submitState={ submit }
                 >
                     <Grid>
