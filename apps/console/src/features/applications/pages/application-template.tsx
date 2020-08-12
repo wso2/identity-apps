@@ -27,8 +27,8 @@ import {
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Divider, Dropdown, DropdownProps, Grid, Icon, Input } from "semantic-ui-react";
-import { AppConstants, AppState, EmptyPlaceholderIllustrations, history} from "../../core";
+import { Divider, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, Input } from "semantic-ui-react";
+import { AppConstants, AppState, EmptyPlaceholderIllustrations, history } from "../../core";
 import { ApplicationCreateWizard, CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
 import { ApplicationTemplateIllustrations } from "../configs";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
@@ -51,6 +51,18 @@ const SPA_TEMPLATE_ID = "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7";
  * @type {string}
  */
 const WEB_APP_TEMPLATE_ID = "b9c5e11e-fc78-484b-9bec-015d247561b8";
+
+/**
+ * Template filter types.
+ * @type {{text: string; value: string; key: string}[]}
+ */
+const TEMPLATE_FILTER_TYPES: DropdownItemProps[] = [
+    {
+        key: "all",
+        text: "All Types",
+        value: "all"
+    }
+];
 
 /**
  * Props for the Applications templates page.
@@ -85,34 +97,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     ] = useState<boolean>(false);
     const [ templateList, setTemplateList ] = useState<ApplicationTemplateListItemInterface[]>(undefined);
     const [ searchTriggered, setSearchTriggered ] = useState<boolean>(false);
-
-    const TEMPLATE_TYPES = [
-        {
-            key: "all",
-            text: "All types",
-            value: "all",
-        },
-        {
-            key: "community",
-            text: "Community",
-            value: "Community",
-        },
-        {
-            key: "hr",
-            text: "HR",
-            value: "HR",
-        },
-        {
-            key: "communication",
-            text: "Communication",
-            value: "Communication",
-        },
-        {
-            key: "content",
-            text: "Content management",
-            value: "Content management",
-        }
-    ];
+    const [ templateFilterTypes, setTemplateFilterTypes ] = useState<DropdownItemProps[]>(TEMPLATE_FILTER_TYPES);
 
     /**
      *  Get Application templates.
@@ -141,6 +126,37 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             setSearchTriggered(true);
         }
     }, [ templateList ]);
+
+    /**
+     * Populate the filter types based on VENDOR template types.
+     */
+    useEffect(() => {
+        if (!(applicationTemplates && applicationTemplates instanceof Array && applicationTemplates.length > 0)) {
+            return;
+        }
+
+        const filterTypes: DropdownItemProps[] = TEMPLATE_FILTER_TYPES;
+
+        [ ...applicationTemplates ].forEach((template: ApplicationTemplateListItemInterface) => {
+            if (template.category === ApplicationTemplateCategories.VENDOR) {
+                template.types.forEach((type: string) => {
+                    const isAvailable = filterTypes.some((filterType: DropdownItemProps) => filterType.value === type);
+                    
+                    if (isAvailable) {
+                        return;
+                    }
+
+                    filterTypes.push({
+                        key: type,
+                        text: type,
+                        value: type
+                    });
+                });
+            }
+        });
+        
+        setTemplateFilterTypes(filterTypes);
+    }, [ applicationTemplates ]);
 
     /**
      * Handles back button click.
@@ -289,7 +305,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                 placeholder="Select type"
                                 selection
                                 defaultValue="all"
-                                options={ TEMPLATE_TYPES }
+                                options={ templateFilterTypes }
                                 onChange={ handleTemplateTypeChange }
                             />
                         </EmphasizedSegment>
@@ -399,7 +415,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                 && applicationTemplates instanceof Array
                                                 && applicationTemplates.length > 0
                                                     ? applicationTemplates.filter(
-                                                    (template) => template.category === ApplicationTemplateCategories.DEFAULT)
+                                                        (template) =>
+                                                            template.category === ApplicationTemplateCategories.DEFAULT)
                                                     : null
                                             }
                                             templateIcons={ ApplicationTemplateIllustrations }
@@ -425,7 +442,9 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                         "title") }
                                                     subtitle={ [t("devPortal:components.templates." +
                                                         "emptyPlaceholder.subtitles")] }
-                                                    data-testid={ `${ testId }-quick-start-template-grid-empty-placeholder` }
+                                                    data-testid={
+                                                        `${ testId }-quick-start-template-grid-empty-placeholder`
+                                                    }
                                                 />
                                             ) }
                                             tagsSectionTitle={ t("common:technologies") }
@@ -441,7 +460,8 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                 && applicationTemplates instanceof Array
                                                 && applicationTemplates.length > 0
                                                     ? applicationTemplates.filter(
-                                                    (template) => template.category === ApplicationTemplateCategories.CUSTOM)
+                                                        (template) =>
+                                                            template.category === ApplicationTemplateCategories.VENDOR)
                                                     : null
                                             }
                                             templateIcons={ ApplicationTemplateIllustrations }
@@ -449,6 +469,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                 fill: "primary"
                                             } }
                                             templateIconSize="tiny"
+                                            showTags={ true }
+                                            tagsKey="types"
+                                            tagsAs="default"
+                                            showTagIcon={ true }
                                             heading="Vendor Integrations"
                                             subHeading="Predefined set of applications to integrate your application
                                             with popular vendors."
@@ -470,7 +494,6 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                     data-testid={ `${ testId }-custom-template-grid-empty-placeholder` }
                                                 />
                                             ) }
-                                            tagsSectionTitle={ t("common:technologies") }
                                             data-testid={ `${ testId }-custom-template-grid` }
                                         />
                                     </div>

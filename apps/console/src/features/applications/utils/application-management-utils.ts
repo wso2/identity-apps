@@ -164,9 +164,10 @@ export class ApplicationManagementUtils {
                 applicationTemplates.unshift(CustomApplicationTemplate);
 
                 // Generate the technologies array.
-                applicationTemplates.forEach((template) => {
-                    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
-                });
+                // TODO: Enable if template icon should be resolved.
+                //applicationTemplates.forEach((template) => {
+                //    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
+                //});
 
                 store.dispatch(setApplicationTemplates(applicationTemplates));
             })
