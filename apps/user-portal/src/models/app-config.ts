@@ -72,6 +72,7 @@ export interface ServiceResourceEndpointsInterface {
     fidoMetaData: string;
     fidoStart: string;
     fidoStartUsernameless: string;
+    isReadOnlyUser: string;
     issuer: string;
     jwks: string;
     logout: string;
