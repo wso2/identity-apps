@@ -31,14 +31,20 @@ import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
-import { getProfileInfo, getProfileSchemas, switchAccount } from "../../api";
+import {
+    getProfileInfo,
+    getProfileSchemas,
+    getUserReadOnlyStatus,
+    switchAccount
+}from "../../api";
 import { history } from "../../helpers";
 import {
     AlertLevels,
     AuthenticatedUserInterface,
     BasicProfileInterface,
     LinkedAccountInterface,
-    ProfileSchema
+    ProfileSchema,
+    ReadOnlyUserStatus
 } from "../../models";
 import {
     getProfileCompletion,
@@ -117,72 +123,100 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
     dispatch(setProfileInfoLoader(true));
 
-    // Get the profile info
-    getProfileInfo()
-        .then((infoResponse) => {
-            if (infoResponse.responseStatus === 200) {
-                dispatch(
-                    setProfileInfo({
-                        ...infoResponse
-                    })
-                );
+    getUserReadOnlyStatus()
+        .then((response: ReadOnlyUserStatus) => {
+            // Get the profile info
+            getProfileInfo()
+                .then((infoResponse) => {
+                    if (infoResponse.responseStatus === 200) {
+                        dispatch(
+                            setProfileInfo({
+                                ...infoResponse,
+                                isReadOnly:
+                                    response["urn:ietf:params:scim:schemas:extension:enterprise:2.0:User"]
+                                        ?.isReadOnlyUser
+                            })
+                        );
 
-                // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
-                if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
-                    isCompletionCalculated = true;
-                    dispatch(getScimSchemas(infoResponse));
-                }
+                        // If the schemas in the redux store is empty, fetch the SCIM schemas from the API.
+                        if (_.isEmpty(store.getState().authenticationInformation.profileSchemas)) {
+                            isCompletionCalculated = true;
+                            dispatch(getScimSchemas(infoResponse));
+                        }
 
-                // If `updateProfileCompletion` flag is enabled, update the profile completion.
-                if (updateProfileCompletion && !isCompletionCalculated) {
-                    getProfileCompletion(infoResponse, store.getState().authenticationInformation.profileSchemas);
-                }
+                        // If `updateProfileCompletion` flag is enabled, update the profile completion.
+                        if (updateProfileCompletion && !isCompletionCalculated) {
+                            getProfileCompletion(
+                                infoResponse,
+                                store.getState().authenticationInformation.profileSchemas
+                            );
+                        }
 
-                return;
-            }
+                        return;
+                    }
 
-            dispatch(
-                addAlert({
-                    description: I18n.instance.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.description"
-                    ),
-                    level: AlertLevels.ERROR,
-                    message: I18n.instance.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.message"
-                    )
+                    dispatch(
+                        addAlert({
+                            description: I18n.instance.t(
+                                "views:components.profile.notifications.getProfileInfo.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: I18n.instance.t(
+                                "views:components.profile.notifications.getProfileInfo.genericError.message"
+                            )
+                        })
+                    );
                 })
-            );
+                .catch((error) => {
+                    if (error.response && error.response.data && error.response.data.detail) {
+                        dispatch(
+                            addAlert({
+                                description: I18n.instance.t(
+                                    "views:components.profile.notifications.getProfileInfo.error.description",
+                                    { description: error.response.data.detail }
+                                ),
+                                level: AlertLevels.ERROR,
+                                message: I18n.instance.t(
+                                    "views:components.profile.notifications.getProfileInfo.error.message"
+                                )
+                            })
+                        );
+
+                        return;
+                    }
+
+                    dispatch(
+                        addAlert({
+                            description: I18n.instance.t(
+                                "views:components.profile.notifications.getProfileInfo.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: I18n.instance.t(
+                                "views:components.profile.notifications.getProfileInfo.genericError.message"
+                            )
+                        })
+                    );
+                })
+                .finally(() => {
+                    dispatch(setProfileInfoLoader(false));
+                });
         })
         .catch((error) => {
-            if (error.response && error.response.data && error.response.data.detail) {
-                dispatch(
-                    addAlert({
-                        description: I18n.instance.t(
-                            "views:components.profile.notifications.getProfileInfo.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: I18n.instance.t("views:components.profile.notifications.getProfileInfo.error.message")
-                    })
-                );
-
-                return;
-            }
-
             dispatch(
                 addAlert({
-                    description: I18n.instance.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.description"
-                    ),
+                    description:
+                        error?.description ??
+                        I18n.instance.t(
+                            "userPortal:components.profile.notifications.getUserReadOnlyStatus.genericError.description"
+                        ),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t(
-                        "views:components.profile.notifications.getProfileInfo.genericError.message"
-                    )
+                    message:
+                        error?.message ??
+                        I18n.instance.t(
+                            "userPortal:components.profile.notifications.getUserReadOnlyStatus.genericError.message"
+                        )
                 })
             );
-        })
-        .finally(() => {
-            dispatch(setProfileInfoLoader(false));
         });
 };
 
