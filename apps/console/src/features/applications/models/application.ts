@@ -271,8 +271,22 @@ export enum SupportedApplicationTemplateCategories {
  * @enum {string}
  */
 export enum ApplicationTemplateCategories {
+    /**
+     * Templates supported by default.
+     * ex: Web Application, SPA etc.
+     * @type {string}
+     */
     DEFAULT = "DEFAULT",
-    CUSTOM = "CUSTOM",
+    /**
+     * Vendor templates.
+     * ex: Zoom, Salesforce etc.
+     * @type {string}
+     */
+    VENDOR = "VENDOR",
+    /**
+     * Templates added manually which are not available in the API.
+     * @type {string}
+     */
     DEFAULT_CUSTOM = "DEFAULT_CUSTOM"
 }
 
