@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, ReactNode } from "react";
-import { Card, CardProps, Divider, Label, Popup } from "semantic-ui-react";
+import { Card, CardProps, Divider, Icon, Label, Popup } from "semantic-ui-react";
 import { GenericIcon, GenericIconProps, GenericIconSizes } from "../icon";
 
 /**
@@ -37,11 +37,11 @@ export interface TemplateCardPropsInterface extends TestableComponentInterface {
     /**
      * Set of tags for the template.
      */
-    tags?: TemplateCardTagInterface[];
+    tags?: TemplateCardTagInterface[] | string[];
     /**
      * Element to render the tag as.
      */
-    tagsAs?: "icon" | "label";
+    tagsAs?: "icon" | "label" | "default";
     /**
      * Title for the tags section.
      */
@@ -81,6 +81,14 @@ export interface TemplateCardPropsInterface extends TestableComponentInterface {
      */
     selected?: boolean;
     /**
+     * Show/Hide tags section.
+     */
+    showTags?: boolean;
+    /**
+     * Show/Hide tag icon.
+     */
+    showTagIcon?: boolean;
+    /**
      * Text align direction.
      */
     textAlign?: "center" | "left" | "right";
@@ -101,11 +109,11 @@ export interface TemplateCardTagInterface {
     /**
      * Tag display name.
      */
-    displayName: string;
+    displayName?: string;
     /**
      * Tag image.
      */
-    logo: any;
+    logo?: any;
 }
 
 /**
@@ -131,6 +139,8 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         imageSize,
         onClick,
         selected,
+        showTags,
+        showTagIcon,
         tags,
         tagsAs,
         tagsSectionTitle,
@@ -148,6 +158,67 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
         },
         className
     );
+
+    /**
+     * Renders the tag based on render type.
+     *
+     * @param {TemplateCardTagInterface | string} tag - Tag to be rendered.
+     * @param {"icon" | "label" | "default"} as - Render type.
+     * @param {number} index - Tag index in array.
+     * @return {React.ReactElement}
+     */
+    const renderTag = (tag: TemplateCardTagInterface | string, as: "icon" | "label" | "default",
+                       index: number): ReactElement => {
+
+        if (typeof tag === "string") {
+            return <span className="tag default" key={ index }>
+                { tag }
+                { (tags.length === 1 || index === tags.length - 1) ? "" : "," }
+            </span>;
+        }
+
+        if (as === "icon") {
+            return (
+                <Popup
+                    basic
+                    key={ index }
+                    trigger={ (
+                        <span
+                            className="icon-wrapper"
+                            data-testid={ `${ testId }-logo-wrapper` }
+                        >
+                            <GenericIcon
+                                icon={ tag.logo }
+                                size="micro"
+                                spaced="right"
+                                fill={ false }
+                                data-testid={ `${ testId }-logo` }
+                                inline
+                                transparent
+                            />
+                        </span>
+                    ) }
+                    size="mini"
+                    position="top center"
+                    content={ tag.displayName }
+                    inverted
+                />
+            );
+        }
+
+        if (as === "label") {
+            return (
+                <Label key={ index } size="mini" data-testid={ `${ testId }-logo-label` }>
+                    { tag.displayName }
+                </Label>
+            );
+        }
+
+        return <span className="tag default" key={ index }>
+            { tag.displayName }
+            { (tags.length === 1 || index === tags.length - 1) ? "" : ", " }
+        </span>;
+    };
 
     return (
         <Card
@@ -177,48 +248,19 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                 <Card.Header data-testid={ `${ testId }-header` }>{ name }</Card.Header>
                 <Card.Description data-testid={ `${ testId }-description` }>{ description }</Card.Description>
                 {
-                    (tags && tags instanceof Array && tags.length > 0)
+                    (showTags && tags && tags instanceof Array && tags.length > 0)
                         ? (
-                            <div className="tags" data-testid={ `${ testId }-tags-container` }>
-                                <div className="title" data-testid={ `${ testId }-tags-title` }>
-                                    { tagsSectionTitle }
-                                </div>
-                                <div className="logos" data-testid={ `${ testId }-logos-container` }>
+                            <div className="tags-container" data-testid={ `${ testId }-tags-container` }>
+                                { tagsSectionTitle && (
+                                    <div className="title" data-testid={ `${ testId }-tags-title` }>
+                                        { tagsSectionTitle }
+                                    </div>
+                                ) }
+                                <div className="tags" data-testid={ `${ testId }-tags` }>
+                                    { showTagIcon && <Icon name="tag" class="tag-icon" size="tiny" color="grey" /> }
                                     {
-                                        tags.map((tag, index) => (
-                                            tagsAs === "icon"
-                                                ? (
-                                                    <Popup
-                                                        basic
-                                                        key={ index }
-                                                        trigger={ (
-                                                            <span
-                                                                className="icon-wrapper"
-                                                                data-testid={ `${ testId }-logo-wrapper` }
-                                                            >
-                                                                <GenericIcon
-                                                                    icon={ tag.logo }
-                                                                    size="micro"
-                                                                    spaced="right"
-                                                                    fill={ false }
-                                                                    data-testid={ `${ testId }-logo` }
-                                                                    inline
-                                                                    transparent
-                                                                />
-                                                            </span>
-                                                        ) }
-                                                        size="mini"
-                                                        position="top center"
-                                                        content={ tag.displayName }
-                                                        inverted
-                                                    />
-                                                )
-                                                : (
-                                                    <Label size="mini" data-testid={ `${ testId }-logo-label` }>
-                                                        { tag.displayName }
-                                                    </Label>
-                                                )
-                                        ))
+                                        (tags as Array<TemplateCardTagInterface|string>)
+                                            .map((tag, index) => renderTag(tag, tagsAs, index))
                                     }
                                 </div>
                             </div>

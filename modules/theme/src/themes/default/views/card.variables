@@ -98,6 +98,11 @@ Recent Application Card
 @templateCardBorderBottomWidth: 3px;
 @templateCardSelectedStateBorderBottomColor: @primaryColor;
 
+@templateCardTextTagFontSize: 0.7em;
+@templateCardTextTagColor: @lightFontColor;
+@templateCardTagIconColor: @lightFontColor;
+@templateCardTextTagMargin: 0 0 0 3px;
+
 /*-------------------------------
         Labeled Card
 --------------------------------*/

@@ -19,6 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import _ from "lodash";
+import get from "lodash/get";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Grid } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
@@ -67,6 +68,14 @@ export interface TemplateGridPropsInterface<T> extends TestableComponentInterfac
      */
     paginationOptions?: TemplateGridPaginationOptionsInterface;
     /**
+     * Show/Hide tags section.
+     */
+    showTags?: TemplateCardPropsInterface["showTags"];
+    /**
+     * Show/Hide tags section.
+     */
+    showTagIcon?: TemplateCardPropsInterface["showTagIcon"];
+    /**
      * Sub heading for the grid.
      */
     subHeading?: ReactNode;
@@ -90,6 +99,15 @@ export interface TemplateGridPropsInterface<T> extends TestableComponentInterfac
      * Template icons.
      */
     templateIcons?: object;
+    /**
+     * Element to render the tag as.
+     */
+    tagsAs?: TemplateCardPropsInterface["tagsAs"];
+    /**
+     * Key to access the tags.
+     * ex: `types` if the tags are in `template.types`
+     */
+    tagsKey?: string;
     /**
      * Grid type.
      */
@@ -138,14 +156,6 @@ interface WithPropertiesInterface {
      * Template Name.
      */
     name: TemplateCardPropsInterface["name"];
-    /**
-     * Services for IDP templates.
-     */
-    services?: TemplateCardPropsInterface["tags"];
-    /**
-     * Services for IDP templates.
-     */
-    types?: TemplateCardPropsInterface["tags"];
 }
 
 
@@ -174,12 +184,15 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
         paginate,
         paginationLimit,
         paginationOptions,
+        showTags,
+        showTagIcon,
         subHeading,
+        tagsKey,
         tagsSectionTitle,
         templates,
         selectedTemplate,
         templateIcons,
-        type,
+        tagsAs,
         useSelectionCard,
         onSecondaryTemplateSelect,
         secondaryTemplates,
@@ -403,20 +416,10 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         image={ resolveTemplateImage(template.image) }
                                         imageOptions={ templateIconOptions }
                                         tagsSectionTitle={ tagsSectionTitle }
-                                        tags={
-                                            type === "application"
-                                                ? null
-                                                : type === "idp"
-                                                    ? template.services
-                                                    : null
-                                        }
-                                        tagsAs={
-                                            type === "application"
-                                                ? "icon"
-                                                : type === "idp"
-                                                    ? "label"
-                                                    : null
-                                        }
+                                        tags={ get(template, tagsKey) }
+                                        tagsAs={ tagsAs }
+                                        showTags={ showTags }
+                                        showTagIcon={ showTagIcon }
                                         name={ template.name }
                                         id={ template.id }
                                         onClick={ onTemplateSelect }
@@ -445,6 +448,5 @@ TemplateGrid.defaultProps = {
         showLessButtonLabel: "Show less",
         showMoreButtonLabel: "Show more"
     },
-    tagsSectionTitle: "Tags",
     useSelectionCard: false
 };
