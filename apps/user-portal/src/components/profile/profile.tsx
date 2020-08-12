@@ -23,9 +23,7 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
-import {
-    updateProfileInfo
-} from "../../api";
+import { updateProfileInfo } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
