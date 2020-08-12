@@ -44,6 +44,7 @@ const AccountSecurityPage = (): ReactElement => {
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -59,102 +60,73 @@ const AccountSecurityPage = (): ReactElement => {
             pageDescription={ t("userPortal:pages.security.subTitle") }
         >
             <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.security, accessConfig?.security?.scopes?.read,
-                                allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.security,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
-                            )
-                            ? (
+                { !isReadOnlyUser &&
+                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
                                 <ChangePassword onAlertFired={ handleAlerts } />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.security, accessConfig?.security?.scopes?.read,
-                                allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.security,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
-                            )
-                            ? (
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
+
+                { !isReadOnlyUser &&
+                    hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
                                 <AccountRecoveryComponent
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
                                 />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.security, accessConfig?.security?.scopes?.read,
-                                allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.security,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
-                            )
-                            ? (
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
+
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
                                 <MultiFactorAuthentication
                                     featureConfig={ accessConfig }
                                     onAlertFired={ handleAlerts }
                                 />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.security, accessConfig?.security?.scopes?.read,
-                                allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.security,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACTIVE_SESSIONS")
-                            )
-                            ? (
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
+
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACTIVE_SESSIONS")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
                                 <UserSessionsComponent onAlertFired={ handleAlerts } />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-                <Grid.Row>
-                    <Grid.Column width={ 16 }>
-                        {
-                            hasRequiredScopes(
-                                accessConfig?.security, accessConfig?.security?.scopes?.read,
-                                allowedScopes
-                            ) &&
-                            isFeatureEnabled(
-                                accessConfig?.security,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
-                            )
-                            ? (
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
+
+                { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        accessConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
+                    ) ? (
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
                                 <Consents onAlertFired={ handleAlerts } />
-                            )
-                            : null
-                        }
-                    </Grid.Column>
-                </Grid.Row>
+                            </Grid.Column>
+                        </Grid.Row>
+                    ) : null }
             </Grid>
         </InnerPageLayout>
     );
