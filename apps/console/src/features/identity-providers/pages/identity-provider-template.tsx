@@ -471,6 +471,9 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                         fill: "primary"
                                     } }
                                     templateIconSize="tiny"
+                                    showTags={ true }
+                                    tagsKey="services"
+                                    tagsAs="label"
                                     heading={ t("devPortal:components.idp.templates.quickSetup.heading") }
                                     subHeading={ t("devPortal:components.idp.templates.quickSetup.subHeading") }
                                     onTemplateSelect={ handleTemplateSelection }
