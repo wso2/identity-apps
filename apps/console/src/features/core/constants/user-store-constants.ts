@@ -32,6 +32,7 @@ export class SharedUserStoreConstants {
     private constructor() { }
 
     public static readonly PRIMARY_USER_STORE = "Primary";
+    public static readonly READONLY_USER_STORE = "ReadOnly";
 
     /**
      * Primary user store property values
