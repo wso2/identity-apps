@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
@@ -24,17 +25,19 @@ import {
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList,
+    ResourceList, ResourceListActionInterface,
     ResourceListItem
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Icon, Image, Label, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import {EmptyPlaceholderIllustrations, UIConstants, history, AppConstants} from "../../core";
+import { AppConstants, AppState, EmptyPlaceholderIllustrations, FeatureConfigInterface, history } from "../../core";
 import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
 
-interface GroupListProps extends LoadableComponentInterface, TestableComponentInterface {
+interface GroupListProps extends SBACInterface<FeatureConfigInterface>,
+    LoadableComponentInterface, TestableComponentInterface {
     /**
      * Width of the action panel column.
      */
@@ -88,6 +91,10 @@ interface GroupListProps extends LoadableComponentInterface, TestableComponentIn
      * Width of the meta info area.
      */
     metaColumnWidth?: SemanticWIDTHS;
+    /**
+     * List of readOnly user stores.
+     */
+    readOnlyUserStores?: string[];
 }
 
 /**
@@ -103,6 +110,8 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         defaultListItemLimit,
         handleGroupDelete,
         isLoading,
+        readOnlyUserStores,
+        featureConfig,
         onEmptyListPlaceholderActionClick,
         onListItemClick,
         onSearchQueryClear,
@@ -116,6 +125,8 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     } = props;
 
     const { t } = useTranslation();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
@@ -225,6 +236,59 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         return null;
     };
 
+    /**
+     * Resolves list item actions based on user store mutability and app configs.
+     *
+     * @param group - Group details.
+     *
+     * @return {ResourceListActionInterface[]} Resolved list actions.
+     */
+    const resolveListItemActions = (group): ResourceListActionInterface[] => {
+        if (!showListItemActions) {
+            return;
+        }
+
+        const userStore = group?.displayName?.split("/").length > 1 ? group?.displayName?.split("/")[0] : "PRIMARY";
+
+        const actions: ResourceListActionInterface[] = [
+            {
+                "data-testid": `${ testId }-edit-group-${ group?.displayName }-button`,
+                hidden: false,
+                icon: !isFeatureEnabled(
+                    featureConfig?.groups,
+                    GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
+                || readOnlyUserStores?.includes(userStore.toString())
+                    ? "eye" : "pencil alternate",
+                onClick: (): void => handleGroupEdit(group.id),
+                popupText: !isFeatureEnabled(
+                    featureConfig?.groups,
+                    GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
+                || readOnlyUserStores?.includes(userStore.toString())
+                    ? t("common:view")
+                    : t("common:edit"),
+                type: "button"
+            }
+        ];
+
+        actions.push({
+            "data-testid": `${ testId }-delete-group-${ group?.displayName }-button`,
+            hidden: !hasRequiredScopes(
+                featureConfig?.groups,
+                featureConfig?.groups?.scopes?.delete, allowedScopes)
+                || readOnlyUserStores?.includes(userStore.toString()),
+            icon: "trash alternate",
+            onClick: (): void => {
+                setCurrentDeletedGroup(group);
+                setShowDeleteConfirmationModal(!showGroupDeleteConfirmation);
+            },
+            popupText: t("adminPortal:components.roles.list.popups.delete",
+                { type: "Group" }),
+            type: "button"
+        });
+
+        return actions;
+    };
+
     return (
         <>
             <ResourceList
@@ -243,32 +307,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     groupList && groupList instanceof Array && groupList.length > 0
                         ? groupList.map((group, index) => (
                             <ResourceListItem
-                                data-testid={ `${ testId }-list-item-${ group.displayName }` }
+                                data-testid={ `${ testId }-list-item-${ group?.displayName }` }
                                 key={ index }
                                 actionsFloated="right"
-                                actions={
-                                    showListItemActions
-                                        ? [
-                                            {
-                                                icon: "pencil alternate",
-                                                onClick: () => handleGroupEdit(group.id),
-                                                popupText: t("adminPortal:components.roles.list.popups.edit",
-                                                        { type: "Group" }),
-                                                type: "button"
-                                            },
-                                            {
-                                                icon: "trash alternate",
-                                                onClick: () => {
-                                                    setCurrentDeletedGroup(group);
-                                                    setShowDeleteConfirmationModal(!showGroupDeleteConfirmation);
-                                                },
-                                                popupText: t("adminPortal:components.roles.list.popups.delete",
-                                                        { type: "Group" }),
-                                                type: "button"
-                                            }
-                                        ]
-                                        : []
-                                }
+                                actions={ resolveListItemActions(group) }
                                 avatar={ (
                                     <Image
                                         floated="left"
