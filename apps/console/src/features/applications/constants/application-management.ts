@@ -17,6 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
+import { ApplicationTemplateCategories } from "../models";
 
 /**
  * Class containing application management constants.
@@ -113,7 +114,6 @@ export class ApplicationManagementConstants {
         .set("Zoom", "OIDC Web Application")
         .set("Workday", "OIDC Web Application")
         .set("Box", "OIDC Web Application");
-    // TODO: Move this to the deployment config.
 
     /**
      * Set of internal application which are forbidden from deleting.
@@ -121,7 +121,15 @@ export class ApplicationManagementConstants {
      * @type {string[]}
      */
     public static readonly DELETING_FORBIDDEN_APPLICATIONS: string[] = [ "Console", "User Portal" ];
-    
+
+    /**
+     * Template categories to be used to extract the filter types.
+     * @type {ApplicationTemplateCategories[]}
+     */
+    public static readonly FILTERABLE_TEMPLATE_CATEGORIES: ApplicationTemplateCategories[] = [
+        ApplicationTemplateCategories.VENDOR
+    ];
+
     /**
      * Key for the SPA template.
      * @constant

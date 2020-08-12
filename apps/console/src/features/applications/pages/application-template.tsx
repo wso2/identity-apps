@@ -31,6 +31,7 @@ import { Divider, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, Input 
 import { AppConstants, AppState, EmptyPlaceholderIllustrations, history } from "../../core";
 import { ApplicationCreateWizard, CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
 import { ApplicationTemplateIllustrations } from "../configs";
+import { ApplicationManagementConstants } from "../constants";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
 import { ApplicationManagementUtils } from "../utils";
 
@@ -138,7 +139,9 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
         const filterTypes: DropdownItemProps[] = TEMPLATE_FILTER_TYPES;
 
         [ ...applicationTemplates ].forEach((template: ApplicationTemplateListItemInterface) => {
-            if (template.category === ApplicationTemplateCategories.VENDOR) {
+            if (ApplicationManagementConstants.FILTERABLE_TEMPLATE_CATEGORIES
+                .includes(template.category as ApplicationTemplateCategories)) {
+
                 template.types.forEach((type: string) => {
                     const isAvailable = filterTypes.some((filterType: DropdownItemProps) => filterType.value === type);
                     
