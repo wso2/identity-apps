@@ -31,11 +31,34 @@ import { MainApplicationInterface } from "../../models";
  * Proptypes for the oauth protocol settings wizard form component.
  */
 interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponentInterface {
+    /**
+     * Set of fields to be displayed.
+     */
     fields?: ("callbackURLs" | "publicClient" | "RefreshToken")[];
+    /**
+     * Flag to hide the hints.
+     */
+    hideFieldHints?: boolean;
+    /**
+     * Initial form values.
+     */
     initialValues?: any;
+    /**
+     * Values from the template.
+     */
     templateValues: MainApplicationInterface;
+    /**
+     * Trigger to invoke submit.
+     */
     triggerSubmit: boolean;
+    /**
+     * On submit callback.
+     * @param values - Form values.
+     */
     onSubmit: (values: any) => void;
+    /**
+     * Flag to show/hide callback URL.
+     */
     showCallbackURL: boolean;
 }
 
@@ -52,6 +75,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
     const {
         fields,
+        hideFieldHints,
         initialValues,
         triggerSubmit,
         onSubmit,
@@ -230,7 +254,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                 setShowError={ setShowURLError }
                                 showError={ showURLError }
                                 hint={
-                                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                                    !hideFieldHints && t("devPortal:components.applications.forms.inboundOIDC" +
+                                        ".fields.callBackUrls.hint")
                                 }
                                 addURLTooltip={ t("common:addURL") }
                                 duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -259,9 +284,12 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         ] }
                                         data-testid={ `${ testId }-public-client-checkbox` }
                                     />
-                                    <Hint>
-                                        { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
-                                    </Hint>
+                                    { !hideFieldHints && (
+                                        <Hint>
+                                            { t("devPortal:components.applications.forms.inboundOIDC.fields.public" +
+                                                ".hint") }
+                                        </Hint>
+                                    ) }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -287,10 +315,12 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         ] }
                                         data-testid={ `${ testId }-renew-refresh-token-checkbox` }
                                     />
-                                    <Hint>
-                                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.renew.hint") }
-                                    </Hint>
+                                    { !hideFieldHints && (
+                                        <Hint>
+                                            { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                                ".refreshToken.fields.renew.hint") }
+                                        </Hint>
+                                    ) }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -306,5 +336,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
  */
 OauthProtocolSettingsWizardForm.defaultProps = {
     "data-testid": "oauth-protocol-settings-wizard-form",
+    hideFieldHints: false,
     showCallbackURL: false
 };

@@ -29,10 +29,30 @@ import { Grid } from "semantic-ui-react";
  * Proptypes for the oauth protocol settings wizard form component.
  */
 interface SAMLProtocolSettingsWizardFormPropsInterface extends TestableComponentInterface {
+    /**
+     * Set of fields to be displayed.
+     */
     fields?: ("issuer" | "applicationQualifier" | "assertionConsumerURLs")[];
+    /**
+     * Flag to hide the hints.
+     */
+    hideFieldHints?: boolean;
+    /**
+     * Initial form values.
+     */
     initialValues?: any;
+    /**
+     * Values from the template.
+     */
     templateValues: any;
+    /**
+     * Trigger to invoke submit.
+     */
     triggerSubmit: boolean;
+    /**
+     * On submit callback.
+     * @param values - Form values.
+     */
     onSubmit: (values: any) => void;
 }
 
@@ -49,6 +69,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
 
     const {
         fields,
+        hideFieldHints,
         initialValues,
         templateValues,
         triggerSubmit,
@@ -150,9 +171,12 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                         }
                                         data-testid={ `${ testId }-issuer-input` }
                                     />
-                                    <Hint>
-                                        { t("devPortal:components.applications.forms.inboundSAML.fields.issuer.hint") }
-                                    </Hint>
+                                    { !hideFieldHints && (
+                                        <Hint>
+                                            { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                ".issuer.hint") }
+                                        </Hint>
+                                    ) }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -181,12 +205,12 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                         }
                                         data-testid={ `${ testId }-application-qualifier-input` }
                                     />
-                                    <Hint>
-                                        {
-                                            t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
-                                                ".hint")
-                                        }
-                                    </Hint>
+                                    { !hideFieldHints && (
+                                        <Hint>
+                                            { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                ".qualifier.hint") }
+                                        </Hint>
+                                    ) }
                                 </Grid.Column>
                             </Grid.Row>
                         ) }
@@ -213,7 +237,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 showError={ showAssertionConsumerUrlError }
                                 setShowError={ setAssertionConsumerUrlError }
                                 hint={
-                                    t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.hint")
+                                    !hideFieldHints && t("devPortal:components.applications.forms.inboundSAML" +
+                                        ".fields.assertionURLs.hint")
                                 }
                                 addURLTooltip={ t("common:addURL") }
                                 duplicateURLErrorMessage={ t("common:duplicateURLError") }
@@ -231,5 +256,6 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
  * Default props for the saml protocol settings wizard form component.
  */
 SAMLProtocolSettingsWizardForm.defaultProps = {
-    "data-testid": "saml-protocol-settings-wizard-form"
+    "data-testid": "saml-protocol-settings-wizard-form",
+    hideFieldHints: false
 };
