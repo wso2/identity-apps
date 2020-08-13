@@ -30,8 +30,9 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface, FeatureConfigInterface } from "../../../core";
+import { AppState, FeatureConfigInterface } from "../../../core";
 import { deleteApplication, updateApplicationDetails } from "../../api";
+import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
@@ -39,7 +40,6 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { GeneralDetailsForm } from "../forms";
-import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the applications general details component.
@@ -124,7 +124,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
 
     const { t } = useTranslation();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
