@@ -151,9 +151,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                     <Grid padded>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 10 }>
-                                <Header>{ connector?.friendlyName }
+                                <Header>
+                                    { connector?.friendlyName }
                                     <Header.Subheader>
-                                        Configure { connector?.friendlyName } settings.
+                                        { t("adminPortal:components.governanceConnectors.connectorSubHeading", {
+                                            name: connector?.friendlyName
+                                        }) }
                                     </Header.Subheader>
                                 </Header>
                             </Grid.Column>

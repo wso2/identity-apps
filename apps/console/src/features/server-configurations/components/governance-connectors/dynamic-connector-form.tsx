@@ -19,6 +19,7 @@
 import { I18n } from "@wso2is/i18n";
 import { Hint, PrimaryButton, RenderInput, RenderToggle } from "@wso2is/react-components";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Divider, Form, Grid } from "semantic-ui-react";
@@ -68,6 +69,8 @@ const DynamicConnectorForm = (props) => {
 
     const formValues = useSelector((state: AppState) => state.form[ props.form ].values);
 
+    const { t } = useTranslation();
+
     return (
         <Form onSubmit={ handleSubmit }>
             <Grid padded={ true }>
@@ -106,8 +109,8 @@ const DynamicConnectorForm = (props) => {
                                             formValues[
                                                 GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)
                                             ]
-                                                ? "Enabled"
-                                                : "Disabled"
+                                                ? t("adminPortal:components.governanceConnectors.enabled")
+                                                : t("adminPortal:components.governanceConnectors.disabled")
                                         }
                                     />
                                 ) }

@@ -106,7 +106,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     return (
         <PageLayout
             title={ connectorCategory?.name }
-            description={ connectorCategory?.description ?? "Configure and manage " + connectorCategory?.name + "." }
+            description={ connectorCategory?.description
+                ?? t("adminPortal:components.governanceConnectors.connectorSubHeading",
+                    { name: connectorCategory?.name }) }
             data-testid={ `${ testId }-page-layout` }
         >
             <Grid>
@@ -123,7 +125,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                         </Segment>
                     </Grid.Column>
                     <Grid.Column width={ 4 }>
-                        <h5>Categories</h5>
+                        <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
                         <Menu secondary vertical className="governance-connector-categories">
                             { connectorCategory?.connectors?.map(
                                 (connector: GovernanceConnectorInterface, index: number) => (
