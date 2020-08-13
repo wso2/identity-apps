@@ -45,6 +45,7 @@ export interface WebWorkerSingletonClientInterface {
 }
 
 export interface CustomGrantRequestParams {
+    id: string;
     data: any;
     signInRequired: boolean;
     attachToken: boolean;
