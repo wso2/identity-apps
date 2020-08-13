@@ -36,7 +36,8 @@ import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateInterface,
     ApplicationTemplateListItemInterface,
-    MainApplicationInterface, SupportedAuthProtocolTypes
+    MainApplicationInterface,
+    SupportedAuthProtocolTypes
 } from "../../models";
 
 /**
@@ -89,6 +90,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
 
+    /**
+     * On sub-template change set the selected template to the first,
+     * and load template details.
+     */
     useEffect(() => {
         if (isEmpty(subTemplates) || !Array.isArray(subTemplates) || subTemplates.length < 1) {
             loadTemplateDetails(template.id);
@@ -98,7 +103,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         setSelectedTemplate(subTemplates[0]);
         loadTemplateDetails(subTemplates[0].id);
     }, [ subTemplates ]);
-    
+
+    /**
+     * This where the form submission happens. When the submit is triggered on the
+     * main form, it triggers the submit of the protocol form.
+     */
     useEffect(() => {
         if (!protocolFormValues) {
             return;
@@ -224,6 +233,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             });
     };
 
+    /**
+     * Resolves the relevant protocol form based on the selected protocol.
+     *
+     * @return {any}
+     */
     const resolveMinimalProtocolFormFields = () => {
         if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OIDC) {
             return (

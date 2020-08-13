@@ -16,11 +16,15 @@
  * under the License.
  */
 
-import { ApplicationTemplateListItemInterface, DefaultTemplateGroupIds } from "../models";
+import {
+    ApplicationTemplateCategories,
+    ApplicationTemplateListItemInterface,
+    DefaultTemplateGroupIds
+} from "../models";
 
 export const getDefaultTemplateGroups = (): ApplicationTemplateListItemInterface[] => [
     {
-        category: "DEFAULT_GROUP",
+        category: ApplicationTemplateCategories.DEFAULT_GROUP,
         description: "Regular web applications which uses re-directions inside browsers.",
         id: DefaultTemplateGroupIds.WEB_APPLICATION,
         image: "oidcWebApp",
@@ -28,7 +32,7 @@ export const getDefaultTemplateGroups = (): ApplicationTemplateListItemInterface
         subTemplatesSectionTitle: "Protocols"
     },
     {
-        category: "DEFAULT_GROUP",
+        category: ApplicationTemplateCategories.DEFAULT_GROUP,
         description: "Applications developed to target native desktops.",
         id: DefaultTemplateGroupIds.DESKTOP_APPLICATION,
         image: "windowsNative",
@@ -36,7 +40,7 @@ export const getDefaultTemplateGroups = (): ApplicationTemplateListItemInterface
         subTemplatesSectionTitle: "Technology"
     },
     {
-        category: "DEFAULT_GROUP",
+        category: ApplicationTemplateCategories.DEFAULT_GROUP,
         description: "Applications developed to target mobiles devices.",
         id: DefaultTemplateGroupIds.MOBILE_APPLICATION,
         image: "oidcMobile",

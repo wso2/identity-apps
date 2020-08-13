@@ -166,8 +166,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                                 ".issuer.placeholder")
                                         }
                                         value={
-                                            // eslint-disable-next-line max-len
-                                            initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration?.issuer
+                                            initialValues?.inboundProtocolConfiguration?.saml?.[
+                                                "manualConfiguration" ]?.issuer
                                         }
                                         data-testid={ `${ testId }-issuer-input` }
                                     />
@@ -219,7 +219,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 urlState={ assertionConsumerUrls }
                                 setURLState={ setAssertionConsumerUrls }
                                 labelName={
-                                    t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.label")
+                                    t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs" +
+                                        ".label")
                                 }
                                 placeholder={
                                     t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs" +

@@ -98,6 +98,10 @@ export class ApplicationManagementConstants {
      */
     public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
 
+    /**
+     * Map to access the template ids.
+     * @type {Map<string, any>}
+     */
     public static readonly TEMPLATE_IDS: Map<string, any> = new Map<string, any>()
         .set("box", "h9c5e23e-fc78-484b-9bec-015d242361b8")
         .set("oidcMobile", "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec")
@@ -111,8 +115,6 @@ export class ApplicationManagementConstants {
 
     /**
      * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
-     * @remarks
-     * If the template name is changed, this map has to be changed.
      * @constant
      * @type {Map<string, string>}
      */

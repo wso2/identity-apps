@@ -23,39 +23,32 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     AppAvatar,
-    ContentLoader,
-    Heading,
     HelpPanelLayout,
     HelpPanelTabInterface,
-    Hint,
-    Markdown,
-    PageHeader,
-    PageLayout,
-    SelectionCard
+    PageLayout
 } from "@wso2is/react-components";
-import _ from "lodash";
+import get from "lodash/get";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { Divider, Grid, Label } from "semantic-ui-react";
+import { Label } from "semantic-ui-react";
 import {
     AppConstants,
+    AppState,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
     FeatureConfigInterface,
     HelpPanelActionIcons,
+    HelpPanelUtils,
     PortalDocumentationStructureInterface,
     history,
-    AppState,
     setHelpPanelDocsContentURL,
-    toggleHelpPanelVisibility,
-    HelpPanelUtils,
-    TechnologyLogos
+    toggleHelpPanelVisibility
 } from "../../core";
 import { getApplicationDetails, updateApplicationConfigurations } from "../api";
-import { EditApplication, HelpPanelOverview, SamplesGuideComponent } from "../components";
-import { HelpPanelIcons, InboundProtocolLogos } from "../configs";
+import { EditApplication, HelpPanelOverview } from "../components";
+import { HelpPanelIcons } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationInterface,
@@ -165,7 +158,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             return;
         }
 
-        const editApplicationDocs = _.get(helpPanelDocStructure,
+        const editApplicationDocs = get(helpPanelDocStructure,
             ApplicationManagementConstants.EDIT_APPLICATIONS_DOCS_KEY);
 
         if (!editApplicationDocs) {
@@ -189,9 +182,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         const mappedKey = ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
             .get(applicationTemplate.id);
 
-        const samplesDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSampleDocsKey(mappedKey));
-        const SDKDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getSDKDocsKey(mappedKey));
-        const configDocs = _.get(helpPanelDocStructure, ApplicationManagementUtils.getConfigDocsKey(mappedKey));
+        const samplesDocs = get(helpPanelDocStructure, ApplicationManagementUtils.getSampleDocsKey(mappedKey));
+        const SDKDocs = get(helpPanelDocStructure, ApplicationManagementUtils.getSDKDocsKey(mappedKey));
+        const configDocs = get(helpPanelDocStructure, ApplicationManagementUtils.getConfigDocsKey(mappedKey));
 
         if (!samplesDocs) {
             return;
