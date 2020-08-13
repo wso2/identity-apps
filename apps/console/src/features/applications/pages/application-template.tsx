@@ -17,40 +17,18 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import {
-    ContentLoader,
-    EmptyPlaceholder,
-    PageLayout,
-    TemplateGrid
-} from "@wso2is/react-components";
+import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
+import isEqual from "lodash/isEqual";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, Input } from "semantic-ui-react";
 import { AppConstants, AppState, EmptyPlaceholderIllustrations, history } from "../../core";
-import { ApplicationCreateWizard, CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
+import { CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
 import { ApplicationTemplateIllustrations } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-
-/**
- * The template ID of SPAs.
- *
- * @constant
- *
- * @type {string}
- */
-const SPA_TEMPLATE_ID = "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7";
-
-/**
- * The template ID of the Web application templates.
- * 
- * @constant 
- * 
- * @type {string}
- */
-const WEB_APP_TEMPLATE_ID = "b9c5e11e-fc78-484b-9bec-015d247561b8";
 
 /**
  * Template filter types.
@@ -87,7 +65,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     const { t } = useTranslation();
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
-        (state: AppState) => state.application.templates);
+        (state: AppState) => state.application.groupedTemplates);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
@@ -123,7 +101,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             return;
         }
 
-        if (filteredTemplateList === applicationTemplates) {
+        if (isEqual(filteredTemplateList, applicationTemplates)) {
             setSearchTriggered(false);
         } else {
             setSearchTriggered(true);
@@ -217,59 +195,9 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             setFilteredTemplateList(applicationTemplates);
         } else {
             const filtered = applicationTemplates.filter((template: ApplicationTemplateListItemInterface) =>
-                template.types.includes(data.value));
+                template.types?.includes(data.value));
 
             setFilteredTemplateList(filtered);
-        }
-    };
-
-        /**
-     * Returns the minimal application creation wizard.
-     * 
-     * @return {ReactElement} The MainAppCreateWizard.
-     */
-    const minimalAppCreationWizard = (): ReactElement => {
-        return (
-            <MinimalAppCreateWizard
-                title={ selectedTemplate?.name }
-                subTitle={ selectedTemplate?.description }
-                closeWizard={ (): void => setShowWizard(false) }
-                template={ selectedTemplate }
-                addProtocol={ false }
-            />
-        );
-    };
-
-    /**
-     * Returns the application creation wizard.
-     * 
-     * @return {ReactElement} The ApplicationCreation Wizard.
-     */
-    const applicationCreationWizard = (): ReactElement => {
-        return (
-            <ApplicationCreateWizard
-                title={ selectedTemplate?.name }
-                subTitle={ selectedTemplate?.description }
-                closeWizard={ (): void => setShowWizard(false) }
-                template={ selectedTemplate }
-                addProtocol={ false }
-            />
-        )
-    };
-
-    /**
-     * Returns the appropriate wizard based on the selected template ID.
-     * 
-     * @return {ReactElement} The MainAppCreateWizard / ApplicationCreation
-     */
-    const resolveWizard = (): ReactElement => {
-        switch (selectedTemplate.id) {
-            case SPA_TEMPLATE_ID:
-                return minimalAppCreationWizard();
-            case WEB_APP_TEMPLATE_ID:
-                return minimalAppCreationWizard();
-            default:
-                return applicationCreationWizard();
         }
     };
 
@@ -331,7 +259,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     <div className="templates quick-start-templates">
                         {
                             renderTemplateGrid(
-                                [ ApplicationTemplateCategories.DEFAULT ],
+                                [ ApplicationTemplateCategories.DEFAULT, ApplicationTemplateCategories.DEFAULT_GROUP ],
                                 {
                                     "data-testid": `${ testId }-quick-start-template-grid`,
                                     heading: "General Applications",
@@ -388,7 +316,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 <div className="templates search-results">
                     {
                         renderTemplateGrid(
-                            [ ApplicationTemplateCategories.DEFAULT, ApplicationTemplateCategories.VENDOR ],
+                            [],
                             {
                                 "data-testid": `${ testId }-search-template-grid`
                             },
@@ -491,7 +419,17 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
 
                     )
             }
-            { showWizard && resolveWizard() }
+            { showWizard && (
+                <MinimalAppCreateWizard
+                    title={ selectedTemplate?.name }
+                    subTitle={ selectedTemplate?.description }
+                    closeWizard={ (): void => setShowWizard(false) }
+                    template={ selectedTemplate }
+                    subTemplates={ selectedTemplate?.subTemplates }
+                    subTemplatesSectionTitle={ selectedTemplate?.subTemplatesSectionTitle }
+                    addProtocol={ false }
+                />
+            ) }
         </PageLayout>
     );
 };
