@@ -35,6 +35,9 @@ import {
     ReactComponent as FederatedAssociations
 } from "../../../themes/default/assets/images/illustrations/federated-associations.svg";
 import {
+    ReactComponent as GovernanceConnectors
+} from "../../../themes/default/assets/images/illustrations/governance-connectors.svg";
+import {
     ReactComponent as ProfileExportMini
 } from "../../../themes/default/assets/images/illustrations/profile-export-mini.svg";
 import {
@@ -59,3 +62,5 @@ export const SettingsSectionIcons = {
     securityQuestions: SecurityQuestions,
     securityQuestionsMini: SecurityQuestionsMini
 };
+
+export const GovernanceConnectorsIllustration = GovernanceConnectors;

@@ -21,9 +21,10 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
+import { Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
 import { updateGovernanceConnector } from "../../api";
+import { GovernanceConnectorsIllustration } from "../../configs";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -150,13 +151,14 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                     <Grid padded>
                         <Grid.Row columns={ 2 }>
                             <Grid.Column width={ 10 }>
-                                <h3>{ connector?.friendlyName }</h3>
+                                <Header>{ connector?.friendlyName }
+                                    <Header.Subheader>
+                                        Configure { connector?.friendlyName } settings.
+                                    </Header.Subheader>
+                                </Header>
                             </Grid.Column>
                             <Grid.Column width={ 6 } textAlign="right">
-                                <img
-                                    width="60%"
-                                    src="https://i.pinimg.com/originals/6b/e3/69/6be369b11b50e0b1c3a2fea19ba7e2ba.png"
-                                />
+                                <GovernanceConnectorsIllustration />
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
