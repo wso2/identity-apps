@@ -34,8 +34,10 @@ import {
 } from "../api";
 import { CustomApplicationTemplate } from "../components";
 import { ApplicationManagementConstants } from "../constants";
+import { getDefaultTemplateGroups } from "../meta";
 import {
     ApplicationTemplateListInterface,
+    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
     emptySAMLAppConfiguration
@@ -149,8 +151,11 @@ export class ApplicationManagementUtils {
 
     /**
      * Retrieve Application template list form the API and sets it in redux state.
+     *
+     * @param {boolean} isGrouped - Should the templates be grouped.
+     * @return {Promise<void>}
      */
-    public static getApplicationTemplates = (): Promise<void> => {
+    public static getApplicationTemplates = (isGrouped: boolean = false): Promise<void> => {
         return getApplicationTemplateList()
             .then((response) => {
                 const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
@@ -168,8 +173,53 @@ export class ApplicationManagementUtils {
                 //applicationTemplates.forEach((template) => {
                 //    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
                 //});
+                
+                if (isGrouped) {
+                    const groupedTemplates: ApplicationTemplateListItemInterface[] = [];
 
-                store.dispatch(setApplicationTemplates(applicationTemplates));
+                    applicationTemplates.forEach((template: ApplicationTemplateListItemInterface) => {
+                        if (!template.templateGroup) {
+                            groupedTemplates.push(template);
+                            return;
+                        }
+
+                        const group = getDefaultTemplateGroups()
+                            .find((group) => group.id === template.templateGroup);
+
+                        if (!group) {
+                            groupedTemplates.push(template);
+                            return;
+                        }
+
+                        if (groupedTemplates.some((groupedTemplate) =>
+                            groupedTemplate.id === template.templateGroup)) {
+
+                            groupedTemplates.forEach((editingTemplate, index) => {
+                                if (editingTemplate.id === template.templateGroup) {
+                                    groupedTemplates[ index ] = {
+                                        ...group,
+                                        subTemplates: [ ...editingTemplate.subTemplates, template ]
+                                    };
+
+                                    return;
+                                }
+                            });
+
+                            return;
+                        }
+
+                        groupedTemplates.push({
+                            ...group,
+                            subTemplates: [ template ]
+                        });
+                    });
+
+                    store.dispatch(setApplicationTemplates(groupedTemplates, isGrouped));
+                    
+                    return;
+                }
+
+                store.dispatch(setApplicationTemplates(applicationTemplates, isGrouped));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
