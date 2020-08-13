@@ -410,3 +410,171 @@
         }
     }
 }
+
+/*-------------------------------
+        Side Panel Modal
+--------------------------------*/
+
+.ui.modal {
+    &.modal-with-side-panel {
+        .panels {
+            display: flex;
+            justify-content: space-between;
+
+            .side-panel {
+                border-left: @sidePanelModalHelpSectionBorderLeft;
+                box-shadow: @sidePanelModalHelpSectionBoxShadow;
+                position: relative;
+                transition: @sidePanelModalHelpSectionTransition;
+
+                .toggle-button-column {
+                    position: absolute;
+                    display: flex;
+                    align-items: center;
+                    right: 30px;
+                    top: 30px;
+                    z-index: 99;
+                    width: 100%;
+                    justify-content: flex-end;
+
+                    &.closed {
+                        right: 0;
+                        justify-content: center;
+                    }
+
+                    .toggle-button {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+
+                .side-panel-content {
+                    transition: @sidePanelModalHelpContentTransition;
+
+                    &.visible {
+                        opacity: 1;
+                    }
+
+                    &.hidden {
+                        opacity: 0;
+                    }
+
+                    .modal-content {
+                        height: 568px;
+                        
+                        p {
+                            font-size: 0.9em;
+                            color: @doveGray;
+                        }
+                    }
+                }
+
+                &.closed {
+                    width: 65px;
+                }
+            }
+
+            .modal-header {
+                font-weight: @sidePanelModalHeaderFontWeight;
+                border-top-right-radius: @sidePanelModalBorderRadius;
+                border-bottom: @sidePanelModalHeaderBorderBottom;
+                font-size: @sidePanelModalHeaderFontSize;
+                line-height: 1.3 em;
+                padding: @sidePanelModalHeaderPadding;
+                height: @sidePanelModalHeaderHeight;
+                overflow: hidden;
+
+                &.muted {
+                    background: @sidePanelModalMutedHeaderBackground;
+                }
+
+                h6 {
+                    text-overflow: ellipsis;
+                    width: 100%;
+                }
+            }
+
+            .modal-actions {
+                border-top: @sidePanelModalActionPanelBorderTop;
+                border-bottom-left-radius:  @sidePanelModalBorderRadius;
+                border-bottom-right-radius: @sidePanelModalBorderRadius;
+                font-size: 1.43em;
+                line-height: 1.3em;
+                padding: 30px;
+
+                .row {
+                    padding: 0;
+                }
+            }
+
+            .modal-content {
+                padding: @sidePanelModalContentPadding;
+                line-height: @sidePanelModalContentPadding;
+                overflow: auto;
+                height: @sidePanelModalContentHeight;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+            .main-panel {
+                width: 60%;
+                flex-grow: 1;
+            }
+
+            .side-panel {
+                width: 350px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+            .main-panel {
+                width: 60%;
+                flex-grow: 1;
+            }
+
+            .side-panel {
+                width: 40%;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 992px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+            width: auto;
+
+            .main-panel {
+                width: 600px;
+            }
+
+            .side-panel {
+                width: 350px;
+            }
+        }
+    }
+}
+
+@media only screen and (min-width: 1200px) {
+    .ui.modal {
+        &.modal-with-side-panel {
+            width: auto;
+
+            .main-panel {
+                width: 700px;
+            }
+
+            .side-panel {
+                width: 400px;
+            }
+        }
+    }
+}

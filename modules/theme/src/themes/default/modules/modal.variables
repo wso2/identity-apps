@@ -26,9 +26,9 @@
 @customModalDescriptionMarginTop: 0em 1.5em 0em 1.5em;
 @customModalHeadingMarginTop: -1.25em 1.5em 0em 1.5em;
 
-/*-------------------
-       Wizard
---------------------*/
+/*-------------------------------
+             Wizard
+--------------------------------*/
 
 @wizardContentHeight: 500px;
 @wizardStepsContainerBgColor: @athensGray;
@@ -36,3 +36,28 @@
 @wizardSubHeaderMaxWidth: 600px;
 @wizardContentHorizontalPadding: 3em;
 @wizardSummaryFieldValueColor: @nobel;
+
+
+/*-------------------------------
+        Side Panel Modal
+--------------------------------*/
+
+@sidePanelModalHeaderFontWeight: 400;
+@sidePanelModalBorderRadius: @defaultBorderRadius;
+@sidePanelModalHeaderFontWeight: @headerFontWeight;
+@sidePanelModalHeaderFontSize: @headerFontSize;
+@sidePanelModalHeaderPadding: @headerPadding;
+@sidePanelModalHeaderHeight: 90px;
+@sidePanelModalHeaderBorderBottom: @defaultBorderWidth solid @borderColor;
+
+@sidePanelModalContentPadding: 30px;
+@sidePanelModalContentHeight: 500px;
+
+@sidePanelModalMutedHeaderBackground: @lightGray;
+
+@sidePanelModalHelpSectionBoxShadow: -4px 0px 15px -8px #d6d6d6;
+@sidePanelModalHelpSectionBorderLeft: whitesmoke solid 1px;
+@sidePanelModalHelpSectionTransition: width ease-out 100ms;
+@sidePanelModalHelpContentTransition: opacity ease-out 100ms;
+
+@sidePanelModalActionPanelBorderTop: @defaultBorderWidth solid @borderColor;
