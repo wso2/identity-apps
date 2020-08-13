@@ -186,66 +186,66 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
         });
 };
 
+export const initializeAuthentication = () =>(dispatch)=> {
+    const auth = IdentityClient.getInstance();
+
+    auth.on("http-request-error", onHttpRequestError);
+    auth.on("http-request-finish", onHttpRequestFinish);
+    auth.on("http-request-start", onHttpRequestStart);
+    auth.on("http-request-success", onHttpRequestSuccess);
+
+    auth
+        .initialize({
+            baseUrls: [ window[ "AppUtils" ].getConfig().serverOrigin ],
+            callbackURL: window[ "AppUtils" ].getConfig().loginCallbackURL,
+            clientHost: window[ "AppUtils" ].getConfig().clientOriginWithTenant,
+            clientID: window[ "AppUtils" ].getConfig().clientID,
+            enablePKCE: true,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
+            scope: [ TokenConstants.SYSTEM_SCOPE ],
+            serverOrigin: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
+            storage: Storage.WebWorker
+        });
+    auth.on("sign-in", (response) => {
+        dispatch(
+            setSignIn({
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                display_name: response.displayName,
+                email: response.email,
+                scope: response.allowedScopes,
+                username: response.username
+            })
+        );
+
+        auth
+            .getServiceEndpoints()
+            .then((response: ServiceResourcesType) => {
+                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
+                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
+                sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+            })
+            .catch((error) => {
+                throw error;
+            });
+
+        dispatch(getProfileInformation());
+    });
+}
+
 /**
  * Handle user sign-in
  */
-export const handleSignIn = () => (dispatch) => {
-    const oAuth = IdentityClient.getInstance();
-    oAuth
-        .initialize({
-            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
-            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-            clientID: window["AppUtils"].getConfig().clientID,
-            enablePKCE: true,
-            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: [TokenConstants.SYSTEM_SCOPE],
-            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-            storage: Storage.WebWorker
-        })
-        .then(() => {
-            oAuth.on("http-request-error", onHttpRequestError);
-            oAuth.on("http-request-finish", onHttpRequestFinish);
-            oAuth.on("http-request-start", onHttpRequestStart);
-            oAuth.on("http-request-success", onHttpRequestSuccess);
-            oAuth.on("sign-in", (response) => {
-                dispatch(
-                    setSignIn({
-                        // eslint-disable-next-line @typescript-eslint/camelcase
-                        display_name: response.displayName,
-                        email: response.email,
-                        scope: response.allowedScopes,
-                        username: response.username
-                    })
-                );
-
-                oAuth
-                    .getServiceEndpoints()
-                    .then((response: ServiceResourcesType) => {
-                        sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
-                        sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
-                        sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
-                    })
-                    .catch((error) => {
-                        throw error;
-                    });
-
-                dispatch(getProfileInformation());
-            });
-
-            oAuth.signIn();
-        })
-        .catch((error) => {
-            throw error;
-        });
+export const handleSignIn = () =>{
+    const auth = IdentityClient.getInstance();
+    auth.signIn();
 };
 
 /**
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    const oAuth = IdentityClient.getInstance();
-    oAuth
+    const auth = IdentityClient.getInstance();
+    auth
         .signOut()
         .then(() => {
             dispatch(setSignOut());
