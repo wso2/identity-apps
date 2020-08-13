@@ -40,6 +40,7 @@ import {
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { history, store } from "../../../core";
+import { HttpUtils } from "../../../core/utils";
 
 /**
  *  Gets profile information by making an API call
@@ -151,10 +152,10 @@ export const handleSignIn = () => (dispatch) => {
             storage: Storage.WebWorker
         })
         .then(() => {
-            oAuth.on("http-request-error", onHttpRequestError);
-            oAuth.on("http-request-finish", onHttpRequestFinish);
-            oAuth.on("http-request-start", onHttpRequestStart);
-            oAuth.on("http-request-success", onHttpRequestSuccess);
+            oAuth.on("http-request-error", HttpUtils.onHttpRequestError);
+            oAuth.on("http-request-finish", HttpUtils.onHttpRequestFinish);
+            oAuth.on("http-request-start", HttpUtils.onHttpRequestStart);
+            oAuth.on("http-request-success", HttpUtils.onHttpRequestSuccess);
             oAuth.on("sign-in", (response) => {
                 dispatch(
                     setSignIn({
