@@ -167,6 +167,7 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
                 username: account.username,
                 "userstore-domain": account.userStoreDomain
             },
+            id: "account-switch",
             returnResponse: true,
             returnsSession: true,
             signInRequired: true
