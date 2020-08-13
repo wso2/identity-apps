@@ -91,14 +91,17 @@ export const setAuthProtocolMeta = (
  * Redux action to set the application templates.
  *
  * @param {ApplicationTemplateListItemInterface[]} templates - Application templates list.
- *
- * @return {SetApplicationTemplatesActionInterface} An action of type `ApplicationActionTypes.SET_APPLICATION_TEMPLATES`
+ * @param {boolean} isGrouped - Are the templates grouped.
+ * @return {SetApplicationTemplatesActionInterface}
  */
 export const setApplicationTemplates = (
-    templates: ApplicationTemplateListItemInterface[]
+    templates: ApplicationTemplateListItemInterface[],
+    isGrouped?: boolean
 ): SetApplicationTemplatesActionInterface => ({
     payload: templates,
-    type: ApplicationActionTypes.SET_APPLICATION_TEMPLATES
+    type: isGrouped
+        ? ApplicationActionTypes.SET_GROUPED_APPLICATION_TEMPLATES
+        : ApplicationActionTypes.SET_APPLICATION_TEMPLATES
 });
 
 /**
