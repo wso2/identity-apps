@@ -32,6 +32,7 @@ import { GovernanceConnectorUtils } from "../../utils";
  */
 interface DynamicGovernanceConnectorProps extends TestableComponentInterface {
     connector: GovernanceConnectorInterface;
+    onUpdate: () => void;
 }
 
 /**
@@ -44,7 +45,7 @@ interface DynamicGovernanceConnectorProps extends TestableComponentInterface {
 export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConnectorProps> = (
     props: DynamicGovernanceConnectorProps
 ): ReactElement => {
-    const { connector, [ "data-testid" ]: testId } = props;
+    const { connector, [ "data-testid" ]: testId, onUpdate } = props;
 
     const dispatch = useDispatch();
 
@@ -110,6 +111,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                         )
                     })
                 );
+
+                onUpdate();
             })
             .catch((error) => {
                 handleUpdateError(error);

@@ -53,13 +53,13 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorInterface>(null);
 
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const newCategoryId = path[ path.length - 1 ];
-
-        loadCategoryConnectors(newCategoryId);
+        loadCategoryConnectors();
     }, []);
 
-    const loadCategoryConnectors = (categoryId: string) => {
+    const loadCategoryConnectors = () => {
+        const path = history.location.pathname.split("/");
+        const categoryId = path[ path.length - 1 ];
+
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
                 response.connectors.map((connector) => {
@@ -117,6 +117,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                 <DynamicGovernanceConnector
                                     connector={ selectedConnector }
                                     data-testid={ `${ testId }-` + selectedConnector?.id }
+                                    onUpdate={ loadCategoryConnectors }
                                 />
                             ) }
                         </Segment>
