@@ -23,7 +23,7 @@ import {
     ServiceResourcesType,
     Storage,
     TOKEN_ENDPOINT
-}from "@wso2is/authentication";
+} from "@wso2is/authentication";
 import { TokenConstants } from "@wso2is/core/constants";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
@@ -113,7 +113,6 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (di
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = (updateProfileCompletion = false) => (dispatch): void => {
-
     let isCompletionCalculated = false;
 
     dispatch(setProfileInfoLoader(true));
@@ -163,9 +162,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t(
-                            "views:components.profile.notifications.getProfileInfo.error.message"
-                        )
+                        message: I18n.instance.t("views:components.profile.notifications.getProfileInfo.error.message")
                     })
                 );
 
@@ -207,24 +204,20 @@ export const handleSignIn = () => (dispatch) => {
             storage: Storage.WebWorker
         })
         .then(() => {
-            oAuth.onHttpRequestError(onHttpRequestError);
-            oAuth.onHttpRequestFinish(onHttpRequestFinish);
-            oAuth.onHttpRequestStart(onHttpRequestStart);
-            oAuth.onHttpRequestSuccess(onHttpRequestSuccess);
-            oAuth.onSignIn(() => {
-                oAuth.getUserInfo().then(response => {
-                    dispatch(
-                        setSignIn({
-                            // eslint-disable-next-line @typescript-eslint/camelcase
-                            display_name: response.displayName,
-                            email: response.email,
-                            scope: response.allowedScopes,
-                            username: response.username
-                        })
-                    );
-                }).catch(error => {
-                    throw error;
-                });
+            oAuth.on("http-request-error", onHttpRequestError);
+            oAuth.on("http-request-finish", onHttpRequestFinish);
+            oAuth.on("http-request-start", onHttpRequestStart);
+            oAuth.on("http-request-success", onHttpRequestSuccess);
+            oAuth.on("sign-in", (response) => {
+                dispatch(
+                    setSignIn({
+                        // eslint-disable-next-line @typescript-eslint/camelcase
+                        display_name: response.displayName,
+                        email: response.email,
+                        scope: response.allowedScopes,
+                        username: response.username
+                    })
+                );
 
                 oAuth
                     .getServiceEndpoints()

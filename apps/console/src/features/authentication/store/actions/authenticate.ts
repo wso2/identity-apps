@@ -40,7 +40,6 @@ import {
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { history, store } from "../../../core";
-import { HttpUtils } from "../../../core/utils/http-utils";
 
 /**
  *  Gets profile information by making an API call
@@ -152,39 +151,36 @@ export const handleSignIn = () => (dispatch) => {
             storage: Storage.WebWorker
         })
         .then(() => {
-            oAuth.onHttpRequestError(HttpUtils.onHttpRequestError);
-            oAuth.onHttpRequestFinish(HttpUtils.onHttpRequestFinish);
-            oAuth.onHttpRequestStart(HttpUtils.onHttpRequestStart);
-            oAuth.onHttpRequestSuccess(HttpUtils.onHttpRequestSuccess);
-            oAuth.onSignIn(() => {
-                oAuth.getUserInfo().then((response) => {
-                    dispatch(
-                        setSignIn({
-                            // eslint-disable-next-line @typescript-eslint/camelcase
-                            display_name: response.displayName,
-                            email: response.email,
-                            scope: response.allowedScopes,
-                            username: response.username
-                        })
-                    );
+            oAuth.on("http-request-error", onHttpRequestError);
+            oAuth.on("http-request-finish", onHttpRequestFinish);
+            oAuth.on("http-request-start", onHttpRequestStart);
+            oAuth.on("http-request-success", onHttpRequestSuccess);
+            oAuth.on("sign-in", (response) => {
+                dispatch(
+                    setSignIn({
+                        // eslint-disable-next-line @typescript-eslint/camelcase
+                        display_name: response.displayName,
+                        email: response.email,
+                        scope: response.allowedScopes,
+                        username: response.username
+                    })
+                );
 
-                    oAuth
-                        .getServiceEndpoints()
-                        .then((response: ServiceResourcesType) => {
-                            sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
-                            sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
-                            sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
-                        })
-                        .catch((error) => {
-                            throw error;
-                        });
+                oAuth
+                    .getServiceEndpoints()
+                    .then((response: ServiceResourcesType) => {
+                        sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
+                        sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
+                        sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+                    })
+                    .catch((error) => {
+                        throw error;
+                    });
 
-                    dispatch(getProfileInformation());
-                });
+                dispatch(getProfileInformation());
             });
 
             oAuth.signIn();
-
         })
         .catch((error) => {
             throw error;
