@@ -33,6 +33,7 @@ import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
+import { initializeAuthentication } from "./features/authentication";
 import {
     AppConstants,
     AppState,
@@ -53,7 +54,6 @@ import {
  * @return {React.ReactElement}
  */
 export const App: FunctionComponent<{}> = (): ReactElement => {
-
     const { state } = useContext(ThemeContext);
 
     const dispatch = useDispatch();
@@ -73,6 +73,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+        dispatch(initializeAuthentication());
     }, []);
 
     /**
