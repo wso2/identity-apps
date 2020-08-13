@@ -270,6 +270,9 @@
         &.small {
             width: @selectionCardSmallWidth;
         }
+        &.x120 {
+            width: @selectionCardX120Width;
+        }
         &:hover {
             transform: none;
             text-decoration: none;
