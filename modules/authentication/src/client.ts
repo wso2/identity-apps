@@ -52,6 +52,7 @@ const DefaultConfig = {
     scope: [OIDC_SCOPE]
 };
 
+// eslint-disable-next-line quotes
 const NOT_AVAILABLE_ERROR = 'This is available only when the storage is set to "WebWorker"';
 
 /**
@@ -93,7 +94,7 @@ export class IdentityClient {
 
     public initialize(config: ConfigInterface): Promise<boolean> {
         this._storage = config.storage ?? Storage.SessionStorage;
-        this._initialized = true;
+        this._initialized = false;
 
         const startCallback = (request: AxiosRequestConfig): void => {
             request.headers = {
@@ -115,6 +116,10 @@ export class IdentityClient {
 
         if (config.storage === Storage.SessionStorage) {
             this._authConfig = { ...DefaultConfig, ...config };
+            this._initialized = true;
+            if (this._onInitialize) {
+                this._onInitialize(true);
+            }
 
             return Promise.resolve(true);
         } else {
@@ -126,6 +131,8 @@ export class IdentityClient {
                     if (this._onInitialize) {
                         this._onInitialize(true);
                     }
+                    this._initialized = true;
+
                     return Promise.resolve(true);
                 })
                 .catch((error) => {
@@ -155,6 +162,21 @@ export class IdentityClient {
      * @memberof IdentityClient
      */
     public async signIn(): Promise<any> {
+        let iterationToWait = 20;
+
+        const sleep = (): Promise<any> => {
+            return new Promise(resolve => setTimeout(resolve, 500));
+        }
+
+        while (!this._initialized && iterationToWait !== 0) {
+            await sleep();
+            iterationToWait--;
+        }
+
+        if (!this._initialized) {
+            return Promise.reject("The object has not been initialized yet.");
+        }
+
         if (this._storage === Storage.WebWorker) {
             return this._client
                 .signIn()
