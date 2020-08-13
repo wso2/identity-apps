@@ -289,7 +289,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     {
                         (subTemplates && subTemplates instanceof Array && subTemplates.length > 0)
                             ? (
-                                <Grid.Row>
+                                <Grid.Row className="pt-0">
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                         <div>{ subTemplatesSectionTitle }</div>
                                         {
@@ -325,7 +325,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             )
                             : null
                     }
-                    <Grid.Row>
+                    <Grid.Row className="pt-0">
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             { resolveMinimalProtocolFormFields() }
                         </Grid.Column>
