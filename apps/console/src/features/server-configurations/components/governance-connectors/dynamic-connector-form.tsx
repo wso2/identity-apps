@@ -99,7 +99,6 @@ const DynamicConnectorForm = (props) => {
                                         name={ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) }
                                         component={ RenderToggle }
                                         type={ getFieldType(property) }
-                                        required={ true }
                                         width={ 10 }
                                         placeholder={ property.value }
                                         data-testid={ `${ testId }-${ property.name }` }
