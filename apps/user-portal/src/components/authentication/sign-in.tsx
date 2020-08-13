@@ -15,20 +15,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../store";
-import { GlobalConfig } from "../../configs";
-import { handleSignIn } from "../../store/actions";
-import { history } from "../../helpers";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { GlobalConfig } from "../../configs";
 import { ApplicationConstants } from "../../constants";
+import { history } from "../../helpers";
+import { AppState } from "../../store";
+import { handleSignIn } from "../../store/actions";
+
 
 /**
  * This component handles the sign-in function
  */
 export const SignIn = (props) => {
-    const dispatch = useDispatch();
     const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
 
     const error = new URLSearchParams(props.location.search).get("error_description");
@@ -36,7 +35,7 @@ export const SignIn = (props) => {
     const getAuthenticationCallbackUrl = () => {
         return window.sessionStorage.getItem("auth_callback_url");
     };
-    
+
     const loginSuccessRedirect = () => {
         const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
         const location =
@@ -49,7 +48,7 @@ export const SignIn = (props) => {
 
     useEffect(() => {
         if (!isAuth && !error) {
-            dispatch(handleSignIn());
+            handleSignIn();
         } else if (error === ApplicationConstants.USER_DENIED_CONSENT) {
             // dispatch(handleSignIn());
             // TODO: Send it to an error page
@@ -59,7 +58,7 @@ export const SignIn = (props) => {
                 JSON.parse(sessionStorage.getItem("request_params")).clientId &&
                 JSON.parse(sessionStorage.getItem("request_params")).clientId !== GlobalConfig.clientID) {
                 sessionStorage.clear();
-                dispatch(handleSignIn());
+                handleSignIn();
             } else {
                 loginSuccessRedirect();
             }

@@ -17,9 +17,14 @@
  */
 
 import { FunctionComponent, ReactElement, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux"; 
+import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import { AppState, history, AppConstants, ConfigReducerStateInterface } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    history
+} from "../../core";
 import { handleSignIn } from "../store";
 
 /**
@@ -32,9 +37,7 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
     props: RouteComponentProps
 ): ReactElement => {
 
-    const { location }  = props;
-
-    const dispatch = useDispatch();
+    const { location } = props;
 
     const isAuthenticated = useSelector((state: AppState) => state.auth.isAuthenticated);
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
@@ -58,7 +61,7 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
 
     useEffect(() => {
         if (!isAuthenticated && !error) {
-            dispatch(handleSignIn());
+            handleSignIn();
             return;
         }
 
