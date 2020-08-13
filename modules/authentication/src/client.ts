@@ -17,13 +17,7 @@
  */
 
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import {
-    ACCESS_TOKEN,
-    AUTHORIZATION_CODE_TYPE,
-    Hooks,
-    OIDC_SCOPE,
-    Storage
-} from "./constants";
+import { ACCESS_TOKEN, AUTHORIZATION_CODE_TYPE, Hooks, OIDC_SCOPE, Storage } from "./constants";
 import { AxiosHttpClient, AxiosHttpClientInstance } from "./http-client";
 import {
     ConfigInterface,
@@ -58,7 +52,7 @@ const DefaultConfig = {
     scope: [OIDC_SCOPE]
 };
 
-const NOT_AVAILABLE_ERROR = "This is available only when the storage is set to \"WebWorker\"";
+const NOT_AVAILABLE_ERROR = 'This is available only when the storage is set to "WebWorker"';
 
 /**
  * IdentityClient class constructor.
@@ -77,7 +71,7 @@ export class IdentityClient {
     private _onSignOutCallback: (response: any) => void;
     private _onEndUserSession: (response: any) => void;
     private _onInitialize: (response: boolean) => void;
-    private _onCustomGrant: Map<string, (response: any) => void>;
+    private _onCustomGrant: Map<string, (response: any) => void> = new Map();
     private _onHttpRequestStart: () => void;
     private _onHttpRequestSuccess: (response: AxiosResponse) => void;
     private _onHttpRequestFinish: () => void;
@@ -247,56 +241,63 @@ export class IdentityClient {
         }
 
         if (this._storage === Storage.WebWorker) {
-            return this._client.customGrant(requestParams).then(response => {
+            return this._client
+                .customGrant(requestParams)
+                .then((response) => {
+                    if (this._onCustomGrant.get(requestParams.id)) {
+                        this._onCustomGrant.get(requestParams.id)(response);
+                    }
+
+                    return Promise.resolve(response);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        }
+
+        return customGrantUtil(requestParams, this._authConfig)
+            .then((response) => {
                 if (this._onCustomGrant.get(requestParams.id)) {
                     this._onCustomGrant.get(requestParams.id)(response);
                 }
 
                 return Promise.resolve(response);
-            }).catch(error => {
+            })
+            .catch((error) => {
                 return Promise.reject(error);
             });
-        }
-
-        return customGrantUtil(requestParams, this._authConfig).then(response => {
-            if (this._onCustomGrant.get(requestParams.id)) {
-                this._onCustomGrant.get(requestParams.id)(response);
-            }
-
-            return Promise.resolve(response);
-        }).catch(error => {
-            return Promise.reject(error);
-        });
     }
 
     public async endUserSession(): Promise<any> {
         if (this._storage === Storage.WebWorker) {
-            return this._client.endUserSession().then(response => {
+            return this._client
+                .endUserSession()
+                .then((response) => {
+                    if (this._onEndUserSession) {
+                        this._onEndUserSession(response);
+
+                        return Promise.resolve(response);
+                    }
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        }
+
+        return sendRevokeTokenRequest(this._authConfig, getSessionParameter(ACCESS_TOKEN, this._authConfig))
+            .then((response) => {
+                resetOPConfiguration(this._authConfig);
+                endAuthenticatedSession(this._authConfig);
+
                 if (this._onEndUserSession) {
                     this._onEndUserSession(response);
 
                     return Promise.resolve(response);
                 }
-            }).catch(error => {
+            })
+            .catch((error) => {
                 return Promise.reject(error);
             });
-        }
-
-        return sendRevokeTokenRequest(
-            this._authConfig,
-            getSessionParameter(ACCESS_TOKEN, this._authConfig)
-        ).then(response => {
-            resetOPConfiguration(this._authConfig);
-            endAuthenticatedSession(this._authConfig);
-
-            if (this._onEndUserSession) {
-                this._onEndUserSession(response);
-
-                return Promise.resolve(response);
-            }
-        }).catch(error => {
-            return Promise.reject(error);
-        });
     }
 
     public async getServiceEndpoints(): Promise<ServiceResourcesType> {
@@ -320,9 +321,9 @@ export class IdentityClient {
         if (callback && typeof callback === "function") {
             switch (hook) {
                 case Hooks.SignIn:
-                        this._onSignInCallback = callback;
-                        break;
-            case Hooks.SignOut:
+                    this._onSignInCallback = callback;
+                    break;
+                case Hooks.SignOut:
                     this._onSignOutCallback = callback;
                     break;
                 case Hooks.EndUserSession:
@@ -332,32 +333,32 @@ export class IdentityClient {
                     this._onInitialize = callback;
                     break;
                 case Hooks.HttpRequestError:
-                        if (this._storage === Storage.WebWorker) {
-                            this._client.onHttpRequestError(callback);
-                        }
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestError(callback);
+                    }
 
-                        this._onHttpRequestError = callback;
+                    this._onHttpRequestError = callback;
                     break;
                 case Hooks.HttpRequestFinish:
-                        if (this._storage === Storage.WebWorker) {
-                            this._client.onHttpRequestFinish(callback);
-                        }
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestFinish(callback);
+                    }
 
-                        this._onHttpRequestFinish = callback;
+                    this._onHttpRequestFinish = callback;
                     break;
                 case Hooks.HttpRequestStart:
-                        if (this._storage === Storage.WebWorker) {
-                            this._client.onHttpRequestStart(callback);
-                        }
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestStart(callback);
+                    }
 
-                        this._onHttpRequestStart = callback;
+                    this._onHttpRequestStart = callback;
                     break;
                 case Hooks.HttpRequestSuccess:
-                        if (this._storage === Storage.WebWorker) {
-                            this._client.onHttpRequestSuccess(callback);
-                        }
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestSuccess(callback);
+                    }
 
-                        this._onHttpRequestSuccess = callback;
+                    this._onHttpRequestSuccess = callback;
                     break;
                 case Hooks.CustomGrant:
                     this._onCustomGrant.set(id, callback);
@@ -366,7 +367,7 @@ export class IdentityClient {
                     throw Error("No such hook found");
             }
         } else {
-            throw Error("The callback function is not a valid function.")
+            throw Error("The callback function is not a valid function.");
         }
     }
 }
