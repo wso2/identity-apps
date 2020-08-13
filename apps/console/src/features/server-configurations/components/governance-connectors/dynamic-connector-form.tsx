@@ -21,7 +21,7 @@ import { Hint, PrimaryButton, RenderInput, RenderToggle } from "@wso2is/react-co
 import React from "react";
 import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { Grid } from "semantic-ui-react";
+import { Divider, Form, Grid } from "semantic-ui-react";
 import { AppState } from "../../../core";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
@@ -69,7 +69,7 @@ const DynamicConnectorForm = (props) => {
     const formValues = useSelector((state: AppState) => state.form[ props.form ].values);
 
     return (
-        <form onSubmit={ handleSubmit }>
+        <Form onSubmit={ handleSubmit }>
             <Grid padded={ true }>
                 { properties?.map((property, index) => {
                     return (
@@ -84,7 +84,7 @@ const DynamicConnectorForm = (props) => {
                                         component={ getFieldComponent(property) }
                                         type={ getFieldType(property) }
                                         required={ true }
-                                        width={ 14 }
+                                        width={ 12 }
                                         placeholder={ property.value }
                                         data-testid={ `${ testId }-${ property.name }` }
                                     />
@@ -113,6 +113,7 @@ const DynamicConnectorForm = (props) => {
                                     />
                                 ) }
                             </Grid.Column>
+                            <Divider hidden />
                         </Grid.Row>
                     );
                 }) }
@@ -122,7 +123,7 @@ const DynamicConnectorForm = (props) => {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        </form>
+        </Form>
     );
 };
 
