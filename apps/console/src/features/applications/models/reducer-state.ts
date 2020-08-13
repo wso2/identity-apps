@@ -29,6 +29,7 @@ import { AuthProtocolMetaListItemInterface, OIDCMetadataInterface } from "./appl
 export interface ApplicationReducerStateInterface {
     meta: ApplicationMetaInterface;
     templates: ApplicationTemplateListItemInterface[];
+    groupedTemplates: ApplicationTemplateListItemInterface[];
     oidcConfigurations: OIDCApplicationConfigurationInterface;
     samlConfigurations: SAMLApplicationConfigurationInterface;
 }

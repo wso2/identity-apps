@@ -232,12 +232,26 @@ export interface ApplicationTemplateListItemInterface {
     id: string;
     name: string;
     description?: string;
-    image: string;
-    authenticationProtocol: string;
+    image?: string;
+    authenticationProtocol?: string;
+    /**
+     * Template group.
+     * ex: "web-application"
+     */
+    templateGroup?: string;
     types?: any[];
     category?: string;
     displayOrder?: number;
     self?: string;
+    /**
+     * List of Sub templates.
+     * ex: `OIDC Web Application` under `Web Application` template.
+     */
+    subTemplates?: ApplicationTemplateListItemInterface[];
+    /**
+     * Title for the sub template selection section inside the wizard.
+     */
+    subTemplatesSectionTitle?: string;
 }
 
 /**
@@ -277,6 +291,12 @@ export enum ApplicationTemplateCategories {
      * @type {string}
      */
     DEFAULT = "DEFAULT",
+    /**
+     * FOr default templates groups.
+     * ex: web-application, mobile, desktop etc.
+     * @type {string}
+     */
+    DEFAULT_GROUP = "DEFAULT_GROUP",
     /**
      * Vendor templates.
      * ex: Zoom, Salesforce etc.
@@ -477,3 +497,15 @@ export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterfa
     sloUrl: "",
     ssoUrl: ""
 });
+
+/**
+ * Enum for default application template group ids.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum DefaultTemplateGroupIds {
+    WEB_APPLICATION = "web-application",
+    DESKTOP_APPLICATION = "desktop",
+    MOBILE_APPLICATION = "mobile"
+}
