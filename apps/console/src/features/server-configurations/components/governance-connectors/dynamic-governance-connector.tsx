@@ -134,7 +134,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         <DynamicConnectorForm
             onSubmit={ handleSubmit }
             props={ { properties: connector.properties } }
-            form={ connector.name + "-form" }
+            form={ connector.category + "-form" }
             initialValues={ getConnectorInitialValues(connector) }
             data-testid={ `${ testId }-${ connector.name }-form` }
         />
