@@ -152,10 +152,10 @@ export class ApplicationManagementUtils {
     /**
      * Retrieve Application template list form the API and sets it in redux state.
      *
-     * @param {boolean} isGrouped - Should the templates be grouped.
+     * @param {boolean} skipGrouping - Skip grouping of templates.
      * @return {Promise<void>}
      */
-    public static getApplicationTemplates = (isGrouped: boolean = false): Promise<void> => {
+    public static getApplicationTemplates = (skipGrouping: boolean = false): Promise<void> => {
         return getApplicationTemplateList()
             .then((response) => {
                 const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
@@ -174,7 +174,7 @@ export class ApplicationManagementUtils {
                 //    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
                 //});
                 
-                if (isGrouped) {
+                if (!skipGrouping) {
                     const groupedTemplates: ApplicationTemplateListItemInterface[] = [];
 
                     applicationTemplates.forEach((template: ApplicationTemplateListItemInterface) => {
@@ -214,12 +214,10 @@ export class ApplicationManagementUtils {
                         });
                     });
 
-                    store.dispatch(setApplicationTemplates(groupedTemplates, isGrouped));
-                    
-                    return;
+                    store.dispatch(setApplicationTemplates(groupedTemplates, true));
                 }
 
-                store.dispatch(setApplicationTemplates(applicationTemplates, isGrouped));
+                store.dispatch(setApplicationTemplates(applicationTemplates));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
