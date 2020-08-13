@@ -26,7 +26,7 @@ import { CommonAuthenticateActionTypes, CommonAuthenticateActions } from "../act
  * @returns {CommonAuthReducerStateInterface} The new state.
  */
 export const commonAuthenticateReducer = (initialState: CommonAuthReducerStateInterface) => (
-    state: CommonAuthReducerStateInterface = initialState,
+    state: CommonAuthReducerStateInterface = { ...initialState },
     action: CommonAuthenticateActions
 ): CommonAuthReducerStateInterface => {
 
@@ -44,7 +44,9 @@ export const commonAuthenticateReducer = (initialState: CommonAuthReducerStateIn
                     username: action.payload.username
                 };
             }
-            break;
+            return {
+                ...state
+            }
         case CommonAuthenticateActionTypes.SET_SIGN_OUT:
             return {
                 ...state,
