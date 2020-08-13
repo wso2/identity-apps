@@ -22,11 +22,11 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid } from "semantic-ui-react";
+import { Divider, Grid, Sidebar, Menu, Segment } from "semantic-ui-react";
 import { history } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
-import { GovernanceConnectorCategoryInterface } from "../models";
+import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
 
 /**
  * Props for the Server Configurations page.
@@ -43,50 +43,62 @@ type GovernanceConnectorsPageInterface = TestableComponentInterface;
 export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPageInterface> = (
     props: GovernanceConnectorsPageInterface
 ): ReactElement => {
-
-    const {
-        ["data-testid"]: testId
-    } = props;
+    const { [ "data-testid" ]: testId } = props;
 
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
 
     const [ connectorCategory, setConnectorCategory ] = useState<GovernanceConnectorCategoryInterface>({});
+    const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorInterface>(null);
 
     useEffect(() => {
         const path = history.location.pathname.split("/");
         const newCategoryId = path[ path.length - 1 ];
 
         loadCategoryConnectors(newCategoryId);
-    }, [ ]);
+    }, []);
 
     const loadCategoryConnectors = (categoryId: string) => {
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
-                response.connectors.map(connector => {
+                response.connectors.map((connector) => {
                     connector.categoryId = categoryId;
                 });
                 setConnectorCategory(response);
+                setSelectorConnector(response.connectors[ 0 ]);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
-                    dispatch(addAlert({
-                        description: t("adminPortal:components.governanceConnectors.notifications." +
-                            "getConnector.error.description", { description: error.response.data.description }),
-                        level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.governanceConnectors.notifications." +
-                            "getConnector.error.message")
-                    }));
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "adminPortal:components.governanceConnectors.notifications." +
+                                "getConnector.error.description",
+                                { description: error.response.data.description }
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "adminPortal:components.governanceConnectors.notifications." +
+                                "getConnector.error.message"
+                            )
+                        })
+                    );
                 } else {
                     // Generic error message
-                    dispatch(addAlert({
-                        description: t("adminPortal:components.governanceConnectors.notifications." +
-                            "getConnector.genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("adminPortal:components.governanceConnectors.notifications." +
-                            "getConnector.genericError.message")
-                    }));
+                    dispatch(
+                        addAlert({
+                            description: t(
+                                "adminPortal:components.governanceConnectors.notifications." +
+                                "getConnector.genericError.description"
+                            ),
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "adminPortal:components.governanceConnectors.notifications." +
+                                "getConnector.genericError.message"
+                            )
+                        })
+                    );
                 }
             });
     };
@@ -98,22 +110,33 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             data-testid={ `${ testId }-page-layout` }
         >
             <Grid>
-                <Grid.Row>
-                    <Grid.Column width={ 10 }>
-                        {
-                            connectorCategory?.connectors?.map((connector, index) => {
-                                return (
-                                    <>
-                                        <DynamicGovernanceConnector
-                                            connector={ connector }
-                                            key={ index }
-                                            data-testid={ `${ testId }-` + connector.id }
-                                        />
-                                        <Divider hidden={ true } key={ "Divider-" + index } />
-                                    </>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 12 }>
+                        <Segment basic className="emphasized bordered">
+                            { selectedConnector && (
+                                <DynamicGovernanceConnector
+                                    connector={ selectedConnector }
+                                    data-testid={ `${ testId }-` + selectedConnector?.id }
+                                />
+                            ) }
+                        </Segment>
+                    </Grid.Column>
+                    <Grid.Column width={ 4 }>
+                        <h5>Categories</h5>
+                        <Menu secondary vertical className="governance-connector-categories">
+                            { connectorCategory?.connectors?.map(
+                                (connector: GovernanceConnectorInterface, index: number) => (
+                                    <Menu.Item
+                                        as="a"
+                                        key={ index }
+                                        className={ selectedConnector?.id === connector?.id ? "active" : "" }
+                                        onClick={ () => setSelectorConnector(connector) }
+                                    >
+                                        { connector.friendlyName }
+                                    </Menu.Item>
                                 )
-                            })
-                        }
+                            ) }
+                        </Menu>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
