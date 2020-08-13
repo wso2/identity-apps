@@ -575,6 +575,11 @@ export interface AdminPortalNS {
                 getConnector: Notification;
                 updateConnector: Notification;
             };
+            enabled: string;
+            disabled: string;
+            categories: string;
+            pageSubHeading: string;
+            connectorSubHeading: string;
         };
         helpPanel: {
             notifications: {

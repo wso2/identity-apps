@@ -923,6 +923,10 @@ export const adminPortal: AdminPortalNS = {
             copyright: "WSO2 Identity Server © {{year}}"
         },
         governanceConnectors: {
+            categories: "Categories",
+            connectorSubHeading: "Configure {{ name }} settings.",
+            disabled: "Disabled",
+            enabled: "Enabled",
             notifications: {
                 getConnector: {
                     error: {
@@ -966,7 +970,9 @@ export const adminPortal: AdminPortalNS = {
                         message: "Update Successful."
                     }
                 }
-            }
+            },
+            pageSubHeading: "Configure and manage {{ name }}."
+
         },
         groups: {
             advancedSearch: {
