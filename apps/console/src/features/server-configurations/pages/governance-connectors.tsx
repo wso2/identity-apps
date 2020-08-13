@@ -22,7 +22,7 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Sidebar, Menu, Segment } from "semantic-ui-react";
+import { Grid, Menu, Segment } from "semantic-ui-react";
 import { history } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
