@@ -63,29 +63,30 @@ export class SharedUserStoreUtils {
      * @param inputValue
      * @param regExValue
      */
-    public static validateInputAgainstRegEx = (inputValue: string, regExValue: string): boolean => {
+    public static validateInputAgainstRegEx(inputValue: string, regExValue: string): boolean {
         const regEx = new RegExp(regExValue);
         return regEx.test(inputValue);
-    };
+    }
 
     /**
      * The following method fetch the user store ids list.
      */
-    public static getUserStoreIds = async (): Promise<string[]> => {
+    public static async getUserStoreIds(): Promise<string[]> {
         const userStoreIds: string[] = [];
-        await getUserStoreList().then((response) => {
+
+        return getUserStoreList().then((response) => {
             response.data.map((userStore) => {
                 userStoreIds.push(userStore.id);
-            })
-        });
+            });
 
-        return userStoreIds;
-    };
+            return userStoreIds;
+        });
+    }
 
     /**
      * The following method fetch the readonly user stores list.
      */
-    public static getReadOnlyUserStores = async (): Promise<string[]> => {
+    public static async getReadOnlyUserStores(): Promise<string[]> {
         const ids = await SharedUserStoreUtils.getUserStoreIds();
         const readOnlyUserStores: string[] = [];
 
@@ -101,5 +102,5 @@ export class SharedUserStoreUtils {
         }
 
         return readOnlyUserStores;
-    };
+    }
 }
