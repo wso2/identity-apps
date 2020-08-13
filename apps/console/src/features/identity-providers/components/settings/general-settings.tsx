@@ -21,10 +21,10 @@ import { addAlert } from "@wso2is/core/store";
 import { ConfirmationModal, ContentLoader, DangerZone, DangerZoneGroup } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider } from "semantic-ui-react";
-import { AppState, ConfigReducerStateInterface } from "../../../core";
 import { deleteIdentityProvider, updateIdentityProviderDetails } from "../../api";
+import { IdentityProviderManagementConstants } from "../../constants";
 import { IdentityProviderInterface } from "../../models";
 import { GeneralDetailsForm } from "../forms";
 import { handleIDPDeleteError, handleIDPUpdateError } from "../utils";
@@ -92,8 +92,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
 
@@ -164,7 +162,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
 
                     />
                     <Divider hidden />
-                    { !(config.ui.doNotDeleteIdentityProviders.includes(name)) && (
+                    { !(IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(name)) && (
                         <DangerZoneGroup sectionHeader={ t("devPortal:components.idp.dangerZoneGroup.header") }>
                             <DangerZone
                                 actionTitle={ t("devPortal:components.idp.dangerZoneGroup.disableIDP.actionTitle") }

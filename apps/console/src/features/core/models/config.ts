@@ -126,12 +126,7 @@ interface ExternalAppConfigInterface {
 /**
  * Portal UI config interface inheriting the common configs from core module.
  */
-export interface UIConfigInterface extends CommonUIConfigInterface {
-    /**
-     * Application(SPs) that shouldn't be allowed to delete.
-     */
-    doNotDeleteIdentityProviders?: string[];
-}
+type UIConfigInterface = CommonUIConfigInterface;
 
 /**
  * Service resource endpoints config.

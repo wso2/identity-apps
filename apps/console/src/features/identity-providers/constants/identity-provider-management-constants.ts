@@ -48,6 +48,13 @@ export class IdentityProviderManagementConstants {
         DocumentationConstants.PORTAL_DOCS_KEY }["Identity Providers"]["Edit Identity Provider"]["Overview"]`;
 
     /**
+     * Set of internal idps which are forbidden from deleting.
+     * // TODO: Remove this once validating is available from the backend level.
+     * @type {string[]}
+     */
+    public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
+
+    /**
      * Doc key for the IDP create page.
      * @constant
      * @type {string}
