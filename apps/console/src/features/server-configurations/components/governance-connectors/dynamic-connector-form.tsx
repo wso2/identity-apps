@@ -17,15 +17,12 @@
  */
 
 import { I18n } from "@wso2is/i18n";
-import {
-    Hint,
-    PrimaryButton,
-    RenderInput,
-    RenderToggle
-} from "@wso2is/react-components";
+import { Hint, PrimaryButton, RenderInput, RenderToggle } from "@wso2is/react-components";
 import React from "react";
+import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Grid } from "semantic-ui-react";
+import { AppState } from "../../../core";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -69,6 +66,8 @@ const DynamicConnectorForm = (props) => {
     const { handleSubmit, [ "data-testid" ]: testId } = props;
     const properties: ConnectorPropertyInterface[] = props.props.properties;
 
+    const formValues = useSelector((state: AppState) => state.form[ props.form ].values);
+
     return (
         <form onSubmit={ handleSubmit }>
             <Grid padded={ true }>
@@ -104,7 +103,13 @@ const DynamicConnectorForm = (props) => {
                                         width={ 10 }
                                         placeholder={ property.value }
                                         data-testid={ `${ testId }-${ property.name }` }
-                                        label={ property.value === "true" ? "Enabled" : "Disabled" }
+                                        label={
+                                            formValues[
+                                                GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)
+                                            ]
+                                                ? "Enabled"
+                                                : "Disabled"
+                                        }
                                     />
                                 ) }
                             </Grid.Column>
