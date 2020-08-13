@@ -1,8 +1,8 @@
 {
 	"id": "df929521-6768-44f5-8586-624126ec3f8b",
-    "name": "Desktop Application",
+    "name": "Windows",
     "description": "Applications developed to target windows desktops.",
-    "image": "windowsNative",
+    "image": "windows",
     "authenticationProtocol": "oidc",
     "types": [
         "dotNet"
