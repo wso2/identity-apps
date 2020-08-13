@@ -122,7 +122,15 @@ export class ApplicationManagementConstants {
         .set("Zoom", "OIDC Web Application")
         .set("Workday", "OIDC Web Application")
         .set("Box", "OIDC Web Application");
+    // TODO: Move this to the deployment config.
 
+    /**
+     * Set of internal application which are forbidden from deleting.
+     * // TODO: Remove this once validating is available from the backend level.
+     * @type {string[]}
+     */
+    public static readonly DELETING_FORBIDDEN_APPLICATIONS: string[] = [ "Console", "User Portal" ];
+    
     /**
      * Key for the SPA template.
      * @constant

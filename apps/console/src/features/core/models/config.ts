@@ -130,10 +130,6 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * Application(SPs) that shouldn't be allowed to delete.
      */
-    doNotDeleteApplications?: string[];
-    /**
-     * Application(SPs) that shouldn't be allowed to delete.
-     */
     doNotDeleteIdentityProviders?: string[];
 }
 

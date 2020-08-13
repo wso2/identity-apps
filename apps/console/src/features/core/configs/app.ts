@@ -145,7 +145,6 @@ export class Config {
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             appName: window["AppUtils"].getConfig().ui.appName,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
-            doNotDeleteApplications: window["doNotDeleteApplications"] || [],
             doNotDeleteIdentityProviders: window["doNotDeleteIdentityProviders"] || [],
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,

@@ -39,6 +39,7 @@ import {
 } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
 import { GeneralDetailsForm } from "../forms";
+import { ApplicationManagementConstants } from "../../constants";
 
 /**
  * Proptypes for the applications general details component.
@@ -216,7 +217,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (config.ui.doNotDeleteApplications.includes(name)) {
+        if (ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(name)) {
             return null;
         }
 
