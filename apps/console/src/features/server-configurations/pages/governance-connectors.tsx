@@ -106,7 +106,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     return (
         <PageLayout
             title={ connectorCategory?.name }
-            description={ connectorCategory?.description }
+            description={ connectorCategory?.description ?? "Configure and manage " + connectorCategory?.name + "." }
             data-testid={ `${ testId }-page-layout` }
         >
             <Grid>
