@@ -68,8 +68,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     // TODO enable after fixing callbackURL.
     // const [showCallbackUrl, setShowCallbackUrl] = useState(false);
 
-    const form = useRef(null);
-
     /**
      * Add regexp to multiple callbackUrls and update configs.
      *
@@ -98,17 +96,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
         return url;
     };
-
-    /**
-     * Submits the form programmatically if triggered from outside.
-     */
-    useEffect(() => {
-        if (!triggerSubmit) {
-            return;
-        }
-
-        form?.current?.props?.onSubmit(new Event("submit"));
-    }, [ triggerSubmit ]);
 
     useEffect(() => {
         if (_.isEmpty(initialValues?.inboundProtocolConfiguration?.oidc)) {
