@@ -21,7 +21,7 @@ import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { AppState, EmptyPlaceholderIllustrations } from "../../../core";
+import { AppState, EmptyPlaceholderIllustrations, TechnologyLogos } from "../../../core";
 import { ApplicationTemplateIllustrations, InboundProtocolLogos } from "../../configs";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
 import { ApplicationManagementUtils } from "../../utils";
@@ -223,10 +223,18 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                 <TemplateGrid<ApplicationTemplateListItemInterface>
                     type="application"
                     templates={
-                        availableTemplates.filter((template) =>
+                        applicationTemplates
+                        && applicationTemplates instanceof Array
+                        && applicationTemplates.length > 0
+                            ? availableTemplates.filter((template) =>
                             template.category === ApplicationTemplateCategories.DEFAULT)
+                            : []
                     }
-                    templateIcons={ ApplicationTemplateIllustrations }
+                    templateIcons={ {
+                        ...ApplicationTemplateIllustrations,
+                        ...TechnologyLogos,
+                        ...InboundProtocolLogos
+                    } }
                     templateIconOptions={ {
                         fill: "primary"
                     } }
