@@ -103,9 +103,10 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
      * Sanitizes and prepares the form values for submission.
      *
      * @param values - Form values.
+     * @param {string} urls - Callback URLs.
      * @return {object} Prepared values.
      */
-    const getFormValues = (values: Map<string, FormValue>): any => {
+    const getFormValues = (values: Map<string, FormValue>, urls?: string): any => {
         const config = {
             inboundProtocolConfiguration: {
                 saml: {
@@ -115,8 +116,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         };
 
         if (!fields || fields.includes("assertionConsumerURLs")) {
-            config.inboundProtocolConfiguration.saml.manualConfiguration[ "assertionConsumerUrls" ] = 
-                assertionConsumerUrls.split(",");
+            config.inboundProtocolConfiguration.saml.manualConfiguration[ "assertionConsumerUrls" ] =
+                urls ? urls.split(",") : assertionConsumerUrls.split(",");
         }
 
         if (!fields || fields.includes("issuer")) {
@@ -131,17 +132,24 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
         return config;
     };
 
+    /**
+     * submitURL function.
+     */
+    let submitUrl: (callback: (url?: string) => void) => void;
+
     return (
         templateValues
             ? (
                 <Forms
                     onSubmit={ (values: Map<string, FormValue>): void => {
-                        // check whether assertionConsumer url is empty or not
-                        if (isEmpty(assertionConsumerUrls)) {
-                            setAssertionConsumerUrlError(true);
-                        } else {
-                            onSubmit(getFormValues(values));
-                        }
+                        submitUrl((url: string) => {
+                            // check whether assertionConsumer url is empty or not
+                            if (isEmpty(assertionConsumerUrls) && isEmpty(url)) {
+                                setAssertionConsumerUrlError(true);
+                            } else {
+                                onSubmit(getFormValues(values, url));
+                            }
+                        });
                     } }
                     submitState={ triggerSubmit }
                 >
@@ -244,6 +252,9 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 addURLTooltip={ t("common:addURL") }
                                 duplicateURLErrorMessage={ t("common:duplicateURLError") }
                                 data-testid={ `${ testId }-assertion-consumer-url-input` }
+                                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                    submitUrl = submitFunction;
+                                } }
                             />
                         ) }
                     </Grid>

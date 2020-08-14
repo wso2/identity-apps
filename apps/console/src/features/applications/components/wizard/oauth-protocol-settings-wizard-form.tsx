@@ -227,7 +227,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                 onSubmit(getFormValues(values, url));
                             }
                         });
-
                     } }
                     submitState={ triggerSubmit }
                 >
