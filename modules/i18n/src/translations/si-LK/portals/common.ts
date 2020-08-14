@@ -66,6 +66,7 @@ export const common: CommonNS = {
     hide: "සඟවන්න",
     hidePassword: "මුරපදය සඟවන්න",
     identityProviders: "හැඳුනුම්පත් සපයන්නා",
+    import: "ආනයන",
     initiator: "ආරම්භකයා",
     ipAddress: "ip ලිපිනය",
     lastAccessed: "අවසන් ප්\u200Dරවේශය",
