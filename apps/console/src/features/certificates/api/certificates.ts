@@ -16,21 +16,21 @@
  * under the License.
  */
 
+import { IdentityClient } from "@wso2is/authentication";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Certificate, HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
-import { store } from "../../core";
+import { store } from "../../core/store";
 
 /**
  * Initialize an axios Http client.
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * This returns the list of certificate aliases.
- * 
+ *
  * @param {string} filter The filter query. Accepts the SCIM format.
- * 
+ *
  * @return {Promise<any>} List of Certificate Aliases.
  */
 export const listCertificateAliases = (filter?: string): Promise<any> => {
@@ -68,10 +68,10 @@ export const listCertificateAliases = (filter?: string): Promise<any> => {
 
 /**
  * This is used to download the specified certificate from the keystore.
- * 
+ *
  * @param {string} alias Alias ID.
  * @param {boolean} encode Specifies if teh certificate should be encoded or not.
- * 
+ *
  * @return {Promise<any>} The specified certificate alias
  */
 export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promise<any> => {
@@ -107,10 +107,10 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
 };
 
 /**
- * This allows you to download the specified public certificate from the keystore. 
- * 
+ * This allows you to download the specified public certificate from the keystore.
+ *
  * @param {boolean} encode Specifies if the certificate should be encoded or not.
- * 
+ *
  * @return {Promise<any>} The specified public certificate.
  */
 export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
@@ -147,9 +147,9 @@ export const retrievePublicCertificate = (encode?: boolean): Promise<any> => {
 
 /**
  * This returns the list of certificate aliases from the truststore.
- * 
+ *
  * @param {string} filter The filter query. Accepts the SCIM format.
- * 
+ *
  * @return {Promise<any>} The list certificate aliases from teh client truststore.
  */
 export const listClientCertificates = (filter?: string): Promise<any> => {
@@ -186,10 +186,10 @@ export const listClientCertificates = (filter?: string): Promise<any> => {
 
 /**
  * This lets you download the specified client certificate from the client truststore.
- * 
+ *
  * @param {string} alias The alias ID.
  * @param {boolean} encode Specifies if the certificate should be encoded or not.
- * 
+ *
  * @return {Promise<any>} The specified client certificate from the truststore.
  */
 export const retrieveClientCertificate = (alias: string, encode?: boolean): Promise<any> => {
@@ -226,10 +226,10 @@ export const retrieveClientCertificate = (alias: string, encode?: boolean): Prom
 
 /**
  * This deletes a keystore certificate.
- * 
+ *
  * @param {string} alias The certificate alias to be deleted.
- * 
- * @return {Promise<any>} 
+ *
+ * @return {Promise<any>}
  */
 export const deleteKeystoreCertificate = (alias: string): Promise<any> => {
     const requestConfig = {
@@ -261,10 +261,10 @@ export const deleteKeystoreCertificate = (alias: string): Promise<any> => {
 };
 
 /**
- * This adds a certificate to the keystore. 
- * 
+ * This adds a certificate to the keystore.
+ *
  * @param {Certificate} data The alias and the certificate to be added.
- * 
+ *
  * @return {Promise<any>}
  */
 export const createKeystoreCertificate = (data: Certificate): Promise<any> => {

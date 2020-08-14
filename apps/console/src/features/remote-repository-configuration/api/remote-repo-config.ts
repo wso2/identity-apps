@@ -17,8 +17,8 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { store } from "../../core";
 import { 
     InterfaceConfigDetails,
@@ -31,7 +31,7 @@ import {
  *
  * @type {AxiosHttpClientInstance}.
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemoteRepoListResponse>> => {
     const requestConfig: AxiosRequestConfig = {

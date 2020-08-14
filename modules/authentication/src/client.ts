@@ -16,47 +16,40 @@
  * under the License.
  */
 
-import { handleSignIn } from "./actions/sign-in";
-import { handleSignOut } from "./actions/sign-out";
-import * as AUTHENTICATION_TYPES from "./constants";
-import { ConfigInterface } from "./models/client";
-import { ResponseModeTypes } from "./models/oidc-request-params";
-
-/**
- * The login scope.
- * @constant
- * @type {string}
- * @default
- */
-const LOGIN_SCOPE = "internal_login";
-
-/**
- * Human task scope.
- * @constant
- * @type {string}
- * @default
- */
-const HUMAN_TASK_SCOPE = "internal_humantask_view";
-
-/**
- * Super Tenant Identifier.
- * @constant
- * @type {string}
- * @default
- */
-const DEFAULT_SUPER_TENANT = "carbon.super";
+import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { ACCESS_TOKEN, AUTHORIZATION_CODE_TYPE, Hooks, OIDC_SCOPE, Storage } from "./constants";
+import { AxiosHttpClient, AxiosHttpClientInstance } from "./http-client";
+import {
+    ConfigInterface,
+    CustomGrantRequestParams,
+    ServiceResourcesType,
+    UserInfo,
+    WebWorkerClientInterface,
+    WebWorkerConfigInterface
+} from "./models";
+import {
+    customGrant as customGrantUtil,
+    endAuthenticatedSession,
+    getServiceEndpoints,
+    getSessionParameter,
+    getUserInfo as getUserInfoUtil,
+    handleSignIn,
+    handleSignOut,
+    resetOPConfiguration,
+    sendRevokeTokenRequest
+} from "./utils";
+import { WebWorkerClient } from "./worker";
 
 /**
  * Default configurations.
  */
 const DefaultConfig = {
-    autherizationType: AUTHENTICATION_TYPES.AUTHORIZATION_CODE_TYPE,
+    authorizationType: AUTHORIZATION_CODE_TYPE,
     clientSecret: null,
     consentDenied: false,
     enablePKCE: true,
     responseMode: null,
-    scope: [LOGIN_SCOPE, HUMAN_TASK_SCOPE],
-    tenant: DEFAULT_SUPER_TENANT
+    scope: [OIDC_SCOPE]
 };
 
 /**
@@ -66,61 +59,95 @@ const DefaultConfig = {
  * @class IdentityClient
  * @implements {ConfigInterface} - Configuration interface.
  */
-export class IdentityClient implements ConfigInterface {
-    public autherizationType!: string;
-    public callbackURL: string;
-    public clientHost: string;
-    public clientID: string;
-    public clientSecret!: string;
-    public consentDenied!: boolean;
-    public enablePKCE!: boolean;
-    public responseMode!: ResponseModeTypes;
-    public scope!: string[];
-    public serverOrigin: string;
-    public tenant!: string;
-    public tenantPath!: string;
+export class IdentityClient {
+    private _authConfig: ConfigInterface | WebWorkerConfigInterface;
+    private static _instance: IdentityClient;
+    private _client: WebWorkerClientInterface;
+    private _storage: Storage;
+    private _initialized: boolean;
+    private _onSignInCallback: (response: UserInfo) => void;
+    private _onSignOutCallback: (response: any) => void;
+    private _onEndUserSession: (response: any) => void;
+    private _onInitialize: (response: boolean) => void;
+    private _onCustomGrant: Map<string, (response: any) => void> = new Map();
+    private _onHttpRequestStart: () => void;
+    private _onHttpRequestSuccess: (response: AxiosResponse) => void;
+    private _onHttpRequestFinish: () => void;
+    private _onHttpRequestError: (error: AxiosError) => void;
+    private _httpClient: AxiosHttpClientInstance;
 
-    constructor(UserConfig: ConfigInterface) {
-        const resolve = (propertyName) => {
-            if (Object.prototype.hasOwnProperty.call(UserConfig, propertyName)) {
-               return UserConfig[propertyName];
-            }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {}
 
-            if (Object.prototype.hasOwnProperty.call(DefaultConfig, propertyName)) {
-                return DefaultConfig[propertyName];
-            }
+    public static getInstance() {
+        if (this._instance) {
+            return this._instance;
+        }
 
-            throw new Error("\"" + propertyName + "\"" +
-                " is missing in your initialize configuration. Please fill all the mandotary properties");
+        this._instance = new IdentityClient();
+
+        return this._instance;
+    }
+
+    public initialize(config: ConfigInterface): Promise<boolean> {
+        this._storage = config.storage ?? Storage.SessionStorage;
+        this._initialized = false;
+
+        const startCallback = (request: AxiosRequestConfig): void => {
+            request.headers = {
+                ...request.headers,
+                Authorization: `Bearer ${getSessionParameter(ACCESS_TOKEN, config)}`
+            };
+
+            this._onHttpRequestStart && typeof this._onHttpRequestStart === "function" && this._onHttpRequestStart();
         };
 
-        this.autherizationType = resolve("autherizationType");
-        this.callbackURL = resolve("callbackURL");
-        this.clientHost = resolve("clientHost");
-        this.clientID = resolve("clientID");
-        this.clientSecret = resolve("clientSecret");
-        this.consentDenied = resolve("consentDenied");
-        this.enablePKCE = resolve("enablePKCE");
-        this.responseMode = resolve("responseMode");
-        this.scope = resolve("scope");
-        this.serverOrigin = resolve("serverOrigin");
-        this.tenant = resolve("tenant");
-        this.tenantPath = resolve("tenantPath");
 
-        Object.assign(this, UserConfig);
+        if (this._storage !== Storage.WebWorker) {
+            this._authConfig = { ...DefaultConfig, ...config };
+            this._initialized = true;
+            this._httpClient = AxiosHttpClient.getInstance();
+            this._httpClient.init(
+                true,
+                startCallback,
+                this._onHttpRequestSuccess,
+                this._onHttpRequestError,
+                this._onHttpRequestFinish
+            );
+
+            if (this._onInitialize) {
+                this._onInitialize(true);
+            }
+
+            return Promise.resolve(true);
+        } else {
+            this._client = WebWorkerClient.getInstance();
+
+            return this._client
+                .initialize(config)
+                .then(() => {
+                    if (this._onInitialize) {
+                        this._onInitialize(true);
+                    }
+                    this._initialized = true;
+
+                    return Promise.resolve(true);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        }
     }
 
-    public getUserInfo() {
-        // TODO: Implement
-        return;
+    public getUserInfo(): Promise<UserInfo> {
+        if (this._storage === Storage.WebWorker) {
+            return this._client.getUserInfo();
+        }
+
+        return Promise.resolve(getUserInfoUtil(this._authConfig));
     }
 
-    public validateAuthnentication() {
-        // TODO: Implement
-        return;
-    }
-
-    public getAccessToken() {
+    public validateAuthentication() {
         // TODO: Implement
         return;
     }
@@ -128,22 +155,244 @@ export class IdentityClient implements ConfigInterface {
     /**
      * Sign-in method.
      *
-     * @param {() => void} [callback] - Callback method to run on successfull sign-in
+     * @param {() => void} [callback] - Callback method to run on successful sign-in
      * @returns {Promise<any>} promise.
      * @memberof IdentityClient
      */
-    public async signIn(callback?: () => void): Promise<any> {
-        return handleSignIn(this, callback);
+    public async signIn(): Promise<any> {
+        let iterationToWait = 20;
+
+        const sleep = (): Promise<any> => {
+            return new Promise(resolve => setTimeout(resolve, 500));
+        }
+
+        while (!this._initialized && iterationToWait !== 0) {
+            await sleep();
+            iterationToWait--;
+        }
+
+        if (!this._initialized) {
+            return Promise.reject("The object has not been initialized yet.");
+        }
+
+        if (this._storage === Storage.WebWorker) {
+            return this._client
+                .signIn()
+                .then((response) => {
+                    if (this._onSignInCallback) {
+                        this._onSignInCallback(response);
+                    }
+
+                    return Promise.resolve(response);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        }
+
+        return handleSignIn(this._authConfig)
+            .then(() => {
+                if (this._onSignInCallback) {
+                    this._onSignInCallback(getUserInfoUtil(this._authConfig));
+                }
+
+                return Promise.resolve(getUserInfoUtil(this._authConfig));
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
     }
 
     /**
      * Sign-out method.
      *
-     * @param {() => void} [callback] - Callback method to run on successfull sign-in
+     * @param {() => void} [callback] - Callback method to run on successful sign-in
      * @returns {Promise<any>} promise.
      * @memberof IdentityClient
      */
-    public async signOut(callback?: () => void): Promise<any> {
-        return handleSignOut(callback);
+    public async signOut(): Promise<any> {
+        if (this._storage === Storage.WebWorker) {
+            return this._client
+                .signOut()
+                .then((response) => {
+                    if (this._onSignOutCallback) {
+                        this._onSignOutCallback(response);
+                    }
+
+                    return Promise.resolve(response);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        }
+
+        return handleSignOut(this._authConfig)
+            .then((response) => {
+                if (this._onSignOutCallback) {
+                    this._onSignOutCallback(response);
+                }
+
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    }
+
+    public async httpRequest(config: AxiosRequestConfig): Promise<AxiosResponse> {
+        if (this._storage === Storage.WebWorker) {
+            return this._client.httpRequest(config);
+        }
+
+        return this._httpClient.request(config);
+    }
+
+    public async httpRequestAll(config: AxiosRequestConfig[]): Promise<AxiosResponse[]> {
+        if (this._storage === Storage.WebWorker) {
+            return this._client.httpRequestAll(config);
+        }
+
+        const requests: Promise<AxiosResponse<any>>[] = [];
+        config.forEach(request => {
+            requests.push(this._httpClient.request(request));
+        });
+
+        return this._httpClient.all(requests);
+    }
+
+    public async customGrant(requestParams: CustomGrantRequestParams): Promise<any> {
+        if (!requestParams.id) {
+            throw Error("No ID specified for the custom grant.");
+        }
+
+        if (this._storage === Storage.WebWorker) {
+            return this._client
+                .customGrant(requestParams)
+                .then((response) => {
+                    if (this._onCustomGrant.get(requestParams.id)) {
+                        this._onCustomGrant.get(requestParams.id)(response);
+                    }
+
+                    return Promise.resolve(response);
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        }
+
+        return customGrantUtil(requestParams, this._authConfig)
+            .then((response) => {
+                if (this._onCustomGrant.get(requestParams.id)) {
+                    this._onCustomGrant.get(requestParams.id)(response);
+                }
+
+                return Promise.resolve(response);
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    }
+
+    public async endUserSession(): Promise<any> {
+        if (this._storage === Storage.WebWorker) {
+            return this._client
+                .endUserSession()
+                .then((response) => {
+                    if (this._onEndUserSession) {
+                        this._onEndUserSession(response);
+
+                        return Promise.resolve(response);
+                    }
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
+        }
+
+        return sendRevokeTokenRequest(this._authConfig, getSessionParameter(ACCESS_TOKEN, this._authConfig))
+            .then((response) => {
+                resetOPConfiguration(this._authConfig);
+                endAuthenticatedSession(this._authConfig);
+
+                if (this._onEndUserSession) {
+                    this._onEndUserSession(response);
+
+                    return Promise.resolve(true);
+                }
+            })
+            .catch((error) => {
+                return Promise.reject(error);
+            });
+    }
+
+    public async getServiceEndpoints(): Promise<ServiceResourcesType> {
+        if (this._storage === Storage.WebWorker) {
+            return this._client.getServiceEndpoints();
+        }
+
+        return Promise.resolve(getServiceEndpoints(this._authConfig));
+    }
+
+    public getHttpClient(): AxiosHttpClientInstance {
+        if (this._initialized) {
+            return this._httpClient;
+        }
+
+        throw Error("Identity Client has not been initialized yet");
+    }
+
+    public on(hook: Hooks.CustomGrant, callback: (response?: any) => void, id: string): void;
+    public on(hook: Hooks, callback: (response?: any) => void, id?: string): void {
+        if (callback && typeof callback === "function") {
+            switch (hook) {
+                case Hooks.SignIn:
+                    this._onSignInCallback = callback;
+                    break;
+                case Hooks.SignOut:
+                    this._onSignOutCallback = callback;
+                    break;
+                case Hooks.EndUserSession:
+                    this._onEndUserSession = callback;
+                    break;
+                case Hooks.Initialize:
+                    this._onInitialize = callback;
+                    break;
+                case Hooks.HttpRequestError:
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestError(callback);
+                    }
+
+                    this._onHttpRequestError = callback;
+                    break;
+                case Hooks.HttpRequestFinish:
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestFinish(callback);
+                    }
+
+                    this._onHttpRequestFinish = callback;
+                    break;
+                case Hooks.HttpRequestStart:
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestStart(callback);
+                    }
+
+                    this._onHttpRequestStart = callback;
+                    break;
+                case Hooks.HttpRequestSuccess:
+                    if (this._storage === Storage.WebWorker) {
+                        this._client.onHttpRequestSuccess(callback);
+                    }
+
+                    this._onHttpRequestSuccess = callback;
+                    break;
+                case Hooks.CustomGrant:
+                    this._onCustomGrant.set(id, callback);
+                    break;
+                default:
+                    throw Error("No such hook found");
+            }
+        } else {
+            throw Error("The callback function is not a valid function.");
+        }
     }
 }

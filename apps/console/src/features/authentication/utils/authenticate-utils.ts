@@ -17,10 +17,7 @@
  */
 
 import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys,
-    OPConfigurationUtil,
-    SignInUtil
+    IdentityClient
 } from "@wso2is/authentication";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -33,7 +30,6 @@ import { handleSignIn } from "../store/actions";
  * Utility class for authenticate operations.
  */
 export class AuthenticateUtils {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -41,29 +37,25 @@ export class AuthenticateUtils {
      * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Clears the session related information and sign out from the session.
      */
     public static endUserSession(): void {
-        SignInUtil.sendRevokeTokenRequest(
-            JSON.parse(AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.REQUEST_PARAMS)),
-            AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN))
+        const auth = IdentityClient.getInstance();
+
+        auth.IdentityClient()
             .then(() => {
-                // Clear out the session info.
-                AuthenticateSessionUtil.endAuthenticatedSession();
-                OPConfigurationUtil.resetOPConfiguration();
                 store.dispatch(handleSignIn());
             })
             .catch((error: AxiosError) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(
                         addAlert<AlertInterface>({
-                            description: I18n.instance.t(
-                                "adminPortal:notifications.endSession.error.description",
-                                { description: error.response.data.detail }
-                            ),
+                            description: I18n.instance.t("adminPortal:notifications.endSession.error.description", {
+                                description: error.response.data.detail
+                            }),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t("adminPortal:notifications.endSession.error.message")
                         })

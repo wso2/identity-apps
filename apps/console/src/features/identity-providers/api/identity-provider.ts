@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { IdentityProviderManagementConstants } from "../constants";
@@ -44,7 +44,7 @@ import {
  * Get an axios instance.
  *
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Creates Identity Provider.

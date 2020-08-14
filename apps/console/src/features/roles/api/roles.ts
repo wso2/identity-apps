@@ -17,14 +17,14 @@
  */
 
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { store } from "../../core";
 import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Retrieve Role details for a give role id.

@@ -17,7 +17,7 @@
  */
 
 import { SignInUtil } from "@wso2is/authentication";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import axios from "axios";
 import _ from "lodash";
 import { ApplicationConstants } from "../constants";
@@ -31,7 +31,7 @@ import { toggleSCIMEnabled } from "../store/actions";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Retrieve the user information of the currently authenticated user.
@@ -52,7 +52,7 @@ export const getUserInfo = (): Promise<any> => {
     return httpClient(requestConfig)
         .then((response) => {
             if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user info from: 
+                return Promise.reject(new Error(`Failed get user info from:
                 ${store.getState().config.endpoints.user}`));
             }
             return Promise.resolve(response);
@@ -126,7 +126,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             let gravatar = "";
 
             if (response.status !== 200) {
-                return Promise.reject(new Error(`Failed get user profile info from: 
+                return Promise.reject(new Error(`Failed get user profile info from:
                 ${store.getState().config.endpoints.me}`));
             }
             if (_.isEmpty(response.data.userImage) && !response.data.profileUrl) {

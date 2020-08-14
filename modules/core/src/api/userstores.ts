@@ -16,7 +16,7 @@
  * under the License.
  */
 
- import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { UserstoreConstants } from "../constants";
@@ -29,7 +29,7 @@ import { ContextUtils } from "../utils";
  * Get an axios instance.
  *
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Retrieve the list of user stores that are currently in the system.

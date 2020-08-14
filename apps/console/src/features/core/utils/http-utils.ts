@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OPConfigurationUtil } from "@wso2is/authentication";
+import { OPConfigurationUtil, Storage } from "@wso2is/authentication";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AppConstants } from "../constants";
@@ -67,9 +67,12 @@ export class HttpUtils {
         // Terminate the session if the token endpoint returns a bad request(400)
         // The token binding feature will return a 400 status code when the session
         // times out.
-        if (error.response && error.response.request
-            && error.response.request.responseURL
-            && error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint()) {
+        if (
+            error.response &&
+            error.response.request &&
+            error.response.request.responseURL &&
+            error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint(Storage.SessionStorage)
+        ) {
 
             if (error.response.status === 400) {
                 history.push(window["AppUtils"].getConfig().routes.logout);
@@ -78,7 +81,7 @@ export class HttpUtils {
         }
 
         // If the user doesn't have login permission, redirect to login error page.
-        if (!AuthenticateUtils.hasLoginPermission()) {
+        if (!AuthenticateUtils.hasLoginPermission(store.getState()?.auth?.scope)) {
             history.push({
                 pathname: AppConstants.PATHS.get("UNAUTHORIZED"),
                 search: "?error=" + AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")

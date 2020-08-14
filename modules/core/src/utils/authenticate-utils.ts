@@ -17,17 +17,12 @@
  *
  */
 
-import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys
-} from "@wso2is/authentication";
 import { TokenConstants } from "../constants";
 
 /**
  * Utility class for authenticate operations.
  */
 export class AuthenticateUtils {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -35,16 +30,16 @@ export class AuthenticateUtils {
      * @hideconstructor
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
+    private constructor() {}
 
     /**
      * Checks if the logged in user has login scope.
      *
      * @return {boolean} True or false.
      */
-    public static hasLoginPermission(): boolean {
-        const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
-        return scopes.includes(TokenConstants.LOGIN_SCOPE);
+    public static hasLoginPermission(allowedScopes: string): boolean {
+        const scopes = allowedScopes?.split(" ");
+        return scopes?.includes(TokenConstants.LOGIN_SCOPE);
     }
 
     /**
@@ -53,8 +48,8 @@ export class AuthenticateUtils {
      * @return {boolean} True or false.
      */
     public static hasScope(scope: string, allowedScopes: string): boolean {
-        const scopes = allowedScopes.split(" ");
-        return scopes.includes(scope);
+        const scopes = allowedScopes?.split(" ");
+        return scopes?.includes(scope);
     }
 
     /**

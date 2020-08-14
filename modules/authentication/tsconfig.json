@@ -2,9 +2,11 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "declaration": true,
+        "baseUrl": "src",
         "paths": {
             "*": ["types/*"]
-        }
+        },
+        "outDir": "./dist"
     },
     "extends": "../../configs/common.tsconfig.json"
 }

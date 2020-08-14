@@ -72,7 +72,7 @@ export const handleSignIn = (state, dispatch): void => {
     };
 
     const sendSignInRequest = (): void => {
-        const requestParams = {
+        /*  const requestParams = {
             clientHost: store.getState().config.deployment.clientHost,
             clientId: store.getState().config.deployment.clientID,
             clientSecret: null,
@@ -96,9 +96,9 @@ export const handleSignIn = (state, dispatch): void => {
             AuthenticateSessionUtil.endAuthenticatedSession();
             OPConfigurationUtil.resetOPConfiguration();
             SignInUtil.sendAuthorizationRequest(requestParams);
-        }
+        } */
     };
-
+    /*
     if (AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.ACCESS_TOKEN)) {
         dispatch(setSignIn(null));
         setProfileDetails();
@@ -118,7 +118,7 @@ export const handleSignIn = (state, dispatch): void => {
 
                 sendSignInRequest();
             });
-    }
+    } */
 };
 
 /**
@@ -128,7 +128,7 @@ export const handleSignIn = (state, dispatch): void => {
  * @param {function} dispatch - State update `dispatch` react hook for AuthContext.
  */
 export const handleSignOut = (state, dispatch): void => {
-    if (!state.logoutInit) {
+    /*  if (!state.logoutInit) {
         SignOutUtil.sendSignOutRequest(store.getState().config.deployment.loginCallbackUrl).then(() => {
             dispatch(setSignOut());
             AuthenticateSessionUtil.endAuthenticatedSession();
@@ -138,5 +138,5 @@ export const handleSignOut = (state, dispatch): void => {
         );
     } else {
         history.push(store.getState().config.deployment.appLoginPath);
-    }
+    } */
 };

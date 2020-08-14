@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient } from "@wso2is/authentication";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -25,12 +25,12 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Method that sends multiple api requests at once.
  */
-const httpRequestAll = OAuth.getInstance().httpRequestAll;
+const httpRequestAll = IdentityClient.getInstance().httpRequestAll.bind(IdentityClient.getInstance());
 
 /**
  * Fetch the configured security questions of the user.

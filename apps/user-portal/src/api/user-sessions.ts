@@ -16,11 +16,8 @@
  * under the License.
  */
 
-import { OAuth } from "@wso2is/oauth-web-worker";
-import {
-    HttpMethods,
-    UserSessions
-} from "../models";
+import { IdentityClient, Storage } from "@wso2is/authentication";
+import { HttpMethods, UserSessions } from "../models";
 import { store } from "../store";
 
 /**
@@ -28,7 +25,7 @@ import { store } from "../store";
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Fetches the list of user sessions from the API.

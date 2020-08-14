@@ -16,9 +16,16 @@
  * under the License.
  */
 
+import {
+    AUTHORIZATION_ENDPOINT,
+    IdentityClient,
+    OIDC_SESSION_IFRAME_ENDPOINT,
+    ServiceResourcesType,
+    Storage,
+    TOKEN_ENDPOINT
+} from "@wso2is/authentication";
 import { TokenConstants } from "@wso2is/core/constants";
 import { I18n } from "@wso2is/i18n";
-import { AUTHORIZATION_ENDPOINT, OAuth, OIDC_SESSION_IFRAME_ENDPOINT } from "@wso2is/oauth-web-worker";
 import _ from "lodash";
 import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
@@ -33,7 +40,13 @@ import {
     LinkedAccountInterface,
     ProfileSchema
 } from "../../models";
-import { getProfileCompletion } from "../../utils";
+import {
+    getProfileCompletion,
+    onHttpRequestError,
+    onHttpRequestFinish,
+    onHttpRequestStart,
+    onHttpRequestSuccess
+} from "../../utils";
 import { store } from "../index";
 
 /**
@@ -100,7 +113,6 @@ export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (di
  *  Gets profile information by making an API call
  */
 export const getProfileInformation = (updateProfileCompletion = false) => (dispatch): void => {
-
     let isCompletionCalculated = false;
 
     dispatch(setProfileInfoLoader(true));
@@ -150,9 +162,7 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t(
-                            "views:components.profile.notifications.getProfileInfo.error.message"
-                        )
+                        message: I18n.instance.t("views:components.profile.notifications.getProfileInfo.error.message")
                     })
                 );
 
@@ -176,54 +186,66 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
         });
 };
 
+export const initializeAuthentication = () =>(dispatch)=> {
+    const auth = IdentityClient.getInstance();
+
+    auth.on("http-request-error", onHttpRequestError);
+    auth.on("http-request-finish", onHttpRequestFinish);
+    auth.on("http-request-start", onHttpRequestStart);
+    auth.on("http-request-success", onHttpRequestSuccess);
+
+    auth
+        .initialize({
+            baseUrls: [ window[ "AppUtils" ].getConfig().serverOrigin ],
+            callbackURL: window[ "AppUtils" ].getConfig().loginCallbackURL,
+            clientHost: window[ "AppUtils" ].getConfig().clientOriginWithTenant,
+            clientID: window[ "AppUtils" ].getConfig().clientID,
+            enablePKCE: true,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
+            scope: [ TokenConstants.SYSTEM_SCOPE ],
+            serverOrigin: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
+            storage: Storage.WebWorker
+        });
+    auth.on("sign-in", (response) => {
+        dispatch(
+            setSignIn({
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                display_name: response.displayName,
+                email: response.email,
+                scope: response.allowedScopes,
+                username: response.username
+            })
+        );
+
+        auth
+            .getServiceEndpoints()
+            .then((response: ServiceResourcesType) => {
+                sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
+                sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
+                sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+            })
+            .catch((error) => {
+                throw error;
+            });
+
+        dispatch(getProfileInformation());
+    });
+}
+
 /**
  * Handle user sign-in
  */
-export const handleSignIn = () => (dispatch) => {
-    const oAuth = OAuth.getInstance();
-    oAuth
-        .initialize({
-            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
-            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-            clientID: window["AppUtils"].getConfig().clientID,
-            enablePKCE: true,
-            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: [TokenConstants.SYSTEM_SCOPE],
-            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant
-        })
-        .then(() => {
-            oAuth
-                .signIn()
-                .then((response) => {
-                    dispatch(
-                        setSignIn({
-                            // eslint-disable-next-line @typescript-eslint/camelcase
-                            display_name: response.displayName,
-                            email: response.email,
-                            scope: response.allowedScopes,
-                            username: response.username
-                        })
-                    );
-                    sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorizationEndpoint);
-                    sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIframe);
-                    dispatch(getProfileInformation());
-                })
-                .catch((error) => {
-                    throw error;
-                });
-        })
-        .catch((error) => {
-            throw error;
-        });
+export const handleSignIn = () =>{
+    const auth = IdentityClient.getInstance();
+    auth.signIn();
 };
 
 /**
  * Handle user sign-out
  */
 export const handleSignOut = () => (dispatch) => {
-    const oAuth = OAuth.getInstance();
-    oAuth
+    const auth = IdentityClient.getInstance();
+    auth
         .signOut()
         .then(() => {
             dispatch(setSignOut());

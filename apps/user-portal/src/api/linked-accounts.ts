@@ -16,23 +16,23 @@
  * under the License.
  */
 
-import { OAuth, SignInResponse } from "@wso2is/oauth-web-worker";
+import { IdentityClient, SignInResponse } from "@wso2is/authentication";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 
 /**
  * OAuth object.
- * 
+ *
  * @type {OAuthSingletonInterface}
  */
-const oAuth = OAuth.getInstance();
+const oAuth = IdentityClient.getInstance();
 
 /**
  * Get an axios instance.
  *
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = oAuth.httpRequest;
+const httpClient = oAuth.httpRequest.bind(oAuth);
 
 /**
  * Retrieve the user account associations of the currently authenticated user.
@@ -157,14 +157,17 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
         .customGrant({
             attachToken: false,
             data: {
-                "client_id": "{{clientId}}",
-                "grant_type": "account_switch",
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                client_id: "{{clientId}}",
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                grant_type: "account_switch",
                 scope: "{{scope}}",
                 "tenant-domain": account.tenantDomain,
                 token: "{{token}}",
                 username: account.username,
                 "userstore-domain": account.userStoreDomain
             },
+            id: "account-switch",
             returnResponse: true,
             returnsSession: true,
             signInRequired: true

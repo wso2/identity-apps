@@ -18,7 +18,7 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ServerConfigurationsConstants } from "../constants";
@@ -27,7 +27,7 @@ import { ServerConfigurationsConstants } from "../constants";
  * Initialize an axios Http client.
  *
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 export const getData = (url: string): Promise<any> => {
     const requestConfig = {

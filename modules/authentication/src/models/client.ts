@@ -16,13 +16,17 @@
  * under the License.
  */
 
+import { AxiosError, AxiosResponse } from "axios";
+import { ServiceResourcesType } from ".";
 import { ResponseModeTypes } from "./oidc-request-params";
+import { SessionData } from "./web-worker-client";
+import { Storage } from "../constants";
 
 /**
  * SDK Client config parameters.
  */
 export interface ConfigInterface {
-    autherizationType?: string;
+    authorizationType?: string;
     callbackURL: string;
     clientHost: string;
     clientID: string;
@@ -33,6 +37,23 @@ export interface ConfigInterface {
     responseMode?: ResponseModeTypes;
     scope?: string[];
     serverOrigin: string;
-    tenant?: string;
-    tenantPath?: string;
+    storage?: Storage;
+    session?: SessionData;
+    endpoints?: ServiceResourcesType;
+}
+
+export interface WebWorkerConfigInterface extends ConfigInterface {
+    baseUrls: string[];
+}
+
+export interface HttpClient {
+    isHandlerEnabled: boolean;
+    requestStartCallback: () => void;
+    requestSuccessCallback: (response: AxiosResponse) => void;
+    requestErrorCallback: (error: AxiosError) => void;
+    requestFinishCallback: () => void;
+}
+
+export interface WebWorkerClientConfigInterface extends WebWorkerConfigInterface {
+    httpClient: HttpClient;
 }

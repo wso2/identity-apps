@@ -29,9 +29,7 @@ export interface TokenResponseInterface {
 }
 
 export interface TokenRequestHeader {
-    headers: {
-        Accept: string;
-        "Access-Control-Allow-Origin": string;
-        "Content-Type": string;
-    };
+    Accept: string;
+    "Access-Control-Allow-Origin": string;
+    "Content-Type": string;
 }

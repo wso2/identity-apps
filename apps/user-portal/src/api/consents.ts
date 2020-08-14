@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { ConsentReceiptInterface, ConsentState, HttpMethods, UpdateReceiptInterface } from "../models";
 import { store } from "../store";
 
@@ -24,7 +24,7 @@ import { store } from "../store";
  * Initialize an axios Http client.
  * @type {AxiosHttpClientInstance}
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Fetches a list of consented applications of the currently authenticated user.
@@ -35,7 +35,7 @@ const httpClient = OAuth.getInstance().httpRequest;
 export const fetchConsentedApps = (state: ConsentState, username): Promise<any> => {
 
     const userName = username.split("@");
-    
+
     if (userName.length > 1) {
         userName.pop();
     }

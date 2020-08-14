@@ -15,9 +15,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
+
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../models";
@@ -25,7 +25,7 @@ import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../model
 /**
  * Initialize an axios Http client.
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Get all email template types
@@ -52,7 +52,7 @@ export const getEmailTemplateTypes = (): Promise<AxiosResponse<EmailTemplateType
 
 /**
  * Create new email template type.
- * 
+ *
  * @param templateType - template type name
  */
 export const createNewTemplateType = (templateType: string): Promise<AxiosResponse<EmailTemplateType>> => {
@@ -79,7 +79,7 @@ export const createNewTemplateType = (templateType: string): Promise<AxiosRespon
 
 /**
  * Delete selected email template type for a given template type id.
- * 
+ *
  * @param templateTypeId - selected template type id.
  */
 export const deleteEmailTemplateType = (templateTypeId: string): Promise<AxiosResponse> => {
@@ -103,7 +103,7 @@ export const deleteEmailTemplateType = (templateTypeId: string): Promise<AxiosRe
 
 /**
  * Get details for the given email template ID.
- * 
+ *
  * @param templateId - Unique ID of the required email template
  */
 export const getEmailTemplate = (templateId: string): Promise<AxiosResponse<EmailTemplateDetails>> => {
@@ -127,7 +127,7 @@ export const getEmailTemplate = (templateId: string): Promise<AxiosResponse<Emai
 
 /**
  * Get template details for given template type id and template id.
- * 
+ *
  * @param templateTypeId - template type id
  * @param templateId - template id
  */
@@ -156,7 +156,7 @@ export const getTemplateDetails = (
 
 /**
  * Create email template for selected locale.
- * 
+ *
  * @param templateTypeId - template type id
  * @param templateData - new template details
  */
@@ -186,7 +186,7 @@ export const createLocaleTemplate = (
 
 /**
  * Delete a given locale template using the template type id and template id.
- * 
+ *
  * @param templateTypeId - template type id
  * @param templateId - locale template id
  */
@@ -211,7 +211,7 @@ export const deleteLocaleTemplate = (templateTypeId: string, templateId: string)
 
 /**
  * Replace given content for the selected locale template id and template type id.
- * 
+ *
  * @param templateTypeId - template type id
  * @param templateId - locale template id
  * @param templateData - replacable locale template data

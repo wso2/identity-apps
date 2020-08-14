@@ -18,7 +18,7 @@
 
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
+import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { OIDCScopesManagementConstants } from "../constants";
@@ -28,7 +28,7 @@ import { OIDCScopesListInterface } from "../models";
  * Get an axios instance.
  *
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
 /**
  * Get the OIDC scopes in the system.

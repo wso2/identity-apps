@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OAuth, SignInResponse } from "@wso2is/oauth-web-worker";
+import { IdentityClient, SignInResponse } from "@wso2is/authentication";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import _ from "lodash";
 import { CommonServiceResourcesEndpoints } from "../configs";
@@ -36,14 +36,14 @@ import {
 import { ContextUtils, ProfileUtils } from "../utils";
 
 /**
- * OAuth instance.
+ * auth instance.
  */
-const oAuth = OAuth.getInstance();
+const auth = IdentityClient.getInstance();
 /**
  * Get an http client instance.
  *
  */
-const httpClient = oAuth.httpRequest;
+const httpClient = auth.httpRequest.bind(auth);
 
 /**
  * Get Gravatar image using the email address.
@@ -261,12 +261,12 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
  * @throws {IdentityAppsApiException}
  */
 export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
-    return oAuth
+    return auth
         .customGrant({
             attachToken: false,
             data: {
-                "client_id": "{{clientId}}",
-                "grant_type": "account_switch",
+                clientId: "{{clientId}}",
+                grantType: "account_switch",
                 scope: "{{scope}}",
                 "tenant-domain": account.tenantDomain,
                 token: "{{token}}",

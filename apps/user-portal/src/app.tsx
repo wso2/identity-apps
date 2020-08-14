@@ -46,6 +46,8 @@ import {
     UIConfigInterface
 } from "./models";
 import { AppState } from "./store";
+import { initializeAuthentication } from "./store/actions";
+
 import { filteredRoutes } from "./utils";
 
 /**
@@ -74,6 +76,7 @@ export const App = (): ReactElement => {
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
+        dispatch(initializeAuthentication());
     }, []);
 
     /**
