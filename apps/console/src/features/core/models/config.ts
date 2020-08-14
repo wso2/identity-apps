@@ -126,7 +126,7 @@ interface ExternalAppConfigInterface {
 /**
  * Portal UI config interface inheriting the common configs from core module.
  */
-type UIConfigInterface = CommonUIConfigInterface;
+export type UIConfigInterface = CommonUIConfigInterface;
 
 /**
  * Service resource endpoints config.
