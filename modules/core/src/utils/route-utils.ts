@@ -17,7 +17,8 @@
  *
  */
 
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
+import { matchPath } from "react-router";
 import { hasRequiredScopes } from "../helpers";
 import { ChildRouteInterface, FeatureAccessConfigInterface, RouteInterface } from "../models";
 
@@ -88,11 +89,11 @@ export class RouteUtils {
         // Remove any redundant routes.
         const sanitize = (routeArr: RouteInterface[] | ChildRouteInterface[]) => {
             return routeArr.filter((route: RouteInterface | ChildRouteInterface) => {
-                if (_.isEmpty(route.children) && !route.path) {
+                if (isEmpty(route.children) && !route.path) {
                     return false;
                 }
 
-                if (!_.isEmpty(route.children) && !route.path) {
+                if (!isEmpty(route.children) && !route.path) {
                     const isFurtherNested = route.children.some((item) => item.children);
 
                     if (isFurtherNested) {
@@ -111,5 +112,78 @@ export class RouteUtils {
         };
 
         return sanitize(routes);
+    }
+
+    /**
+     * Checks if the URL path is similar to the path of the route that's passed in.
+     *
+     * @param {string} pathname - Current pathname in location.
+     * @param {RouteInterface | ChildRouteInterface} route - Route to be evaluated.
+     * @return {boolean} If the route is active or not.
+     */
+    public static isActiveRoute(pathname: string, route: RouteInterface | ChildRouteInterface): boolean {
+
+        const match = (routePath: string): boolean => {
+            return matchPath(pathname, routePath)?.isExact;
+        };
+
+        const checkChildren = (childRoutes): boolean => {
+            if (!childRoutes) {
+                return false;
+            }
+
+            for (const child of childRoutes) {
+                const isMatching = match(child.path);
+
+                if (isMatching) {
+                    return true;
+                }
+            }
+        };
+
+        return match(route?.path) || checkChildren(route?.children);
+    }
+
+    /**
+     * Gets the active route on initial app loading time.
+     *
+     * @param {string} pathname - Current pathname in location.
+     * @param {RouteInterface[]} routes - Evaluating routes.
+     * @return {RouteInterface | ChildRouteInterface} Initially active route.
+     */
+    public static getInitialActiveRoute(pathname: string,
+                                        routes: RouteInterface[]): RouteInterface | ChildRouteInterface {
+
+        let found = false;
+        let activeRoute: RouteInterface | ChildRouteInterface = null;
+
+        const recurse = (routesArr: RouteInterface[] | ChildRouteInterface[]): void => {
+            for (const route of routesArr) {
+                // Terminate the evaluation if the route is
+                // not supposed to be displayed on the side panel.
+                if (!route.showOnSidePanel) {
+                    continue;
+                }
+
+                activeRoute = route;
+
+                if (this.isActiveRoute(pathname, route)) {
+                    found = true;
+                    break;
+                } else {
+                    if (route.children && route.children.length && route.children.length > 0) {
+                        recurse(route.children);
+                        if (found) {
+                            break;
+                        }
+                    }
+                }
+                activeRoute = null;
+            }
+        };
+
+        recurse(routes);
+
+        return activeRoute;
     }
 }

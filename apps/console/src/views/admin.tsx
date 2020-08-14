@@ -42,11 +42,12 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch, matchPath } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
+    ConfigReducerStateInterface,
     FeatureConfigInterface,
     Footer,
     Header,
@@ -78,15 +79,19 @@ interface AdminViewPropsInterface {
  * @return {React.ReactElement}
  */
 export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
-    props: AdminViewPropsInterface
+    props: AdminViewPropsInterface & RouteComponentProps
 ): ReactElement => {
 
-    const { fluid } = props;
+    const {
+        fluid,
+        location
+    } = props;
 
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
@@ -105,8 +110,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        setSelectedRoute(getInitialActiveRoute());
-    }, []);
+        const pathname = location.pathname.replace(config.deployment.appBaseName, "");
+        setSelectedRoute(RouteUtils.getInitialActiveRoute(pathname, filteredRoutes));
+    }, [ filteredRoutes ]);
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
@@ -173,63 +179,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             GovernanceConnectorUtils.getGovernanceConnectors();
         }
     }, [ governanceConnectorCategories ]);
-
-    /**
-     * Checks if the URL path is similar to the path of the route that's passed in.
-     *
-     * @param { RouteInterface | ChildRouteInterface } route - Route to be evaluated.
-     * @return {boolean} If the route is active or not.
-     */
-    const isActiveRoute = (route: RouteInterface | ChildRouteInterface): boolean => {
-        const pathname = window.location.pathname.split("/").pop();
-        if (route.path) {
-            const urlTokens = route.path.split("/");
-            return pathname === urlTokens[ 1 ];
-        } else if (!route.path && route.children && route.children.length > 0) {
-            return route.children.some((childRoute) => {
-                return pathname === childRoute.path;
-            });
-        }
-    };
-
-    /**
-     * Gets the active route on initial app loading time.
-     *
-     * @return { RouteInterface | ChildRouteInterface } Initially active route.
-     */
-    const getInitialActiveRoute = (): RouteInterface | ChildRouteInterface => {
-        let found = false;
-        let activeRoute: RouteInterface | ChildRouteInterface = null;
-
-        const recurse = (routesArr: RouteInterface[] | ChildRouteInterface[]): void => {
-            for (const route of routesArr) {
-                // Terminate the evaluation if the route is
-                // not supposed to be displayed on the side panel.
-                if (!route.showOnSidePanel) {
-                    continue;
-                }
-
-                activeRoute = route;
-
-                if (isActiveRoute(route)) {
-                    found = true;
-                    break;
-                } else {
-                    if (route.children && route.children.length && route.children.length > 0) {
-                        recurse(route.children);
-                        if (found) {
-                            break;
-                        }
-                    }
-                }
-                activeRoute = null;
-            }
-        };
-
-        recurse(adminViewRoutes);
-
-        return activeRoute;
-    };
 
     /**
      * Handles side panel toggle click.
