@@ -52,6 +52,7 @@ import {
     WebWorkerConfigInterface,
     WebWorkerSingletonClientInterface
 } from "../models";
+import { getAuthorizationCode } from "../utils";
 
 /**
  * This is a singleton class that allows authentication using the OAuth 2.0 protocol.
@@ -115,26 +116,6 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
      * HttpClient handlers
      */
     let httpClientHandlers: HttpClient;
-
-    /**
-     * @private
-     *
-     * Extracts the authorization code from the URL and returns it.
-     *
-     * @returns {string} The authorization code.
-     *
-     */
-    const getAuthorizationCode = (): string => {
-        if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
-            return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
-        }
-
-        if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
-            return window.sessionStorage.getItem(AUTHORIZATION_CODE);
-        }
-
-        return null;
-    };
 
     /**
      * @private
