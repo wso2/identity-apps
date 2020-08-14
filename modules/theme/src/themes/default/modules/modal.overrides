@@ -291,6 +291,17 @@
                 }
             }
         }
+        &.minimal-application-create-wizard {
+            .sub-template-selection {
+                .sub-template-selection-card {
+                    .card-text-container {
+                        .header {
+                            font-size: @minimalApplicationCreateWizardSubTemplateSelectionCardFontSize;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 

@@ -85,7 +85,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
 
-    const [ templateSettings, setTemplateSettings ] = useState<MainApplicationInterface>(null);
+    const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
@@ -113,10 +113,10 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             return;
         }
 
-        const application = merge(templateSettings, protocolFormValues);
+        const application: MainApplicationInterface = merge(templateSettings?.application, protocolFormValues);
 
         application.name = generalFormValues.get("name").toString();
-        application.description = "";
+        application.description = templateSettings.description;
         application.templateId = selectedTemplate.id;
 
         createApplication(application)
@@ -202,7 +202,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const loadTemplateDetails = (id: string): void => {
         getApplicationTemplateData(id)
             .then((response: ApplicationTemplateInterface) => {
-                setTemplateSettings(response.application);
+                setTemplateSettings(response);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -238,14 +238,14 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      *
      * @return {any}
      */
-    const resolveMinimalProtocolFormFields = () => {
+    const resolveMinimalProtocolFormFields = (): ReactElement => {
         if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OIDC) {
             return (
                 <OauthProtocolSettingsWizardForm
                     fields={ [ "callbackURLs" ] }
                     hideFieldHints={ true }
                     triggerSubmit={ submitProtocolForm }
-                    templateValues={ templateSettings }
+                    templateValues={ templateSettings?.application }
                     onSubmit={ (values): void => setProtocolFormValues(values) }
                     showCallbackURL={ true }
                     data-testid={ `${ testId }-oauth-protocol-settings-form` }
@@ -257,7 +257,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     fields={ [ "issuer", "assertionConsumerURLs" ] }
                     hideFieldHints={ true }
                     triggerSubmit={ submitProtocolForm }
-                    templateValues={ templateSettings }
+                    templateValues={ templateSettings?.application }
                     onSubmit={ (values): void => setProtocolFormValues(values) }
                     data-testid={ `${ testId }-saml-protocol-settings-form` }
                 />
@@ -305,35 +305,37 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                             ? (
                                 <Grid.Row className="pt-0">
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                                        <div>{ subTemplatesSectionTitle }</div>
-                                        {
-                                            subTemplates.map((
-                                                subTemplate: ApplicationTemplateListItemInterface, index: number
-                                            ) => (
-                                                <SelectionCard
-                                                    inline
-                                                    key={ index }
-                                                    image={
-                                                        {
-                                                            ...InboundProtocolLogos,
-                                                            ...TechnologyLogos
-                                                        }[ subTemplate.image ]
-                                                    }
-                                                    size="x120"
-                                                    header={ subTemplate.name }
-                                                    he
-                                                    selected={ selectedTemplate.id === subTemplate.id }
-                                                    onClick={ () => {
-                                                        setSelectedTemplate(subTemplate);
-                                                        loadTemplateDetails(subTemplate.id);
-                                                    } }
-                                                    imageSize="mini"
-                                                    contentTopBorder={ false }
-                                                    showTooltips={ true }
-                                                    data-testid={ `${ testId }-${ subTemplate.id }-card` }
-                                                />
-                                            ))
-                                        }
+                                        <div className="sub-template-selection">
+                                            <div>{ subTemplatesSectionTitle }</div>
+                                            {
+                                                subTemplates.map((
+                                                    subTemplate: ApplicationTemplateListItemInterface, index: number
+                                                ) => (
+                                                    <SelectionCard
+                                                        inline
+                                                        key={ index }
+                                                        image={
+                                                            {
+                                                                ...InboundProtocolLogos,
+                                                                ...TechnologyLogos
+                                                            }[ subTemplate.image ]
+                                                        }
+                                                        size="x120"
+                                                        className="sub-template-selection-card"
+                                                        header={ subTemplate.name }
+                                                        selected={ selectedTemplate.id === subTemplate.id }
+                                                        onClick={ () => {
+                                                            setSelectedTemplate(subTemplate);
+                                                            loadTemplateDetails(subTemplate.id);
+                                                        } }
+                                                        imageSize="mini"
+                                                        contentTopBorder={ false }
+                                                        showTooltips={ true }
+                                                        data-testid={ `${ testId }-${ subTemplate.id }-card` }
+                                                    />
+                                                ))
+                                            }
+                                        </div>
                                     </Grid.Column>
                                 </Grid.Row>
                             )
@@ -352,7 +354,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     return (
         <ModalWithSidePanel
             open={ true }
-            className="wizard application-create-wizard"
+            className="wizard minimal-application-create-wizard"
             dimmer="blurring"
             onClose={ handleWizardClose }
             closeOnDimmerClick
