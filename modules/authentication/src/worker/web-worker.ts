@@ -172,7 +172,7 @@ export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSin
     const httpRequest = (config: AxiosRequestConfig): Promise<AxiosResponse> => {
         let matches = false;
         authConfig.baseUrls.forEach((baseUrl) => {
-            if (config.url.startsWith(baseUrl)) {
+            if (config?.url?.startsWith(baseUrl)) {
                 matches = true;
             }
         });
