@@ -78,9 +78,6 @@ const DynamicConnectorForm = (props) => {
                     return (
                         <Grid.Row columns={ 2 } className="pl-3" key={ index }>
                             <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 10 }>
-                                { getFieldComponent(property) === RenderInput && (
-                                    <label htmlFor={ property.name }>{ property.displayName }</label>
-                                ) }
                                 { !isToggle(property) ? (
                                     <Field
                                         name={ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) }
@@ -90,6 +87,7 @@ const DynamicConnectorForm = (props) => {
                                         width={ 12 }
                                         placeholder={ property.value }
                                         data-testid={ `${ testId }-${ property.name }` }
+                                        label={ property.displayName }
                                     />
                                 ) : (
                                         <label>{ property.displayName }</label>
