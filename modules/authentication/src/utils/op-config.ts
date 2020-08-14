@@ -42,7 +42,7 @@ import { ConfigInterface, ServiceResourcesType } from "../models";
  * @returns {boolean}
  */
 export const isOPConfigInitiated = (requestParams: ConfigInterface): boolean => {
-    if (requestParams.storage === Storage.SessionStorage) {
+    if (requestParams.storage !== Storage.WebWorker) {
         return (
             getSessionParameter(OP_CONFIG_INITIATED, requestParams) &&
             getSessionParameter(OP_CONFIG_INITIATED, requestParams) === "true"
@@ -227,7 +227,7 @@ export const initOPConfiguration = (requestParams: ConfigInterface, forceInit: b
  * Reset openid provider configuration.
  */
 export const resetOPConfiguration = (requestParams: ConfigInterface): void => {
-    if (requestParams.storage === Storage.SessionStorage) {
+    if (requestParams.storage !== Storage.WebWorker) {
         removeSessionParameter(AUTHORIZATION_ENDPOINT, requestParams);
         removeSessionParameter(TOKEN_ENDPOINT, requestParams);
         removeSessionParameter(END_SESSION_ENDPOINT, requestParams);

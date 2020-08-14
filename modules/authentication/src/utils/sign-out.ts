@@ -55,7 +55,7 @@ export function sendSignOutRequest(requestParams: ConfigInterface): Promise<any>
     const logoutCallback =
         `${logoutEndpoint}?` + `id_token_hint=${idToken}` + `&post_logout_redirect_uri=${callbackURL}`;
 
-    if (requestParams.storage === Storage.SessionStorage) {
+    if (requestParams.storage !== Storage.WebWorker) {
         window.location.href = logoutCallback;
     } else {
         return Promise.resolve(logoutCallback);
@@ -71,11 +71,14 @@ export function sendSignOutRequest(requestParams: ConfigInterface): Promise<any>
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function handleSignOut(requestParams: ConfigInterface): Promise<any> {
-    if (requestParams.storage !== Storage.WebWorker && sessionStorage.length === 0) {
+    if (
+        (requestParams.storage === Storage.SessionStorage && sessionStorage.length === 0) ||
+        (requestParams.storage === Storage.LocalStorage && localStorage.length === 0)
+    ) {
         return Promise.reject(new Error("No login sessions."));
     } else if (requestParams?.session?.size === 0) {
-               return Promise.reject(new Error("No login sessions."));
-           } else {
-               return sendSignOutRequest(requestParams);
-           }
+        return Promise.reject(new Error("No login sessions."));
+    } else {
+        return sendSignOutRequest(requestParams);
+    }
 }

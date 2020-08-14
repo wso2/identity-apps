@@ -80,8 +80,8 @@ export function hasAuthorizationCode(requestParams: ConfigInterface): boolean {
  *
  * @returns {string} Resolved authorization code.
  */
-export function getAuthorizationCode(requestParams: ConfigInterface): string {
-    if (requestParams.storage === Storage.SessionStorage) {
+export function getAuthorizationCode(requestParams?: ConfigInterface): string {
+    if (!requestParams || requestParams.storage !== Storage.WebWorker) {
         if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
             return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
         }
@@ -645,9 +645,9 @@ export const customGrant = (
  */
 export const getUserInfo = (config: ConfigInterface): UserInfo => {
     return {
-        allowedScopes: config.session.get(SCOPE),
-        displayName: config.session.get(DISPLAY_NAME),
-        email: config.session.get(EMAIL),
-        username: config.session.get(USERNAME)
+        allowedScopes: getSessionParameter(SCOPE, config),
+        displayName: getSessionParameter(DISPLAY_NAME, config),
+        email: getSessionParameter(EMAIL, config),
+        username: getSessionParameter(USERNAME, config)
     };
 };
