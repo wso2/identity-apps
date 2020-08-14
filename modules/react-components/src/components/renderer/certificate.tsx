@@ -48,7 +48,7 @@ export interface CertificateLablesPropsInterface {
 
 /**
  * This renders the certificate component that displays the details of a certificate.
- * 
+ *
  * @param {CertificatePropsInterface} props - Props injected to the component.
  * @returns {ReactElement}
  */
@@ -123,19 +123,19 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
         const isValid = new Date() >= validFrom;
 
         if (isValid) {
+            icon = "check circle";
+            iconColor = "green";
+            popupText = "Certificate is valid."
+        } else {
             if (Math.abs(moment.duration(currentDate.diff(expiryDate)).months()) > 1) {
-                icon = "check circle";
-                iconColor = "green";
-                popupText = "Certificate is valid."
+                icon = "times circle";
+                iconColor = "red";
+                popupText = "Certificate is still not valid."
             } else {
                 icon = "exclamation circle";
                 iconColor = "yellow";
-                popupText = "Certificate is soon to be valid."
+                popupText = "Certificate is soon to be valid.";
             }
-        } else {
-            icon = "times circle";
-            iconColor = "red";
-            popupText = "Certificate is still not valid."
         }
 
         return (
