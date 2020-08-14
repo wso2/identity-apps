@@ -52,9 +52,6 @@ const DefaultConfig = {
     scope: [OIDC_SCOPE]
 };
 
-// eslint-disable-next-line quotes
-const NOT_AVAILABLE_ERROR = 'This is available only when the storage is set to "WebWorker"';
-
 /**
  * IdentityClient class constructor.
  *
@@ -105,18 +102,19 @@ export class IdentityClient {
             this._onHttpRequestStart && typeof this._onHttpRequestStart === "function" && this._onHttpRequestStart();
         };
 
-        this._httpClient = AxiosHttpClient.getInstance();
-        this._httpClient.init(
-            true,
-            startCallback,
-            this._onHttpRequestSuccess,
-            this._onHttpRequestError,
-            this._onHttpRequestFinish
-        );
 
-        if (config.storage === Storage.SessionStorage) {
+        if (this._storage !== Storage.WebWorker) {
             this._authConfig = { ...DefaultConfig, ...config };
             this._initialized = true;
+            this._httpClient = AxiosHttpClient.getInstance();
+            this._httpClient.init(
+                true,
+                startCallback,
+                this._onHttpRequestSuccess,
+                this._onHttpRequestError,
+                this._onHttpRequestFinish
+            );
+
             if (this._onInitialize) {
                 this._onInitialize(true);
             }
@@ -193,12 +191,12 @@ export class IdentityClient {
         }
 
         return handleSignIn(this._authConfig)
-            .then((response) => {
+            .then(() => {
                 if (this._onSignInCallback) {
-                    this._onSignInCallback(response);
+                    this._onSignInCallback(getUserInfoUtil(this._authConfig));
                 }
 
-                return Promise.resolve(response);
+                return Promise.resolve(getUserInfoUtil(this._authConfig));
             })
             .catch((error) => {
                 return Promise.reject(error);
@@ -246,7 +244,7 @@ export class IdentityClient {
             return this._client.httpRequest(config);
         }
 
-        return Promise.reject(NOT_AVAILABLE_ERROR);
+        return this._httpClient.request(config);
     }
 
     public async httpRequestAll(config: AxiosRequestConfig[]): Promise<AxiosResponse[]> {
@@ -254,7 +252,12 @@ export class IdentityClient {
             return this._client.httpRequestAll(config);
         }
 
-        return Promise.reject(NOT_AVAILABLE_ERROR);
+        const requests: Promise<AxiosResponse<any>>[] = [];
+        config.forEach(request => {
+            requests.push(this._httpClient.request(request));
+        });
+
+        return this._httpClient.all(requests);
     }
 
     public async customGrant(requestParams: CustomGrantRequestParams): Promise<any> {
@@ -314,7 +317,7 @@ export class IdentityClient {
                 if (this._onEndUserSession) {
                     this._onEndUserSession(response);
 
-                    return Promise.resolve(response);
+                    return Promise.resolve(true);
                 }
             })
             .catch((error) => {
