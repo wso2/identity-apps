@@ -37,7 +37,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Image, Menu } from "semantic-ui-react";
+import { Container, Image, Menu } from "semantic-ui-react";
 import { ComponentPlaceholder } from "../../../extensions";
 import { history } from "../helpers";
 import { ConfigReducerStateInterface } from "../models";
@@ -165,29 +165,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             extensions={ [
                 {
                     component: (
-                        <>
-                            <Menu.Item
-                                name={ config.deployment.developerApp.displayName }
-                                active={ activeView === "DEVELOPER" }
-                                className="portal-switch"
-                                onClick={ () => {
-                                    history.push(config.deployment.developerApp.path);
-                                } }
-                            />
-                            <Menu.Item
-                                name={ config.deployment.adminApp.displayName }
-                                active={ activeView === "ADMIN" }
-                                className="portal-switch"
-                                onClick={ () => {
-                                    history.push(config.deployment.adminApp.path);
-                                } }
-                            />
-                        </>
-                    ),
-                    floated: "left"
-                },
-                {
-                    component: (
                         <Menu.Item>
                             <ComponentPlaceholder section="feedback-button" type="component"/>
                         </Menu.Item>
@@ -214,7 +191,30 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             showUserDropdown={ true }
             onSidePanelToggleClick={ onSidePanelToggleClick }
             { ...rest }
-        />
+        >
+            <div className="secondary-panel">
+                <Container fluid={ fluid }>
+                    <Menu className="inner-menu">
+                        <Menu.Item
+                            name={ config.deployment.developerApp.displayName }
+                            active={ activeView === "DEVELOPER" }
+                            className="portal-switch"
+                            onClick={ () => {
+                                history.push(config.deployment.developerApp.path);
+                            } }
+                        />
+                        <Menu.Item
+                            name={ config.deployment.adminApp.displayName }
+                            active={ activeView === "ADMIN" }
+                            className="portal-switch"
+                            onClick={ () => {
+                                history.push(config.deployment.adminApp.path);
+                            } }
+                        />
+                    </Menu>
+                </Container>
+            </div>
+        </ReusableHeader>
     );
 };
 
