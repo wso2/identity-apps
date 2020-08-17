@@ -41,7 +41,7 @@ import {
     helpPanelReducer
 } from "./reducers";
 import { applicationReducer } from "../../applications";
-import { commonAuthenticateReducerInitialState } from "../../authentication";
+import { commonAuthenticateReducerInitialState } from "../../authentication/store/reducers/authenticate";
 import { identityProviderReducer } from "../../identity-providers";
 import { governanceConnectorReducer } from "../../server-configurations";
 import {
