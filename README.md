@@ -30,32 +30,24 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 ## Run in dev mode
 
 1. **Do only if you skip WSO2 Identity Server build step above:** Download the built distribution of WSO2 Identity Server from [https://wso2.com/identity-and-access-management/](https://wso2.com/identity-and-access-management/).
-2. Add below code to `repository/resources/conf/templates/repository/conf/tomcat/web.xml.j2` in `WSO2 Identity Server` distribution pack to allow CORS.
+2. Add below code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack to allow CORS.
 
-```xml
-    <filter>
-        <filter-name>CORS</filter-name>
-        <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
-        <init-param>
-            <param-name>cors.allowOrigin</param-name>
-            <param-value>https://localhost:9000, https://localhost:9001, https://localhost:9002</param-value>
-        </init-param>
-        <init-param>
-            <param-name>cors.supportedMethods</param-name>
-            <param-value>GET, HEAD, POST, DELETE, OPTIONS, PATCH, PUT</param-value>
-        </init-param>
-        <init-param>
-                   <param-name>cors.exposedHeaders</param-name>
-                   <param-value>Location</param-value>
-        </init-param>
-    </filter>
-
-    <filter-mapping>
-        <filter-name>CORS</filter-name>
-        <url-pattern>/*</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-    </filter-mapping>
+```
+    [cors]
+    allowed_origins = [
+       "https://localhost:9000", 
+       "https://localhost:9001"
+    ]
+    supported_methods = [
+       "GET",
+       "POST",
+       "HEAD",
+       "OPTIONS",
+       "PUT",
+       "HEAD",
+       "DELETE"
+    ]
+    exposed_headers = [ "Location" ]
 ```
 3. Add your hostname and port as a trusted FIDO2 origin in `repository/resources/conf/templates/repository/conf/identity/identity.xml.j2` as given below.
 
