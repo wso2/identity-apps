@@ -29,18 +29,17 @@ import {
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Icon, ListItemProps } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import {
     AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
     EmptyPlaceholderIllustrations,
     UIConstants,
     history
 } from "../../core";
 import { deleteIdentityProvider } from "../api";
+import { IdentityProviderManagementConstants } from "../constants";
 import { IdentityProviderListResponseInterface, StrictIdentityProviderInterface } from "../models";
 
 /**
@@ -110,8 +109,6 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     } = props;
 
     const dispatch = useDispatch();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
@@ -238,14 +235,15 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                                     key={ index }
                                     actions={ showListItemActions && [
                                         {
-                                            hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
+                                            hidden: false,
                                             icon: "pencil alternate",
                                             onClick: (): void => handleIdentityProviderEdit(idp.id),
                                             popupText: "edit",
                                             type: "button"
                                         },
                                         {
-                                            hidden: config.ui.doNotDeleteIdentityProviders.includes(idp.name),
+                                            hidden: IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS
+                                                .includes(idp.name),
                                             icon: "trash alternate",
                                             onClick: (): void => handleIdentityProviderDeleteAction(idp.id),
                                             popupText: "delete",

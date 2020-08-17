@@ -237,7 +237,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             hidden: !hasRequiredScopes(
                 featureConfig?.applications,
                 featureConfig?.applications?.scopes?.delete, allowedScopes)
-                || config.ui.doNotDeleteApplications.includes(app.name),
+                || ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(app.name),
             icon: "trash alternate",
             onClick: (): void => {
                 setShowDeleteConfirmationModal(true);

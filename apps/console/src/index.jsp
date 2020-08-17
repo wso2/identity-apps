@@ -154,9 +154,6 @@
                     }
                 }
             }
-
-            // TODO: Move this to the deployment config.
-            var doNotDeleteApplications = ["Developer Portal", "User Portal"];
         </script>
     </head>
     <body>
