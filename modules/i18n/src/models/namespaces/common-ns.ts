@@ -66,6 +66,7 @@ export interface CommonNS {
     hide: string;
     hidePassword: string;
     identityProviders: string;
+    import: string;
     initiator: string;
     ipAddress: string;
     lastAccessed: string;

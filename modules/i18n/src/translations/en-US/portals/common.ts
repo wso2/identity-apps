@@ -66,6 +66,7 @@ export const common: CommonNS = {
     hide: "Hide",
     hidePassword: "Hide password",
     identityProviders: "Identity Providers",
+    import: "Import",
     initiator: "Initiator",
     ipAddress: "ip address",
     lastAccessed: "Last accessed",

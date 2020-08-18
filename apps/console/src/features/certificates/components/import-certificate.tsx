@@ -50,9 +50,9 @@ interface ImportCertificatePropsInterface extends TestableComponentInterface {
 
 /**
  * This renders the import certificate wizard.
- * 
+ *
  * @param {ImportCertificatePropsInterface} props
- * 
+ *
  * @returns {ReactElement}
  */
 export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterface> = (
@@ -67,7 +67,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     } = props;
 
     const dispatch = useDispatch();
-    
+
     const { t } = useTranslation();
 
     const [ data, setData ] = useState<Certificate>(null);
@@ -105,11 +105,11 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             onClose();
         }).catch(error => {
             dispatch(addAlert({
-                description: error?.description
+                description: error?.response?.data?.description
                     || t("adminPortal:components.certificates.keystore.notifications." +
                         "addCertificate.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: error?.message
+                message: error?.response?.data?.message
                     || t("adminPortal:components.certificates.keystore.notifications." +
                         "addCertificate.genericError.message")
             }));
@@ -120,9 +120,9 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
      * This is called when the first step is submitted.
      * It stores
      *      1. the data returned by the first step to be posted.
-     *      2. the state of the first step component 
+     *      2. the state of the first step component
      *       so that they can be sent back if previous is clicked.
-     * 
+     *
      * @param {Certificate} data The alias and the PEM-encoded certificate string.
      * @param {string} name The alias of the certificate.
      * @param {string} pem The PEM-encoded string.
@@ -149,7 +149,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
 
     /**
      * This serializes the certificate object.
-     * 
+     *
      * @param {Certificate} data The data object containing the alias and the PEM string.
      * @param {forge.pki.Certificate} certificateForge The Forge Certificate object.
      */
