@@ -256,7 +256,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                         )
                     )
                 }
-                { children }
                 { (
                     <Menu.Menu
                         position="right"
@@ -426,6 +425,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                     </Menu.Menu>
                 ) }
             </Container>
+            { children }
         </Menu>
     );
 };

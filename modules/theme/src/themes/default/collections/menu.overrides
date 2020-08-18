@@ -30,6 +30,7 @@
         }
     }
     &.app-header {
+        display: @appHeaderDisplay;
         background: @appHeaderBackground;
         height: @appHeaderHeight;
         box-shadow: @appHeaderBoxShadow;
@@ -166,7 +167,46 @@
                 margin: 0.5rem 0rem;
             }
         }
+
+        .secondary-panel {
+            display: @appHeaderSecondaryPanelDisplay;
+            box-shadow: @appHeaderSecondaryPanelBoxShadow;
+            border-left: @appHeaderSecondaryPanelBorderLeft;
+            border-right: @appHeaderSecondaryPanelBorderRight;
+            border-bottom: @appHeaderSecondaryPanelBorderBottom;
+            border-top: @appHeaderSecondaryPanelBorderTop;
+            background: @appHeaderSecondaryPanelBackground;
+            height: @appHeaderSecondaryPanelHeight;
+
+            .ui.container {
+                height: @appHeaderSecondaryPanelContainerHeight;
+            }
+            .inner-menu {
+                box-shadow: @appHeaderSecondaryPanelInnerMenuBoxShadow;
+                border: @appHeaderSecondaryPanelInnerMenuBorder;
+                border-radius: @appHeaderSecondaryPanelInnerMenuBorderRadius;
+                background: @appHeaderSecondaryPanelInnerMenuBackground;
+                height: @appHeaderSecondaryPanelInnerMenuHeight;
+                
+                .item.portal-switch {
+                    background: @appHeaderSecondaryPanelPortalSwitchBackground;
+                    color: @appHeaderSecondaryPanelPortalSwitchColor;
+                    border-bottom: @appHeaderSecondaryPanelPortalSwitchBorderBottom;
+                    
+                    &.active {
+                        background: @appHeaderSecondaryPanelPortalSwitchActiveBackground;
+                        color: @appHeaderSecondaryPanelPortalSwitchActiveColor;
+                        border-bottom: @appHeaderSecondaryPanelPortalSwitchActiveBorderBottom;
+                    }
+                    
+                    &:first-child {
+                        margin-left: @appHeaderSecondaryPanelPortalSwitchesLeftSpacing;
+                    }
+                }
+            }
+        }
     }
+
     &.app-footer {
         background: @appFooterBackground;
         height: @appFooterHeight;

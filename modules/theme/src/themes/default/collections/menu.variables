@@ -29,9 +29,36 @@
       App Header
 --------------------*/
 
+@appHeaderDisplay: block;
 @appHeaderBackground: @lightPageBackground;
-@appHeaderHeight: 60px;
+@appHeaderHeight: auto;
 @appHeaderBoxShadow: none;
+
+@appHeaderSecondaryPanelDisplay: block;
+@appHeaderSecondaryPanelHeight: 50px;
+@appHeaderSecondaryPanelBackground: @lightPageBackground;
+@appHeaderSecondaryPanelBoxShadow: none;
+@appHeaderSecondaryPanelBorderLeft: 0;
+@appHeaderSecondaryPanelBorderRight: 0;
+@appHeaderSecondaryPanelBorderBottom: 0;
+@appHeaderSecondaryPanelBorderTop: @defaultBorderWidth solid @borderColor;
+@appHeaderSecondaryPanelInnerMenuBorder: 0;
+@appHeaderSecondaryPanelInnerMenuBoxShadow: none;
+@appHeaderSecondaryPanelInnerMenuBorderRadius: 0;
+@appHeaderSecondaryPanelInnerMenuBackground: @appHeaderSecondaryPanelBackground;
+@appHeaderSecondaryPanelInnerMenuHeight: 100%;
+
+@appHeaderSecondaryPanelPortalSwitchesLeftSpacing: 14px;
+
+@appHeaderSecondaryPanelPortalSwitchBackground: inherit;
+@appHeaderSecondaryPanelPortalSwitchColor: @lightTextColor;
+@appHeaderSecondaryPanelPortalSwitchBorderBottom: 3px solid transparent;
+
+@appHeaderSecondaryPanelPortalSwitchActiveBackground: inherit;
+@appHeaderSecondaryPanelPortalSwitchActiveColor: @textColor;
+@appHeaderSecondaryPanelPortalSwitchActiveBorderBottom: 3px solid @primaryColor;
+
+@appHeaderSecondaryPanelContainerHeight: 100%;
 
 @appHeaderPortalSwitchExtensionBackgroundColor: transparent !important;
 @appHeaderPortalSwitchExtensionColor: @lightTextColor !important;
