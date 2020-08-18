@@ -738,6 +738,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     label={
+                                        "Revoke access token when the IdP session is terminated"
+                                    }
+                                    name="revokeTokensWhenIDPSessionTerminated"
+                                    default={
+                                        initialValues
+                                            ? initialValues.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                            : metadata.revokeTokensWhenIDPSessionTerminated
+                                    }
+                                    type="toggle"
+                                    children={ getAllowedList(metadata.accessTokenBindingType, true) }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-access-token-type-radio-group` }
+                                />
+                                <Hint>
+                                    Revoke the access token when the IdP session it is bound to is terminated.
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                                <Field
+                                    label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.bindingType.label")
                                     }
