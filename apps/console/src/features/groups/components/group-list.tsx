@@ -214,20 +214,20 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
                             <Icon name="add"/>
-                            { t("adminPortal:components.roles.list.emptyPlaceholders.emptyGroupList.action",
+                            { t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.action",
                                 { type: "Group" })}
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.roles.list.emptyPlaceholders.emptyGroupList.title",
+                    title={ t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: "group" }) }
                     subtitle={ [
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyGroupList.subtitles.0",
+                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
                             { type: "groups" }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyGroupList.subtitles.1",
+                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
                             { type: "group" }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyGroupList.subtitles.2",
+                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
                             { type: "group" })
                     ] }
                 />
