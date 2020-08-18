@@ -1060,6 +1060,12 @@ export const userPortal: UserPortalNS = {
                         message: "පරිශීලක පැතිකඩ සාර්ථකව ලබා ගන්නා ලදි"
                     }
                 },
+                getUserReadOnlyStatus: {
+                    genericError: {
+                        description: "පරිශීලකයාගේ කියවීමට පමණක් තත්ත්වය ලබා ගැනීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය!!!"
+                    }
+                },
                 updateProfileInfo: {
                     error: {
                         description: "{{description}}",

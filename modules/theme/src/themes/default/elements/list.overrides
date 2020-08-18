@@ -78,6 +78,15 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
+
+            .content {
+                overflow: hidden;
+
+                .list-item-name {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
         }
         
         &.fill {

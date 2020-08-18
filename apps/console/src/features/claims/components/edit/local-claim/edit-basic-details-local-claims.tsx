@@ -122,7 +122,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     /**
      * This deletes a local claim
-     * @param {string} id 
+     * @param {string} id
      */
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(() => {
@@ -149,7 +149,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     /**
      * This shows a popup with a delay of 500 ms.
-     * 
+     *
      * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
      * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
      */
@@ -162,7 +162,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
 
     /**
      * This closes the popup.
-     * 
+     *
      * @param {React.Dispatch<React.SetStateAction<boolean>>} callback The state dispatch method.
      * @param {React.MutableRefObject<any>} ref The ref object carrying the `setTimeout` ID.
      */
@@ -206,7 +206,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                             regEx: values.get("regularExpression").toString(),
                             required: values.get("required").length > 0,
                             supportedByDefault: values.get("supportedByDefault").length > 0
-    
+
                         };
                         updateAClaim(claim.id, data).then(() => {
                             dispatch(addAlert(
@@ -299,7 +299,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                     data-testid={ `${ testId }-form-regex-input` }
                                 />
                                 <Popup
-                                    content={ t("adminPortal:components.claims.local.forms.description.regExHint") }
+                                    content={ t("adminPortal:components.claims.local.forms.regExHint") }
                                     inverted
                                     open={ isShowRegExHint }
                                     trigger={ <span></span> }

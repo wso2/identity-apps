@@ -1049,6 +1049,12 @@ export const userPortal: UserPortalNS = {
                         message: "Perfil de usuário recuperado com sucesso"
                     }
                 },
+                getUserReadOnlyStatus: {
+                    genericError: {
+                        description: "Ocorreu um erro ao recuperar o status somente leitura do usuário",
+                        message: "Algo deu errado"
+                    }
+                },
                 updateProfileInfo: {
                     error: {
                         description: "{{description}}",

@@ -31,7 +31,7 @@ import { SettingsSection } from "../shared";
 /**
  * Prop types for the basic details component.
  */
-interface MfaProps  extends SBACInterface<FeatureConfigInterface> {
+interface MfaProps extends SBACInterface<FeatureConfigInterface> {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -40,6 +40,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
     const { onAlertFired, featureConfig } = props;
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     return (
         <SettingsSection
@@ -47,54 +48,36 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
             header={ t("userPortal:sections.mfa.heading") }
         >
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
-                <List.Item className="inner-list-item">
-                    {
-                        hasRequiredScopes(
-                            featureConfig?.security, featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
-                        isFeatureEnabled(
-                            featureConfig?.security,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_SMS")
-                        )
-                        ? (
+                { !isReadOnlyUser
+                    && hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes)
+                    && isFeatureEnabled(
+                        featureConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_SMS")
+                    ) ? (
+                        <List.Item className="inner-list-item">
                             <SMSOTPAuthenticator onAlertFired={ onAlertFired } />
-                        )
-                        : null
-                    }
-                </List.Item>
-                <List.Item className="inner-list-item">
-                    {
-                        hasRequiredScopes(
-                            featureConfig?.security, featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
-                        isFeatureEnabled(
-                            featureConfig?.security,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_FIDO")
-                        )
-                        ? (
+                        </List.Item>
+                    ) : null }
+
+                { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        featureConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_FIDO")
+                    ) ? (
+                        <List.Item className="inner-list-item">
                             <FIDOAuthenticator onAlertFired={ onAlertFired } />
-                        )
-                        : null
-                    }
-                </List.Item>
-                <List.Item className="inner-list-item">
-                    {
-                        hasRequiredScopes(
-                            featureConfig?.security, featureConfig?.security?.scopes?.read,
-                            allowedScopes
-                        ) &&
-                        isFeatureEnabled(
-                            featureConfig?.security,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_TOTP")
-                        )
-                        ? (
+                        </List.Item>
+                    ) : null }
+
+                { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
+                    isFeatureEnabled(
+                        featureConfig?.security,
+                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_TOTP")
+                    ) ? (
+                        <List.Item className="inner-list-item">
                             <TOTPAuthenticator onAlertFired={ onAlertFired } />
-                        )
-                        : null
-                    }
-                </List.Item>
+                        </List.Item>
+                    ) : null }
             </List>
         </SettingsSection>
     );

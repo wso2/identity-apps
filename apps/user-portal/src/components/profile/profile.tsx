@@ -56,6 +56,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
+    const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -202,6 +203,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 // Re-fetch the profile information
                 dispatch(getProfileInformation(true));
             }
+        }).catch(error => {
+            onAlertFired({
+                description: error?.detail ?? t(
+                    "userPortal:components.profile.notifications.updateProfileInfo.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: error?.message ?? t(
+                    "userPortal:components.profile.notifications.updateProfileInfo.genericError.message"
+                )
+            });
         });
 
         // Hide corresponding edit view
@@ -369,7 +380,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             }
                         >
                             <List.Content floated="right">
-                                {schema.mutability !== "READ_ONLY"
+                                { !isReadOnlyUser
+                                    && schema.mutability !== "READ_ONLY"
                                     && schema.name !== "userName"
                                     && !isEmpty(profileInfo.get(schema.name))
                                     ? (
