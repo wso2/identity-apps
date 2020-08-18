@@ -750,6 +750,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedList(metadata.accessTokenBindingType, true) }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-access-token-type-radio-group` }
+                                    required={ false }
+                                    requiredErrorMessage=""
                                 />
                                 <Hint>
                                     Revoke the access token when the IdP session it is bound to is terminated.
