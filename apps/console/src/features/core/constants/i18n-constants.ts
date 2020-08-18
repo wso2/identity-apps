@@ -91,6 +91,7 @@ export class I18nConstants {
                 store.getState().config.i18n
             )
         },
+        load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
         ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.ADMIN_PORTAL_NAMESPACE, I18nConstants.DEV_PORTAL_NAMESPACE ]
     };
 
