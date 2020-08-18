@@ -494,7 +494,17 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
 
                             return Promise.reject("Redirecting to get authorization code...");
                         } else {
-                            return Promise.reject("Something went wrong during authentication");
+                            if (response.type === AUTH_REQUIRED && !response.code) {
+                                return Promise.reject(
+                                    "Something went wrong during authentication." +
+                                        " No authorization code was received."
+                                );
+                            } else {
+                                return Promise.reject(
+                                    "Something went wrong during authentication." +
+                                        "Unknown response received. " + JSON.stringify(response)
+                                );
+                            }
                         }
                     })
                     .catch((error) => {
