@@ -26,13 +26,15 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AssignGroupsUsers } from "./assign-groups-users";
 import { RoleBasics } from "./role-basics";
-import { PermissionList } from "./role-permisson";
+import { PermissionList } from "./role-permission";
 import { CreateRoleSummary } from "./role-sumary";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
 import { createRole } from "../../api";
 import { RolesWizardStepIcons } from "../../configs";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models";
+import {history} from "../../../core/helpers";
+import {AppConstants} from "../../../core/constants";
 
 /**
  * Interface which captures create role props.
@@ -159,7 +161,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             "schemas": [
                 "urn:ietf:params:scim:schemas:extension:2.0:Role"
             ],
-            "displayName": basicData.BasicDetails.domain + "/" + basicData.BasicDetails.roleName,
+            "displayName": basicData.BasicDetails.roleName,
             "users" : users,
             "groups": groups,
             "permissions": permissions
@@ -175,12 +177,14 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                         message: t("adminPortal:components.roles.notifications.createRole.success.message")
                     })
                 );
+
+                closeWizard();
+                history.push(AppConstants.PATHS.get("ROLE_EDIT").replace(":id", response.data.id));
             }
 
-            updateList();
-            closeWizard();
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.roles.notifications.createRole.error.description"),
@@ -189,6 +193,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     })
                 );
             } else if (error.response && error.response.data.detail) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.roles.notifications.createRole.error.description",
@@ -198,6 +203,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     })
                 );
             } else {
+                closeWizard();
                 dispatch(addAlert({
                     description: t("adminPortal:components.roles.notifications.createRole.genericError.description"),
                     level: AlertLevels.ERROR,

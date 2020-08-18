@@ -28,7 +28,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
-import { AssignRoles, RolePermissions } from "../../../core";
+import {AppConstants, AssignRoles, history, RolePermissions} from "../../../core";
 import { updateRole } from "../../../roles/api";
 import { createGroup } from "../../api";
 import { GroupsWizardStepIcons } from "../../configs";
@@ -267,10 +267,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     })
                 );
             }
-            updateList();
+
             closeWizard();
+            history.push(AppConstants.PATHS.get("GROUP_EDIT").replace(":id", response.data.id));
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.groups.notifications.createGroup.error.description"),
@@ -279,6 +281,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     })
                 );
             } else if (error.response && error.response.data.detail) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.groups.notifications.createGroup.error.description",
@@ -288,6 +291,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     })
                 );
             } else {
+                closeWizard();
                 dispatch(addAlert({
                     description: t("adminPortal:components.groups.notifications.createGroup.genericError.description"),
                     level: AlertLevels.ERROR,

@@ -142,32 +142,6 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
 };
 
 /**
- * Update bulks of roles
- *
- * @param data request payload
- * @returns {Promise<any>} a promise containing the response.
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const updateUserRoles = (data: object): Promise<any> => {
-    const requestConfig = {
-        data,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.POST,
-        url: store.getState().config.endpoints.bulk
-    };
-
-    return httpClient(requestConfig)
-        .then((response) => {
-            return Promise.resolve(response);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
-};
-
-/**
  * Retrieve the user information through user id.
  *
  * @return {Promise<any>} a promise containing the response.

@@ -24,6 +24,7 @@ import { BasicRoleDetails } from "./edit-role-basic";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
 import { history } from "../../../core";
+import {RoleGroupsList} from "./edit-role-groups";
 
 /**
  * Captures props needed for edit role component
@@ -83,6 +84,18 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 </ResourceTab.Pane>
             )
         },{
+            menuItem: t("adminPortal:components.roles.edit.menuItems.groups"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <RoleGroupsList
+                        data-testid="role-mgt-edit-role-groups"
+                        role={ roleObject }
+                        onRoleUpdate={ onRoleUpdate }
+                    />
+                </ResourceTab.Pane>
+            )
+        },
+        {
             menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>

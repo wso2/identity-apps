@@ -38,7 +38,7 @@ import { EmptyPlaceholderIllustrations, UIConstants } from "../../../core";
 import { UserBasicInterface, getUsersList } from "../../../users";
 
 /**
- * Proptypes for the application consents list component.
+ * Proptypes for the role user list component.
  */
 interface AddRoleUserProps extends TestableComponentInterface {
     triggerSubmit?: boolean;

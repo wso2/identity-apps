@@ -31,7 +31,7 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, Input, InputOnChangeData, Label } from "semantic-ui-react"
 import { AppConstants, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
-import { deleteRoleById, updateRoleDetails } from "../../api";
+import {deleteRoleById, updateRole, updateRoleDetails} from "../../api";
 import { PatchRoleDataInterface } from "../../models";
 
 /**
@@ -145,13 +145,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     const handleOnDelete = (id: string): void => {
         deleteRoleById(id).then(() => {
             handleAlerts({
-                description: isGroup
-                    ? t("adminPortal:components.groups.notifications.deleteGroup.success.description")
-                    : t("adminPortal:components.roles.notifications.deleteRole.success.description"),
+                description: t("adminPortal:components.roles.notifications.deleteRole.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: isGroup
-                    ? t("adminPortal:components.groups.notifications.deleteGroup.success.message")
-                    : t("adminPortal:components.roles.notifications.deleteRole.success.message")
+                message: t("adminPortal:components.roles.notifications.deleteRole.success.message")
             });
             if (isGroup) {
                 history.push(AppConstants.PATHS.get("GROUPS"));
@@ -179,27 +175,19 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             }]
         };
 
-        updateRoleDetails(roleObject.id, roleData)
+        updateRole(roleObject.id, roleData)
             .then(() => {
                 onRoleUpdate();
                 handleAlerts({
-                    description: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.success.description")
-                        : t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                    description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.success.message")
-                        : t("adminPortal:components.roles.notifications.updateRole.success.message")
+                    message: t("adminPortal:components.roles.notifications.updateRole.success.message")
                 });
             }).catch(() => {
                 handleAlerts({
-                    description: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.error.description")
-                        : t("adminPortal:components.roles.notifications.updateRole.error.description"),
+                    description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
-                    message: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.error.message")
-                        : t("adminPortal:components.roles.notifications.updateRole.error.message")
+                    message: t("adminPortal:components.roles.notifications.updateRole.error.message")
                 });
             });
     };

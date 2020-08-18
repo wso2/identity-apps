@@ -41,8 +41,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
     const {
         roleObject,
-        onRoleUpdate,
-        isGroup
+        onRoleUpdate
     } = props;
 
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
@@ -54,7 +53,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         } else {
             setCurrentUserStore(PRIMARY_DOMAIN);
         }
-    }, [currentUserStore, roleObject, isGroup]);
+    }, [ currentUserStore, roleObject ]);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -67,13 +66,12 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
     const onUserUpdate = (userList: any) => {
         const newUsers: CreateRoleMemberInterface[] = [];
-        
-        userList?.forEach(selectedUser => {
+
+        for (const selectedUser of userList) {
             newUsers.push({
-                value: selectedUser.id,
-                display: selectedUser.userName
+                value: selectedUser.id
             })
-        });
+        }
 
         const roleData: PatchRoleDataInterface = {
             schemas: [
@@ -81,48 +79,35 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             ],
             Operations: [{
                 "op": "replace",
-                "value": {
-                    "members": newUsers
-                }
+                "path": "users",
+                "value": newUsers
             }]
         };
         
         updateRoleDetails(roleObject.id, roleData)
             .then(() => {
                 handleAlerts({
-                    description: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.success.description")
-                        : t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                    description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.success.message")
-                        : t("adminPortal:components.roles.notifications.updateRole.success.message")
+                    message: t("adminPortal:components.roles.notifications.updateRole.success.message")
                 });
                 onRoleUpdate();
             }).catch(() => {
                 handleAlerts({
-                    description: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.error.description")
-                        : t("adminPortal:components.roles.notifications.updateRole.error.description"),
+                    description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
-                    message: isGroup
-                        ? t("adminPortal:components.groups.notifications.updateGroup.error.message")
-                        : t("adminPortal:components.roles.notifications.updateRole.error.message")
+                    message: t("adminPortal:components.roles.notifications.updateRole.error.message")
                 });
             })
     };
 
     return (
         <AddRoleUsers
-            data-testid={
-                isGroup
-                    ? "group-mgt-edit-group-users"
-                    : "role-mgt-edit-role-users"
-            }
-            isGroup={ isGroup } 
+            data-testid="role-mgt-edit-role-users"
+            isGroup={ false }
             isEdit={ true } 
             userStore={ currentUserStore }
-            assignedUsers={ roleObject.members } 
+            assignedUsers={ roleObject.users }
             onSubmit={ onUserUpdate }
         />
     )

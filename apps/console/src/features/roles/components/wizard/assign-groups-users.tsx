@@ -63,12 +63,12 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
         handleAddedGroupInitialListChange,
         handleAddedGroupListChange,
         handleGroupListChange,
-        handleInitialGroupListChange,
+        handleInitialGroupListChange
     } = props;
 
     const panes = () => ([
         {
-            menuItem: "Groups",
+            menuItem: { key: "groups", icon: "group", content: "Groups" },
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <AssignGroups
@@ -84,7 +84,7 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
             )
         },
         {
-            menuItem: "Users",
+            menuItem: { key: "users", icon: "user", content: "Users" },
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <AddRoleUsers

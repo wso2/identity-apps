@@ -18,3 +18,4 @@
 
 export * from "./user-store";
 export * from "./users";
+export * from "./bulk-operations";
