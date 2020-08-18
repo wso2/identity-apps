@@ -16,15 +16,17 @@
  * under the License.
  */
 
+import { IdentityClient } from "@wso2is/authentication";
 import { HttpMethods } from "@wso2is/core/models";
-import { OAuth } from "@wso2is/oauth-web-worker";
 import { store } from "../store";
 
 /**
- * Initialize an axios Http client.
+ * Get an axios instance.
  *
  */
-const httpClient = OAuth.getInstance().httpRequest;
+const httpClient = IdentityClient.getInstance()
+    .httpRequest.bind(IdentityClient.getInstance())
+    .bind(IdentityClient.getInstance());
 
 /**
  * Update bulks of resources
