@@ -8,12 +8,12 @@
     "adminApp": {
         "basePath": "/manage",
         "displayName": "Manage",
-        "path": "/manage/overview"
+        "path": "/manage/users"
     },
     "developerApp": {
         "basePath": "/develop",
         "displayName": "Develop",
-        "path": "/develop/overview"
+        "path": "/develop/applications"
     },
     "documentation": {
         "baseURL": "https://api.github.com",
@@ -32,7 +32,7 @@
     "productVersion": "",
     "serverOrigin": "https://localhost:9443",
     "routePaths": {
-        "home": "/develop/overview",
+        "home": "/develop/applications",
         "login": "/login",
         "logout": "/logout"
     },

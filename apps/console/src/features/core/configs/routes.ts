@@ -49,18 +49,6 @@ const extensions = EXTENSION_ROUTES();
  */
 const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
     {
-        component: lazy(() => import("../../developer-overview/pages/overview")),
-        icon: {
-            icon: SidePanelIcons.overview
-        },
-        id: "overview",
-        name: "devPortal:components.sidePanel.overview",
-        order: 1,
-        path: AppConstants.PATHS.get("DEVELOPER_OVERVIEW"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
         children: [
             {
                 component: lazy(() => import("../../applications/pages/application-template")),
@@ -94,7 +82,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "applications",
         name: "common:applications",
-        order: 2,
+        order: 1,
         path: AppConstants.PATHS.get("APPLICATIONS"),
         protected: true,
         showOnSidePanel: true
@@ -133,7 +121,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "identityProviders",
         name: "common:identityProviders",
-        order: 3,
+        order: 2,
         path: AppConstants.PATHS.get("IDP"),
         protected: true,
         showOnSidePanel: true
@@ -161,7 +149,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "remote-repo",
         name: "Remote Repo Config",
-        order: 4,
+        order: 3,
         path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
         protected: true,
         showOnSidePanel: true
@@ -188,7 +176,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "oidcScopes",
         name: "OIDC Scopes",
-        order: 5,
+        order: 4,
         path: AppConstants.PATHS.get("OIDC_SCOPES"),
         protected: true,
         showOnSidePanel: true
@@ -221,19 +209,6 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
  */
 const ADMIN_VIEW_ROUTES: RouteInterface[] = [
     {
-        category: "adminPortal:components.sidePanel.categories.general",
-        component: lazy(() => import("../../admin-overview/pages/overview")),
-        icon: {
-            icon: SidePanelIcons.overview
-        },
-        id: "overview",
-        name: "adminPortal:components.sidePanel.overview",
-        order: 1,
-        path: AppConstants.PATHS.get("ADMIN_OVERVIEW"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
         category: "adminPortal:components.sidePanel.categories.users",
         children: [
             {
@@ -256,7 +231,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "users",
         name: "adminPortal:components.sidePanel.users",
-        order: 2,
+        order: 1,
         path: AppConstants.PATHS.get("USERS"),
         protected: true,
         showOnSidePanel: true
@@ -312,7 +287,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "roles",
         name: "adminPortal:components.sidePanel.roles",
-        order: 2,
+        order: 3,
         path: AppConstants.PATHS.get("ROLES"),
         protected: true,
         showOnSidePanel: true
@@ -364,7 +339,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "attributeDialects",
         name: "adminPortal:components.sidePanel.attributeDialects",
-        order: 5,
+        order: 6,
         path: AppConstants.PATHS.get("CLAIM_DIALECTS"),
         protected: true,
         showOnSidePanel: true
@@ -401,7 +376,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "userStores",
         name: "adminPortal:components.sidePanel.userstores",
-        order: 3,
+        order: 4,
         path: AppConstants.PATHS.get("USERSTORES"),
         protected: true,
         showOnSidePanel: true
@@ -414,7 +389,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "certificates",
         name: "adminPortal:components.sidePanel.certificates",
-        order: 4,
+        order: 5,
         path: AppConstants.PATHS.get("CERTIFICATES"),
         protected: true,
         showOnSidePanel: true
@@ -466,7 +441,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         },
         id: "emailTemplates",
         name: "adminPortal:components.sidePanel.emailTemplates",
-        order: 6,
+        order: 7,
         path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
         protected: true,
         showOnSidePanel: true
@@ -477,7 +452,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         icon: null,
         id: "governanceConnectors",
         name: "adminPortal:components.sidePanel.governanceConnectors",
-        order: 6,
+        order: 8,
         path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS"),
         protected: true,
         showOnSidePanel: false
