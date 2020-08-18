@@ -49,18 +49,6 @@ const extensions = EXTENSION_ROUTES();
  */
 const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
     {
-        component: lazy(() => import("../../developer-overview/pages/overview")),
-        icon: {
-            icon: SidePanelIcons.overview
-        },
-        id: "overview",
-        name: "devPortal:components.sidePanel.overview",
-        order: 1,
-        path: AppConstants.PATHS.get("DEVELOPER_OVERVIEW"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
         children: [
             {
                 component: lazy(() => import("../../applications/pages/application-template")),
@@ -220,19 +208,6 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
  * Admin View Layout Routes array.
  */
 const ADMIN_VIEW_ROUTES: RouteInterface[] = [
-    {
-        category: "adminPortal:components.sidePanel.categories.general",
-        component: lazy(() => import("../../admin-overview/pages/overview")),
-        icon: {
-            icon: SidePanelIcons.overview
-        },
-        id: "overview",
-        name: "adminPortal:components.sidePanel.overview",
-        order: 1,
-        path: AppConstants.PATHS.get("ADMIN_OVERVIEW"),
-        protected: true,
-        showOnSidePanel: true
-    },
     {
         category: "adminPortal:components.sidePanel.categories.users",
         children: [
