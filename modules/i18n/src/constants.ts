@@ -77,4 +77,12 @@ export class I18nModuleConstants {
      * @default
      */
     public static readonly DEFAULT_FALLBACK_LANGUAGE: string = "en-US";
+
+    /**
+     * Metadata file name.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly META_FILENAME: string = "meta.json";
 }

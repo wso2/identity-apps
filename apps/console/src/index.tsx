@@ -52,8 +52,10 @@ I18n.init({
         // `https://localhost:9443/<PORTAL>/resources/i18n/meta.json` rather than looking for the file in
         // `https://localhost:9443/t/wso2.com/<PORTAL>/resources/i18n/meta.json`.
         const metaPath = `/${
-            StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant)
-        }/${ StringUtils.removeSlashesFromPath(Config.getI18nConfig().resourcePath) }/meta.json`;
+            StringUtils.removeSlashesFromPath(Config.getDeploymentConfig().appBaseNameWithoutTenant) }/${
+            StringUtils.removeSlashesFromPath(Config.getI18nConfig().resourcePath) }/${
+            I18nModuleConstants.META_FILENAME
+            }`;
 
         // Fetch the meta file to get the supported languages.
         axios.get(metaPath)
