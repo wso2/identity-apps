@@ -66,6 +66,7 @@ Recent Application Card
 @selectionCardSelectedStateBorderColor: @primaryColor;
 @selectionCardDefaultWidth: 150px;
 @selectionCardSmallWidth: 135px;
+@selectionCardX120Width: 120px;
 @selectionCardSpacedBottomMargin: 2em;
 @selectionCardRightSpacing: 20px;
 @selectionCardTextContainerPadding: 0.8em 1em;
@@ -97,6 +98,11 @@ Recent Application Card
 @templateCardTagTitleFontSize: 0.7em;
 @templateCardBorderBottomWidth: 3px;
 @templateCardSelectedStateBorderBottomColor: @primaryColor;
+
+@templateCardTextTagFontSize: 0.7em;
+@templateCardTextTagColor: @lightFontColor;
+@templateCardTagIconColor: @lightFontColor;
+@templateCardTextTagMargin: 0 0 0 3px;
 
 /*-------------------------------
         Labeled Card

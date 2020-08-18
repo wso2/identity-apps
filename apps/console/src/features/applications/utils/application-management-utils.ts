@@ -21,7 +21,10 @@ import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { TemplateCardTagInterface } from "@wso2is/react-components";
-import _ from "lodash";
+import camelCase from "lodash/camelCase";
+import intersectionBy from "lodash/intersectionBy";
+import startCase from "lodash/startCase";
+import unionBy from "lodash/unionBy";
 import { DocPanelUICardInterface, TechnologyLogos, store } from "../../core";
 import {
     getApplicationTemplateList,
@@ -31,11 +34,11 @@ import {
 } from "../api";
 import { CustomApplicationTemplate } from "../components";
 import { ApplicationManagementConstants } from "../constants";
+import { getDefaultTemplateGroups } from "../meta";
 import {
     ApplicationTemplateListInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
-    MainApplicationInterface,
     SAMLApplicationConfigurationInterface,
     emptySAMLAppConfiguration
 } from "../models";
@@ -72,10 +75,10 @@ export class ApplicationManagementUtils {
         return getAvailableInboundProtocols(customOnly)
             .then((response) => {
                 // Filter meta based on the available protocols.
-                const filteredMeta = _.intersectionBy(meta, response, "name");
+                const filteredMeta = intersectionBy(meta, response, "name");
 
                 store.dispatch(
-                    setAvailableInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(filteredMeta,
+                    setAvailableInboundAuthProtocolMeta(unionBy<AuthProtocolMetaListItemInterface>(filteredMeta,
                         response, "name"))
                 );
             })
@@ -113,10 +116,10 @@ export class ApplicationManagementUtils {
         return getAvailableInboundProtocols(customOnly)
             .then((response) => {
                 // Filter meta based on the available protocols.
-                const filteredMeta = _.intersectionBy(meta, response, "name");
+                const filteredMeta = intersectionBy(meta, response, "name");
 
                 store.dispatch(
-                    setAvailableCustomInboundAuthProtocolMeta(_.unionBy<AuthProtocolMetaListItemInterface>(
+                    setAvailableCustomInboundAuthProtocolMeta(unionBy<AuthProtocolMetaListItemInterface>(
                         filteredMeta,
                         response,
                         "name")
@@ -148,8 +151,11 @@ export class ApplicationManagementUtils {
 
     /**
      * Retrieve Application template list form the API and sets it in redux state.
+     *
+     * @param {boolean} skipGrouping - Skip grouping of templates.
+     * @return {Promise<void>}
      */
-    public static getApplicationTemplates = (): Promise<void> => {
+    public static getApplicationTemplates = (skipGrouping: boolean = false): Promise<void> => {
         return getApplicationTemplateList()
             .then((response) => {
                 const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
@@ -163,9 +169,53 @@ export class ApplicationManagementUtils {
                 applicationTemplates.unshift(CustomApplicationTemplate);
 
                 // Generate the technologies array.
-                applicationTemplates.forEach((template) => {
-                    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
-                });
+                // TODO: Enable if template icon should be resolved.
+                //applicationTemplates.forEach((template) => {
+                //    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
+                //});
+                
+                if (!skipGrouping) {
+                    const groupedTemplates: ApplicationTemplateListItemInterface[] = [];
+
+                    applicationTemplates.forEach((template: ApplicationTemplateListItemInterface) => {
+                        if (!template.templateGroup) {
+                            groupedTemplates.push(template);
+                            return;
+                        }
+
+                        const group = getDefaultTemplateGroups()
+                            .find((group) => group.id === template.templateGroup);
+
+                        if (!group) {
+                            groupedTemplates.push(template);
+                            return;
+                        }
+
+                        if (groupedTemplates.some((groupedTemplate) =>
+                            groupedTemplate.id === template.templateGroup)) {
+
+                            groupedTemplates.forEach((editingTemplate, index) => {
+                                if (editingTemplate.id === template.templateGroup) {
+                                    groupedTemplates[ index ] = {
+                                        ...group,
+                                        subTemplates: [ ...editingTemplate.subTemplates, template ]
+                                    };
+
+                                    return;
+                                }
+                            });
+
+                            return;
+                        }
+
+                        groupedTemplates.push({
+                            ...group,
+                            subTemplates: [ template ]
+                        });
+                    });
+
+                    store.dispatch(setApplicationTemplates(groupedTemplates, true));
+                }
 
                 store.dispatch(setApplicationTemplates(applicationTemplates));
             })
@@ -192,56 +242,6 @@ export class ApplicationManagementUtils {
     };
 
     /**
-     * Appends template name to the application description.
-     * TODO: This is a temporary solution. Revert back once SP -> Template mapping is available.
-     *
-     * @param {MainApplicationInterface} application - Application details.
-     * @param {ApplicationTemplateListItemInterface} template - Template object.
-     *
-     * @return {MainApplicationInterface} Modified Application object.
-     */
-    public static prefixTemplateNameToDescription(
-        application: MainApplicationInterface, template: ApplicationTemplateListItemInterface
-    ): MainApplicationInterface {
-
-        if (!template || !template.name) {
-            return application;
-        }
-
-        return {
-            ...application,
-            description: template.name
-                + ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER
-                + application.description
-        };
-    }
-
-    /**
-     * Resolves the template name and description when the raw description string is passed in.
-     * TODO: This is a temporary solution. Revert back once SP -> Template mapping is available.
-     *
-     * @param {string} description - Raw description string.
-     *
-     * @return {(string | null)[]} Template name and Description as tuple.
-     */
-    public static resolveApplicationTemplateNameInDescription(description: string): (string | null)[] {
-
-        if (!description || typeof description !== "string") {
-            return [ null, description ];
-        }
-
-        const tokens = description.split(ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER);
-
-        if(tokens.length <= 1) {
-            return [ null, description ];
-        }
-
-        const [ template, ...desc ] = tokens;
-
-        return [ template, desc.join(ApplicationManagementConstants.APPLICATION_DESCRIPTION_SPLITTER) ];
-    }
-
-    /**
      * Build supported technologies list for UI from the given technology types.
      *
      * @param {string[]} technologies - Set of supported technologies.
@@ -260,7 +260,7 @@ export class ApplicationManagementUtils {
             }
 
             return {
-                displayName: _.startCase(technology),
+                displayName: startCase(technology),
                 logo,
                 name: technology
             }
@@ -389,8 +389,8 @@ export class ApplicationManagementUtils {
             samples.push({
                 displayName: key,
                 docs: value.toString(),
-                image: _.camelCase(key).toLowerCase(),
-                name: _.camelCase(key).toLowerCase()
+                image: camelCase(key).toLowerCase(),
+                name: camelCase(key).toLowerCase()
             })
         }
 

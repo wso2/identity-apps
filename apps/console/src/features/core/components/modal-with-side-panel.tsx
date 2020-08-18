@@ -67,8 +67,7 @@ export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<Compo
 ): ReactElement => {
     return (
         <>
-            <div className={ `header ${ props?.className ?? "" }` }>{ props?.children }</div>
-            <Divider className="divider" />
+            <div className={ `modal-header ${ props?.className ?? "" }` }>{ props?.children }</div>
         </>
     );
 };
@@ -83,7 +82,7 @@ export const ModalWithSidePanelHeader: FunctionComponent<PropsWithChildren<Compo
 export const ModalWithSidePanelContent: FunctionComponent<PropsWithChildren<ComponentsPropsInterface>> = (
     props: PropsWithChildren<ComponentsPropsInterface>
 ): ReactElement => {
-    return <div className={ `content ${ props?.className ?? "" }` }>{ props?.children }</div>;
+    return <div className={ `modal-content ${ props?.className ?? "" }` }>{ props?.children }</div>;
 };
 
 /**
@@ -98,8 +97,7 @@ export const ModalWithSidePanelActions: FunctionComponent<PropsWithChildren<Comp
 ): ReactElement => {
     return (
         <>
-            <Divider className="divider" />
-            <div className={ `actions ${ props?.className ?? "" }` }>{ props?.children }</div>
+            <div className={ `modal-actions ${ props?.className ?? "" }` }>{ props?.children }</div>
         </>
     );
 };

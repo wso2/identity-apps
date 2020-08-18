@@ -321,11 +321,11 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     list?.applications && list.applications instanceof Array && list.applications.length > 0
                         ? list.applications.map((app: ApplicationListItemInterface, index: number) => {
 
-                            const [
-                                templateName,
-                                description
-                            ] = ApplicationManagementUtils.resolveApplicationTemplateNameInDescription(
-                                app.description);
+                            // TODO: Get the support from listing API to retrieve the templateId.
+                            const template = applicationTemplates
+                                && applicationTemplates instanceof Array
+                                && applicationTemplates.length > 0
+                                && applicationTemplates.find((template) => template.id === app.templateId);
 
                             // TODO Remove this check and move the logic to backend.
                             if ("wso2carbon-local-sp" !== app.name) {
@@ -359,22 +359,17 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                                         itemDescription={ (
                                             <>
                                                 {
-                                                    templateName
-                                                    && applicationTemplates
-                                                    && applicationTemplates instanceof Array
-                                                    && applicationTemplates
-                                                        .find((template) => template.name === templateName)
-                                                    && (
+                                                    template && (
                                                         <Label
                                                             size="mini"
                                                             className="compact spaced-right"
                                                             data-testid={ `${ testId }-template-type` }
                                                         >
-                                                            { templateName }
+                                                            { template.name }
                                                         </Label>
                                                     )
                                                 }
-                                                { description }
+                                                { app.description }
                                             </>
                                         ) }
                                         onClick={

@@ -673,6 +673,14 @@ export interface DevPortalNS {
                     subHeading: string;
                 };
             };
+            wizards: {
+                minimalAppCreationWizard: {
+                    help: {
+                        heading: string;
+                        subHeading: string;
+                    };
+                };
+            };
         };
         footer: {
             copyright: string;

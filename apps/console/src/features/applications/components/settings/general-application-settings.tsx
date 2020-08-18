@@ -38,7 +38,6 @@ import {
     ApplicationTemplateListItemInterface,
     CertificateInterface
 } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
 import { GeneralDetailsForm } from "../forms";
 
 /**
@@ -115,7 +114,6 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         isLoading,
         onDelete,
         onUpdate,
-        template,
         certificate,
         [ "data-testid" ]: testId
     } = props;
@@ -172,7 +170,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
      * @param {ApplicationInterface} updatedDetails - Form values.
      */
     const handleFormSubmit = (updatedDetails: ApplicationInterface): void => {
-        updateApplicationDetails(ApplicationManagementUtils.prefixTemplateNameToDescription(updatedDetails, template))
+        updateApplicationDetails(updatedDetails)
             .then(() => {
                 dispatch(addAlert({
                     description: t("devPortal:components.applications.notifications.updateApplication.success" +

@@ -32,6 +32,7 @@ export interface ApplicationBasicInterface {
     name: string;
     description?: string;
     accessUrl?: string;
+    templateId?: string;
 }
 
 /**
@@ -231,12 +232,26 @@ export interface ApplicationTemplateListItemInterface {
     id: string;
     name: string;
     description?: string;
-    image: string;
-    authenticationProtocol: string;
+    image?: string;
+    authenticationProtocol?: string;
+    /**
+     * Template group.
+     * ex: "web-application"
+     */
+    templateGroup?: string;
     types?: any[];
     category?: string;
     displayOrder?: number;
     self?: string;
+    /**
+     * List of Sub templates.
+     * ex: `OIDC Web Application` under `Web Application` template.
+     */
+    subTemplates?: ApplicationTemplateListItemInterface[];
+    /**
+     * Title for the sub template selection section inside the wizard.
+     */
+    subTemplatesSectionTitle?: string;
 }
 
 /**
@@ -270,8 +285,28 @@ export enum SupportedApplicationTemplateCategories {
  * @enum {string}
  */
 export enum ApplicationTemplateCategories {
+    /**
+     * Templates supported by default.
+     * ex: Web Application, SPA etc.
+     * @type {string}
+     */
     DEFAULT = "DEFAULT",
-    CUSTOM = "CUSTOM",
+    /**
+     * FOr default templates groups.
+     * ex: web-application, mobile, desktop etc.
+     * @type {string}
+     */
+    DEFAULT_GROUP = "DEFAULT_GROUP",
+    /**
+     * Vendor templates.
+     * ex: Zoom, Salesforce etc.
+     * @type {string}
+     */
+    VENDOR = "VENDOR",
+    /**
+     * Templates added manually which are not available in the API.
+     * @type {string}
+     */
     DEFAULT_CUSTOM = "DEFAULT_CUSTOM"
 }
 
@@ -462,3 +497,15 @@ export const emptySAMLAppConfiguration = (): SAMLApplicationConfigurationInterfa
     sloUrl: "",
     ssoUrl: ""
 });
+
+/**
+ * Enum for default application template group ids.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum DefaultTemplateGroupIds {
+    WEB_APPLICATION = "web-application",
+    DESKTOP_APPLICATION = "desktop",
+    MOBILE_APPLICATION = "mobile"
+}

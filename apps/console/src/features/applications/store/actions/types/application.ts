@@ -60,6 +60,12 @@ export enum ApplicationActionTypes {
      */
     SET_APPLICATION_TEMPLATES = "SET_APPLICATION_TEMPLATES",
     /**
+     * Action type to set grouped application templates.
+     *
+     * @type {string}
+     */
+    SET_GROUPED_APPLICATION_TEMPLATES = "SET_GROUPED_APPLICATION_TEMPLATES",
+    /**
      * Action type to set oidc application configurations.
      *
      * @type {string}
@@ -119,7 +125,7 @@ export interface SetAuthProtocolMetaInterface extends ApplicationBaseActionInter
  */
 export interface SetApplicationTemplatesActionInterface extends ApplicationBaseActionInterface {
     payload: ApplicationTemplateListItemInterface[];
-    type: ApplicationActionTypes.SET_APPLICATION_TEMPLATES;
+    type: ApplicationActionTypes.SET_APPLICATION_TEMPLATES | ApplicationActionTypes.SET_GROUPED_APPLICATION_TEMPLATES;
 }
 
 /**

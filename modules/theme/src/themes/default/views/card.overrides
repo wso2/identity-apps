@@ -270,6 +270,9 @@
         &.small {
             width: @selectionCardSmallWidth;
         }
+        &.x120 {
+            width: @selectionCardX120Width;
+        }
         &:hover {
             transform: none;
             text-decoration: none;
@@ -392,13 +395,30 @@
                 text-overflow: ellipsis;
                 height: @templateCardDescriptionHeight;
             }
-            .tags {
+            .tags-container {
                 margin: 8px 0;
 
                 .title {
                     font-size: @templateCardTagTitleFontSize;
                     color: @lightFontColor;
                     margin-bottom: 5px;
+                }
+                
+                .tags {
+                    .tag-icon {
+                        color: @templateCardTagIconColor;
+                    }
+                    
+                    .tag {
+                        &.default {
+                            font-size: @templateCardTextTagFontSize;
+                            color: @templateCardTextTagColor;
+                        }
+                        
+                        &:not(:first-child) {
+                            margin: @templateCardTextTagMargin;
+                        }
+                    }
                 }
             }
         }

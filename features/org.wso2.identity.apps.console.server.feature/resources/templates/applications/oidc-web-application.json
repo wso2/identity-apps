@@ -1,8 +1,8 @@
 {
 	"id": "b9c5e11e-fc78-484b-9bec-015d247561b8",
-    "name": "Web Application",
-    "description": "Regular web applications which uses redirections inside browsers.",
-    "image": "oidcWebApp",
+    "name": "OpenID Connect",
+    "description": "Regular web applications which uses re-directions inside browsers.",
+    "image": "oidc",
     "authenticationProtocol": "oidc",
     "types": [
         "java", "dotNet"

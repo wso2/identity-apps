@@ -23,6 +23,7 @@ import { ApplicationActionTypes, ApplicationActions } from "../actions/types";
  * Common profile reducer initial state.
  */
 const initialState: ApplicationReducerStateInterface = {
+    groupedTemplates: undefined,
     meta: {
         customInboundProtocolChecked: false,
         customInboundProtocols: [],
@@ -84,6 +85,11 @@ export const applicationReducer = (state: ApplicationReducerStateInterface = ini
             return {
                 ...state,
                 templates: action.payload
+            };
+        case ApplicationActionTypes.SET_GROUPED_APPLICATION_TEMPLATES:
+            return {
+                ...state,
+                groupedTemplates: action.payload
             };
         case ApplicationActionTypes.SET_OIDC_APPLICATION_CONFIGURATIONS:
             return {

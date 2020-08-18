@@ -17,6 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
+import { ApplicationTemplateCategories } from "../models";
 
 /**
  * Class containing application management constants.
@@ -53,15 +54,6 @@ export class ApplicationManagementConstants {
         .set("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG", "applications.edit.signOnMethodConfiguration")
         .set("APPLICATION_EDIT_PROVISIONING_SETTINGS", "applications.edit.provisioningSettings")
         .set("APPLICATION_EDIT_ADVANCED_SETTINGS", "applications.edit.advancedSettings");
-
-    /**
-     * Splitter token to split the description to extract the template.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly APPLICATION_DESCRIPTION_SPLITTER: string = ":::";
-
 
     /**
      * Key for the `Edit Application` tag in the docs structure object.
@@ -107,22 +99,34 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
 
     /**
+     * Map to access the template ids.
+     * @type {Map<string, any>}
+     */
+    public static readonly TEMPLATE_IDS: Map<string, any> = new Map<string, any>()
+        .set("box", "h9c5e23e-fc78-484b-9bec-015d242361b8")
+        .set("oidcMobile", "44a2d9d9-bc0c-4b54-85df-1cf08f4002ec")
+        .set("oidcWeb", "b9c5e11e-fc78-484b-9bec-015d247561b8")
+        .set("samlWeb", "776a73da-fd8e-490b-84ff-93009f8ede85")
+        .set("spa", "6a90e4b0-fbff-42d7-bfde-1efd98f07cd7")
+        .set("slack", "z345e11e-fc78-484b-9bec-015d2475u341r")
+        .set("windowsDesktop", "df929521-6768-44f5-8586-624126ec3f8b")
+        .set("workday", "r565e11e-fc78-484b-9bec-015d24753456")
+        .set("zoom", "t565e11e-fc78-484b-9bec-015d2472008");
+
+    /**
      * Mapping for template and template DOC in the doc structure. i.e `<"TEMPLATE_NAME", "TAG_NAME_IN_DOC_STRUCTURE">`
-     * @remarks
-     * If the template name is changed, this map has to be changed.
      * @constant
      * @type {Map<string, string>}
      */
     public static readonly APPLICATION_TEMPLATE_DOC_MAPPING: Map<string, string> = new Map<string, string>()
-        .set("Web Application", "Single Page Application")
-        .set("Single Page Application", "Single Page Application")
-        .set("Mobile Application", "OIDC Mobile Application")
-        .set("Desktop Application", "Windows Desktop Application")
-        .set("Slack", "OIDC Web Application")
-        .set("Zoom", "OIDC Web Application")
-        .set("Workday", "OIDC Web Application")
-        .set("Box", "OIDC Web Application");
-    // TODO: Move this to the deployment config.
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("box"), "OIDC Web Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcMobile"), "OIDC Mobile Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("oidcWeb"), "OIDC Web Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("spa"), "Single Page Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("slack"), "OIDC Web Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("windowsDesktop"), "Windows Desktop Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("workday"), "OIDC Web Application")
+        .set(ApplicationManagementConstants.TEMPLATE_IDS.get("zoom"), "OIDC Web Application");
 
     /**
      * Set of internal application which are forbidden from deleting.
@@ -130,7 +134,15 @@ export class ApplicationManagementConstants {
      * @type {string[]}
      */
     public static readonly DELETING_FORBIDDEN_APPLICATIONS: string[] = [ "Console", "User Portal" ];
-    
+
+    /**
+     * Template categories to be used to extract the filter types.
+     * @type {ApplicationTemplateCategories[]}
+     */
+    public static readonly FILTERABLE_TEMPLATE_CATEGORIES: ApplicationTemplateCategories[] = [
+        ApplicationTemplateCategories.VENDOR
+    ];
+
     /**
      * Key for the SPA template.
      * @constant

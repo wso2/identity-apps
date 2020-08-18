@@ -1799,6 +1799,14 @@ export const devPortal: DevPortalNS = {
                     heading: "Quick Setup",
                     subHeading: "Predefined set of application templates to speed up your application creation."
                 }
+            },
+            wizards: {
+                minimalAppCreationWizard: {
+                    help: {
+                        heading: "Help",
+                        subHeading: "Use the following as a guidance",
+                    }
+                }
             }
         },
         footer: {

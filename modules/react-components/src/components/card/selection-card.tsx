@@ -66,7 +66,7 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
     /**
      * Card size.
      */
-    size?: "small" | "default" | "auto";
+    size?: "x120" | "small" | "default" | "auto";
     /**
      * Add spacing to the card.
      */
