@@ -1464,8 +1464,10 @@ export const adminPortal: AdminPortalNS = {
                 },
                 menuItems: {
                     basic: "Basics",
+                    groups: "Groups",
                     permissions: "Permissions",
-                    users: "Users"
+                    users: "Users",
+                    roles: "Roles"
                 },
                 users: {
                     list: {
