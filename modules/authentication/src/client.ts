@@ -65,6 +65,7 @@ export class IdentityClient {
     private _client: WebWorkerClientInterface;
     private _storage: Storage;
     private _initialized: boolean;
+    private _startedInitialize: boolean = false;
     private _onSignInCallback: (response: UserInfo) => void;
     private _onSignOutCallback: (response: any) => void;
     private _onEndUserSession: (response: any) => void;
@@ -92,6 +93,7 @@ export class IdentityClient {
     public initialize(config: ConfigInterface): Promise<boolean> {
         this._storage = config.storage ?? Storage.SessionStorage;
         this._initialized = false;
+        this._startedInitialize = true;
 
         const startCallback = (request: AxiosRequestConfig): void => {
             request.headers = {
@@ -135,6 +137,8 @@ export class IdentityClient {
                 })
                 .catch((error) => {
                     return Promise.reject(error);
+                }).finally(() => {
+                    this._startedInitialize = false;
                 });
         }
     }
@@ -160,19 +164,22 @@ export class IdentityClient {
      * @memberof IdentityClient
      */
     public async signIn(): Promise<any> {
-        let iterationToWait = 20;
+        if (!this._startedInitialize) {
+            return Promise.reject("The object has not been initialized yet.");
+        }
+
+        let iterationToWait = 0;
 
         const sleep = (): Promise<any> => {
             return new Promise(resolve => setTimeout(resolve, 500));
         }
 
-        while (!this._initialized && iterationToWait !== 0) {
+        while (!this._initialized) {
+            if (iterationToWait>20) {
+                console.warn("It is taking longer than usual for the object to be initialized")
+            }
             await sleep();
-            iterationToWait--;
-        }
-
-        if (!this._initialized) {
-            return Promise.reject("The object has not been initialized yet.");
+            iterationToWait++;
         }
 
         if (this._storage === Storage.WebWorker) {
