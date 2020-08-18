@@ -185,7 +185,7 @@
 .ui.vertical.menu {
     &.governance-connector-categories {
         .item.active {
-            border-left: 5px @primaryColor solid;
+            border-left: @activeBorderWidth @primaryColor solid;
         }
     }
 
