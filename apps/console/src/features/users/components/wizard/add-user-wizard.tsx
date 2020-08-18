@@ -28,6 +28,8 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { updateRoleDetails } from "../../../roles/api";
 import { addUser } from "../../api";
@@ -36,8 +38,6 @@ import { AddUserWizardStateInterface, UserDetailsInterface, createEmptyUserDetai
 import { AddUser } from "../add-user";
 import { AddUserGroup } from "../add-user-groups";
 import { AddUserRole } from "../add-user-role";
-import {history} from "../../../core/helpers";
-import {AppConstants} from "../../../core/constants";
 
 interface AddUserWizardPropsInterface extends TestableComponentInterface {
     closeWizard: () => void;

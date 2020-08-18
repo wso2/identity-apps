@@ -21,10 +21,10 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { BasicRoleDetails } from "./edit-role-basic";
+import { RoleGroupsList } from "./edit-role-groups";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
 import { history } from "../../../core";
-import {RoleGroupsList} from "./edit-role-groups";
 
 /**
  * Captures props needed for edit role component

@@ -28,13 +28,13 @@ import { AssignGroupsUsers } from "./assign-groups-users";
 import { RoleBasics } from "./role-basics";
 import { PermissionList } from "./role-permission";
 import { CreateRoleSummary } from "./role-sumary";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
 import { createRole } from "../../api";
 import { RolesWizardStepIcons } from "../../configs";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models";
-import {history} from "../../../core/helpers";
-import {AppConstants} from "../../../core/constants";
 
 /**
  * Interface which captures create role props.

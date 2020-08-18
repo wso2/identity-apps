@@ -48,7 +48,7 @@ import {
 } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard";
-import {EmptyPlaceholderIllustrations, updateResources} from "../../core";
+import { EmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../roles/constants";
 
 interface UserRolesPropsInterface {

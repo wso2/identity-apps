@@ -31,7 +31,7 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, Input, InputOnChangeData, Label } from "semantic-ui-react"
 import { AppConstants, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
-import {deleteRoleById, updateRole, updateRoleDetails} from "../../api";
+import { deleteRoleById, updateRole } from "../../api";
 import { PatchRoleDataInterface } from "../../models";
 
 /**
@@ -169,9 +169,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             ],
             Operations: [{
                 "op": "replace",
-                "value": {
-                    "displayName": labelText ? labelText + "/" + nameValue : nameValue
-                }
+                "path": "displayName",
+                "value": labelText ? labelText + "/" + nameValue : nameValue
             }]
         };
 

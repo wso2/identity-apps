@@ -17,12 +17,12 @@
  */
 
 import {
-    AlertInterface,
     AlertLevels,
     RolesInterface,
     RolesMemberInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     EmphasizedSegment,
     EmptyPlaceholder,
@@ -36,6 +36,7 @@ import {
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import {
     Button,
     Divider,
@@ -44,10 +45,9 @@ import {
     Input,
     Label,
     Modal,
-    Popup,
     Table
 } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../../core";
+import { EmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { getGroupList } from "../../../groups/api";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
@@ -76,8 +76,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
-
-    console.log("Role object", role);
+    const dispatch = useDispatch();
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<any>([]);
@@ -91,34 +90,6 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
-    const [ showGroupPermissionModal, setGroupPermissionModal ] = useState(false);
-    const [ selectedGroupId, setSelectedGroupId ] = useState<string>("");
-    const [ isGroupSelected, setGroupSelection ] = useState(false);
-
-    // The following constant are used to persist the state of the unassigned groups permissions.
-    const [ viewGroupPermissions, setViewGroupPermissions ] = useState(false);
-    const [ groupId, setGroupId ] = useState();
-    const [ isSelected, setSelection ] = useState(false);
-
-    useEffect(() => {
-        if (!selectedGroupId) {
-            return;
-        }
-
-        if (isGroupSelected) {
-            handleOpenGroupPermissionModal();
-        }
-    }, [ isGroupSelected ]);
-
-    useEffect(() => {
-        if (!groupId) {
-            return;
-        }
-
-        if (isSelected) {
-            setViewGroupPermissions(true);
-        }
-    }, [ isSelected ]);
 
     useEffect(() => {
         if (!(role)) {
@@ -415,52 +386,52 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 bulkRemoveData.Operations.push(operation);
             });
 
-            // updateUserRoles(bulkRemoveData)
-            //     .then(() => {
-            //         onAlertFired({
-            //             description: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
-            //                 "success.description"
-            //             ),
-            //             level: AlertLevels.SUCCESS,
-            //             message: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
-            //                 "success.message"
-            //             )
-            //         });
-            //         handleCloseAddNewGroupModal();
-            //         onRoleUpdate(role.id);
-            //     })
-            //     .catch((error) => {
-            //         if (error?.response?.status === 404) {
-            //             return;
-            //         }
-            //
-            //         if (error?.response && error?.response?.data && error?.response?.data?.description) {
-            //             onAlertFired({
-            //                 description: error.response?.data?.description,
-            //                 level: AlertLevels.ERROR,
-            //                 message: t(
-            //                     "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
-            //                     "error.message"
-            //                 )
-            //             });
-            //
-            //             return;
-            //         }
-            //
-            //         onAlertFired({
-            //             description: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
-            //                 "genericError.description"
-            //             ),
-            //             level: AlertLevels.ERROR,
-            //             message: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
-            //                 "genericError.message"
-            //             )
-            //         });
-            //     });
+            updateResources(bulkRemoveData)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "success.message"
+                        )
+                    }));
+                    handleCloseAddNewGroupModal();
+                    onRoleUpdate(role.id);
+                })
+                .catch((error) => {
+                    if (error?.response?.status === 404) {
+                        return;
+                    }
+
+                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error.response?.data?.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                                "error.message"
+                            )
+                        }));
+
+                        return;
+                    }
+
+                    dispatch(addAlert({
+                        description: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
+                            "genericError.message"
+                        )
+                    }));
+                });
         } else {
             groupIds.map((id) => {
                 addOperation = {
@@ -474,67 +445,53 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 bulkAddData.Operations.push(operation);
             });
 
-            // updateUserRoles(bulkAddData)
-            //     .then(() => {
-            //         onAlertFired({
-            //             description: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
-            //                 "success.description"
-            //             ),
-            //             level: AlertLevels.SUCCESS,
-            //             message: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
-            //                 "success.message"
-            //             )
-            //         });
-            //         handleCloseAddNewGroupModal();
-            //         onRoleUpdate(role.id);
-            //     })
-            //     .catch((error) => {
-            //         if (error?.response?.status === 404) {
-            //             return;
-            //         }
-            //
-            //         if (error?.response && error?.response?.data && error?.response?.data?.description) {
-            //             onAlertFired({
-            //                 description: error.response?.data?.description,
-            //                 level: AlertLevels.ERROR,
-            //                 message: t(
-            //                     "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
-            //                     "error.message"
-            //                 )
-            //             });
-            //
-            //             return;
-            //         }
-            //
-            //         onAlertFired({
-            //             description: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
-            //                 "genericError.description"
-            //             ),
-            //             level: AlertLevels.ERROR,
-            //             message: t(
-            //                 "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
-            //                 "genericError.message"
-            //             )
-            //         });
-            //     });
+            updateResources(bulkAddData)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "success.message"
+                        )
+                    }));
+                    handleCloseAddNewGroupModal();
+                    onRoleUpdate(role.id);
+                })
+                .catch((error) => {
+                    if (error?.response?.status === 404) {
+                        return;
+                    }
+
+                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                        dispatch(addAlert({
+                            description: error.response?.data?.description,
+                            level: AlertLevels.ERROR,
+                            message: t(
+                                "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                                "error.message"
+                            )
+                        }));
+
+                        return;
+                    }
+
+                    dispatch(addAlert({
+                        description: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
+                            "genericError.message"
+                        )
+                    }));
+                });
         }
-    };
-
-    const handleOpenGroupPermissionModal = () => {
-        setGroupPermissionModal(true);
-    };
-
-    const handleSetSelectedId = (groupId: string) => {
-        setSelectedGroupId(groupId);
-        setGroupSelection(true);
-    };
-
-    const handleGroupIdSet = (groupId) => {
-        setGroupId(groupId);
-        setSelection(true);
     };
 
     const addNewGroupModal = () => (
@@ -594,7 +551,6 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 }
                                                 isItemChecked={ checkedUnassignedListItems.includes(group) }
                                                 showSecondaryActions={ false }
-                                                handleOpenPermissionModal={ () => handleGroupIdSet(group.id) }
                                                 data-testid="user-mgt-update-groups-modal-unselected-groups"
                                             />
                                         )
@@ -752,7 +708,6 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                                 "editGroups.groupList.headers.1") }
                                                         </strong>
                                                     </Table.HeaderCell>
-                                                    <Table.HeaderCell/>
                                                 </Table.Row>
                                             </Table.Header>
                                             <Table.Body>
