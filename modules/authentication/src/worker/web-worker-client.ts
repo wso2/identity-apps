@@ -497,7 +497,8 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
                             if (response.type === AUTH_REQUIRED && !response.code) {
                                 return Promise.reject(
                                     "Something went wrong during authentication." +
-                                        " No authorization code was received."
+                                        " No authorization url was received." +
+                                        JSON.stringify(response)
                                 );
                             } else {
                                 return Promise.reject(
