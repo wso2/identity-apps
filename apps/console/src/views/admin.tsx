@@ -144,7 +144,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
                 const filteredRoutesClone = [ ...filteredRoutes ];
 
-                governanceConnectorCategories.map(category => {
+                governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface) => {
                     let subCategoryExists = false;
                     category.connectors?.map(connector => {
                         if (connector.subCategory !== "DEFAULT") {
@@ -165,7 +165,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         },
                         id: category.id,
                         name: category.name,
-                        order: 6,
                         path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
                         protected: true,
                         showOnSidePanel: true
