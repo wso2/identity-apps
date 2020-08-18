@@ -49,6 +49,7 @@
     RecoveryInitiatingRequest recoveryInitiatingRequest = new RecoveryInitiatingRequest();
     recoveryInitiatingRequest.setUser(user);
     String callback = (String) request.getAttribute("callback");
+    String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
@@ -58,6 +59,10 @@
     property.setKey("callback");
     property.setValue(URLEncoder.encode(callback, "UTF-8"));
     properties.add(property);
+    Property sessionDataKeyProperty = new Property();
+    sessionDataKeyProperty.setKey("sessionDataKey");
+    sessionDataKeyProperty.setValue(sessionDataKey);
+    properties.add(sessionDataKeyProperty);
     recoveryInitiatingRequest.setProperties(properties);
 
     try {
