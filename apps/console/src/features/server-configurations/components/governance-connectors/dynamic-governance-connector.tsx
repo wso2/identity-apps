@@ -18,13 +18,13 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { GenericIcon, LinkButton, Section } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Accordion, Grid, Icon } from "semantic-ui-react";
+import { Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
 import { updateGovernanceConnector } from "../../api";
+import { GovernanceConnectorsIllustration } from "../../configs";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -33,6 +33,7 @@ import { GovernanceConnectorUtils } from "../../utils";
  */
 interface DynamicGovernanceConnectorProps extends TestableComponentInterface {
     connector: GovernanceConnectorInterface;
+    onUpdate: () => void;
 }
 
 /**
@@ -45,13 +46,7 @@ interface DynamicGovernanceConnectorProps extends TestableComponentInterface {
 export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConnectorProps> = (
     props: DynamicGovernanceConnectorProps
 ): ReactElement => {
-
-    const {
-        connector,
-        ["data-testid"]: testId
-    } = props;
-
-    const [ connectorAccordionActiveState, setConnectorAccordionActiveState ] = useState<boolean>(false);
+    const { connector, [ "data-testid" ]: testId, onUpdate } = props;
 
     const dispatch = useDispatch();
 
@@ -59,46 +54,66 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     const handleUpdateError = (error) => {
         if (error.response && error.response.data && error.response.data.detail) {
-            dispatch(addAlert({
-                description: t("adminPortal:components.governanceConnectors.notifications." +
-                    "updateConnector.error.description", { description: error.response.data.description }),
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.governanceConnectors.notifications." +
-                    "updateConnector.error.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: t(
+                        "adminPortal:components.governanceConnectors.notifications." +
+                        "updateConnector.error.description",
+                        { description: error.response.data.description }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "adminPortal:components.governanceConnectors.notifications." + "updateConnector.error.message"
+                    )
+                })
+            );
         } else {
             // Generic error message
-            dispatch(addAlert({
-                description: t("adminPortal:components.governanceConnectors.notifications." +
-                    "updateConnector.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.governanceConnectors.notifications." +
-                    "updateConnector.genericError.message")
-            }));
+            dispatch(
+                addAlert({
+                    description: t(
+                        "adminPortal:components.governanceConnectors.notifications." +
+                        "updateConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "adminPortal:components.governanceConnectors.notifications." +
+                        "updateConnector.genericError.message"
+                    )
+                })
+            );
         }
     };
 
     const handleSubmit = (values) => {
         const data = {
-            "operation": "UPDATE",
-            "properties": []
+            operation: "UPDATE",
+            properties: []
         };
         for (const key in values) {
             data.properties.push({
-                "name": GovernanceConnectorUtils.decodeConnectorPropertyName(key),
-                "value": values[key]
+                name: GovernanceConnectorUtils.decodeConnectorPropertyName(key),
+                value: values[ key ]
             });
         }
         updateGovernanceConnector(data, connector.categoryId, connector.id)
             .then(() => {
-                dispatch(addAlert({
-                    description: t("adminPortal:components.governanceConnectors.notifications." +
-                        "updateConnector.success.description", { name: connector.friendlyName }),
-                    level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.governanceConnectors.notifications." +
-                        "updateConnector.success.message")
-                }));
-                handleConnectorAccordionClick();
+                dispatch(
+                    addAlert({
+                        description: t(
+                            "adminPortal:components.governanceConnectors.notifications." +
+                            "updateConnector.success.description",
+                            { name: connector.friendlyName }
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.governanceConnectors.notifications." +
+                            "updateConnector.success.message"
+                        )
+                    })
+                );
+
+                onUpdate();
             })
             .catch((error) => {
                 handleUpdateError(error);
@@ -107,75 +122,54 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     const getConnectorInitialValues = (connector: GovernanceConnectorInterface) => {
         const values = {};
-        connector?.properties.map(property => {
+        connector?.properties.map((property) => {
             if (property.value === "true") {
-                values[GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)] = true;
+                values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = true;
             } else if (property.value === "false") {
-                values[GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)] = false;
+                values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = false;
             } else {
-                values[GovernanceConnectorUtils.encodeConnectorPropertyName(property.name)] = property.value;
+                values[ GovernanceConnectorUtils.encodeConnectorPropertyName(property.name) ] = property.value;
             }
         });
         return values;
     };
 
     const connectorForm: ReactElement = (
-        <DynamicConnectorForm onSubmit={ handleSubmit }
-                              props={ { properties: connector.properties } }
-                              form={ connector.name + "-form" }
-                              initialValues={ getConnectorInitialValues(connector) }
-                              data-testid={ `${ testId }-${ connector.name }-form` }
+        <DynamicConnectorForm
+            onSubmit={ handleSubmit }
+            props={ { properties: connector.properties } }
+            form={ connector.category + "-form" }
+            initialValues={ getConnectorInitialValues(connector) }
+            data-testid={ `${ testId }-${ connector.name }-form` }
         />
     );
 
-    const handleConnectorAccordionClick = () => {
-        setConnectorAccordionActiveState(!connectorAccordionActiveState)
-    };
-
-    const connectorAccordion: ReactElement = (
-        <Accordion fluid styled data-testid={ `${ testId }-main-accordion` }>
-            <Accordion.Title
-                active={ connectorAccordionActiveState }
-                index={ 0 }
-                onClick={ handleConnectorAccordionClick }
-            >
-                <Grid className="middle aligned">
-                    <Grid.Row columns={ 2 } className="inner-list-item">
-                        <Grid.Column className="first-column">
-                            <LinkButton className="p-3">Settings</LinkButton>
-                        </Grid.Column>
-                        <Grid.Column className="last-column" textAlign="right">
-                            <GenericIcon
-                                size="default"
-                                defaultIcon
-                                link
-                                inline
-                                transparent
-                                verticalAlign="middle"
-                                className="pr-3"
-                                icon={ <Icon name="angle right" className="chevron"/> }
-                            />
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid>
-            </Accordion.Title>
-            <Accordion.Content active={ connectorAccordionActiveState }>
-                { connectorForm }
-            </Accordion.Content>
-        </Accordion>
-    );
-
     return (
-        <Section
-            header={ connector?.friendlyName }
-            description={ connector?.description }
-            iconSize="auto"
-            iconStyle="colored"
-            iconFloated="right"
-            accordion={ connectorAccordion }
-            data-testid={ `${ testId }-section` }
-        >
-        </Section>
+        <Grid>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column>
+                    <Grid padded>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column width={ 10 }>
+                                <Header>
+                                    { connector?.friendlyName }
+                                    <Header.Subheader>
+                                        { t("adminPortal:components.governanceConnectors.connectorSubHeading", {
+                                            name: connector?.friendlyName
+                                        }) }
+                                    </Header.Subheader>
+                                </Header>
+                            </Grid.Column>
+                            <Grid.Column width={ 6 } textAlign="right">
+                                <GovernanceConnectorsIllustration />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
+                    <Divider />
+                    { connectorForm }
+                </Grid.Column>
+            </Grid.Row>
+        </Grid>
     );
 };
 

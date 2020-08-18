@@ -16,7 +16,7 @@
  * under the License.
  *
  */
- 
+
 /*******************************
             Menu
 *******************************/
@@ -131,3 +131,9 @@
 @userDropdownPadding: 8px;
 @userDropdownLinkMargin: 8px 0;
 @userDropdownLinkedAccountMargin: 8px 0;
+
+/*-------------------------------
+      Governance Connectors
+--------------------------------*/
+
+@activeBorderWidth: 5px;

@@ -43,7 +43,7 @@
             .item.portal-switch {
                 background: @appHeaderPortalSwitchExtensionBackgroundColor;
                 color: @appHeaderPortalSwitchExtensionColor;
-                    
+
                 &.active {
                     color: @appHeaderPortalSwitchExtensionActiveColor;
                     border-bottom: @appHeaderPortalSwitchExtensionActiveBorderBottom;
@@ -223,6 +223,12 @@
 }
 
 .ui.vertical.menu {
+    &.governance-connector-categories {
+        .item.active {
+            border-left: @activeBorderWidth @primaryColor solid;
+        }
+    }
+
     &.side-panel {
         // override the box shadow and border in the semantic ui menu component
         box-shadow: none;
@@ -352,12 +358,12 @@
                 }
             }
         }
-        
+
         &.relaxed {
             .side-panel-category {
                 margin-bottom: @sidePanelCategoryRelaxedMarginBottom;
             }
-            
+
             .side-panel-item {
                 &.hover-background {
                     margin-bottom: @sidePanelBackgroundHoveredItemRelaxedMarginBottom;

@@ -70,6 +70,7 @@ export const RenderInput = createRenderer(
                 placeholder={ placeholder }
                 type={ type }
                 disabled={ disabled }
+                label={ label }
                 error={
                     meta.touched && ((meta.error && (
                         {
