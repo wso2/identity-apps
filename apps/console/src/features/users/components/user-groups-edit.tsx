@@ -17,7 +17,12 @@
  */
 
 import { getRolesList } from "@wso2is/core/api";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, RolesMemberInterface } from "@wso2is/core/models";
+import {
+    AlertInterface,
+    AlertLevels,
+    ProfileInfoInterface,
+    RolesMemberInterface,
+} from "@wso2is/core/models";
 import {
     EmphasizedSegment,
     EmptyPlaceholder,
@@ -31,6 +36,7 @@ import {
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import {
     Button,
     Divider,
@@ -44,13 +50,26 @@ import {
 } from "semantic-ui-react";
 import { UserRolePermissions } from "./user-role-permissions";
 import { RolePermissions } from "./wizard";
-import { EmptyPlaceholderIllustrations } from "../../core";
+import { AppState, EmptyPlaceholderIllustrations } from "../../core";
 import { updateUserRoles } from "../api";
 
 interface UserGroupsPropsInterface {
+    /**
+     * User profile
+     */
     user: ProfileInfoInterface;
+    /**
+     * On alert fired callback.
+     */
     onAlertFired: (alert: AlertInterface) => void;
+    /**
+     * Handle user update callback.
+     */
     handleUserUpdate: (userId: string) => void;
+    /**
+     * Show if the user is read only.
+     */
+    isReadOnly?: boolean;
 }
 
 export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
@@ -60,10 +79,13 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const {
         onAlertFired,
         user,
-        handleUserUpdate
+        handleUserUpdate,
+        isReadOnly,
     } = props;
 
     const { t } = useTranslation();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<any>([]);
@@ -749,13 +771,17 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 floated="left"
                                                 size="small"
                                             />
-                                            <Button
-                                                data-testid="user-mgt-groups-list-update-button"
-                                                size="medium"
-                                                icon="pencil"
-                                                floated="right"
-                                                onClick={ handleOpenAddNewGroupModal }
-                                            />
+                                            {
+                                                !isReadOnly && (
+                                                    <Button
+                                                        data-testid="user-mgt-groups-list-update-button"
+                                                        size="medium"
+                                                        icon="pencil"
+                                                        floated="right"
+                                                        onClick={ handleOpenAddNewGroupModal }
+                                                    />
+                                                )
+                                            }
                                         </Grid.Column>
                                     </Grid.Row>
                                     <Grid.Row>
@@ -833,13 +859,15 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 "groupList.emptyListPlaceholder.subTitle.2")
                                         ] }
                                         action={
-                                            <PrimaryButton
-                                                data-testid="user-mgt-empty-groups-list-assign-group-button"
-                                                icon="plus"
-                                                onClick={ handleOpenAddNewGroupModal }
-                                            >
-                                                Assign Group
-                                            </PrimaryButton>
+                                            !isReadOnly && (
+                                                <PrimaryButton
+                                                    data-testid="user-mgt-empty-groups-list-assign-group-button"
+                                                    icon="plus"
+                                                    onClick={ handleOpenAddNewGroupModal }
+                                                >
+                                                    Assign Group
+                                                </PrimaryButton>
+                                            )
                                         }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         imageSize="tiny"

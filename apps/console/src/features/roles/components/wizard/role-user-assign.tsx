@@ -48,6 +48,7 @@ interface AddRoleUserProps extends TestableComponentInterface {
     isGroup: boolean;
     userStore?: string;
     initialValues?: UserBasicInterface[];
+    isReadOnly?: boolean;
 }
 
 export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
@@ -59,6 +60,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         initialValues,
         isGroup,
         userStore,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -453,13 +455,17 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     floated="left"
                                                     size="small"
                                                 />
-                                                <Button
-                                                    data-testid={ `${ testId }-users-list-edit-button` }
-                                                    size="medium"
-                                                    icon="pencil"
-                                                    floated="right"
-                                                    onClick={ handleOpenAddNewGroupModal }
-                                                />
+                                                {
+                                                    !isReadOnly && (
+                                                        <Button
+                                                            data-testid={ `${ testId }-users-list-edit-button` }
+                                                            size="medium"
+                                                            icon="pencil"
+                                                            floated="right"
+                                                            onClick={ handleOpenAddNewGroupModal }
+                                                        />
+                                                    )
+                                                }
                                             </Grid.Column>
                                         </Grid.Row>
                                         <Grid.Row>
@@ -509,14 +515,17 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     "emptyPlaceholder.subtitles", { type: "role" })
                                             ] }
                                             action={
-                                                <PrimaryButton
-                                                    data-testid={ `${ testId }-users-list-empty-assign-users-button` }
-                                                    onClick={ handleOpenAddNewGroupModal }
-                                                    icon="plus"
-                                                >
-                                                    { t("adminPortal:components.roles.edit.users.list." +
-                                                        "emptyPlaceholder.action") }
-                                                </PrimaryButton>
+                                                !isReadOnly && (
+                                                    <PrimaryButton
+                                                        data-testid={ `${ testId }-users-list-empty-assign-users-
+                                                        button` }
+                                                        onClick={ handleOpenAddNewGroupModal }
+                                                        icon="plus"
+                                                    >
+                                                        { t("adminPortal:components.roles.edit.users.list." +
+                                                            "emptyPlaceholder.action") }
+                                                    </PrimaryButton>
+                                                )
                                             }
                                             image={ EmptyPlaceholderIllustrations.emptyList }
                                             imageSize="tiny"

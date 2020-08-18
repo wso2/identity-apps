@@ -21,11 +21,17 @@ import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, UIConstants } from "../../core";
+import {
+    AdvancedSearchWithBasicFilters,
+    AppState,
+    FeatureConfigInterface,
+    SharedUserStoreUtils,
+    UIConstants
+} from "../../core";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
@@ -54,9 +60,11 @@ const GROUPS_SORTING_OPTIONS: DropdownItemProps[] = [
  *
  * @return {ReactElement}
  */
-const GroupsPage = (): ReactElement => {
+const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
@@ -69,6 +77,7 @@ const GroupsPage = (): ReactElement => {
     const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
     const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
 
     const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
     const [ paginatedGroups, setPaginatedGroups ] = useState<RolesInterface[]>([]);
@@ -92,6 +101,12 @@ const GroupsPage = (): ReactElement => {
 
     useEffect(() => {
         getGroups();
+    }, [ userStore ]);
+
+    useEffect(() => {
+        SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
+            setReadOnlyUserStoresList(response);
+        });
     }, [ userStore ]);
 
     const getGroups = () => {
@@ -366,6 +381,8 @@ const GroupsPage = (): ReactElement => {
                     onSearchQueryClear={ handleSearchQueryClear }
                     groupList={ paginatedGroups }
                     searchQuery={ searchQuery }
+                    readOnlyUserStores={ readOnlyUserStoresList }
+                    featureConfig={ featureConfig }
                 />
             </ListLayout>
             {

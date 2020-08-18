@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { AlertInterface, ProfileInfoInterface, emptyProfileInfo } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { ProfileInfoInterface, emptyProfileInfo } from "@wso2is/core/models";
 import { PageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
-import { AppConstants, history } from "../../core";
+import { useSelector } from "react-redux";
+import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { getUserDetails } from "../api";
 import { EditUser } from "../components";
 
@@ -34,19 +33,25 @@ import { EditUser } from "../components";
 const UserEditPage = (): ReactElement => {
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
+    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
 
-    /**
-     * Dispatches the alert object to the redux store.
-     * @param {AlertInterface} alert - Alert object.
-     */
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
-    };
+    useEffect(() => {
+        const path = history.location.pathname.split("/");
+        const id = path[ path.length - 1 ];
+
+        getUser(id);
+    }, []);
+
+    useEffect(() => {
+        SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
+            setReadOnlyUserStoresList(response);
+        });
+    }, [ user ]);
 
     const getUser = (id: string) => {
         setIsUserDetailsRequestLoading(true);
@@ -66,13 +71,6 @@ const UserEditPage = (): ReactElement => {
     const handleUserUpdate = (id: string) => {
         getUser(id);
     };
-
-    useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const id = path[ path.length - 1 ];
-
-        getUser(id);
-    }, []);
 
     const handleBackButtonClick = () => {
         history.push(AppConstants.PATHS.get("USERS"));
@@ -101,7 +99,12 @@ const UserEditPage = (): ReactElement => {
             titleTextAlign="left"
             bottomMargin={ false }
         >
-            <EditUser user={ user } handleUserUpdate={ handleUserUpdate }/>
+            <EditUser
+                featureConfig={ featureConfig }
+                user={ user }
+                handleUserUpdate={ handleUserUpdate }
+                readOnlyUserStores={ readOnlyUserStoresList }
+            />
         </PageLayout>
     );
 };

@@ -38,9 +38,22 @@ import { deleteUser, updateUserInfo } from "../api";
  * Prop types for the basic details component.
  */
 interface UserProfilePropsInterface extends TestableComponentInterface {
+    /**
+     * On alert fired callback.
+     */
     onAlertFired: (alert: AlertInterface) => void;
+    /**
+     * User profile
+     */
     user: ProfileInfoInterface;
+    /**
+     * Handle user update callback.
+     */
     handleUserUpdate: (userId: string) => void;
+    /**
+     * Show if the user is read only.
+     */
+    isReadOnly?: boolean;
 }
 
 /**
@@ -57,17 +70,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         onAlertFired,
         user,
         handleUserUpdate,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
+
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
     const [ urlSchema, setUrlSchema ] = useState<ProfileSchemaInterface>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
-    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
     /**
      * The following function maps profile details to the SCIM schemas.
@@ -269,6 +284,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     type="text"
                                     value={ domainName[1] }
                                     key={ key }
+                                    readOnly={ isReadOnly }
                                 />
                             </Form.Field>
                         ) : (
@@ -283,6 +299,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 value={ profileInfo.get(schema.name) }
                                 key={ key }
                                 disabled={ schema.name === "userName" }
+                                readOnly={ isReadOnly }
                             />
                         )
                     }
@@ -313,15 +330,19 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Button
-                                            data-testid={ `${ testId }-form-update-button` }
-                                            primary
-                                            type="submit"
-                                            size="small"
-                                            className="form-button"
-                                        >
-                                            Update
-                                        </Button>
+                                        {
+                                            !isReadOnly && (
+                                                <Button
+                                                    data-testid={ `${ testId }-form-update-button` }
+                                                    primary
+                                                    type="submit"
+                                                    size="small"
+                                                    className="form-button"
+                                                >
+                                                    Update
+                                                </Button>
+                                            )
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -330,18 +351,26 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 )
             }
             <Divider hidden />
-            <DangerZoneGroup sectionHeader={ t("adminPortal:components.user.editUser.dangerZoneGroup.header") }>
-                <DangerZone
-                    data-testid={ `${ testId }-danger-zone` }
-                    actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone.actionTitle") }
-                    header={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone.header") }
-                    subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone.subheader") }
-                    onActionClick={ (): void => {
-                        setShowDeleteConfirmationModal(true);
-                        setDeletingUser(user);
-                    } }
-                />
-            </DangerZoneGroup>
+            {
+                !isReadOnly && (
+                    <DangerZoneGroup
+                        sectionHeader={ t("adminPortal:components.user.editUser.dangerZoneGroup.header") }
+                    >
+                        <DangerZone
+                            data-testid={ `${ testId }-danger-zone` }
+                            actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone." +
+                                "actionTitle") }
+                            header={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone.header") }
+                            subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone." +
+                                "subheader") }
+                            onActionClick={ (): void => {
+                                setShowDeleteConfirmationModal(true);
+                                setDeletingUser(user);
+                            } }
+                        />
+                    </DangerZoneGroup>
+                )
+            }
             {
                 deletingUser && (
                     <ConfirmationModal

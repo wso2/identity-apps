@@ -38,9 +38,22 @@ import { PatchRoleDataInterface } from "../../models";
  * Interface to contain props needed for component
  */
 interface BasicRoleProps extends TestableComponentInterface {
+    /**
+     * Role details
+     */
     roleObject: RolesInterface;
+    /**
+     * Show if it is role.
+     */
     isGroup: boolean;
+    /**
+     * Handle role update callback.
+     */
     onRoleUpdate: () => void;
+    /**
+     * Show if the user is read only.
+     */
+    isReadOnly?: boolean;
 }
 
 /**
@@ -56,6 +69,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         roleObject,
         onRoleUpdate,
         isGroup,
+        isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -244,6 +258,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                 : `${ testId }-role-name-input`
                                         }
                                         loading={ isRegExLoading }
+                                        readOnly={ isReadOnly }
                                     />
                                     {
                                         !isRoleNamePatternValid && (
@@ -263,62 +278,69 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         )
                                     }
                                 </Form.Field>
-
                             </Grid.Column>
                         </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Button
-                                    primary
-                                    type="submit"
-                                    size="small"
-                                    className="form-button"
-                                    data-testid={
-                                        isGroup
-                                            ? `${ testId }-group-update-button`
-                                            : `${ testId }-role-update-button`
-                                    }
-                                    disabled={ !isRoleNamePatternValid && !isRegExLoading }
-                                >
-                                    { t("adminPortal:components.roles.edit.basics.buttons.update") }
-                                </Button>
+                                {
+                                    !isReadOnly && (
+                                        <Button
+                                            primary
+                                            type="submit"
+                                            size="small"
+                                            className="form-button"
+                                            data-testid={
+                                                isGroup
+                                                    ? `${ testId }-group-update-button`
+                                                    : `${ testId }-role-update-button`
+                                            }
+                                            disabled={ !isRoleNamePatternValid && !isRegExLoading }
+                                        >
+                                            { t("adminPortal:components.roles.edit.basics.buttons.update") }
+                                        </Button>
+                                    )
+                                }
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
                 </Forms>
             </EmphasizedSegment>
             <Divider hidden />
-            <DangerZoneGroup sectionHeader="Danger Zone">
-                <DangerZone
-                    actionTitle={
-                        isGroup
-                            ? t("adminPortal:components.roles.edit.basics.dangerZone.actionTitle",
-                                { type: "Group" })
-                            : t("adminPortal:components.roles.edit.basics.dangerZone.actionTitle",
-                                { type: "Role" })
-                    }
-                    header={
-                        isGroup
-                            ? t("adminPortal:components.roles.edit.basics.dangerZone.header",
-                                { type: "group" })
-                            : t("adminPortal:components.roles.edit.basics.dangerZone.header",
-                                { type: "role" })
-                    }
-                    subheader={ 
-                        isGroup
-                            ? t("adminPortal:components.roles.edit.basics.dangerZone.subheader",
-                                { type: "group" })
-                            : t("adminPortal:components.roles.edit.basics.dangerZone.subheader",
-                                { type: "role" })
-                    }
-                    onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
-                    data-testid={
-                        isGroup
-                            ? `${ testId }-group-danger-zone`
-                            : `${ testId }-role-danger-zone`
-                    }
-                />
-            </DangerZoneGroup> 
+            {
+                !isReadOnly && (
+                    <DangerZoneGroup sectionHeader="Danger Zone">
+                        <DangerZone
+                            actionTitle={
+                                isGroup
+                                    ? t("adminPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                                    { type: "Group" })
+                                    : t("adminPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                                    { type: "Role" })
+                            }
+                            header={
+                                isGroup
+                                    ? t("adminPortal:components.roles.edit.basics.dangerZone.header",
+                                    { type: "group" })
+                                    : t("adminPortal:components.roles.edit.basics.dangerZone.header",
+                                    { type: "role" })
+                            }
+                            subheader={
+                                isGroup
+                                    ? t("adminPortal:components.roles.edit.basics.dangerZone.subheader",
+                                    { type: "group" })
+                                    : t("adminPortal:components.roles.edit.basics.dangerZone.subheader",
+                                    { type: "role" })
+                            }
+                            onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
+                            data-testid={
+                                isGroup
+                                    ? `${ testId }-group-danger-zone`
+                                    : `${ testId }-role-danger-zone`
+                            }
+                        />
+                    </DangerZoneGroup>
+                )
+            }
             {
                 showRoleDeleteConfirmation && 
                     <ConfirmationModal

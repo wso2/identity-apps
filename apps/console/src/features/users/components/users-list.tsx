@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
@@ -24,19 +25,30 @@ import {
     LinkButton,
     PrimaryButton,
     ResourceList,
+    ResourceListActionInterface,
     ResourceListItem,
     UserAvatar
 } from "@wso2is/react-components";
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Grid, Icon, List, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    EmptyPlaceholderIllustrations,
+    FeatureConfigInterface,
+    UIConstants,
+    history
+} from "../../core";
+import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
 
 /**
  * Prop types for the liked accounts component.
  */
-interface UsersListProps extends LoadableComponentInterface, TestableComponentInterface {
+interface UsersListProps extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
+    TestableComponentInterface {
     /**
      * Width of the action panel column.
      */
@@ -95,6 +107,10 @@ interface UsersListProps extends LoadableComponentInterface, TestableComponentIn
      * Width of the meta info area.
      */
     metaColumnWidth?: SemanticWIDTHS;
+    /**
+     * List of readOnly user stores.
+     */
+    readOnlyUserStores?: string[];
 }
 
 /**
@@ -109,6 +125,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
         defaultListItemLimit,
         handleUserDelete,
         isLoading,
+        readOnlyUserStores,
+        featureConfig,
         onEmptyListPlaceholderActionClick,
         onListItemClick,
         onSearchQueryClear,
@@ -126,6 +144,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<UserBasicInterface>(undefined);
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const handleUserEdit = (userId: string) => {
         history.push(AppConstants.PATHS.get("USER_EDIT").replace(":id", userId));
@@ -209,6 +229,59 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     /**
+     * Resolves list item actions based on user store mutability and app configs.
+     *
+     * @param user - User details.
+     *
+     * @return {ResourceListActionInterface[]} Resolved list actions.
+     */
+    const resolveListItemActions = (user): ResourceListActionInterface[] => {
+        if (!showListItemActions) {
+            return;
+        }
+
+        const userStore = user?.userName?.split("/").length > 1 ? user?.userName?.split("/")[0] : "PRIMARY";
+
+        const actions: ResourceListActionInterface[] = [
+            {
+                "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
+                hidden: false,
+                icon: !isFeatureEnabled(
+                    featureConfig?.users,
+                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
+                    || readOnlyUserStores?.includes(userStore.toString())
+                    ? "eye" : "pencil alternate",
+                onClick: (): void => handleUserEdit(user.id),
+                popupText: !isFeatureEnabled(
+                    featureConfig?.users,
+                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
+                    || readOnlyUserStores?.includes(userStore.toString())
+                    ? t("common:view")
+                    : t("common:edit"),
+                type: "button"
+            }
+        ];
+
+        actions.push({
+            "data-testid": `${ testId }-delete-user-${ user.userName }-button`,
+            hidden: !hasRequiredScopes(
+                featureConfig?.users,
+                featureConfig?.users?.scopes?.delete, allowedScopes)
+                || readOnlyUserStores?.includes(userStore.toString()) || user.userName === "admin",
+            icon: "trash alternate",
+            onClick: (): void => {
+                setShowDeleteConfirmationModal(true);
+                setDeletingUser(user);
+            },
+            popupText: t("adminPortal:components.users.usersList.list" +
+                ".iconPopups.delete"),
+            type: "button"
+        });
+
+        return actions;
+    };
+
+    /**
      * Shows list placeholders.
      *
      * @return {React.ReactElement}
@@ -282,32 +355,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         ? usersList.Resources.map((user, index) => (
                             <ResourceListItem
                                 key={ index }
-                                actions={
-                                    showListItemActions
-                                        ? [
-                                            {
-                                                "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
-                                                icon: "pencil alternate",
-                                                onClick: () => handleUserEdit(user.id),
-                                                popupText: t("adminPortal:components.users.usersList.list" +
-                                                    ".iconPopups.edit"),
-                                                type: "button"
-                                            },
-                                            {
-                                                "data-testid": `${ testId }-delete-user-${ user.userName }-button`,
-                                                hidden: user.userName === "admin",
-                                                icon: "trash alternate",
-                                                onClick: (): void => {
-                                                    setShowDeleteConfirmationModal(true);
-                                                    setDeletingUser(user);
-                                                },
-                                                popupText: t("adminPortal:components.users.usersList.list" +
-                                                    ".iconPopups.delete"),
-                                                type: "button"
-                                            }
-                                        ]
-                                        : []
-                                }
+                                actions={ resolveListItemActions(user) }
                                 actionsFloated="right"
                                 avatar={ (
                                     <UserAvatar

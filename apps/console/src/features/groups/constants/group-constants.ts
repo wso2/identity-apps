@@ -36,4 +36,16 @@ export class GroupConstants {
      * @type {string}
      */
     public static readonly GROUP_VIEW_PATH: string = "/groups/";
+
+    /**
+     * Set of keys used to enable/disable features.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("GROUP_CREATE", "groups.create")
+        .set("GROUP_UPDATE", "groups.update")
+        .set("GROUP_DELETE", "groups.delete")
+        .set("GROUP_READ", "groups.read")
 }

@@ -20,6 +20,7 @@ import { getUserStoreList } from "@wso2is/core/api";
 import _ from "lodash";
 import { UserStoreProperty } from "../../userstores/models";
 import { getAUserStore } from "../api";
+import { SharedUserStoreConstants } from "../constants";
 
 /**
  * Utility class for common user store operations.
@@ -62,8 +63,44 @@ export class SharedUserStoreUtils {
      * @param inputValue
      * @param regExValue
      */
-    public static validateInputAgainstRegEx = (inputValue: string, regExValue: string): boolean => {
+    public static validateInputAgainstRegEx(inputValue: string, regExValue: string): boolean {
         const regEx = new RegExp(regExValue);
         return regEx.test(inputValue);
-    };
+    }
+
+    /**
+     * The following method fetch the user store ids list.
+     */
+    public static async getUserStoreIds(): Promise<string[]> {
+        const userStoreIds: string[] = [];
+
+        return getUserStoreList().then((response) => {
+            response.data.map((userStore) => {
+                userStoreIds.push(userStore.id);
+            });
+
+            return userStoreIds;
+        });
+    }
+
+    /**
+     * The following method fetch the readonly user stores list.
+     */
+    public static async getReadOnlyUserStores(): Promise<string[]> {
+        const ids = await SharedUserStoreUtils.getUserStoreIds();
+        const readOnlyUserStores: string[] = [];
+
+        for (const id of ids) {
+             await getAUserStore(id)
+                .then((res) => {
+                    res.properties.map((property: UserStoreProperty) => {
+                        if (property.name == SharedUserStoreConstants.READONLY_USER_STORE) {
+                            readOnlyUserStores.push(res.name.toUpperCase());
+                        }
+                    })
+                });
+        }
+
+        return readOnlyUserStores;
+    }
 }

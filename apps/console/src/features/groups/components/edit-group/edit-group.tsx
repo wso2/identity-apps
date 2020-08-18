@@ -16,20 +16,39 @@
  * under the License.
  */
 
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
+import { useSelector } from "react-redux";
+import { FeatureConfigInterface } from "../../../core/models";
+import { AppState } from "../../../core/store";
 import { BasicRoleDetails, RoleUserDetails } from "../../../roles";
+import { GroupConstants } from "../../constants";
 import { GroupsInterface } from "../../models";
 
 /**
  * Captures props needed for edit group component
  */
-interface EditGroupProps {
+interface EditGroupProps extends SBACInterface<FeatureConfigInterface> {
+    /**
+     * Group ID
+     */
     groupId: string;
+    /**
+     * Group details
+     */
     group: GroupsInterface;
+    /**
+     * Handle group update callback.
+     */
     onGroupUpdate: () => void;
+    /**
+     * List of readOnly user stores.
+     */
+    readOnlyUserStores?: string[];
 }
 
 /**
@@ -41,10 +60,31 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
 
     const {
         group,
-        onGroupUpdate
+        onGroupUpdate,
+        featureConfig,
+        readOnlyUserStores
     } = props;
 
     const { t } = useTranslation();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if(!group) {
+            return;
+        }
+
+        const userStore = group?.displayName.split("/");
+
+        if (!isFeatureEnabled(featureConfig?.groups, GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
+            || readOnlyUserStores?.includes(userStore?.toString())
+            || !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.update, allowedScopes)
+        ) {
+            setReadOnly(true);
+        }
+    }, [ group, readOnlyUserStores ]);
 
     const panes = () => ([
         {
@@ -56,6 +96,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                         isGroup={ true }
                         roleObject={ group }
                         onRoleUpdate={ onGroupUpdate }
+                        isReadOnly={ isReadOnly }
                     />
                 </ResourceTab.Pane>
             )
@@ -68,6 +109,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                         isGroup={ true }
                         roleObject={ group }
                         onRoleUpdate={ onGroupUpdate }
+                        isReadOnly={ isReadOnly }
                     />
                 </ResourceTab.Pane>
             )

@@ -16,19 +16,33 @@
  * under the License.
  */
 
-import { AlertInterface, ProfileInfoInterface } from "@wso2is/core/models";
+import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
+import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-edit";
+import { FeatureConfigInterface } from "../../core/models";
+import { AppState } from "../../core/store";
+import { UserManagementConstants } from "../constants";
 
-interface EditUserPropsInterface {
+interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
+    /**
+     * User profile
+     */
     user: ProfileInfoInterface;
+    /**
+     * Handle user update callback.
+     */
     handleUserUpdate: (userId: string) => void;
+    /**
+     * List of readOnly user stores.
+     */
+    readOnlyUserStores?: string[];
 }
 
 /**
@@ -42,11 +56,32 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const {
         user,
-        handleUserUpdate
+        handleUserUpdate,
+        featureConfig,
+        readOnlyUserStores
     } = props;
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
+    const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
+
+    useEffect(() => {
+        if(!user) {
+            return;
+        }
+
+        const userStore = user?.userName.split("/");
+
+        if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
+            || readOnlyUserStores?.includes(userStore?.toString())
+            || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+        ) {
+            setReadOnly(true);
+        }
+    }, [ user, readOnlyUserStores ]);
 
     const handleAlerts = (alert: AlertInterface) => {
         dispatch(addAlert<AlertInterface>(alert));
@@ -61,6 +96,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
+                        isReadOnly={ isReadOnly }
                     />
                 </ResourceTab.Pane>
             )
@@ -73,6 +109,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
+                        isReadOnly={ isReadOnly }
                     />
                 </ResourceTab.Pane>
             )
@@ -85,6 +122,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
+                        isReadOnly={ isReadOnly }
                     />
                 </ResourceTab.Pane>
             )

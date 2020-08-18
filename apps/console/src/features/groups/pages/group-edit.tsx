@@ -19,10 +19,9 @@
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {AppConstants, history} from "../../core";
+import { AppConstants, SharedUserStoreUtils, history } from "../../core";
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
-import { GroupConstants } from "../constants";
 import { GroupsInterface } from "../models";
 
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
@@ -32,6 +31,27 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
     const [ roleId, setGroupId ] = useState<string>(undefined);
     const [ group, setGroup ] = useState<GroupsInterface>();
     const [ isGroupDetailsRequestLoading, setIsGroupDetailsRequestLoading ] = useState<boolean>(false);
+    const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
+
+    /**
+     * Get the readOnly user stores list.
+     */
+    useEffect(() => {
+        SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
+            setReadOnlyUserStoresList(response);
+        });
+    }, [ group ]);
+
+    /**
+     * Get Group data from URL id
+     */
+    useEffect(() => {
+        const path = history.location.pathname.split("/");
+        const roleId = path[ path.length - 1 ];
+
+        setGroupId(roleId);
+        getGroupDetails(roleId);
+    }, []);
 
     const getGroupDetails = (roleId: string ): void => {
         setIsGroupDetailsRequestLoading(true);
@@ -52,17 +72,6 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
     const onGroupUpdate = (): void => {
         getGroupDetails(roleId);
     };
-
-    /**
-     * Get Group data from URL id
-     */
-    useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const roleId = path[ path.length - 1 ];
-
-        setGroupId(roleId);
-        getGroupDetails(roleId);
-    }, []);
 
     const handleBackButtonClick = () => {
         history.push(AppConstants.PATHS.get("GROUPS"));

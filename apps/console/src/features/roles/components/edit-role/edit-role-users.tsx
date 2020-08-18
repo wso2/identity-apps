@@ -30,6 +30,7 @@ interface RoleUserDetailsProps {
     roleObject: RolesInterface;
     isGroup: boolean;
     onRoleUpdate: () => void;
+    isReadOnly?: boolean;
 }
 
 export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (

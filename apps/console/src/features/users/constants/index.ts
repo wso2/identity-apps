@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./user-constants";
+export * from "./user-management-constants";
