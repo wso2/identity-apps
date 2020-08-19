@@ -145,7 +145,8 @@ export const initializeAuthentication = () => (dispatch) => {
         responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
         scope: [TokenConstants.SYSTEM_SCOPE],
         serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-        storage: Storage.WebWorker
+        // TODO: Revert back to Worker Storage.
+        storage: Storage.SessionStorage
     });
     auth.on("http-request-error", HttpUtils.onHttpRequestError);
     auth.on("http-request-finish", HttpUtils.onHttpRequestFinish);
