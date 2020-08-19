@@ -17,8 +17,7 @@
  */
 
 import { I18nModuleConstants, I18nModuleInitOptions, generateBackendPaths } from "@wso2is/i18n";
-import { store } from "../store";
-
+import { Config } from "../configs";
 /**
  * Class containing portal specific i18n constants.
  */
@@ -97,7 +96,7 @@ export class I18nConstants {
                 language,
                 namespace,
                 window["AppUtils"].getConfig().appBase,
-                store.getState().config.i18n
+                Config.getI18nConfig()
             )
         },
         load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
