@@ -29,7 +29,8 @@ const WriteFilePlugin = require("write-file-webpack-plugin");
 const deploymentConfig = require("./src/public/deployment.config.json");
 
 // Flag to enable source maps in production.
-const isSourceMapsEnabledInProduction = false;
+// TODO: [IMPORTANT] Revert back to false.
+const isSourceMapsEnabledInProduction = true;
 
 // Enable/Disable profiling in Production.
 const isProfilingEnabledInProduction = false;

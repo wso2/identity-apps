@@ -119,6 +119,9 @@ export const isValidIdToken = (
     issuer: string,
     username: string
 ): boolean => {
+    // TODO: [IMPORTANT] Remove this log.
+    console.log("idToken", idToken, "JWK", jwk, "clientID", clientID, "issuer", issuer, "username", username);
+    
     return KJUR.jws.JWS.verifyJWT(idToken, jwk, {
         alg: getSupportedSignatureAlgorithms(),
         // `jsrsasign` typings only allow string[] as aud but string should also be possible.
