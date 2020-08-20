@@ -20,3 +20,4 @@ export * from "./edit-role";
 export * from "./edit-role-basic";
 export * from "./edit-role-permission";
 export * from "./edit-role-users";
+export * from "./edit-role-groups";

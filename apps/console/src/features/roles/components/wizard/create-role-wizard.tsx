@@ -23,11 +23,13 @@ import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-compone
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
+import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AssignGroupsUsers } from "./assign-groups-users";
 import { RoleBasics } from "./role-basics";
-import { PermissionList } from "./role-permisson";
+import { PermissionList } from "./role-permission";
 import { CreateRoleSummary } from "./role-sumary";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
 import { createRole } from "../../api";
@@ -97,6 +99,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
     const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
     const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
+    const [ isEnded, setEnded ] = useState<boolean>(false);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -120,6 +123,16 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         }
     }, []);
 
+    useEffect(() => {
+        if(!isEnded) {
+            return;
+        }
+
+        if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]) {
+            addRole(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]);
+        }
+    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] ]);
+
     /**
      * Method to handle create role action when create role wizard finish action is triggered.
      *
@@ -132,17 +145,17 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         const permissions: string[] = [];
 
         if (basicData?.UserList?.length > 0) {
-            basicData.UserList.forEach(user => {
-                users.push({
-                    display: user.userName,
-                    value: user.id
+            basicData?.UserList?.forEach(user => {
+                users?.push({
+                    display: user?.userName,
+                    value: user?.id
                 })
             })
         }
 
         if (basicData?.GroupList?.length > 0) {
-            basicData.GroupList.forEach(group => {
-                groups.push({
+            basicData?.GroupList?.forEach(group => {
+                groups?.push({
                     display: group.displayName,
                     value: group.id
                 })
@@ -150,8 +163,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         }
 
         if (basicData?.PermissionList?.length > 0) {
-            basicData.PermissionList.forEach(permission => {
-                permissions.push(permission.fullPath);
+            basicData?.PermissionList?.forEach(permission => {
+                permissions?.push(permission?.fullPath);
             })
         }
 
@@ -159,7 +172,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             "schemas": [
                 "urn:ietf:params:scim:schemas:extension:2.0:Role"
             ],
-            "displayName": basicData.BasicDetails.domain + "/" + basicData.BasicDetails.roleName,
+            "displayName": basicData?.BasicDetails ? basicData?.BasicDetails?.roleName : basicData?.roleName,
             "users" : users,
             "groups": groups,
             "permissions": permissions
@@ -175,12 +188,14 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                         message: t("adminPortal:components.roles.notifications.createRole.success.message")
                     })
                 );
+
+                closeWizard();
+                history.push(AppConstants.PATHS.get("ROLE_EDIT").replace(":id", response.data.id));
             }
 
-            updateList();
-            closeWizard();
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.roles.notifications.createRole.error.description"),
@@ -189,6 +204,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     })
                 );
             } else if (error.response && error.response.data.detail) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.roles.notifications.createRole.error.description",
@@ -198,6 +214,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                     })
                 );
             } else {
+                closeWizard();
                 dispatch(addAlert({
                     description: t("adminPortal:components.roles.notifications.createRole.genericError.description"),
                     level: AlertLevels.ERROR,
@@ -350,6 +367,11 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         setPartiallyCompletedStep(currentStep);
     };
 
+    const handleFinishFlow = () => {
+        setEnded(true);
+        setSubmitGeneralSettings();
+    };
+
     return (
         <Modal
             open={ true }
@@ -399,14 +421,25 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentStep < WIZARD_STEPS.length - 1 && (
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ changeStepToNext }
-                                    data-testid={ `${ testId }-next-button` }
-                                >
-                                    { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
-                                    <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
-                                </PrimaryButton>
+                                <>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ changeStepToNext }
+                                        data-testid={ `${ testId }-next-button` }
+                                    >
+                                        { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
+                                        <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
+                                    </PrimaryButton>
+                                    <Button
+                                        basic
+                                        color="orange"
+                                        floated="right"
+                                        onClick={ handleFinishFlow }
+                                        data-testid={ `${ testId }-initial-finish-button` }
+                                    >
+                                        { t("adminPortal:components.roles.addRoleWizard.buttons.finish") }
+                                    </Button>
+                                </>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
                                 <PrimaryButton

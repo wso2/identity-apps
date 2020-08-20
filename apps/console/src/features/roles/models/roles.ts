@@ -35,14 +35,14 @@ export interface CreateRoleInterface {
  */
 export interface CreateRoleMemberInterface {
     value: string;
-    display: string;
+    display?: string;
 }
 
 /**
  * Interface to store form data from create role wizard form.
  */
 export interface CreateRoleFormData {
-    domain: string;
+    domain?: string;
     roleName: string;
 }
 
@@ -63,4 +63,5 @@ export interface PatchRoleDataInterface {
 export interface ScimOperationsInterface {
     op: string;
     value: any;
+    path?: string;
 }

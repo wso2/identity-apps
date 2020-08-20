@@ -35,6 +35,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid, Icon, Responsive } from "semantic-ui-react";
 import { AppConstants, AppState, UIConstants, history } from "../../core";
 import { GroupList } from "../../groups/components";
+import { GroupsInterface } from "../../groups/models";
 import { UserListInterface, UsersList, getUsersList } from "../../users";
 import { QueryParams, getUserStores } from "../../userstores";
 import { OverviewPageIllustrations } from "../configs";
@@ -68,7 +69,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
         (state: AppState) => state.loaders.isProfileInfoRequestLoading);
     const [ usersList, setUsersList ] = useState<UserListInterface>({});
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
-    const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
+    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
     const [ userstoresCount, setUserstoresCount ] = useState<number>(0);
     const [ userCount, setUsersCount ] = useState<number>(0);

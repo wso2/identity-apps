@@ -23,9 +23,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
 import { useSelector } from "react-redux";
+import { GroupRolesList } from "./edit-group-roles";
+import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
-import { BasicRoleDetails, RoleUserDetails } from "../../../roles";
+import { BasicRoleDetails } from "../../../roles";
 import { GroupConstants } from "../../constants";
 import { GroupsInterface } from "../../models";
 
@@ -104,11 +106,23 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
             menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <RoleUserDetails
+                    <GroupUsersList
                         data-testid="group-mgt-edit-group-users"
                         isGroup={ true }
-                        roleObject={ group }
-                        onRoleUpdate={ onGroupUpdate }
+                        group={ group }
+                        onGroupUpdate={ onGroupUpdate }
+                        isReadOnly={ isReadOnly }
+                    />
+                </ResourceTab.Pane>
+            )
+        },{
+            menuItem: t("adminPortal:components.roles.edit.menuItems.roles"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <GroupRolesList
+                        data-testid="group-mgt-edit-group-roles"
+                        group={ group }
+                        onGroupUpdate={ onGroupUpdate }
                         isReadOnly={ isReadOnly }
                     />
                 </ResourceTab.Pane>

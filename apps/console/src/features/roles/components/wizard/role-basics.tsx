@@ -80,25 +80,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     }, [ isAddGroup ]);
 
     /**
-     * Contains domains needed for role creation.
-     * 
-     * Note : Since primary domain is available all time, 
-     *        hardcoded in the dropdown elements.
-     * 
-     * TODO : Discuss and add or remove the Hybrid domains 
-     *        to the dropdown.
-    */
-    const groupDomains = [{
-        key: -1, text: PRIMARY_DOMAIN, value: PRIMARY_DOMAIN
-    }];
-
-    const roleDomains = [{
-        key: -1, text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
-    },{
-        key: 0, text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
-    }];
-
-    /**
      * Util method to validate if the provided role name exists in the system.
      * 
      * @param roleName - new role name user entered.
@@ -117,16 +98,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             .then((response) => {
                 setIsValidRoleName(response?.data?.totalResults === 0);
             });
-    };
-
-    /**
-     * The following function change of the user stores.
-     *
-     * @param values
-     */
-    const handleDomainChange = (values: Map<string, FormValue>) => {
-        const domain: string = values.get("domain").toString();
-        setUserStore(domain);
     };
 
     /**
@@ -206,7 +177,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     const getFormValues = (values: any): CreateRoleFormData => {
         return {
-            domain: values.get("domain").toString(),
             roleName: values.get("rolename").toString()
         };
     };
@@ -220,33 +190,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
             submitState={ triggerSubmit }
         >
              <Grid>
-                <GridRow columns={ 2 }>
-                    <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            data-testid={ `${ testId }-domain-dropdown` }
-                            type="dropdown"
-                            label={
-                               t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
-                                   "label.role")
-                            }
-                            name="domain"
-                            children={ roleDomains }
-                            placeholder={ t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
-                                "domain.placeholder") }
-                            requiredErrorMessage={
-                                t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.domain." +
-                                        "validation.empty.role")
-                            }
-                            required={ true }
-                            element={ <div></div> }
-                            listen={ handleDomainChange }
-                            value={ initialValues?.domain ? 
-                                    initialValues?.domain : 
-                                        isAddGroup ? 
-                                            userStoreOptions[0]?.value : roleDomains[0].value 
-                            }
-                        />
-                    </GridColumn>
+                <GridRow>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             data-testid={ `${ testId }-role-name-input` }

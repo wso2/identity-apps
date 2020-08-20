@@ -23,7 +23,8 @@ export interface RolesInterface {
     displayName: string;
     id: string;
     meta: RolesMetaInterface;
-    members: RolesMemberInterface[];
+    groups?: RoleGroupsInterface[];
+    users?: RolesMemberInterface[];
 }
 
 /**
@@ -50,6 +51,15 @@ export interface RolesMetaInterface {
  * Interface to contain Role member information
  */
 export interface RolesMemberInterface {
+    display: string;
+    value: string;
+    $ref: string;
+}
+
+/**
+ * Interface to contain groups information of the role
+ */
+export interface RoleGroupsInterface {
     display: string;
     value: string;
     $ref: string;

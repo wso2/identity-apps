@@ -246,13 +246,19 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             {
                 "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
                 hidden: false,
-                icon: !isFeatureEnabled(
+                icon: !hasRequiredScopes(
+                    featureConfig?.users,
+                    featureConfig?.users?.scopes?.update, allowedScopes)
+                    || !isFeatureEnabled(
                     featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
                     ? "eye" : "pencil alternate",
                 onClick: (): void => handleUserEdit(user.id),
-                popupText: !isFeatureEnabled(
+                popupText: !hasRequiredScopes(
+                    featureConfig?.users,
+                    featureConfig?.users?.scopes?.update, allowedScopes)
+                    || !isFeatureEnabled(
                     featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())

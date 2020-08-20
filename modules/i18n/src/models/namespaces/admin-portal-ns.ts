@@ -894,7 +894,9 @@ export interface AdminPortalNS {
                 menuItems: {
                     basic: string;
                     permissions: string;
+                    groups: string;
                     users: string;
+                    roles: string;
                 };
                 users: {
                     list: {

@@ -24,11 +24,11 @@ import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-compone
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Icon, Modal } from "semantic-ui-react";
+import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AddGroupUsers } from "./group-assign-users";
 import { GroupBasics } from "./group-basics";
 import { CreateGroupSummary } from "./group-summary";
-import { AssignRoles, RolePermissions } from "../../../core";
+import { AppConstants, AssignRoles, RolePermissions, history } from "../../../core";
 import { updateRole } from "../../../roles/api";
 import { createGroup } from "../../api";
 import { GroupsWizardStepIcons } from "../../configs";
@@ -75,7 +75,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const {
         closeWizard,
         initStep,
-        updateList,
         [ "data-testid" ]: testId
     } = props;
 
@@ -100,6 +99,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const [ tempRoleList, setTempRoleList ] = useState<RolesInterface[]>([]);
     const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]>([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]>([]);
+    const [ isEnded, setEnded ] = useState<boolean>(false);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -133,6 +133,16 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         }
     }, []);
 
+    useEffect(() => {
+        if(!isEnded) {
+            return;
+        }
+
+        if (wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]) {
+            addGroup(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]);
+        }
+    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] ]);
+
     const handleRoleIdSet = (roleId) => {
         setSelectedRoleId(roleId);
         setRoleSelection(true);
@@ -162,10 +172,10 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const addGroup = (groupDetails: any): void => {
 
         const members: CreateGroupMemberInterface[] = [];
-        const users = groupDetails.UserList;
-        if (users.length > 0) {
-            users.forEach(user => {
-                members.push({
+        const users = groupDetails?.UserList;
+        if (users?.length > 0) {
+            users?.forEach(user => {
+                members?.push({
                     display: user.userName,
                     value: user.id
                 })
@@ -173,7 +183,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         }
 
         const groupData: CreateGroupInterface = {
-            "displayName": groupDetails.BasicDetails.groupName,
+            "displayName": groupDetails?.BasicDetails ? groupDetails?.BasicDetails?.groupName : groupDetails?.groupName,
             "members" : members,
             "schemas": [
                 "urn:ietf:params:scim:schemas:core:2.0:Group"
@@ -190,9 +200,9 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 const createdGroup = response.data;
                 const rolesList: string[] = [];
 
-                if (groupDetails.RoleList.roles) {
-                    groupDetails.RoleList.roles.forEach(role => {
-                        rolesList.push(role.id);
+                if (groupDetails?.RoleList?.roles) {
+                    groupDetails?.RoleList?.roles.forEach(role => {
+                        rolesList?.push(role.id);
                     })
                 }
 
@@ -215,46 +225,48 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     ]
                 };
 
-                for (const roleId of rolesList) {
-                    updateRole(roleId, roleData)
-                        .catch(error => {
-                            if (!error.response || error.response.status === 401) {
-                                dispatch(
-                                    addAlert({
-                                        description: t("adminPortal:components.groups.notifications." +
-                                            "createPermission." +
-                                            "error.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: t("adminPortal:components.groups.notifications.createPermission." +
-                                            "error.message")
-                                    })
-                                );
-                            } else if (error.response && error.response.data.detail) {
-                                dispatch(
-                                    addAlert({
-                                        description: t("adminPortal:components.groups.notifications." +
-                                            "createPermission." +
-                                            "error.description",
-                                            { description: error.response.data.detail }),
-                                        level: AlertLevels.ERROR,
-                                        message: t("adminPortal:components.groups.notifications.createPermission." +
-                                            "error.message")
-                                    })
-                                );
-                            } else {
-                                dispatch(
-                                    addAlert({
-                                        description: t("adminPortal:components.groups.notifications." +
-                                            "createPermission." +
-                                            "genericError.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: t("adminPortal:components.groups.notifications.createPermission." +
-                                            "genericError."+
-                                            "message")
-                                    })
-                                );
-                            }
-                        });
+                if (rolesList && rolesList.length > 0) {
+                    for (const roleId of rolesList) {
+                        updateRole(roleId, roleData)
+                            .catch(error => {
+                                if (!error.response || error.response.status === 401) {
+                                    dispatch(
+                                        addAlert({
+                                            description: t("adminPortal:components.groups.notifications." +
+                                                "createPermission." +
+                                                "error.description"),
+                                            level: AlertLevels.ERROR,
+                                            message: t("adminPortal:components.groups.notifications.createPermission." +
+                                                "error.message")
+                                        })
+                                    );
+                                } else if (error.response && error.response.data.detail) {
+                                    dispatch(
+                                        addAlert({
+                                            description: t("adminPortal:components.groups.notifications." +
+                                                "createPermission." +
+                                                "error.description",
+                                                {description: error.response.data.detail}),
+                                            level: AlertLevels.ERROR,
+                                            message: t("adminPortal:components.groups.notifications.createPermission." +
+                                                "error.message")
+                                        })
+                                    );
+                                } else {
+                                    dispatch(
+                                        addAlert({
+                                            description: t("adminPortal:components.groups.notifications." +
+                                                "createPermission." +
+                                                "genericError.description"),
+                                            level: AlertLevels.ERROR,
+                                            message: t("adminPortal:components.groups.notifications.createPermission." +
+                                                "genericError." +
+                                                "message")
+                                        })
+                                    );
+                                }
+                            });
+                    }
                 }
 
                 dispatch(
@@ -267,10 +279,12 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     })
                 );
             }
-            updateList();
+
             closeWizard();
+            history.push(AppConstants.PATHS.get("GROUP_EDIT").replace(":id", response.data.id));
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.groups.notifications.createGroup.error.description"),
@@ -279,6 +293,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     })
                 );
             } else if (error.response && error.response.data.detail) {
+                closeWizard();
                 dispatch(
                     addAlert({
                         description: t("adminPortal:components.groups.notifications.createGroup.error.description",
@@ -288,6 +303,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     })
                 );
             } else {
+                closeWizard();
                 dispatch(addAlert({
                     description: t("adminPortal:components.groups.notifications.createGroup.genericError.description"),
                     level: AlertLevels.ERROR,
@@ -328,7 +344,11 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         if (WizardStepsFormTypes.BASIC_DETAILS === formType) {
             setSelectedUserStore(values.domain);
         }
-        setCurrentWizardStep(currentStep + 1);
+
+        if (!isEnded) {
+            setCurrentWizardStep(currentStep + 1);
+        }
+
         setWizardState({ ...wizardState, [ formType ]: values });
     };
 
@@ -428,6 +448,11 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         setPartiallyCompletedStep(currentStep);
     };
 
+    const handleFinishFlow = () => {
+        setEnded(true);
+        setSubmitGeneralSettings();
+    };
+
     return (
         <Modal
             open={ true }
@@ -479,14 +504,25 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentStep < WIZARD_STEPS.length - 1 && (
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ changeStepToNext }
-                                    data-testid={ `${ testId }-next-button` }
-                                >
-                                    { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
-                                    <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
-                                </PrimaryButton>
+                                <>
+                                    <PrimaryButton
+                                        floated="right"
+                                        onClick={ changeStepToNext }
+                                        data-testid={ `${ testId }-next-button` }
+                                    >
+                                        { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
+                                        <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
+                                    </PrimaryButton>
+                                    <Button
+                                        basic
+                                        color="orange"
+                                        floated="right"
+                                        onClick={ handleFinishFlow }
+                                        data-testid={ `${ testId }-initial-finish-button` }
+                                    >
+                                        { t("adminPortal:components.roles.addRoleWizard.buttons.finish") }
+                                    </Button>
+                                </>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
                                 <PrimaryButton

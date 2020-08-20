@@ -17,11 +17,12 @@
  */
 
 import {
-    AlertInterface,
     AlertLevels,
-    ProfileInfoInterface,
-    RolesMemberInterface
+    RolesInterface,
+    RolesMemberInterface,
+    TestableComponentInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import {
     EmphasizedSegment,
     EmptyPlaceholder,
@@ -35,6 +36,7 @@ import {
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import {
     Button,
     Divider,
@@ -45,41 +47,36 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { RolePermissions } from "./wizard";
-import { EmptyPlaceholderIllustrations, updateResources } from "../../core";
-import { getGroupList } from "../../groups/api";
+import { EmptyPlaceholderIllustrations, updateResources } from "../../../core";
+import { getGroupList } from "../../../groups/api";
 
-interface UserGroupsPropsInterface {
+interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
      * User profile
      */
-    user: ProfileInfoInterface;
-    /**
-     * On alert fired callback.
-     */
-    onAlertFired: (alert: AlertInterface) => void;
+    role: RolesInterface;
     /**
      * Handle user update callback.
      */
-    handleUserUpdate: (userId: string) => void;
+    onRoleUpdate: (roleId: string) => void;
     /**
      * Show if the user is read only.
      */
     isReadOnly?: boolean;
 }
 
-export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
-    props: UserGroupsPropsInterface
+export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
+    props: RoleGroupsPropsInterface
 ): ReactElement => {
 
     const {
-        onAlertFired,
-        user,
-        handleUserUpdate,
-        isReadOnly,
+        role,
+        onRoleUpdate,
+        isReadOnly
     } = props;
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const [ showAddNewRoleModal, setAddNewRoleModalView ] = useState(false);
     const [ groupList, setGroupList ] = useState<any>([]);
@@ -95,11 +92,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
 
     useEffect(() => {
-        if (!(user)) {
+        if (!(role)) {
             return;
         }
         mapUserRoles();
-        setAssignedGroups(user.groups);
+        setAssignedGroups(role.groups);
     }, []);
 
     useEffect(() => {
@@ -123,16 +120,16 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
      * roles are updated.
      */
     useEffect(() => {
-        if (!(user)) {
+        if (!(role)) {
             return;
         }
         mapUserRoles();
-        setAssignedGroups(user.groups);
-    }, [ user ]);
+        setAssignedGroups(role.groups);
+    }, [ role ]);
 
     useEffect(() => {
         let domain = "Primary";
-        const domainName: string[] = user?.userName?.split("/");
+        const domainName: string[] = role?.displayName?.split("/");
 
         if (domainName.length > 1) {
             domain = domainName[0];
@@ -146,11 +143,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
     const mapUserRoles = () => {
         const groupsMap = new Map<string, string> ();
 
-        if (user.groups && user.groups instanceof Array) {
-            _.forEachRight (user.groups, (group) => {
+        if (role.groups && role.groups instanceof Array) {
+            _.forEachRight (role.groups, (group) => {
                 const groupName = group.display.split("/");
 
-                if (groupName.length === 1) {
+                if (groupName.length > 1) {
                     groupsMap.set(group.display, group.value);
                 }
             });
@@ -336,7 +333,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 "Operations": [
                     {
                         "op": "remove",
-                        "path": "members[display eq" + " " + user.userName + "]"
+                        "path": "groups"
                     }
                 ]
             }
@@ -349,9 +346,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     {
                         "op": "add",
                         "value": {
-                            "members": [
+                            "groups": [
                                 {
-                                    "display": user.userName,
                                     "value": user.id
                                 }
                             ]
@@ -392,7 +388,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
             updateResources(bulkRemoveData)
                 .then(() => {
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: t(
                             "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                             "success.description"
@@ -402,9 +398,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                             "success.message"
                         )
-                    });
+                    }));
                     handleCloseAddNewGroupModal();
-                    handleUserUpdate(user.id);
+                    onRoleUpdate(role.id);
                 })
                 .catch((error) => {
                     if (error?.response?.status === 404) {
@@ -412,19 +408,19 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        onAlertFired({
+                        dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                                 "error.message"
                             )
-                        });
+                        }));
 
                         return;
                     }
 
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: t(
                             "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                             "genericError.description"
@@ -434,7 +430,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                             "genericError.message"
                         )
-                    });
+                    }));
                 });
         } else {
             groupIds.map((id) => {
@@ -451,7 +447,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
             updateResources(bulkAddData)
                 .then(() => {
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: t(
                             "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                             "success.description"
@@ -461,9 +457,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                             "success.message"
                         )
-                    });
+                    }));
                     handleCloseAddNewGroupModal();
-                    handleUserUpdate(user.id);
+                    onRoleUpdate(role.id);
                 })
                 .catch((error) => {
                     if (error?.response?.status === 404) {
@@ -471,19 +467,19 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        onAlertFired({
+                        dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                                 "error.message"
                             )
-                        });
+                        }));
 
                         return;
                     }
 
-                    onAlertFired({
+                    dispatch(addAlert({
                         description: t(
                             "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                             "genericError.description"
@@ -493,7 +489,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                             "genericError.message"
                         )
-                    });
+                    }));
                 });
         }
     };
@@ -522,11 +518,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         data-testid="user-mgt-update-groups-modal"
                     >
                         <TransferList
-                            isListEmpty={ !(groupList.length > 0) }
+                            isListEmpty={ !(groupList?.length > 0) }
                             listType="unselected"
                             listHeaders={ [
                                 t("adminPortal:components.transferList.list.headers.0"),
-                                t("adminPortal:components.transferList.list.headers.1")
+                                t("adminPortal:components.transferList.list.headers.1"), ""
                             ] }
                             handleHeaderCheckboxChange={ selectAllUnAssignedList }
                             isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
@@ -535,17 +531,17 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             data-testid="user-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
                         >
                             {
-                                groupList?.map((role, index)=> {
-                                    const roleName = role.displayName?.split("/");
-                                    if (roleName.length === 1) {
+                                groupList?.map((group, index)=> {
+                                    const groupName = group.displayName?.split("/");
+                                    if (groupName.length >= 1) {
                                         return (
                                             <TransferListItem
                                                 handleItemChange={
-                                                    () => handleUnassignedItemCheckboxChange(role)
+                                                    () => handleUnassignedItemCheckboxChange(group)
                                                 }
                                                 key={ index }
-                                                listItem={ role.displayName }
-                                                listItemId={ role.id }
+                                                listItem={ group.displayName }
+                                                listItemId={ group.id }
                                                 listItemIndex={ index }
                                                 listItemTypeLabel={
                                                     {
@@ -553,7 +549,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                         labelText: "Primary"
                                                     }
                                                 }
-                                                isItemChecked={ checkedUnassignedListItems.includes(role) }
+                                                isItemChecked={ checkedUnassignedListItems.includes(group) }
                                                 showSecondaryActions={ false }
                                                 data-testid="user-mgt-update-groups-modal-unselected-groups"
                                             />
@@ -578,7 +574,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             {
                                 tempGroupList?.map((role, index)=> {
                                     const userGroup = role.displayName.split("/");
-                                    if (userGroup.length === 1) {
+                                    if (userGroup.length >= 1) {
                                         return (
                                             <TransferListItem
                                                 handleItemChange={
@@ -621,7 +617,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             <PrimaryButton
                                 data-testid="user-mgt-update-groups-modal-save-button"
                                 floated="right"
-                                onClick={ () => updateUserGroup(user, tempGroupList) }
+                                onClick={ () => updateUserGroup(role, tempGroupList) }
                             >
                                 { t("common:save") }
                             </PrimaryButton>
@@ -650,7 +646,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 }
             });
         } else {
-            setAssignedGroups(user.groups);
+            setAssignedGroups(role.groups);
         }
     };
 
@@ -718,13 +714,15 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                 {
                                                     assignedGroups?.map((group) => {
                                                         const userGroup = group.display.split("/");
-                                                        if (userGroup.length === 1) {
+                                                        if (userGroup.length > 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     <Table.Cell>
-                                                                        <Label color="olive">Primary</Label>
+                                                                        <Label color="olive">
+                                                                            { userGroup[0] }
+                                                                        </Label>
                                                                     </Table.Cell>
-                                                                    <Table.Cell>{ group.display }</Table.Cell>
+                                                                    <Table.Cell>{ userGroup[1] }</Table.Cell>
                                                                 </Table.Row>
                                                             )
                                                         }
@@ -742,7 +740,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             "groupList.emptyListPlaceholder.title") }
                                         subtitle={ [
                                             t("adminPortal:components.user.updateUser.groups.editGroups." +
-                                                    "groupList.emptyListPlaceholder.subTitle.0"),
+                                                "groupList.emptyListPlaceholder.subTitle.0"),
                                             t("adminPortal:components.user.updateUser.groups.editGroups." +
                                                 "groupList.emptyListPlaceholder.subTitle.1"),
                                             t("adminPortal:components.user.updateUser.groups.editGroups." +

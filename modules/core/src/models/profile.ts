@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { RolesMemberInterface } from "./roles";
+
 /**
  * Multi-valued attribute schema
  */
@@ -71,7 +73,7 @@ export interface ProfileInfoInterface {
     /**
      * Roles assigned to the user.
      */
-    roles?: MultiValueAttributeInterface[];
+    roles?: RolesMemberInterface[];
     /**
      * Name of the user.
      */

@@ -28,6 +28,8 @@ import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
 import { RolePermissions } from "./user-role-permissions";
 import { AddUserWizardSummary } from "./wizard-summary";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { getGroupList, updateGroupDetails } from "../../../groups/api";
 import { updateRoleDetails } from "../../../roles/api";
 import { addUser } from "../../api";
@@ -438,14 +440,15 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups)
                 }
 
-                updateList();
                 closeWizard();
+                history.push(AppConstants.PATHS.get("USER_EDIT").replace(":id", response.data.id));
             })
             .catch((error) => {
                 // Axios throws a generic `Network Error` for 401 status.
                 // As a temporary solution, a check to see if a response
                 // is available has be used.
                 if (!error.response || error.response.status === 401) {
+                    closeWizard();
                     dispatch(addAlert({
                         description: t(
                             "adminPortal:components.users.notifications.addUser.error.description"
@@ -456,7 +459,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         )
                     }));
                 } else if (error.response && error.response.data && error.response.data.detail) {
-
+                    closeWizard();
                     dispatch(addAlert({
                         description: t(
                             "adminPortal:components.users.notifications.addUser.error.description",
@@ -468,6 +471,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         )
                     }));
                 } else {
+                    closeWizard();
                     // Generic error message
                     dispatch(addAlert({
                         description: t(

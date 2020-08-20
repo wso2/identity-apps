@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { RolesMemberInterface } from "@wso2is/core/models";
+
 /**
  * Interface to store data for create group api.
  */
@@ -30,7 +32,7 @@ export interface CreateGroupInterface {
  */
 export interface CreateGroupMemberInterface {
     value: string;
-    display: string;
+    display?: string;
 }
 
 /**
@@ -62,7 +64,8 @@ export interface GroupsInterface {
     displayName: string;
     id: string;
     meta: GroupsMetaInterface;
-    members: GroupsMemberInterface[];
+    members?: GroupsMemberInterface[];
+    roles?: RolesMemberInterface[];
 }
 
 /**
@@ -97,6 +100,7 @@ export interface GroupsMemberInterface {
 export interface GroupSCIMOperationsInterface {
     op: string;
     value: any;
+    path?: string;
 }
 
 /**

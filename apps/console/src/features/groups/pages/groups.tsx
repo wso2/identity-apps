@@ -79,8 +79,8 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
 
-    const [ groupList, setGroupsList ] = useState<RolesInterface[]>([]);
-    const [ paginatedGroups, setPaginatedGroups ] = useState<RolesInterface[]>([]);
+    const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
+    const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
 
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(GROUPS_SORTING_OPTIONS[ 0 ]);
 
