@@ -332,6 +332,7 @@ export function sendRefreshTokenRequest(requestParams: ConfigInterface, refreshT
 
                     return Promise.resolve(tokenResponse);
                 }
+
                 return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
             });
         })
