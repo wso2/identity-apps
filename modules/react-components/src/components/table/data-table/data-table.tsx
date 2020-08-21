@@ -23,13 +23,17 @@ import get from "lodash/get";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import {
     Dropdown,
-    DropdownItemProps, Icon,
+    DropdownItemProps,
+    Header,
+    Icon,
+    Placeholder,
     Popup,
     SemanticICONS,
     SemanticWIDTHS,
     Table, TableCellProps,
     TableProps
 } from "semantic-ui-react";
+import { Avatar } from "../../avatar";
 
 /**
  * Interface for the data table component.
@@ -59,6 +63,10 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
      * Is the data loading.
      */
     isLoading?: boolean;
+    /**
+     * Optional meta for the loading state.
+     */
+    loadingStateOptions?: TableLoadingStateOptionsInterface;
     /**
      * Callback row selection.
      */
@@ -138,6 +146,21 @@ export interface TableActionsInterface {
     renderer?: "semantic-icon" | "dropdown";
 }
 
+
+/**
+ * Interface for loading state options.
+ */
+interface TableLoadingStateOptionsInterface {
+    /**
+     * Number of loading rows.
+     */
+    count: number;
+    /**
+     * Loading state image type.
+     */
+    imageType?: "circular" | "square";
+}
+
 export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: DataTablePropsInterface): ReactElement => {
 
     const {
@@ -146,9 +169,11 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
         data,
         columns,
         isLoading,
+        loadingStateOptions,
         onRowClick,
-        placeholders,
+        placeholders: externalPlaceholders,
         selectable,
+        testId,
         transparent,
         ...rest
     } = props;
@@ -177,7 +202,7 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
     };
 
     const renderActions = (item: TableDataInterface, action: TableActionsInterface, index: number): ReactElement => {
-        
+
         const {
             component: actionComponent,
             disabled: actionDisabled,
@@ -297,18 +322,73 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
     };
 
     const isExternalPlaceholdersAvailable = (): boolean => {
-        if (!placeholders) {
+        if (!externalPlaceholders) {
             return false;
         }
         return true;
     };
 
-    const showExternalPlaceholders = (): ReactNode => {
-        return !isLoading && placeholders;
+    const showPlaceholders = (): ReactNode => {
+        if (isLoading) {
+            return showLoadingPlaceholders();
+        }
+
+        return externalPlaceholders;
+    };
+
+    /**
+     * Shows the loading state placeholder rows.
+     *
+     * @return {React.ReactElement[]}
+     */
+    const showLoadingPlaceholders = (): ReactElement[] => {
+
+        const placeholders: ReactElement[] = [];
+
+        for (let i = 0; i < loadingStateOptions.count; i++) {
+            placeholders.push(
+                <Table.Row key={ i }>
+                    <Table.Cell>
+                        <Header as="h6" image>
+                            {
+                                loadingStateOptions.imageType && (
+                                    <Avatar
+                                        image={ (
+                                            <Placeholder style={ { height: 35, width: 35 } }>
+                                                <Placeholder.Image/>
+                                            </Placeholder>
+                                        ) }
+                                        isLoading={ true }
+                                        avatarType={ loadingStateOptions.imageType === "circular" ? "user" : "app" }
+                                        size="mini"
+                                        floated="left"
+                                    />
+                                )
+                            }
+                            <Header.Content>
+                                <Placeholder style={ { width: "300px" } }>
+                                    <Placeholder.Header>
+                                        <Placeholder.Line/>
+                                        <Placeholder.Line/>
+                                    </Placeholder.Header>
+                                </Placeholder>
+                            </Header.Content>
+                        </Header>
+                    </Table.Cell>
+                </Table.Row>
+            )
+        }
+
+        return placeholders;
     };
 
     return (
-        <Table className={ classes } selectable={ selectable } { ...rest }>
+        <Table
+            className={ classes }
+            selectable={ !isLoading && selectable }
+            data-testid={ testId }
+            { ...rest }
+        >
             {
                 isColumnsValid(columns, true) && (
                     <Table.Header>
@@ -325,46 +405,46 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
                 {
                     isColumnsValid(columns)
                         ? isDataValid(data)
-                            ? data.map((item: TableDataInterface, index) => {
-    
-                                if (!item) {
-                                    return;
-                                }
-    
-                                const {
-                                    key: itemKey,
-                                    textAlign: itemTextAlign,
-                                    width: itemWidth
-                                } = item;
-    
-                                return (
-                                    <Table.Row
-                                        key={ itemKey ?? index }
-                                        onClick={ (e: SyntheticEvent) => selectable && onRowClick(e, item) }
-                                    >
-                                        {
-                                            columns.map((column: TableColumnInterface, index) => {
-    
-                                                const {
-                                                    textAlign: columnTextAlign,
-                                                    width: columnWidth
-                                                } = column;
-    
-                                                return (
-                                                    <Table.Cell
-                                                        key={ index }
-                                                        textAlign={ itemTextAlign || columnTextAlign }
-                                                        width={ itemWidth ?? columnWidth }
-                                                    >
-                                                        { renderCell(item, column) }
-                                                    </Table.Cell>
-                                                )
-                                            })
-                                        }
-                                    </Table.Row>
-                                )
-                            })
-                            : showExternalPlaceholders()
+                        ? data.map((item: TableDataInterface, index) => {
+
+                            if (!item) {
+                                return;
+                            }
+
+                            const {
+                                key: itemKey,
+                                textAlign: itemTextAlign,
+                                width: itemWidth
+                            } = item;
+
+                            return (
+                                <Table.Row
+                                    key={ itemKey ?? index }
+                                    onClick={ (e: SyntheticEvent) => selectable && onRowClick(e, item) }
+                                >
+                                    {
+                                        columns.map((column: TableColumnInterface, index) => {
+
+                                            const {
+                                                textAlign: columnTextAlign,
+                                                width: columnWidth
+                                            } = column;
+
+                                            return (
+                                                <Table.Cell
+                                                    key={ index }
+                                                    textAlign={ itemTextAlign || columnTextAlign }
+                                                    width={ itemWidth ?? columnWidth }
+                                                >
+                                                    { renderCell(item, column) }
+                                                </Table.Cell>
+                                            )
+                                        })
+                                    }
+                                </Table.Row>
+                            )
+                        })
+                        : showPlaceholders()
                         : null
                 }
             </Table.Body>
