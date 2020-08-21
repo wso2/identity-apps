@@ -20,7 +20,11 @@ module.exports = {
     presets: [
         [ "@babel/preset-env",
             {
-                useBuiltIns: "entry"
+                corejs: {
+                    proposals: true,
+                    version: "3.6"
+                },
+               useBuiltIns: "entry"
             }
         ],
         [ "@babel/preset-typescript", {
