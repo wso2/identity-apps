@@ -17,6 +17,7 @@
  */
 
 import { AppUtils } from "./app-utils";
+import "core-js";
 
 AppUtils.init({
     serverOrigin: "https://localhost:9443",
