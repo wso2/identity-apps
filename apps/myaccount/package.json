@@ -24,7 +24,9 @@
         "start": "run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
         "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "test": "jest --passWithNoTests"
+        "test": "jest --passWithNoTests",
+        "type-check": "tsc --noEmit",
+        "type-check:watch": "npm run type-check -- --watch"
     },
     "dependencies": {
         "@wso2is/authentication": "^1.0.403",
