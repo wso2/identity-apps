@@ -65,7 +65,10 @@ module.exports = (env) => {
                 ? "source-map"
                 : false
             : isDevelopment && "cheap-module-source-map",
-        entry: ["./src/index.tsx"],
+        entry: {
+            init: "./src/init/init.ts",
+            main: "./src/index.tsx"
+        },
         mode: isProduction ? "production" : "development",
         module: {
             rules: [
