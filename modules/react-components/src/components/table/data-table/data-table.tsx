@@ -30,10 +30,28 @@ import {
     Popup,
     SemanticICONS,
     SemanticWIDTHS,
-    Table, TableCellProps,
+    Table,
     TableProps
 } from "semantic-ui-react";
+import { DataTableBody } from "./data-table-body";
+import { DataTableCell, DataTableCellPropsInterface } from "./data-table-cell";
+import { DataTableFooter } from "./data-table-footer";
+import { DataTableHeader } from "./data-table-header";
+import { DataTableHeaderCell } from "./data-table-header-cell";
+import { DataTableRow } from "./data-table-row";
 import { Avatar } from "../../avatar";
+
+/**
+ * Interface for the Data Table sub components.
+ */
+export interface DataTableSubComponentsInterface {
+    Body: typeof DataTableBody;
+    Cell: typeof DataTableCell;
+    Footer: typeof DataTableFooter;
+    Header: typeof DataTableHeader;
+    HeaderCell: typeof DataTableHeaderCell;
+    Row: typeof DataTableRow;
+}
 
 /**
  * Interface for the data table component.
@@ -81,6 +99,9 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
     transparent?: boolean;
 }
 
+/**
+ * Table Data Strict Interface.
+ */
 export interface StrictDataPropsInterface {
     /**
      * key prop for React.
@@ -88,10 +109,16 @@ export interface StrictDataPropsInterface {
     key?: string | number;
 }
 
-export interface TableDataInterface extends StrictDataPropsInterface, TableCellProps {
+/**
+ * Table Data Dynamic Interface.
+ */
+export interface TableDataInterface extends StrictDataPropsInterface, DataTableCellPropsInterface {
     [ key: string ]: any;
 }
 
+/**
+ * Table Column Strict Interface.
+ */
 export interface StrictColumnPropsInterface {
     /**
      * key prop for React.
@@ -107,10 +134,16 @@ export interface StrictColumnPropsInterface {
     dataIndex: string | "action";
 }
 
+/**
+ * Table Column Dynamic Interface.
+ */
 export interface TableColumnInterface extends StrictColumnPropsInterface {
     [ key: string ]: any;
 }
 
+/**
+ * Table Actions Interface.
+ */
 export interface TableActionsInterface {
     /**
      * Component render node.
@@ -161,7 +194,15 @@ interface TableLoadingStateOptionsInterface {
     imageType?: "circular" | "square";
 }
 
-export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: DataTablePropsInterface): ReactElement => {
+/**
+ * Data Driven Table Component.
+ *
+ * @param {DataTablePropsInterface} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
+export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSubComponentsInterface = (
+    props: DataTablePropsInterface
+): ReactElement => {
 
     const {
         actions,
@@ -315,9 +356,9 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
         } = column;
 
         return (
-            <Table.HeaderCell key={ columnKey ?? index } textAlign={ columnTextAlign } { ...rest }>
+            <DataTable.HeaderCell key={ columnKey ?? index } textAlign={ columnTextAlign } { ...rest }>
                 { columnTitle }
-            </Table.HeaderCell>
+            </DataTable.HeaderCell>
         );
     };
 
@@ -347,8 +388,8 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
 
         for (let i = 0; i < loadingStateOptions.count; i++) {
             placeholders.push(
-                <Table.Row key={ i }>
-                    <Table.Cell>
+                <DataTable.Row key={ i }>
+                    <DataTable.Cell>
                         <Header as="h6" image>
                             {
                                 loadingStateOptions.imageType && (
@@ -374,8 +415,8 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
                                 </Placeholder>
                             </Header.Content>
                         </Header>
-                    </Table.Cell>
-                </Table.Row>
+                    </DataTable.Cell>
+                </DataTable.Row>
             )
         }
 
@@ -391,17 +432,17 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
         >
             {
                 isColumnsValid(columns, true) && (
-                    <Table.Header>
-                        <Table.Row>
+                    <DataTable.Header>
+                        <DataTable.Row>
                             {
                                 columns.map((column: TableColumnInterface, index) => renderHeaderCell(column, index))
                             }
-                        </Table.Row>
-                    </Table.Header>
+                        </DataTable.Row>
+                    </DataTable.Header>
                 )
             }
 
-            <Table.Body>
+            <DataTable.Body>
                 {
                     isColumnsValid(columns)
                         ? isDataValid(data)
@@ -418,7 +459,7 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
                             } = item;
 
                             return (
-                                <Table.Row
+                                <DataTable.Row
                                     key={ itemKey ?? index }
                                     onClick={ (e: SyntheticEvent) => selectable && onRowClick(e, item) }
                                 >
@@ -431,23 +472,23 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
                                             } = column;
 
                                             return (
-                                                <Table.Cell
+                                                <DataTable.Cell
                                                     key={ index }
                                                     textAlign={ itemTextAlign || columnTextAlign }
                                                     width={ itemWidth ?? columnWidth }
                                                 >
                                                     { renderCell(item, column) }
-                                                </Table.Cell>
+                                                </DataTable.Cell>
                                             )
                                         })
                                     }
-                                </Table.Row>
+                                </DataTable.Row>
                             )
                         })
                         : showPlaceholders()
                         : null
                 }
-            </Table.Body>
+            </DataTable.Body>
         </Table>
     );
 };
@@ -457,3 +498,10 @@ DataTable.defaultProps = {
     selectable: true,
     stackable: true
 };
+
+DataTable.Body = DataTableBody;
+DataTable.Cell = DataTableCell;
+DataTable.Footer = DataTableFooter;
+DataTable.Header = DataTableHeader;
+DataTable.HeaderCell = DataTableHeaderCell;
+DataTable.Row = DataTableRow;
