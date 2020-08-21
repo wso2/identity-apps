@@ -56,9 +56,21 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
      */
     id?: string;
     /**
+     * Is the data loading.
+     */
+    isLoading?: boolean;
+    /**
      * Callback row selection.
      */
     onRowClick: (e: SyntheticEvent, item: TableDataInterface) => void;
+    /**
+     * Placeholders for the table.
+     */
+    placeholders?: ReactNode;
+    /**
+     * Should the table appear on a transparent background.
+     */
+    transparent?: boolean;
 }
 
 export interface StrictDataPropsInterface {
@@ -133,16 +145,27 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
         className,
         data,
         columns,
+        isLoading,
         onRowClick,
+        placeholders,
         selectable,
+        transparent,
         ...rest
     } = props;
 
-    const classes = classNames("data-table", className);
+    const classes = classNames(
+        "data-table",
+        {
+            transparent
+        },
+        className
+    );
 
     const isColumnsValid = (columns: TableColumnInterface[], checkIfRenderable: boolean = false): boolean => {
         return (columns && Array.isArray(columns) && columns.length > 0)
-            && checkIfRenderable ? columns.some((column: TableColumnInterface) => column.title) : true;
+            && (checkIfRenderable
+                ? columns.some((column: TableColumnInterface) => column.title) && !isExternalPlaceholdersAvailable()
+                : true);
     };
 
     const isDataValid = (data: TableDataInterface[]): boolean => {
@@ -273,6 +296,17 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
         );
     };
 
+    const isExternalPlaceholdersAvailable = (): boolean => {
+        if (!placeholders) {
+            return false;
+        }
+        return true;
+    };
+
+    const showExternalPlaceholders = (): ReactNode => {
+        return !isLoading && placeholders;
+    };
+
     return (
         <Table className={ classes } selectable={ selectable } { ...rest }>
             {
@@ -290,46 +324,48 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> = (props: Dat
             <Table.Body>
                 {
                     isColumnsValid(columns)
-                    && isDataValid(data)
-                    && data.map((item: TableDataInterface, index) => {
-
-                        if (!item) {
-                            return;
-                        }
-
-                        const {
-                            key: itemKey,
-                            textAlign: itemTextAlign,
-                            width: itemWidth
-                        } = item;
-
-                        return (
-                            <Table.Row
-                                key={ itemKey ?? index }
-                                onClick={ (e: SyntheticEvent) => selectable && onRowClick(e, item) }
-                            >
-                                {
-                                    columns.map((column: TableColumnInterface, index) => {
-
-                                        const {
-                                            textAlign: columnTextAlign,
-                                            width: columnWidth
-                                        } = column;
-
-                                        return (
-                                            <Table.Cell
-                                                key={ index }
-                                                textAlign={ itemTextAlign || columnTextAlign }
-                                                width={ itemWidth ?? columnWidth }
-                                            >
-                                                { renderCell(item, column) }
-                                            </Table.Cell>
-                                        )
-                                    })
+                        ? isDataValid(data)
+                            ? data.map((item: TableDataInterface, index) => {
+    
+                                if (!item) {
+                                    return;
                                 }
-                            </Table.Row>
-                        )
-                    })
+    
+                                const {
+                                    key: itemKey,
+                                    textAlign: itemTextAlign,
+                                    width: itemWidth
+                                } = item;
+    
+                                return (
+                                    <Table.Row
+                                        key={ itemKey ?? index }
+                                        onClick={ (e: SyntheticEvent) => selectable && onRowClick(e, item) }
+                                    >
+                                        {
+                                            columns.map((column: TableColumnInterface, index) => {
+    
+                                                const {
+                                                    textAlign: columnTextAlign,
+                                                    width: columnWidth
+                                                } = column;
+    
+                                                return (
+                                                    <Table.Cell
+                                                        key={ index }
+                                                        textAlign={ itemTextAlign || columnTextAlign }
+                                                        width={ itemWidth ?? columnWidth }
+                                                    >
+                                                        { renderCell(item, column) }
+                                                    </Table.Cell>
+                                                )
+                                            })
+                                        }
+                                    </Table.Row>
+                                )
+                            })
+                            : showExternalPlaceholders()
+                        : null
                 }
             </Table.Body>
         </Table>

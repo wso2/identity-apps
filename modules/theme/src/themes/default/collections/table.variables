@@ -1,3 +1,10 @@
 /*******************************
         Table Varibles
 *******************************/
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+@dataTableTransparentBackground: transparent;
+@dataTableTransparentBorder: none;

@@ -26,3 +26,16 @@
         margin: 0.7em 1em;
     }
 }
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+.ui.table {
+    &.data-table {
+        &.transparent {
+            background: @dataTableTransparentBackground;
+            border: @dataTableTransparentBorder;
+        }
+    }
+}
