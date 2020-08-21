@@ -17,12 +17,22 @@
  */
 
 module.exports = {
-  env: {
-    test: {
-      plugins: ["@babel/plugin-transform-modules-commonjs"]
-    }
-  },
-  presets: [["@babel/preset-env", {
-    "useBuiltIns": "entry"
-  }]]
+    presets: [
+        [ "@babel/preset-env",
+            {
+                useBuiltIns: "entry"
+            }
+        ],
+        [ "@babel/preset-typescript", {
+            "allowNamespaces": true
+        } ],
+        "@babel/react"
+
+    ],
+    env: {
+        test: {
+            plugins: [ "@babel/plugin-transform-modules-commonjs" ]
+        }
+    },
+    plugins: [ "@babel/plugin-proposal-class-properties" ]
 };
