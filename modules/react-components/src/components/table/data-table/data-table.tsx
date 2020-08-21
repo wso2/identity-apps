@@ -20,7 +20,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import get from "lodash/get";
-import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
 import {
     Dropdown,
     DropdownItemProps,
@@ -73,6 +73,10 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
      * Table data source.
      */
     data: TableDataInterface[];
+    /**
+     * Table extensions.
+     */
+    extensions?: TableExtensionInterface[];
     /**
      * Table id.
      */
@@ -183,7 +187,7 @@ export interface TableActionsInterface {
 /**
  * Interface for loading state options.
  */
-interface TableLoadingStateOptionsInterface {
+export interface TableLoadingStateOptionsInterface {
     /**
      * Number of loading rows.
      */
@@ -192,6 +196,21 @@ interface TableLoadingStateOptionsInterface {
      * Loading state image type.
      */
     imageType?: "circular" | "square";
+}
+
+export interface TableExtensionInterface {
+    /**
+     * Position to place the extension.
+     */
+    position: "top" | "bottom";
+    /**
+     * Component to be rendered.
+     */
+    component: ReactNode;
+    /**
+     * Does the external component provide renderer.
+     */
+    isExternalRendererProvided?: boolean;
 }
 
 /**
@@ -207,8 +226,9 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
     const {
         actions,
         className,
-        data,
         columns,
+        data,
+        extensions,
         isLoading,
         loadingStateOptions,
         onRowClick,
@@ -240,6 +260,13 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
 
     const isActionsValid = (actions: TableActionsInterface[]): boolean => {
         return actions && Array.isArray(actions) && actions.length > 0;
+    };
+
+    const isExtensionsValid = (extensions: TableExtensionInterface[], checkIfRenderable: boolean = false): boolean => {
+        return (extensions && Array.isArray(extensions) && extensions.length > 0)
+            && (checkIfRenderable
+                ? extensions.some((extension: TableExtensionInterface)=> extension.component)
+                : true);
     };
 
     const renderActions = (item: TableDataInterface, action: TableActionsInterface, index: number): ReactElement => {
@@ -431,6 +458,39 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
             { ...rest }
         >
             {
+                isExtensionsValid(extensions, true) && (
+                    extensions.map((extension: TableExtensionInterface, index: number) => {
+                        const {
+                            component,
+                            isExternalRendererProvided,
+                            position
+                        } = extension;
+
+                        return (
+                            position === "top"
+                                ? isExternalRendererProvided
+                                    ? (
+                                        <Fragment key={ index }>
+                                            { component }
+                                        </Fragment>
+                                    )
+                                    : (
+                                        <DataTable.Header fullWidth>
+                                            <DataTable.Row>
+                                                <DataTable.HeaderCell
+                                                    colSpan={ isColumnsValid(columns) && columns.length }
+                                                >
+                                                    { component }
+                                                </DataTable.HeaderCell>
+                                            </DataTable.Row>
+                                        </DataTable.Header>
+                                    )
+                                : null
+                        );
+                    })
+                )
+            }
+            {
                 isColumnsValid(columns, true) && (
                     <DataTable.Header>
                         <DataTable.Row>
@@ -489,6 +549,40 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
                         : null
                 }
             </DataTable.Body>
+
+            {
+                isExtensionsValid(extensions, true) && (
+                    extensions.map((extension: TableExtensionInterface, index: number) => {
+                        const {
+                            component,
+                            isExternalRendererProvided,
+                            position
+                        } = extension;
+
+                        return (
+                            position === "bottom"
+                                ? isExternalRendererProvided
+                                    ? (
+                                        <Fragment key={ index }>
+                                            { component }
+                                        </Fragment>
+                                    )
+                                    : (
+                                        <DataTable.Footer fullWidth>
+                                            <DataTable.Row>
+                                                <DataTable.HeaderCell
+                                                    colSpan={ isColumnsValid(columns) && columns.length }
+                                                >
+                                                    { component }
+                                                </DataTable.HeaderCell>
+                                            </DataTable.Row>
+                                        </DataTable.Footer>
+                                    )
+                                : null
+                        );
+                    })
+                )
+            }
         </Table>
     );
 };
