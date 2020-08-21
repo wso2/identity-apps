@@ -98,7 +98,7 @@ module.exports = (env) => {
                 },
                 {
                     exclude: /(node_modules)/,
-                    test: /\.tsx?$/,
+                    test: /\.(ts|js)x?$/,
                     use: [
                         { loader: "cache-loader" },
                         {
@@ -109,11 +109,7 @@ module.exports = (env) => {
                             }
                         },
                         {
-                            loader: "ts-loader",
-                            options: {
-                                happyPackMode: true,
-                                transpileOnly: true
-                            }
+                            loader: "babel-loader"
                         }
                     ]
                 },
