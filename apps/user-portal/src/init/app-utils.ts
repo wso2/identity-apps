@@ -88,8 +88,7 @@ export const AppUtils = (function() {
                 _config.clientID : _config.clientID + "_" + this.getTenantName(),
                 clientOrigin: _config.clientOrigin,
                 clientOriginWithTenant: _config.clientOrigin + this.getTenantPath(),
-                extensions: _config.extensions,
-                loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
+                loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName +
                     _config.loginCallbackPath,
                 logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName +
                     _config.logoutCallbackPath,
