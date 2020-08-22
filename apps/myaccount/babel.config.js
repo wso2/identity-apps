@@ -31,7 +31,7 @@ module.exports = {
                     proposals: true,
                     version: "3.6"
                 },
-                useBuiltIns: "usage"
+                useBuiltIns: "entry"
             }
         ],
         "@babel/preset-typescript",
