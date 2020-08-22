@@ -25,7 +25,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@hapi/joi": "^17.1.0",
+        "joi": "^17.2.0",
         "@storybook/addon-actions": "^5.3.3",
         "@storybook/addon-centered": "^5.3.6",
         "@storybook/addon-docs": "^5.3.3",
@@ -35,7 +35,6 @@
         "@storybook/theming": "^5.3.3",
         "@svgr/webpack": "^4.3.2",
         "@types/crypto-js": "^3.1.43",
-        "@types/hapi__joi": "^16.0.2",
         "@types/history": "^4.7.3",
         "@types/i18next": "8.4.3",
         "@types/js-yaml": "3.12.3",
