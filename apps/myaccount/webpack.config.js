@@ -265,14 +265,16 @@ module.exports = (env) => {
                     template: path.join(__dirname, "src", "index.jsp"),
                     tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                     tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
-                    title: titleText
+                    title: titleText,
+                    inject: "head"
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
                     publicPath: publicPath,
                     template: path.join(__dirname, "src", "index.html"),
-                    title: titleText
+                    title: titleText,
+                    inject: "head"
                 }),
             new webpack.DefinePlugin({
                 "process.env": {
