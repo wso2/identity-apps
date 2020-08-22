@@ -97,7 +97,7 @@ module.exports = (env) => {
                     ]
                 },
                 {
-                    exclude: /(node_modules)/,
+                    exclude: /(node_modules\/(?!joi|react-notification-system|less-plugin-rewrite-variable))/,
                     test: /\.(ts|js)x?$/,
                     use: [
                         { loader: "cache-loader" },
