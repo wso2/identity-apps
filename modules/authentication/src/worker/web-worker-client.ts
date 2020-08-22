@@ -492,7 +492,7 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
 
                             location.href = response.code;
 
-                            return Promise.reject("Redirecting to get authorization code...");
+                            return Promise.resolve(null)
                         } else {
                             if (response.type === AUTH_REQUIRED && !response.code) {
                                 return Promise.reject(
