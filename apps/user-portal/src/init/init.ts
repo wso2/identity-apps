@@ -17,6 +17,8 @@
  */
 
 import { AppUtils } from "./app-utils";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 AppUtils.init({
     serverOrigin: "https://localhost:9443",
