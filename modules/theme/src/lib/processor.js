@@ -1,6 +1,21 @@
+/* eslint-disable */
 "use strict";
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _typeof(obj) {
+    "@babel/helpers - typeof";
+    if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+        _typeof = function _typeof(obj) {
+            return typeof obj;
+        };
+    } else {
+        _typeof = function _typeof(obj) {
+            return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype
+                ? "symbol"
+                : typeof obj;
+        };
+    }
+    return _typeof(obj);
+}
 
 /**
  *
@@ -27,13 +42,13 @@ function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "functi
  * SOFTWARE.
  *
  */
-module.exports = function () {
+module.exports = function() {
     function PreProcessor(options) {
         this.options = options || {};
     }
 
     function replaceVar(src, replaceVar, replaceValue) {
-        var regex = new RegExp("(?<=" + replaceVar + "(.[^aA-zZ]*?))[\:](.*?)[\;]", "g");
+        var regex = new RegExp("(?<=" + replaceVar + "(.[^aA-zZ]*?))[:](.*?)[;]", "g");
         var match = src.match(regex);
 
         if (match) {
@@ -43,19 +58,19 @@ module.exports = function () {
         }
     }
 
-    PreProcessor.prototype.process = function (src, extra) {
+    PreProcessor.prototype.process = function(src, extra) {
         var _this = this;
 
-        var fileElements = extra.fileInfo.filename.split('/');
+        var fileElements = extra.fileInfo.filename.split("/");
         var newSrc = src;
-        Object.keys(this.options).forEach(function (option) {
-            var optionValue = _this.options[ option ];
+        Object.keys(this.options).forEach(function(option) {
+            var optionValue = _this.options[option];
 
-            if (_typeof(optionValue) === 'object' && optionValue !== null) {
-                if (fileElements[ fileElements.length - 1 ] == optionValue.file) {
+            if (_typeof(optionValue) === "object" && optionValue !== null) {
+                if (fileElements[fileElements.length - 1] == optionValue.file) {
                     newSrc = replaceVar(newSrc, option, optionValue.value);
                 }
-            } else if (typeof optionValue === 'string' && optionValue !== null) {
+            } else if (typeof optionValue === "string" && optionValue !== null) {
                 newSrc = replaceVar(newSrc, option, optionValue);
             }
         });
