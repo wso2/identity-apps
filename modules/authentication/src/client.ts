@@ -175,7 +175,7 @@ export class IdentityClient {
         }
 
         while (!this._initialized) {
-            if (iterationToWait>20) {
+            if (iterationToWait===21) {
                 // eslint-disable-next-line no-console
                 console.warn("It is taking longer than usual for the object to be initialized")
             }
