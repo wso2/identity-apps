@@ -97,7 +97,7 @@ module.exports = (env) => {
                     ]
                 },
                 {
-                    exclude: /(node_modules\/(?!joi|react-notification-system|less-plugin-rewrite-variable))/,
+                    exclude: /(node_modules\/(?!joi|react-notification-system|less-plugin-rewrite-variable|@wso2is\/authentication|@wso2is\/forms|@wso2is\/react-components|@wso2is\/theme|@wso2is\/validation))/,
                     test: /\.(ts|js)x?$/,
                     use: [
                         { loader: "cache-loader" },
@@ -265,16 +265,14 @@ module.exports = (env) => {
                     template: path.join(__dirname, "src", "index.jsp"),
                     tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
                     tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
-                    title: titleText,
-                    inject: "head"
+                    title: titleText
                 })
                 : new HtmlWebpackPlugin({
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
                     publicPath: publicPath,
                     template: path.join(__dirname, "src", "index.html"),
-                    title: titleText,
-                    inject: "head"
+                    title: titleText
                 }),
             new webpack.DefinePlugin({
                 "process.env": {
