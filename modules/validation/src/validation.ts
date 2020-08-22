@@ -17,9 +17,14 @@
  *
  */
 
-import Joi from "joi";
 import Axios from "axios";
-import "./plugins/text-encoder-polyfill";
+import Joi from "joi";
+import encoding from "text-encoding";
+
+if (typeof TextEncoder === "undefined") {
+    // eslint-disable-next-line no-global-assign
+    TextEncoder=encoding.TextEncoder;
+}
 
 type ValidationFunction = (value: string) => boolean;
 
