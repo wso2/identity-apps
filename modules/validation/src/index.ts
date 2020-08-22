@@ -18,5 +18,6 @@
  */
 
 import { email, imageUrl, mobileNumber, url } from "./validation";
+import 'fastestsmallesttextencoderdecoder';
 
 export const FormValidation = { email, mobileNumber, url, imageUrl };
