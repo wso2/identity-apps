@@ -30,5 +30,8 @@
     "devDependencies": {
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7"
+    },
+    "dependencies": {
+        "text-encoding": "^0.7.0"
     }
 }
