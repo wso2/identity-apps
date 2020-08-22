@@ -17,7 +17,7 @@
  *
  */
 
-import Joi from "@hapi/joi";
+import Joi from "joi";
 import Axios from "axios";
 import "./plugins/text-encoder-polyfill";
 
