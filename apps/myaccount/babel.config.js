@@ -17,26 +17,24 @@
  */
 
 module.exports = {
-    presets: [
-        [ "@babel/preset-env",
-            {
-                corejs: {
-                    proposals: true,
-                    version: "3.6"
-                },
-               useBuiltIns: "entry"
-            }
-        ],
-        [ "@babel/preset-typescript", {
-            "allowNamespaces": true
-        } ],
-        "@babel/react"
-
-    ],
     env: {
         test: {
             plugins: [ "@babel/plugin-transform-modules-commonjs" ]
         }
     },
-    plugins: [ "@babel/plugin-proposal-class-properties" ]
+    plugins: [ "@babel/plugin-proposal-class-properties" ],
+    presets: [
+        [
+            "@babel/preset-env",
+            {
+                corejs: {
+                    proposals: true,
+                    version: "3.6"
+                },
+                useBuiltIns: "entry"
+            }
+        ],
+        "@babel/preset-typescript",
+        "@babel/react"
+    ]
 };
