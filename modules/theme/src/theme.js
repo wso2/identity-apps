@@ -19,7 +19,7 @@
 
 const path = require("path");
 const less = require("less");
-const RewriteVariablePlugin = require("less-plugin-rewrite-variable");
+const RewriteVariablePlugin = require("./lib");
 
 export const Theme = {
     compile: (file, options) => {
