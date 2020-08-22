@@ -26,6 +26,5 @@
         "await-semaphore": "*",
         "axios": "*",
         "crypto-js": "*"
-    },
-    "browserslist":["> 0.5%"]
+    }
 }
