@@ -8,3 +8,4 @@
 
 @dataTableTransparentBackground: transparent;
 @dataTableTransparentBorder: none;
+@dataTableSelectableRowCursor: pointer;

@@ -37,5 +37,11 @@
             background: @dataTableTransparentBackground;
             border: @dataTableTransparentBorder;
         }
+        
+        &.selectable {
+            .data-table-body .data-table-row {
+                cursor: @dataTableSelectableRowCursor;
+            }
+        }
     }
 }
