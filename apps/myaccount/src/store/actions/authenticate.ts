@@ -27,6 +27,7 @@ import {
 import { TokenConstants } from "@wso2is/core/constants";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
+import { UAParser } from "ua-parser-js";
 import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
@@ -238,7 +239,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [ TokenConstants.SYSTEM_SCOPE ],
             serverOrigin: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
-            storage: Storage.WebWorker
+            storage: new UAParser().getBrowser() === "IE" as any ? Storage.SessionStorage : Storage.WebWorker
         });
     auth.on("sign-in", (response) => {
         dispatch(
