@@ -58,15 +58,15 @@ export interface DataTableSubComponentsInterface {
 /**
  * Interface for the data table component.
  */
-export interface DataTablePropsInterface extends Omit<TableProps, "columns">, TestableComponentInterface {
+export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "columns">, TestableComponentInterface {
     /**
      * Set of actions.
      */
-    actions?: TableActionsInterface[];
+    actions?: TableActionsInterface<T>[];
     /**
      * UI Props for the cell.
      */
-    cellUIProps: TableCellProps;
+    cellUIProps?: TableCellProps;
     /**
      * Table data source.
      */
@@ -78,7 +78,7 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
     /**
      * Table data source.
      */
-    data: TableDataInterface[];
+    data: TableDataInterface<T>[];
     /**
      * Table extensions.
      */
@@ -106,7 +106,7 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
     /**
      * UI Props for the Row.
      */
-    rowUIProps: TableRowProps;
+    rowUIProps?: TableRowProps;
     /**
      * Should the table appear on a transparent background.
      */
@@ -116,11 +116,15 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
 /**
  * Table Data Strict Interface.
  */
-export interface StrictDataPropsInterface {
+export interface StrictDataPropsInterface<T = {}> {
     /**
      * key prop for React.
      */
     key?: string | number;
+    /**
+     * The row value of the entry. Used for callbacks like onClick etc.
+     */
+    value?: T;
     /**
      * Props for the UI component.
      */
@@ -144,7 +148,7 @@ export interface DataRendererPropsInterface {
 /**
  * Table Data Dynamic Interface.
  */
-export interface TableDataInterface extends StrictDataPropsInterface, DataTableCellPropsInterface {
+export interface TableDataInterface<T = {}> extends StrictDataPropsInterface<T>, DataTableCellPropsInterface {
     [ key: string ]: any;
 }
 
@@ -176,7 +180,7 @@ export interface TableColumnInterface extends StrictColumnPropsInterface {
 /**
  * Table Actions Interface.
  */
-export interface TableActionsInterface {
+export interface TableActionsInterface<T = {}> {
     /**
      * Component render node.
      */
@@ -188,19 +192,19 @@ export interface TableActionsInterface {
     /**
      * Should action be hidden.
      */
-    hidden?: (item: TableDataInterface) => boolean;
+    hidden?: (item: TableDataInterface<T>) => boolean;
     /**
      * Icon for the action.
      */
-    icon?: SemanticICONS;
+    icon?: (item?: TableDataInterface<T>) => SemanticICONS;
     /**
      * Action onclick callback.
      */
-    onClick?: (e: SyntheticEvent, item: TableDataInterface) => void;
+    onClick?: (e: SyntheticEvent, item: TableDataInterface<T>) => void;
     /**
      * Action popup text.
      */
-    popupText?: string;
+    popupText?: (item?: TableDataInterface<T>) => string;
     /**
      * Sub actions for dropdown type.
      */
@@ -247,8 +251,9 @@ export interface TableExtensionInterface {
  * @param {DataTablePropsInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSubComponentsInterface = (
-    props: DataTablePropsInterface
+
+export const DataTable = <T extends object = {}>(
+    props: DataTablePropsInterface<T>
 ): ReactElement => {
 
     const {
@@ -280,7 +285,7 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
     const isColumnsValid = (columns: TableColumnInterface[], checkIfRenderable: boolean = false): boolean => {
         return (columns && Array.isArray(columns) && columns.length > 0)
             && (checkIfRenderable
-                ? columns.some((column: TableColumnInterface) => column.title) && !isExternalPlaceholdersAvailable()
+                ? columns.some((column: TableColumnInterface) => column?.title) && !isExternalPlaceholdersAvailable()
                 : true);
     };
 
@@ -315,6 +320,10 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
         if (actionHidden && actionHidden(item)) {
             return null;
         }
+        
+        const resolvedIcon: SemanticICONS = actionIcon(item);
+        
+        const resolvedPopupText: string = actionPopupText(item);
 
         if (actionRenderer === "dropdown") {
             return (
@@ -332,12 +341,15 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
                                     disabled={ actionDisabled }
                                     size="small"
                                     color="grey"
-                                    name={ actionIcon }
-                                    onClick={ (e: SyntheticEvent) => actionOnClick(e, item) }
+                                    name={ resolvedIcon }
+                                    onClick={ (e: SyntheticEvent) => {
+                                        e.stopPropagation();
+                                        actionOnClick(e, item);
+                                    } }
                                 />
                             ) }
                             position="top center"
-                            content={ actionPopupText }
+                            content={ resolvedPopupText }
                             inverted
                         />
                     ) }
@@ -358,12 +370,15 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
                             disabled={ actionDisabled }
                             size="small"
                             color="grey"
-                            name={ actionIcon }
-                            onClick={ (e: SyntheticEvent) => actionOnClick(e, item) }
+                            name={ resolvedIcon }
+                            onClick={ (e: SyntheticEvent) => {
+                                e.stopPropagation();
+                                actionOnClick(e, item);
+                            } }
                         />
                     ) }
                     position="top center"
-                    content={ actionPopupText }
+                    content={ resolvedPopupText }
                     inverted
                 />
             )
@@ -376,7 +391,7 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
                     disabled={ actionDisabled }
                     trigger={ actionComponent }
                     position="top center"
-                    content={ actionPopupText }
+                    content={ resolvedPopupText }
                     inverted
                 />
             )
@@ -552,7 +567,7 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
                             const {
                                 cellUIProps: cellUIPropOverrides,
                                 rowUIProps: rowUIPropOverrides
-                            } = rendererProps;
+                            } = rendererProps || {};
 
                             return (
                                 <DataTable.Row
