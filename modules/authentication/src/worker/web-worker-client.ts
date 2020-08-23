@@ -492,7 +492,12 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
 
                             location.href = response.code;
 
-                            return Promise.resolve(null)
+                            return Promise.resolve({
+                                allowedScopes: "",
+                                displayName: "",
+                                email: "",
+                                username: ""
+                            });
                         } else {
                             if (response.type === AUTH_REQUIRED && !response.code) {
                                 return Promise.reject(
