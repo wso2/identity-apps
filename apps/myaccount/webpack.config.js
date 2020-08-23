@@ -75,7 +75,12 @@ module.exports = (env) => {
             rules: [
                 {
                     test: /\.css$/,
-                    use: ["style-loader", "css-loader", "postcss-loader"]
+                    use: ["style-loader", "css-loader"]
+                },
+                {
+                    exclude: /node_modules/,
+                    test: /\.css$/,
+                    use: [ "postcss-loader" ]
                 },
                 {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
@@ -99,17 +104,16 @@ module.exports = (env) => {
                 },
                 {
                     exclude: {
-						test: /node_modules(\\|\/)(core-js)/,
-						not: [
-							/joi/,
-							/react-notification-system/,
-							/less-plugin-rewrite-variable/,
-							/@wso2is(\\|\/)authentication/,
-							/@wso2is(\\|\/)forms/,
-							/@wso2is(\\|\/)react-components/,
-							/@wso2is(\\|\/)theme/,
-							/@wso2is(\\|\/)validation/
-						]
+                        not: [
+                            /joi/,
+                            /react-notification-system/,
+                            /less-plugin-rewrite-variable/,
+                            /@wso2is(\\|\/)authentication/,
+                            /@wso2is(\\|\/)forms/,
+                            /@wso2is(\\|\/)react-components/,
+                            /@wso2is(\\|\/)theme/,
+                            /@wso2is(\\|\/)validation/ ],
+                        test: /node_modules(\\|\/)(core-js)/
                     },
 					test: /\.(ts|js)x?$/,
                     use: [
