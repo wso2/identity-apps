@@ -20,7 +20,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import get from "lodash/get";
-import React, { Fragment, ReactElement, ReactNode, SyntheticEvent } from "react";
+import React, { Fragment, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import {
     Dropdown,
     DropdownItemProps,
@@ -37,11 +37,13 @@ import {
 } from "semantic-ui-react";
 import { DataTableBody } from "./data-table-body";
 import { DataTableCell, DataTableCellPropsInterface } from "./data-table-cell";
+import { DataTableColumnSelector } from "./data-table-column-selector";
 import { DataTableFooter } from "./data-table-footer";
 import { DataTableHeader } from "./data-table-header";
 import { DataTableHeaderCell } from "./data-table-header-cell";
 import { DataTableRow } from "./data-table-row";
 import { Avatar } from "../../avatar";
+import { GenericIconProps } from "../../icon";
 
 /**
  * Interface for the Data Table sub components.
@@ -68,6 +70,18 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      */
     cellUIProps?: TableCellProps;
     /**
+     * Heading for the column selector dropdown.
+     */
+    columnSelectorHeader?: string;
+    /**
+     * Width of the column selector.
+     */
+    columnSelectorWidth?: number;
+    /**
+     * Custom icon for the column selector trigger.
+     */
+    columnSelectorTriggerIcon?: GenericIconProps["icon"];
+    /**
      * Table data source.
      */
     columns: TableColumnInterface[];
@@ -84,6 +98,10 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      */
     extensions?: TableExtensionInterface[];
     /**
+     * Externally provided Search component.
+     */
+    externalSearch?: ReactNode;
+    /**
      * Table id.
      */
     id?: string;
@@ -95,6 +113,11 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      * Optional meta for the loading state.
      */
     loadingStateOptions?: TableLoadingStateOptionsInterface;
+    /**
+     * Callback to inform the new set of visible columns.
+     * @param {TableColumnInterface[]} columns - New columns.
+     */
+    onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
     /**
      * Callback row selection.
      */
@@ -108,9 +131,9 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      */
     rowUIProps?: TableRowProps;
     /**
-     * Search component to be rendered.
+     * Show/Hide column selector.
      */
-    search?: ReactNode;
+    showColumnSelector?: boolean;
     /**
      * Show/Hide header cells.
      */
@@ -119,6 +142,14 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      * Show/Hide the table's operations panel header that has the search, column selector etc.
      */
     showOperationsHeader?: boolean;
+    /**
+     * Show/Hide table search.
+     */
+    showSearch?: boolean;
+    /**
+     * Should the toggle disallowed columns be shown as disabled.
+     */
+    showToggleDisallowedColumns?: boolean;
     /**
      * Should the table appear on a transparent background.
      */
@@ -169,13 +200,25 @@ export interface TableDataInterface<T = {}> extends StrictDataPropsInterface<T>,
  */
 export interface StrictColumnPropsInterface {
     /**
+     * Allow/Deny toggling the visibility of the column using the column selector.
+     */
+    allowToggleVisibility?: boolean;
+    /**
      * key prop for React.
      */
     key?: string | number;
     /**
+     * Unique ID for the column.
+     */
+    id: string;
+    /**
+     * Should the column be hidden.
+     */
+    hidden?: boolean;
+    /**
      * Column title.
      */
-    title?: ReactNode;
+    title: ReactNode;
     /**
      * Index to find relevant data.
      */
@@ -272,18 +315,25 @@ export const DataTable = <T extends object = {}>(
         actions,
         cellUIProps,
         className,
-        columns,
+        columnSelectorHeader,
+        columnSelectorWidth,
+        columnSelectorTriggerIcon,
+        columns: initialColumns,
         data,
         extensions,
+        externalSearch,
         isLoading,
         loadingStateOptions,
+        onColumnSelectionChange,
         onRowClick,
         placeholders: externalPlaceholders,
         rowUIProps,
-        search,
         selectable,
+        showColumnSelector,
         showHeader,
         showOperationsHeader,
+        showSearch,
+        showToggleDisallowedColumns,
         testId,
         transparent,
         ...rest
@@ -296,6 +346,12 @@ export const DataTable = <T extends object = {}>(
         },
         className
     );
+
+    const [ columns, setColumns ] = useState<TableColumnInterface[]>(initialColumns);
+
+    useEffect(() => {
+        setColumns(initialColumns);
+    }, [ initialColumns ]);
 
     const isColumnsValid = (columns: TableColumnInterface[]): boolean => {
         return (columns && Array.isArray(columns) && columns.length > 0);
@@ -317,7 +373,7 @@ export const DataTable = <T extends object = {}>(
     };
     
     const isTableRenderable = (data: TableDataInterface[]): boolean => {
-        return !isDataValid(data) || !isExternalPlaceholdersAvailable();
+        return isDataValid(data);
     };
 
     const renderActions = (item: TableDataInterface, action: TableActionsInterface, index: number): ReactElement => {
@@ -440,21 +496,19 @@ export const DataTable = <T extends object = {}>(
             key: columnKey,
             textAlign: columnTextAlign,
             title: columnTitle,
+            hidden: columnHidden,
             ...rest
         } = column;
+
+        if (columnHidden) {
+            return;
+        }
 
         return (
             <DataTable.HeaderCell key={ columnKey ?? index } textAlign={ columnTextAlign } { ...rest }>
                 { columnTitle }
             </DataTable.HeaderCell>
         );
-    };
-
-    const isExternalPlaceholdersAvailable = (): boolean => {
-        if (!externalPlaceholders) {
-            return false;
-        }
-        return true;
     };
 
     const showPlaceholders = (): ReactNode => {
@@ -511,6 +565,11 @@ export const DataTable = <T extends object = {}>(
         return placeholders;
     };
 
+    const handleColumnSelectorChange = (columns: TableColumnInterface[]): void => {
+        setColumns(columns);
+        onColumnSelectionChange(columns);
+    };
+
     return (
         <Table
             className={ classes }
@@ -557,15 +616,31 @@ export const DataTable = <T extends object = {}>(
                             }
                             
                             {
-                                showOperationsHeader && search && (
+                                showOperationsHeader && (showSearch || showColumnSelector) && (
                                     <DataTable.Header fullWidth>
                                         <DataTable.Row>
                                             <DataTable.HeaderCell
                                                 colSpan={ isColumnsValid(columns) && columns.length }
                                             >
-                                                <div className="data-table-search">
-                                                    { search }
-                                                </div>
+                                                {
+                                                    showSearch && (
+                                                        <div className="data-table-search">
+                                                            { externalSearch }
+                                                        </div>
+                                                    )
+                                                }
+                                                {
+                                                    showColumnSelector && isColumnsValid(columns) && (
+                                                        <DataTableColumnSelector
+                                                            columns={ columns }
+                                                            columnSelectorHeader={ columnSelectorHeader }
+                                                            columnSelectorWidth={ columnSelectorWidth }
+                                                            onColumnSelectionChange={ handleColumnSelectorChange }
+                                                            showToggleDisallowedColumns={ showToggleDisallowedColumns }
+                                                            triggerIcon={ columnSelectorTriggerIcon }
+                                                        />
+                                                    )
+                                                }
                                             </DataTable.HeaderCell>
                                         </DataTable.Row>
                                     </DataTable.Header>
@@ -620,8 +695,13 @@ export const DataTable = <T extends object = {}>(
 
                                                             const {
                                                                 textAlign: columnTextAlign,
-                                                                width: columnWidth
+                                                                width: columnWidth,
+                                                                hidden: columnHidden
                                                             } = column;
+
+                                                            if (columnHidden) {
+                                                                return;
+                                                            }
 
                                                             return (
                                                                 <DataTable.Cell
@@ -678,7 +758,7 @@ export const DataTable = <T extends object = {}>(
                             }
                         </>
                     )
-                    : showPlaceholders()
+                    : <DataTable.Body>{ showPlaceholders() }</DataTable.Body>
             }
         </Table>
     );

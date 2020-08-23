@@ -43,5 +43,16 @@
                 cursor: @dataTableSelectableRowCursor;
             }
         }
+        
+        .data-table-header {
+            th {
+                font-weight: @dataTableHeaderFontWeight;
+            }
+        }
+        .data-table-column-selector {
+            float: @dataTableColumnSelectorFloat;
+           
+            // Check popup.overrides for column selector popup styles.
+        }
     }
 }

@@ -9,3 +9,6 @@
 @dataTableTransparentBackground: transparent;
 @dataTableTransparentBorder: none;
 @dataTableSelectableRowCursor: pointer;
+@dataTableColumnSelectorFloat: right;
+
+@dataTableHeaderFontWeight: 500;
