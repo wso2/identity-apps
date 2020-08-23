@@ -20,7 +20,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import get from "lodash/get";
-import React, { Fragment, FunctionComponent, ReactElement, ReactNode, SyntheticEvent } from "react";
+import React, { Fragment, ReactElement, ReactNode, SyntheticEvent } from "react";
 import {
     Dropdown,
     DropdownItemProps,
@@ -107,6 +107,10 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      * UI Props for the Row.
      */
     rowUIProps?: TableRowProps;
+    /**
+     * Show/Hide header cells.
+     */
+    showHeader?: boolean;
     /**
      * Should the table appear on a transparent background.
      */
@@ -269,6 +273,7 @@ export const DataTable = <T extends object = {}>(
         placeholders: externalPlaceholders,
         rowUIProps,
         selectable,
+        showHeader,
         testId,
         transparent,
         ...rest
@@ -282,11 +287,8 @@ export const DataTable = <T extends object = {}>(
         className
     );
 
-    const isColumnsValid = (columns: TableColumnInterface[], checkIfRenderable: boolean = false): boolean => {
-        return (columns && Array.isArray(columns) && columns.length > 0)
-            && (checkIfRenderable
-                ? columns.some((column: TableColumnInterface) => column?.title) && !isExternalPlaceholdersAvailable()
-                : true);
+    const isColumnsValid = (columns: TableColumnInterface[]): boolean => {
+        return (columns && Array.isArray(columns) && columns.length > 0);
     };
 
     const isDataValid = (data: TableDataInterface[]): boolean => {
@@ -302,6 +304,10 @@ export const DataTable = <T extends object = {}>(
             && (checkIfRenderable
                 ? extensions.some((extension: TableExtensionInterface)=> extension.component)
                 : true);
+    };
+    
+    const isTableRenderable = (data: TableDataInterface[]): boolean => {
+        return !isDataValid(data) || !isExternalPlaceholdersAvailable();
     };
 
     const renderActions = (item: TableDataInterface, action: TableActionsInterface, index: number): ReactElement => {
@@ -503,140 +509,150 @@ export const DataTable = <T extends object = {}>(
             { ...rest }
         >
             {
-                isExtensionsValid(extensions, true) && (
-                    extensions.map((extension: TableExtensionInterface, index: number) => {
-                        const {
-                            component,
-                            isExternalRendererProvided,
-                            position
-                        } = extension;
-
-                        return (
-                            position === "top"
-                                ? isExternalRendererProvided
-                                    ? (
-                                        <Fragment key={ index }>
-                                            { component }
-                                        </Fragment>
-                                    )
-                                    : (
-                                        <DataTable.Header fullWidth>
-                                            <DataTable.Row>
-                                                <DataTable.HeaderCell
-                                                    colSpan={ isColumnsValid(columns) && columns.length }
-                                                >
-                                                    { component }
-                                                </DataTable.HeaderCell>
-                                            </DataTable.Row>
-                                        </DataTable.Header>
-                                    )
-                                : null
-                        );
-                    })
-                )
-            }
-            {
-                isColumnsValid(columns, true) && (
-                    <DataTable.Header>
-                        <DataTable.Row>
+                isTableRenderable(data)
+                    ? (
+                        <>
                             {
-                                columns.map((column: TableColumnInterface, index) => renderHeaderCell(column, index))
+                                isExtensionsValid(extensions, true) && (
+                                    extensions.map((extension: TableExtensionInterface, index: number) => {
+                                        const {
+                                            component,
+                                            isExternalRendererProvided,
+                                            position
+                                        } = extension;
+
+                                        return (
+                                            position === "top"
+                                                ? isExternalRendererProvided
+                                                ? (
+                                                    <Fragment key={ index }>
+                                                        { component }
+                                                    </Fragment>
+                                                )
+                                                : (
+                                                    <DataTable.Header fullWidth>
+                                                        <DataTable.Row>
+                                                            <DataTable.HeaderCell
+                                                                colSpan={ isColumnsValid(columns) && columns.length }
+                                                            >
+                                                                { component }
+                                                            </DataTable.HeaderCell>
+                                                        </DataTable.Row>
+                                                    </DataTable.Header>
+                                                )
+                                                : null
+                                        );
+                                    })
+                                )
                             }
-                        </DataTable.Row>
-                    </DataTable.Header>
-                )
-            }
 
-            <DataTable.Body>
-                {
-                    isColumnsValid(columns)
-                        ? isDataValid(data)
-                        ? data.map((item: TableDataInterface, index) => {
-
-                            if (!item) {
-                                return;
+                            {
+                                isColumnsValid(columns) && showHeader && (
+                                    <DataTable.Header>
+                                        <DataTable.Row>
+                                            {
+                                                columns.map((column: TableColumnInterface, index) =>
+                                                    renderHeaderCell(column, index))
+                                            }
+                                        </DataTable.Row>
+                                    </DataTable.Header>
+                                )
                             }
 
-                            const {
-                                key: itemKey,
-                                rendererProps,
-                                textAlign: itemTextAlign,
-                                width: itemWidth
-                            } = item;
-                            
-                            const {
-                                cellUIProps: cellUIPropOverrides,
-                                rowUIProps: rowUIPropOverrides
-                            } = rendererProps || {};
+                            <DataTable.Body>
+                                {
+                                    isColumnsValid(columns)
+                                        ? data.map((item: TableDataInterface, index) => {
 
-                            return (
-                                <DataTable.Row
-                                    key={ itemKey ?? index }
-                                    onClick={ (e: SyntheticEvent) => selectable && onRowClick(e, item) }
-                                    { ...rowUIProps }
-                                    { ...rowUIPropOverrides }
-                                >
-                                    {
-                                        columns.map((column: TableColumnInterface, index) => {
+                                            if (!item) {
+                                                return;
+                                            }
 
                                             const {
-                                                textAlign: columnTextAlign,
-                                                width: columnWidth
-                                            } = column;
+                                                key: itemKey,
+                                                rendererProps,
+                                                textAlign: itemTextAlign,
+                                                width: itemWidth
+                                            } = item;
+
+                                            const {
+                                                cellUIProps: cellUIPropOverrides,
+                                                rowUIProps: rowUIPropOverrides
+                                            } = rendererProps || {};
 
                                             return (
-                                                <DataTable.Cell
-                                                    key={ index }
-                                                    textAlign={ itemTextAlign || columnTextAlign }
-                                                    width={ itemWidth ?? columnWidth }
-                                                    { ...cellUIProps }
-                                                    { ...cellUIPropOverrides }
+                                                <DataTable.Row
+                                                    key={ itemKey ?? index }
+                                                    onClick={
+                                                        (e: SyntheticEvent) => selectable && onRowClick(e, item)
+                                                    }
+                                                    { ...rowUIProps }
+                                                    { ...rowUIPropOverrides }
                                                 >
-                                                    { renderCell(item, column) }
-                                                </DataTable.Cell>
+                                                    {
+                                                        columns.map((column: TableColumnInterface, index) => {
+
+                                                            const {
+                                                                textAlign: columnTextAlign,
+                                                                width: columnWidth
+                                                            } = column;
+
+                                                            return (
+                                                                <DataTable.Cell
+                                                                    key={ index }
+                                                                    textAlign={ itemTextAlign || columnTextAlign }
+                                                                    width={ itemWidth ?? columnWidth }
+                                                                    { ...cellUIProps }
+                                                                    { ...cellUIPropOverrides }
+                                                                >
+                                                                    { renderCell(item, column) }
+                                                                </DataTable.Cell>
+                                                            )
+                                                        })
+                                                    }
+                                                </DataTable.Row>
                                             )
                                         })
-                                    }
-                                </DataTable.Row>
-                            )
-                        })
-                        : showPlaceholders()
-                        : null
-                }
-            </DataTable.Body>
+                                        : null
+                                }
+                            </DataTable.Body>
 
-            {
-                isExtensionsValid(extensions, true) && (
-                    extensions.map((extension: TableExtensionInterface, index: number) => {
-                        const {
-                            component,
-                            isExternalRendererProvided,
-                            position
-                        } = extension;
+                            {
+                                isExtensionsValid(extensions, true) && (
+                                    extensions.map((extension: TableExtensionInterface, index: number) => {
+                                        const {
+                                            component,
+                                            isExternalRendererProvided,
+                                            position
+                                        } = extension;
 
-                        return (
-                            position === "bottom"
-                                ? isExternalRendererProvided
-                                    ? (
-                                        <Fragment key={ index }>
-                                            { component }
-                                        </Fragment>
-                                    )
-                                    : (
-                                        <DataTable.Footer fullWidth>
-                                            <DataTable.Row>
-                                                <DataTable.HeaderCell
-                                                    colSpan={ isColumnsValid(columns) && columns.length }
-                                                >
-                                                    { component }
-                                                </DataTable.HeaderCell>
-                                            </DataTable.Row>
-                                        </DataTable.Footer>
-                                    )
-                                : null
-                        );
-                    })
-                )
+                                        return (
+                                            position === "bottom"
+                                                ? isExternalRendererProvided
+                                                ? (
+                                                    <Fragment key={ index }>
+                                                        { component }
+                                                    </Fragment>
+                                                )
+                                                : (
+                                                    <DataTable.Footer fullWidth>
+                                                        <DataTable.Row>
+                                                            <DataTable.HeaderCell
+                                                                colSpan={ isColumnsValid(columns) && columns.length }
+                                                            >
+                                                                { component }
+                                                            </DataTable.HeaderCell>
+                                                        </DataTable.Row>
+                                                    </DataTable.Footer>
+                                                )
+                                                : null
+                                        );
+                                    })
+                                )
+                            }
+                        </>
+                    )
+                    : showPlaceholders()
             }
         </Table>
     );
@@ -645,6 +661,7 @@ export const DataTable = <T extends object = {}>(
 DataTable.defaultProps = {
     "data-testid": "data-table",
     selectable: true,
+    showHeader: true,
     stackable: true
 };
 
