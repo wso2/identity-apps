@@ -108,9 +108,17 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
      */
     rowUIProps?: TableRowProps;
     /**
+     * Search component to be rendered.
+     */
+    search?: ReactNode;
+    /**
      * Show/Hide header cells.
      */
     showHeader?: boolean;
+    /**
+     * Show/Hide the table's operations panel header that has the search, column selector etc.
+     */
+    showOperationsHeader?: boolean;
     /**
      * Should the table appear on a transparent background.
      */
@@ -272,8 +280,10 @@ export const DataTable = <T extends object = {}>(
         onRowClick,
         placeholders: externalPlaceholders,
         rowUIProps,
+        search,
         selectable,
         showHeader,
+        showOperationsHeader,
         testId,
         transparent,
         ...rest
@@ -543,6 +553,22 @@ export const DataTable = <T extends object = {}>(
                                                 : null
                                         );
                                     })
+                                )
+                            }
+                            
+                            {
+                                showOperationsHeader && search && (
+                                    <DataTable.Header fullWidth>
+                                        <DataTable.Row>
+                                            <DataTable.HeaderCell
+                                                colSpan={ isColumnsValid(columns) && columns.length }
+                                            >
+                                                <div className="data-table-search">
+                                                    { search }
+                                                </div>
+                                            </DataTable.HeaderCell>
+                                        </DataTable.Row>
+                                    </DataTable.Header>
                                 )
                             }
 
