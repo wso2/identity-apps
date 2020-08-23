@@ -31,7 +31,9 @@ import {
     SemanticICONS,
     SemanticWIDTHS,
     Table,
-    TableProps
+    TableCellProps,
+    TableProps,
+    TableRowProps
 } from "semantic-ui-react";
 import { DataTableBody } from "./data-table-body";
 import { DataTableCell, DataTableCellPropsInterface } from "./data-table-cell";
@@ -61,6 +63,10 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
      * Set of actions.
      */
     actions?: TableActionsInterface[];
+    /**
+     * UI Props for the cell.
+     */
+    cellUIProps: TableCellProps;
     /**
      * Table data source.
      */
@@ -98,6 +104,10 @@ export interface DataTablePropsInterface extends Omit<TableProps, "columns">, Te
      */
     placeholders?: ReactNode;
     /**
+     * UI Props for the Row.
+     */
+    rowUIProps: TableRowProps;
+    /**
      * Should the table appear on a transparent background.
      */
     transparent?: boolean;
@@ -111,6 +121,24 @@ export interface StrictDataPropsInterface {
      * key prop for React.
      */
     key?: string | number;
+    /**
+     * Props for the UI component.
+     */
+    rendererProps?: DataRendererPropsInterface;
+}
+
+/**
+ * Interface for the Data renderer props.
+ */
+export interface DataRendererPropsInterface {
+    /**
+     * UI Props for the cell.
+     */
+    cellUIProps: TableCellProps;
+    /**
+     * UI Props for the Row.
+     */
+    rowUIProps: TableRowProps;
 }
 
 /**
@@ -225,6 +253,7 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
 
     const {
         actions,
+        cellUIProps,
         className,
         columns,
         data,
@@ -233,6 +262,7 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
         loadingStateOptions,
         onRowClick,
         placeholders: externalPlaceholders,
+        rowUIProps,
         selectable,
         testId,
         transparent,
@@ -514,14 +544,22 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
 
                             const {
                                 key: itemKey,
+                                rendererProps,
                                 textAlign: itemTextAlign,
                                 width: itemWidth
                             } = item;
+                            
+                            const {
+                                cellUIProps: cellUIPropOverrides,
+                                rowUIProps: rowUIPropOverrides
+                            } = rendererProps;
 
                             return (
                                 <DataTable.Row
                                     key={ itemKey ?? index }
                                     onClick={ (e: SyntheticEvent) => selectable && onRowClick(e, item) }
+                                    { ...rowUIProps }
+                                    { ...rowUIPropOverrides }
                                 >
                                     {
                                         columns.map((column: TableColumnInterface, index) => {
@@ -536,6 +574,8 @@ export const DataTable: FunctionComponent<DataTablePropsInterface> & DataTableSu
                                                     key={ index }
                                                     textAlign={ itemTextAlign || columnTextAlign }
                                                     width={ itemWidth ?? columnWidth }
+                                                    { ...cellUIProps }
+                                                    { ...cellUIPropOverrides }
                                                 >
                                                     { renderCell(item, column) }
                                                 </DataTable.Cell>
