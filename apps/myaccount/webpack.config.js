@@ -98,8 +98,20 @@ module.exports = (env) => {
                     ]
                 },
                 {
-                    exclude: /(node_modules\/(?!joi|react-notification-system|less-plugin-rewrite-variable|@wso2is\/authentication|@wso2is\/forms|@wso2is\/react-components|@wso2is\/theme|@wso2is\/validation))/,
-                    test: /\.(ts|js)x?$/,
+                    exclude: {
+						test: /node_modules(\\|\/)(core-js)/,
+						not: [
+							/joi/,
+							/react-notification-system/,
+							/less-plugin-rewrite-variable/,
+							/@wso2is(\\|\/)authentication/,
+							/@wso2is(\\|\/)forms/,
+							/@wso2is(\\|\/)react-components/,
+							/@wso2is(\\|\/)theme/,
+							/@wso2is(\\|\/)validation/
+						]
+                    },
+					test: /\.(ts|js)x?$/,
                     use: [
                         { loader: "cache-loader" },
                         {
