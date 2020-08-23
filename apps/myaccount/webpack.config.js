@@ -67,7 +67,8 @@ module.exports = (env) => {
             : isDevelopment && "cheap-module-source-map",
         entry: {
             init: "./src/init/init.ts",
-            main: "./src/index.tsx"
+            main: "./src/index.tsx",
+            rpIFrame: "./src/init/rpIFrame-script.ts"
         },
         mode: isProduction ? "production" : "development",
         module: {
@@ -250,6 +251,7 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
+                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
                     importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
@@ -268,12 +270,20 @@ module.exports = (env) => {
                     title: titleText
                 })
                 : new HtmlWebpackPlugin({
+                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
                     publicPath: publicPath,
                     template: path.join(__dirname, "src", "index.html"),
                     title: titleText
                 }),
+            new HtmlWebpackPlugin({
+                excludeChunks: [ "main", "init" ],
+                filename: path.join(distFolder, "rpIFrame.html"),
+                hash: true,
+                publicPath: publicPath,
+                template: path.join(__dirname, "src", "rpIFrame.html")
+            }),
             new webpack.DefinePlugin({
                 "process.env": {
                     NODE_ENV: JSON.stringify(env.NODE_ENV)
