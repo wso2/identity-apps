@@ -1209,6 +1209,7 @@ body {
         background: @advancedSearchHintBackground;
         border: @advancedSearchActiveSearchQueryBorder;
         border-top: @advancedSearchActiveSearchQueryBorderTop;
+        z-index: @advancedSearchQueryHintZIndex;
 
         .query {
             display: inline-block;
@@ -1223,6 +1224,21 @@ body {
         }
         &.active {
             visibility: visible;
+        }
+    }
+}
+
+@media only screen and (max-width: @tabletBreakpoint) {
+    .advanced-search-wrapper {
+        .ui.action.input {
+            &.advanced-search {
+                min-width: unset;
+                width: @mobileAdvancedSearchMinWidth;
+            }
+        }
+
+        .search-query-hint {
+            width: @mobileAdvancedSearchActiveSearchQueryWidth;
         }
     }
 }

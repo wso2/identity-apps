@@ -49,10 +49,19 @@
                 font-weight: @dataTableHeaderFontWeight;
             }
         }
+
         .data-table-column-selector {
-            float: @dataTableColumnSelectorFloat;
-           
             // Check popup.overrides for column selector popup styles.
+        }
+    }
+}
+
+@media only screen and (max-width: @tabletBreakpoint) {
+    .ui.table {
+        &.data-table {
+            .data-table-search {
+                margin-bottom: @mobileDataTableSearchMarginBottom;
+            }
         }
     }
 }

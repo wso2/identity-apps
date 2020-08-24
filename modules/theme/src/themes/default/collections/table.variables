@@ -12,3 +12,6 @@
 @dataTableColumnSelectorFloat: right;
 
 @dataTableHeaderFontWeight: 500;
+
+// Mobile Variables
+@mobileDataTableSearchMarginBottom: 10px;

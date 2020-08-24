@@ -155,6 +155,7 @@
 --------------------*/
 
 @advancedSearchWidth: 320px;
+@mobileAdvancedSearchMinWidth: auto;
 @advancedSearchDropdownMinWidth: 260px;
 @advancedSearchDropdownMaxWidth: 520px;
 @advancedSearchBorder: 1px solid @borderColor;
