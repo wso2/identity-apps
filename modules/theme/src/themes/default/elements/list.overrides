@@ -80,7 +80,7 @@
             }
 
             .content {
-                overflow: hidden;
+                x-overflow: hidden;
 
                 .list-item-name {
                     overflow: hidden;
