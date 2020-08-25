@@ -32,7 +32,6 @@
 
         <title><%= htmlWebpackPlugin.options.title %></title>
 
-        <script src="<%= htmlWebpackPlugin.options.publicPath %>/app-utils.js"></script>
         <script>
             // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
             // In such cases, the code is added to the sessionStorage under the key "code".
@@ -45,6 +44,7 @@
             if (sessionState !== "null") {
                 sessionStorage.setItem("session_state", sessionState);
             }
+<<<<<<< HEAD
 
             if (window["AppUtils"] === null || window["AppUtils"].getConfig() === null) {
                 AppUtils.init({
@@ -184,6 +184,8 @@
                     }
                 }
             }
+=======
+>>>>>>> Use babel to transpile console
         </script>
     </head>
     <body>

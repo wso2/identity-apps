@@ -1,34 +1,36 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
- *
- * WSO2 Inc. licenses this file to you under the Apache License,
- * Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
+* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+*
+* WSO2 Inc. licenses this file to you under the Apache License,
+* Version 2.0 (the "License"); you may not use this file except
+* in compliance with the License.
+* You may obtain a copy of the License at
+*
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* Unless required by applicable law or agreed to in writing,
+* software distributed under the License is distributed on an
+* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+* KIND, either express or implied. See the License for the
+* specific language governing permissions and limitations
+* under the License.
+*/
 
 import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-if (!window[ "AppUtils" ]|| !window[ "AppUtils" ]?.getConfig()) {
+if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
+        accountAppOrigin: "https://localhost:9000",
+        developerAppOrigin: "https://localhost:9001",
         serverOrigin: "https://localhost:9443",
         superTenant: "carbon.super",
         tenantPrefix: "t"
     });
-}
 
-window[ "AppUtils" ] = AppUtils;
+    window["AppUtils"] = AppUtils;
+}
 
 function getRandomPKCEChallenge() {
     const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
@@ -43,9 +45,8 @@ function getRandomPKCEChallenge() {
 
 function sendPromptNoneRequest() {
     const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
-    const promptNoneIFrame: HTMLIFrameElement = rpIFrame.contentWindow.document.getElementById(
-        "promptNoneIFrame"
-    ) as HTMLIFrameElement;
+    const promptNoneIFrame: HTMLIFrameElement
+        = rpIFrame.contentWindow.document.getElementById("promptNoneIFrame") as HTMLIFrameElement;
     const config = window.parent["AppUtils"].getConfig();
     promptNoneIFrame.src =
         sessionStorage.getItem("authorization_endpoint") +
@@ -85,8 +86,8 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
 } else {
     // Tracking user interactions
     let IDLE_TIMEOUT = 600;
-    if (config?.session != null && config.session.userIdconstimeOut != null && config.session.userIdconstimeOut > 1) {
-        IDLE_TIMEOUT = config.session.userIdconstimeOut;
+    if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
+        IDLE_TIMEOUT = config.session.userIdleTimeOut;
     }
     let IDLE_WARNING_TIMEOUT = 580;
     if (
@@ -119,29 +120,27 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
     };
 
     window.setInterval(() => {
-        {
-            _idleSecondsCounter++;
-            _sessionAgeCounter++;
+        _idleSecondsCounter++;
+        _sessionAgeCounter++;
 
-            // Logout user if idle
-            if (_idleSecondsCounter >= IDLE_TIMEOUT) {
-                window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
-            } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
-                // eslint-disable-next-line no-console
-                console.log(
-                    "You will be logged out of the system after " +
-                        (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) +
-                        " seconds! Click OK to stay logged in."
-                );
-            }
+        // Logout user if idle
+        if (_idleSecondsCounter >= IDLE_TIMEOUT) {
+            window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+        } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
+            // eslint-disable-next-line no-console
+            console.log(
+                "You will be logged out of the system after " +
+                    (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) +
+                    " seconds! Click OK to stay logged in."
+            );
+        }
 
-            // Keep user session intact if the user is active
-            if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
-                if (_sessionAgeCounter > _idleSecondsCounter) {
-                    sendPromptNoneRequest();
-                }
-                _sessionAgeCounter = 0;
+        // Keep user session intact if the user is active
+        if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
+            if (_sessionAgeCounter > _idleSecondsCounter) {
+                sendPromptNoneRequest();
             }
+            _sessionAgeCounter = 0;
         }
     }, 1000);
 }
