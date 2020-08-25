@@ -240,10 +240,10 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label={ t("adminPortal:components.claims.external.forms.attributeURI.label") }
+                            label={ t("adminPortal:components.claims.external.forms.localAttribute.label") }
                             required={ true }
                             requiredErrorMessage={ t("adminPortal:components.claims.external.forms." +
-                                "attributeURI.requiredErrorMessage") }
+                                "localAttribute.requiredErrorMessage") }
                             placeholder={ t("adminPortal:components.claims.external.forms.attributeURI.placeholder") }
                             search
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
