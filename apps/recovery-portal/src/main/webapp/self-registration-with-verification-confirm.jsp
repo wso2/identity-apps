@@ -85,7 +85,7 @@
             File titleFile = new File(getServletContext().getRealPath("extensions/title.jsp"));
             if (titleFile.exists()) {
         %>
-                <jsp:include page="extensions/title.jsp"/>
+                <jsp:directive.include file="extensions/title.jsp"/>
         <% } else { %>
                 <jsp:directive.include file="includes/title.jsp"/>
         <% } %>
@@ -108,7 +108,7 @@
         File headerFile = new File(getServletContext().getRealPath("extensions/header.jsp"));
         if (headerFile.exists()) {
     %>
-            <jsp:include page="extensions/header.jsp"/>
+            <jsp:directive.include file="extensions/header.jsp"/>
     <% } else { %>
             <jsp:directive.include file="includes/header.jsp"/>
     <% } %>
@@ -144,7 +144,7 @@
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
         if (footerFile.exists()) {
     %>
-            <jsp:include page="extensions/footer.jsp"/>
+            <jsp:directive.include file="extensions/footer.jsp"/>
     <% } else { %>
             <jsp:directive.include file="includes/footer.jsp"/>
     <% } %>
