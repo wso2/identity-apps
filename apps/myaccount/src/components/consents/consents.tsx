@@ -402,7 +402,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * @return {JSX.Element}
      */
     const consentRevokeModal = (): JSX.Element => {
-        const isUserPortal: number = ApplicationConstants.PORTAL_SP_DESCRIPTION.localeCompare(
+        const self: number = ApplicationConstants.PORTAL_SP_DESCRIPTION.localeCompare(
             revokingConsent.spDisplayName);
 
         return (
@@ -422,7 +422,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             >
                 <Modal.Content>
                     {
-                        (isUserPortal === 0)
+                        (self === 0)
                             ? (
                                 <Message warning>
                                     <p>{ t("userPortal:components.consentManagement.modals." +
