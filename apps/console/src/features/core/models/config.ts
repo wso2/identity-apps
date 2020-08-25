@@ -96,7 +96,7 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      */
     adminApp: ExternalAppConfigInterface;
     /**
-     * Configs of the user portal app.
+     * Configs of the myaccount app.
      */
     accountApp: ExternalAppConfigInterface;
     /**
