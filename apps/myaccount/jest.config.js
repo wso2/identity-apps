@@ -18,13 +18,13 @@
 
 module.exports = {
     globals: {
-        APP_BASENAME: "user-portal",
+        APP_BASENAME: "myaccount",
         SERVER_HOST_DEFAULT: "https://localhost:9443",
         APP_HOME_PATH: "/overview",
         APP_LOGIN_PATH: "/login",
         CLIENT_ID_DEFAULT: "USER_PORTAL",
         CLIENT_HOST_DEFAULT: "https://localhost:9000",
-        LOGIN_CALLBACK_URL: "https://localhost:9000/user-portal/login"
+        LOGIN_CALLBACK_URL: "https://localhost:9000/myaccount/login"
     },
     transform: {
         "^.+\\.tsx$": "ts-jest",

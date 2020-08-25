@@ -68,7 +68,7 @@ export class ApplicationConstants {
         .set("UNAUTHORIZED", "/unauthorized");
 
     /**
-     * Name of the app config file for the user portal.
+     * Name of the app config file for the portal.
      * @constant
      * @type {string}
      * @default
@@ -116,12 +116,13 @@ export class ApplicationConstants {
     public static readonly APPLICATIONS_PAGE_PATH: string = "/applications";
 
     /**
-     * User portal application identifier.
+     * Portal SP description.
+     * Should be same as the description defined in AppPortalConstants.java in components/common.
      * @constant
      * @type {string}
      * @default
      */
-    public static readonly USER_PORTAL_IDENTIFIER: string = "This is the user portal application.";
+    public static readonly PORTAL_SP_DESCRIPTION: string = "This is the my account application.";
 
     /**
      * Error description when the user selects no in the logout prompt

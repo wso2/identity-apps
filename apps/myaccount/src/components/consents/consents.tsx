@@ -218,7 +218,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * @param {ConsentInterface} consent - Consent which needs to be revoked.
      */
     const revokeAppConsent = (consent: ConsentInterface): void => {
-        const isUserPortal: number = ApplicationConstants.USER_PORTAL_IDENTIFIER.localeCompare(consent.spDisplayName);
+        const self: number = ApplicationConstants.PORTAL_SP_DESCRIPTION.localeCompare(consent.spDisplayName);
 
         revokeConsentedApp(consent.consentReceiptID)
             .then(() => {
@@ -233,8 +233,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         ".success.message")
                 });
 
-                // If the revoked app is user portal, end the session.
-                if (isUserPortal === 0) {
+                // If the revoked app is myaccount, end the session.
+                if (self === 0) {
                     endUserSession();
 
                     return;
@@ -402,7 +402,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * @return {JSX.Element}
      */
     const consentRevokeModal = (): JSX.Element => {
-        const isUserPortal: number = ApplicationConstants.USER_PORTAL_IDENTIFIER.localeCompare(
+        const isUserPortal: number = ApplicationConstants.PORTAL_SP_DESCRIPTION.localeCompare(
             revokingConsent.spDisplayName);
 
         return (
