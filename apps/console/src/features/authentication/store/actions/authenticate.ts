@@ -41,6 +41,7 @@ import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
 import { history, store } from "../../../core";
 import { HttpUtils } from "../../../core/utils";
+import { UAParser } from "ua-parser-js";
 
 /**
  *  Gets profile information by making an API call
@@ -145,7 +146,7 @@ export const initializeAuthentication = () => (dispatch) => {
         responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
         scope: [TokenConstants.SYSTEM_SCOPE],
         serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-        storage: Storage.WebWorker
+        storage: new UAParser().getBrowser().name==="IE" ? Storage.SessionStorage : Storage.WebWorker
     });
     auth.on("http-request-error", HttpUtils.onHttpRequestError);
     auth.on("http-request-finish", HttpUtils.onHttpRequestFinish);
