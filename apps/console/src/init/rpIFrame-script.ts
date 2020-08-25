@@ -71,7 +71,7 @@ function getRandomPKCEChallenge() {
 }
 
 function receiveMessage(e) {
-    if (targetOrigin.indexOf(e.origin) < 0) {
+    if (targetOrigin?.indexOf(e.origin) < 0) {
         return;
     }
 
