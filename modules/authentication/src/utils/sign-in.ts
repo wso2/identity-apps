@@ -57,9 +57,15 @@ import {
     USERNAME_TAG
 } from "../constants";
 import { Storage } from "../constants/storage";
-import { CustomGrantRequestParams, SignInResponse, UserInfo } from "../models";
+import {
+    ConfigInterface,
+    CustomGrantRequestParams,
+    SignInResponse,
+    UserInfo,
+    WebWorkerConfigInterface,
+    isWebWorkerConfig
+} from "../models";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
-import { ConfigInterface } from "../models/client";
 import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
 
 /**
@@ -67,7 +73,7 @@ import { TokenRequestHeader, TokenResponseInterface } from "../models/token-resp
  *
  * @returns {boolean} true if authorization code is present.
  */
-export function hasAuthorizationCode(requestParams: ConfigInterface): boolean {
+export function hasAuthorizationCode(requestParams: ConfigInterface | WebWorkerConfigInterface): boolean {
     return !!getAuthorizationCode(requestParams);
 }
 
@@ -79,8 +85,8 @@ export function hasAuthorizationCode(requestParams: ConfigInterface): boolean {
  *
  * @returns {string} Resolved authorization code.
  */
-export function getAuthorizationCode(requestParams?: ConfigInterface): string {
-    if (!requestParams || requestParams.storage !== Storage.WebWorker) {
+export function getAuthorizationCode(requestParams?: ConfigInterface | WebWorkerConfigInterface): string {
+    if (!requestParams || !isWebWorkerConfig(requestParams)) {
         if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
             return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
         }
@@ -114,9 +120,12 @@ export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader =
 /**
  * Send authorization request.
  *
- * @param {ConfigInterface} requestParams request parameters required for authorization request.
+ * @param {ConfigInterface | WebWorkerConfigInterface} requestParams
+ * request parameters required for authorization request.
  */
-export function sendAuthorizationRequest(requestParams: ConfigInterface): Promise<SignInResponse | never> {
+export function sendAuthorizationRequest(
+    requestParams: ConfigInterface | WebWorkerConfigInterface
+): Promise<SignInResponse | never> {
     const authorizeEndpoint = getAuthorizeEndpoint(requestParams);
 
     if (!authorizeEndpoint || authorizeEndpoint.trim().length === 0) {
@@ -173,7 +182,10 @@ export function sendAuthorizationRequest(requestParams: ConfigInterface): Promis
  * @returns {Promise<boolean>} whether token is valid.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function validateIdToken(idToken: string, requestParams: ConfigInterface): Promise<any> {
+export function validateIdToken(
+    idToken: string,
+    requestParams: ConfigInterface | WebWorkerConfigInterface
+): Promise<any> {
     const jwksEndpoint = getJwksUri(requestParams);
 
     if (!jwksEndpoint || jwksEndpoint.trim().length === 0) {
@@ -187,7 +199,7 @@ export function validateIdToken(idToken: string, requestParams: ConfigInterface)
                 return Promise.reject(new Error("Failed to load public keys from JWKS URI: " + jwksEndpoint));
             }
 
-            const jwk = getJWKForTheIdToken(idToken.split(".")[ 0 ], response.data.keys);
+            const jwk = getJWKForTheIdToken(idToken.split(".")[0], response.data.keys);
 
             let issuer = getIssuer(requestParams);
 
@@ -207,10 +219,12 @@ export function validateIdToken(idToken: string, requestParams: ConfigInterface)
 /**
  * Send token request.
  *
- * @param {ConfigInterface} requestParams request parameters required for token request.
+ * @param {ConfigInterface | WebWorkerConfigInterface} requestParams request parameters required for token request.
  * @returns {Promise<TokenResponseInterface>} token response data or error.
  */
-export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenResponseInterface> {
+export function sendTokenRequest(
+    requestParams: ConfigInterface | WebWorkerConfigInterface | WebWorkerConfigInterface | WebWorkerConfigInterface
+): Promise<TokenResponseInterface> {
     const tokenEndpoint = getTokenEndpoint(requestParams);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -218,40 +232,38 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
     }
 
     // Extract session state and set to the sessionStorage
-    const sessionState =
-        requestParams.storage === Storage.WebWorker
-            ? requestParams.session.get(SESSION_STATE)
-            : new URL(window.location.href).searchParams.get(SESSION_STATE);
+    const sessionState = isWebWorkerConfig(requestParams)
+        ? requestParams.session.get(SESSION_STATE)
+        : new URL(window.location.href).searchParams.get(SESSION_STATE);
     if (sessionState !== null && sessionState.length > 0) {
         setSessionParameter(SESSION_STATE, sessionState, requestParams);
     }
 
     const body = [];
-    body.push(`client_id=${ requestParams.clientID }`);
+    body.push(`client_id=${requestParams.clientID}`);
 
     if (requestParams.clientSecret && requestParams.clientSecret.trim().length > 0) {
-        body.push(`client_secret=${ requestParams.clientSecret }`);
+        body.push(`client_secret=${requestParams.clientSecret}`);
     }
 
-    const code =
-        requestParams.storage === Storage.WebWorker
-            ? requestParams.session.get(AUTHORIZATION_CODE)
-            : getAuthorizationCode(requestParams);
-    body.push(`code=${ code }`);
+    const code = isWebWorkerConfig(requestParams)
+        ? requestParams.session.get(AUTHORIZATION_CODE)
+        : getAuthorizationCode(requestParams);
+    body.push(`code=${code}`);
 
     if (requestParams.storage === Storage.SessionStorage && window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
         window.sessionStorage.removeItem(AUTHORIZATION_CODE);
     }
 
-    if (requestParams.storage === Storage.WebWorker && requestParams.session.get(AUTHORIZATION_CODE)) {
+    if (isWebWorkerConfig(requestParams) && requestParams.session.get(AUTHORIZATION_CODE)) {
         requestParams.session.delete(AUTHORIZATION_CODE);
     }
 
     body.push("grant_type=authorization_code");
-    body.push(`redirect_uri=${ requestParams.callbackURL }`);
+    body.push(`redirect_uri=${requestParams.callbackURL}`);
 
     if (requestParams.enablePKCE) {
-        body.push(`code_verifier=${ getSessionParameter(PKCE_CODE_VERIFIER, requestParams) }`);
+        body.push(`code_verifier=${getSessionParameter(PKCE_CODE_VERIFIER, requestParams)}`);
         removeSessionParameter(PKCE_CODE_VERIFIER, requestParams);
     }
 
@@ -263,26 +275,30 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
                     new Error("Invalid status code received in the token response: " + response.status)
                 );
             }
-            return validateIdToken(response.data.id_token, requestParams).then((valid) => {
-                if (valid) {
-                    setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams), requestParams);
+            return validateIdToken(response.data.id_token, requestParams)
+                .then((valid) => {
+                    if (valid) {
+                        setSessionParameter(REQUEST_PARAMS, JSON.stringify(requestParams), requestParams);
 
-                    const tokenResponse: TokenResponseInterface = {
-                        accessToken: response.data.access_token,
-                        expiresIn: response.data.expires_in,
-                        idToken: response.data.id_token,
-                        refreshToken: response.data.refresh_token,
-                        scope: response.data.scope,
-                        tokenType: response.data.token_type
-                    };
+                        const tokenResponse: TokenResponseInterface = {
+                            accessToken: response.data.access_token,
+                            expiresIn: response.data.expires_in,
+                            idToken: response.data.id_token,
+                            refreshToken: response.data.refresh_token,
+                            scope: response.data.scope,
+                            tokenType: response.data.token_type
+                        };
 
-                    return Promise.resolve(tokenResponse);
-                }
+                        return Promise.resolve(tokenResponse);
+                    }
 
-                return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
-            }).catch(error => {
-                return Promise.reject(error);
-            });
+                    return Promise.reject(
+                        new Error("Invalid id_token in the token response: " + response.data.id_token)
+                    );
+                })
+                .catch((error) => {
+                    return Promise.reject(error);
+                });
         })
         .catch((error) => {
             return Promise.reject(error);
@@ -292,11 +308,14 @@ export function sendTokenRequest(requestParams: ConfigInterface): Promise<TokenR
 /**
  * Send refresh token request.
  *
- * @param {ConfigInterface} requestParams request parameters required for token request.
+ * @param {ConfigInterface | WebWorkerConfigInterface} requestParams request parameters required for token request.
  * @param {string} refreshToken
  * @returns {Promise<TokenResponseInterface>} refresh token response data or error.
  */
-export function sendRefreshTokenRequest(requestParams: ConfigInterface, refreshToken: string): Promise<any> {
+export function sendRefreshTokenRequest(
+    requestParams: ConfigInterface | WebWorkerConfigInterface,
+    refreshToken: string
+): Promise<any> {
     const tokenEndpoint = getTokenEndpoint(requestParams);
 
     if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
@@ -304,8 +323,8 @@ export function sendRefreshTokenRequest(requestParams: ConfigInterface, refreshT
     }
 
     const body = [];
-    body.push(`client_id=${ requestParams.clientID }`);
-    body.push(`refresh_token=${ refreshToken }`);
+    body.push(`client_id=${requestParams.clientID}`);
+    body.push(`refresh_token=${refreshToken}`);
     body.push("grant_type=refresh_token");
 
     return axios
@@ -343,12 +362,16 @@ export function sendRefreshTokenRequest(requestParams: ConfigInterface, refreshT
 /**
  * Send revoke token request.
  *
- * @param {ConfigInterface} requestParams request parameters required for revoke token request.
+ * @param {ConfigInterface | WebWorkerConfigInterface} requestParams
+ * request parameters required for revoke token request.
  * @param {string} accessToken access token
  * @returns {any}
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function sendRevokeTokenRequest(requestParams: ConfigInterface, accessToken: string): Promise<any> {
+export function sendRevokeTokenRequest(
+    requestParams: ConfigInterface | WebWorkerConfigInterface,
+    accessToken: string
+): Promise<any> {
     const revokeTokenEndpoint = getRevokeTokenEndpoint(requestParams);
 
     if (!revokeTokenEndpoint || revokeTokenEndpoint.trim().length === 0) {
@@ -356,8 +379,8 @@ export function sendRevokeTokenRequest(requestParams: ConfigInterface, accessTok
     }
 
     const body = [];
-    body.push(`client_id=${ requestParams.clientID }`);
-    body.push(`token=${ accessToken }`);
+    body.push(`client_id=${requestParams.clientID}`);
+    body.push(`token=${accessToken}`);
     body.push("token_type_hint=access_token");
 
     return axios
@@ -396,7 +419,7 @@ export const getGravatar = (emailAddress: string): string => {
  * @returns {AuthenticatedUserInterface} authenticated user.
  */
 export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterface => {
-    const payload = JSON.parse(atob(idToken.split(".")[ 1 ]));
+    const payload = JSON.parse(atob(idToken.split(".")[1]));
     const emailAddress = payload.email ? payload.email : null;
 
     return {
@@ -414,7 +437,7 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
  * @returns {Promise<any>} sign out request status
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export function sendSignInRequest(requestParams: ConfigInterface): Promise<SignInResponse> {
+export function sendSignInRequest(requestParams: ConfigInterface | WebWorkerConfigInterface): Promise<SignInResponse> {
     if (hasAuthorizationCode(requestParams)) {
         return sendTokenRequest(requestParams)
             .then((response) => {
@@ -435,7 +458,7 @@ export function sendSignInRequest(requestParams: ConfigInterface): Promise<SignI
     }
 }
 
-export function handleSignIn(requestParams: ConfigInterface): Promise<any> {
+export function handleSignIn(requestParams: ConfigInterface | WebWorkerConfigInterface): Promise<any> {
     if (getSessionParameter(ACCESS_TOKEN, requestParams)) {
         if (!isValidOPConfig(requestParams)) {
             endAuthenticatedSession(requestParams);
@@ -471,7 +494,10 @@ export function handleSignIn(requestParams: ConfigInterface): Promise<any> {
  *
  * @returns String with template tags replaced with actual values.
  */
-const replaceTemplateTags = (text: string, authConfig: ConfigInterface): string => {
+const replaceTemplateTags = (
+    text: string,
+    authConfig: ConfigInterface | WebWorkerConfigInterface | WebWorkerConfigInterface | WebWorkerConfigInterface
+): string => {
     let scope = OIDC_SCOPE;
 
     if (authConfig.scope && authConfig.scope.length > 0) {
@@ -482,8 +508,8 @@ const replaceTemplateTags = (text: string, authConfig: ConfigInterface): string 
     }
 
     return text
-        .replace(TOKEN_TAG, authConfig.session.get(ACCESS_TOKEN))
-        .replace(USERNAME_TAG, authConfig.session.get(USERNAME))
+        .replace(TOKEN_TAG, getSessionParameter(ACCESS_TOKEN, authConfig))
+        .replace(USERNAME_TAG, getSessionParameter(USERNAME, authConfig))
         .replace(SCOPE_TAG, scope)
         .replace(CLIENT_ID_TAG, authConfig.clientID)
         .replace(CLIENT_SECRET_TAG, authConfig.clientSecret);
@@ -499,17 +525,20 @@ const replaceTemplateTags = (text: string, authConfig: ConfigInterface): string 
  */
 export const customGrant = (
     requestParams: CustomGrantRequestParams,
-    authConfig: ConfigInterface
+    authConfig: ConfigInterface | WebWorkerConfigInterface | WebWorkerConfigInterface | WebWorkerConfigInterface
 ): Promise<SignInResponse | boolean | AxiosResponse> => {
-    if (!authConfig.session.get(TOKEN_ENDPOINT) || authConfig.session.get(TOKEN_ENDPOINT).trim().length === 0) {
+    if (
+        !getSessionParameter(TOKEN_ENDPOINT, authConfig) ||
+        getSessionParameter(TOKEN_ENDPOINT, authConfig).trim().length === 0
+    ) {
         return Promise.reject(new Error("Invalid token endpoint found."));
     }
 
     let data: string = "";
 
-    Object.entries(requestParams.data).map(([ key, value ], index: number) => {
+    Object.entries(requestParams.data).map(([key, value], index: number) => {
         const newValue = replaceTemplateTags(value as string, authConfig);
-        data += `${ key }=${ newValue }${ index !== Object.entries(requestParams.data).length - 1 ? "&" : "" }`;
+        data += `${key}=${newValue}${index !== Object.entries(requestParams.data).length - 1 ? "&" : ""}`;
     });
 
     const requestConfig: AxiosRequestConfig = {
@@ -518,13 +547,13 @@ export const customGrant = (
             ...getTokenRequestHeaders(authConfig.clientHost)
         },
         method: "POST",
-        url: authConfig.session.get(TOKEN_ENDPOINT)
+        url: getSessionParameter(TOKEN_ENDPOINT, authConfig)
     };
 
     if (requestParams.attachToken) {
         requestConfig.headers = {
             ...requestConfig.headers,
-            Authorization: `Bearer ${ authConfig.session.get(ACCESS_TOKEN) }`
+            Authorization: `Bearer ${getSessionParameter(ACCESS_TOKEN, authConfig)}`
         };
     }
 
@@ -580,7 +609,7 @@ export const customGrant = (
  *
  * @returns {UserInfo} User information.
  */
-export const getUserInfo = (config: ConfigInterface): UserInfo => {
+export const getUserInfo = (config: ConfigInterface | WebWorkerConfigInterface): UserInfo => {
     return {
         allowedScopes: getSessionParameter(SCOPE, config),
         displayName: getSessionParameter(DISPLAY_NAME, config),

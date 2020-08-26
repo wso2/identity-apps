@@ -17,7 +17,7 @@
  */
 
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { ConfigInterface } from "./client";
+import { WebWorkerClientConfigInterface } from "./client";
 import { ServiceResourcesType } from "./endpoints";
 import { Message, SignInResponse, UserInfo } from "./message";
 import { CustomGrantRequestParams } from "./web-worker-client";
@@ -38,7 +38,7 @@ export interface WebWorkerInterface {
 }
 
 export interface WebWorkerSingletonInterface {
-    getInstance(config: ConfigInterface): WebWorkerInterface;
+    getInstance(config: WebWorkerClientConfigInterface): WebWorkerInterface;
 }
 
 interface WebWorkerEvent<T> extends MessageEvent {

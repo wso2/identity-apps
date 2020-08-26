@@ -25,7 +25,8 @@ import {
     ServiceResourcesType,
     UserInfo,
     WebWorkerClientInterface,
-    WebWorkerConfigInterface
+    WebWorkerConfigInterface,
+    isWebWorkerConfig
 } from "./models";
 import {
     customGrant as customGrantUtil,
@@ -90,7 +91,7 @@ export class IdentityClient {
         return this._instance;
     }
 
-    public initialize(config: ConfigInterface): Promise<boolean> {
+    public initialize(config: ConfigInterface | WebWorkerConfigInterface): Promise<boolean> {
         this._storage = config.storage ?? Storage.SessionStorage;
         this._initialized = false;
         this._startedInitialize = true;
@@ -104,7 +105,7 @@ export class IdentityClient {
             this._onHttpRequestStart && typeof this._onHttpRequestStart === "function" && this._onHttpRequestStart();
         };
 
-        if (this._storage !== Storage.WebWorker) {
+        if (!isWebWorkerConfig(config)) {
             this._authConfig = { ...DefaultConfig, ...config };
             this._initialized = true;
             this._httpClient = AxiosHttpClient.getInstance();

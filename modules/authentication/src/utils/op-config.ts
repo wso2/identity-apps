@@ -34,14 +34,14 @@ import {
     TOKEN_ENDPOINT,
     USERNAME
 } from "../constants";
-import { ConfigInterface, ServiceResourcesType } from "../models";
+import { ConfigInterface, ServiceResourcesType, WebWorkerConfigInterface } from "../models";
 
 /**
  * Checks whether openid configuration initiated.
  *
  * @returns {boolean}
  */
-export const isOPConfigInitiated = (requestParams: ConfigInterface): boolean => {
+export const isOPConfigInitiated = (requestParams: ConfigInterface | WebWorkerConfigInterface): boolean => {
     if (requestParams.storage !== Storage.WebWorker) {
         return (
             getSessionParameter(OP_CONFIG_INITIATED, requestParams) &&
@@ -59,7 +59,10 @@ export const isOPConfigInitiated = (requestParams: ConfigInterface): boolean => 
  *
  * @param {string} authorizationEndpoint
  */
-export const setAuthorizeEndpoint = (authorizationEndpoint: string, requestParams: ConfigInterface): void => {
+export const setAuthorizeEndpoint = (
+    authorizationEndpoint: string,
+    requestParams: ConfigInterface | WebWorkerConfigInterface
+): void => {
     setSessionParameter(AUTHORIZATION_ENDPOINT, authorizationEndpoint, requestParams);
 };
 
@@ -86,7 +89,7 @@ export const setEndSessionEndpoint = (endSessionEndpoint: string, requestParams)
  *
  * @param jwksEndpoint
  */
-export const setJwksUri = (jwksEndpoint, requestParams: ConfigInterface): void => {
+export const setJwksUri = (jwksEndpoint, requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
     setSessionParameter(JWKS_ENDPOINT, jwksEndpoint, requestParams);
 };
 
@@ -95,28 +98,34 @@ export const setJwksUri = (jwksEndpoint, requestParams: ConfigInterface): void =
  *
  * @param {string} revokeTokenEndpoint
  */
-export const setRevokeTokenEndpoint = (revokeTokenEndpoint: string, requestParams: ConfigInterface): void => {
+export const setRevokeTokenEndpoint = (
+    revokeTokenEndpoint: string,
+    requestParams: ConfigInterface | WebWorkerConfigInterface
+): void => {
     setSessionParameter(REVOKE_TOKEN_ENDPOINT, revokeTokenEndpoint, requestParams);
 };
 
 /**
  * Set openid configuration initiated.
  */
-export const setOPConfigInitiated = (requestParams: ConfigInterface): void => {
+export const setOPConfigInitiated = (requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
     setSessionParameter(OP_CONFIG_INITIATED, "true", requestParams);
 };
 
 /**
  * Set callback URL.
  */
-export const setCallbackURL = (url: string, requestParams: ConfigInterface): void => {
+export const setCallbackURL = (url: string, requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
     setSessionParameter(CALLBACK_URL, url, requestParams);
 };
 
 /**
  * Set OIDC Session IFrame URL.
  */
-export const setOIDCSessionIFrameURL = (url: string, requestParams: ConfigInterface): void => {
+export const setOIDCSessionIFrameURL = (
+    url: string,
+    requestParams: ConfigInterface | WebWorkerConfigInterface
+): void => {
     setSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, url, requestParams);
 };
 
@@ -125,7 +134,7 @@ export const setOIDCSessionIFrameURL = (url: string, requestParams: ConfigInterf
  *
  * @param issuer id_token issuer.
  */
-export const setIssuer = (issuer, requestParams: ConfigInterface): void => {
+export const setIssuer = (issuer, requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
     setSessionParameter(ISSUER, issuer, requestParams);
 };
 
@@ -134,7 +143,7 @@ export const setIssuer = (issuer, requestParams: ConfigInterface): void => {
  *
  * @param {string} clientID - Client ID of the application.
  */
-export const setClientID = (requestParams: ConfigInterface): void => {
+export const setClientID = (requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
     setSessionParameter(CLIENT_ID, requestParams.clientID, requestParams);
 };
 
@@ -146,7 +155,10 @@ export const setClientID = (requestParams: ConfigInterface): void => {
  * @returns {Promise<any>} promise.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const initOPConfiguration = (requestParams: ConfigInterface, forceInit: boolean): Promise<any> => {
+export const initOPConfiguration = (
+    requestParams: ConfigInterface | WebWorkerConfigInterface,
+    forceInit: boolean
+): Promise<any> => {
     if (!forceInit && isValidOPConfig(requestParams)) {
         return Promise.resolve();
     }
@@ -191,7 +203,7 @@ export const initOPConfiguration = (requestParams: ConfigInterface, forceInit: b
                 requestParams
             );
             setRevokeTokenEndpoint(
-                requestParams.serverOrigin +( requestParams?.endpoints?.revoke || SERVICE_RESOURCES.revoke),
+                requestParams.serverOrigin + (requestParams?.endpoints?.revoke || SERVICE_RESOURCES.revoke),
                 requestParams
             );
             setEndSessionEndpoint(
@@ -205,8 +217,8 @@ export const initOPConfiguration = (requestParams: ConfigInterface, forceInit: b
             );
             setClientID(requestParams);
             setOIDCSessionIFrameURL(
-                requestParams.serverOrigin + (requestParams?.endpoints?.oidcSessionIFrame ||
-                    SERVICE_RESOURCES.oidcSessionIFrame),
+                requestParams.serverOrigin +
+                    (requestParams?.endpoints?.oidcSessionIFrame || SERVICE_RESOURCES.oidcSessionIFrame),
                 requestParams
             );
             setCallbackURL(requestParams.callbackURL, requestParams);
@@ -226,7 +238,7 @@ export const initOPConfiguration = (requestParams: ConfigInterface, forceInit: b
 /**
  * Reset openid provider configuration.
  */
-export const resetOPConfiguration = (requestParams: ConfigInterface): void => {
+export const resetOPConfiguration = (requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
     if (requestParams.storage !== Storage.WebWorker) {
         removeSessionParameter(AUTHORIZATION_ENDPOINT, requestParams);
         removeSessionParameter(TOKEN_ENDPOINT, requestParams);
@@ -243,8 +255,8 @@ export const resetOPConfiguration = (requestParams: ConfigInterface): void => {
     }
 };
 
-export const getServiceEndpoints = (authConfig: ConfigInterface): ServiceResourcesType => {
-    return ({
+export const getServiceEndpoints = (authConfig: ConfigInterface | WebWorkerConfigInterface): ServiceResourcesType => {
+    return {
         authorize: getAuthorizeEndpoint(authConfig),
         jwks: getJwksUri(authConfig),
         logout: getEndSessionEndpoint(authConfig),
@@ -252,15 +264,15 @@ export const getServiceEndpoints = (authConfig: ConfigInterface): ServiceResourc
         revoke: getRevokeTokenEndpoint(authConfig),
         token: getTokenEndpoint(authConfig),
         wellKnown: SERVICE_RESOURCES.wellKnown
-    });
-}
+    };
+};
 
 /**
  * Get OAuth2 authorize endpoint.
  *
  * @returns {string|null}
  */
-export const getAuthorizeEndpoint = (requestParams: ConfigInterface): string | null => {
+export const getAuthorizeEndpoint = (requestParams: ConfigInterface | WebWorkerConfigInterface): string | null => {
     return getSessionParameter(AUTHORIZATION_ENDPOINT, requestParams);
 };
 
@@ -269,7 +281,7 @@ export const getAuthorizeEndpoint = (requestParams: ConfigInterface): string | n
  *
  * @returns {string|null}
  */
-export const getTokenEndpoint = (requestParams: ConfigInterface): string | null => {
+export const getTokenEndpoint = (requestParams: ConfigInterface | WebWorkerConfigInterface): string | null => {
     return getSessionParameter(TOKEN_ENDPOINT, requestParams);
 };
 
@@ -278,20 +290,20 @@ export const getTokenEndpoint = (requestParams: ConfigInterface): string | null 
  *
  * @returns {string|null}
  */
-export const getRevokeTokenEndpoint = (requestParams: ConfigInterface): string | null => {
+export const getRevokeTokenEndpoint = (requestParams: ConfigInterface | WebWorkerConfigInterface): string | null => {
     return getSessionParameter(REVOKE_TOKEN_ENDPOINT, requestParams);
 };
 
-export const getOIDCSessionIFrameURL = (requestParams: ConfigInterface): string | null => {
+export const getOIDCSessionIFrameURL = (requestParams: ConfigInterface | WebWorkerConfigInterface): string | null => {
     return getSessionParameter(OIDC_SESSION_IFRAME_ENDPOINT, requestParams);
-}
+};
 
 /**
  * Get OIDC end session endpoint.
  *
  * @returns {string|null}
  */
-export const getEndSessionEndpoint = (requestParams: ConfigInterface): string | null => {
+export const getEndSessionEndpoint = (requestParams: ConfigInterface | WebWorkerConfigInterface): string | null => {
     return getSessionParameter(END_SESSION_ENDPOINT, requestParams);
 };
 
@@ -300,7 +312,7 @@ export const getEndSessionEndpoint = (requestParams: ConfigInterface): string | 
  *
  * @returns {string|null}
  */
-export const getJwksUri = (requestParams: ConfigInterface): string | null => {
+export const getJwksUri = (requestParams: ConfigInterface | WebWorkerConfigInterface): string | null => {
     return getSessionParameter(JWKS_ENDPOINT, requestParams);
 };
 
@@ -309,7 +321,7 @@ export const getJwksUri = (requestParams: ConfigInterface): string | null => {
  *
  * @returns {string|null}
  */
-export const getUsername = (requestParams: ConfigInterface): string | null => {
+export const getUsername = (requestParams: ConfigInterface | WebWorkerConfigInterface): string | null => {
     return getSessionParameter(USERNAME, requestParams);
 };
 
@@ -327,7 +339,7 @@ export const getTenant = (requestParams): string | null => {
  *
  * @returns {any}
  */
-export const getIssuer = (requestParams: ConfigInterface): string => {
+export const getIssuer = (requestParams: ConfigInterface | WebWorkerConfigInterface): string => {
     return getSessionParameter(ISSUER, requestParams);
 };
 
@@ -336,7 +348,7 @@ export const getIssuer = (requestParams: ConfigInterface): string => {
  *
  * @return {string}
  */
-export const getClientID = (requestParams: ConfigInterface): string => {
+export const getClientID = (requestParams: ConfigInterface | WebWorkerConfigInterface): string => {
     return getSessionParameter(CLIENT_ID, requestParams);
 };
 
@@ -347,7 +359,7 @@ export const getClientID = (requestParams: ConfigInterface): string => {
  * @param {string} clientID - Client ID of the application.
  * @return {boolean}
  */
-export const isValidOPConfig = (requestParams: ConfigInterface): boolean => {
+export const isValidOPConfig = (requestParams: ConfigInterface | WebWorkerConfigInterface): boolean => {
     return (
         isOPConfigInitiated(requestParams) &&
         !!getClientID(requestParams) &&

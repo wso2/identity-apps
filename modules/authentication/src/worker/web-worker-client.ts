@@ -40,7 +40,6 @@ import {
 } from "../constants";
 import {
     AuthCode,
-    ConfigInterface,
     CustomGrantRequestParams,
     HttpClient,
     Message,
@@ -388,12 +387,12 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             }
         };
 
-        const message: Message<ConfigInterface> = {
+        const message: Message<WebWorkerConfigInterface> = {
             data: config,
             type: INIT
         };
 
-        return communicate<ConfigInterface, null>(message)
+        return communicate<WebWorkerConfigInterface, null>(message)
             .then(() => {
                 initialized = true;
 

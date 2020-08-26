@@ -32,7 +32,13 @@ import {
     TOKEN_TYPE,
     USERNAME
 } from "../constants";
-import { AuthenticatedUserInterface, ConfigInterface, SessionInterface, TokenResponseInterface } from "../models";
+import {
+    AuthenticatedUserInterface,
+    ConfigInterface,
+    SessionInterface,
+    TokenResponseInterface,
+    WebWorkerConfigInterface
+} from "../models";
 
 /**
  * Semaphore used for synchronizing the refresh token requests.
@@ -44,7 +50,7 @@ const semaphore = new Semaphore(1);
  *
  * @param {string} key.
  */
-export function removeSessionParameter(key: string, requestParams: ConfigInterface): void {
+export function removeSessionParameter(key: string, requestParams: ConfigInterface | WebWorkerConfigInterface): void {
     switch (requestParams.storage) {
         case Storage.WebWorker:
             requestParams.session.delete(key);
@@ -66,7 +72,11 @@ export function removeSessionParameter(key: string, requestParams: ConfigInterfa
  * @param {string} key.
  * @param value value.
  */
-export function setSessionParameter(key: string, value: string, requestParams: ConfigInterface): void {
+export function setSessionParameter(
+    key: string,
+    value: string,
+    requestParams: ConfigInterface | WebWorkerConfigInterface
+): void {
     switch (requestParams.storage) {
         case Storage.WebWorker:
             requestParams.session.set(key, value);
@@ -88,7 +98,10 @@ export function setSessionParameter(key: string, value: string, requestParams: C
  * @param {string} key.
  * @returns {string | null} parameter value or null.
  */
-export function getSessionParameter(key: string, requestParams: ConfigInterface): string | null {
+export function getSessionParameter(
+    key: string,
+    requestParams: ConfigInterface | WebWorkerConfigInterface
+): string | null {
     switch (requestParams.storage) {
         case Storage.WebWorker:
             return requestParams.session.get(key);
@@ -104,7 +117,7 @@ export function getSessionParameter(key: string, requestParams: ConfigInterface)
 /**
  * End authenticated user session.
  */
-export function endAuthenticatedSession(requestParams: ConfigInterface): void {
+export function endAuthenticatedSession(requestParams: ConfigInterface | WebWorkerConfigInterface): void {
     removeSessionParameter(ACCESS_TOKEN, requestParams);
     removeSessionParameter(ACCESS_TOKEN_EXPIRE_IN, requestParams);
     removeSessionParameter(ACCESS_TOKEN_ISSUED_AT, requestParams);
@@ -126,7 +139,7 @@ export function endAuthenticatedSession(requestParams: ConfigInterface): void {
 export function initUserSession(
     tokenResponse: TokenResponseInterface,
     authenticatedUser: AuthenticatedUserInterface,
-    requestParams: ConfigInterface
+    requestParams: ConfigInterface | WebWorkerConfigInterface
 ): void {
     endAuthenticatedSession(requestParams);
     setSessionParameter(ACCESS_TOKEN, tokenResponse.accessToken, requestParams);
@@ -146,7 +159,7 @@ export function initUserSession(
  *
  * @returns {SessionInterface} session object.
  */
-export function getAllSessionParameters(requestParams: ConfigInterface): SessionInterface {
+export function getAllSessionParameters(requestParams: ConfigInterface | WebWorkerConfigInterface): SessionInterface {
     return {
         accessToken: getSessionParameter(ACCESS_TOKEN, requestParams),
         displayName: getSessionParameter(DISPLAY_NAME, requestParams),
@@ -165,7 +178,7 @@ export function getAllSessionParameters(requestParams: ConfigInterface): Session
  *
  * @returns {Promise<string>} access token.
  */
-export function getAccessToken(requestParams: ConfigInterface): Promise<string> {
+export function getAccessToken(requestParams: ConfigInterface | WebWorkerConfigInterface): Promise<string> {
     const accessToken = getSessionParameter(ACCESS_TOKEN, requestParams);
     const expiresIn = getSessionParameter(ACCESS_TOKEN_EXPIRE_IN, requestParams);
     const issuedAt = getSessionParameter(ACCESS_TOKEN_ISSUED_AT, requestParams);
