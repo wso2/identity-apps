@@ -18,19 +18,11 @@
 
 import Base64 from "crypto-js/enc-base64";
 import WordArray from "crypto-js/lib-typedarrays";
-import MD5 from "crypto-js/md5";
 import sha256 from "crypto-js/sha256";
 import { KEYUTIL, KJUR } from "jsrsasign";
 import { JWKInterface } from "../models";
 
-/**
- * Generate email hash.
- *
- * @returns {string} hashed email address.
- */
-export const getEmailHash = (emailAddress: string): CryptoJS.WordArray => {
-    return emailAddress ? MD5(emailAddress.trim()) : null;
-};
+
 
 /**
  * Get URL encoded string.

@@ -17,7 +17,7 @@
  */
 
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import { getCodeChallenge, getCodeVerifier, getEmailHash, getJWKForTheIdToken, isValidIdToken } from "./crypto";
+import { getCodeChallenge, getCodeVerifier, getJWKForTheIdToken, isValidIdToken } from "./crypto";
 import {
     getAuthorizeEndpoint,
     getIssuer,
@@ -401,16 +401,6 @@ export function sendRevokeTokenRequest(
             return Promise.reject(error);
         });
 }
-
-/**
- * Get user image from gravatar.com.
- *
- * @param emailAddress email address received authenticated user.
- * @returns {string} gravatar image path.
- */
-export const getGravatar = (emailAddress: string): string => {
-    return "https://www.gravatar.com/avatar/" + getEmailHash(emailAddress) + "?d=404";
-};
 
 /**
  * Get authenticated user from the id_token.
