@@ -39,7 +39,7 @@ export const AllAppAvatarVariations = (): ReactElement => {
     return (
         <>
             <AppAvatar
-                name="User Portal"
+                name="My Account"
                 size="tiny"
                 spaced="right"
             />
@@ -70,7 +70,7 @@ AllAppAvatarVariations.story = {
  */
 export const AppAvatarWithInitials = (): ReactElement => (
     <AppAvatar
-        name="User Portal"
+        name="My Account"
         size="tiny"
         spaced="right"
     />
@@ -115,7 +115,7 @@ AppAvatarFromImage.story = {
 export const AppAvatarPlaceholder = (): ReactElement => (
     <AppAvatar
         isLoading={ true }
-        name="User Portal"
+        name="My Account"
         size="tiny"
         spaced="right"
     />
@@ -174,7 +174,7 @@ AppAvatarSizes.story = {
  */
 export const AppAvatarPlayground = (): ReactElement => (
     <AppAvatar
-        name={ text("Application name", "User Portal") }
+        name={ text("Application name", "My Account") }
         // tslint:disable:object-literal-sort-keys
         size={ select(
             "Size",

@@ -123,7 +123,7 @@ export const revokeConsentedApp = (appId: string): Promise<any> => {
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise<any> => {
     const body: UpdateReceiptInterface = {
-        collectionMethod: "Web Form - User Portal",
+        collectionMethod: "Web Form - My Account",
         jurisdiction: receipt.jurisdiction,
         language: receipt.language,
         policyURL: receipt.policyUrl,

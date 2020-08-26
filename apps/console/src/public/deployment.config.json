@@ -1,6 +1,6 @@
 {
     "accountApp": {
-        "path": "/user-portal/overview"
+        "path": "/myaccount/overview"
     },
     "appBaseName": "console",
     "clientID": "CONSOLE",

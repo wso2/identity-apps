@@ -1,30 +1,30 @@
 {
-    "appBaseName": "{{ user_portal.app_base_name }}",
-    "clientID": "{{ user_portal.client_id }}",
-    "loginCallbackPath": "{{ user_portal.login_callback_path }}",
-    "logoutCallbackPath": "{{ user_portal.logout_callback_path }}",
+    "appBaseName": "{{ myaccount.app_base_name }}",
+    "clientID": "{{ myaccount.client_id }}",
+    "loginCallbackPath": "{{ myaccount.login_callback_path }}",
+    "logoutCallbackPath": "{{ myaccount.logout_callback_path }}",
     "productVersion": "{{ product.version }}",
-    {% if user_portal.server_origin is defined %}
-    "serverOrigin": "{{ user_portal.server_origin }}",
+    {% if myaccount.server_origin is defined %}
+    "serverOrigin": "{{ myaccount.server_origin }}",
     {% endif %}
     "routePaths": {
-        {% if user_portal.route_paths is defined %}
-        {% for path, value in user_portal.route_paths.items() %}
+        {% if myaccount.route_paths is defined %}
+        {% for path, value in myaccount.route_paths.items() %}
             "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
         {% endfor %}
         {% endif %}
     },
     "session": {
-        {% if user_portal.session.params is defined %}
-            {% for param, value in user_portal.session.params.items() %}
+        {% if myaccount.session.params is defined %}
+            {% for param, value in myaccount.session.params.items() %}
                 "{{ param }}": {{ value }}{{ "," if not loop.last }}
             {% endfor %}
         {% endif %}
     },
     "ui": {
         "announcements": [
-            {% if user_portal.ui.announcements is defined %}
-            {% for announcement in user_portal.ui.announcements %}
+            {% if myaccount.ui.announcements is defined %}
+            {% for announcement in myaccount.ui.announcements %}
             {
             {% for key, value in announcement.items() %}
             {% if value is number %}
@@ -37,13 +37,13 @@
             {% endfor %}
             {% endif %}
         ],
-        "appCopyright": "{{ user_portal.ui.app_copyright }}",
-        "appTitle": "{{ user_portal.ui.app_title }}",
-        "appName": "{{ user_portal.ui.app_name }}",
-        "appLogoPath": "{{ user_portal.ui.app_logo_path }}",
+        "appCopyright": "{{ myaccount.ui.app_copyright }}",
+        "appTitle": "{{ myaccount.ui.app_title }}",
+        "appName": "{{ myaccount.ui.app_name }}",
+        "appLogoPath": "{{ myaccount.ui.app_logo_path }}",
         "authenticatorApp": {
-                {% if user_portal.authenticator_app_configs is defined %}
-                {% for key, value in user_portal.authenticator_app_configs.items() %}
+                {% if myaccount.authenticator_app_configs is defined %}
+                {% for key, value in myaccount.authenticator_app_configs.items() %}
                 "{{ key }}": {{ value }}{{ "," if not loop.last }}
                 {% endfor %}
                 {% endif %}
@@ -51,16 +51,16 @@
         "features": {
             "applications": {
                 "disabledFeatures": [
-                    {% if user_portal.applications.disabled_features is defined %}
+                    {% if myaccount.applications.disabled_features is defined %}
                     {% for feature in applications.users.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ user_portal.applications.enabled }},
+                "enabled": {{ myaccount.applications.enabled }},
                 "scopes": {
-                    {% if user_portal.applications.scopes is defined %}
-                    {% for operation, scopes in user_portal.applications.scopes.items() %}
+                    {% if myaccount.applications.scopes is defined %}
+                    {% for operation, scopes in myaccount.applications.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -77,16 +77,16 @@
             },
             "operations": {
                 "disabledFeatures": [
-                    {% if user_portal.operations.disabled_features is defined %}
-                    {% for feature in user_portal.operations.disabled_features %}
+                    {% if myaccount.operations.disabled_features is defined %}
+                    {% for feature in myaccount.operations.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ user_portal.operations.enabled }},
+                "enabled": {{ myaccount.operations.enabled }},
                 "scopes": {
-                    {% if user_portal.operations.scopes is defined %}
-                    {% for operation, scopes in user_portal.operations.scopes.items() %}
+                    {% if myaccount.operations.scopes is defined %}
+                    {% for operation, scopes in myaccount.operations.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -103,16 +103,16 @@
             },
             "overview": {
                 "disabledFeatures": [
-                    {% if user_portal.overview.disabled_features is defined %}
-                    {% for feature in user_portal.overview.disabled_features %}
+                    {% if myaccount.overview.disabled_features is defined %}
+                    {% for feature in myaccount.overview.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ user_portal.overview.enabled }},
+                "enabled": {{ myaccount.overview.enabled }},
                 "scopes": {
-                    {% if user_portal.overview.scopes is defined %}
-                    {% for operation, scopes in user_portal.overview.scopes.items() %}
+                    {% if myaccount.overview.scopes is defined %}
+                    {% for operation, scopes in myaccount.overview.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -129,16 +129,16 @@
             },
             "personalInfo": {
                 "disabledFeatures": [
-                    {% if user_portal.personal_info.disabled_features is defined %}
-                    {% for feature in user_portal.personal_info.disabled_features %}
+                    {% if myaccount.personal_info.disabled_features is defined %}
+                    {% for feature in myaccount.personal_info.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ user_portal.personal_info.enabled }},
+                "enabled": {{ myaccount.personal_info.enabled }},
                 "scopes": {
-                    {% if user_portal.personal_info.scopes is defined %}
-                    {% for operation, scopes in user_portal.personal_info.scopes.items() %}
+                    {% if myaccount.personal_info.scopes is defined %}
+                    {% for operation, scopes in myaccount.personal_info.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -155,16 +155,16 @@
             },
             "security": {
                 "disabledFeatures": [
-                    {% if user_portal.security.disabled_features is defined %}
-                    {% for feature in user_portal.security.disabled_features %}
+                    {% if myaccount.security.disabled_features is defined %}
+                    {% for feature in myaccount.security.disabled_features %}
                     "{{ feature }}"{{ "," if not loop.last }}
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": {{ user_portal.security.enabled }},
+                "enabled": {{ myaccount.security.enabled }},
                 "scopes": {
-                    {% if user_portal.security.scopes is defined %}
-                    {% for operation, scopes in user_portal.security.scopes.items() %}
+                    {% if myaccount.security.scopes is defined %}
+                    {% for operation, scopes in myaccount.security.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
@@ -180,7 +180,7 @@
                 }
             }
         },
-        "productName": "{{ user_portal.ui.product_name }}",
+        "productName": "{{ myaccount.ui.product_name }}",
         "productVersionConfig": {
             {% if console.product_version.configs.items() is defined %}
             {% for key, value in console.product_version.configs.items() %}
@@ -193,7 +193,7 @@
             {% endif %}
         },
         "theme": {
-            "name": "{{ user_portal.theme }}"
+            "name": "{{ myaccount.theme }}"
         }
     }
 }

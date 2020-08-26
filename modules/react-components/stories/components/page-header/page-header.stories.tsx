@@ -40,7 +40,7 @@ export const DefaultPageHeader = (): ReactElement => (
         description="A clear description for the page header"
         image={ (
             <AppAvatar
-                name="User Portal"
+                name="My Account"
                 size="tiny"
                 spaced="right"
             />
@@ -72,7 +72,7 @@ export const PageHeaderPlaceholder = (): ReactElement => (
         description="A clear description for the page header"
         image={ (
             <AppAvatar
-                name="User Portal"
+                name="My Account"
                 size="tiny"
                 spaced="right"
             />

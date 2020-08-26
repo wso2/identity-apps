@@ -23,7 +23,7 @@
 	      http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 	      version="2.4">
  
-  <display-name>user-portal</display-name>
+  <display-name>myaccount</display-name>
 
   <filter>
     <filter-name>SuperTenantFlowInitializer</filter-name>
