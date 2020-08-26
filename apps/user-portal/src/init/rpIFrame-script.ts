@@ -38,7 +38,6 @@ function isNotNull(value) {
     return value !== null && value.length !== 0 && value !== "null";
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function setTimer() {
     if (!targetOrigin || !clientId || !redirectUri) {
         return;
