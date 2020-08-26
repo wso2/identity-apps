@@ -239,7 +239,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [ TokenConstants.SYSTEM_SCOPE ],
             serverOrigin: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
-            storage: new UAParser().getBrowser().name === "IE" as any ? Storage.SessionStorage : Storage.WebWorker
+            storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
         });
     auth.on("sign-in", (response) => {
         dispatch(
