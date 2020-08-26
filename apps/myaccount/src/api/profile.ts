@@ -177,9 +177,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                     ? response.data[SCIM2_ENT_USER_SCHEMA].pendingEmails
                     : [],
                 ...response.data,
-                userName: (response.data.userName.split("/").length > 1
-                    ? response.data.userName.split("/")[1]
-                    : response.data.userName) || ""
+                userName: response.data.userName || ""
             };
 
             return Promise.resolve(profileResponse);

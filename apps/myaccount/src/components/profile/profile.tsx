@@ -261,19 +261,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         }).length > 0;
     };
 
-    const displayProfileInfo = (schemaName: any, profileInfo: string) => {
-        if (schemaName === "emails" && isEmailPending) {
-            return (
-                <>
-                    { profileInfo }
-                    <p>Pending</p>
-                </>
-            )
-        } else {
-            return profileInfo;
-        }
-    };
-
     /**
      * This function generates the Edit Section based on the input Profile Schema
      * @param {Profile Schema} schema

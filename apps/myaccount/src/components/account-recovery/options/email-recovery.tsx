@@ -21,7 +21,7 @@ import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {Form, Grid, Icon, List, Popup} from "semantic-ui-react";
+import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
 import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
@@ -257,9 +257,14 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                         color="yellow"
                                                     />
                                                 }
-                                                content="Please confirm the email address update in order to add the
-                                                new email to your profile."
-                                                header="Confirmation pending!"
+                                                content={
+                                                    t("userPortal:components.profile.messages." +
+                                                        "emailConfirmation.content")
+                                                }
+                                                header={
+                                                    t("userPortal:components.profile.messages." +
+                                                        "emailConfirmation.header")
+                                                }
                                                 inverted
                                             />
                                         ) : null
