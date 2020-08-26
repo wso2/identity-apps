@@ -1,6 +1,6 @@
 {
-    "appBaseName": "user-portal",
-    "clientID": "USER_PORTAL",
+    "appBaseName": "myaccount",
+    "clientID": "MY_ACCOUNT",
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
     "productVersion": "",
@@ -18,8 +18,8 @@
     },
     "ui": {
         "appCopyright": "WSO2 Identity Server",
-        "appTitle": "Account | WSO2 Identity Server",
-        "appName": "Account",
+        "appTitle": "My Account | WSO2 Identity Server",
+        "appName": "My Account",
         "appLogoPath": "/assets/images/logo.svg",
         "authenticatorApp": {
             "enabled": true

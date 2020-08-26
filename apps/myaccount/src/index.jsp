@@ -162,7 +162,7 @@
         <iframe
             id="rpIFrame"
             style="display: block"
-            src="/user-portal/rpIFrame.html"
+            src="<%= htmlWebpackPlugin.options.publicPath %>/rpIFrame.html"
             frameborder="0"
             width="0"
             height="0"

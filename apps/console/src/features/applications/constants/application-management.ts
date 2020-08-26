@@ -133,7 +133,7 @@ export class ApplicationManagementConstants {
      * // TODO: Remove this once validating is available from the backend level.
      * @type {string[]}
      */
-    public static readonly DELETING_FORBIDDEN_APPLICATIONS: string[] = [ "Console", "User Portal" ];
+    public static readonly DELETING_FORBIDDEN_APPLICATIONS: string[] = [ "Console", "My Account" ];
 
     /**
      * Template categories to be used to extract the filter types.

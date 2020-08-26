@@ -44,7 +44,7 @@
     </scm>
 
     <modules>
-        <module>apps/user-portal</module>
+        <module>apps/myaccount</module>
         <module>apps/console</module>
         <module>apps/authentication-portal</module>
         <module>apps/recovery-portal</module>
@@ -55,7 +55,7 @@
         <module>components/theme</module>
         <module>components/org.wso2.identity.apps.common</module>
         <module>features/org.wso2.identity.apps.common.server.feature</module>
-        <module>features/org.wso2.identity.apps.user.portal.server.feature</module>
+        <module>features/org.wso2.identity.apps.myaccount.server.feature</module>
         <module>features/org.wso2.identity.apps.console.server.feature</module>
         <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
@@ -197,7 +197,7 @@
 
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>user-portal</artifactId>
+                <artifactId>myaccount</artifactId>
                 <version>${project.version}</version>
                 <type>war</type>
             </dependency>
@@ -506,7 +506,7 @@
             </dependency>
             <dependency>
                 <groupId>org.wso2.identity.apps</groupId>
-                <artifactId>org.wso2.identity.apps.user.portal.server.feature</artifactId>
+                <artifactId>org.wso2.identity.apps.myaccount.server.feature</artifactId>
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
