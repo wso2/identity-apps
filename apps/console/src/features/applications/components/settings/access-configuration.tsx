@@ -32,7 +32,15 @@ import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon } from "semantic-ui-react";
-import { AppState, AuthenticatorAccordion, FeatureConfigInterface } from "../../../core";
+import {
+    AppState,
+    AuthenticatorAccordion,
+    CORSOriginsListInterface,
+    EmptyPlaceholderIllustrations,
+    FeatureConfigInterface,
+    getCORSOrigins,
+    store
+} from "../../../core";
 import {
     deleteProtocol,
     getAuthProtocolMetadata,
@@ -41,7 +49,6 @@ import {
     updateAuthProtocolConfig
 } from "../../api";
 import { InboundProtocolLogos } from "../../configs";
-import { EmptyPlaceholderIllustrations } from "../../../core";
 import { SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import { InboundFormFactory } from "../forms";
@@ -109,10 +116,25 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
 
     const authProtocolMeta = useSelector((state: AppState) => state.application.meta.protocolMeta);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const tenantName = store.getState().config.deployment.tenant;
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
+    const [ allowedOrigins, setAllowedOrigins ] = useState([]);
+    const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
+
+    useEffect(() => {
+        const allowedCORSOrigins = [];
+        getCORSOrigins()
+            .then((response: CORSOriginsListInterface[]) => {
+                response.map((origin) => {
+                    allowedCORSOrigins.push(origin.url);
+                });
+            });
+
+        setAllowedOrigins(allowedCORSOrigins);
+    }, [ isAllowedOriginsUpdated ]);
 
     /**
      * Handles the inbound config delete action.
@@ -310,6 +332,9 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     actions: [],
                                     content: (
                                         <InboundFormFactory
+                                            tenantDomain={ tenantName }
+                                            allowedOrigins={ allowedOrigins }
+                                            onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(true) }
                                             metadata={ authProtocolMeta[protocol] }
                                             initialValues={
                                                 _.isEmpty(inboundProtocolConfig[protocol])

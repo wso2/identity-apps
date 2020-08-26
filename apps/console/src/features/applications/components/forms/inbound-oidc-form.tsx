@@ -47,6 +47,18 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * CORS allowed origin list for the tenant.
+     */
+    allowedOriginList?: string[];
+    /**
+     * Callback to update the allowed origins.
+     */
+    onAllowedOriginsUpdate?: () => void;
+    /**
+     * Tenant domain
+     */
+    tenantDomain?: string;
 }
 
 /**
@@ -67,6 +79,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         onApplicationRegenerate,
         onApplicationRevoke,
         readOnly,
+        allowedOriginList,
+        tenantDomain,
         [ "data-testid" ]: testId
     } = props;
 
@@ -75,8 +89,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
+    const [ showOriginError, setShowOriginError ] = useState(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
+    const [ allowedOrigins, setAllowedOrigins ] = useState("");
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -90,6 +106,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
         }
         return callbackURL;
+    };
+
+    /**
+     * Separate out multiple origins in the passed string.
+     *
+     * @param {string} origins - Allowed origins
+     * @return Resolved allowed origins.
+     */
+    const resolveAllowedOrigins = (origins: string): string[] => {
+        if (origins.split(",").length > 1) {
+            return origins.split(",");
+        }
+        return [ origins ];
     };
 
     /**
@@ -191,10 +220,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      *
      * @param values - Form values.
      * @param {string} url - Callback URLs.
+     * @param {string} origin - Allowed origins.
      *
      * @return {any} Sanitized form values.
      */
-    const updateConfiguration = (values: any, url?: string): any => {
+    const updateConfiguration = (values: any, url?: string, origin?: string): any => {
         const formValues = {
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
@@ -202,7 +232,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 type: values.get("type"),
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
             },
-            allowedOrigins: [],
+            allowedOrigins: resolveAllowedOrigins(origin ? origin : allowedOrigins),
             callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
             grantTypes: values.get("grant"),
             idToken: {
@@ -254,9 +284,25 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     );
 
     /**
+     * The following function handles allowing CORS for a new origin.
+     *
+     * @param {string} url - Allowed origin
+     */
+    const handleAllowOrigin = (url: string): void => {
+        const allowedURLs = initialValues?.allowedOrigins;
+        allowedURLs.push(url);
+        setAllowedOrigins(allowedURLs?.toString());
+    };
+
+    /**
      * submitURL function.
      */
     let submitUrl: (callback: (url?: string) => void) => void;
+
+    /**
+     * submitOrigin function.
+     */
+    let submitOrigin: (callback: (origin?: string) => void) => void;
 
     return (
         metadata ?
@@ -267,7 +313,13 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             if (isEmpty(callBackUrls) && isEmpty(url)) {
                                 setShowURLError(true);
                             } else {
-                                onSubmit(updateConfiguration(values, url));
+                                submitOrigin((origin) => {
+                                    if (isEmpty(allowedOrigins) && isEmpty(origin)) {
+                                        setShowOriginError(true);
+                                    } else {
+                                        onSubmit(updateConfiguration(values, url, origin));
+                                    }
+                                });
                             }
                         });
                     } }
@@ -485,6 +537,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Grid.Column>
                         </Grid.Row>
                         <URLInput
+                            isAllowEnabled={ false }
+                            tenantDomain={ tenantDomain }
+                            allowedOrigins={ allowedOriginList }
+                            labelEnabled={ true }
                             urlState={ callBackUrls }
                             setURLState={ setCallBackUrls }
                             labelName={
@@ -516,30 +572,45 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 submitUrl = submitFunction;
                             } }
                         />
-                        {/*TODO: Enable this after the backend is fixed*/ }
-                        {/*<Grid.Row columns={ 1 }>
+                        <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    name="allowedOrigins"
-                                    label="Allowed origins"
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!FormValidation.url(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push("This is not a valid URL");
-                                        }
+                                <URLInput
+                                    handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                                    urlState={ allowedOrigins }
+                                    setURLState={ setAllowedOrigins }
+                                    labelName={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".label")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".placeholder")
+                                    }
+                                    value={ initialValues?.allowedOrigins?.toString() }
+                                    validationErrorMsg={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".validations.empty")
+                                    }
+                                    validation={ (value: string) => {
+                                        return FormValidation.url(value);
                                     } }
-                                    required={ false }
-                                    requiredErrorMessage="this is not needed"
-                                    placeholder="Enter the Allowed Origins"
-                                    type="text"
-                                    value={ initialValues.allowedOrigins?.toString() }
+                                    computerWidth={ 10 }
+                                    setShowError={ setShowOriginError }
+                                    showError={ showOriginError }
+                                    hint={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".hint")
+                                    }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    data-testid={ `${ testId }-allowed-origin-url-input` }
+                                    getSubmit={ (submitOriginFunction: (callback: (origin?: string) => void) => void
+                                    ) => {
+                                        submitOrigin = submitOriginFunction;
+                                    } }
                                 />
-                                <Hint>
-                                    Certain origins can be whitelisted to allowed cross origin requests. Enter a list
-                                    of URL separated by commas. E.g. https://app.example.com/js.
-                                </Hint>
                             </Grid.Column>
-                        </Grid.Row>*/}
+                        </Grid.Row>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field

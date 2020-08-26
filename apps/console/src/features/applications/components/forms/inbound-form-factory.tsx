@@ -39,6 +39,18 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * CORS allowed origin list for the tenant.
+     */
+    allowedOrigins?: string[];
+    /**
+     * Callback to update the allowed origins.
+     */
+    onAllowedOriginsUpdate?: () => void;
+    /**
+     * Tenant domain
+     */
+    tenantDomain?: string;
 }
 
 /**
@@ -60,6 +72,9 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         onApplicationRegenerate,
         onApplicationRevoke,
         readOnly,
+        allowedOrigins,
+        onAllowedOriginsUpdate,
+        tenantDomain,
         [ "data-testid" ]: testId
     } = props;
 
@@ -67,6 +82,9 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         case SupportedAuthProtocolTypes.OIDC:
             return (
                 <InboundOIDCForm
+                    tenantDomain={ tenantDomain }
+                    allowedOriginList={ allowedOrigins }
+                    onAllowedOriginsUpdate={ onAllowedOriginsUpdate }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
