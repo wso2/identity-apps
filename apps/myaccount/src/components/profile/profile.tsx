@@ -45,18 +45,31 @@ interface ProfileProps {
  * @return {JSX.Element}
  */
 export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
-    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
-    const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
-    const [ editingForm, setEditingForm ] = useState(new Map<string, boolean>());
+
     const { onAlertFired } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
+
     const profileDetails: AuthStateInterface = useSelector((state: AppState) => state.authenticationInformation);
     const isProfileInfoLoading: boolean = useSelector((state: AppState) => state.loaders.isProfileInfoLoading);
     const isSCIMEnabled: boolean = useSelector((state: AppState) => state.profile.isSCIMEnabled);
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
-    const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+
+    const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
+    const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
+    const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
+    const [ editingForm, setEditingForm ] = useState(new Map<string, boolean>());
+    const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
+
+    /**
+     * Set the if the email verification is pending.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.pendingEmails && !isEmpty(profileDetails?.profileInfo?.pendingEmails)) {
+            setEmailPending(true);
+        }
+    }, [ profileDetails?.profileInfo?.pendingEmails ]);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -106,12 +119,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
-                        profileDetails.profileInfo[schemaNames[0]][0] &&
-                            profileDetails.profileInfo[[schemaNames[0]][0]][0].value &&
-                            profileDetails.profileInfo[[schemaNames[0]][0]][0].value !== ""
-                            ? tempProfileInfo.set(schema.name,
-                                profileDetails.profileInfo[[schemaNames[0]][0]][0].value as string)
-                            : tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][0] as string);
+                        if (profileDetails?.profileInfo?.pendingEmails?.length > 0) {
+                            tempProfileInfo.set(schema.name,
+                                profileDetails.profileInfo.pendingEmails[0].value as string)
+                        } else {
+                            profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] &&
+                            profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value &&
+                            profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value !== ""
+                                ? tempProfileInfo.set(schema.name,
+                                profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value as string)
+                                : tempProfileInfo.set(schema.name, profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] as string);
+                        }
                     } else {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
@@ -243,6 +261,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         }).length > 0;
     };
 
+    const displayProfileInfo = (schemaName: any, profileInfo: string) => {
+        if (schemaName === "emails" && isEmailPending) {
+            return (
+                <>
+                    { profileInfo }
+                    <p>Pending</p>
+                </>
+            )
+        } else {
+            return profileInfo;
+        }
+    };
+
     /**
      * This function generates the Edit Section based on the input Profile Schema
      * @param {Profile Schema} schema
@@ -355,7 +386,39 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 <Placeholder><Placeholder.Line /></Placeholder>
                                             )
                                             : profileInfo.get(schema.name)
-                                            || (
+                                            ? (
+                                                schema.name === "emails" && isEmailPending
+                                                    ? (
+                                                        <>
+                                                            <p>
+                                                                {
+                                                                    profileInfo.get(schema.name)
+                                                                }
+                                                                <Popup
+                                                                    size="tiny"
+                                                                    trigger={
+                                                                        <Icon
+                                                                            name="info circle"
+                                                                            color="yellow"
+                                                                        />
+                                                                    }
+                                                                    content={
+                                                                        t("userPortal:components.profile.messages." +
+                                                                            "emailConfirmation.content")
+                                                                    }
+                                                                    header={
+                                                                        t("userPortal:components.profile.messages." +
+                                                                            "emailConfirmation.header")
+                                                                    }
+                                                                    inverted
+                                                                />
+                                                            </p>
+                                                        </>
+                                                    )
+                                                    : profileInfo.get(schema.name)
+
+                                            )
+                                            : (
                                                 <a
                                                     className="placeholder-text"
                                                     onClick={ () => { showFormEditView(schema.name); } }
