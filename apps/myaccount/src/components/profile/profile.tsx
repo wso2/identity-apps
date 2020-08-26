@@ -403,7 +403,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         </>
                                                     )
                                                     : profileInfo.get(schema.name)
-
                                             )
                                             : (
                                                 <a
