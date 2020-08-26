@@ -86,6 +86,14 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      *  Is inbound protocol config request is still loading.
      */
     isInboundProtocolConfigRequestLoading: boolean;
+    /**
+    * CORS allowed origin list for the tenant.
+    */
+    allowedOriginList?: string[];
+    /**
+     * Callback to update the allowed origins.
+     */
+    onAllowedOriginsUpdate?: () => void;
 }
 
 /**
@@ -107,6 +115,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         inboundProtocols,
         isLoading,
         onUpdate,
+        allowedOriginList,
+        onAllowedOriginsUpdate,
         [ "data-testid" ]: testId
     } = props;
 
@@ -121,20 +131,6 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ protocolToDelete, setProtocolToDelete ] = useState<string>(undefined);
-    const [ allowedOrigins, setAllowedOrigins ] = useState([]);
-    const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
-
-    useEffect(() => {
-        const allowedCORSOrigins = [];
-        getCORSOrigins()
-            .then((response: CORSOriginsListInterface[]) => {
-                response.map((origin) => {
-                    allowedCORSOrigins.push(origin.url);
-                });
-            });
-
-        setAllowedOrigins(allowedCORSOrigins);
-    }, [ isAllowedOriginsUpdated ]);
 
     /**
      * Handles the inbound config delete action.
@@ -194,6 +190,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                 }));
 
                 onUpdate(appId);
+                onAllowedOriginsUpdate();
             })
             .catch((error) => {
                 if (error?.response?.data?.description) {
@@ -333,8 +330,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     content: (
                                         <InboundFormFactory
                                             tenantDomain={ tenantName }
-                                            allowedOrigins={ allowedOrigins }
-                                            onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(true) }
+                                            allowedOrigins={ allowedOriginList }
                                             metadata={ authProtocolMeta[protocol] }
                                             initialValues={
                                                 _.isEmpty(inboundProtocolConfig[protocol])

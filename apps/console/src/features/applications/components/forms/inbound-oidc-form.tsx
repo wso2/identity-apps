@@ -52,10 +52,6 @@ interface InboundOIDCFormPropsInterface extends TestableComponentInterface {
      */
     allowedOriginList?: string[];
     /**
-     * Callback to update the allowed origins.
-     */
-    onAllowedOriginsUpdate?: () => void;
-    /**
      * Tenant domain
      */
     tenantDomain?: string;
