@@ -44,10 +44,6 @@ interface InboundFormFactoryInterface extends TestableComponentInterface {
      */
     allowedOrigins?: string[];
     /**
-     * Callback to update the allowed origins.
-     */
-    onAllowedOriginsUpdate?: () => void;
-    /**
      * Tenant domain
      */
     tenantDomain?: string;
@@ -73,7 +69,6 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
         onApplicationRevoke,
         readOnly,
         allowedOrigins,
-        onAllowedOriginsUpdate,
         tenantDomain,
         [ "data-testid" ]: testId
     } = props;
@@ -84,7 +79,6 @@ export const InboundFormFactory: FunctionComponent<InboundFormFactoryInterface> 
                 <InboundOIDCForm
                     tenantDomain={ tenantDomain }
                     allowedOriginList={ allowedOrigins }
-                    onAllowedOriginsUpdate={ onAllowedOriginsUpdate }
                     initialValues={ initialValues }
                     metadata={ metadata }
                     onSubmit={ onSubmit }
