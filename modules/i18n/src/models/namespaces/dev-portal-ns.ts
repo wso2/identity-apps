@@ -1257,6 +1257,12 @@ export interface DevPortalNS {
             applicationEdit: string;
             applicationTemplates: string;
             applications: string;
+            categories: {
+                application: string;
+                quickStart: string;
+                identityProviders: string;
+                general: string;
+            };
             customize: string;
             identityProviderEdit: string;
             identityProviderTemplates: string;
