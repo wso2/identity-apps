@@ -1081,6 +1081,12 @@ export const userPortal: UserPortalNS = {
                     }
                 }
             },
+            messages: {
+                emailConfirmation: {
+                    content: "உங்கள் சுயவிவரத்தில் புதிய மின்னஞ்சலைச் சேர்க்க மின்னஞ்சல் முகவரி புதுப்பிப்பை உறுதிப்படுத்தவும்.",
+                    header: "உறுதிப்படுத்தல் நிலுவையில் உள்ளது!"
+                }
+            },
             notifications: {
                 getProfileInfo: {
                     error: {
