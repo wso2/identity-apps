@@ -3088,8 +3088,8 @@ export const devPortal: DevPortalNS = {
             categories: {
                 application: "Applications",
                 general: "General",
-                identityProviders: "Identity Providers",
-                quickStart: "Quick Start"
+                gettingStarted: "Getting Started",
+                identityProviders: "Identity Providers"
             },
             customize: "Customize",
             identityProviderEdit: "Identity Providers Edit",

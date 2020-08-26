@@ -1259,7 +1259,7 @@ export interface DevPortalNS {
             applications: string;
             categories: {
                 application: string;
-                quickStart: string;
+                gettingStarted: string;
                 identityProviders: string;
                 general: string;
             };
