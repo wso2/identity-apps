@@ -200,7 +200,10 @@ export class IdentityClient {
         return handleSignIn(this._authConfig)
             .then(() => {
                 if (this._onSignInCallback) {
-                    this._onSignInCallback(getUserInfoUtil(this._authConfig));
+                    const userInfo = getUserInfoUtil(this._authConfig);
+                    if (userInfo.allowedScopes || userInfo.displayName || userInfo.email || userInfo.username) {
+                        this._onSignInCallback(getUserInfoUtil(this._authConfig));
+                    }
                 }
 
                 return Promise.resolve(getUserInfoUtil(this._authConfig));
