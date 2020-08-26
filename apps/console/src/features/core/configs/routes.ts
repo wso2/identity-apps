@@ -49,6 +49,7 @@ const extensions = EXTENSION_ROUTES();
  */
 const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
     {
+        category: "devPortal:components.sidePanel.categories.application",
         children: [
             {
                 component: lazy(() => import("../../applications/pages/application-template")),
@@ -88,6 +89,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "devPortal:components.sidePanel.categories.identityProviders",
         children: [
             {
                 component: lazy(() => import("../../identity-providers/pages/identity-provider-template")),
@@ -127,6 +129,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "devPortal:components.sidePanel.categories.application",
         children: [
             {
                 component: lazy(() =>
@@ -155,6 +158,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         showOnSidePanel: true
     },
     {
+        category: "devPortal:components.sidePanel.categories.general",
         children: [
             {
                 component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
@@ -179,7 +183,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         order: 4,
         path: AppConstants.PATHS.get("OIDC_SCOPES"),
         protected: true,
-        showOnSidePanel: true
+        showOnSidePanel: false
     },
     {
         component: lazy(() => import("../pages/customize")),
