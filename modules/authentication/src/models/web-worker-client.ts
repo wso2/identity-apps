@@ -27,7 +27,6 @@ export interface WebWorkerClientInterface {
     signOut(): Promise<boolean>;
     signIn(): Promise<UserInfo>;
     initialize(config: ConfigInterface): Promise<boolean>;
-    listenForAuthCode(): Promise<UserInfo>;
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
     endUserSession(): Promise<boolean>;
     getServiceEndpoints(): Promise<ServiceResourcesType>;

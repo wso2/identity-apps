@@ -446,25 +446,6 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
     };
 
     /**
-     * Listens for the authorization code in the callback URL.
-     * If present, this will continue with the authentication flow and resolve if successfully authenticated.
-     * @returns {Promise<UserInfo>} Promise that resolves on successful authentication.
-     */
-    const listenForAuthCode = (): Promise<UserInfo> => {
-        if (!initialized) {
-            return Promise.reject(
-                "Error while listening to authorization code. The object has not been initialized yet."
-            );
-        }
-
-        if (hasAuthorizationCode()) {
-            return sendAuthorizationCode();
-        } else {
-            return Promise.reject("No Authorization Code found.");
-        }
-    };
-
-    /**
      * Initiates the authentication flow.
      *
      * @returns {Promise<UserInfo>} A promise that resolves when authentication is successful.
@@ -641,7 +622,6 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             httpRequest,
             httpRequestAll,
             initialize,
-            listenForAuthCode,
             onHttpRequestError,
             onHttpRequestFinish,
             onHttpRequestStart,

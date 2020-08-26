@@ -60,7 +60,6 @@ import { Storage } from "../constants/storage";
 import { CustomGrantRequestParams, SignInResponse, UserInfo } from "../models";
 import { AuthenticatedUserInterface } from "../models/authenticated-user";
 import { ConfigInterface } from "../models/client";
-import { AccountSwitchRequestParams } from "../models/oidc-request-params";
 import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
 
 /**
@@ -406,71 +405,6 @@ export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterfac
         username: payload.sub
     };
 };
-
-/**
- * Send account switch request.
- *
- * @param {AccountSwitchRequestParams} requestParams request parameters required for the account switch request.
- * @param {string} clientHost client host.
- * @returns {Promise<TokenResponseInterface>} token response data or error.
- */
-export function sendAccountSwitchRequest(
-    requestParams: AccountSwitchRequestParams,
-    config: ConfigInterface
-): Promise<any> {
-    const tokenEndpoint = getTokenEndpoint(config);
-
-    if (!tokenEndpoint || tokenEndpoint.trim().length === 0) {
-        return Promise.reject(new Error("Invalid token endpoint found."));
-    }
-
-    let scope = OIDC_SCOPE;
-
-    if (requestParams.scope && requestParams.scope.length > 0) {
-        if (!requestParams.scope.includes(OIDC_SCOPE)) {
-            requestParams.scope.push(OIDC_SCOPE);
-        }
-        scope = requestParams.scope.join(" ");
-    }
-
-    const body = [];
-    body.push("grant_type=account_switch");
-    body.push(`username=${ requestParams.username }`);
-    body.push(`userstore-domain=${ requestParams[ "userstore-domain" ] }`);
-    body.push(`tenant-domain=${ requestParams[ "tenant-domain" ] }`);
-    body.push(`token=${ getSessionParameter(ACCESS_TOKEN, config) }`);
-    body.push(`scope=${ scope }`);
-    body.push(`client_id=${ requestParams.client_id }`);
-
-    return axios
-        .post(tokenEndpoint, body.join("&"), { headers: getTokenRequestHeaders(requestParams.clientHost) })
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(
-                    new Error("Invalid status code received in the token response: " + response.status)
-                );
-            }
-
-            return validateIdToken(response.data.id_token, config).then((valid) => {
-                if (valid) {
-                    const tokenResponse: TokenResponseInterface = {
-                        accessToken: response.data.access_token,
-                        expiresIn: response.data.expires_in,
-                        idToken: response.data.id_token,
-                        refreshToken: response.data.refresh_token,
-                        scope: response.data.scope,
-                        tokenType: response.data.token_type
-                    };
-                    return Promise.resolve(tokenResponse);
-                }
-
-                return Promise.reject(new Error("Invalid id_token in the token response: " + response.data.id_token));
-            });
-        })
-        .catch((error) => {
-            return Promise.reject(error);
-        });
-}
 
 /**
  * Execute user sign in request
