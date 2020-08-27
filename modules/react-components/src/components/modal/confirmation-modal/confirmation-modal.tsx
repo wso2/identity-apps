@@ -152,6 +152,14 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
     };
 
     /**
+     * Handler for the primary button click event.
+     */
+    const handlePrimaryActionClick = (e: MouseEvent<HTMLButtonElement>) => {
+        setAssertionInput("");
+        onPrimaryActionClick(e);
+    };
+
+    /**
      * Resolves the animated icon.
      *
      * @param {string} type - Type of the modal.
@@ -325,7 +333,7 @@ export const ConfirmationModal: FunctionComponent<ConfirmationModalPropsInterfac
                                     data-testid={ testId + "-confirm-button" }
                                     className={ `${ type } ${ primaryActionFluid ? "fluid" : "" }` }
                                     disabled={ !(!assertionType || confirmed) }
-                                    onClick={ onPrimaryActionClick }
+                                    onClick={ handlePrimaryActionClick }
                                     fluid={ primaryActionFluid }
                                 >
                                     { primaryAction }
