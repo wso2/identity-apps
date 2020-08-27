@@ -99,6 +99,7 @@
             org.wso2.carbon.stratos.common.*; version="${carbon.commons.imp.pkg.version.range}",
 
             org.wso2.carbon.identity.oauth.*; version="${carbon.identity.oauth.imp.pkg.version.range}",
+            org.wso2.carbon.identity.oauth2.*; version="${carbon.identity.oauth.imp.pkg.version.range}",
             org.wso2.carbon.identity.base.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.core.*; version="${carbon.identity.framework.imp.pkg.version.range}",
             org.wso2.carbon.identity.core.util.*; version="${carbon.identity.framework.imp.pkg.version.range}",
