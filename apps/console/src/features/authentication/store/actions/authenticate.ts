@@ -197,6 +197,7 @@ export const handleSignOut = () => (dispatch) => {
             dispatch(setSignOut());
         })
         .catch(() => {
+            AuthenticateUtils.updateAuthenticationCallbackUrl(window["AppUtils"].getConfig().routes.logout);
             history.push(store?.getState()?.config?.deployment?.appLoginPath);
         });
 };
