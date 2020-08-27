@@ -39,7 +39,6 @@ import {
     getUserReadOnlyStatus,
     switchAccount
 }from "../../api";
-import { history } from "../../helpers";
 import {
     AlertLevels,
     AuthenticatedUserInterface,
@@ -288,7 +287,11 @@ export const handleSignOut = () => (dispatch) => {
             dispatch(setSignOut());
         })
         .catch(() => {
-            history.push(store?.getState()?.config?.deployment?.appLoginPath);
+            const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
+
+            rpIFrame.onload = () => {
+                AuthenticateUtils.checkUserSessionStatus();
+            }
         });
 };
 

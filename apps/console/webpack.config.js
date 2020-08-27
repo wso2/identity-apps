@@ -72,7 +72,7 @@ module.exports = (env) => {
                 : false
             : isDevelopment && "cheap-module-source-map",
         entry: {
-            init: "./src/init/init.ts",
+            init: [ "@babel/polyfill", "./src/init/init.ts" ],
             main: "./src/index.tsx",
             rpIFrame: "./src/init/rpIFrame-script.ts"
         },
