@@ -633,6 +633,12 @@ export interface UserPortalNS {
                     };
                 };
             };
+            messages: {
+                emailConfirmation: {
+                    content: string;
+                    header: string;
+                };
+            };
             notifications: {
                 getProfileInfo: Notification;
                 getUserReadOnlyStatus: Notification;

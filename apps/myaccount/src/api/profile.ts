@@ -17,10 +17,10 @@
  */
 
 import { SignInUtil } from "@wso2is/authentication";
-import { IdentityClient, Storage } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
 import axios from "axios";
 import _ from "lodash";
-import { ApplicationConstants } from "../constants";
+import { ApplicationConstants, SCIM2_ENT_USER_SCHEMA } from "../constants";
 import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, MultiValue, ProfileSchema, ReadOnlyUserStatus } from "../models";
 import { store } from "../store";
@@ -167,14 +167,17 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
-                organisation: response.data[orgKey] ? response.data[orgKey].organization : "",
+                organisation: response.data[orgKey]?.organization ? response.data[orgKey].organization : "",
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
                 userImage: response.data.userImage || profileImage,
-                userName: response.data.userName || "",
-                ...response.data
+                pendingEmails: response.data[SCIM2_ENT_USER_SCHEMA]
+                    ? response.data[SCIM2_ENT_USER_SCHEMA].pendingEmails
+                    : [],
+                ...response.data,
+                userName: response.data.userName || ""
             };
 
             return Promise.resolve(profileResponse);

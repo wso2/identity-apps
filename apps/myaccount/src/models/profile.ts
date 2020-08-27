@@ -33,10 +33,18 @@ export interface Name {
 }
 
 /**
+ * Multi-valued pending emails model
+ */
+export interface PendingEmail {
+    type?: string;
+    value: string;
+}
+
+/**
  * Profile Model
  */
 export interface BasicProfileInterface {
-    emails: string[] | MultiValue[];
+    emails?: string[] | MultiValue[] | any;
     email?: string;
     phoneNumbers: MultiValue[];
     organisation: string;
@@ -44,6 +52,7 @@ export interface BasicProfileInterface {
     roles?: MultiValue[];
     name: Name;
     profileUrl: string;
+    pendingEmails?: string | PendingEmail[] | any;
     isSecurity?: boolean;
     userImage?: string;
     userName?: string;

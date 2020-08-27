@@ -1045,6 +1045,12 @@ export const userPortal: UserPortalNS = {
                     }
                 }
             },
+            messages: {
+                emailConfirmation: {
+                    content: "ඔබගේ පැතිකඩට නව විද්‍යුත් තැපෑල එක් කිරීම සඳහා කරුණාකර විද්‍යුත් තැපැල් ලිපින යාවත්කාලීන කිරීම තහවුරු කරන්න.",
+                    header: "තහවුරු කිරීම අපේක්ෂිතයි!"
+                }
+            },
             notifications: {
                 getProfileInfo: {
                     error: {
