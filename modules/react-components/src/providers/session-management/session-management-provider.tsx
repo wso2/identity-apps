@@ -143,6 +143,10 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
             setShowSessionTimeoutModal(!!timeout);
         });
+        
+        return () => {
+            performCleanupTasks();
+        }
     }, []);
 
     /**
@@ -158,6 +162,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
             }
         }
 
+        performCleanupTasks();
         setShowSessionTimeoutModal(false);
     };
 
@@ -165,8 +170,17 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
      * Handles session logout click.
      */
     const handleSessionLogout = (): void => {
+        performCleanupTasks();
         setShowSessionTimeoutModal(false);
         onSessionLogout();
+    };
+
+    /**
+     * Performs housekeeping tasks.
+     */
+    const performCleanupTasks = () => {
+        setTimerDisplay(undefined);
+        window.clearInterval(timerIntervalID.current);
     };
 
     /**
