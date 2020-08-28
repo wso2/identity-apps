@@ -16,8 +16,15 @@
  * under the License.
  */
 
-export * from "./admin-portal-ns";
-export * from "./common-ns";
-export * from "./console-ns";
-export * from "./dev-portal-ns";
-export * from "./user-portal-ns";
+import { ModalInterface } from "../common";
+
+/**
+ * Model for the Console namespace
+ */
+export interface ConsoleNS {
+    common: {
+        modals: {
+            sessionTimeoutModal: ModalInterface;
+        };
+    };
+}
