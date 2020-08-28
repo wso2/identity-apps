@@ -71,6 +71,11 @@ export interface CommonDeploymentConfigInterface {
      */
     appLoginPath: string;
     /**
+     * Logout path of the application.
+     * ex: `/logout`
+     */
+    appLogoutPath: string;
+    /**
      * Host of the client application.
      * ex: `https://localhost:9001`
      */
