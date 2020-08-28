@@ -1178,6 +1178,15 @@ export const userPortal: UserPortalNS = {
             }
         }
     },
+    modals: {
+        sessionTimeoutModal: {
+            description: "අක්‍රියතාවය හේතුවෙන් ඔබ වත්මන් සැසියෙන් ඉවත් වනු ඇත. ඔබ සැසිය දිගටම කරගෙන යාමට කැමති " +
+                "නම් කරුණාකර රැඳී සිටින්න තෝරන්න.",
+            heading: "තත්පර <1>{{ time }}</1> කින් ඔබ ඉවත් වනු ඇත.",
+            primaryButton: "පුරනය වී සිටින්න",
+            secondaryButton: "වරන්න"
+        }
+    },
     pages: {
         applications: {
             subTitle: "Manage and maintain your applications",

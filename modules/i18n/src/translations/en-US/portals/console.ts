@@ -23,7 +23,7 @@ export const console: ConsoleNS = {
         modals: {
             sessionTimeoutModal: {
                 description: "You will be logged out of the current session due to inactivity." +
-                    "\nPlease choose Stay logged in if you would like to continue the session.",
+                    "Please choose Stay logged in if you would like to continue the session.",
                 heading: "You will be logged out in <1>{{ time }}</1>.",
                 primaryButton: "Stay logged in",
                 secondaryButton: "Logout"

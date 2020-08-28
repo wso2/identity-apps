@@ -1167,6 +1167,15 @@ export const userPortal: UserPortalNS = {
             }
         }
     },
+    modals: {
+        sessionTimeoutModal: {
+            description: "Você será desconectado da sessão atual devido à inatividade." +
+                "Selecione Permanecer conectado se desejar continuar a sessão.",
+            heading: "Você será desconectado em <1>{{ time }}</1>.",
+            primaryButton: "Permaneça logado",
+            secondaryButton: "Sair"
+        }
+    },
     pages: {
         applications: {
             subTitle: "Manage and maintain your applications",
