@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { LocaleMeta } from "../../models";
 import { I18nModuleConstants } from "../../constants";
+import { LocaleMeta } from "../../models";
 
 export const meta: LocaleMeta = {
     code: "ta-IN",
     flag: "in",
     name: "தமிழ் (India)",
-    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE ]
+    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE, I18nModuleConstants.USER_PORTAL_NAMESPACE ]
 };
