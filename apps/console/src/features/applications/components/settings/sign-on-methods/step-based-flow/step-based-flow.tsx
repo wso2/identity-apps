@@ -554,7 +554,6 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                             ? authenticationSteps.map((step, stepIndex) => (
                                                 <Fragment key={ stepIndex }>
                                                     <AuthenticationStep
-                                                        key={ stepIndex }
                                                         authenticators={
                                                             [ ...localAuthenticators, ...federatedAuthenticators ]
                                                         }

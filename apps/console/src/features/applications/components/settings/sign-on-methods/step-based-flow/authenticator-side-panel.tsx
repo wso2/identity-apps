@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, GenericIcon, Heading } from "@wso2is/react-components";
 import classNames from "classnames";
-import React, { FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, Ref, SyntheticEvent, forwardRef, useState } from "react";
 import Draggable from "react-draggable";
 import { useTranslation } from "react-i18next";
 import { Accordion, Card, Icon, Popup } from "semantic-ui-react";
@@ -183,7 +183,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                         authenticator?.authenticators
                                                         && authenticator.authenticators instanceof Array
                                                         && authenticator.authenticators.length > 0 && (
-                                                            <>
+                                                            <Fragment key={ index }>
                                                                 <Accordion.Title
                                                                     active={
                                                                         authenticatorsAccordionActiveIndexes.includes(
@@ -225,7 +225,7 @@ export const AuthenticatorSidePanel: FunctionComponent<AuthenticatorSidePanelPro
                                                                         data-testid={ `${ testId }-authenticators` }
                                                                     />
                                                                 </Accordion.Content>
-                                                            </>
+                                                            </Fragment>
                                                         )
                                                     ))
                                                 }
