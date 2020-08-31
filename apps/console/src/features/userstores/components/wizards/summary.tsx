@@ -163,14 +163,15 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
             <Divider horizontal>{ t("adminPortal:components.userstores.wizard.steps.group") }</Divider>
 
             {
-                groupProperties?.map((property: TypeProperty) => {
+                groupProperties?.map((property: TypeProperty, index: number) => {
                     if (!(property.attributes.find(attribute => attribute.name === "type")?.value === "password")) {
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[ 0 ]?.value
+                                }))[ 0 ]?.value,
+                                index
                             )
                         )
                     }
