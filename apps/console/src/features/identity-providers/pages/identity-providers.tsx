@@ -289,7 +289,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
             } }
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 action={
