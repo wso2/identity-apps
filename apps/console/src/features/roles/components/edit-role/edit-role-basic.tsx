@@ -23,12 +23,12 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Forms } from "@wso2is/forms"
+import { Field, Forms } from "@wso2is/forms"
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react"
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Form, Grid, Input, InputOnChangeData, Label } from "semantic-ui-react"
+import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react"
 import { AppConstants, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
 import { deleteRoleById, updateRole } from "../../api";
@@ -58,7 +58,7 @@ interface BasicRoleProps extends TestableComponentInterface {
 
 /**
  * Component to edit basic role details.
- * 
+ *
  * @param props Role object containing details which needs to be edited.
  */
 export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
@@ -139,7 +139,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     /**
      * Function which will handle role deletion action.
-     * 
+     *
      * @param id - Role ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
@@ -159,7 +159,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
 
     /**
      * Method to update role name for the selected role.
-     * 
+     *
      * @param values Form values which will be used to update the role
      */
     const updateRoleName = (values: any): void => {
@@ -218,7 +218,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                 : t("adminPortal:components.roles.edit.basics.fields.roleName.name")
                                         }
                                     </label>
-                                    <Input
+                                    <Field
                                         required={ true }
                                         name={ "rolename" }
                                         label={ labelText !== "" ? labelText + " /" : null }
@@ -329,7 +329,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 )
             }
             {
-                showRoleDeleteConfirmation && 
+                showRoleDeleteConfirmation &&
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
