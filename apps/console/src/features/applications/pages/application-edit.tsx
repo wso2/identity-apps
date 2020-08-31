@@ -166,7 +166,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         dispatch(
-            setHelpPanelDocsContentURL(editApplicationDocs[ 
+            setHelpPanelDocsContentURL(editApplicationDocs[
                 ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
                     .get(applicationTemplate.id) ]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
         );
@@ -740,7 +740,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             } }
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
             onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
             visible={ helpPanelVisibilityGlobalState }
         >
