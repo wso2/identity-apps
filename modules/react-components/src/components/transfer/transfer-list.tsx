@@ -90,8 +90,10 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                                 </Table.Row>
                             </Table.Header>
                         )
-                    }
-                    { children }
+                        }
+                        <Table.Body>
+                            { children }
+                        </Table.Body>
                 </Table>
                 ) : (
                     <div className={ "empty-placeholder-center" }>
