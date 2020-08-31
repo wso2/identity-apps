@@ -16,8 +16,18 @@
  * under the License.
  */
 
-export * from "./admin-portal-ns";
-export * from "./common-ns";
-export * from "./console-ns";
-export * from "./dev-portal-ns";
-export * from "./user-portal-ns";
+import { ConsoleNS } from "../../../models";
+
+export const console: ConsoleNS = {
+    common: {
+        modals: {
+            sessionTimeoutModal: {
+                description: "You will be logged out of the current session due to inactivity." +
+                    "Please choose Stay logged in if you would like to continue the session.",
+                heading: "You will be logged out in <1>{{ time }}</1>.",
+                primaryButton: "Stay logged in",
+                secondaryButton: "Logout"
+            }
+        }
+    }
+};

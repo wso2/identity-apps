@@ -14,10 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./admin-portal-ns";
-export * from "./common-ns";
-export * from "./console-ns";
-export * from "./dev-portal-ns";
-export * from "./user-portal-ns";
+export * from "./session-management";
