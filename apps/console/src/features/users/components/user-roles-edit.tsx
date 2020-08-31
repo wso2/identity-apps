@@ -208,10 +208,10 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
         if (user.roles && user.roles instanceof Array) {
             _.forEachRight (user.roles, (roles) => {
-                const role = roles.display.split("/");
+                const role = roles.display?.split("/");
 
-                if (role.length >= 1) {
-                    rolesMap.set(roles.display, roles.value);
+                if (role?.length >= 1) {
+                    rolesMap.set(roles?.display, roles?.value);
                 }
             });
             setPrimaryRolesList(rolesMap);
@@ -757,9 +757,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         <>
             <Heading as="h4">
                 { t("adminPortal:components.user.updateUser.roles.editRoles.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>
@@ -894,8 +894,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 <PrimaryButton
                                                     data-testid="user-mgt-user-empty-roles-list-assign-group-button"
                                                     onClick={ handleOpenAddNewGroupModal }
-                                                    icon="plus"
                                                 >
+                                                    <Icon name="plus"/>
                                                     Assign Role
                                                 </PrimaryButton>
                                             )
