@@ -489,8 +489,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                     data-testid={ `${ testId }-users-list-empty-assign-users-
                                                     button` }
                                                     onClick={ handleOpenAddNewGroupModal }
-                                                    icon="plus"
                                                 >
+                                                    <Icon name="plus"/>
                                                     { t("adminPortal:components.roles.edit.users.list." +
                                                         "emptyPlaceholder.action") }
                                                 </PrimaryButton>
