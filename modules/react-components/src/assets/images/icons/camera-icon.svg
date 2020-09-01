@@ -1,0 +1,25 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg id="camera-icon" class="icon" height="14" width="14" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <g>
+        <circle class="path" cx="256" cy="296" r="81"/>
+        <path class="path" d="m374.297 91-5.177-25.883c-2.794-13.974-15.166-24.117-29.417-24.117h-167.406c-14.25 0-26.623 10.143-29.417 24.117l-5.177 25.883z"/>
+        <path class="path" d="m467 121c-35.223 0-405.516 0-422 0-24.813 0-45 20.187-45 45v260c0 24.813 20.187 45 45 45h422c24.813 0 45-20.187 45-45v-260c0-24.813-20.187-45-45-45zm-339 94h-48c-8.284 0-15-6.716-15-15s6.716-15 15-15h48c8.284 0 15 6.716 15 15s-6.716 15-15 15zm128 192c-61.206 0-111-49.794-111-111s49.794-111 111-111 111 49.794 111 111-49.794 111-111 111z"/>
+    </g>
+</svg>
