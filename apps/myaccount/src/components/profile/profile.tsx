@@ -16,10 +16,14 @@
  * under the License
  */
 
+import { updateProfileImageURL } from "@wso2is/core/api";
+import { resolveUserDisplayName } from "@wso2is/core/helpers";
+import { MultiValueAttributeInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { EditAvatarModal, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
@@ -29,7 +33,7 @@ import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "
 import { AppState } from "../../store";
 import { getProfileInformation } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
-import { EditSection, SettingsSection, UserAvatar } from "../shared";
+import { EditSection, SettingsSection } from "../shared";
 
 /**
  * Prop types for the basic details component.
@@ -61,6 +65,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
     const [ editingForm, setEditingForm ] = useState(new Map<string, boolean>());
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
+    const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
 
     /**
      * Set the if the email verification is pending.
@@ -465,48 +470,109 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         }
     };
 
+    /**
+     * Handles edit avatar modal submit action.
+     *
+     * @param {<HTMLButtonElement>} e - Event.
+     * @param {string} url - Selected image URL.
+     */
+    const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
+        updateProfileImageURL(url)
+            .then((response) => {
+                if (response.status === 200) {
+                    onAlertFired({
+                        description: t("userPortal:components.profile.notifications.updateProfileInfo.success" +
+                            ".description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("userPortal:components.profile.notifications.updateProfileInfo.success.message")
+                    });
+
+                    // Re-fetch the profile information
+                    dispatch(getProfileInformation(true));
+                }
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    onAlertFired({
+                        description: t("userPortal:components.profile.notifications.updateProfileInfo.error" +
+                            ".description",
+                            { description: error.response.data.detail }),
+                        level: AlertLevels.ERROR,
+                        message: t("userPortal:components.profile.notifications.updateProfileInfo.error.message")
+                    });
+                }
+
+                onAlertFired({
+                    description: t("userPortal:components.profile.notifications.updateProfileInfo.genericError" +
+                        ".description"),
+                    level: AlertLevels.ERROR,
+                    message: t("userPortal:components.profile.notifications.updateProfileInfo.genericError.message")
+                });
+            })
+            .finally(() => {
+                setShowEditAvatarModal(false);
+            });
+    };
+
+    /**
+     * Renders the user avatar.
+     *
+     * @return {any}
+     */
+    const renderAvatar = () => (
+        <>
+            <UserAvatar
+                editable
+                showGravatarLabel
+                size="tiny"
+                onClick={ handleAvatarOnClick }
+                profileInfo={ profileDetails?.profileInfo as any }
+                gravatarInfoPopoverText={ (
+                    <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
+                        This image has been retrieved from
+                        <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
+                            Gravatar
+                        </a> service.
+                    </Trans>
+                ) }
+            />
+            <EditAvatarModal
+                open={ showEditAvatarModal }
+                name={ resolveUserDisplayName(profileDetails?.profileInfo as any) }
+                emails={
+                    (profileDetails?.profileInfo?.emails
+                        && Array.isArray(profileDetails.profileInfo.emails)
+                        && profileDetails.profileInfo.emails.length > 0)
+                        ? profileDetails.profileInfo.emails
+                            .map((email: (string | MultiValueAttributeInterface)): string => {
+                                if (typeof email !== "string" && email?.value) {
+                                    return email.value;
+                                }
+
+                                return email as string;
+                            })
+                        : []
+                }
+                onClose={ () => setShowEditAvatarModal(false) }
+                onCancel={ () => setShowEditAvatarModal(false) }
+                onSubmit={ handleAvatarEditModalSubmit }
+            />
+        </>
+    );
+
+    /**
+     * Handles the onclick action of the avatar.
+     */
+    const handleAvatarOnClick = () => {
+        setShowEditAvatarModal(true);
+    };
+
     return (
         <SettingsSection
             description={ t("userPortal:sections.profile.description") }
             header={ t("userPortal:sections.profile.heading") }
-            icon={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showEdit={ true }
-                    profileUrl={ !isEmpty(urlSchema) ? profileInfo.get(urlSchema.name) : "" }
-                    urlSchema={ urlSchema }
-                    onAlertFired={ onAlertFired }
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
-                                Gravatar
-                                </a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
-            iconMini={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showEdit={ true }
-                    profileUrl={ !isEmpty(urlSchema) ? profileInfo.get(urlSchema.name) : "" }
-                    urlSchema={ urlSchema }
-                    onAlertFired={ onAlertFired }
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
-                                Gravatar
-                                </a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
+            icon={ renderAvatar() }
+            iconMini={ renderAvatar() }
             placeholder={
                 !isSCIMEnabled
                     ? t("userPortal:components.profile.placeholders.SCIMDisabled.heading")
