@@ -68,6 +68,10 @@ interface UserRolesPropsInterface {
      * Show if the user is read only.
      */
     isReadOnly?: boolean;
+    /**
+     * Enable roles and groups separation.
+     */
+    isGroupAndRoleSeparationEnabled?: boolean;
 }
 
 /**
@@ -89,7 +93,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         onAlertFired,
         user,
         handleUserUpdate,
-        isReadOnly
+        isReadOnly,
+        isGroupAndRoleSeparationEnabled
     } = props;
 
     const { t } = useTranslation();
@@ -158,7 +163,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         if (!(user)) {
             return;
         }
-        setAssignedRoles(user.roles);
         mapUserRoles();
     }, []);
 
@@ -170,7 +174,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             return;
         }
         mapUserRoles();
-        setAssignedRoles(user.roles);
     }, [ user ]);
 
     useEffect(() => {
@@ -206,15 +209,34 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const mapUserRoles = () => {
         const rolesMap = new Map<string, string> ();
 
+        if(!isGroupAndRoleSeparationEnabled) {
+            const groupsMap = new Map<string, string> ();
+
+            if (user.groups && user.groups instanceof Array) {
+                _.forEachRight (user.groups, (group) => {
+                    const groupName = group?.display?.split("/");
+
+                    if (groupName.length > 1) {
+                        groupsMap.set(group.display, group.value);
+                    }
+                });
+                setPrimaryRolesList(groupsMap);
+                setAssignedRoles(user.groups);
+            }
+
+            return;
+        }
+
         if (user.roles && user.roles instanceof Array) {
             _.forEachRight (user.roles, (roles) => {
-                const role = roles.display.split("/");
+                const role = roles?.display?.split("/");
 
                 if (role.length >= 1) {
                     rolesMap.set(roles.display, roles.value);
                 }
             });
             setPrimaryRolesList(rolesMap);
+            setAssignedRoles(user.roles);
         }
     };
 
@@ -545,7 +567,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      * @param roleName: string
      */
     const createItemLabel = (roleName: string) => {
-        const role = roleName.split("/");
+        const role = roleName?.split("/");
         if (role.length > 0) {
             if (role[0] == "Application") {
                 return { labelText: "Application", labelColor: null, name: "application-label" };
@@ -617,7 +639,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 >
                                     {
                                         roleList?.map((role, index) => {
-                                            const roleName = role.displayName?.split("/");
+                                            const roleName = role?.displayName?.split("/");
                                             if (roleName.length >= 1) {
                                                 return (
                                                     <TransferListItem
@@ -654,7 +676,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 >
                                     {
                                         tempRoleList?.map((role, index) => {
-                                            const roleName = role.displayName.split("/");
+                                            const roleName = role?.displayName?.split("/");
                                             if (roleName.length >= 1) {
                                                 return (
                                                     <TransferListItem
@@ -714,7 +736,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             const re = new RegExp(_.escapeRegExp(value), "i");
 
             assignedRoles && assignedRoles?.map((role) => {
-                const groupName = role.display.split("/");
+                const groupName = role?.display?.split("/");
                 if (groupName.length > 1) {
                     isMatch = re.test(role.display);
                     if (isMatch) {
@@ -821,8 +843,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                             <Table.Body>
                                                 {
                                                     assignedRoles?.map((group) => {
-                                                        const userRole = group.display.split("/");
-                                                        if (userRole.length >= 1) {
+                                                        const userRole = group?.display?.split("/");
+                                                        if (userRole.length > 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     {
