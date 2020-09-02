@@ -41,7 +41,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, RouteComponentProps, Switch, matchPath } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import {
     AppState,
@@ -54,8 +54,7 @@ import {
     SidePanelMiscIcons,
     UIConstants,
     developerViewRoutes,
-    history,
-    store
+    history
 } from "../features/core";
 
 /**
@@ -114,7 +113,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             allowedScopes));
 
         if (isEmpty(profileInfo)) {
-            dispatch(getProfileInfo(null, store.getState().config.ui.gravatarConfig));
+            dispatch(getProfileInfo(null));
         }
     }, [ featureConfig ]);
 
