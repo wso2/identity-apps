@@ -6,6 +6,9 @@
 @avatarInitialsColor: @white;
 @avatarEditableCursor: pointer;
 
+@avatarHoverableCursor: pointer;
+@avatarHoverableOpacity: 0.7;
+
 /* Size */
 @littleWidth: 48px;
 @miniWidth: 35px;
