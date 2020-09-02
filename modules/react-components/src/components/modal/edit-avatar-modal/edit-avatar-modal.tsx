@@ -65,24 +65,24 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
      */
     name: string;
     /**
-     * Secondary button text.
+     * Cancel button text.
      */
-    secondaryButtonText?: string;
+    cancelButtonText?: string;
     /**
-     * Primary button text.
+     * Submit button text.
      */
-    primaryButtonText?: string;
+    submitButtonText?: string;
     /**
-     * Callback function for the primary action button.
+     * Callback function for the submit button.
      * @param {<HTMLButtonElement>} e - Event.
      * @param {string} url - Submitted URL.
      */
-    onPrimaryActionClick?: (e: MouseEvent<HTMLButtonElement>, url: string) => void;
+    onSubmit?: (e: MouseEvent<HTMLButtonElement>, url: string) => void;
     /**
-     * Callback function for the secondary action button.
+     * Callback function for the cancel button.
      * @param {<HTMLButtonElement>} e - Event.
      */
-    onSecondaryActionClick?: (e: MouseEvent<HTMLButtonElement>) => void;
+    onCancel?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
@@ -111,13 +111,13 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 ): ReactElement => {
 
     const {
+        cancelButtonText,
         emails,
         heading,
         name,
-        onPrimaryActionClick,
-        onSecondaryActionClick,
-        primaryButtonText,
-        secondaryButtonText,
+        onCancel,
+        onSubmit,
+        submitButtonText,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -271,7 +271,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     };
 
     const handleModalSubmit = (e: MouseEvent<HTMLButtonElement>) => {
-        onPrimaryActionClick(e, outputURL);
+        onSubmit(e, outputURL === SystemGeneratedAvatars.get("Initials") ? "" : outputURL);
     };
 
     return (
@@ -336,13 +336,14 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                                     <Dropdown
                                                                         text={ selectedGravatarEmail }
                                                                         options={
-                                                                            emails.map((email: string, index: number) => {
-                                                                                return {
-                                                                                    key: index,
-                                                                                    text: email,
-                                                                                    value: email
-                                                                                }
-                                                                            })
+                                                                            emails
+                                                                                .map((email: string, index: number) => {
+                                                                                    return {
+                                                                                        key: index,
+                                                                                        text: email,
+                                                                                        value: email
+                                                                                    }
+                                                                                })
                                                                         }
                                                                         onChange={ handleGravatarEmailDropdownChange }
                                                                     />
@@ -404,11 +405,11 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                 </Form>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton onClick={ onSecondaryActionClick }>
-                    { secondaryButtonText }
+                <LinkButton onClick={ onCancel }>
+                    { cancelButtonText }
                 </LinkButton>
                 <PrimaryButton disabled={ !outputURL } onClick={ handleModalSubmit }>
-                    { primaryButtonText }
+                    { submitButtonText }
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
@@ -419,9 +420,9 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
  * Default props for the component.
  */
 EditAvatarModal.defaultProps = {
+    cancelButtonText: "Cancel",
     "data-testid": "edit-avatar-modal",
     dimmer: "blurring",
     heading: "Update profile picture",
-    primaryButtonText: "Save",
-    secondaryButtonText: "Cancel"
+    submitButtonText: "Save"
 };
