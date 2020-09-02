@@ -530,9 +530,10 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                     <ResourceList.Item
                                         avatar={
                                             <Avatar
+                                                rounded
                                                 image={ <CertificateIllustrations.avatar /> }
                                                 transparent={ true }
-                                                avatarType="app"
+                                                shape="square"
                                                 spaced="right"
                                                 floated="left"
                                                 data-testid={ `${ testId }-item-image` }
