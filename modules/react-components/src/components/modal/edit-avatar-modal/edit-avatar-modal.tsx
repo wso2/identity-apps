@@ -122,7 +122,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         ...rest
     } = props;
 
-    const [ selectedGravatarEmail, setSelectedGravatarEmail ] = useState<string>(emails[ 0 ]);
+    const [ selectedGravatarEmail, setSelectedGravatarEmail ] = useState<string>(undefined);
     const [ selectedGravatarSize, setSelectedGravatarSize ] = useState<number>(GRAVATAR_IMAGE_MIN_SIZE);
     const [ isInitialGravatarRequestLoading, setIsInitialGravatarRequestLoading ] = useState<boolean>(false);
     const [ isGravatarQualified, setIsGravatarQualified ] = useState<boolean>(undefined);
@@ -137,6 +137,17 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     useEffect(() => {
         setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
     }, []);
+
+    /**
+     * Init selected gravatar email once `emails` prop is valid.
+     */
+    useEffect(() => {
+        if (!emails || !Array.isArray(emails) || emails.length < 1) {
+            return;
+        }
+
+        setSelectedGravatarEmail(emails[ 0 ]);
+    }, [ emails ]);
 
     useEffect(() => {
         if (!selectedGravatarEmail) {
@@ -304,65 +315,69 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <div className="avatar-from-gravatar">
-                                    <div className="mb-3">
-                                        <Form.Field>
-                                            <Checkbox
-                                                radio
-                                                value={ AvatarTypes.GRAVATAR }
-                                                label={
-                                                    <label>
-                                                        <>
-                                                            <span>Gravatar based on </span>
-                                                            <Dropdown
-                                                                text={ selectedGravatarEmail }
-                                                                options={
-                                                                    emails.map((email: string, index: number) => {
-                                                                        return {
-                                                                            key: index,
-                                                                            text: email,
-                                                                            value: email
+                        {
+                            selectedGravatarEmail && (
+                                <Grid.Row>
+                                    <Grid.Column width={ 16 }>
+                                        <div className="avatar-from-gravatar">
+                                            <div className="mb-3">
+                                                <Form.Field>
+                                                    <Checkbox
+                                                        radio
+                                                        value={ AvatarTypes.GRAVATAR }
+                                                        label={
+                                                            <label>
+                                                                <>
+                                                                    <span>Gravatar based on </span>
+                                                                    <Dropdown
+                                                                        text={ selectedGravatarEmail }
+                                                                        options={
+                                                                            emails.map((email: string, index: number) => {
+                                                                                return {
+                                                                                    key: index,
+                                                                                    text: email,
+                                                                                    value: email
+                                                                                }
+                                                                            })
                                                                         }
-                                                                    })
-                                                                }
-                                                                onChange={ handleGravatarEmailDropdownChange }
-                                                            />
-                                                        </>
-                                                    </label>
-                                                }
-                                                checked={ selectedAvatarType === AvatarTypes.GRAVATAR }
-                                                onChange={ handleSelectedAvatarTypeChange }
-                                            />
-                                        </Form.Field>
-                                    </div>
-                                    {
-                                        (!isInitialGravatarRequestLoading && !isGravatarQualified) && (
-                                            <Message
-                                                warning
-                                                visible
-                                                size="tiny"
-                                                header="No matching Gravatar image found!"
-                                                content={
-                                                    <div>
-                                                        It seems like { selectedGravatarEmail } is not registered on
-                                                        Gravatar.
-                                                        Sign up for a Gravatar account by clicking <a>here</a> or use
-                                                        one of
-                                                        the
-                                                        following.
-                                                    </div>
-                                                }
-                                            />
-                                        )
-                                    }
-                                    <Card.Group className="avatar-from-gravatar-card-group">
-                                        { renderGravatarOptions() }
-                                    </Card.Group>
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
+                                                                        onChange={ handleGravatarEmailDropdownChange }
+                                                                    />
+                                                                </>
+                                                            </label>
+                                                        }
+                                                        checked={ selectedAvatarType === AvatarTypes.GRAVATAR }
+                                                        onChange={ handleSelectedAvatarTypeChange }
+                                                    />
+                                                </Form.Field>
+                                            </div>
+                                            {
+                                                (!isInitialGravatarRequestLoading && !isGravatarQualified) && (
+                                                    <Message
+                                                        warning
+                                                        visible
+                                                        size="tiny"
+                                                        header="No matching Gravatar image found!"
+                                                        content={
+                                                            <div>
+                                                                It seems like { selectedGravatarEmail } is not registered on
+                                                                Gravatar.
+                                                                Sign up for a Gravatar account by clicking <a>here</a> or use
+                                                                one of
+                                                                the
+                                                                following.
+                                                            </div>
+                                                        }
+                                                    />
+                                                )
+                                            }
+                                            <Card.Group className="avatar-from-gravatar-card-group">
+                                                { renderGravatarOptions() }
+                                            </Card.Group>
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            ) 
+                        }
                         <Grid.Row>
                             <Grid.Column width={ 8 }>
                                 <div className="avatar-from-url">
