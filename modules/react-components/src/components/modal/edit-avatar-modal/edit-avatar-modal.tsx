@@ -20,6 +20,7 @@ import { getGravatarImage } from "@wso2is/core/api";
 import { GravatarFallbackTypes, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import React, {
+    ChangeEvent,
     FormEvent,
     FunctionComponent,
     MouseEvent,
@@ -30,12 +31,14 @@ import React, {
     useState
 } from "react";
 import {
+    Card,
     CardProps,
     Checkbox,
     CheckboxProps,
     Dropdown,
     DropdownProps,
     Form,
+    Grid,
     Input,
     Message,
     Modal,
@@ -71,18 +74,16 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
     primaryButtonText?: string;
     /**
      * Callback function for the primary action button.
+     * @param {<HTMLButtonElement>} e - Event.
+     * @param {string} url - Submitted URL.
      */
-    onPrimaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    onPrimaryActionClick?: (e: MouseEvent<HTMLButtonElement>, url: string) => void;
     /**
      * Callback function for the secondary action button.
+     * @param {<HTMLButtonElement>} e - Event.
      */
-    onSecondaryActionClick?: (e: MouseEvent<HTMLElement>) => void;
+    onSecondaryActionClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
-
-const URL_INPUT_PROTOCOL_OPTIONS = [
-    { key: 0, text: "https://", value: "https://" },
-    { key: 1, text: "http://", value: "http://" }
-];
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
 const GRAVATAR_IMAGE_MAX_SIZE = 200;
@@ -127,6 +128,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     const [ isGravatarQualified, setIsGravatarQualified ] = useState<boolean>(undefined);
     const [ gravatarURLs, setGravatarURLs ] = useState<Map<string, string>>(undefined);
     const [ selectedAvatarType, setSelectedAvatarType ] = useState<AvatarTypes>(undefined);
+    const [ customHostedURL, setCustomHostedURL ] = useState<string>(undefined);
     const [
         outputURL,
         setOutputURL
@@ -195,6 +197,8 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             
             return;
         }
+
+        setOutputURL(customHostedURL);
     }, [ selectedAvatarType, gravatarURLs ]);
 
     const handleGravatarEmailDropdownChange = (e: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
@@ -213,7 +217,6 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         for (const [ key, value ] of gravatarURLs) {
             elemArray.push(
                 <SelectionCard
-                    inline
                     id={ value }
                     size="x100"
                     header={ key }
@@ -251,6 +254,15 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
     };
 
+    const handleCustomHostedURLChange = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }): void => {
+        setCustomHostedURL(value);
+        setOutputURL(value);
+    };
+
+    const handleModalSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+        onPrimaryActionClick(e, outputURL);
+    };
+
     return (
         <Modal
             data-testid={ testId }
@@ -259,113 +271,124 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             <Modal.Header>{ heading }</Modal.Header>
             <Modal.Content>
                 <Form>
-                    <div className="avatar-from-system mb-5">
-                        <div className="mb-3">
-                            <Form.Field>
-                                <Checkbox
-                                    radio
-                                    value={ AvatarTypes.SYSTEM_GENERATED }
-                                    label="System generated avatar"
-                                    checked={ selectedAvatarType === AvatarTypes.SYSTEM_GENERATED }
-                                    onChange={ handleSelectedAvatarTypeChange }
-                                />
-                            </Form.Field>
-                        </div>
-                        <SelectionCard
-                            id={ SystemGeneratedAvatars.get("Initials") }
-                            size="x100"
-                            header="Initials"
-                            image={
-                                <UserAvatar
-                                    size="little"
-                                    name={ name }
-                                />
-                            }
-                            selected={ outputURL === SystemGeneratedAvatars.get("Initials") }
-                            onClick={ handleSystemGeneratedAvatarChange }
-                        />
-                    </div>
-                    <div className="avatar-from-gravatar mb-5">
-                        <div className="mb-3">
-                            <Form.Field>
-                                <Checkbox
-                                    radio
-                                    value={ AvatarTypes.GRAVATAR }
-                                    label={
-                                        <label>
-                                            <>
-                                                <span>Gravatar based on </span>
-                                                <Dropdown
-                                                    text={ selectedGravatarEmail }
-                                                    options={
-                                                        emails.map((email: string, index: number) => {
-                                                            return {
-                                                                key: index,
-                                                                text: email,
-                                                                value: email
-                                                            }
-                                                        })
-                                                    }
-                                                    onChange={ handleGravatarEmailDropdownChange }
+                    <Grid>
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <div className="avatar-from-system">
+                                    <div className="mb-3">
+                                        <Form.Field>
+                                            <Checkbox
+                                                radio
+                                                value={ AvatarTypes.SYSTEM_GENERATED }
+                                                label="System generated avatar"
+                                                checked={ selectedAvatarType === AvatarTypes.SYSTEM_GENERATED }
+                                                onChange={ handleSelectedAvatarTypeChange }
+                                            />
+                                        </Form.Field>
+                                    </div>
+                                    <Card.Group className="avatar-from-system-card-group">
+                                        <SelectionCard
+                                            id={ SystemGeneratedAvatars.get("Initials") }
+                                            size="x100"
+                                            header="Initials"
+                                            image={
+                                                <UserAvatar
+                                                    size="little"
+                                                    name={ name }
                                                 />
-                                            </>
-                                        </label>
+                                            }
+                                            selected={ outputURL === SystemGeneratedAvatars.get("Initials") }
+                                            onClick={ handleSystemGeneratedAvatarChange }
+                                        />
+                                    </Card.Group>
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <div className="avatar-from-gravatar">
+                                    <div className="mb-3">
+                                        <Form.Field>
+                                            <Checkbox
+                                                radio
+                                                value={ AvatarTypes.GRAVATAR }
+                                                label={
+                                                    <label>
+                                                        <>
+                                                            <span>Gravatar based on </span>
+                                                            <Dropdown
+                                                                text={ selectedGravatarEmail }
+                                                                options={
+                                                                    emails.map((email: string, index: number) => {
+                                                                        return {
+                                                                            key: index,
+                                                                            text: email,
+                                                                            value: email
+                                                                        }
+                                                                    })
+                                                                }
+                                                                onChange={ handleGravatarEmailDropdownChange }
+                                                            />
+                                                        </>
+                                                    </label>
+                                                }
+                                                checked={ selectedAvatarType === AvatarTypes.GRAVATAR }
+                                                onChange={ handleSelectedAvatarTypeChange }
+                                            />
+                                        </Form.Field>
+                                    </div>
+                                    {
+                                        (!isInitialGravatarRequestLoading && !isGravatarQualified) && (
+                                            <Message
+                                                warning
+                                                visible
+                                                size="tiny"
+                                                header="No matching Gravatar image found!"
+                                                content={
+                                                    <div>
+                                                        It seems like { selectedGravatarEmail } is not registered on
+                                                        Gravatar.
+                                                        Sign up for a Gravatar account by clicking <a>here</a> or use
+                                                        one of
+                                                        the
+                                                        following.
+                                                    </div>
+                                                }
+                                            />
+                                        )
                                     }
-                                    checked={ selectedAvatarType === AvatarTypes.GRAVATAR }
-                                    onChange={ handleSelectedAvatarTypeChange }
-                                />
-                            </Form.Field>
-                        </div>
-                        {
-                            (!isInitialGravatarRequestLoading && !isGravatarQualified) && (
-                                <Message
-                                    warning
-                                    visible
-                                    size="tiny"
-                                    header="No matching Gravatar image found!"
-                                    content={
-                                        <div>
-                                            It seems like { selectedGravatarEmail } is not registered on Gravatar.
-                                            Sign up for a Gravatar account by clicking <a>here</a> or use one of the
-                                            following.
-                                        </div>
-                                    }
-                                />
-                            )
-                        }
-                        <div>
-                            { renderGravatarOptions() }
-                        </div>
-                    </div>
-                    <div className="avatar-from-url mb-5">
-                        <div className="mb-3">
-                            <Form.Field>
-                                <Checkbox
-                                    radio
-                                    value={ AvatarTypes.URL }
-                                    label="Hosted Image"
-                                    checked={ selectedAvatarType === AvatarTypes.URL }
-                                    onChange={ handleSelectedAvatarTypeChange }
-                                />
-                            </Form.Field>
-                        </div>
-                        <Input
-                            label={
-                                <Dropdown
-                                    defaultValue="https://"
-                                    options={ URL_INPUT_PROTOCOL_OPTIONS }
-                                />
-                            }
-                            placeholder="Enter the image URL"
-                        />
-                    </div>
+                                    <Card.Group className="avatar-from-gravatar-card-group">
+                                        { renderGravatarOptions() }
+                                    </Card.Group>
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row>
+                            <Grid.Column width={ 8 }>
+                                <div className="avatar-from-url">
+                                    <div className="mb-3">
+                                        <Form.Field>
+                                            <Checkbox
+                                                radio
+                                                value={ AvatarTypes.URL }
+                                                label="Hosted Image"
+                                                checked={ selectedAvatarType === AvatarTypes.URL }
+                                                onChange={ handleSelectedAvatarTypeChange }
+                                            />
+                                        </Form.Field>
+                                    </div>
+                                    <Input fluid icon placeholder="https://" onChange={ handleCustomHostedURLChange }/>
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid>
                 </Form>
             </Modal.Content>
             <Modal.Actions>
                 <LinkButton onClick={ onSecondaryActionClick }>
                     { secondaryButtonText }
                 </LinkButton>
-                <PrimaryButton disabled={ !outputURL } onClick={ onPrimaryActionClick }>
+                <PrimaryButton disabled={ !outputURL } onClick={ handleModalSubmit }>
                     { primaryButtonText }
                 </PrimaryButton>
             </Modal.Actions>
