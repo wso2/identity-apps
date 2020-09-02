@@ -211,6 +211,29 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
 };
 
 /**
+ * Update the logged in user's profile image URL.
+ *
+ * @param {string} url - Image URL.
+ * @return {Promise<ProfileInfoInterface>} Updated profile info as a Promise.
+ * @throws {IdentityAppsApiException}
+ */
+export const updateProfileImageURL = (url: string): Promise<ProfileInfoInterface> => {
+    const data = {
+        Operations: [
+            {
+                op: "replace",
+                value: {
+                    profileUrl: url
+                }
+            }
+        ],
+        schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+    };
+
+    return updateProfileInfo(data);
+};
+
+/**
  * Retrieve the profile schemas of the user claims of the currently authenticated user.
  *
  * @return {Promise<ProfileSchemaInterface[]>} Array of profile schemas as a Promise.
