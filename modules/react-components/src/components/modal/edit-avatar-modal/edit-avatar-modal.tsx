@@ -141,6 +141,9 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             return;
         }
 
+        // Once the email selection is changed, switch the selected type to `Gravatar`.
+        setSelectedAvatarType(AvatarTypes.GRAVATAR);
+
         setIsInitialGravatarRequestLoading(true);
 
         getGravatarImage(selectedGravatarEmail)
@@ -183,16 +186,16 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     useEffect(() => {
         if (selectedAvatarType === AvatarTypes.SYSTEM_GENERATED) {
             setOutputURL(SystemGeneratedAvatars.get("Initials"));
+            
+            return;
         }
 
-        if (selectedAvatarType === AvatarTypes.GRAVATAR) {
+        if (selectedAvatarType === AvatarTypes.GRAVATAR && gravatarURLs) {
             setOutputURL(gravatarURLs.get("Gravatar") ?? gravatarURLs.get("Retro"));
+            
+            return;
         }
-
-        if (selectedAvatarType === AvatarTypes.URL) {
-            setOutputURL(gravatarURLs.get(""));
-        }
-    }, [ selectedAvatarType ]);
+    }, [ selectedAvatarType, gravatarURLs ]);
 
     const handleGravatarEmailDropdownChange = (e: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         const { value } = data;
