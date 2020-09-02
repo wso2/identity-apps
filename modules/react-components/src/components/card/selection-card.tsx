@@ -60,13 +60,17 @@ export interface SelectionCardPropsInterface extends Omit<CardProps, "image">, T
      */
     selected?: boolean;
     /**
+     * Should text be shown i.e Header & Description.
+     */
+    showText?: boolean;
+    /**
      * Should tooltips be shown.
      */
     showTooltips?: boolean;
     /**
      * Card size.
      */
-    size?: "x120" | "small" | "default" | "auto";
+    size?: "x100" | "x120" | "small" | "default" | "auto";
     /**
      * Add spacing to the card.
      */
@@ -106,6 +110,7 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
         multilineDescription,
         onClick,
         selected,
+        showText,
         showTooltips,
         size,
         spaced,
@@ -153,33 +158,37 @@ export const SelectionCard: FunctionComponent<SelectionCardPropsInterface> = (
                     </Card.Content>
                 )
             }
-            <Card.Content className="card-text-container" style={ { textAlign } }>
-                { header && (
-                    <Tooltip
-                        disabled={ !showTooltips }
-                        content={ header }
-                        trigger={ (
-                            <Card.Header data-testid={ `${ testId }-header` }>
-                                { header }
-                            </Card.Header>
+            {
+                showText && (
+                    <Card.Content className="card-text-container" style={ { textAlign } }>
+                        { header && (
+                            <Tooltip
+                                disabled={ !showTooltips }
+                                content={ header }
+                                trigger={ (
+                                    <Card.Header data-testid={ `${ testId }-header` }>
+                                        { header }
+                                    </Card.Header>
+                                ) }
+                            />
                         ) }
-                    />
-                ) }
-                { description && (
-                    <Tooltip
-                        disabled={ !showTooltips }
-                        content={ description }
-                        trigger={ (
-                            <Card.Description
-                                className={ multilineDescription ? "multiline" : "" }
-                                data-testid={ `${ testId }-description` }
-                            >
-                                { description }
-                            </Card.Description>
+                        { description && (
+                            <Tooltip
+                                disabled={ !showTooltips }
+                                content={ description }
+                                trigger={ (
+                                    <Card.Description
+                                        className={ multilineDescription ? "multiline" : "" }
+                                        data-testid={ `${ testId }-description` }
+                                    >
+                                        { description }
+                                    </Card.Description>
+                                ) }
+                            />
                         ) }
-                    />
-                ) }
-            </Card.Content>
+                    </Card.Content>
+                )
+            }
         </Card>
     );
 };
@@ -193,6 +202,7 @@ SelectionCard.defaultProps = {
     imageSize: "tiny",
     inline: false,
     onClick: () => null,
+    showText: true,
     showTooltips: false,
     size: "default",
     textAlign: "center"
