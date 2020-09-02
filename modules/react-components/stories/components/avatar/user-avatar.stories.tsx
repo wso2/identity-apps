@@ -17,10 +17,10 @@
  *
  */
 
-import { boolean, radios, select, text } from "@storybook/addon-knobs";
 import { action } from "@storybook/addon-actions";
-import React, { ReactElement } from "react";
+import { boolean, radios, select, text } from "@storybook/addon-knobs";
 import { UIConstants } from "@wso2is/core/constants";
+import React, { ReactElement } from "react";
 import { meta } from "./user-avatar.stories.meta";
 import { UserAvatar } from "../../../src";
 
@@ -232,6 +232,7 @@ UserAvatarPlaceholder.story = {
  */
 export const EditableUserAvatar = (): ReactElement => (
     <UserAvatar
+        editable
         spaced="right"
         size="tiny"
         profileInfo={ {
@@ -243,8 +244,8 @@ export const EditableUserAvatar = (): ReactElement => (
             profileUrl: "https://avatars3.githubusercontent.com/u/25959096?s=460&v=4",
             userName: "brion"
         } }
-        isEditable={ true }
-        onEditAvatarClicked={ action("Edit avatar button clicked") }
+        onClick={ action("Clicked on Avatar") }
+        onEditIconClick={ action("Clicked on Avatar Edit Icon") }
     />
 );
 

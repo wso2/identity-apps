@@ -190,9 +190,7 @@ UserAvatar.defaultProps = {
     "data-testid": "user-avatar",
     defaultIcon: DummyUser,
     gravatarInfoPopoverText: null,
-    isEditable: false,
     name: null,
-    onEditAvatarClicked: () => null,
     profileInfo: null,
     showGravatarLabel: false
 };

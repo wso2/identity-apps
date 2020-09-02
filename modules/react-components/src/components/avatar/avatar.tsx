@@ -40,6 +40,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
      */
     defaultIcon?: any;
     /**
+     * If the avatar is editable or not.
+     */
+    editable?: boolean;
+    /**
      * Edit icon.
      */
     editIcon?: GenericIconProps["icon"];
@@ -59,10 +63,6 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
      * Color of the avatar initials.
      */
     initialsColor?: "white" | "primary";
-    /**
-     * If the avatar is editable or not.
-     */
-    isEditable?: boolean;
     /**
      * If the avatar is in a loading state.
      */
@@ -149,13 +149,13 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         children,
         className,
         defaultIcon,
+        editable,
         editIcon,
         editIconSize,
         image,
         initialsColor,
         inline,
         isLoading,
-        isEditable,
         label,
         name,
         onEditIconClick,
@@ -189,6 +189,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
 
     const imgElementClasses = classNames(AVATAR_MODULE_CSS_CLASS,
         {
+            "hoverable": onClick,
             [ `initials-color-${ initialsColor }` ]: initialsColor,
             relaxed,
             [ `${ size }` ]: size, // Size is used as a class to support the custom size "little"
@@ -241,7 +242,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
      * @return {ReactElement}
      */
     const renderEditBubble = (): ReactElement => (
-        isEditable && (
+        editable && (
             <div className="edit-icon-container">
                 <GenericIcon
                     link
