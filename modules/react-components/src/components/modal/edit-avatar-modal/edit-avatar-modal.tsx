@@ -283,38 +283,42 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             <Modal.Content>
                 <Form>
                     <Grid>
-                        <Grid.Row>
-                            <Grid.Column width={ 16 }>
-                                <div className="avatar-from-system">
-                                    <div className="mb-3">
-                                        <Form.Field>
-                                            <Checkbox
-                                                radio
-                                                value={ AvatarTypes.SYSTEM_GENERATED }
-                                                label="System generated avatar"
-                                                checked={ selectedAvatarType === AvatarTypes.SYSTEM_GENERATED }
-                                                onChange={ handleSelectedAvatarTypeChange }
-                                            />
-                                        </Form.Field>
-                                    </div>
-                                    <Card.Group className="avatar-from-system-card-group">
-                                        <SelectionCard
-                                            id={ SystemGeneratedAvatars.get("Initials") }
-                                            size="x100"
-                                            header="Initials"
-                                            image={
-                                                <UserAvatar
-                                                    size="little"
-                                                    name={ name }
+                        {
+                            name && (
+                                <Grid.Row>
+                                    <Grid.Column width={ 16 }>
+                                        <div className="avatar-from-system">
+                                            <div className="mb-3">
+                                                <Form.Field>
+                                                    <Checkbox
+                                                        radio
+                                                        value={ AvatarTypes.SYSTEM_GENERATED }
+                                                        label="System generated avatar"
+                                                        checked={ selectedAvatarType === AvatarTypes.SYSTEM_GENERATED }
+                                                        onChange={ handleSelectedAvatarTypeChange }
+                                                    />
+                                                </Form.Field>
+                                            </div>
+                                            <Card.Group className="avatar-from-system-card-group">
+                                                <SelectionCard
+                                                    id={ SystemGeneratedAvatars.get("Initials") }
+                                                    size="x100"
+                                                    header="Initials"
+                                                    image={
+                                                        <UserAvatar
+                                                            size="little"
+                                                            name={ name }
+                                                        />
+                                                    }
+                                                    selected={ outputURL === SystemGeneratedAvatars.get("Initials") }
+                                                    onClick={ handleSystemGeneratedAvatarChange }
                                                 />
-                                            }
-                                            selected={ outputURL === SystemGeneratedAvatars.get("Initials") }
-                                            onClick={ handleSystemGeneratedAvatarChange }
-                                        />
-                                    </Card.Group>
-                                </div>
-                            </Grid.Column>
-                        </Grid.Row>
+                                            </Card.Group>
+                                        </div>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                         {
                             selectedGravatarEmail && (
                                 <Grid.Row>
@@ -379,7 +383,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                             ) 
                         }
                         <Grid.Row>
-                            <Grid.Column width={ 8 }>
+                            <Grid.Column computer={ 8 } tablet={ 10 } mobile={ 16 }>
                                 <div className="avatar-from-url">
                                     <div className="mb-3">
                                         <Form.Field>
