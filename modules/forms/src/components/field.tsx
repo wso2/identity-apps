@@ -18,7 +18,7 @@
 
 import classNames from "classnames";
 import React from "react";
-import { Button, Divider, Form, Radio } from "semantic-ui-react";
+import { Button, Divider, Form, Icon, Radio } from "semantic-ui-react";
 import { Password } from "./password";
 import { QueryParameters } from "./query-parameters";
 import {
@@ -357,6 +357,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     type={ inputField.type }
                     disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
+                    {inputField.icon && <Icon name={ inputField.icon }/>}
                     { inputField.value }
                 </Button>
             );
@@ -369,6 +370,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     onClick={ handleReset }
                     disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
+                    { inputField.icon && <Icon name={ inputField.icon } /> }
                     { inputField.value }
                 </Button>
             );
@@ -384,6 +386,7 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     } }
                     disabled={ inputField.disabled ? inputField.disabled(form) : false }
                 >
+                    { inputField.icon && <Icon name={ inputField.icon } /> }
                     { inputField.value }
                 </Button>
             );

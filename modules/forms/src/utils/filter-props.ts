@@ -47,7 +47,8 @@ export const filterPassedProps = (props: any): any => {
     delete props.wrapper;
     delete props.wrapperProps;
     delete props.hidden;
-	delete props.displayErrorOn;
-	
+    delete props.displayErrorOn;
+    delete props.icon;
+
     return props;
 };
