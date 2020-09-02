@@ -208,6 +208,7 @@ export const emptyProfileInfo = (): ProfileInfoInterface => ({
  */
 export type GravatarFallbackTypes =
     "404"
+    | "default"
     | "mp"
     | "identicon"
     | "monsterid"
