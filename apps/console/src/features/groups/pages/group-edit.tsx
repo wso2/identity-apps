@@ -19,7 +19,8 @@
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AppConstants, SharedUserStoreUtils, history } from "../../core";
+import { useSelector } from "react-redux";
+import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { getGroupById } from "../api";
 import { EditGroup } from "../components";
 import { GroupsInterface } from "../models";
@@ -27,6 +28,8 @@ import { GroupsInterface } from "../models";
 const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const { t } = useTranslation();
+
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
 
     const [ roleId, setGroupId ] = useState<string>(undefined);
     const [ group, setGroup ] = useState<GroupsInterface>();
@@ -96,6 +99,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
                 group={ group }
                 groupId={ roleId }
                 onGroupUpdate={ onGroupUpdate }
+                featureConfig={ featureConfig }
             />
         </PageLayout>
     );

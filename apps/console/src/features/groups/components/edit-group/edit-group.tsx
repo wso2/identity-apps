@@ -70,6 +70,8 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const { t } = useTranslation();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
 
@@ -88,49 +90,59 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
         }
     }, [ group, readOnlyUserStores ]);
 
-    const panes = () => ([
-        {
-            menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <BasicRoleDetails
-                        data-testid="group-mgt-edit-group-basic"
-                        isGroup={ true }
-                        roleObject={ group }
-                        onRoleUpdate={ onGroupUpdate }
-                        isReadOnly={ isReadOnly }
-                    />
-                </ResourceTab.Pane>
-            )
-        },{
-            menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <GroupUsersList
-                        data-testid="group-mgt-edit-group-users"
-                        isGroup={ true }
-                        group={ group }
-                        onGroupUpdate={ onGroupUpdate }
-                        isReadOnly={ isReadOnly }
-                    />
-                </ResourceTab.Pane>
-            )
-        },{
-            menuItem: t("adminPortal:components.roles.edit.menuItems.roles"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <GroupRolesList
-                        data-testid="group-mgt-edit-group-roles"
-                        group={ group }
-                        onGroupUpdate={ onGroupUpdate }
-                        isReadOnly={ isReadOnly }
-                    />
-                </ResourceTab.Pane>
-            )
+    const resolveResourcePanes = () => {
+        const panes = [
+            {
+                menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <BasicRoleDetails
+                            data-testid="group-mgt-edit-group-basic"
+                            isGroup={ true }
+                            roleObject={ group }
+                            onRoleUpdate={ onGroupUpdate }
+                            isReadOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },{
+                menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <GroupUsersList
+                            data-testid="group-mgt-edit-group-users"
+                            isGroup={ true }
+                            group={ group }
+                            onGroupUpdate={ onGroupUpdate }
+                            isReadOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
+            }
+        ];
+
+        if (isGroupAndRoleSeparationEnabled) {
+            panes.push(
+                {
+                    menuItem: t("adminPortal:components.roles.edit.menuItems.roles"),
+                    render: () => (
+                        <ResourceTab.Pane controlledSegmentation attached={ false }>
+                            <GroupRolesList
+                                data-testid="group-mgt-edit-group-roles"
+                                group={ group }
+                                onGroupUpdate={ onGroupUpdate }
+                                isReadOnly={ isReadOnly }
+                            />
+                        </ResourceTab.Pane>
+                    )
+                }
+            );
         }
-    ]);
+
+        return panes;
+    };
 
     return (
-        <ResourceTab panes={ panes() } />
+        <ResourceTab panes={ resolveResourcePanes() } />
     );
 };
