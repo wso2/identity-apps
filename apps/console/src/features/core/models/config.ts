@@ -142,6 +142,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     IDPResourceEndpointsInterface,
     ScopesResourceEndpointsInterface {
 
+    CORSOrigins: string;
     documentationContent: string;
     documentationStructure: string;
     // TODO: Remove this endpoint and use ID token to get the details
