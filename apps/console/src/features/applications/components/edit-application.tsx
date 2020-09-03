@@ -127,9 +127,28 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 response.map((origin) => {
                     allowedCORSOrigins.push(origin.url);
                 });
-            });
+                setAllowedOrigins(allowedCORSOrigins);
+            })
+            .catch((error) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins." +
+                            "error.message")
+                    }));
 
-        setAllowedOrigins(allowedCORSOrigins);
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins." +
+                        "genericError.message")
+                }));
+            });
     }, [ isAllowedOriginsUpdated ]);
 
     useEffect(() => {

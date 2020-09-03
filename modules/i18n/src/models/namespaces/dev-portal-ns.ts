@@ -635,6 +635,7 @@ export interface DevPortalNS {
                 deleteProtocolConfig: Notification;
                 duplicateAuthenticationStep: Notification;
                 emptyAuthenticationStep: Notification;
+                fetchAllowedCORSOrigins: Notification;
                 fetchApplication: Notification;
                 fetchApplications: Notification;
                 fetchCustomInboundProtocols: Notification;

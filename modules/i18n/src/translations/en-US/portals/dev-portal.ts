@@ -1484,6 +1484,20 @@ export const devPortal: DevPortalNS = {
                         message: "Update error"
                     }
                 },
+                fetchAllowedCORSOrigins: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve allowed CORS Origins.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved allowed CORS Origins.",
+                        message: "Retrieval successful"
+                    }
+                },
                 fetchApplication: {
                     error: {
                         description: "{{description}}",

@@ -24,7 +24,7 @@ import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid }  from "semantic-ui-react";
+import { Grid } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../models";
 
 /**
