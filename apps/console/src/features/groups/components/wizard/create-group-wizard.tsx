@@ -504,15 +504,16 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentStep < WIZARD_STEPS.length - 1 && (
-                                <>
-                                    <PrimaryButton
-                                        floated="right"
-                                        onClick={ changeStepToNext }
-                                        data-testid={ `${ testId }-next-button` }
-                                    >
-                                        { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
-                                        <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
-                                    </PrimaryButton>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ changeStepToNext }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
+                                    { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
+                                    <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
+                                </PrimaryButton>
+                            ) }
+                            { currentStep === 0 && (
                                     <Button
                                         basic
                                         color="orange"
@@ -522,7 +523,6 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                     >
                                         { t("adminPortal:components.roles.addRoleWizard.buttons.finish") }
                                     </Button>
-                                </>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
                                 <PrimaryButton

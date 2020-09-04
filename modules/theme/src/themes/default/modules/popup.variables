@@ -17,3 +17,9 @@
 @dataTableColumnSelectorPopupHeadingFontWeight: 500;
 @dataTableColumnSelectorPopupHeadingContainerBorderBottom: @defaultBorderWidth solid @borderColor;
 @dataTableColumnSelectorPopupHeadingContainerBackground: @offWhite;
+
+/*-------------------------------
+        CORS Details Popup
+--------------------------------*/
+
+@corsDetailsPopupDividerMargin: 1em 0 0 0;

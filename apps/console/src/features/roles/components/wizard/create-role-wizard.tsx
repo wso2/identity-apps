@@ -22,7 +22,7 @@ import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AssignGroupsUsers } from "./assign-groups-users";
 import { RoleBasics } from "./role-basics";
@@ -30,6 +30,7 @@ import { PermissionList } from "./role-permission";
 import { CreateRoleSummary } from "./role-sumary";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
+import { AppState } from "../../../core/store";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
 import { createRole } from "../../api";
@@ -118,7 +119,9 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         if (groupList.length < 1) {
             getGroupList(null)
                 .then((response) => {
-                    setGroupList(response.data.Resources);
+                    const groups = response.data.Resources.filter(
+                        (group) => group.displayName.split("/").length === 1);
+                    setGroupList(groups);
                 });
         }
     }, []);
@@ -421,15 +424,16 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentStep < WIZARD_STEPS.length - 1 && (
-                                <>
-                                    <PrimaryButton
-                                        floated="right"
-                                        onClick={ changeStepToNext }
-                                        data-testid={ `${ testId }-next-button` }
-                                    >
-                                        { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
-                                        <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
-                                    </PrimaryButton>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ changeStepToNext }
+                                    data-testid={ `${ testId }-next-button` }
+                                >
+                                    { t("adminPortal:components.roles.addRoleWizard.buttons.next") }
+                                    <Icon name="arrow right" data-testid={ `${ testId }-next-button-icon` }/>
+                                </PrimaryButton>
+                            ) }
+                            { currentStep === 0 && (
                                     <Button
                                         basic
                                         color="orange"
@@ -439,7 +443,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                                     >
                                         { t("adminPortal:components.roles.addRoleWizard.buttons.finish") }
                                     </Button>
-                                </>
                             ) }
                             { currentStep === WIZARD_STEPS.length - 1 && (
                                 <PrimaryButton

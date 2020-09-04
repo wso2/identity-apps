@@ -1052,6 +1052,12 @@ export const userPortal: UserPortalNS = {
                     }
                 }
             },
+            messages: {
+                emailConfirmation: {
+                    content: "Please confirm the email address update in order to add the new email to your profile.",
+                    header: "Confirmation pending!"
+                }
+            },
             notifications: {
                 getProfileInfo: {
                     error: {
@@ -1184,6 +1190,15 @@ export const userPortal: UserPortalNS = {
                     }
                 }
             }
+        }
+    },
+    modals: {
+        sessionTimeoutModal: {
+            description: "You will be logged out of the current session due to inactivity." +
+                "Please choose Stay logged in if you would like to continue the session.",
+            heading: "You will be logged out in <1>{{ time }}</1>.",
+            primaryButton: "Stay logged in",
+            secondaryButton: "Logout"
         }
     },
     pages: {

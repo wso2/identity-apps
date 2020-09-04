@@ -90,6 +90,14 @@
         
         .data-table-column-selector-popup-content {
             padding: @verticalPadding @horizontalPadding;
+/*-------------------------------
+        CORS Details Popup
+--------------------------------*/
+
+.ui.popup {
+    &.cors-details-popup {
+        .ui.divider {
+            margin: @corsDetailsPopupDividerMargin;
         }
     }
 }

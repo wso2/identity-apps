@@ -65,6 +65,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
     const dispatch = useDispatch();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isReadOnly, setReadOnly ] = useState<boolean>(false);
 
@@ -119,6 +121,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserRolesList
+                        isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
                         onAlertFired={ handleAlerts }
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }

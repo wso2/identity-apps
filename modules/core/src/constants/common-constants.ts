@@ -37,4 +37,11 @@ export class CommonConstants {
      * @default
      */
     public static readonly AXIOS_FETCH_REQUEST_ERROR_MESSAGE: string = "An error occurred while executing the request";
+
+    /**
+     * Key which will appear on the URL to denote session timeout state.
+     * This should be same as the key used in session management logic in `index.(jsp|html) files in portals.
+     * @type {string}
+     */
+    public static readonly SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY: string = "session_timeout_warning";
 }

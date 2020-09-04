@@ -68,7 +68,7 @@ export enum AlertLevels {
  */
 export interface RuntimeConfigInterface {
     /**
-     * Name of the application. ex: "User Portal".
+     * Name of the application. ex: "Console, My Account etc.".
      */
     applicationName?: string;
     /**
@@ -84,7 +84,7 @@ export interface RuntimeConfigInterface {
      */
     copyrightText?: string;
     /**
-     * Login callback URL. ex: "https://localhost:9000/user-portal/login".
+     * Login callback URL. ex: "https://localhost:9000/<PORTAL>/login".
      */
     loginCallbackUrl?: string;
     /**

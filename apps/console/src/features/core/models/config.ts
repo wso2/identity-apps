@@ -96,7 +96,7 @@ export interface DeploymentConfigInterface extends CommonDeploymentConfigInterfa
      */
     adminApp: ExternalAppConfigInterface;
     /**
-     * Configs of the user portal app.
+     * Configs of the myaccount app.
      */
     accountApp: ExternalAppConfigInterface;
     /**
@@ -142,6 +142,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     IDPResourceEndpointsInterface,
     ScopesResourceEndpointsInterface {
 
+    CORSOrigins: string;
     documentationContent: string;
     documentationStructure: string;
     // TODO: Remove this endpoint and use ID token to get the details

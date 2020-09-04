@@ -746,13 +746,22 @@ export const devPortal: DevPortalNS = {
                 },
                 inboundOIDC: {
                     fields: {
+                        allowedOrigins: {
+                            hint: "Allowed Origins are URLs that will be allowed to make requests from cross " +
+                                "origins to WSO2 Identity Server APIs",
+                            label: "Allowed Origins",
+                            placeholder: "Enter allowed origins",
+                            validations: {
+                                empty: "Please add a valid origin."
+                            }
+                        },
                         callBackUrls: {
                             hint: "After the authentication, we will only redirect to the above redirect URLs " +
                                 "and you can specify multiple URLs",
                             label: "Redirect URLs",
                             placeholder: "Enter redirect URLs",
                             validations: {
-                                empty: "Please add valid URL."
+                                empty: "Please add a valid URL."
                             }
                         },
                         clientID: {
@@ -1473,6 +1482,20 @@ export const devPortal: DevPortalNS = {
                         description: "There is an empty authentication step. Please remove it or add authenticators " +
                             "to proceed.",
                         message: "Update error"
+                    }
+                },
+                fetchAllowedCORSOrigins: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve allowed CORS Origins.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved allowed CORS Origins.",
+                        message: "Retrieval successful"
                     }
                 },
                 fetchApplication: {
@@ -3085,6 +3108,12 @@ export const devPortal: DevPortalNS = {
             applicationEdit: "Application Edit",
             applicationTemplates: "Application Templates",
             applications: "Applications",
+            categories: {
+                application: "Applications",
+                general: "General",
+                gettingStarted: "Getting Started",
+                identityProviders: "Identity Providers"
+            },
             customize: "Customize",
             identityProviderEdit: "Identity Providers Edit",
             identityProviderTemplates: "Identity Provider Templates",
@@ -3120,6 +3149,33 @@ export const devPortal: DevPortalNS = {
                 }
             },
             searchPlaceholder: "Search {{type}}"
+        },
+        URLInput: {
+            withLabel: {
+                negative: {
+                    content: "The origin of the redirect URL {{url}} is not allowed to make CORS requests to WSO2 " +
+                        "Identity Server APIs.",
+                    detailedContent: {
+                        0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also prevent " +
+                            "legitimate requests from known",
+                        1: "Therefore enabling CORS for this origin will allow you to access Identity Server APIs " +
+                            "from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
+                    },
+                    header: "CORS Not Allowed",
+                    leftAction: "Allow"
+                },
+                positive: {
+                    content: "The origin of the redirect URL {{url}} is allowed to make CORS requests to WSO2 " +
+                        "Identity Server APIs.",
+                    detailedContent: {
+                        0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also prevent " +
+                            "legitimate requests from known",
+                        1: "Therefore enabling CORS for this origin will allow you to access Identity Server APIs " +
+                            "from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
+                    },
+                    header: "CORS is Allowed"
+                }
+            }
         }
     },
     notifications: {
