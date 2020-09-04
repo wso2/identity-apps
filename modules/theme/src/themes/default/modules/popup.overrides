@@ -91,6 +91,7 @@
         .data-table-column-selector-popup-content {
             padding: @verticalPadding @horizontalPadding;
         }
+    }
 }
 
 /*-------------------------------
