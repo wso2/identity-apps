@@ -18,7 +18,7 @@
 
 import { DisplayCertificate, DistinguishedName, TestableComponentInterface } from "@wso2is/core/models";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, Fragment } from "react";
 import { Divider, Grid, Icon, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 
 /**
@@ -230,8 +230,8 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    issuerDN.map((attribute: DistinguishedName) => (
-                        <>
+                    issuerDN.map((attribute: DistinguishedName, index: number) => (
+                        <Fragment key={ index }>
                             <Grid.Row>
                                 <Grid.Column computer={ 4 } mobile={ 4 } tablet={ 4 }>
                                     <p className="certificate-field">
@@ -255,7 +255,7 @@ export const Certificate: FunctionComponent<CertificatePropsInterface> = (
                                     </p>
                                 </Grid.Column>
                             </Grid.Row>
-                        </>
+                        </Fragment>
                     ))
                 }
             </Grid>

@@ -165,7 +165,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             extensions={ [
                 {
                     component: (
-                        <Menu.Item>
+                        <Menu.Item key={ "feedback-button" }>
                             <ComponentPlaceholder section="feedback-button" type="component"/>
                         </Menu.Item>
                     ),

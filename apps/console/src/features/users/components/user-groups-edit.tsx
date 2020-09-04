@@ -657,9 +657,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         <>
             <Heading as="h4">
                 { t("adminPortal:components.user.updateUser.groups.editGroups.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.groups.editGroups.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("adminPortal:components.user.updateUser.groups.editGroups.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>
@@ -715,11 +715,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedGroups?.map((group) => {
+                                                    assignedGroups?.map((group, index: number) => {
                                                         const userGroup = group?.display?.split("/");
                                                         if (userGroup.length === 1) {
                                                             return (
-                                                                <Table.Row>
+                                                                <Table.Row key={ index }>
                                                                     <Table.Cell>
                                                                         <Label color="olive">Primary</Label>
                                                                     </Table.Cell>
@@ -751,9 +751,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             !isReadOnly && (
                                                 <PrimaryButton
                                                     data-testid="user-mgt-empty-groups-list-assign-group-button"
-                                                    icon="plus"
                                                     onClick={ handleOpenAddNewGroupModal }
                                                 >
+                                                    <Icon name="plus"/>
                                                     Assign Group
                                                 </PrimaryButton>
                                             )

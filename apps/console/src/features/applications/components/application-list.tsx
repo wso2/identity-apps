@@ -28,16 +28,16 @@ import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList,
-    ResourceListActionInterface
+    TableActionsInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, Label, ListItemProps } from "semantic-ui-react";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -64,6 +64,10 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
     TestableComponentInterface {
 
     /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
+    /**
      * Default list item limit.
      */
     defaultListItemLimit?: number;
@@ -78,7 +82,7 @@ interface ApplicationListPropsInterface extends SBACInterface<FeatureConfigInter
     /**
      * On list item select callback.
      */
-    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
+    onListItemClick?: (event: SyntheticEvent, app: ApplicationListItemInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -113,6 +117,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 ): ReactElement => {
 
     const {
+        advancedSearch,
         defaultListItemLimit,
         featureConfig,
         isLoading,
@@ -212,39 +217,37 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
     /**
      * Resolves list item actions based on the app config.
      *
-     * @param {ApplicationListItemInterface} app - Application derails.
-     *
-     * @return {ResourceListActionInterface[]} Resolved list actions.
+     * @return {TableActionsInterface[]} Resolved list actions.
      */
-    const resolveListActions = (app: ApplicationListItemInterface): ResourceListActionInterface[] => {
+    const resolveListActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
             return;
         }
 
-        const actions: ResourceListActionInterface[] = [
+        const actions: TableActionsInterface[] = [
             {
-                hidden: !isFeatureEnabled(
-                    featureConfig?.applications,
+                hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: "pencil alternate",
-                onClick: (): void => handleApplicationEdit(app.id),
-                popupText: t("common:edit"),
-                type: "button"
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, { value: app }: { value: ApplicationListItemInterface }): void => 
+                    handleApplicationEdit(app?.id),
+                popupText: (): string => t("common:edit"),
+                renderer: "semantic-icon"
             }
         ];
 
         actions.push({
-            hidden: !hasRequiredScopes(
+            hidden: ({ value: app}: { value: ApplicationListItemInterface }) => !hasRequiredScopes(
                 featureConfig?.applications,
                 featureConfig?.applications?.scopes?.delete, allowedScopes)
-                || ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(app.name),
-            icon: "trash alternate",
-            onClick: (): void => {
+                || ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(app?.name),
+            icon: (): SemanticICONS => "trash alternate",
+            onClick: (e: SyntheticEvent, { value: app }: { value: ApplicationListItemInterface }): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingApplication(app);
             },
-            popupText: t("common:delete"),
-            type: "button"
+            popupText: (): string => t("common:delete"),
+            renderer: "semantic-icon"
         });
 
         return actions;
@@ -304,23 +307,34 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     return (
         <>
-            <ResourceList
+            <DataTable<ApplicationListItemInterface>
                 className="applications-list"
                 isLoading={ isLoading || isApplicationTemplateRequestLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                selection={ selection }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
-                data-testid={ testId }
-            >
-                {
-                    list?.applications && list.applications instanceof Array && list.applications.length > 0
-                        ? list.applications.map((app: ApplicationListItemInterface, index: number) => {
-
+                actions={ resolveListActions() }
+                columns={ [
+                    {
+                        allowToggleVisibility: false,
+                        dataIndex: "name",
+                        id: "name",
+                        key: "name",
+                        title: t("common:name")
+                    },
+                    {
+                        allowToggleVisibility: false,
+                        dataIndex: "action",
+                        id: "actions",
+                        key: "actions",
+                        textAlign: "right",
+                        title: t("common:actions")
+                    }
+                ] }
+                data={
+                    list?.applications && Array.isArray(list.applications) && list.applications.length > 0
+                        ? list?.applications?.map((app: ApplicationListItemInterface) => {
                             // TODO: Get the support from listing API to retrieve the templateId.
                             const template = applicationTemplates
                                 && applicationTemplates instanceof Array
@@ -329,67 +343,67 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
                             // TODO Remove this check and move the logic to backend.
                             if ("wso2carbon-local-sp" !== app.name) {
-                                return (
-                                    <ResourceList.Item
-                                        key={ index }
-                                        id={ app.id }
-                                        actions={ resolveListActions(app) }
-                                        actionsFloated="right"
-                                        avatar={
-                                            app.image
-                                                ? (
-                                                    <AppAvatar
-                                                        name={ app.name }
-                                                        image={ app.image }
-                                                        size="mini"
-                                                        floated="left"
-                                                        data-testid={ `${ testId }-item-image` }
-                                                    />
-                                                )
-                                                : (
-                                                    <AnimatedAvatar
-                                                        name={ app.name }
-                                                        size="mini"
-                                                        floated="left"
-                                                        data-testid={ `${ testId }-item-image` }
-                                                    />
-                                                )
-                                        }
-                                        itemHeader={ app.name }
-                                        itemDescription={ (
-                                            <>
-                                                {
-                                                    template && (
-                                                        <Label
+                                return {
+                                    id: app.id,
+                                    key: app.id,
+                                    name: (
+                                        <Header as="h6" image>
+                                            {
+                                                app.image
+                                                    ? (
+                                                        <AppAvatar
+                                                            name={ app.name }
+                                                            image={ app.image }
                                                             size="mini"
-                                                            className="compact spaced-right"
-                                                            data-testid={ `${ testId }-template-type` }
-                                                        >
-                                                            { template.name }
-                                                        </Label>
+                                                            data-testid={ `${ testId }-item-image` }
+                                                        />
                                                     )
-                                                }
-                                                { app.description }
-                                            </>
-                                        ) }
-                                        onClick={
-                                            (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
-                                                if (!selection) {
-                                                    return;
-                                                }
-
-                                                handleApplicationEdit(app.id);
-                                                onListItemClick(event, data);
+                                                    : (
+                                                        <AnimatedAvatar
+                                                            name={ app.name }
+                                                            size="mini"
+                                                            data-testid={ `${ testId }-item-image` }
+                                                        />
+                                                    )
                                             }
-                                        }
-                                        data-testid={ `${ testId }-item` }
-                                    />
-                                );
+                                            <Header.Content>
+                                                { app.name }
+                                                <Header.Subheader>
+                                                    {
+                                                        template && (
+                                                            <Label
+                                                                size="mini"
+                                                                className="compact spaced-right"
+                                                                data-testid={ `${ testId }-template-type` }
+                                                            >
+                                                                { template.name }
+                                                            </Label>
+                                                        )
+                                                    }
+                                                    { app.description }
+                                                </Header.Subheader>
+                                            </Header.Content>
+                                        </Header>
+                                    ),
+                                    value: app
+                                }
                             }
                         })
-                        : showPlaceholders()
+                        : []
                 }
-            </ResourceList>
+                externalSearch={ advancedSearch }
+                onRowClick={
+                    (e: SyntheticEvent, { value: app }: { value: ApplicationListItemInterface }): void => {
+                        handleApplicationEdit(app?.id);
+                        onListItemClick(e, app);
+                    }
+                }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !(isLoading || isApplicationTemplateRequestLoading) && (showPlaceholders() !== null) }
+                data-testid={ testId }
+            />
             {
                 deletingApplication && (
                     <ConfirmationModal
@@ -446,6 +460,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
  */
 ApplicationList.defaultProps = {
     "data-testid": "application-list",
-    selection: false,
+    selection: true,
     showListItemActions: true
 };

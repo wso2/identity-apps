@@ -257,7 +257,7 @@ export const TemplateCard: FunctionComponent<TemplateCardPropsInterface> = (
                                     </div>
                                 ) }
                                 <div className="tags" data-testid={ `${ testId }-tags` }>
-                                    { showTagIcon && <Icon name="tag" class="tag-icon" size="tiny" color="grey" /> }
+                                    { showTagIcon && <Icon name="tag" className="tag-icon" size="tiny" color="grey" /> }
                                     {
                                         (tags as Array<TemplateCardTagInterface|string>)
                                             .map((tag, index) => renderTag(tag, tagsAs, index))

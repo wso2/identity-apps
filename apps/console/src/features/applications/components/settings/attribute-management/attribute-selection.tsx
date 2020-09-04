@@ -654,7 +654,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         ] }
                                         action={
                                             !readOnly && (
-                                                <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
+                                                <PrimaryButton onClick={ handleOpenSelectionModal }>
+                                                    <Icon name="plus"/>
                                                     { t("devPortal:components.applications.placeholders" +
                                                         ".emptyAttributesList.action") }
                                                 </PrimaryButton>

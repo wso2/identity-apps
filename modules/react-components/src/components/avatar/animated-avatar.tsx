@@ -490,7 +490,6 @@ export const AnimatedAvatar: FunctionComponent<AnimatedAvatarPropsInterface> = (
 };
 
 AnimatedAvatar.defaultProps = {
-    floated: "left",
     size: "mini",
     verticalAlign: "middle"
 };

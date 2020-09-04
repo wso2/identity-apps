@@ -64,9 +64,9 @@ interface AddExternalClaimsPropsInterface extends TestableComponentInterface {
 
 /**
  * A component that lets you add an external claim.
- * 
+ *
  * @param {AddExternalClaimsPropsInterface} props - Props injected to the component.
- * 
+ *
  * @return {React.ReactElement} Component.
  */
 export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterface> = (
@@ -115,7 +115,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
     }, []);
 
     /**
-     * Remove local claims that have already been mapped. 
+     * Remove local claims that have already been mapped.
      */
     useEffect(() => {
         if (externalClaims && localClaims) {
@@ -136,7 +136,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
 
     /**
      * This removes the mapped local claims from the local claims list.
-     * 
+     *
      * @param {string} claimURI The claim URI of the mapped local claim.
      * @param {Claim[]} filteredLocalClaims - Filtered claims.
      *
@@ -180,7 +180,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                     || t("adminPortal:components.claims.external.notifications." +
                                     "addExternalAttribute.genericError.description"),
                                 level: AlertLevels.ERROR,
-                                message: error?.message 
+                                message: error?.message
                                     || t("adminPortal:components.claims.external.notifications." +
                                         "addExternalAttribute.genericError.message")
                             }
@@ -226,6 +226,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                         value: claim.claimURI
                                     }
                                 })
+                                ?? []
                             }
                             data-testid={ `${ testId }-form-local-claim-dropdown` }
                         />

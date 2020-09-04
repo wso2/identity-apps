@@ -737,9 +737,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         <>
             <Heading as="h4">
                 { t("adminPortal:components.user.updateUser.roles.editRoles.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>
@@ -874,8 +874,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                 <PrimaryButton
                                                     data-testid="group-mgt-group-empty-roles-list-assign-group-button"
                                                     onClick={ handleOpenAddNewGroupModal }
-                                                    icon="plus"
                                                 >
+                                                    <Icon name="plus"/>
                                                     Assign Role
                                                 </PrimaryButton>
                                             )

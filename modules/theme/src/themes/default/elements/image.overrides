@@ -271,6 +271,11 @@
                 &.bg-image {
                     background-size: @miniWidth @miniWidth;
                 }
+                
+                &.with-app-image img {
+                    width: @miniWidth;
+                    height: @miniWidth;
+                }
             }
             &.little {
                 width: @littleWidth;
@@ -283,6 +288,11 @@
                 &.bg-image {
                     background-size: @littleWidth @littleWidth;
                 }
+
+                &.with-app-image img {
+                    width: @littleWidth;
+                    height: @littleWidth;
+                }
             }
             &.tiny {
                 height: @tinyWidth;
@@ -293,6 +303,11 @@
                 }
                 &.bg-image {
                     background-size: @tinyWidth @tinyWidth;
+                }
+
+                &.with-app-image img {
+                    width: @tinyWidth;
+                    height: @tinyWidth;
                 }
             }
             &.small {
@@ -305,6 +320,11 @@
                 &.bg-image {
                     background-size: @smallWidth @smallWidth;
                 }
+
+                &.with-app-image img {
+                    width: @smallWidth;
+                    height: @smallWidth;
+                }
             }
             &.medium {
                 height: @mediumWidth;
@@ -315,6 +335,11 @@
                 }
                 &.bg-image {
                     background-size: @mediumWidth @mediumWidth;
+                }
+
+                &.with-app-image img {
+                    width: @mediumWidth;
+                    height: @mediumWidth;
                 }
             }
             &.large {
@@ -327,6 +352,11 @@
                 &.bg-image {
                     background-size: @largeWidth @largeWidth;
                 }
+
+                &.with-app-image img {
+                    width: @largeWidth;
+                    height: @largeWidth;
+                }
             }
             &.big {
                 height: @bigWidth;
@@ -337,6 +367,11 @@
                 }
                 &.bg-image {
                     background-size: @bigWidth @bigWidth;
+                }
+
+                &.with-app-image img {
+                    width: @bigWidth;
+                    height: @bigWidth;
                 }
             }
             &.huge {
@@ -349,6 +384,11 @@
                 &.bg-image {
                     background-size: @hugeWidth @hugeWidth;
                 }
+
+                &.with-app-image img {
+                    width: @hugeWidth;
+                    height: @hugeWidth;
+                }
             }
             &.massive {
                 height: @massiveWidth;
@@ -359,6 +399,11 @@
                 }
                 &.bg-image {
                     background-size: @massiveWidth @massiveWidth;
+                }
+
+                &.with-app-image img {
+                    width: @massiveWidth;
+                    height: @massiveWidth;
                 }
             }
             &.spaced-right {

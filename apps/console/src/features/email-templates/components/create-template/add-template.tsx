@@ -207,7 +207,8 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
                             <Form.Field>
                                 <label>Locale</label>
-                                <Dropdown
+                                <Field
+                                    type="dropdown"
                                     placeholder={
                                         t("adminPortal:components.emailLocale.forms.addLocale.fields.locale" +
                                             ".placeholder")
@@ -221,9 +222,15 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                                             ".validations.empty")
                                     }
                                     required={ true }
-                                    options={ localeList ? localeList : [] }
-                                    onChange={ (event: SyntheticEvent, data: DropdownProps) => {
-                                        setLocale(data.value.toString());
+                                    children={ localeList ? localeList.map(list => {
+                                        return {
+                                            key: list.key as string,
+                                            text: list.text as string,
+                                            value: list.value as string
+                                        }
+                                    }) : [] }
+                                    listen={ (values: Map<string, FormValue>) => {
+                                        setLocale(values.get("locale").toString());
                                     } }
                                     search
                                     value={ locale }
@@ -236,7 +243,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                         </Grid.Column>
                     </Grid.Row>
                 }
-                
+
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
                         <Field
