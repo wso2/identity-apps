@@ -41,7 +41,7 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.remoteRepoConfig
+        url: store.getState().config.endpoints.remoteFetchConfig
     };
     return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
@@ -60,7 +60,7 @@ export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
+        url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };
     return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
@@ -79,7 +79,7 @@ export const triggerConfigDeployment = (id: string): Promise<AxiosResponse> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id + "/trigger"
+        url: store.getState().config.endpoints.remoteFetchConfig + "/" + id + "/trigger"
     };
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
@@ -98,7 +98,7 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id + "/status"
+        url: store.getState().config.endpoints.remoteFetchConfig + "/" + id + "/status"
     };
     return httpClient<InterfaceConfigDetails>(requestConfig)
         .then((response: AxiosResponse<InterfaceConfigDetails>) => {
@@ -118,7 +118,7 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
         },
         data: configObj,
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.remoteRepoConfig
+        url: store.getState().config.endpoints.remoteFetchConfig
     };
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
@@ -138,7 +138,7 @@ export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetai
         },
         data: configObj,
         method: HttpMethods.PATCH,
-        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
+        url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
@@ -157,7 +157,7 @@ export const deleteRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
+        url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };
 
     return httpClient(requestConfig)

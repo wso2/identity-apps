@@ -16,5 +16,18 @@
  * under the License.
  */
 
-export * from "./remote-repository-config";
-export * from "./endpoints";
+import { RemoteFetchConfigResourcesEndpointsInterface } from "../models";
+
+/**
+ * Get the resource endpoints for the Email Template Management feature.
+ *
+ * @param {string} serverHost - Server Host.
+ * @return {RemoteFetchConfigResourcesEndpointsInterface}
+ */
+export const getRemoteFetchConfigResourceEndpoints = (
+    serverHost: string
+): RemoteFetchConfigResourcesEndpointsInterface => {
+    return {
+        remoteFetchConfig: `${ serverHost }/api/server/v1/remote-fetch`
+    }
+};

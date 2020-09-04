@@ -155,7 +155,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         order: 3,
         path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
         protected: true,
-        showOnSidePanel: true
+        showOnSidePanel: false
     },
     {
         category: "devPortal:components.sidePanel.categories.general",
@@ -447,6 +447,20 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         name: "adminPortal:components.sidePanel.emailTemplates",
         order: 7,
         path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
+        protected: true,
+        showOnSidePanel: true
+    },
+    {
+        category: "adminPortal:components.sidePanel.categories.configurations",
+        component: lazy(() => import("../../remote-repository-configuration/pages/remote-repository-config")),
+        exact: true,
+        icon: {
+            icon: SidePanelIcons.remoteFetch
+        },
+        id: "remoteFetchConfig",
+        name: "Remote Fetch Configuration",
+        order: 8,
+        path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
         protected: true,
         showOnSidePanel: true
     },
