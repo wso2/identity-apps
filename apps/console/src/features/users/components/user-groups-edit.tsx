@@ -715,7 +715,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedGroups?.map((group) => {
+                                                    assignedGroups?.map((group, index: number) => {
                                                         const userGroup = group?.display?.split("/");
                                                         if (userGroup.length === 1) {
                                                             return (
