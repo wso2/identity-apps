@@ -28,13 +28,13 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     ConfirmationModal,
-    ResourceList,
-    ResourceListActionInterface
+    DataTable,
+    TableActionsInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { ListItemProps } from "semantic-ui-react";
+import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
 import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../core";
 import { deleteOIDCScope } from "../api";
@@ -47,6 +47,10 @@ import { OIDCScopesListInterface } from "../models";
 interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
     TestableComponentInterface {
 
+    /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
@@ -61,8 +65,11 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
     onScopeDelete?: () => void;
     /**
      * On list item select callback.
+     *
+     * @param {React.SyntheticEvent} event - Click event.
+     * @param {OIDCScopesListInterface} scope - Selected Scope.
      */
-    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
+    onListItemClick?: (event: SyntheticEvent, scope: OIDCScopesListInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -97,6 +104,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        advancedSearch,
         defaultListItemLimit,
         featureConfig,
         isLoading,
@@ -175,38 +183,37 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     /**
      * Resolves list item actions based on the scope.
      *
-     * @param {OIDCScopesListInterface} scope.
-     *
-     * @return {ResourceListActionInterface[]} Resolved list actions.
+     * @return {TableActionsInterface[]} Resolved list actions.
      */
-    const resolveListActions = (scope: OIDCScopesListInterface): ResourceListActionInterface[] => {
+    const resolveListActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
             return;
         }
 
-        const actions: ResourceListActionInterface[] = [
+        const actions: TableActionsInterface[] = [
             {
-                hidden: !isFeatureEnabled(
+                hidden: (): boolean => !isFeatureEnabled(
                     featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: "pencil alternate",
-                onClick: (): void => handleOIDCScopesEdit(scope.name),
-                popupText: t("common:edit"),
-                type: "button"
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, { value: scope }: { value: OIDCScopesListInterface }): void =>
+                    handleOIDCScopesEdit(scope?.name),
+                popupText: (): string => t("common:edit"),
+                renderer: "semantic-icon"
             }
         ];
 
         actions.push({
-            hidden: !hasRequiredScopes(
+            hidden: (): boolean => !hasRequiredScopes(
                 featureConfig?.applications,
                 featureConfig?.applications?.scopes?.delete, allowedScopes),
-            icon: "trash alternate",
-            onClick: (): void => {
+            icon: (): SemanticICONS => "trash alternate",
+            onClick: (e: SyntheticEvent, { value: scope }: { value: OIDCScopesListInterface }): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingScope(scope);
             },
-            popupText: t("common:delete"),
-            type: "button"
+            popupText: (): string => t("common:delete"),
+            renderer: "semantic-icon"
         });
 
         return actions;
@@ -215,51 +222,74 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 
     return (
         <>
-            <ResourceList
-                className="applications-list"
+            <DataTable<OIDCScopesListInterface>
+                className="oidc-scopes-list"
+                extensions={ [
+                    {
+                        component: advancedSearch,
+                        position: "top"
+                    }
+                ] }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit,
                     imageType: "square"
                 } }
-                selection={ selection }
-                data-testid={ testId }
-            >
-                {
-                    list && list instanceof Array && list.length > 0
-                        ? list.map((scope, index: number) => {
-                                return (
-                                    <ResourceList.Item
-                                        key={ index }
-                                        id={ scope.name }
-                                        actions={ resolveListActions(scope) }
-                                        actionsFloated="right"
-                                        avatar={
-                                            <AnimatedAvatar
-                                                name={ scope.name }
-                                                size="mini"
-                                                floated="left"
-                                                data-testid={ `${ testId }-item-image` }
-                                            />
-                                        }
-                                        itemHeader={ scope.name }
-                                        onClick={
-                                            (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
-                                                if (!selection) {
-                                                    return;
-                                                }
-
-                                                handleOIDCScopesEdit(scope.name);
-                                                onListItemClick(event, data);
-                                            }
-                                        }
-                                        data-testid={ `${ testId }-item` }
-                                    />
-                                );
+                actions={ resolveListActions() }
+                columns={ [
+                    {
+                        allowToggleVisibility: false,
+                        dataIndex: "name",
+                        id: "name",
+                        key: "name",
+                        title: t("common:name")
+                    },
+                    {
+                        allowToggleVisibility: false,
+                        dataIndex: "action",
+                        id: "actions",
+                        key: "actions",
+                        textAlign: "right",
+                        title: t("common:actions")
+                    }
+                ] }
+                data={
+                    (list && Array.isArray(list) && list.length > 0)
+                        ? list.map((scope: OIDCScopesListInterface, index: number) => {
+                            return {
+                                id: scope.name,
+                                key: index,
+                                name: (
+                                    <Header as="h6" image>
+                                        <AnimatedAvatar
+                                            name={ scope.name }
+                                            size="mini"
+                                            floated="left"
+                                            data-testid={ `${ testId }-item-image` }
+                                        />
+                                        <Header.Content>
+                                            { scope.displayName || scope.name }
+                                            <Header.Subheader>
+                                                { scope.description }
+                                            </Header.Subheader>
+                                        </Header.Content>
+                                    </Header>
+                                ),
+                                value: scope
+                            }
                         })
-                        : null
+                        : []
                 }
-            </ResourceList>
+                onRowClick={
+                    (e: SyntheticEvent, { value: scope }: { value: OIDCScopesListInterface }): void => {
+                        handleOIDCScopesEdit(scope?.name);
+                        onListItemClick(e, scope);
+                    }
+                }
+                selectable={ selection }
+                showHeader={ false }
+                data-testid={ testId }
+            />
             {
                 deletingScope && (
                     <ConfirmationModal
@@ -316,6 +346,6 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
  */
 OIDCScopeList.defaultProps = {
     "data-testid": "scope-list",
-    selection: false,
+    selection: true,
     showListItemActions: true
 };

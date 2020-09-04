@@ -70,6 +70,31 @@
 }
 
 /*-------------------------------
+          Data Table
+--------------------------------*/
+
+.ui.popup {
+    &.data-table-column-selector-popup {
+        padding: @dataTableColumnSelectorPopupPadding;
+
+        .data-table-column-selector-popup-heading-container {
+            padding: @verticalPadding @horizontalPadding;
+            border-bottom: @dataTableColumnSelectorPopupHeadingContainerBorderBottom;
+            background: @dataTableColumnSelectorPopupHeadingContainerBackground;
+
+            .heading {
+                font-size: @dataTableColumnSelectorPopupHeadingFontSize;
+                font-weight: @dataTableColumnSelectorPopupHeadingFontWeight;
+            }
+        }
+        
+        .data-table-column-selector-popup-content {
+            padding: @verticalPadding @horizontalPadding;
+        }
+    }
+}
+
+/*-------------------------------
         CORS Details Popup
 --------------------------------*/
 

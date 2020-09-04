@@ -20,6 +20,7 @@ import { CommonNS } from "../../../models";
 
 export const common: CommonNS = {
     access: "ප්\u200Dරවේශය",
+    actions: "ක්‍රියා",
     active: "සක්\u200Dරීයයි",
     add: "එකතු කරන්න",
     addURL: "URL එක් කරන්න",
@@ -70,6 +71,7 @@ export const common: CommonNS = {
     initiator: "ආරම්භකයා",
     ipAddress: "ip ලිපිනය",
     lastAccessed: "අවසන් ප්\u200Dරවේශය",
+    lastModified: "අවසන් වෙනස් කළ දිනය",
     lastSeen: "අවසන් වරට",
     lastUpdatedOn: "අවසන් වරට යාවත්කාලීන කළ දිනය",
     loginTime: "පිවිසුම් කාලය",

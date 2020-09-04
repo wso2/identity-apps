@@ -26,3 +26,33 @@
         margin: 0.7em 1em;
     }
 }
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+.ui.table {
+    &.data-table {
+        &.transparent {
+            background: @dataTableTransparentBackground;
+            border: @dataTableTransparentBorder;
+        }
+        
+        &.selectable {
+            .data-table-body .data-table-row {
+                cursor: @dataTableSelectableRowCursor;
+            }
+        }
+        
+        .data-table-header {
+            th {
+                font-weight: @dataTableHeaderFontWeight;
+            }
+        }
+        .data-table-column-selector {
+            float: @dataTableColumnSelectorFloat;
+           
+            // Check popup.overrides for column selector popup styles.
+        }
+    }
+}

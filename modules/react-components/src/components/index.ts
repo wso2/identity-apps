@@ -47,6 +47,7 @@ export * from "./section";
 export * from "./side-panel";
 export * from "./step";
 export * from "./tab";
+export * from "./table";
 export * from "./typography";
 export * from "./theme";
 export * from "./tree-view";

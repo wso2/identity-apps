@@ -20,6 +20,7 @@ import { CommonNS } from "../../../models";
 
 export const common: CommonNS = {
     access: "அணுகல்",
+    actions: "செயல்கள்",
     active: "செயல்பாட்டில் உள்ள",
     add: "சேர்",
     addURL: "URL ஐச் சேர்க்கவும்",
@@ -70,6 +71,7 @@ export const common: CommonNS = {
     initiator: "கருத்தா",
     ipAddress: "ip முகவரி",
     lastAccessed: "இறுதி அணுகல்",
+    lastModified: "கடைசியாக மாற்றியமைக்கப்பட்டது",
     lastSeen: "இறுதி நுழைவு",
     lastUpdatedOn: "கடைசியாக புதுப்பிக்கப்பட்ட தேதி",
     loginTime: "நுழைந்த நேரம்",
