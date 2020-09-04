@@ -33,6 +33,7 @@ import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.OAuthUtil;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
+import org.wso2.carbon.identity.oauth2.OAuth2Constants;
 import org.wso2.carbon.registry.core.exceptions.RegistryException;
 import org.wso2.carbon.user.core.UserRealm;
 import org.wso2.carbon.user.core.UserStoreException;
@@ -49,7 +50,6 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
-import static org.wso2.identity.apps.common.util.AppPortalConstants.TOKEN_BINDING_TYPE_COOKIE;
 
 /**
  * App portal utils.
@@ -93,6 +93,8 @@ public class AppPortalUtils {
         }
         oAuthConsumerAppDTO.setPkceMandatory(true);
         oAuthConsumerAppDTO.setTokenBindingType(bindingType);
+        oAuthConsumerAppDTO.setTokenBindingValidationEnabled(true);
+        oAuthConsumerAppDTO.setTokenRevocationWithIDPSessionTerminationEnabled(true);
 
         try {
             PrivilegedCarbonContext.startTenantFlow();
@@ -212,8 +214,8 @@ public class AppPortalUtils {
                 }
                 try {
                     AppPortalUtils.createOAuth2Application(appPortal.getName(), appPortal.getPath(), consumerKey,
-                            consumerSecret, adminUsername, tenantId, tenantDomain, TOKEN_BINDING_TYPE_COOKIE,
-                            grantTypes);
+                            consumerSecret, adminUsername, tenantId, tenantDomain,
+                            OAuth2Constants.TokenBinderType.SSO_SESSION_BASED_TOKEN_BINDER, grantTypes);
                 } catch (IdentityOAuthAdminException e) {
                     if ("Error when adding the application. An application with the same name already exists."
                             .equals(e.getMessage())) {

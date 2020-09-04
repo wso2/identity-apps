@@ -30,6 +30,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, Input, InputOnChangeData, Label } from "semantic-ui-react"
 import { AppConstants, history } from "../../../core";
+import { updateGroupDetails } from "../../../groups/api";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
 import { deleteRoleById, updateRole } from "../../api";
 import { PatchRoleDataInterface } from "../../models";
@@ -54,6 +55,10 @@ interface BasicRoleProps extends TestableComponentInterface {
      * Show if the user is read only.
      */
     isReadOnly?: boolean;
+    /**
+     * Enable roles and groups separation.
+     */
+    isGroupAndRoleSeparationEnabled?: boolean;
 }
 
 /**
@@ -70,6 +75,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         onRoleUpdate,
         isGroup,
         isReadOnly,
+        isGroupAndRoleSeparationEnabled,
         [ "data-testid" ]: testId
     } = props;
 
@@ -174,21 +180,39 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             }]
         };
 
-        updateRole(roleObject.id, roleData)
-            .then(() => {
-                onRoleUpdate();
-                handleAlerts({
-                    description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.roles.notifications.updateRole.success.message")
-                });
-            }).catch(() => {
+        if (isGroup || isGroupAndRoleSeparationEnabled) {
+            updateGroupDetails(roleObject.id, roleData)
+                .then(() => {
+                    onRoleUpdate();
+                    handleAlerts({
+                        description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.roles.notifications.updateRole.success.message")
+                    });
+                }).catch(() => {
                 handleAlerts({
                     description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
                     message: t("adminPortal:components.roles.notifications.updateRole.error.message")
                 });
             });
+        } else {
+            updateRole(roleObject.id, roleData)
+                .then(() => {
+                    onRoleUpdate();
+                    handleAlerts({
+                        description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.roles.notifications.updateRole.success.message")
+                    });
+                }).catch(() => {
+                handleAlerts({
+                    description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.roles.notifications.updateRole.error.message")
+                });
+            });
+        }
     };
 
     return (

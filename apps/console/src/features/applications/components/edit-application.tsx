@@ -34,7 +34,7 @@ import {
   SignOnMethods
 } from "./settings";
 import { ComponentExtensionPlaceholder } from "../../../extensions";
-import { AppState, FeatureConfigInterface } from "../../core";
+import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
 import { getInboundProtocolConfig } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
@@ -114,6 +114,42 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [inboundProtocolConfig, setInboundProtocolConfig] = useState<any>(undefined);
     const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
     const [tabPaneExtensions, setTabPaneExtensions] = useState<any>(undefined);
+    const [ allowedOrigins, setAllowedOrigins ] = useState([]);
+    const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
+
+    /**
+     * Fetch the allowed origins list whenever there's an update.
+     */
+    useEffect(() => {
+        const allowedCORSOrigins = [];
+        getCORSOrigins()
+            .then((response: CORSOriginsListInterface[]) => {
+                response.map((origin) => {
+                    allowedCORSOrigins.push(origin.url);
+                });
+                setAllowedOrigins(allowedCORSOrigins);
+            })
+            .catch((error) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins." +
+                            "error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins." +
+                        "genericError.message")
+                }));
+            });
+    }, [ isAllowedOriginsUpdated ]);
 
     useEffect(() => {
         if (tabPaneExtensions) {
@@ -251,6 +287,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const ApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <AccessConfiguration
+                allowedOriginList={ allowedOrigins }
+                onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }
                 appId={ application.id }
                 appName={ application.name }
                 isLoading={ isLoading }

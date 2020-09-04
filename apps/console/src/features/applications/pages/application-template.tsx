@@ -65,7 +65,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     const { t } = useTranslation();
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
-        (state: AppState) => state.application.groupedTemplates);
+        (state: AppState) => state?.application?.groupedTemplates);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);

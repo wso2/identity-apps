@@ -65,3 +65,18 @@
         }
     }
 }
+
+.ui.circular.label {
+    &.micro {
+        min-width: @microCircularLabelMinWidth;
+        min-height: @microCircularLabelMinHeight;
+        &.spaced {
+            &-left {
+                margin-left: @microCircularLabelLeftMargin;
+            }
+            &-right {
+                margin-right: @microCircularLabelRightMargin;
+            }
+        }
+    }
+}

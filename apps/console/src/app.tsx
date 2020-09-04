@@ -26,7 +26,7 @@ import {
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ContentLoader, ThemeContext } from "@wso2is/react-components";
+import { ContentLoader, SessionManagementProvider, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
@@ -54,6 +54,7 @@ import {
  * @return {React.ReactElement}
  */
 export const App: FunctionComponent<{}> = (): ReactElement => {
+
     const { state } = useContext(ThemeContext);
 
     const dispatch = useDispatch();
@@ -122,6 +123,25 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         });
     }, [ config, loginInit ]);
 
+    /**
+     * Handles session timeout abort.
+     *
+     * @param {URL} url - Current URL.
+     */
+    const handleSessionTimeoutAbort = (url: URL): void => {
+        history.push({
+            pathname: (url.pathname).replace(config.deployment.appBaseName, ""),
+            search: url.search
+        });
+    };
+
+    /**
+     * Handles session logout.
+     */
+    const handleSessionLogout = (): void => {
+        history.push(config.deployment.appLogoutPath);
+    };
+
     return (
         <>
             {
@@ -131,57 +151,73 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                             <div className="container-fluid">
                                 <I18nextProvider i18n={ I18n.instance }>
                                     <Suspense fallback={ <ContentLoader dimmer/> }>
-                                        <Helmet>
-                                            <link
-                                                rel="shortcut icon"
-                                                href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
-                                                `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
-                                                `${ state.theme }/assets/images/favicon.ico` }
-                                            />
-                                            <link
-                                                href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
-                                                `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
-                                                `${ state.theme }/theme.min.css` }
-                                                rel="stylesheet"
-                                                type="text/css"
-                                            />
-                                            <style type="text/css">
-                                                { state.css }
-                                            </style>
-                                        </Helmet>
-                                        <Switch>
-                                            <Redirect
-                                                exact={ true }
-                                                path="/"
-                                                to={ config.deployment.appLoginPath }
-                                            />
-                                            {
-                                                baseRoutes.map((route, index) => {
-                                                    return (
-                                                        route.protected ?
-                                                            (
-                                                                <ProtectedRoute
-                                                                    component={ route.component }
-                                                                    path={ route.path }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                            :
-                                                            (
-                                                                <Route
-                                                                    path={ route.path }
-                                                                    render={ (props) =>
-                                                                        (<route.component { ...props } />)
-                                                                    }
-                                                                    key={ index }
-                                                                    exact={ route.exact }
-                                                                />
-                                                            )
-                                                    );
-                                                })
-                                            }
-                                        </Switch>
+                                        <SessionManagementProvider
+                                            onSessionTimeoutAbort={ handleSessionTimeoutAbort }
+                                            onSessionLogout={ handleSessionLogout }
+                                            modalOptions={ {
+                                                description: I18n.instance.t("console:common.modals" +
+                                                    ".sessionTimeoutModal.description"),
+                                                headingI18nKey: "console:common.modals.sessionTimeoutModal.heading",
+                                                primaryButtonText: I18n.instance.t("console:common.modals" +
+                                                    ".sessionTimeoutModal.primaryButton"),
+                                                secondaryButtonText: I18n.instance.t("console:common.modals" +
+                                                    ".sessionTimeoutModal.secondaryButton")
+                                            } }
+                                        >
+                                            <>
+                                                <Helmet>
+                                                    <link
+                                                        rel="shortcut icon"
+                                                        href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
+                                                        `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
+                                                        `${ state.theme }/assets/images/favicon.ico` }
+                                                    />
+                                                    <link
+                                                        href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
+                                                        `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
+                                                        `${ state.theme }/theme.min.css` }
+                                                        rel="stylesheet"
+                                                        type="text/css"
+                                                    />
+                                                    <style type="text/css">
+                                                        { state.css }
+                                                    </style>
+                                                </Helmet>
+                                                <Switch>
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path="/"
+                                                        to={ config.deployment.appLoginPath }
+                                                    />
+                                                    {
+                                                        baseRoutes.map((route, index) => {
+                                                            return (
+                                                                route.protected ?
+                                                                    (
+                                                                        <ProtectedRoute
+                                                                            component={ route.component }
+                                                                            path={ route.path }
+                                                                            key={ index }
+                                                                            exact={ route.exact }
+                                                                        />
+                                                                    )
+                                                                    :
+                                                                    (
+                                                                        <Route
+                                                                            path={ route.path }
+                                                                            render={ (props) =>
+                                                                                (<route.component { ...props } />)
+                                                                            }
+                                                                            key={ index }
+                                                                            exact={ route.exact }
+                                                                        />
+                                                                    )
+                                                            );
+                                                        })
+                                                    }
+                                                </Switch>
+                                            </>
+                                        </SessionManagementProvider>
                                     </Suspense>
                                 </I18nextProvider>
                             </div>

@@ -81,13 +81,13 @@ export interface DevPortalNS {
                 listingPage: {
                     title: string;
                     description: string;
-                },
+                };
                 editPage: {
                     title: string;
                     description: string;
                     backLink: string;
                 };
-            },
+            };
             createConfigForm: {
                 configName: {
                     label: string;
@@ -119,8 +119,8 @@ export interface DevPortalNS {
                 };
                 enableConfig: {
                     label: string;
-                }
-            }
+                };
+            };
             placeholders: {
                 emptyList: {
                     action: string;
@@ -133,11 +133,11 @@ export interface DevPortalNS {
                 };
                 emptyDetails: {
                     subtitles: {
-                        0: string,
-                        1: string
-                    },
-                    title: string
-                }
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
             };
             list: {
                 confirmations: {
@@ -145,12 +145,12 @@ export interface DevPortalNS {
                 };
             };
             notifications: {
-                deleteConfig: Notification,
-                editConfig: Notification,
-                triggerConfig: Notification,
-                createConfig: Notification,
-                getConfig: Notification,
-            }
+                deleteConfig: Notification;
+                editConfig: Notification;
+                triggerConfig: Notification;
+                createConfig: Notification;
+                getConfig: Notification;
+            };
         };
         applications: {
             addWizard: {
@@ -455,6 +455,7 @@ export interface DevPortalNS {
                 };
                 inboundOIDC: {
                     fields: {
+                        allowedOrigins: FormAttributes;
                         callBackUrls: FormAttributes;
                         clientID: FormAttributes;
                         clientSecret: FormAttributes;
@@ -634,6 +635,7 @@ export interface DevPortalNS {
                 deleteProtocolConfig: Notification;
                 duplicateAuthenticationStep: Notification;
                 emptyAuthenticationStep: Notification;
+                fetchAllowedCORSOrigins: Notification;
                 fetchApplication: Notification;
                 fetchApplications: Notification;
                 fetchCustomInboundProtocols: Notification;
@@ -1257,6 +1259,12 @@ export interface DevPortalNS {
             applicationEdit: string;
             applicationTemplates: string;
             applications: string;
+            categories: {
+                application: string;
+                gettingStarted: string;
+                identityProviders: string;
+                general: string;
+            };
             customize: string;
             identityProviderEdit: string;
             identityProviderTemplates: string;
@@ -1286,6 +1294,27 @@ export interface DevPortalNS {
                             selected: string;
                         };
                     };
+                };
+            };
+        };
+        URLInput: {
+            withLabel: {
+                positive: {
+                    header: string;
+                    content: string;
+                    detailedContent: {
+                        0: string;
+                        1: string;
+                    };
+                };
+                negative: {
+                    header: string;
+                    content: string;
+                    detailedContent: {
+                        0: string;
+                        1: string;
+                    };
+                    leftAction: string;
                 };
             };
         };
@@ -1319,9 +1348,9 @@ export interface DevPortalNS {
                 quickStart: {
                     title: string;
                 };
-            }
-        }
-    }
+            };
+        };
+    };
     placeholders: {
         404: Placeholder;
         accessDenied: Placeholder;

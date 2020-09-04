@@ -1,0 +1,199 @@
+{
+    "appBaseName": "{{ myaccount.app_base_name }}",
+    "clientID": "{{ myaccount.client_id }}",
+    "loginCallbackPath": "{{ myaccount.login_callback_path }}",
+    "logoutCallbackPath": "{{ myaccount.logout_callback_path }}",
+    "productVersion": "{{ product.version }}",
+    {% if myaccount.server_origin is defined %}
+    "serverOrigin": "{{ myaccount.server_origin }}",
+    {% endif %}
+    "routePaths": {
+        {% if myaccount.route_paths is defined %}
+        {% for path, value in myaccount.route_paths.items() %}
+            "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "session": {
+        {% if myaccount.session.params is defined %}
+            {% for param, value in myaccount.session.params.items() %}
+                "{{ param }}": {{ value }}{{ "," if not loop.last }}
+            {% endfor %}
+        {% endif %}
+    },
+    "ui": {
+        "announcements": [
+            {% if myaccount.ui.announcements is defined %}
+            {% for announcement in myaccount.ui.announcements %}
+            {
+            {% for key, value in announcement.items() %}
+            {% if value is number %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            }{{ "," if not loop.last }}
+            {% endfor %}
+            {% endif %}
+        ],
+        "appCopyright": "{{ myaccount.ui.app_copyright }}",
+        "appTitle": "{{ myaccount.ui.app_title }}",
+        "appName": "{{ myaccount.ui.app_name }}",
+        "appLogoPath": "{{ myaccount.ui.app_logo_path }}",
+        "authenticatorApp": {
+                {% if myaccount.authenticator_app_configs is defined %}
+                {% for key, value in myaccount.authenticator_app_configs.items() %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+                {% endfor %}
+                {% endif %}
+        },
+        "features": {
+            "applications": {
+                "disabledFeatures": [
+                    {% if myaccount.applications.disabled_features is defined %}
+                    {% for feature in applications.users.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.applications.enabled }},
+                "scopes": {
+                    {% if myaccount.applications.scopes is defined %}
+                    {% for operation, scopes in myaccount.applications.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "operations": {
+                "disabledFeatures": [
+                    {% if myaccount.operations.disabled_features is defined %}
+                    {% for feature in myaccount.operations.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.operations.enabled }},
+                "scopes": {
+                    {% if myaccount.operations.scopes is defined %}
+                    {% for operation, scopes in myaccount.operations.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "overview": {
+                "disabledFeatures": [
+                    {% if myaccount.overview.disabled_features is defined %}
+                    {% for feature in myaccount.overview.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.overview.enabled }},
+                "scopes": {
+                    {% if myaccount.overview.scopes is defined %}
+                    {% for operation, scopes in myaccount.overview.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "personalInfo": {
+                "disabledFeatures": [
+                    {% if myaccount.personal_info.disabled_features is defined %}
+                    {% for feature in myaccount.personal_info.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.personal_info.enabled }},
+                "scopes": {
+                    {% if myaccount.personal_info.scopes is defined %}
+                    {% for operation, scopes in myaccount.personal_info.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "security": {
+                "disabledFeatures": [
+                    {% if myaccount.security.disabled_features is defined %}
+                    {% for feature in myaccount.security.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ myaccount.security.enabled }},
+                "scopes": {
+                    {% if myaccount.security.scopes is defined %}
+                    {% for operation, scopes in myaccount.security.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            }
+        },
+        "productName": "{{ myaccount.ui.product_name }}",
+        "productVersionConfig": {
+            {% if console.product_version.configs.items() is defined %}
+            {% for key, value in console.product_version.configs.items() %}
+            {% if value is string %}
+                "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+            {% else %}
+                "{{ key }}": {{ value }}{{ "," if not loop.last }}
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+        },
+        "theme": {
+            "name": "{{ myaccount.theme }}"
+        }
+    }
+}

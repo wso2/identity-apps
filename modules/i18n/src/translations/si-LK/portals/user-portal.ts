@@ -1045,6 +1045,12 @@ export const userPortal: UserPortalNS = {
                     }
                 }
             },
+            messages: {
+                emailConfirmation: {
+                    content: "ඔබගේ පැතිකඩට නව විද්‍යුත් තැපෑල එක් කිරීම සඳහා කරුණාකර විද්‍යුත් තැපැල් ලිපින යාවත්කාලීන කිරීම තහවුරු කරන්න.",
+                    header: "තහවුරු කිරීම අපේක්ෂිතයි!"
+                }
+            },
             notifications: {
                 getProfileInfo: {
                     error: {
@@ -1176,6 +1182,15 @@ export const userPortal: UserPortalNS = {
                     }
                 }
             }
+        }
+    },
+    modals: {
+        sessionTimeoutModal: {
+            description: "අක්‍රියතාවය හේතුවෙන් ඔබ වත්මන් සැසියෙන් ඉවත් වනු ඇත. ඔබ සැසිය දිගටම කරගෙන යාමට කැමති " +
+                "නම් කරුණාකර රැඳී සිටින්න තෝරන්න.",
+            heading: "තත්පර <1>{{ time }}</1> කින් ඔබ ඉවත් වනු ඇත.",
+            primaryButton: "පුරනය වී සිටින්න",
+            secondaryButton: "වරන්න"
         }
     },
     pages: {

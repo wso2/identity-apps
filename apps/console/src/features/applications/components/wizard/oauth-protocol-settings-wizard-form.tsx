@@ -60,6 +60,14 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
      * Flag to show/hide callback URL.
      */
     showCallbackURL: boolean;
+    /**
+     * CORS allowed origin list for the tenant.
+     */
+    allowedOrigins?: string[];
+    /**
+     * Tenant domain
+     */
+    tenantDomain?: string;
 }
 
 /**
@@ -74,6 +82,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 ): ReactElement => {
 
     const {
+        allowedOrigins,
         fields,
         hideFieldHints,
         initialValues,
@@ -81,6 +90,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         onSubmit,
         templateValues,
         showCallbackURL,
+        tenantDomain,
         [ "data-testid" ]: testId
     } = props;
 
@@ -91,9 +101,12 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
     const [ showURLError, setShowURLError ] = useState(false);
-
     // TODO enable after fixing callbackURL.
     // const [showCallbackUrl, setShowCallbackUrl] = useState(false);
+
+    // Maintain the state if the user allowed the CORS for the
+    // origin of the configured callback URL(s).
+    const [ allowCORSUrls, setAllowCORSUrls ] = useState<string[]>([]);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -207,7 +220,22 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             };
         }
 
+        if (showCallbackURL || (!fields || fields.includes("callbackURLs"))) {
+            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
+        }
+
         return config;
+    };
+
+    /**
+     * The following function handles allowing CORS for a new origin.
+     *
+     * @param {string} url - Allowed origin
+     */
+    const handleAllowOrigin = (url: string): void => {
+        const allowedURLs = [ ...allowCORSUrls ];
+        allowedURLs.push(url);
+        setAllowCORSUrls(allowedURLs);
     };
 
     /**
@@ -233,6 +261,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     <Grid>
                         { !fields || fields.includes("callbackURLs") && (
                             <URLInput
+                                labelEnabled={ true }
+                                handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                                tenantDomain={ tenantDomain }
+                                allowedOrigins={ allowedOrigins }
                                 urlState={ callBackUrls }
                                 setURLState={ setCallBackUrls }
                                 labelName={
@@ -262,6 +294,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                 getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                     submitUrl = submitFunction;
                                 } }
+                                required={ true }
                             />
                         ) }
                         { !fields || fields.includes("publicClient") && (

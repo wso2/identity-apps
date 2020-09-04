@@ -133,7 +133,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
-        (state: AppState) => state.application.templates);
+        (state: AppState) => state?.application?.templates);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);

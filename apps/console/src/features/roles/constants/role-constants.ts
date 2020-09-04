@@ -20,3 +20,31 @@ export const APPLICATION_DOMAIN = "Application";
 export const INTERNAL_DOMAIN = "Internal";
 export const PRIMARY_DOMAIN = "Primary";
 export const ROLE_VIEW_PATH = "/roles/";
+
+/**
+ * Class containing role constants.
+ */
+export class RoleConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() { }
+
+    /**
+     * Set of keys used to enable/disable features.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly FEATURE_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("ROLE_CREATE", "roles.create")
+        .set("ROLE_UPDATE", "roles.update")
+        .set("ROLE_DELETE", "roles.delete")
+        .set("ROLE_READ", "roles.read")
+}

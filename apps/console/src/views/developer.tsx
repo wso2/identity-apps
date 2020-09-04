@@ -275,6 +275,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
             sidePanel={ (
                 <SidePanel
                     ordered
+                    categorized
                     caretIcon={ SidePanelMiscIcons.caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }
