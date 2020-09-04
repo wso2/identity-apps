@@ -32,6 +32,7 @@ interface RolePermissionDetailProps {
     roleObject: RolesInterface;
     isGroup: boolean;
     onRoleUpdate: () => void;
+    isReadOnly?: boolean;
 }
 
 /**
@@ -47,7 +48,8 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     const {
         roleObject,
         onRoleUpdate,
-        isGroup
+        isGroup,
+        isReadOnly
     } = props;
     
     const onPermissionUpdate = (updatedPerms: Permission[]) => {

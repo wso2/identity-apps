@@ -232,6 +232,7 @@
         "gravatarConfig": {
             "fallback": "404"
         },
+        "isGroupAndRoleSeparationEnabled": false,
         "productName": "Identity Server",
         "productVersionConfig": {
             "allowSnapshot": true,

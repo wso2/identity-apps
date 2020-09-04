@@ -17,7 +17,7 @@
  */
 
 /**
- * Class containing shared user store constants.
+ * Class containing groups constants.
  */
 export class GroupConstants {
 
