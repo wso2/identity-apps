@@ -90,6 +90,8 @@
         
         .data-table-column-selector-popup-content {
             padding: @verticalPadding @horizontalPadding;
+        }
+}
             
 /*-------------------------------
         CORS Details Popup
