@@ -40,6 +40,10 @@ export interface DataTableColumnSelector extends TestableComponentInterface {
      */
     columns: TableColumnInterface[];
     /**
+     * Trigger icon float.
+     */
+    floated?: GenericIconProps["floated"];
+    /**
      * Callback to inform the new set of visible columns.
      * @param {TableColumnInterface[]} columns - New columns.
      */
@@ -68,6 +72,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelector>
         columnSelectorHeader,
         columnSelectorWidth,
         columns,
+        floated,
         onColumnSelectionChange,
         showToggleDisallowedColumns,
         triggerIcon,
@@ -171,6 +176,7 @@ export const DataTableColumnSelector: FunctionComponent<DataTableColumnSelector>
                                 link
                                 hoverable
                                 transparent
+                                floated={ floated }
                                 icon={ triggerIcon }
                                 size="micro"
                             />
@@ -189,6 +195,7 @@ DataTableColumnSelector.defaultProps = {
     columnSelectorHeader: "Show/Hide Columns",
     columnSelectorWidth: 240,
     "data-testid": "data-table-column-selector",
+    floated: "right",
     showToggleDisallowedColumns: false,
     triggerIcon: ColumnIcon
 };

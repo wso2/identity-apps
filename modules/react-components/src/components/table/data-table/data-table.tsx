@@ -24,10 +24,12 @@ import React, { Fragment, ReactElement, ReactNode, SyntheticEvent, useEffect, us
 import {
     Dropdown,
     DropdownItemProps,
+    Grid,
     Header,
     Icon,
     Placeholder,
     Popup,
+    Responsive,
     SemanticICONS,
     SemanticWIDTHS,
     Table,
@@ -622,25 +624,67 @@ export const DataTable = <T extends object = {}>(
                                             <DataTable.HeaderCell
                                                 colSpan={ isColumnsValid(columns) && columns.length }
                                             >
-                                                {
-                                                    showSearch && (
-                                                        <div className="data-table-search">
-                                                            { externalSearch }
-                                                        </div>
-                                                    )
-                                                }
-                                                {
-                                                    showColumnSelector && isColumnsValid(columns) && (
-                                                        <DataTableColumnSelector
-                                                            columns={ columns }
-                                                            columnSelectorHeader={ columnSelectorHeader }
-                                                            columnSelectorWidth={ columnSelectorWidth }
-                                                            onColumnSelectionChange={ handleColumnSelectorChange }
-                                                            showToggleDisallowedColumns={ showToggleDisallowedColumns }
-                                                            triggerIcon={ columnSelectorTriggerIcon }
-                                                        />
-                                                    )
-                                                }
+                                                <Grid>
+                                                    <Grid.Row>
+                                                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
+                                                            {
+                                                                showSearch && (
+                                                                    <div className="data-table-search">
+                                                                        { externalSearch }
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        </Grid.Column>
+                                                        <Responsive
+                                                            as={ Grid.Column }
+                                                            minWidth={ Responsive.onlyMobile.maxWidth }
+                                                            mobile={ 16 } tablet={ 8 } computer={ 8 }
+                                                            textAlign="right"
+                                                        >
+                                                            {
+                                                                showColumnSelector && isColumnsValid(columns) && (
+                                                                    <DataTableColumnSelector
+                                                                        columns={ columns }
+                                                                        columnSelectorHeader={ columnSelectorHeader }
+                                                                        columnSelectorWidth={ columnSelectorWidth }
+                                                                        floated="right"
+                                                                        onColumnSelectionChange={
+                                                                            handleColumnSelectorChange
+                                                                        }
+                                                                        showToggleDisallowedColumns={
+                                                                            showToggleDisallowedColumns
+                                                                        }
+                                                                        triggerIcon={ columnSelectorTriggerIcon }
+                                                                    />
+                                                                )
+                                                            }
+                                                        </Responsive>
+                                                        <Responsive
+                                                            as={ Grid.Column }
+                                                            maxWidth={ Responsive.onlyMobile.maxWidth }
+                                                            mobile={ 16 } tablet={ 8 } computer={ 8 }
+                                                            textAlign="left"
+                                                        >
+                                                            {
+                                                                showColumnSelector && isColumnsValid(columns) && (
+                                                                    <DataTableColumnSelector
+                                                                        columns={ columns }
+                                                                        columnSelectorHeader={ columnSelectorHeader }
+                                                                        columnSelectorWidth={ columnSelectorWidth }
+                                                                        floated="left"
+                                                                        onColumnSelectionChange={
+                                                                            handleColumnSelectorChange
+                                                                        }
+                                                                        showToggleDisallowedColumns={
+                                                                            showToggleDisallowedColumns
+                                                                        }
+                                                                        triggerIcon={ columnSelectorTriggerIcon }
+                                                                    />
+                                                                )
+                                                            }
+                                                        </Responsive>
+                                                    </Grid.Row>
+                                                </Grid>
                                             </DataTable.HeaderCell>
                                         </DataTable.Row>
                                     </DataTable.Header>

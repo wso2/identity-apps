@@ -69,12 +69,16 @@
 @advancedSearchActiveSearchQueryBorder: 1px solid @borderColor;
 @advancedSearchActiveSearchQueryBorderTop: @defaultBorderWidth solid @lightBorderColor;
 @advancedSearchActiveSearchQueryWidth: @advancedSearchWidth;
+@advancedSearchQueryHintZIndex: 9999;
 
 @advancedSearchInputBackgroundColor: @lightInputBackground;
 
 @advancedSearchAddonButtonBorder: none;
 @advancedSearchAddonButtonBackgroundColor: @advancedSearchInputBackgroundColor;
 @advancedSearchAddonButtonActiveBackgroundColor: @advancedSearchInputBackgroundColor;
+
+// Mobile Responsive Variables
+@mobileAdvancedSearchActiveSearchQueryWidth: 274px;
 
 /*-------------------
        Alert
