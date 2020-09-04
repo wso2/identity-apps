@@ -266,7 +266,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const domainName = profileInfo?.get(schema.name)?.toString().split("/");
 
         return (
-            <Grid.Row columns={ 1 }>
+            <Grid.Row columns={ 1 } key={ key }>
                 <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                     {
                         schema.name === "userName" && domainName.length > 1 ? (

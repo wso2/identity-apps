@@ -58,7 +58,7 @@ type IDPEditPagePropsInterface = TestableComponentInterface
 
 /**
  * Identity Provider Edit page.
- * 
+ *
  * @param {IDPEditPagePropsInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
@@ -239,7 +239,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             } }
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 isLoading={ isIdentityProviderRequestLoading }

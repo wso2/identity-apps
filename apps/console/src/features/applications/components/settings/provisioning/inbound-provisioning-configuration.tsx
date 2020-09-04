@@ -77,7 +77,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
     const dispatch = useDispatch();
 
     const [ userStore, setUserStore ] = useState<SimpleUserStoreListItemInterface[]>([]);
-    
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
@@ -128,9 +128,9 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         <>
             <Heading as="h4">
                 { t("devPortal:components.applications.edit.sections.provisioning.inbound.heading") }
-                <Heading subHeading as="h6">
-                    { t("devPortal:components.applications.edit.sections.provisioning.inbound.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading as="h6">
+                { t("devPortal:components.applications.edit.sections.provisioning.inbound.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>

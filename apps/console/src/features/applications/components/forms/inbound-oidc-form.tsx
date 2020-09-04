@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
@@ -1060,12 +1060,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".logoutURLs.fields.back.placeholder")
                                     }
                                     type="text"
-                                    validationErrorMsg={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.validations.invalid")
-                                    }
-                                    validation={ (value: string) => {
-                                        return FormValidation.url(value);
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push((
+                                                t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                                    ".logoutURLs.fields.back.validations.invalid")
+                                            ))
+                                        }
                                     } }
                                     value={ initialValues.logout?.backChannelLogoutUrl }
                                     readOnly={ readOnly }
@@ -1091,12 +1093,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".logoutURLs.fields.front.placeholder")
                                     }
                                     type="text"
-                                    validationErrorMsg={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.front.validations.invalid")
-                                    }
-                                    validation={ (value: string) => {
-                                        return FormValidation.url(value);
+                                    validation={ (value: string, validation: Validation) => {
+                                        if (!FormValidation.url(value)) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push((
+                                                t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                                    ".logoutURLs.fields.front.validations.invalid")
+                                            ));
+                                        }
                                     } }
                                     value={ initialValues.logout?.frontChannelLogoutUrl }
                                     readOnly={ readOnly }

@@ -137,6 +137,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     style={ {
                         minWidth: "200px"
                     } }
+                    key={ stepIndex }
                     hoverable
                     disabled={
                         !(authenticator?.authenticators
