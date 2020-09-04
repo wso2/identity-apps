@@ -27,7 +27,7 @@ import {
 } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ContentLoader, ThemeContext } from "@wso2is/react-components";
+import { ContentLoader, SessionManagementProvider, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { ReactElement, Suspense, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
@@ -122,78 +122,113 @@ export const App = (): ReactElement => {
 
     }, [ config?.deployment?.tenant, userName ]);
 
+    /**
+     * Handles session timeout abort.
+     *
+     * @param {URL} url - Current URL.
+     */
+    const handleSessionTimeoutAbort = (url: URL): void => {
+        history.push({
+            pathname: (url.pathname).replace(config.deployment.appBaseName, ""),
+            search: url.search
+        });
+    };
+
+    /**
+     * Handles session logout.
+     */
+    const handleSessionLogout = (): void => {
+        history.push(config.deployment.appLogoutPath);
+    };
+
     return (
         <>
             {
                 (!_.isEmpty(config?.deployment) && !_.isEmpty(config?.endpoints))
-                        ? (
+                    ? (
                         <Router history={ history }>
                             <div className="container-fluid">
                                 <I18nextProvider i18n={ I18n.instance }>
                                     <Suspense fallback={ <ContentLoader dimmer/> }>
-                                        <Helmet>
-                                            <link
-                                                rel="shortcut icon"
-                                                href={ `${ window["AppUtils"].getConfig().clientOrigin }/` +
-                                                `${ window["AppUtils"].getConfig().appBase }/libs/themes/` +
-                                                `${ state.theme }/assets/images/favicon.ico` }
-                                            />
-                                            <link
-                                                href={ `${window["AppUtils"].getConfig().clientOrigin}/` +
-                                                `${window["AppUtils"].getConfig().appBase}/libs/themes/` +
-                                                `${ state.theme }/theme.min.css` }
-                                                rel="stylesheet"
-                                                type="text/css"
-                                            />
-                                            <style type="text/css">
-                                                { state.css }
-                                            </style>
-                                        </Helmet>
-                                        <Switch>
-                                            <Redirect
-                                                exact={ true }
-                                                path="/"
-                                                to={ window["AppUtils"].getConfig().routes.login }
-                                            />
-                                            <Route
-                                                path={ window["AppUtils"].getConfig().routes.login }
-                                                render={ (props) => {
-                                                    return <SignIn { ...props } />;
-                                                } }
-                                            />
-                                            <Route
-                                                path={ window["AppUtils"].getConfig().routes.logout }
-                                                render={ () => {
-                                                    return <SignOut />;
-                                                } }
-                                            />
-                                            {
-                                                config
-                                                    ? filteredRoutes(config).map((route, index) => {
-                                                        return (
-                                                            route.protected ?
-                                                                (
-                                                                    <ProtectedRoute
-                                                                        component={ route.component }
-                                                                        path={ route.path }
-                                                                        key={ index }
-                                                                    />
-                                                                )
-                                                                :
-                                                                (
-                                                                    <Route
-                                                                        path={ route.path }
-                                                                        render={ (props) =>
-                                                                            (<route.component { ...props } />)
-                                                                        }
-                                                                        key={ index }
-                                                                    />
-                                                                )
-                                                        );
-                                                    })
-                                                    : null
-                                            }
-                                        </Switch>
+                                        <SessionManagementProvider
+                                            onSessionTimeoutAbort={ handleSessionTimeoutAbort }
+                                            onSessionLogout={ handleSessionLogout }
+                                            modalOptions={ {
+                                                description: I18n.instance.t("userPortal:modals" +
+                                                    ".sessionTimeoutModal.description"),
+                                                headingI18nKey: "userPortal:modals.sessionTimeoutModal.heading",
+                                                primaryButtonText: I18n.instance.t("userPortal:modals" +
+                                                    ".sessionTimeoutModal.primaryButton"),
+                                                secondaryButtonText: I18n.instance.t("userPortal:modals" +
+                                                    ".sessionTimeoutModal.secondaryButton")
+                                            } }
+                                        >
+                                            <>
+                                                <Helmet>
+                                                    <link
+                                                        rel="shortcut icon"
+                                                        href={ `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
+                                                        `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                                        `${ state.theme }/assets/images/favicon.ico` }
+                                                    />
+                                                    <link
+                                                        href={ `${ window[ "AppUtils" ].getConfig().clientOrigin }/` +
+                                                        `${ window[ "AppUtils" ].getConfig().appBase }/libs/themes/` +
+                                                        `${ state.theme }/theme.min.css` }
+                                                        rel="stylesheet"
+                                                        type="text/css"
+                                                    />
+                                                    <style type="text/css">
+                                                        { state.css }
+                                                    </style>
+                                                </Helmet>
+                                                <Switch>
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path="/"
+                                                        to={ window[ "AppUtils" ].getConfig().routes.login }
+                                                    />
+                                                    <Route
+                                                        path={ window[ "AppUtils" ].getConfig().routes.login }
+                                                        render={ (props) => {
+                                                            return <SignIn { ...props } />;
+                                                        } }
+                                                    />
+                                                    <Route
+                                                        path={ window[ "AppUtils" ].getConfig().routes.logout }
+                                                        render={ () => {
+                                                            return <SignOut/>;
+                                                        } }
+                                                    />
+                                                    {
+                                                        config
+                                                            ? filteredRoutes(config).map((route, index) => {
+                                                                return (
+                                                                    route.protected ?
+                                                                        (
+                                                                            <ProtectedRoute
+                                                                                component={ route.component }
+                                                                                path={ route.path }
+                                                                                key={ index }
+                                                                            />
+                                                                        )
+                                                                        :
+                                                                        (
+                                                                            <Route
+                                                                                path={ route.path }
+                                                                                render={ (props) =>
+                                                                                    (<route.component { ...props } />)
+                                                                                }
+                                                                                key={ index }
+                                                                            />
+                                                                        )
+                                                                );
+                                                            })
+                                                            : null
+                                                    }
+                                                </Switch>
+                                            </>
+                                        </SessionManagementProvider>
                                     </Suspense>
                                 </I18nextProvider>
                             </div>

@@ -18,3 +18,4 @@
  */
 
 export * from "./confirmation-modal";
+export * from "./session-timeout-modal";

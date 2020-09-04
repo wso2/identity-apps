@@ -152,3 +152,13 @@ interface TransferListHeaders {
 interface TransferListSearchPlaceholders {
     [ key: string ]: any;
 }
+
+/**
+ * Interface for Modals.
+ */
+export interface ModalInterface {
+    description: string;
+    heading: string;
+    primaryButton: string;
+    secondaryButton: string;
+}

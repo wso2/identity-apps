@@ -58,6 +58,14 @@ export class I18nConstants {
     public static readonly COMMON_NAMESPACE: string = I18nModuleConstants.COMMON_NAMESPACE;
 
     /**
+     * Console portal namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CONSOLE_PORTAL_NAMESPACE: string = I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -65,6 +73,7 @@ export class I18nConstants {
      */
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
+        [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.ADMIN_PORTAL_NAMESPACE, "portals" ],
         [ I18nConstants.DEV_PORTAL_NAMESPACE, "portals" ]
     ]);
@@ -92,7 +101,12 @@ export class I18nConstants {
             )
         },
         load: "currentOnly", // lookup only current lang key(en-US). Prevents 404 from `en`.
-        ns: [ I18nConstants.COMMON_NAMESPACE, I18nConstants.ADMIN_PORTAL_NAMESPACE, I18nConstants.DEV_PORTAL_NAMESPACE ]
+        ns: [
+            I18nConstants.COMMON_NAMESPACE,
+            I18nConstants.CONSOLE_PORTAL_NAMESPACE,
+            I18nConstants.ADMIN_PORTAL_NAMESPACE,
+            I18nConstants.DEV_PORTAL_NAMESPACE
+        ]
     };
 
     /**

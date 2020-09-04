@@ -45,7 +45,6 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { RolePermissions } from "./wizard";
 import { EmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { getGroupList } from "../../groups/api";
 
@@ -76,7 +75,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         onAlertFired,
         user,
         handleUserUpdate,
-        isReadOnly,
+        isReadOnly
     } = props;
 
     const { t } = useTranslation();
@@ -148,7 +147,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
         if (user.groups && user.groups instanceof Array) {
             _.forEachRight (user.groups, (group) => {
-                const groupName = group.display.split("/");
+                const groupName = group?.display?.split("/");
 
                 if (groupName.length === 1) {
                     groupsMap.set(group.display, group.value);
@@ -536,7 +535,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         >
                             {
                                 groupList?.map((role, index)=> {
-                                    const roleName = role.displayName?.split("/");
+                                    const roleName = role?.displayName?.split("/");
                                     if (roleName.length === 1) {
                                         return (
                                             <TransferListItem
@@ -577,7 +576,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         >
                             {
                                 tempGroupList?.map((role, index)=> {
-                                    const userGroup = role.displayName.split("/");
+                                    const userGroup = role?.displayName?.split("/");
                                     if (userGroup.length === 1) {
                                         return (
                                             <TransferListItem
@@ -640,7 +639,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             const re = new RegExp(_.escapeRegExp(value), "i");
 
             assignedGroups && assignedGroups?.map((group) => {
-                const groupName = group.display.split("/");
+                const groupName = group?.display?.split("/");
                 if (groupName.length === 1) {
                     isMatch = re.test(group.display);
                     if (isMatch) {
@@ -716,8 +715,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedGroups?.map((group, index) => {
-                                                        const userGroup = group.display.split("/");
+                                                    assignedGroups?.map((group) => {
+                                                        const userGroup = group?.display?.split("/");
                                                         if (userGroup.length === 1) {
                                                             return (
                                                                 <Table.Row key={ index }>

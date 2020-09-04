@@ -46,6 +46,7 @@ export class Config {
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
             appHomePath: window["AppUtils"].getConfig().routes.home,
             appLoginPath: window["AppUtils"].getConfig().routes.login,
+            appLogoutPath: window["AppUtils"].getConfig().routes.logout,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,

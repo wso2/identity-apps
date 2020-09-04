@@ -1221,6 +1221,15 @@ export const userPortal: UserPortalNS = {
             }
         }
     },
+    modals: {
+        sessionTimeoutModal: {
+            description: "செயலற்ற தன்மை காரணமாக தற்போதைய அமர்வில் இருந்து நீங்கள் வெளியேற்றப்படுவீர்கள். " +
+                "நீங்கள் அமர்வைத் தொடர விரும்பினால் உள்நுழைந்திருப்பதைத் தேர்வுசெய்க.",
+            heading: "நீங்கள் <1>{{ time }}</1> இல் வெளியேறுவீர்கள்.",
+            primaryButton: "உள்நுழைந்திருங்கள்",
+            secondaryButton: "வெளியேறு"
+        }
+    },
     pages: {
         applications: {
             subTitle: "உங்கள் செயலிகளை முகாமை செய்ய மற்றும் பராமரிக்க",

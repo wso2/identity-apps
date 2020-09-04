@@ -71,6 +71,11 @@ export interface CommonDeploymentConfigInterface {
      */
     appLoginPath: string;
     /**
+     * Logout path of the application.
+     * ex: `/logout`
+     */
+    appLogoutPath: string;
+    /**
      * Host of the client application.
      * ex: `https://localhost:9001`
      */
@@ -189,6 +194,10 @@ export interface CommonUIConfigInterface {
      * Gravatar service configurations.
      */
     gravatarConfig?: GravatarConfig;
+    /**
+     * Enable roles and groups separation.
+     */
+    isGroupAndRoleSeparationEnabled?: boolean;
     /**
      * Application features configurations
      */
