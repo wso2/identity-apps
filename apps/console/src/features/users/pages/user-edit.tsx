@@ -17,8 +17,14 @@
  */
 
 import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels, ProfileInfoInterface, emptyProfileInfo } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import {
+    AlertInterface,
+    AlertLevels,
+    ProfileInfoInterface,
+    ProfileSchemaInterface,
+    emptyProfileInfo
+} from "@wso2is/core/models";
+import { addAlert, getProfileInformation } from "@wso2is/core/store";
 import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,6 +32,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { getUserDetails, updateUserInfo } from "../api";
 import { EditUser } from "../components";
+import { UserManagementUtils } from "../utils";
 
 /**
  * User Edit page.
@@ -39,6 +46,8 @@ const UserEditPage = (): ReactElement => {
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
@@ -75,6 +84,10 @@ const UserEditPage = (): ReactElement => {
 
     const handleUserUpdate = (id: string) => {
         getUser(id);
+        
+        if (UserManagementUtils.isAuthenticatedUser(profileInfo, user)) {
+            dispatch(getProfileInformation(true, profileSchemas));
+        }
     };
 
     const handleBackButtonClick = () => {
