@@ -169,7 +169,6 @@ const UserEditPage = (): ReactElement => {
                     editable
                     name={ resolveUserDisplayName(user) }
                     size="tiny"
-                    floated="left"
                     image={ user?.profileUrl }
                     onClick={ () => setShowEditAvatarModal(true) }
                 />
