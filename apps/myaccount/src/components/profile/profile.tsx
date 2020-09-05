@@ -17,8 +17,7 @@
  */
 
 import { updateProfileImageURL } from "@wso2is/core/api";
-import { resolveUserDisplayName } from "@wso2is/core/helpers";
-import { MultiValueAttributeInterface } from "@wso2is/core/models";
+import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -539,20 +538,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             <EditAvatarModal
                 open={ showEditAvatarModal }
                 name={ resolveUserDisplayName(profileDetails?.profileInfo as any) }
-                emails={
-                    (profileDetails?.profileInfo?.emails
-                        && Array.isArray(profileDetails.profileInfo.emails)
-                        && profileDetails.profileInfo.emails.length > 0)
-                        ? profileDetails.profileInfo.emails
-                            .map((email: (string | MultiValueAttributeInterface)): string => {
-                                if (typeof email !== "string" && email?.value) {
-                                    return email.value;
-                                }
-
-                                return email as string;
-                            })
-                        : []
-                }
+                emails={ resolveUserEmails(profileDetails?.profileInfo?.emails) }
                 onClose={ () => setShowEditAvatarModal(false) }
                 onCancel={ () => setShowEditAvatarModal(false) }
                 onSubmit={ handleAvatarEditModalSubmit }
