@@ -88,6 +88,7 @@ export interface AddUserWizardStateInterface {
     email: string;
     firstName: string;
     lastName: string;
+    profileUrl: string;
     domain: string;
     newPassword: string;
     confirmPassword: string;
@@ -150,6 +151,7 @@ export const createEmptyUserBasicWizard = (): AddUserWizardStateInterface => ({
     lastName: "",
     newPassword: "",
     passwordOption: "",
+    profileUrl: "",
     roles: [],
     userName: ""
 });

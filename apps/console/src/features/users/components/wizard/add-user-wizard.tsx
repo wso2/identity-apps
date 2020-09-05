@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { getGravatarImage, getRolesList } from "@wso2is/core/api";
+import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
@@ -108,21 +108,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
-
-    const [ userGravatarUrl, setUserGravatarUrl ] = useState<string>("");
-
-    useEffect(() => {
-        if (!wizardState) {
-            return;
-        }
-
-        if (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email) {
-            getGravatarImage(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email)
-                .then((response) => {
-                    setUserGravatarUrl(response);
-                });
-        }
-    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email ]);
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -375,18 +360,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
      */
     const addUserBasic = (userInfo: AddUserWizardStateInterface) => {
         let userName = "";
-        let profileUrl = "";
-        userInfo.domain !== "primary" ? userName = userInfo.domain + "/" + userInfo.userName : userName =
-            userInfo.userName;
+
+        userInfo.domain !== "primary"
+            ? userName = userInfo.domain + "/" + userInfo.userName
+            : userName = userInfo.userName;
+
         let userDetails: UserDetailsInterface = createEmptyUserDetails();
         const password = userInfo.newPassword;
 
-        if (userGravatarUrl) {
-            profileUrl = userGravatarUrl;
-        }
-
-        userInfo.passwordOption && userInfo.passwordOption !== "askPw" ?
-            (
+        userInfo.passwordOption && userInfo.passwordOption !== "askPw"
+            ? (
                 userDetails = {
                     emails:[
                         {
@@ -399,11 +382,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         givenName: userInfo.firstName
                     },
                     password,
-                    profileUrl, 
+                    profileUrl: userInfo.profileUrl, 
                     userName
                 }
-            ) :
-            (
+            )
+            : (
                 userDetails = {
                     emails: [
                         {
@@ -416,7 +399,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         givenName: userInfo.firstName
                     },
                     password: "password",
-                    profileUrl,
+                    profileUrl: userInfo.profileUrl,
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
                         askPassword: "true"
                     },
@@ -507,18 +490,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
-        let wizardData: WizardStateInterface = { ...wizardState };
-
-        if (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] &&
-            !(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ].profileUrl) && userGravatarUrl) {
-            wizardData = {
-                ...wizardState,
-                BasicDetails: {
-                    ...wizardState.BasicDetails,
-                    profileUrl: userGravatarUrl
-                }
-            }
-        }
+        const wizardData: WizardStateInterface = { ...wizardState };
 
         let summary = {};
 
@@ -534,6 +506,21 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 
     const handleWizardFormFinish = (user: AddUserWizardStateInterface) => {
         addUserBasic(user);
+    };
+
+    /**
+     * Persists the profile image change done from the summary view in wizard state.
+     *
+     * @param {string} url - Profile URL.
+     */
+    const handleProfileImageChange = (url: string): void => {
+        setWizardState({
+            ...wizardState,
+            [ WizardStepsFormTypes.BASIC_DETAILS ]: {
+                ...wizardState[ WizardStepsFormTypes.BASIC_DETAILS ],
+                profileUrl: url
+            }
+        })
     };
 
     const STEPS = [
@@ -606,6 +593,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     triggerSubmit={ finishSubmit }
                     onSubmit={ handleWizardFormFinish }
                     summary={ generateWizardSummary() }
+                    onProfileImageChange={ handleProfileImageChange }
                 />
             ),
             icon: UserWizardStepIcons.summary,
