@@ -321,7 +321,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 {
                                     profileSchema
                                     && profileSchema.map((schema: ProfileSchemaInterface, index: number) => {
-                                        if (schema.name !== "roles.default") {
+                                        if (!(schema.name === "roles.default" || schema.name === "profileUrl")) {
                                             return (
                                                 generateProfileEditForm(schema, index)
                                             );

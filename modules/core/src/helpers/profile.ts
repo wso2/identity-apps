@@ -99,7 +99,7 @@ export const resolveUserStoreEmbeddedUsername = (username: string) => {
  * @param {(string | MultiValueAttributeInterface)[]} emails - User emails.
  * @return {string[]} Emails as a string array.
  */
-export const getUserEmails = (emails: (string | MultiValueAttributeInterface)[]): string[] => {
+export const resolveUserEmails = (emails: (string | MultiValueAttributeInterface)[]): string[] => {
     if (!emails || !Array.isArray(emails) || emails.length < 1) {
         return [];
     }

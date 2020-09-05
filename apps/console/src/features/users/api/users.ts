@@ -16,9 +16,11 @@
  * under the License.
  */
 
+import { IdentityClient } from "@wso2is/authentication";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
-import { IdentityClient, Storage } from "@wso2is/authentication";
 import { store } from "../../core";
+import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
 /**
@@ -169,9 +171,10 @@ export const getUserDetails = (id: string): Promise<any> => {
 /**
  * Update the required details of the user profile.
  *
- * @param userId - User ID.
- * @param data - Data to be updated.
+ * @param {string} userId - User ID.
+ * @param {object} data - Data to be updated.
  * @return {Promise<ProfileInfoInterface>} a promise containing the response.
+ * @throws {IdentityAppsApiException}
  */
 export const updateUserInfo = (userId: string, data: object): Promise<ProfileInfoInterface> => {
 
@@ -190,6 +193,12 @@ export const updateUserInfo = (userId: string, data: object): Promise<ProfileInf
             return Promise.resolve(response.data as ProfileInfoInterface);
         })
         .catch((error) => {
-            return Promise.reject(`Failed to update the profile info - ${error}`);
+            throw new IdentityAppsApiException(
+                UserManagementConstants.USER_INFO_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

@@ -65,5 +65,8 @@ export class UserManagementConstants {
         .set("USER_CREATE", "users.create")
         .set("USER_UPDATE", "users.update")
         .set("USER_DELETE", "users.delete")
-        .set("USER_READ", "users.read")
+        .set("USER_READ", "users.read");
+
+    // API errors
+    public static readonly USER_INFO_UPDATE_ERROR: string = "Could not update the user information.";
 }
