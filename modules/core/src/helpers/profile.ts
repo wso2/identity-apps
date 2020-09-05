@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import { ISConstants } from "../constants";
-import { AuthReducerStateInterface, ProfileInfoInterface } from "../models";
+import { AuthReducerStateInterface, MultiValueAttributeInterface, ProfileInfoInterface } from "../models";
 
 /**
  * Resolves the user's display name.
@@ -33,8 +33,8 @@ export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
                                        fallback: string = null): string => {
 
     if (profileInfo.name && (profileInfo.name.givenName || profileInfo.name.familyName)) {
-        const givenName = _.isEmpty(profileInfo.name.givenName) ? "" : profileInfo.name.givenName + " ";
-        const familyName = _.isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
+        const givenName = isEmpty(profileInfo.name.givenName) ? "" : profileInfo.name.givenName + " ";
+        const familyName = isEmpty(profileInfo.name.familyName) ? "" : profileInfo.name.familyName;
 
         return givenName + familyName;
     } else if (profileInfo.userName) {
@@ -91,4 +91,24 @@ export const resolveUserStoreEmbeddedUsername = (username: string) => {
     }
 
     return username;
+};
+
+/**
+ * Get the user's emails as a string array.
+ *
+ * @param {(string | MultiValueAttributeInterface)[]} emails - User emails.
+ * @return {string[]} Emails as a string array.
+ */
+export const getUserEmails = (emails: (string | MultiValueAttributeInterface)[]): string[] => {
+    if (!emails || !Array.isArray(emails) || emails.length < 1) {
+        return [];
+    }
+
+    return emails.map((email: (string | MultiValueAttributeInterface)): string => {
+        if (typeof email !== "string" && email?.value) {
+            return email.value;
+        }
+
+        return email as string;
+    });
 };
