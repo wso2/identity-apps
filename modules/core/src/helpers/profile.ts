@@ -25,10 +25,12 @@ import { AuthReducerStateInterface, ProfileInfoInterface } from "../models";
  *
  * @param {ProfileInfoInterface} profileInfo - profile information.
  * @param {AuthReducerStateInterface} authState - Contains basic profile info extracted from the ID token.
+ * @param {string} fallback - Fallback value.
  * @return {string} - Resolved display name.
  */
 export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
-                                       authState?: AuthReducerStateInterface): string => {
+                                       authState?: AuthReducerStateInterface,
+                                       fallback: string = null): string => {
 
     if (profileInfo.name && (profileInfo.name.givenName || profileInfo.name.familyName)) {
         const givenName = _.isEmpty(profileInfo.name.givenName) ? "" : profileInfo.name.givenName + " ";
@@ -43,7 +45,7 @@ export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
         return authState.username;
     }
 
-    return null;
+    return fallback;
 };
 
 /**
