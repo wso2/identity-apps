@@ -93,12 +93,14 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
 }
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
-const GRAVATAR_IMAGE_MAX_SIZE = 200;
 
 const SystemGeneratedAvatars: Map<string, SystemGeneratedAvatarURLs> = new Map<string, SystemGeneratedAvatarURLs>([
     [ "Initials", "system_gen_i_1" ]
 ]);
 
+/**
+ * Different Avatar types.
+ */
 export enum AvatarTypes {
     SYSTEM_GENERATED = "SYSTEM_GENERATED",
     GRAVATAR = "GRAVATAR",
@@ -176,13 +178,13 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     } = props;
 
     const [ selectedGravatarEmail, setSelectedGravatarEmail ] = useState<string>(undefined);
-    const [ selectedGravatarSize, setSelectedGravatarSize ] = useState<number>(GRAVATAR_IMAGE_MIN_SIZE);
+    const [ selectedGravatarSize, setSelectedGravatarSize ] = useState<number>(undefined);
     const [ isInitialGravatarRequestLoading, setIsInitialGravatarRequestLoading ] = useState<boolean>(false);
     const [ isGravatarQualified, setIsGravatarQualified ] = useState<boolean>(undefined);
     const [ gravatarURLs, setGravatarURLs ] = useState<Map<string, string>>(undefined);
     const [ selectedAvatarType, setSelectedAvatarType ] = useState<AvatarTypes>(undefined);
-    const [ customHostedURL, setCustomHostedURL ] = useState<string>(undefined);
-    const [ customHostedURLError, setCustomHostedURLError ] = useState<LabelProps>(undefined);
+    const [ hostedURL, setHostedURL ] = useState<string>(undefined);
+    const [ hostedURLError, setHostedURLError ] = useState<LabelProps>(undefined);
     const [
         outputURL,
         setOutputURL
@@ -198,8 +200,12 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         className
     );
 
+    /**
+     * Triggered on component mount.
+     */
     useEffect(() => {
         setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
+        setSelectedGravatarSize(GRAVATAR_IMAGE_MIN_SIZE);
     }, []);
 
     /**
@@ -213,6 +219,9 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setSelectedGravatarEmail(emails[ 0 ]);
     }, [ emails ]);
 
+    /**
+     * Triggered when selected gravatar email changes.
+     */
     useEffect(() => {
         if (!selectedGravatarEmail) {
             return;
@@ -224,10 +233,10 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setIsInitialGravatarRequestLoading(true);
 
         getGravatarImage(selectedGravatarEmail)
-            .then((response) => {
+            .then(() => {
                 setIsGravatarQualified(true)
             })
-            .catch((error) => {
+            .catch(() => {
                 setIsGravatarQualified(false);
             })
             .finally(() => {
@@ -235,6 +244,9 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             });
     }, [ selectedGravatarEmail ]);
 
+    /**
+     * Triggered when selected gravatar email or `isGravatarQualified` flag chages.
+     */
     useEffect(() => {
         if (!selectedGravatarEmail || isGravatarQualified === undefined) {
             return;
@@ -260,6 +272,9 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setGravatarURLs(urls);
     }, [ selectedGravatarEmail, isGravatarQualified ]);
 
+    /**
+     * Triggered when selected avatar type or gravatar URLs changes.
+     */
     useEffect(() => {
         if (selectedAvatarType === AvatarTypes.SYSTEM_GENERATED) {
             setOutputURL(SystemGeneratedAvatars.get("Initials"));
@@ -273,21 +288,32 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             return;
         }
 
-        setOutputURL(customHostedURL);
+        setOutputURL(hostedURL);
     }, [ selectedAvatarType, gravatarURLs ]);
 
+    /**
+     * Handles selected gravatar email change.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} e - Event.
+     * @param {DropdownProps} data - Dropdown data.
+     */
     const handleGravatarEmailDropdownChange = (e: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         const { value } = data;
         setSelectedGravatarEmail(value as string);
     };
 
-    const renderGravatarOptions = () => {
+    /**
+     * Render the different gravatar options.
+     *
+     * @return {ReactElement[]}
+     */
+    const renderGravatarOptions = (): ReactElement[] => {
 
         if (!gravatarURLs) {
             return;
         }
 
-        const elemArray = [];
+        const elemArray: ReactElement[] = [];
 
         for (const [ key, value ] of gravatarURLs) {
             elemArray.push(
@@ -310,36 +336,61 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         return elemArray;
     };
 
+    /**
+     * Handle selected avatar type change.
+     *
+     * @param {React.FormEvent<HTMLInputElement>} e - Event.
+     * @param {CheckboxProps} data - Checkbox data.
+     */
     const handleSelectedAvatarTypeChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
         const { value } = data;
         setSelectedAvatarType(value as AvatarTypes);
         resolveHostedURLFieldErrors(value as AvatarTypes, isHostedURLValid);
     };
 
-    const handleGravatarOptionChange = (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => {
+    /**
+     * Handles gravatar option change,
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} e - Event.
+     * @param {CardProps} data - Card data.
+     */
+    const handleGravatarOptionChange = (e: MouseEvent<HTMLAnchorElement>, data: CardProps): void => {
         const { id } = data;
 
         setOutputURL(id);
         setSelectedAvatarType(AvatarTypes.GRAVATAR);
     };
 
-    const handleSystemGeneratedAvatarChange = (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => {
+    /**
+     * Handles system generated avatar option change.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} e - Event.
+     * @param {CardProps} data - Card data.
+     */
+    const handleSystemGeneratedAvatarChange = (e: MouseEvent<HTMLAnchorElement>, data: CardProps): void => {
         const { id } = data;
 
         setOutputURL(id);
         setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
     };
 
-    const handleCustomHostedURLFieldOnChange = (e: ChangeEvent<HTMLInputElement>,
+    /**
+     * Handle Hosted URL field on change event.
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} e - Event.
+     * @param {string} value - Input value.
+     */
+    const handleHostedURLFieldOnChange = (e: ChangeEvent<HTMLInputElement>,
                                                 { value }: { value: string }): void => {
 
-        setCustomHostedURL(value);
+        setHostedURL(value);
         setOutputURL(value);
         validateHostedURL(value);
     };
 
     /**
      * Validates the Hosted Image URL.
+     *
      * @param {string} url - Image URL.
      */
     const validateHostedURL = (url: string): void => {
@@ -354,35 +405,44 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         ImageUtils.isValidImageURL(url, isImageValid);
     };
 
-    const handleHostedURLFieldOnFocus = (e: ChangeEvent<HTMLInputElement>): void => {
+    /**
+     * Handles focus event of hosted URL input field.
+     */
+    const handleHostedURLFieldOnFocus = (): void => {
         setSelectedAvatarType(AvatarTypes.URL);
     };
 
-    const handleModalSubmit = (e: MouseEvent<HTMLButtonElement>) => {
+    /**
+     * Handles modal submit.
+     *
+     * @param {React.MouseEvent<HTMLButtonElement>} e - Event.
+     */
+    const handleModalSubmit = (e: MouseEvent<HTMLButtonElement>): void => {
         onSubmit(e, outputURL === SystemGeneratedAvatars.get("Initials") ? "" : outputURL);
     };
 
     /**
      * Resolves the errors of the hosted image URL field.
+     *
      * @param {AvatarTypes} avatarType - Selected avatar type.
      * @param {boolean} isValid - Is avatar valid.
      */
     const resolveHostedURLFieldErrors = (avatarType?: AvatarTypes, isValid?: boolean): void => {
 
         if (isValid === true) {
-            setCustomHostedURLError(null);
+            setHostedURLError(null);
 
             return;
         }
         
         if (avatarType !== AvatarTypes.URL) {
-            setCustomHostedURLError(null);
+            setHostedURLError(null);
 
             return;
         }
 
         if (avatarType === AvatarTypes.URL && isValid === false) {
-            setCustomHostedURLError({
+            setHostedURLError({
                 content: translations.hostedAvatar.input.errors.invalid.content,
                 pointing: translations.hostedAvatar.input.errors.invalid.pointing as LabelProps["pointing"]
             });
@@ -416,11 +476,11 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
      * @return {React.ReactElement}
      */
     const resolveHostedURLMessage = (): ReactElement => {
-        if (isHostedURLValidationRequestLoading || customHostedURLError || !customHostedURL) {
+        if (isHostedURLValidationRequestLoading || hostedURLError || !hostedURL) {
             return null;
         }
 
-        if (URLUtils.isHttpUrl(customHostedURL)) {
+        if (URLUtils.isHttpUrl(hostedURL)) {
             return (
                 <Message
                     warning
@@ -432,7 +492,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             );
         }
 
-        if (URLUtils.isDataUrl(customHostedURL)) {
+        if (URLUtils.isDataUrl(hostedURL)) {
             return (
                 <Message
                     warning
@@ -575,17 +635,17 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         control={ Input }
                                         placeholder={ translations.hostedAvatar.input.placeholder }
                                         onFocus={ handleHostedURLFieldOnFocus }
-                                        onChange={ handleCustomHostedURLFieldOnChange }
-                                        error={ customHostedURLError }
+                                        onChange={ handleHostedURLFieldOnChange }
+                                        error={ hostedURLError }
                                         loading={ isHostedURLValidationRequestLoading }
                                     />
                                     {
-                                        customHostedURL && isHostedURLValid && (
+                                        hostedURL && isHostedURLValid && (
                                             <UserAvatar
                                                 spaced="left"
                                                 size="mini"
                                                 isLoading={ isHostedURLValidationRequestLoading }
-                                                image={ customHostedURL }
+                                                image={ hostedURL }
                                             />
                                         )
                                     }
@@ -634,7 +694,7 @@ EditAvatarModal.defaultProps = {
                     header: "No matching Gravatar image found!"
                 }
             },
-            heading: "Gravatar based on ",
+            heading: "Gravatar based on "
         },
         hostedAvatar: {
             heading: "Hosted Image",
