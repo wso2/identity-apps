@@ -19,6 +19,7 @@
 import { getGravatarImage } from "@wso2is/core/api";
 import { GravatarFallbackTypes, TestableComponentInterface } from "@wso2is/core/models";
 import { ImageUtils, ProfileUtils } from "@wso2is/core/utils";
+import classNames from "classnames";
 import React, {
     ChangeEvent,
     FormEvent,
@@ -47,6 +48,7 @@ import {
 import { UserAvatar } from "../../avatar";
 import { LinkButton, PrimaryButton } from "../../button";
 import { SelectionCard } from "../../card";
+import { ContentLoader } from "../../loader";
 import { Hint } from "../../typography";
 
 /**
@@ -151,6 +153,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
     const {
         cancelButtonText,
+        className,
         emails,
         heading,
         name,
@@ -175,6 +178,15 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setOutputURL
     ] = useState<SystemGeneratedAvatarURLs | string>(undefined);
     const [ isHostedURLValid, setIsHostedURLValid ] = useState<boolean>(undefined);
+    const [
+        isHostedURLValidationRequestLoading,
+        setIsHostedURLValidationRequestLoading
+    ] = useState<boolean>(false);
+
+    const classes = classNames(
+        "edit-avatar-modal",
+        className
+    );
 
     useEffect(() => {
         setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
@@ -313,19 +325,23 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
         setCustomHostedURL(value);
         setOutputURL(value);
+        validateHostedURL(value);
     };
 
-    const handleHostedURLFieldOnBlur = (e: ChangeEvent<HTMLInputElement>): void => {
-        if (!e?.target?.value) {
-            return;
-        }
-
+    /**
+     * Validates the Hosted Image URL.
+     * @param {string} url - Image URL.
+     */
+    const validateHostedURL = (url: string): void => {
         const isImageValid = (isValid: boolean) => {
             setIsHostedURLValid(isValid);
             resolveHostedURLFieldErrors(selectedAvatarType, isValid);
+            setIsHostedURLValidationRequestLoading(false);
         };
 
-        ImageUtils.isValidImageURL(e.target.value, isImageValid);
+        setIsHostedURLValidationRequestLoading(true);
+
+        ImageUtils.isValidImageURL(url, isImageValid);
     };
 
     const handleHostedURLFieldOnFocus = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -358,16 +374,37 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         if (avatarType === AvatarTypes.URL && isValid === false) {
             setCustomHostedURLError({
                 content: translations.hostedAvatar.input.errors.invalid.content,
-                pointing: true
+                pointing: translations.hostedAvatar.input.errors.invalid.pointing as LabelProps["pointing"]
             });
             
             return;
         }
     };
 
+    /**
+     * Resolves gravatar options validation message.
+     * @return {React.ReactElement}
+     */
+    const resolveGravatarOptionsMessage = (): ReactElement => {
+        if (isInitialGravatarRequestLoading || isGravatarQualified) {
+            return null;
+        }
+
+        return (
+            <Message
+                warning
+                visible
+                size="tiny"
+                header={ translations.gravatar.errors.noAssociation.header }
+                content={ translations.gravatar.errors.noAssociation.content }
+            />
+        )
+    };
+
     return (
         <Modal
             data-testid={ testId }
+            className={ classes }
             { ...rest }
         >
             <Modal.Header>{ heading }</Modal.Header>
@@ -447,19 +484,21 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                 </Form.Field>
                                             </div>
                                             {
-                                                (!isInitialGravatarRequestLoading && !isGravatarQualified) && (
-                                                    <Message
-                                                        warning
-                                                        visible
-                                                        size="tiny"
-                                                        header={ translations.gravatar.errors.noAssociation.header }
-                                                        content={ translations.gravatar.errors.noAssociation.content }
-                                                    />
-                                                )
+                                                !isInitialGravatarRequestLoading
+                                                    ? (
+                                                        <>
+                                                            { resolveGravatarOptionsMessage() }
+                                                            <Card.Group className="avatar-from-gravatar-card-group">
+                                                                { renderGravatarOptions() }
+                                                            </Card.Group>
+                                                        </>
+                                                    )
+                                                    : (
+                                                        <div className="avatar-types-loader-container">
+                                                            <ContentLoader />
+                                                        </div>
+                                                    )
                                             }
-                                            <Card.Group className="avatar-from-gravatar-card-group">
-                                                { renderGravatarOptions() }
-                                            </Card.Group>
                                         </div>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -480,14 +519,13 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         </Form.Field>
                                     </div>
                                     <Form.Field
-                                        icon
                                         fluid
                                         control={ Input }
                                         placeholder={ translations.hostedAvatar.input.placeholder }
                                         onFocus={ handleHostedURLFieldOnFocus }
                                         onChange={ handleCustomHostedURLFieldOnChange }
-                                        onBlur={ handleHostedURLFieldOnBlur }
                                         error={ customHostedURLError }
+                                        loading={ isHostedURLValidationRequestLoading }
                                     />
                                     <Hint>{ translations.hostedAvatar.input.hint }</Hint>
                                 </div>
@@ -501,7 +539,12 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                     { cancelButtonText }
                 </LinkButton>
                 <PrimaryButton
-                    disabled={ !outputURL || (selectedAvatarType === AvatarTypes.URL && !isHostedURLValid) }
+                    disabled={
+                        isInitialGravatarRequestLoading
+                        || isHostedURLValidationRequestLoading
+                        || !outputURL
+                        || (selectedAvatarType === AvatarTypes.URL && !isHostedURLValid)
+                    }
                     onClick={ handleModalSubmit }
                 >
                     { submitButtonText }
