@@ -377,7 +377,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         
         if (avatarType !== AvatarTypes.URL) {
             setCustomHostedURLError(null);
-            
+
             return;
         }
 
@@ -386,7 +386,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                 content: translations.hostedAvatar.input.errors.invalid.content,
                 pointing: translations.hostedAvatar.input.errors.invalid.pointing as LabelProps["pointing"]
             });
-            
+
             return;
         }
     };
@@ -571,6 +571,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                 <div className="avatar-from-url-field">
                                     <Form.Field
                                         fluid
+                                        className="hosted-url-input"
                                         control={ Input }
                                         placeholder={ translations.hostedAvatar.input.placeholder }
                                         onFocus={ handleHostedURLFieldOnFocus }
@@ -578,6 +579,16 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         error={ customHostedURLError }
                                         loading={ isHostedURLValidationRequestLoading }
                                     />
+                                    {
+                                        customHostedURL && isHostedURLValid && (
+                                            <UserAvatar
+                                                spaced="left"
+                                                size="mini"
+                                                isLoading={ isHostedURLValidationRequestLoading }
+                                                image={ customHostedURL }
+                                            />
+                                        )
+                                    }
                                 </div>
                                 <Hint>{ translations.hostedAvatar.input.hint }</Hint>
                             </Grid.Column>
