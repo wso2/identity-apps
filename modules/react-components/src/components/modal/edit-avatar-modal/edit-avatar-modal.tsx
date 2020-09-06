@@ -227,9 +227,6 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
             return;
         }
 
-        // Once the email selection is changed, switch the selected type to `Gravatar`.
-        setSelectedAvatarType(AvatarTypes.GRAVATAR);
-
         setIsInitialGravatarRequestLoading(true);
 
         getGravatarImage(selectedGravatarEmail)
@@ -300,6 +297,8 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     const handleGravatarEmailDropdownChange = (e: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         const { value } = data;
         setSelectedGravatarEmail(value as string);
+        // Once the email selection is changed, switch the selected type to `Gravatar`.
+        setSelectedAvatarType(AvatarTypes.GRAVATAR);
     };
 
     /**

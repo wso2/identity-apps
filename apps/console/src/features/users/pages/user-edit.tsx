@@ -187,66 +187,71 @@ const UserEditPage = (): ReactElement => {
                 handleUserUpdate={ handleUserUpdate }
                 readOnlyUserStores={ readOnlyUserStoresList }
             />
-            <EditAvatarModal
-                open={ showEditAvatarModal }
-                name={ resolveUserDisplayName(user) }
-                emails={ resolveUserEmails(user?.emails) }
-                onClose={ () => setShowEditAvatarModal(false) }
-                onCancel={ () => setShowEditAvatarModal(false) }
-                onSubmit={ handleAvatarEditModalSubmit }
-                heading={ t("console:common.modals.editAvatarModal.heading") }
-                submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
-                cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }
-                translations={ {
-                    gravatar: {
-                        errors: {
-                            noAssociation: {
-                                content: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
-                                    ".noAssociation.content"),
-                                header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
-                                    ".noAssociation.header")
-                            }
-                        },
-                        heading: t("console:common.modals.editAvatarModal.content.gravatar.heading")
-                    },
-                    hostedAvatar: {
-                        heading: t("console:common.modals.editAvatarModal.content.hostedAvatar.heading"),
-                        input: {
-                            errors: {
-                                http: {
-                                    content: t("console:common.modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.http.content"),
-                                    header: t("console:common.modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.http.header")
+            {
+                showEditAvatarModal && (
+                    <EditAvatarModal
+                        open={ showEditAvatarModal }
+                        name={ resolveUserDisplayName(user) }
+                        emails={ resolveUserEmails(user?.emails) }
+                        onClose={ () => setShowEditAvatarModal(false) }
+                        onCancel={ () => setShowEditAvatarModal(false) }
+                        onSubmit={ handleAvatarEditModalSubmit }
+                        heading={ t("console:common.modals.editAvatarModal.heading") }
+                        submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
+                        cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }
+                        translations={ {
+                            gravatar: {
+                                errors: {
+                                    noAssociation: {
+                                        content: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.content"),
+                                        header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.header")
+                                    }
                                 },
-                                invalid: {
-                                    content: t("console:common.modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.invalid.content"),
-                                    pointing: t("console:common.modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.invalid.pointing")
+                                heading: t("console:common.modals.editAvatarModal.content.gravatar.heading")
+                            },
+                            hostedAvatar: {
+                                heading: t("console:common.modals.editAvatarModal.content.hostedAvatar.heading"),
+                                input: {
+                                    errors: {
+                                        http: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.content"),
+                                            header: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.header")
+                                        },
+                                        invalid: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.content"),
+                                            pointing: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.pointing")
+                                        }
+                                    },
+                                    hint: t("console:common.modals.editAvatarModal.content.hostedAvatar.input.hint"),
+                                    placeholder: t("console:common.modals.editAvatarModal.content." +
+                                        "hostedAvatar.input.placeholder"),
+                                    warnings: {
+                                        dataURL: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.content"),
+                                            header: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.header")
+                                        }
+                                    }
                                 }
                             },
-                            hint: t("console:common.modals.editAvatarModal.content.hostedAvatar.input.hint"),
-                            placeholder: t("console:common.modals.editAvatarModal.content.hostedAvatar.input" +
-                                ".placeholder"),
-                            warnings: {
-                                dataURL: {
-                                    content: t("console:common.modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".warnings.dataURL.content"),
-                                    header: t("console:common.modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".warnings.dataURL.header")
+                            systemGenAvatars: {
+                                heading: t("console:common.modals.editAvatarModal.content.systemGenAvatars.heading"),
+                                types: {
+                                    initials: t("console:common.modals.editAvatarModal.content.systemGenAvatars." +
+                                        "types.initials")
                                 }
                             }
-                        }
-                    },
-                    systemGenAvatars: {
-                        heading: t("console:common.modals.editAvatarModal.content.systemGenAvatars.heading"),
-                        types: {
-                            initials: t("console:common.modals.editAvatarModal.content.systemGenAvatars.types.initials")
-                        }
-                    }
-                } }
-            />
+                        } }
+                    />
+                )
+            }
         </PageLayout>
     );
 };

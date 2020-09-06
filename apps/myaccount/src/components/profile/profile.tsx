@@ -535,66 +535,71 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     </Trans>
                 ) }
             />
-            <EditAvatarModal
-                open={ showEditAvatarModal }
-                name={ resolveUserDisplayName(profileDetails?.profileInfo as any) }
-                emails={ resolveUserEmails(profileDetails?.profileInfo?.emails) }
-                onClose={ () => setShowEditAvatarModal(false) }
-                onCancel={ () => setShowEditAvatarModal(false) }
-                onSubmit={ handleAvatarEditModalSubmit }
-                heading={ t("userPortal:modals.editAvatarModal.heading") }
-                submitButtonText={ t("userPortal:modals.editAvatarModal.primaryButton") }
-                cancelButtonText={ t("userPortal:modals.editAvatarModal.secondaryButton") }
-                translations={ {
-                    gravatar: {
-                        errors: {
-                            noAssociation: {
-                                content: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
-                                    ".noAssociation.content"),
-                                header: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
-                                    ".noAssociation.header")
-                            }
-                        },
-                        heading: t("userPortal:modals.editAvatarModal.content.gravatar.heading")
-                    },
-                    hostedAvatar: {
-                        heading: t("userPortal:modals.editAvatarModal.content.hostedAvatar.heading"),
-                        input: {
-                            errors: {
-                                http: {
-                                    content: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.http.content"),
-                                    header: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.http.header")
+            {
+                showEditAvatarModal && (
+                    <EditAvatarModal
+                        open={ showEditAvatarModal }
+                        name={ resolveUserDisplayName(profileDetails?.profileInfo as any) }
+                        emails={ resolveUserEmails(profileDetails?.profileInfo?.emails) }
+                        onClose={ () => setShowEditAvatarModal(false) }
+                        onCancel={ () => setShowEditAvatarModal(false) }
+                        onSubmit={ handleAvatarEditModalSubmit }
+                        heading={ t("userPortal:modals.editAvatarModal.heading") }
+                        submitButtonText={ t("userPortal:modals.editAvatarModal.primaryButton") }
+                        cancelButtonText={ t("userPortal:modals.editAvatarModal.secondaryButton") }
+                        translations={ {
+                            gravatar: {
+                                errors: {
+                                    noAssociation: {
+                                        content: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.content"),
+                                        header: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.header")
+                                    }
                                 },
-                                invalid: {
-                                    content: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.invalid.content"),
-                                    pointing: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".errors.invalid.pointing")
+                                heading: t("userPortal:modals.editAvatarModal.content.gravatar.heading")
+                            },
+                            hostedAvatar: {
+                                heading: t("userPortal:modals.editAvatarModal.content.hostedAvatar.heading"),
+                                input: {
+                                    errors: {
+                                        http: {
+                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.content"),
+                                            header: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.header")
+                                        },
+                                        invalid: {
+                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.content"),
+                                            pointing: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.pointing")
+                                        }
+                                    },
+                                    hint: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input.hint"),
+                                    placeholder: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
+                                        ".placeholder"),
+                                    warnings: {
+                                        dataURL: {
+                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.content"),
+                                            header: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.header")
+                                        }
+                                    }
                                 }
                             },
-                            hint: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input.hint"),
-                            placeholder: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
-                                ".placeholder"),
-                            warnings: {
-                                dataURL: {
-                                    content: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".warnings.dataURL.content"),
-                                    header: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
-                                        ".warnings.dataURL.header")
+                            systemGenAvatars: {
+                                heading: t("userPortal:modals.editAvatarModal.content.systemGenAvatars.heading"),
+                                types: {
+                                    initials: t("userPortal:modals.editAvatarModal.content.systemGenAvatars." +
+                                        "types.initials")
                                 }
                             }
-                        }
-                    },
-                    systemGenAvatars: {
-                        heading: t("userPortal:modals.editAvatarModal.content.systemGenAvatars.heading"),
-                        types: {
-                            initials: t("userPortal:modals.editAvatarModal.content.systemGenAvatars.types.initials")
-                        }
-                    }
-                } }
-            />
+                        } }
+                    />
+                )
+            }
         </>
     );
 
