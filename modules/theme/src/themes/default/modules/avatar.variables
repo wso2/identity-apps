@@ -25,7 +25,7 @@
         Avatar Wrapper
 --------------------------------*/
 
-@avatarWrapperDisplayInline: display-block;
+@avatarWrapperDisplayInline: inline-block;
 
 /*-------------------------------
         Avatar Container
@@ -35,11 +35,11 @@
 @avatarContainerDisplay: inline-block;
 
 @avatarCustomLabelPosition: absolute;
-@avatarCustomLabelZIndex: 999;
+@avatarCustomLabelZIndex: 9;
 @avatarCustomLabelWidth: 1.5em;
 @avatarCustomLabelHeight: 1.5em;
 @avatarCustomLabelTop: 0;
-@avatarCustomLabelRight: 10%;
+@avatarCustomLabelRight: 5%;
 
 @editAvatarIconPosition: absolute;
 @editAvatarIconBottom: 0;

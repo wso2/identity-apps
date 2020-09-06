@@ -590,3 +590,26 @@
         }
     }
 }
+
+/*-------------------------------
+      Edit Avatar Modal
+--------------------------------*/
+
+.ui.modal {
+    &.edit-avatar-modal {
+        .avatar-types-loader-container {
+            height: @editAvatarModalContentLoaderContainerHeight;
+            width: @editAvatarModalContentLoaderContainerWidth;
+        }
+        
+        .avatar-from-url-field {
+            display: @editAvatarModalURLFieldContainerDisplay;
+
+            .hosted-url-input {
+                display: @editAvatarModalURLFieldDisplay;
+                width: @editAvatarModalURLFieldWidth;
+                margin-bottom: @editAvatarModalURLFieldMarginBottom;
+            }
+        }
+    }
+}
