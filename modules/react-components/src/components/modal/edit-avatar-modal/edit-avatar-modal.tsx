@@ -18,7 +18,7 @@
 
 import { getGravatarImage } from "@wso2is/core/api";
 import { GravatarFallbackTypes, TestableComponentInterface } from "@wso2is/core/models";
-import { ProfileUtils } from "@wso2is/core/utils";
+import { ImageUtils, ProfileUtils } from "@wso2is/core/utils";
 import React, {
     ChangeEvent,
     FormEvent,
@@ -39,7 +39,7 @@ import {
     DropdownProps,
     Form,
     Grid,
-    Input,
+    Input, LabelProps,
     Message,
     Modal,
     ModalProps
@@ -121,6 +121,12 @@ export interface EditAvatarModalContentI18nInterface {
     hostedAvatar: {
         heading: ReactNode;
         input: {
+            errors: {
+                invalid: {
+                    content: string;
+                    pointing: string;
+                };
+            };
             placeholder: string;
             hint: string;
         };
@@ -163,10 +169,12 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     const [ gravatarURLs, setGravatarURLs ] = useState<Map<string, string>>(undefined);
     const [ selectedAvatarType, setSelectedAvatarType ] = useState<AvatarTypes>(undefined);
     const [ customHostedURL, setCustomHostedURL ] = useState<string>(undefined);
+    const [ customHostedURLError, setCustomHostedURLError ] = useState<LabelProps>(undefined);
     const [
         outputURL,
         setOutputURL
     ] = useState<SystemGeneratedAvatarURLs | string>(undefined);
+    const [ isHostedURLValid, setIsHostedURLValid ] = useState<boolean>(undefined);
 
     useEffect(() => {
         setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
@@ -283,6 +291,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     const handleSelectedAvatarTypeChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
         const { value } = data;
         setSelectedAvatarType(value as AvatarTypes);
+        resolveHostedURLFieldErrors(value as AvatarTypes, isHostedURLValid);
     };
 
     const handleGravatarOptionChange = (e: MouseEvent<HTMLAnchorElement>, data: CardProps) => {
@@ -299,13 +308,61 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
     };
 
-    const handleCustomHostedURLChange = (e: ChangeEvent<HTMLInputElement>, { value }: { value: string }): void => {
+    const handleCustomHostedURLFieldOnChange = (e: ChangeEvent<HTMLInputElement>,
+                                                { value }: { value: string }): void => {
+
         setCustomHostedURL(value);
         setOutputURL(value);
     };
 
+    const handleHostedURLFieldOnBlur = (e: ChangeEvent<HTMLInputElement>): void => {
+        if (!e?.target?.value) {
+            return;
+        }
+
+        const isImageValid = (isValid: boolean) => {
+            setIsHostedURLValid(isValid);
+            resolveHostedURLFieldErrors(selectedAvatarType, isValid);
+        };
+
+        ImageUtils.isValidImageURL(e.target.value, isImageValid);
+    };
+
+    const handleHostedURLFieldOnFocus = (e: ChangeEvent<HTMLInputElement>): void => {
+        setSelectedAvatarType(AvatarTypes.URL);
+    };
+
     const handleModalSubmit = (e: MouseEvent<HTMLButtonElement>) => {
         onSubmit(e, outputURL === SystemGeneratedAvatars.get("Initials") ? "" : outputURL);
+    };
+
+    /**
+     * Resolves the errors of the hosted image URL field.
+     * @param {AvatarTypes} avatarType - Selected avatar type.
+     * @param {boolean} isValid - Is avatar valid.
+     */
+    const resolveHostedURLFieldErrors = (avatarType?: AvatarTypes, isValid?: boolean): void => {
+
+        if (isValid === true) {
+            setCustomHostedURLError(null);
+
+            return;
+        }
+        
+        if (avatarType !== AvatarTypes.URL) {
+            setCustomHostedURLError(null);
+            
+            return;
+        }
+
+        if (avatarType === AvatarTypes.URL && isValid === false) {
+            setCustomHostedURLError({
+                content: translations.hostedAvatar.input.errors.invalid.content,
+                pointing: true
+            });
+            
+            return;
+        }
     };
 
     return (
@@ -422,11 +479,15 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                             />
                                         </Form.Field>
                                     </div>
-                                    <Input
+                                    <Form.Field
                                         icon
                                         fluid
+                                        control={ Input }
                                         placeholder={ translations.hostedAvatar.input.placeholder }
-                                        onChange={ handleCustomHostedURLChange }
+                                        onFocus={ handleHostedURLFieldOnFocus }
+                                        onChange={ handleCustomHostedURLFieldOnChange }
+                                        onBlur={ handleHostedURLFieldOnBlur }
+                                        error={ customHostedURLError }
                                     />
                                     <Hint>{ translations.hostedAvatar.input.hint }</Hint>
                                 </div>
@@ -439,7 +500,10 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                 <LinkButton onClick={ onCancel }>
                     { cancelButtonText }
                 </LinkButton>
-                <PrimaryButton disabled={ !outputURL } onClick={ handleModalSubmit }>
+                <PrimaryButton
+                    disabled={ !outputURL || (selectedAvatarType === AvatarTypes.URL && !isHostedURLValid) }
+                    onClick={ handleModalSubmit }
+                >
                     { submitButtonText }
                 </PrimaryButton>
             </Modal.Actions>
@@ -470,6 +534,12 @@ EditAvatarModal.defaultProps = {
         hostedAvatar: {
             heading: "Hosted Image",
             input: {
+                errors: {
+                    invalid: {
+                        content: "Please enter a valid image URL",
+                        pointing: "above"
+                    }
+                },
                 hint: "Enter a valid image URL which is hosted on a third party location.",
                 placeholder: "Enter URL for the image."
             }
