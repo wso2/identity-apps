@@ -41,7 +41,7 @@ export class URLUtils {
      * @return {boolean} True if the url is a http url.
      */
     public static isHttpUrl(url: string): boolean {
-        return !!url.match(PatternConstants.HTTP_URL_REGEX_PATTERN);
+        return !!url.trim().match(PatternConstants.HTTP_URL_REGEX_PATTERN);
     }
 
     /**
@@ -52,7 +52,7 @@ export class URLUtils {
      * @return {boolean} True if the url is a https url.
      */
     public static isHttpsUrl(url: string): boolean {
-        return !!url.match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
+        return !!url.trim().match(PatternConstants.HTTPS_URL_REGEX_PATTERN);
     }
 
     /**
@@ -63,6 +63,6 @@ export class URLUtils {
      * @return {boolean} True if the url is a data url.
      */
     public static isDataUrl(url: string): boolean {
-        return !!url.match(PatternConstants.DATA_URL_REGEX_PATTERN);
+        return !!url.trim().match(PatternConstants.DATA_URL_REGEX_PATTERN);
     }
 }
