@@ -47,6 +47,7 @@ import {
 import { UserAvatar } from "../../avatar";
 import { LinkButton, PrimaryButton } from "../../button";
 import { SelectionCard } from "../../card";
+import { Hint } from "../../typography";
 
 /**
  * Edit Avatar Modal props interface.
@@ -83,6 +84,10 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
      * @param {<HTMLButtonElement>} e - Event.
      */
     onCancel?: (e: MouseEvent<HTMLButtonElement>) => void;
+    /**
+     * i18n translations for modal content.
+     */
+    translations?: EditAvatarModalContentI18nInterface;
 }
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
@@ -99,6 +104,34 @@ export enum AvatarTypes {
 }
 
 type SystemGeneratedAvatarURLs = "system_gen_i_1";
+
+/**
+ * Interface for the i18n string of the component.
+ */
+export interface EditAvatarModalContentI18nInterface {
+    gravatar: {
+        heading: ReactNode;
+        errors: {
+            noAssociation: {
+                header: ReactNode;
+                content: ReactNode;
+            };
+        };
+    };
+    hostedAvatar: {
+        heading: ReactNode;
+        input: {
+            placeholder: string;
+            hint: string;
+        };
+    };
+    systemGenAvatars: {
+        heading: ReactNode;
+        types: {
+            initials: ReactNode;
+        };
+    };
+}
 
 /**
  * Edit Avatar modal.
@@ -119,6 +152,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         onSubmit,
         submitButtonText,
         [ "data-testid" ]: testId,
+        translations,
         ...rest
     } = props;
 
@@ -293,7 +327,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                     <Checkbox
                                                         radio
                                                         value={ AvatarTypes.SYSTEM_GENERATED }
-                                                        label="System generated avatar"
+                                                        label={ translations.systemGenAvatars.heading }
                                                         checked={ selectedAvatarType === AvatarTypes.SYSTEM_GENERATED }
                                                         onChange={ handleSelectedAvatarTypeChange }
                                                     />
@@ -303,7 +337,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                 <SelectionCard
                                                     id={ SystemGeneratedAvatars.get("Initials") }
                                                     size="x100"
-                                                    header="Initials"
+                                                    header={ translations.systemGenAvatars.types.initials }
                                                     image={
                                                         <UserAvatar
                                                             size="little"
@@ -332,7 +366,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                         label={
                                                             <label>
                                                                 <>
-                                                                    <span>Gravatar based on </span>
+                                                                    <span>{ translations.gravatar.heading }</span>
                                                                     <Dropdown
                                                                         text={ selectedGravatarEmail }
                                                                         options={
@@ -361,17 +395,8 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                                         warning
                                                         visible
                                                         size="tiny"
-                                                        header="No matching Gravatar image found!"
-                                                        content={
-                                                            <div>
-                                                                It seems like { selectedGravatarEmail } is not registered on
-                                                                Gravatar.
-                                                                Sign up for a Gravatar account by clicking <a>here</a> or use
-                                                                one of
-                                                                the
-                                                                following.
-                                                            </div>
-                                                        }
+                                                        header={ translations.gravatar.errors.noAssociation.header }
+                                                        content={ translations.gravatar.errors.noAssociation.content }
                                                     />
                                                 )
                                             }
@@ -384,20 +409,26 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                             ) 
                         }
                         <Grid.Row>
-                            <Grid.Column computer={ 8 } tablet={ 10 } mobile={ 16 }>
+                            <Grid.Column computer={ 10 } tablet={ 10 } mobile={ 16 }>
                                 <div className="avatar-from-url">
                                     <div className="mb-3">
                                         <Form.Field>
                                             <Checkbox
                                                 radio
                                                 value={ AvatarTypes.URL }
-                                                label="Hosted Image"
+                                                label={ translations.hostedAvatar.heading }
                                                 checked={ selectedAvatarType === AvatarTypes.URL }
                                                 onChange={ handleSelectedAvatarTypeChange }
                                             />
                                         </Form.Field>
                                     </div>
-                                    <Input fluid icon placeholder="https://" onChange={ handleCustomHostedURLChange }/>
+                                    <Input
+                                        icon
+                                        fluid
+                                        placeholder={ translations.hostedAvatar.input.placeholder }
+                                        onChange={ handleCustomHostedURLChange }
+                                    />
+                                    <Hint>{ translations.hostedAvatar.input.hint }</Hint>
                                 </div>
                             </Grid.Column>
                         </Grid.Row>
@@ -424,5 +455,30 @@ EditAvatarModal.defaultProps = {
     "data-testid": "edit-avatar-modal",
     dimmer: "blurring",
     heading: "Update profile picture",
-    submitButtonText: "Save"
+    submitButtonText: "Save",
+    translations: {
+        gravatar: {
+            errors: {
+                noAssociation: {
+                    content: "It seems like the selected email is not registered on Gravatar. Sign up for a " +
+                        "Gravatar account by visiting Gravatar official website or use one of the following.",
+                    header: "No matching Gravatar image found!"
+                }
+            },
+            heading: "Gravatar based on ",
+        },
+        hostedAvatar: {
+            heading: "Hosted Image",
+            input: {
+                hint: "Enter a valid image URL which is hosted on a third party location.",
+                placeholder: "Enter URL for the image."
+            }
+        },
+        systemGenAvatars: {
+            heading: "System generated avatar",
+            types: {
+                initials: "Initials"
+            }
+        }
+    }
 };
