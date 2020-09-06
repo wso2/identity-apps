@@ -24,6 +24,7 @@ import { ModalInterface } from "../common";
 export interface ConsoleNS {
     common: {
         modals: {
+            editAvatarModal: ModalInterface;
             sessionTimeoutModal: ModalInterface;
         };
     };

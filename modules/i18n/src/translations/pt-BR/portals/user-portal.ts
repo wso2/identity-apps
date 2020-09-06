@@ -1174,6 +1174,55 @@ export const userPortal: UserPortalNS = {
         }
     },
     modals: {
+        editAvatarModal: {
+            content: {
+                gravatar: {
+                    errors: {
+                        noAssociation: {
+                            content: "Parece que o email selecionado não está registrado no Gravatar. " +
+                                "Cadastre-se para uma conta do Gravatar visitando o site oficial do Gravatar ou " +
+                                "use um dos seguintes.",
+                            header: "Nenhuma imagem do Gravatar correspondente encontrada!"
+                        }
+                    },
+                    heading: "Gravatar baseado em "
+                },
+                hostedAvatar: {
+                    heading: "Imagem Hospedada",
+                    input: {
+                        errors: {
+                            http: {
+                                content: "O URL selecionado aponta para uma imagem não segura veiculada por HTTP. " +
+                                    "Prossiga com cuidado.",
+                                header: "Conteúdo inseguro!"
+                            },
+                            invalid: {
+                                content: "Insira um URL de imagem válido"
+                            }
+                        },
+                        hint: "Insira um URL de imagem válido que esteja hospedado em um local de terceiros.",
+                        placeholder: "Insira o URL da imagem.",
+                        warnings: {
+                            dataURL: {
+                                content: "Usar URLs de dados com grande contagem de caracteres pode resultar em " +
+                                    "problemas de banco de dados. Prossiga com cuidado.",
+                                header: "Verifique novamente o URL de dados inserido!"
+                            }
+                        }
+                    }
+                },
+                systemGenAvatars: {
+                    heading: "Avatar gerado pelo sistema",
+                    types: {
+                        initials: "Initials"
+                    }
+                }
+            },
+            description: null,
+            heading: "Atualizar foto de perfil",
+            primaryButton: "Salve",
+            secondaryButton: "Cancelar"
+        },
         sessionTimeoutModal: {
             description: "Você será desconectado da sessão atual devido à inatividade." +
                 "Selecione Permanecer conectado se desejar continuar a sessão.",

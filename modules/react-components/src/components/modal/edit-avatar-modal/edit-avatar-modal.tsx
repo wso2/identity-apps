@@ -444,7 +444,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         if (avatarType === AvatarTypes.URL && isValid === false) {
             setHostedURLError({
                 content: translations.hostedAvatar.input.errors.invalid.content,
-                pointing: translations.hostedAvatar.input.errors.invalid.pointing as LabelProps["pointing"]
+                pointing: "above"
             });
 
             return;
