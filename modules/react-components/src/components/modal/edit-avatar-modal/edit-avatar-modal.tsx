@@ -270,25 +270,6 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     }, [ selectedGravatarEmail, isGravatarQualified ]);
 
     /**
-     * Triggered when selected avatar type or gravatar URLs changes.
-     */
-    useEffect(() => {
-        if (selectedAvatarType === AvatarTypes.SYSTEM_GENERATED) {
-            setOutputURL(SystemGeneratedAvatars.get("Initials"));
-            
-            return;
-        }
-
-        if (selectedAvatarType === AvatarTypes.GRAVATAR && gravatarURLs) {
-            setOutputURL(gravatarURLs.get("Gravatar") ?? gravatarURLs.get("Retro"));
-            
-            return;
-        }
-
-        setOutputURL(hostedURL);
-    }, [ selectedAvatarType, gravatarURLs ]);
-
-    /**
      * Handles selected gravatar email change.
      *
      * @param {React.SyntheticEvent<HTMLElement>} e - Event.
@@ -296,9 +277,16 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
      */
     const handleGravatarEmailDropdownChange = (e: SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
         const { value } = data;
+
         setSelectedGravatarEmail(value as string);
+
         // Once the email selection is changed, switch the selected type to `Gravatar`.
         setSelectedAvatarType(AvatarTypes.GRAVATAR);
+        
+        // Set the default option.
+        if (gravatarURLs) {
+            setOutputURL(gravatarURLs.get("Gravatar") ?? gravatarURLs.get("Retro"));
+        }
     };
 
     /**
@@ -343,8 +331,31 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
      */
     const handleSelectedAvatarTypeChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => {
         const { value } = data;
+
         setSelectedAvatarType(value as AvatarTypes);
+        resolveOutputURLsOnAvatarTypeChange(value as AvatarTypes);
         resolveHostedURLFieldErrors(value as AvatarTypes, isHostedURLValid);
+    };
+
+    /**
+     * Resolves the default option when the avatar type changes.
+     *
+     * @param {AvatarTypes} avatarType - Avatar Type.
+     */
+    const resolveOutputURLsOnAvatarTypeChange = (avatarType: AvatarTypes): void => {
+        if (avatarType === AvatarTypes.SYSTEM_GENERATED) {
+            setOutputURL(SystemGeneratedAvatars.get("Initials"));
+
+            return;
+        }
+
+        if (avatarType === AvatarTypes.GRAVATAR && gravatarURLs) {
+            setOutputURL(gravatarURLs.get("Gravatar") ?? gravatarURLs.get("Retro"));
+
+            return;
+        }
+
+        setOutputURL(hostedURL);
     };
 
     /**
