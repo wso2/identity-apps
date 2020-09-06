@@ -148,7 +148,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userImage: response.data.userImage,
+                // TODO: Validate if necessary.
+                userImage: response.data.userImage || response.data.profileUrl,
                 ...response.data,
                 userName: response.data.userName || ""
             };

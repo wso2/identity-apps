@@ -119,7 +119,8 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userImage: response.data.userImage,
+                // TODO: Validate if necessary.
+                userImage: response.data.userImage || response.data.profileUrl,
                 userName: response.data.userName || "",
                 ...response.data
             };

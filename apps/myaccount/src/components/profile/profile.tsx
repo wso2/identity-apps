@@ -477,18 +477,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      */
     const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
         updateProfileImageURL(url)
-            .then((response) => {
-                if (response.status === 200) {
-                    onAlertFired({
-                        description: t("userPortal:components.profile.notifications.updateProfileInfo.success" +
-                            ".description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("userPortal:components.profile.notifications.updateProfileInfo.success.message")
-                    });
+            .then(() => {
+                onAlertFired({
+                    description: t("userPortal:components.profile.notifications.updateProfileInfo.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("userPortal:components.profile.notifications.updateProfileInfo.success.message")
+                });
 
-                    // Re-fetch the profile information
-                    dispatch(getProfileInformation(true));
-                }
+                // Re-fetch the profile information
+                dispatch(getProfileInformation(true));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
