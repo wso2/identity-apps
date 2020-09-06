@@ -43,4 +43,19 @@ export class ImageUtils {
 
         return !!str.match(pattern);
     }
+
+    /**
+     * Checks if a URL points to a valid image.
+     *
+     * @param {string} url - Image URL.
+     * @param {(isValid: boolean) => void} callback - Reports image validity. 
+     */
+    public static isValidImageURL(url: string, callback: (isValid: boolean) => void): void {
+        const image = new Image();
+
+        image.onload = () => callback(true);
+        image.onerror = () => callback(false);
+
+        image.src = url;
+    }
 }
