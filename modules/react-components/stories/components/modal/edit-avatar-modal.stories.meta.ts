@@ -17,5 +17,17 @@
  *
  */
 
-export * from "./confirmation-modal.stories";
-export * from "./edit-avatar-modal.stories";
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
+
+export const meta: StoryMetaInterface = {
+    components: [ "EditAvatarModal" ],
+    description: "A modal component to be prompted for editing avatars.",
+    stories: [
+        {
+            description: "Basic usage of the modal",
+            title: "Basic Usage"
+        }
+    ],
+    title: `${ StoryCategories.COMPONENTS }/Edit Avatar Modal`
+};

@@ -17,5 +17,14 @@
  *
  */
 
-export * from "./confirmation-modal.stories";
-export * from "./edit-avatar-modal.stories";
+export const getSampleProfileInfo = () => {
+    return {
+        emails: [ "brion@wso2.com", "brionbmp@gmail.com", "mario@gmail.com" ],
+        name: {
+            familyName: "Silva",
+            givenName: "Brion"
+        },
+        profileUrl: "https://avatars3.githubusercontent.com/u/25959096?s=460&v=4",
+        userName: "brion"
+    }
+};
