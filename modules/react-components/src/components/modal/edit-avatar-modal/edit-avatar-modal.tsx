@@ -18,7 +18,7 @@
 
 import { getGravatarImage } from "@wso2is/core/api";
 import { GravatarFallbackTypes, TestableComponentInterface } from "@wso2is/core/models";
-import { ImageUtils, ProfileUtils } from "@wso2is/core/utils";
+import { ImageUtils, ProfileUtils, URLUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, {
     ChangeEvent,
@@ -124,6 +124,10 @@ export interface EditAvatarModalContentI18nInterface {
         heading: ReactNode;
         input: {
             errors: {
+                http: {
+                    header: ReactNode;
+                    content: ReactNode;
+                };
                 invalid: {
                     content: string;
                     pointing: string;
@@ -131,6 +135,12 @@ export interface EditAvatarModalContentI18nInterface {
             };
             placeholder: string;
             hint: string;
+            warnings: {
+                dataURL: {
+                    header: ReactNode;
+                    content: ReactNode;
+                };
+            };
         };
     };
     systemGenAvatars: {
@@ -401,6 +411,42 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         )
     };
 
+    /**
+     * Resolves hosted URL validation message.
+     * @return {React.ReactElement}
+     */
+    const resolveHostedURLMessage = (): ReactElement => {
+        if (isHostedURLValidationRequestLoading || customHostedURLError || !customHostedURL) {
+            return null;
+        }
+
+        if (URLUtils.isHttpUrl(customHostedURL)) {
+            return (
+                <Message
+                    warning
+                    visible
+                    size="tiny"
+                    header={ translations.hostedAvatar.input.errors.http.header }
+                    content={ translations.hostedAvatar.input.errors.http.content }
+                />
+            );
+        }
+
+        if (URLUtils.isDataUrl(customHostedURL)) {
+            return (
+                <Message
+                    warning
+                    visible
+                    size="tiny"
+                    header={ translations.hostedAvatar.input.warnings.dataURL.header }
+                    content={ translations.hostedAvatar.input.warnings.dataURL.content }
+                />
+            );
+        }
+
+        return null;
+    };
+
     return (
         <Modal
             data-testid={ testId }
@@ -504,20 +550,25 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                 </Grid.Row>
                             ) 
                         }
+                        <Grid.Row className="pb-0">
+                            <Grid.Column width={ 16 }>
+                                <div className="avatar-from-url-label">
+                                    <Form.Field>
+                                        <Checkbox
+                                            radio
+                                            value={ AvatarTypes.URL }
+                                            label={ translations.hostedAvatar.heading }
+                                            checked={ selectedAvatarType === AvatarTypes.URL }
+                                            onChange={ handleSelectedAvatarTypeChange }
+                                        />
+                                    </Form.Field>
+                                    { resolveHostedURLMessage() }
+                                </div>
+                            </Grid.Column>
+                        </Grid.Row>
                         <Grid.Row>
                             <Grid.Column computer={ 10 } tablet={ 10 } mobile={ 16 }>
-                                <div className="avatar-from-url">
-                                    <div className="mb-3">
-                                        <Form.Field>
-                                            <Checkbox
-                                                radio
-                                                value={ AvatarTypes.URL }
-                                                label={ translations.hostedAvatar.heading }
-                                                checked={ selectedAvatarType === AvatarTypes.URL }
-                                                onChange={ handleSelectedAvatarTypeChange }
-                                            />
-                                        </Form.Field>
-                                    </div>
+                                <div className="avatar-from-url-field">
                                     <Form.Field
                                         fluid
                                         control={ Input }
@@ -527,8 +578,8 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         error={ customHostedURLError }
                                         loading={ isHostedURLValidationRequestLoading }
                                     />
-                                    <Hint>{ translations.hostedAvatar.input.hint }</Hint>
                                 </div>
+                                <Hint>{ translations.hostedAvatar.input.hint }</Hint>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
@@ -578,13 +629,25 @@ EditAvatarModal.defaultProps = {
             heading: "Hosted Image",
             input: {
                 errors: {
+                    http: {
+                        content: "The selected URL points to an insecure image served over HTTP. " +
+                            "Please proceed with caution.",
+                        header: "Insecure Content!"
+                    },
                     invalid: {
                         content: "Please enter a valid image URL",
                         pointing: "above"
                     }
                 },
                 hint: "Enter a valid image URL which is hosted on a third party location.",
-                placeholder: "Enter URL for the image."
+                placeholder: "Enter URL for the image.",
+                warnings: {
+                    dataURL: {
+                        content: "Using Data URLs with large character count might result in database issues. " +
+                            "Proceed with caution.",
+                        header: "Double check the entered Data URL!"
+                    }
+                }
             }
         },
         systemGenAvatars: {
