@@ -92,6 +92,18 @@
         background-repeat: no-repeat;
         background-size: 100%;
     }
+    
+    .inner-content {
+        // Stretch out non square images to fill the spaces. 
+        .inner-image {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: auto;
+            max-width: max-content;
+            left: 0;
+        }
+    }
 }
 
 /*-------------------------------
