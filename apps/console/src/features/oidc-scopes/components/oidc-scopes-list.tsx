@@ -29,14 +29,22 @@ import {
     AnimatedAvatar,
     ConfirmationModal,
     DataTable,
-    TableActionsInterface
+    TableActionsInterface,
+    EmptyPlaceholder,
+    PrimaryButton,
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { Icon, ListItemProps, Header, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
-import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EmptyPlaceholderIllustrations,
+    history
+} from "../../core";
 import { deleteOIDCScope } from "../api";
 import { OIDCScopesListInterface } from "../models";
 
@@ -112,8 +120,6 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         onScopeDelete,
         onListItemClick,
         onEmptyListPlaceholderActionClick,
-        onSearchQueryClear,
-        searchQuery,
         selection,
         showListItemActions,
         [ "data-testid" ]: testId
@@ -122,8 +128,6 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingScope, setDeletingScope ] = useState<OIDCScopesListInterface>(undefined);
@@ -185,7 +189,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
      *
      * @return {TableActionsInterface[]} Resolved list actions.
      */
-    const resolveListActions = (): TableActionsInterface[] => {
+    const resolveListActions = (scope: OIDCScopesListInterface): TableActionsInterface[] => {
         if (!showListItemActions) {
             return;
         }
@@ -219,6 +223,36 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         return actions;
     };
 
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        if (list instanceof Array && list?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ onEmptyListPlaceholderActionClick && (
+                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                            <Icon name="add"/>
+                            { t("devPortal:components.oidcScopes.placeholders.emptyList.action") }
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations?.newList }
+                    imageSize="tiny"
+                    title={ t("devPortal:components.oidcScopes.placeholders.emptyList.title") }
+                    subtitle={ [
+                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.0"),
+                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.1"),
+                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.2")
+                    ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
+                />
+            );
+        }
+
+        return null;
+    };
 
     return (
         <>
