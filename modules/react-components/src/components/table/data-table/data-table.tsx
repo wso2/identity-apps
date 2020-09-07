@@ -161,15 +161,11 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
 /**
  * Table Data Strict Interface.
  */
-export interface StrictDataPropsInterface<T = {}> {
+export interface StrictDataPropsInterface {
     /**
      * key prop for React.
      */
     key?: string | number;
-    /**
-     * The row value of the entry. Used for callbacks like onClick etc.
-     */
-    value?: T;
     /**
      * Props for the UI component.
      */
@@ -191,9 +187,15 @@ export interface DataRendererPropsInterface {
 }
 
 /**
+ * Table Data Interface.
+ */
+export interface TableDataInterface<T = {}> extends StrictDataPropsInterface, DynamicTableDataInterface,
+    DataTableCellPropsInterface { }
+
+/**
  * Table Data Dynamic Interface.
  */
-export interface TableDataInterface<T = {}> extends StrictDataPropsInterface<T>, DataTableCellPropsInterface {
+export interface DynamicTableDataInterface {
     [ key: string ]: any;
 }
 
@@ -225,12 +227,21 @@ export interface StrictColumnPropsInterface {
      * Index to find relevant data.
      */
     dataIndex: string | "action";
+    /**
+     * Give column render control to outside.
+     */
+    render?: (item: TableDataInterface) => ReactElement;
 }
+
+/**
+ * Table Column Interface.
+ */
+export interface TableColumnInterface extends StrictColumnPropsInterface, DynamicTableColumnInterface { }
 
 /**
  * Table Column Dynamic Interface.
  */
-export interface TableColumnInterface extends StrictColumnPropsInterface {
+export interface DynamicTableColumnInterface {
     [ key: string ]: any;
 }
 
@@ -740,7 +751,8 @@ export const DataTable = <T extends object = {}>(
                                                             const {
                                                                 textAlign: columnTextAlign,
                                                                 width: columnWidth,
-                                                                hidden: columnHidden
+                                                                hidden: columnHidden,
+                                                                render: columnRenderer
                                                             } = column;
 
                                                             if (columnHidden) {
@@ -755,7 +767,11 @@ export const DataTable = <T extends object = {}>(
                                                                     { ...cellUIProps }
                                                                     { ...cellUIPropOverrides }
                                                                 >
-                                                                    { renderCell(item, column) }
+                                                                    {
+                                                                        columnRenderer
+                                                                            ? columnRenderer(item)
+                                                                            : renderCell(item, column)
+                                                                    }
                                                                 </DataTable.Cell>
                                                             )
                                                         })

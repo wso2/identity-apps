@@ -57,35 +57,26 @@ export const BasicUsage = (): ReactElement => (
                 renderer: "semantic-icon"
             }
         ] }
-        data={
-            DEMO_DATA_LIST.map((item: DataTableDemoDataInterface, index: number) => {
-                return {
-                    clientId: <Label>{ item.clientId }</Label>,
-                    id: item.clientId,
-                    key: index,
-                    name: (
-                        <Header as="h6" image>
-                            <AppAvatar
-                                name={ item.name }
-                                image={ item.imageUrl }
-                                size="mini"
-                            />
-                            <Header.Content>
-                                { item.name }
-                                <Header.Subheader>{ item.description }</Header.Subheader>
-                            </Header.Content>
-                        </Header>
-                    ),
-                    value: item
-                }
-            })
-        }
+        data={ DEMO_DATA_LIST }
         columns={ [
             {
                 allowToggleVisibility: false,
                 dataIndex: "name",
                 id: "name",
                 key: 0,
+                render: (item) => (
+                    <Header as="h6" image>
+                        <AppAvatar
+                            name={ item.name }
+                            image={ item.imageUrl }
+                            size="mini"
+                        />
+                        <Header.Content>
+                            { item.name }
+                            <Header.Subheader>{ item.description }</Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
                 title: "Name"
             },
             {
@@ -93,6 +84,9 @@ export const BasicUsage = (): ReactElement => (
                 dataIndex: "clientId",
                 id: "clientId",
                 key: 1,
+                render: (item) => (
+                    <Label>{ item.clientId }</Label>
+                ),
                 title: "Client ID"
             },
             {
@@ -149,31 +143,7 @@ export const WithOperationsBar = (): ReactElement => (
                 renderer: "semantic-icon"
             }
         ] }
-        data={
-            DEMO_DATA_LIST.map((item: DataTableDemoDataInterface, index: number) => {
-                return {
-                    clientId: <Label>{ item.clientId }</Label>,
-                    id: item.clientId,
-                    key: index,
-                    name: (
-                        <Header as="h6" image>
-                            <AppAvatar
-                                name={ item.name }
-                                image={ item.imageUrl }
-                                size="mini"
-                            />
-                            <Header.Content>
-                                { item.name }
-                                <Header.Subheader>
-                                    { item.description }
-                                </Header.Subheader>
-                            </Header.Content>
-                        </Header>
-                    ),
-                    value: item
-                }
-            })
-        }
+        data={ DEMO_DATA_LIST }
         externalSearch={
             <AdvancedSearch
                 aligned="left"
@@ -261,13 +231,29 @@ export const WithOperationsBar = (): ReactElement => (
                 dataIndex: "name",
                 id: "name",
                 key: 0,
+                render: (item) => (
+                    <Header as="h6" image>
+                        <AppAvatar
+                            name={ item.name }
+                            image={ item.imageUrl }
+                            size="mini"
+                        />
+                        <Header.Content>
+                            { item.name }
+                            <Header.Subheader>{ item.description }</Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
                 title: "Name"
             },
             {
-                allowToggleVisibility: true,
+                allowToggleVisibility: false,
                 dataIndex: "clientId",
                 id: "clientId",
                 key: 1,
+                render: (item) => (
+                    <Label>{ item.clientId }</Label>
+                ),
                 title: "Client ID"
             },
             {
