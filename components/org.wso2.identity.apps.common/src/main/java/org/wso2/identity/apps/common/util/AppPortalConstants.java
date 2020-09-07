@@ -42,8 +42,10 @@ public class AppPortalConstants {
      */
     public enum AppPortal {
 
-        MY_ACCOUNT("My Account", "This is the my account application.", "MY_ACCOUNT", "/myaccount/login"),
-        CONSOLE("Console", "This is the console application.", "CONSOLE", "/console/login");
+        MY_ACCOUNT("My Account", "This is the my account application.", "MY_ACCOUNT", "/myaccount/login",
+                "/myaccount/"),
+        CONSOLE("Console", "This is the console application.", "CONSOLE", "/console/login",
+                "/console/");
 
         private final String name;
 
@@ -53,12 +55,15 @@ public class AppPortalConstants {
 
         private final String path;
 
-        AppPortal(String name, String description, String consumerKey, String path) {
+        private final String endpoint;
+
+        AppPortal(String name, String description, String consumerKey, String path, String endpoint) {
 
             this.name = name;
             this.description = description;
             this.consumerKey = consumerKey;
             this.path = path;
+            this.endpoint = endpoint;
         }
 
         public String getName() {
@@ -79,6 +84,10 @@ public class AppPortalConstants {
         public String getPath() {
 
             return path;
+        }
+
+        public String getEndpoint() {
+            return endpoint;
         }
     }
 }
