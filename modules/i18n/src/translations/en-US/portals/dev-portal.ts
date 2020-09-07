@@ -2847,6 +2847,17 @@ export const devPortal: DevPortalNS = {
                     }
                 }
             },
+            placeholders:{
+                emptyList: {
+                    action: "New OIDC Scope",
+                    subtitles: {
+                        0: "Currently there are no OIDC scopes.",
+                        1: "You can add a new OIDC scope easily by following the",
+                        2: "steps in the creation wizard."
+                    },
+                    title: "Add a new OIDC Scope"
+                }
+            },
             wizards: {
                 addScopeWizard: {
                     buttons: {
