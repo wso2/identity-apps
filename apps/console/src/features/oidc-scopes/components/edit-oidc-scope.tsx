@@ -221,8 +221,8 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                             scope?.claims?.length > 0 ? (
                                 <Segment.Group fluid>
                                     <Segment
-                                        data-testid="user-mgt-roles-list"
-                                        className="user-role-edit-header-segment"
+                                        data-testid="scope-attributes-list"
+                                        className="oidc-scopes-attributes-list-segment"
                                     >
                                         <Grid.Row>
                                             <Grid.Column>

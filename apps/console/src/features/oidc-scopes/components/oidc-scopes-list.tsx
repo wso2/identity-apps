@@ -31,17 +31,16 @@ import {
     DataTable,
     TableActionsInterface,
     EmptyPlaceholder,
-    PrimaryButton,
+    PrimaryButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, ListItemProps, Header, SemanticICONS } from "semantic-ui-react";
+import { Icon, Header, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
 import {
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EmptyPlaceholderIllustrations,
     history
 } from "../../core";
@@ -189,7 +188,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
      *
      * @return {TableActionsInterface[]} Resolved list actions.
      */
-    const resolveListActions = (scope: OIDCScopesListInterface): TableActionsInterface[] => {
+    const resolveListActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
             return;
         }
@@ -320,6 +319,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         onListItemClick(e, scope);
                     }
                 }
+                placeholders={ showPlaceholders() }
                 selectable={ selection }
                 showHeader={ false }
                 data-testid={ testId }
