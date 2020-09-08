@@ -152,10 +152,22 @@ const RolesPage = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-            { text: "All user stores", key: -2, value: null },
-            { text: "Primary", key: -1, value: "primary" }
+            {
+                key: -2,
+                text: "All user stores",
+                value: null
+            },
+            {
+                key: -1,
+                text: "Primary",
+                value: "primary"
+            }
         ];
-        let storeOption = { text: "", key: null, value: "" };
+        let storeOption = {
+            key: null,
+            text: "",
+            value: ""
+        };
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -190,11 +202,9 @@ const RolesPage = (): ReactElement => {
 
     const searchRoleListHandler = (searchQuery: string) => {
         const searchData: SearchRoleInterface = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-            ],
-            startIndex: 1,
-            filter: searchQuery
+            filter: searchQuery,
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:SearchRequest"],
+            startIndex: 1
         };
 
         setSearchQuery(searchQuery);
@@ -234,10 +244,6 @@ const RolesPage = (): ReactElement => {
             Resources: roleList?.Resources?.slice(offsetValue, itemLimit + offsetValue)
         };
         setPaginatedRoles(updatedData);
-    };
-
-    const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setUserStore(data.value as string);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {

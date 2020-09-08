@@ -33,7 +33,6 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<RolesInterface>();
-    const [ isGroup, setIsGroup ] = useState<boolean>(false);
     const [ isRoleDetailsRequestLoading, setIsRoleDetailsRequestLoading ] = useState<boolean>(false);
 
     const getRoleDetails = (roleId: string ): void => {
@@ -70,7 +69,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     const handleBackButtonClick = () => {
         history.push(AppConstants.PATHS.get("ROLES"));
     };
-    
+
     return (
         <PageLayout
             isLoading={ isRoleDetailsRequestLoading }

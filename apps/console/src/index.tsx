@@ -32,7 +32,7 @@ import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
-import { Config, HttpUtils, UIConstants, store } from "./features/core";
+import { Config, UIConstants, store } from "./features/core";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());

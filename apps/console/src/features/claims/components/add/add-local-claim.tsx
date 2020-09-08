@@ -88,9 +88,11 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         addLocalClaim(data).then(() => {
             dispatch(addAlert(
                 {
-                    description: t("adminPortal:components.claims.local.notifications.addLocalClaim.success.description"),
+                    description: t("adminPortal:components.claims.local.notifications." +
+                        "addLocalClaim.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.local.notifications.addLocalClaim.success.message")
+                    message: t("adminPortal:components.claims.local.notifications." +
+                        "addLocalClaim.success.message")
                 }
             ));
             onClose();
@@ -99,7 +101,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             dispatch(addAlert(
                 {
                     description: error?.description
-                        || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.description"),
+                        || t("adminPortal:components.claims.local.notifications." +
+                            "addLocalClaim.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.message
                         || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
@@ -110,7 +113,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     /**
      * Handler that is called when the `Basic Details` wizard step is completed
-     * @param {Claim} dataFromForm 
+     * @param {Claim} dataFromForm
      * @param {Map<string, FormValue>} values
      */
     const onSubmitBasicDetails = (dataFromForm: Claim, values: Map<string, FormValue>) => {
@@ -122,8 +125,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     /**
      * Handler that is called when the `Mapped Attributes` step of the wizard is completed
-     * @param {Claim} dataFromForm 
-     * @param {KeyValue[]} values 
+     * @param {Claim} dataFromForm
+     * @param {KeyValue[]} values
      */
     const onSubmitMappedAttributes = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         setCurrentWizardStep(2);
@@ -274,4 +277,3 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 AddLocalClaims.defaultProps = {
     "data-testid": "add-local-claims-wizard"
 };
-

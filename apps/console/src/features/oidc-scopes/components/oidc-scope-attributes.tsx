@@ -338,4 +338,3 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         </Modal>
     )
 };
-

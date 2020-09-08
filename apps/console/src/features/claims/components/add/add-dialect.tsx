@@ -49,9 +49,9 @@ interface AddDialectPropsInterface extends TestableComponentInterface {
 
 /**
  * A component that lets you add a dialect.
- * 
+ *
  * @param {AddDialectPropsInterface} props - Props injected to the component.
- * 
+ *
  * @return {React.ReactElement} component.
  */
 export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
@@ -88,7 +88,8 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
             });
             Promise.all(externalClaimPromises).then(() => {
                 dispatch(addAlert({
-                    description: t("adminPortal:components.claims.dialects.notifications.addDialect.success.description"),
+                    description: t("adminPortal:components.claims.dialects.notifications." +
+                        "addDialect.success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t("adminPortal:components.claims.dialects.notifications.addDialect.success.message")
                 }))
@@ -118,7 +119,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
     /**
      * Handler that is called when the `Dialect Details` wizard step is completed.
-     * 
+     *
      * @param {Map<string, FormValue>} values Form values.
      */
     const onSubmitDialectDetails = (values: Map<string, FormValue>): void => {
@@ -128,7 +129,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
     /**
      * Handler that is called when the `Add External CLaims` step of the wizard is completed.
-     * 
+     *
      * @param {AddExternalClaim[]} claims - Claim Values.
      */
     const onSubmitExternalClaims = (claims: AddExternalClaim[]): void => {

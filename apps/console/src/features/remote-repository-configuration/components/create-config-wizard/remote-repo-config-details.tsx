@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 
 interface RemoteRepoConfigDetailsProps extends TestableComponentInterface {
@@ -31,22 +30,20 @@ export const RemoteRepoConfigDetails: FunctionComponent<RemoteRepoConfigDetailsP
     props: RemoteRepoConfigDetailsProps
 ): ReactElement => {
 
-    const { t } = useTranslation();
-
     const { onSubmit, triggerSubmit } = props;
 
     const [ isEnabled, setIsEnabled ] = useState<boolean>(false);
 
     const getFormValues = (values: any): any => {
         return {
-            configName: values.get("configName").toString(),
+            accessToken: values.get("accessToken").toString(),
             configEnabled: isEnabled,
-            gitUrl: values.get("gitURL").toString(),
+            configName: values.get("configName").toString(),
             gitBranch: values.get("gitBranch").toString(),
             gitDirectory: values.get("gitDirectory").toString(),
-            accessToken: values.get("accessToken").toString(),
-            userName: values.get("userName").toString(),
-            pollingfreq: parseInt(values.get("pollingFreq").toString())
+            gitUrl: values.get("gitURL").toString(),
+            pollingfreq: parseInt(values.get("pollingFreq").toString()),
+            userName: values.get("userName").toString()
         };
     };
 

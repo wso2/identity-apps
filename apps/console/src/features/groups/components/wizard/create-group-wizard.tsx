@@ -207,22 +207,16 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 }
 
                 const roleData = {
-                    "schemas": [
-                        "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-                    ],
-                    "Operations": [
-                        {
-                            "op": "add",
-                            "value": {
-                                "groups": [
-                                    {
-                                        "display": createdGroup.displayName,
-                                        "value": createdGroup.id
-                                    }
-                                ]
-                            }
+                    "Operations": [{
+                        "op": "add",
+                        "value": {
+                            "groups": [{
+                                "display": createdGroup.displayName,
+                                "value": createdGroup.id
+                            }]
                         }
-                    ]
+                    }],
+                    "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
                 };
 
                 if (rolesList && rolesList.length > 0) {

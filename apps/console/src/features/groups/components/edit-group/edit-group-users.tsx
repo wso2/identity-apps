@@ -52,7 +52,6 @@ interface GroupUsersListProps extends TestableComponentInterface {
 
 export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: GroupUsersListProps): ReactElement => {
     const {
-        isGroup,
         isReadOnly,
         group,
         onGroupUpdate,
@@ -263,15 +262,13 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         }
 
         const groupData: PatchGroupDataInterface = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ],
             Operations: [{
                 "op": "replace",
                 "value": {
                     "members": newUsers
                 }
-            }]
+            }],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
         updateGroupDetails(group.id, groupData)

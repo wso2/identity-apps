@@ -30,7 +30,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import {
     AppConstants,
@@ -125,7 +125,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
 
     const { t } = useTranslation();
-    
+
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
      *

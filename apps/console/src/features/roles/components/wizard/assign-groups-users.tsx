@@ -19,7 +19,6 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
-import { useTranslation } from "react-i18next";
 import { AddRoleUsers } from "./role-user-assign";
 import { AssignGroups } from "../../../core";
 
@@ -68,7 +67,11 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
 
     const panes = () => ([
         {
-            menuItem: { key: "groups", icon: "group", content: "Groups" },
+            menuItem: {
+                content: "Groups",
+                icon: "group",
+                key: "groups"
+            },
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <AssignGroups
@@ -84,7 +87,11 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
             )
         },
         {
-            menuItem: { key: "users", icon: "user", content: "Users" },
+            menuItem: {
+                content: "Users",
+                icon: "user",
+                key: "users"
+            },
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <AddRoleUsers

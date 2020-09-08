@@ -166,18 +166,15 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     /**
      * Method to update role name for the selected role.
      *
-     * @param values Form values which will be used to update the role
      */
-    const updateRoleName = (values: any): void => {
+    const updateRoleName = (): void => {
         const roleData: PatchRoleDataInterface = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ],
             Operations: [{
                 "op": "replace",
                 "path": "displayName",
                 "value": labelText ? labelText + "/" + nameValue : nameValue
-            }]
+            }],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
         if (isGroup || isGroupAndRoleSeparationEnabled) {

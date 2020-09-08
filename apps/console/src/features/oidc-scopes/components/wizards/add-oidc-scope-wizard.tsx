@@ -88,8 +88,6 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
     const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
     const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
     const [ filterSelectedClaims, setFilterSelectedClaims ] = useState<ExternalClaim[]>([]);
-    const [ selectedClaims, setSelectedClaims ] = useState<ExternalClaim[]>([]);
-    const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
 
     useEffect(() => {

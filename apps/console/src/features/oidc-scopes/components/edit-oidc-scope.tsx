@@ -150,9 +150,9 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const updateOIDCScope = (attributes: string[]): void => {
         const data: OIDCScopesListInterface = {
-            displayName: scope.displayName,
             claims: attributes,
-            description: ""
+            description: "",
+            displayName: scope.displayName
         };
 
         updateOIDCScopeDetails(scope.name, data)

@@ -74,17 +74,6 @@ interface UserRolesPropsInterface {
     isGroupAndRoleSeparationEnabled?: boolean;
 }
 
-/**
- * Enum for role types.
- * @readonly
- * @enum { string }
- */
-enum RoleTypes {
-    APPLICATION = "Application",
-    INTERNAL= "Internal",
-    PRIMARY = "Primary"
-}
-
 export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     props: UserRolesPropsInterface
 ): ReactElement => {
@@ -255,47 +244,39 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "remove",
-                        "path": "users",
-                        "value": [
-                            {
-                                "value": user.id
-                            }
-                        ]
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "remove",
+                    "path": "users",
+                    "value": [{
+                        "value": user.id
+                    }]
+                }]
+            },
+            method: "PATCH"
         };
 
         let addOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "add",
-                        "path": "users",
-                        "value": [
-                            {
-                                "value": user.id
-                            }
-                        ]
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "add",
+                    "path": "users",
+                    "value": [{
+                        "value": user.id
+                    }]
+                }]
+            },
+            method: "PATCH"
         };
 
         const removeOperations = [];
@@ -570,9 +551,17 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const role = roleName?.split("/");
         if (role.length > 0) {
             if (role[0] == "Application") {
-                return { labelText: "Application", labelColor: null, name: "application-label" };
+                return {
+                    labelColor: null,
+                    labelText: "Application",
+                    name: "application-label"
+                };
             } else {
-                return { labelText: "Internal", labelColor: null, name: "internal-label" };
+                return {
+                    labelColor: null,
+                    labelText: "Internal",
+                    name: "internal-label"
+                };
             }
         }
     };

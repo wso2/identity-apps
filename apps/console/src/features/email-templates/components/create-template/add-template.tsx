@@ -21,10 +21,10 @@ import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { AxiosError, AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Dropdown, DropdownItemProps, DropdownProps, Form, Grid } from "semantic-ui-react";
+import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
 import { EmailTemplate, EmailTemplateType } from "../../models";
@@ -115,7 +115,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
 
     /**
      * Util method to handle create template based on the form data captured.
-     * 
+     *
      * @param values - values from the form submit
      */
     const createTemplate = (values: Map<string, FormValue>) => {
@@ -155,7 +155,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
     /**
      * Util method to handle update/replace content in template based on the form data
      * captured.
-     * 
+     *
      * @param values - values from the form submit
      */
     const updateTemplate = (values: Map<string, FormValue>) => {
@@ -191,7 +191,7 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
     };
 
     return (
-        <Forms 
+        <Forms
             onSubmit={ (values: Map<string, FormValue>) => {
                 if (templateId === "") {
                     createTemplate(values)
@@ -270,8 +270,8 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                             <label>
                                 { t("adminPortal:components.emailLocale.forms.addLocale.fields.bodyEditor.label") }
                             </label>
-                            <EmailTemplateEditor 
-                                htmlContent={ htmlBodyContent } 
+                            <EmailTemplateEditor
+                                htmlContent={ htmlBodyContent }
                                 isReadOnly={ false }
                                 isSignature
                                 isAddFlow={ templateId === "" }
@@ -288,8 +288,8 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                                 { t("adminPortal:components.emailLocale.forms.addLocale.fields.signatureEditor" +
                                     ".label") }
                             </label>
-                            <EmailTemplateEditor 
-                                htmlContent={ htmlFooterContent } 
+                            <EmailTemplateEditor
+                                htmlContent={ htmlFooterContent }
                                 isReadOnly={ false }
                                 isSignature={ false }
                                 isAddFlow={ templateId === "" }
