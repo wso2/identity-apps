@@ -89,6 +89,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
     const [ allowedOrigins, setAllowedOrigins ] = useState("");
+    const [
+        isTokenBindingTypeSelected,
+        setIsTokenBindingTypeSelected
+    ] = useState<boolean>(false);
+
+    /**
+     * Sets if a valid token binding type is selected.
+     */
+    useEffect(() => {
+        if (initialValues.accessToken.bindingType !== "None") {
+            setIsTokenBindingTypeSelected(true);
+        }
+    }, [ initialValues.accessToken.bindingType ]);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -225,6 +238,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
+                revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
+                // TODO: Enable this when the rest API is improved.
+                // tokenBindingValidation: values.get("ValidateBinding")?.length > 0,
                 type: values.get("type"),
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
             },
@@ -310,6 +326,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 setShowURLError(true);
                             } else {
                                 submitOrigin((origin) => {
+                                    // TODO: Remove the empty check when the backend is fixed.
                                     if (isEmpty(allowedOrigins) && isEmpty(origin)) {
                                         setShowOriginError(true);
                                     } else {
@@ -734,9 +751,76 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     children={ getAllowedList(metadata.accessTokenBindingType, true) }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-access-token-type-radio-group` }
+                                    listen={ (values) => {
+                                        setIsTokenBindingTypeSelected(values.get("bindingType") !== "None")
+                                    } }
                                 />
                             </Grid.Column>
                         </Grid.Row>
+                        {
+                            isTokenBindingTypeSelected && (
+                                <>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                                            <Field
+                                                name="ValidateBinding"
+                                                label=""
+                                                required={ false }
+                                                requiredErrorMessage=""
+                                                type="checkbox"
+                                                value={
+                                                    initialValues.accessToken?.tokenBindingValidation
+                                                        ? [ "validateBinding" ]
+                                                        : []
+                                                }
+                                                children={ [
+                                                    {
+                                                        label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                            ".sections.accessToken.fields.validateBinding.label"),
+                                                        value: "validateBinding"
+                                                    }
+                                                ] }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
+                                            />
+                                            <Hint>
+                                                { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                                    ".accessToken.fields.validateBinding.hint") }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                    <Grid.Row columns={ 1 }>
+                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                                            <Field
+                                                name="RevokeAccessToken"
+                                                label=""
+                                                required={ false }
+                                                requiredErrorMessage=""
+                                                type="checkbox"
+                                                value={
+                                                    initialValues.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                                        ? [ "revokeAccessToken" ]
+                                                        : []
+                                                }
+                                                children={ [
+                                                    {
+                                                        label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                            ".sections.accessToken.fields.revokeToken.label"),
+                                                        value: "revokeAccessToken"
+                                                    }
+                                                ] }
+                                                readOnly={ readOnly }
+                                                data-testid={ `${ testId }-access-token-revoke-token-checkbox` }
+                                            />
+                                            <Hint>
+                                                { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                                    ".accessToken.fields.revokeToken.hint") }
+                                            </Hint>
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </>
+                            )
+                        }
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
