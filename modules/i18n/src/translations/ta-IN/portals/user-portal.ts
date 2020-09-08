@@ -1233,7 +1233,7 @@ export const userPortal: UserPortalNS = {
                             header: "பொருந்தக்கூடிய Gravatar படம் எதுவும் கிடைக்கவில்லை!"
                         }
                     },
-                    heading: "கிராவதரை அடிப்படையாகக் கொண்டது "
+                    heading: "Gravatarஐ அடிப்படையாகக் கொண்டது "
                 },
                 hostedAvatar: {
                     heading: "ஹோஸ்ட் செய்யப்பட்ட படம்",
