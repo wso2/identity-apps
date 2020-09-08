@@ -17,15 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Heading, Hint, PrimaryButton, SecondaryButton } from "@wso2is/react-components";
+import { Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Grid, Header } from "semantic-ui-react";
+import { Divider, Grid } from "semantic-ui-react";
 import { OIDCConfigurations } from "./oidc-configurations";
 import { SAMLConfigurations } from "./saml-configurations";
 import { AppState } from "../../../core";
-import { ApplicationManagementConstants } from "../../constants";
 import {
     InboundProtocolListItemInterface,
     OIDCApplicationConfigurationInterface,
@@ -59,7 +58,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
         (state: AppState) => state.application.samlConfigurations);
     const { t } = useTranslation();
 
-    const { applicationType, inboundProtocols, handleTabChange } = props;
+    const { inboundProtocols } = props;
 
     const [ isOIDC, setIsOIDC ] = useState<boolean>(false);
     const [ isSAML, setIsSAML ] = useState<boolean>(false);
