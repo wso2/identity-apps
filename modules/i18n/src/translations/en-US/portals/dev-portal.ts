@@ -804,8 +804,17 @@ export const devPortal: DevPortalNS = {
                                         empty: "Please fill the user access token expiry time"
                                     }
                                 },
+                                revokeToken: {
+                                    hint: "Allow to revoke tokens of this application when a bound IDP session " +
+                                        "gets terminated",
+                                    label: "Revoke tokens when the IDP session terminates"
+                                },
                                 type: {
                                     label: "Token type"
+                                },
+                                validateBinding: {
+                                    hint: "Enable token binding validation during the API invocations",
+                                    label: "Validate token bindings"
                                 }
                             },
                             heading: "Access Token",

@@ -58,6 +58,8 @@ export interface OIDCMetadataInterface {
     scopeValidators?: MetadataPropertyInterface;
     accessTokenType?: MetadataPropertyInterface;
     accessTokenBindingType?: MetadataPropertyInterface;
+    accessTokenBindingValidation?: boolean;
+    revokeTokensWhenIDPSessionTerminated?: boolean;
 }
 
 export enum State {
@@ -75,6 +77,8 @@ interface AccessTokenConfigurationInterface {
     userAccessTokenExpiryInSeconds?: number;
     applicationAccessTokenExpiryInSeconds?: number;
     bindingType?: string;
+    revokeTokensWhenIDPSessionTerminated?: boolean;
+    tokenBindingValidation?: boolean;
 }
 
 interface RefreshTokenConfigurationInterface {
