@@ -1491,8 +1491,8 @@ export const adminPortal: AdminPortalNS = {
                     basic: "Basics",
                     groups: "Groups",
                     permissions: "Permissions",
-                    users: "Users",
-                    roles: "Roles"
+                    roles: "Roles",
+                    users: "Users"
                 },
                 users: {
                     list: {
@@ -2206,8 +2206,10 @@ export const adminPortal: AdminPortalNS = {
                 metaColumnBtn: "Columns"
             },
             list: {
-                actions: "Actions",
-                name: "Name"
+                columns: {
+                    actions: "Actions",
+                    name: "Name"
+                }
             },
             notifications: {
                 addUser: {

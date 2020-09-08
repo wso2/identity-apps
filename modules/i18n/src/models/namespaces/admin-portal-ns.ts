@@ -1382,9 +1382,11 @@ export interface AdminPortalNS {
                 assignUserRoleBtn: string;
                 metaColumnBtn: string;
             };
-            columns: {
-                actions: string;
-                name: string;
+            list: {
+                columns: {
+                    actions: string;
+                    name: string;
+                };
             };
             notifications: {
                 addUser: Notification;
