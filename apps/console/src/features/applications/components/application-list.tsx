@@ -41,7 +41,6 @@ import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     UIConstants,
@@ -136,7 +135,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const dispatch = useDispatch();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.templates);
 
@@ -229,7 +227,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (e: SyntheticEvent, { value: app }: { value: ApplicationListItemInterface }): void => 
+                onClick: (e: SyntheticEvent, { value: app }: { value: ApplicationListItemInterface }): void =>
                     handleApplicationEdit(app?.id),
                 popupText: (): string => t("common:edit"),
                 renderer: "semantic-icon"
