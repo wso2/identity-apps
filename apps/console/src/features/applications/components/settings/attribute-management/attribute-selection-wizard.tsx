@@ -55,7 +55,6 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
 
     const {
         selectedClaims,
-        setSelectedClaims,
         showAddModal,
         setShowAddModal,
         availableClaims,
@@ -76,19 +75,6 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     const [checkedAssignedListItems, setCheckedAssignedListItems] = useState<ExtendedClaimInterface[]>([]);
     const [isSelectUnassignedClaimsAllClaimsChecked, setSelectUnassignedClaimsAllClaimsChecked] = useState(false);
     const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState(false);
-
-
-    const getClaimName = (claimURI: string): string => {
-        if (typeof claimURI === "string") {
-            const claimArray = claimURI.split("/");
-            if (claimArray.length > 1) {
-                return claimArray[claimArray.length - 1];
-            } else {
-                return claimArray[0];
-            }
-        }
-        return claimURI;
-    };
 
     const handleAttributeModal = () => {
         setShowAddModal(false);
