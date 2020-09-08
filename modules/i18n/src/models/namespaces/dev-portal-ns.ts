@@ -470,6 +470,8 @@ export interface DevPortalNS {
                                 bindingType: FormAttributes;
                                 expiry: FormAttributes;
                                 type: FormAttributes;
+                                revokeToken: FormAttributes;
+                                validateBinding: FormAttributes;
                             };
                         };
                         idToken: {
