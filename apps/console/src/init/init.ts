@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the "License"); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AppUtils } from "./app-utils";
 import "core-js/stable";
@@ -45,8 +45,9 @@ function getRandomPKCEChallenge() {
 
 function sendPromptNoneRequest() {
     const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
-    const promptNoneIFrame: HTMLIFrameElement
-        = rpIFrame.contentWindow.document.getElementById("promptNoneIFrame") as HTMLIFrameElement;
+    const promptNoneIFrame: HTMLIFrameElement = rpIFrame.contentWindow.document.getElementById(
+        "promptNoneIFrame"
+    ) as HTMLIFrameElement;
     const config = window.parent["AppUtils"].getConfig();
     promptNoneIFrame.src =
         sessionStorage.getItem("authorization_endpoint") +
@@ -127,12 +128,34 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
         if (_idleSecondsCounter >= IDLE_TIMEOUT) {
             window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
         } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
-            // eslint-disable-next-line no-console
-            console.log(
-                "You will be logged out of the system after " +
-                    (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) +
-                    " seconds! Click OK to stay logged in."
-            );
+            const warningSearchParamKey = "session_timeout_warning";
+            const currentURL = new URL(window.location.href);
+
+            // If the URL already has the timeout warning search para, delete it first.
+            if (currentURL && currentURL.searchParams && currentURL.searchParams.get(warningSearchParamKey) !== null) {
+                currentURL.searchParams.delete(warningSearchParamKey);
+            }
+
+            const existingSearchParams = currentURL.search;
+
+            // NOTE: This variable is used for push state.
+            // If already other search params are available simply append using `&`,
+            // otherwise just add the param using `?`.
+            const searchParam =
+                existingSearchParams + (existingSearchParams ? "&" : "?") + warningSearchParamKey + "=" + "true";
+
+            // Append the search param to the URL object.
+            currentURL.searchParams.append(warningSearchParamKey, "true");
+
+            const state = {
+                idleTimeout: IDLE_TIMEOUT,
+                idleWarningTimeout: IDLE_WARNING_TIMEOUT,
+                url: currentURL.href
+            };
+
+            window.history.pushState(state, null, searchParam);
+
+            dispatchEvent(new PopStateEvent("popstate", { state: state }));
         }
 
         // Keep user session intact if the user is active
