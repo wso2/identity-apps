@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { HttpMethods } from "@wso2is/core/models";
 import { IdentityClient, Storage } from "@wso2is/authentication";
+import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../store";
 
 /**

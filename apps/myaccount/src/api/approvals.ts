@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, Storage } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary, HttpMethods } from "../models";
 import { store } from "../store";
 

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
+import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";

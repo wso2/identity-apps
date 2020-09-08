@@ -18,8 +18,8 @@
 
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
-import { AppIconBackgrounds } from "../../configs";
 import { Avatar, AvatarProps } from "./avatar";
+import { AppIconBackgrounds } from "../../configs";
 
 /**
  * Prop types for the App Avatar component.

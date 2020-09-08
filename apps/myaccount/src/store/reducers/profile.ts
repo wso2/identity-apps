@@ -18,7 +18,7 @@
  */
 
 import { ProfileReducerStateInterface } from "../../models";
-import { ProfileActions, ProfileActionTypes } from "../actions/types/profile";
+import { ProfileActionTypes, ProfileActions } from "../actions/types/profile";
 
 /**
  * Initial state.

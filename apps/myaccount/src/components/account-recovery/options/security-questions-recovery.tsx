@@ -27,9 +27,9 @@ import {
     AlertLevels,
     AnswersInterface,
     ChallengesQuestionsInterface,
-    createEmptyChallenge,
     QuestionSetsInterface,
     QuestionsInterface,
+    createEmptyChallenge
 } from "../../../models";
 import { EditSection, ThemeIcon } from "../../shared";
 
@@ -220,7 +220,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t("userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
-                            "success.message"),
+                            "success.message")
                     });
                 })
                 .catch((error) => {

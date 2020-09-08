@@ -19,11 +19,11 @@
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import NotificationSystem from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
+import { ThemeIcon } from "./icon";
 import { AlertIcons } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
 import { initializeAlertSystem } from "../../store/actions";
-import { ThemeIcon } from "./icon";
 
 /**
  * Prop types for the Alert component.

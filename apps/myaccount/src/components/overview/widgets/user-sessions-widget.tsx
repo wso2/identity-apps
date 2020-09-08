@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { fetchUserSessions } from "../../../api";
 import { history } from "../../../helpers";
-import { AlertLevels, emptyUserSessions, UserSessions } from "../../../models";
+import { AlertLevels, UserSessions, emptyUserSessions } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
@@ -70,7 +70,7 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
                             level: AlertLevels.ERROR,
                             message: t(
                                 "userPortal:components.userSessions.notifications.fetchSessions.error.message"
-                            ),
+                            )
                         })
                     );
 
@@ -85,7 +85,7 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.userSessions.notifications.fetchSessions.genericError.message"
-                        ),
+                        )
                     })
                 );
             });

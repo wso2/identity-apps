@@ -18,9 +18,9 @@
 
 import * as React from "react";
 import { Container, Grid, Responsive } from "semantic-ui-react";
-import * as UIConstants from "../../constants/ui-constants";
 import { SidePanel } from "./side-panel";
 import { SidePanelMobile } from "./side-panel-mobile";
+import * as UIConstants from "../../constants/ui-constants";
 
 /**
  * Side panel wrapper component Prop types.

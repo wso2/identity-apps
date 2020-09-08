@@ -19,10 +19,10 @@
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
+import { ApplicationListItem } from "./application-list-item";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 import { Application } from "../../models";
 import { EmptyPlaceholder } from "../shared";
-import { ApplicationListItem } from "./application-list-item";
 
 /**
  * Proptypes for the application list component.
@@ -70,7 +70,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
                     subtitle={ [
                         t("userPortal:placeholders.emptySearchResult.subtitles.0",
                             { query: searchQuery }),
-                        t("userPortal:placeholders.emptySearchResult.subtitles.1"),
+                        t("userPortal:placeholders.emptySearchResult.subtitles.1")
                     ] }
                 />
             );

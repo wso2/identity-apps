@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { render, RenderOptions, RenderResult } from "@testing-library/react";
+import { RenderOptions, RenderResult, render } from "@testing-library/react";
 import { I18n } from "@wso2is/i18n";
 import React from "react";
 import { I18nextProvider } from "react-i18next";

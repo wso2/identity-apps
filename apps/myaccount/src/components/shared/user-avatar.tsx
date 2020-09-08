@@ -22,13 +22,13 @@ import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Dimmer, Form, Icon, Modal, Popup } from "semantic-ui-react";
+import { Avatar, AvatarProps } from "./avatar";
 import { updateProfileInfo } from "../../api";
 import { ThirdPartyLogos } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
 import { resolveUserDisplayName } from "../../helpers";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { getProfileInformation } from "../../store/actions";
-import { Avatar, AvatarProps } from "./avatar";
 
 /**
  * Prop types for the user avatar component.

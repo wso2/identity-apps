@@ -23,7 +23,7 @@ import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/
 import { SettingsSectionIcons } from "../../configs";
 import {
     AlertInterface,
-    AlertLevels,
+    AlertLevels
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
 import { SettingsSection, UserAvatar } from "../shared";

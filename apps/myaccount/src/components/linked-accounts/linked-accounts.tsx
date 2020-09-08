@@ -20,6 +20,8 @@ import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { LinkedAccountsEdit } from "./linked-accounts-edit";
+import { LinkedAccountsList } from "./linked-accounts-list";
 import {
     addAccountAssociation,
     removeLinkedAccount
@@ -33,10 +35,8 @@ import {
 } from "../../models";
 import { AppState } from "../../store";
 import { getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
-import { SettingsSection } from "../shared";
-import { LinkedAccountsEdit } from "./linked-accounts-edit";
-import { LinkedAccountsList } from "./linked-accounts-list";
 import { refreshPage } from "../../utils";
+import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the liked accounts component.
