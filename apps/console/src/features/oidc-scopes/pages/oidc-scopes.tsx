@@ -19,39 +19,15 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { I18n } from "@wso2is/i18n";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface } from "../../core";
 import { getOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
-
-const OIDC_SCOPE_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
-    {
-        key: 1,
-        text: I18n.instance.t("common:name"),
-        value: "name"
-    },
-    {
-        key: 2,
-        text: I18n.instance.t("common:type"),
-        value: "type"
-    },
-    {
-        key: 3,
-        text: I18n.instance.t("common:createdOn"),
-        value: "createdDate"
-    },
-    {
-        key: 4,
-        text: I18n.instance.t("common:lastUpdatedOn"),
-        value: "lastUpdated"
-    }
-];
 
 /**
  * Props for the OIDC scopes page.
