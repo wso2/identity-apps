@@ -14,12 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./api";
-export * from "./components";
-export * from "./configs";
-export * from "./constants";
-export * from "./models";
-export * from "./pages";
-export * from "./utils";
+import { StoryCategories } from "../../hierarchy";
+import { StoryMetaInterface } from "../../models";
+
+export const meta: StoryMetaInterface = {
+    components: [ "EditAvatarModal" ],
+    description: "A modal component to be prompted for editing avatars.",
+    stories: [
+        {
+            description: "Basic usage of the modal",
+            title: "Basic Usage"
+        }
+    ],
+    title: `${ StoryCategories.COMPONENTS }/Edit Avatar Modal`
+};

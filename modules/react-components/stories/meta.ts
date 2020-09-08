@@ -14,12 +14,17 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./api";
-export * from "./components";
-export * from "./configs";
-export * from "./constants";
-export * from "./models";
-export * from "./pages";
-export * from "./utils";
+export const getSampleProfileInfo = () => {
+    return {
+        emails: [ "brion@wso2.com", "brionbmp@gmail.com", "mario@gmail.com" ],
+        name: {
+            familyName: "Silva",
+            givenName: "Brion"
+        },
+        profileUrl: "https://avatars3.githubusercontent.com/u/25959096?s=460&v=4",
+        userName: "brion"
+    }
+};

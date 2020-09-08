@@ -42,13 +42,15 @@ export class ProfileUtils {
      * @param {number} size - Size of the image from 1 up to 2048.
      * @param {string} defaultImage - Custom default fallback image URL.
      * @param {GravatarFallbackTypes} fallback - Built in fallback strategy.
+     * @param {boolean} forceDefault - Forcefully use the fallback image.
      * @see {@link https://en.gravatar.com/site/implement/images/}
      * @return {string} Gravatar Image URL.
      */
     public static buildGravatarURL(emailAddress: string,
                                    size?: number,
                                    defaultImage?: string,
-                                   fallback: GravatarFallbackTypes = "404"): string {
+                                   fallback: GravatarFallbackTypes = "404",
+                                   forceDefault?: boolean): string {
 
         const URL: string = UIConstants.GRAVATAR_URL + "/avatar/" + CryptoUtils.MD5Hash(emailAddress);
         const params: string[] = [];
@@ -59,8 +61,12 @@ export class ProfileUtils {
 
         if (defaultImage) {
             params.push("d=" + encodeURIComponent(defaultImage));
-        } else {
+        } else if (fallback !== "default") {
             params.push("d=" + fallback);
+        }
+
+        if (forceDefault) {
+            params.push("f=y");
         }
 
         return URL + "?" + params.join("&");

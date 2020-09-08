@@ -158,11 +158,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     dispatch(
                         addAlert({
                             description: I18n.instance.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.description"
+                                "userPortal:components.profile.notifications.getProfileInfo.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.message"
+                                "userPortal:components.profile.notifications.getProfileInfo.genericError.message"
                             )
                         })
                     );
@@ -172,12 +172,12 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                         dispatch(
                             addAlert({
                                 description: I18n.instance.t(
-                                    "views:components.profile.notifications.getProfileInfo.error.description",
+                                    "userPortal:components.profile.notifications.getProfileInfo.error.description",
                                     { description: error.response.data.detail }
                                 ),
                                 level: AlertLevels.ERROR,
                                 message: I18n.instance.t(
-                                    "views:components.profile.notifications.getProfileInfo.error.message"
+                                    "userPortal:components.profile.notifications.getProfileInfo.error.message"
                                 )
                             })
                         );
@@ -188,11 +188,11 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
                     dispatch(
                         addAlert({
                             description: I18n.instance.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.description"
+                                "userPortal:components.profile.notifications.getProfileInfo.genericError.description"
                             ),
                             level: AlertLevels.ERROR,
                             message: I18n.instance.t(
-                                "views:components.profile.notifications.getProfileInfo.genericError.message"
+                                "userPortal:components.profile.notifications.getProfileInfo.genericError.message"
                             )
                         })
                     );
@@ -264,7 +264,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
 
         dispatch(getProfileInformation());
     });
-}
+};
 
 /**
  * Handle user sign-in

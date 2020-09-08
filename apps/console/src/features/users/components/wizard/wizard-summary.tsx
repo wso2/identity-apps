@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Heading, UserAvatar } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect } from "react";
+import { EditAvatarModal, Heading, UserAvatar } from "@wso2is/react-components";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 
@@ -25,6 +25,11 @@ interface AddUserWizardSummaryProps {
     summary: any;
     triggerSubmit: boolean;
     onSubmit: (application: any) => void;
+    /**
+     * Callback fired when profile image is changed.
+     * @param {string} url - New URL.
+     */
+    onProfileImageChange: (url: string) => void;
 }
 
 /**
@@ -39,10 +44,14 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
     const {
         summary,
         triggerSubmit,
-        onSubmit
+        onSubmit,
+        onProfileImageChange
     } = props;
 
     const { t } = useTranslation();
+
+    const [ modifiedSummary, setModifiedSummary ] = useState<any>(summary);
+    const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
 
     /**
      * Submits the form programmatically if triggered from outside.
@@ -52,8 +61,24 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
             return;
         }
 
-        onSubmit(summary);
+        onSubmit(modifiedSummary);
     }, [ triggerSubmit ]);
+
+    /**
+     * Handles edit avatar modal submit action.
+     *
+     * @param {<HTMLButtonElement>} e - Event.
+     * @param {string} url - Selected image URL.
+     */
+    const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
+        setModifiedSummary({
+            ...modifiedSummary,
+            profileUrl: url
+        });
+
+        onProfileImageChange(url);
+        setShowEditAvatarModal(false);
+    };
 
     return (
         <Grid className="wizard-summary">
@@ -61,20 +86,23 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 } textAlign="center">
                     <div className="general-details">
                         <UserAvatar
-                            name={ summary?.firstName }
-                            image={ summary?.profileUrl }
+                            editable
+                            name={ modifiedSummary?.firstName }
+                            image={ modifiedSummary?.profileUrl }
+                            onEditIconClick={ () => setShowEditAvatarModal(true) }
+                            onClick={ () => setShowEditAvatarModal(true) }
                             size="tiny"
                         />
-                        { summary?.firstName && (
-                            <Heading size="small" className="name">{ summary.firstName }</Heading>
+                        { modifiedSummary?.firstName && (
+                            <Heading size="small" className="name">{ modifiedSummary.firstName }</Heading>
                         ) }
-                        { summary?.email && (
-                            <div className="description">{ summary.email }</div>
+                        { modifiedSummary?.email && (
+                            <div className="description">{ modifiedSummary.email }</div>
                         ) }
                     </div>
                 </Grid.Column>
             </Grid.Row>
-            { summary?.firstName && (
+            { modifiedSummary?.firstName && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
@@ -82,14 +110,14 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                         </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ summary.firstName + " " + summary.lastName }</div>
+                        <div className="value url">{ modifiedSummary.firstName + " " + modifiedSummary.lastName }</div>
                     </Grid.Column>
                 </Grid.Row>
             ) }
             {
-                summary?.groups &&
-                summary.groups instanceof Array &&
-                summary.groups.length > 0
+                modifiedSummary?.groups &&
+                modifiedSummary.groups instanceof Array &&
+                modifiedSummary.groups.length > 0
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -100,7 +128,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
-                                        summary.groups
+                                        modifiedSummary.groups
                                             .map((group, index) => (
                                                 <Label key={ index } basic circular>{ group.displayName }</Label>
                                             ))
@@ -112,9 +140,9 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     : null
             }
             {
-                summary?.roles &&
-                summary.roles instanceof Array &&
-                summary.roles.length > 0
+                modifiedSummary?.roles &&
+                modifiedSummary.roles instanceof Array &&
+                modifiedSummary.roles.length > 0
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -125,7 +153,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
-                                        summary.roles
+                                        modifiedSummary.roles
                                             .map((role, index) => (
                                                 <Label key={ index } basic circular>{ role.displayName }</Label>
                                             ))
@@ -136,7 +164,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                     )
                     : null
             }
-            { summary?.userName && (
+            { modifiedSummary?.userName && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
@@ -144,11 +172,11 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                         </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ summary.userName }</div>
+                        <div className="value url">{ modifiedSummary.userName }</div>
                     </Grid.Column>
                 </Grid.Row>
             ) }
-            { summary?.domain && (
+            { modifiedSummary?.domain && (
                 <Grid.Row className="summary-field" columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                         <div className="label">
@@ -156,42 +184,117 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                         </div>
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">{ summary.domain }</div>
+                        <div className="value url">{ modifiedSummary.domain }</div>
                     </Grid.Column>
                 </Grid.Row>
             ) }
-            { summary?.email && summary?.passwordOption && summary?.passwordOption === "askPw" ? (
-                <Grid.Row className="summary-field" columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">
-                            { t("adminPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption.label") }
-                        </div>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">
-                            {
-                                t("adminPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption" +
-                                    ".message.0",
-                                { email: summary.email })
+            { modifiedSummary?.email && modifiedSummary?.passwordOption && modifiedSummary?.passwordOption === "askPw"
+                ? (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">
+                                {
+                                    t("adminPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption" +
+                                        ".label")
+                                }
+                            </div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">
+                                {
+                                    t("adminPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption" +
+                                        ".message.0",
+                                        { email: modifiedSummary.email })
+                                }
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+                : (
+                    <Grid.Row className="summary-field" columns={ 2 }>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                            <div className="label">
+                                {
+                                    t("adminPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption" +
+                                        ".label")
+                                }
+                            </div>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                            <div className="value url">
+                                { t("adminPortal:components.user.modals.addUserWizard.wizardSummary" +
+                                    ".passwordOption.message.1") }
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+
+            {
+                showEditAvatarModal && (
+                    <EditAvatarModal
+                        open={ showEditAvatarModal }
+                        name={ modifiedSummary?.firstName }
+                        emails={ [ modifiedSummary?.email ] }
+                        onClose={ () => setShowEditAvatarModal(false) }
+                        onCancel={ () => setShowEditAvatarModal(false) }
+                        onSubmit={ handleAvatarEditModalSubmit }
+                        heading={ t("console:common.modals.editAvatarModal.heading") }
+                        submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
+                        cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }
+                        translations={ {
+                            gravatar: {
+                                errors: {
+                                    noAssociation: {
+                                        content: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.content"),
+                                        header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.header")
+                                    }
+                                },
+                                heading: t("console:common.modals.editAvatarModal.content.gravatar.heading")
+                            },
+                            hostedAvatar: {
+                                heading: t("console:common.modals.editAvatarModal.content.hostedAvatar.heading"),
+                                input: {
+                                    errors: {
+                                        http: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.content"),
+                                            header: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.header")
+                                        },
+                                        invalid: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.content"),
+                                            pointing: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.pointing")
+                                        }
+                                    },
+                                    hint: t("console:common.modals.editAvatarModal.content.hostedAvatar.input.hint"),
+                                    placeholder: t("console:common.modals.editAvatarModal.content." +
+                                        "hostedAvatar.input.placeholder"),
+                                    warnings: {
+                                        dataURL: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.content"),
+                                            header: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.header")
+                                        }
+                                    }
+                                }
+                            },
+                            systemGenAvatars: {
+                                heading: t("console:common.modals.editAvatarModal.content.systemGenAvatars.heading"),
+                                types: {
+                                    initials: t("console:common.modals.editAvatarModal.content.systemGenAvatars." +
+                                        "types.initials")
+                                }
                             }
-                        </div>
-                    </Grid.Column>
-                </Grid.Row>
-            ) : (
-                <Grid.Row className="summary-field" columns={ 2 }>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                        <div className="label">
-                            { t("adminPortal:components.user.modals.addUserWizard.wizardSummary.passwordOption.label") }
-                        </div>
-                    </Grid.Column>
-                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                        <div className="value url">
-                            { t("adminPortal:components.user.modals.addUserWizard.wizardSummary" +
-                            ".passwordOption.message.1") }
-                        </div>
-                    </Grid.Column>
-                </Grid.Row>
-            ) }
+                        } }
+                    />
+                )
+            }
         </Grid>
     );
 };

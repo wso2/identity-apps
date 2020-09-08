@@ -46,7 +46,6 @@ export const DefaultSection = (): ReactElement => (
                 spaced="right"
                 size="tiny"
                 image="https://avatars3.githubusercontent.com/u/25959096?s=460&v=4"
-                onEditAvatarClicked={ null }
             />
         ) }
         iconMini={ (
@@ -54,7 +53,6 @@ export const DefaultSection = (): ReactElement => (
                 spaced="right"
                 size="tiny"
                 image="https://avatars3.githubusercontent.com/u/25959096?s=460&v=4"
-                onEditAvatarClicked={ null }
             />
         ) }
     />

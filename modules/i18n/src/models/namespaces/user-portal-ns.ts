@@ -683,6 +683,7 @@ export interface UserPortalNS {
         };
     };
     modals: {
+        editAvatarModal: ModalInterface;
         sessionTimeoutModal: ModalInterface;
     };
     pages: {

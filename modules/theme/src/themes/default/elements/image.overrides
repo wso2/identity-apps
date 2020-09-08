@@ -21,6 +21,7 @@
      User Image Variation
 *******************************/
 
+/* @deprecated Moved to avatar module */
 .ui.image {
     &.user-image {
         &.user-avatar {

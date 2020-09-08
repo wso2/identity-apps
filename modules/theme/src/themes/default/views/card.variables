@@ -67,10 +67,12 @@ Recent Application Card
 @selectionCardDefaultWidth: 150px;
 @selectionCardSmallWidth: 135px;
 @selectionCardX120Width: 120px;
+@selectionCardX100Width: 100px;
 @selectionCardSpacedBottomMargin: 2em;
 @selectionCardRightSpacing: 20px;
 @selectionCardTextContainerPadding: 0.8em 1em;
-@selectionCardHeaderFontSize: 1em;
+@selectionCardHeaderFontSize: 1em !important;
+@selectionCardHeaderLineHeight: @selectionCardHeaderFontSize + 0.2em !important;
 @selectionCardDescriptionFontSize: 0.8em;
 @selectionCardHeaderMaxWidth: 100%;
 @selectionCardDescriptionMaxWidth: 100%;

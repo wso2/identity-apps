@@ -84,12 +84,10 @@ export const getGravatarImage = (email: string,
  * Retrieve the user profile details of the currently authenticated user.
  *
  * @param {() => void} onSCIMDisabled - Callback to be fired if SCIM is disabled for the user store.
- * @param {GravatarConfig} gravatarConfig - Gravatar configurations.
  * @returns {Promise<ProfileInfoInterface>} Profile information as a Promise.
  * @throws {IdentityAppsApiException}
  */
-export const getProfileInfo = (onSCIMDisabled: () => void,
-                               gravatarConfig?: GravatarConfig): Promise<ProfileInfoInterface> => {
+export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoInterface> => {
 
     const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 
@@ -102,7 +100,6 @@ export const getProfileInfo = (onSCIMDisabled: () => void,
 
     return httpClient(requestConfig)
         .then(async (response: AxiosResponse) => {
-            let gravatar = "";
 
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -114,23 +111,6 @@ export const getProfileInfo = (onSCIMDisabled: () => void,
                     response.config);
             }
 
-            if (_.isEmpty(response.data.userImage) && !response.data.profileUrl) {
-                try {
-                    gravatar = await getGravatarImage(
-                        typeof response.data.emails[0] === "string"
-                            ? response.data.emails[0]
-                            : response.data.emails[0].value,
-                        gravatarConfig?.size,
-                        gravatarConfig?.defaultImage,
-                        gravatarConfig?.fallback
-                    );
-                } catch (error) {
-                    gravatar = "";
-                }
-            }
-
-            const profileImage: string = response.data.profileUrl ? response.data.profileUrl : gravatar;
-
             const profileResponse: ProfileInfoInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
@@ -139,7 +119,8 @@ export const getProfileInfo = (onSCIMDisabled: () => void,
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userImage: response.data.userImage || profileImage,
+                // TODO: Validate if necessary.
+                userImage: response.data.userImage || response.data.profileUrl,
                 userName: response.data.userName || "",
                 ...response.data
             };
@@ -208,6 +189,29 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
                 error.response,
                 error.config);
         });
+};
+
+/**
+ * Update the logged in user's profile image URL.
+ *
+ * @param {string} url - Image URL.
+ * @return {Promise<ProfileInfoInterface>} Updated profile info as a Promise.
+ * @throws {IdentityAppsApiException}
+ */
+export const updateProfileImageURL = (url: string): Promise<ProfileInfoInterface> => {
+    const data = {
+        Operations: [
+            {
+                op: "replace",
+                value: {
+                    profileUrl: url
+                }
+            }
+        ],
+        schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+    };
+
+    return updateProfileInfo(data);
 };
 
 /**

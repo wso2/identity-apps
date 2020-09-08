@@ -21,7 +21,7 @@ import { resolveUserDisplayName } from "@wso2is/core/helpers";
 import { AuthReducerStateInterface, ProfileInfoInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { Icon, Popup } from "semantic-ui-react";
+import { Popup } from "semantic-ui-react";
 import { Avatar, AvatarPropsInterface } from "./avatar";
 import GravatarLogo from "../../assets/images/gravatar-logo.png";
 import DummyUser from "../../assets/images/user.png";
@@ -39,11 +39,6 @@ export interface UserAvatarPropsInterface extends AvatarPropsInterface, Testable
      */
     gravatarInfoPopoverText?: React.ReactNode;
     /**
-     * Callback when avatar edit is clicked.
-     * @param {React.SyntheticEvent} e - Click event.
-     */
-    onEditAvatarClicked?: (e: React.SyntheticEvent) => void;
-    /**
      * Profile information.
      */
     profileInfo?: ProfileInfoInterface;
@@ -51,10 +46,6 @@ export interface UserAvatarPropsInterface extends AvatarPropsInterface, Testable
      * If the gravatar label should be displayed or not.
      */
     showGravatarLabel?: boolean;
-    /**
-     * If the avatar is editable or not.
-     */
-    isEditable?: boolean;
 }
 
 /**
@@ -70,20 +61,18 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
 
     const {
         authState,
+        children,
+        className,
         gravatarInfoPopoverText,
         name,
         image,
-        onEditAvatarClicked,
         profileInfo,
         showGravatarLabel,
-        isEditable,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
 
-    const classes = classNames({
-        [ "editable" ]: isEditable
-    }, "");
+    const classes = classNames(className);
 
     const [ userImage, setUserImage ] = useState(null);
     const [ showPopup, setShowPopup ] = useState(false);
@@ -174,26 +163,18 @@ export const UserAvatar: FunctionComponent<UserAvatarPropsInterface> = (
             trigger={ (
                 <Avatar
                     avatar
-                    avatarType="user"
+                    shape="circular"
                     bordered={ false }
                     className={ classes }
                     image={ resolveAvatarImage() }
                     label={ showGravatarLabel ? resolveTopLabel() : null }
                     name={ profileInfo ? resolveUserDisplayName(profileInfo, authState) : name || "" }
-                    onClick={ onEditAvatarClicked }
                     onMouseOver={ handleOnMouseOver }
                     onMouseOut={ handleOnMouseOut }
                     data-testid={ testId }
                     { ...rest }
                 >
-                    { isEditable && (
-                        <Icon
-                            name="camera"
-                            className="edit-icon"
-                            size="large"
-                            data-testid={ `${ testId }-edit-icon` }
-                        />
-                    ) }
+                    { children }
                 </Avatar>
             ) }
             data-testid={ `${ testId }-gravatar-disclaimer-popup` }
@@ -209,9 +190,7 @@ UserAvatar.defaultProps = {
     "data-testid": "user-avatar",
     defaultIcon: DummyUser,
     gravatarInfoPopoverText: null,
-    isEditable: false,
     name: null,
-    onEditAvatarClicked: () => null,
     profileInfo: null,
     showGravatarLabel: false
 };

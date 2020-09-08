@@ -19,12 +19,14 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent } from "react";
-import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
+import { Image, ImageProps, Placeholder, SemanticSIZES } from "semantic-ui-react";
+import { ReactComponent as CameraIcon } from "../../assets/images/icons/camera-icon.svg";
+import { GenericIcon, GenericIconProps } from "../icon";
 
 /**
  * Prop types for the Avatar component.
  */
-export interface AvatarPropsInterface extends TestableComponentInterface {
+export interface AvatarPropsInterface extends TestableComponentInterface, Omit<ImageProps, "size"> {
     /**
      * To determine if avatar with initials should be displayed.
      */
@@ -34,25 +36,21 @@ export interface AvatarPropsInterface extends TestableComponentInterface {
      */
     avatarInitialsLimit?: 1 | 2;
     /**
-     * Type of the avatar.
-     */
-    avatarType?: "user" | "app";
-    /**
-     * If a border should be displayed.
-     */
-    bordered?: boolean;
-    /**
-     * Custom class for the component.
-     */
-    className?: string;
-    /**
      * Default icon.
      */
     defaultIcon?: any;
     /**
-     * Floated direction of the avatar.
+     * If the avatar is editable or not.
      */
-    floated?: "left" | "right";
+    editable?: boolean;
+    /**
+     * Edit icon.
+     */
+    editIcon?: GenericIconProps["icon"];
+    /**
+     * Edit icon size.
+     */
+    editIconSize?: GenericIconProps["size"];
     /**
      * Image to be displayed as an avatar.
      */
@@ -61,6 +59,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface {
      * If the avatar should be displayed inline.
      */
     inline?: boolean;
+    /**
+     * Color of the avatar initials.
+     */
+    initialsColor?: "white" | "primary";
     /**
      * If the avatar is in a loading state.
      */
@@ -73,6 +75,11 @@ export interface AvatarPropsInterface extends TestableComponentInterface {
      * User's name.
      */
     name?: string;
+    /**
+     * On Edit Icon click callback.
+     * @param {React.SyntheticEvent} e - Click event.
+     */
+    onEditIconClick?: (e: SyntheticEvent) => void;
     /**
      * On click callback.
      * @param {React.SyntheticEvent} e - Click event.
@@ -93,6 +100,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface {
      */
     relaxed?: boolean | "very";
     /**
+     * Shape of the avatar.
+     */
+    shape?: "circular" | "square";
+    /**
      * Size of the avatar.
      */
     size?: AvatarSizes;
@@ -108,12 +119,18 @@ export interface AvatarPropsInterface extends TestableComponentInterface {
      * Makes the avatar transparent.
      */
     transparent?: boolean;
+    /**
+     * Adjust styling to enable background images.
+     */
+    withBackgroundImage?: boolean;
 }
 
 /**
  * Type to handle Avatar sizes.
  */
 export type AvatarSizes = SemanticSIZES | "x60" | "little";
+
+const AVATAR_MODULE_CSS_CLASS = "ui-avatar";
 
 /**
  * Avatar component.
@@ -129,56 +146,71 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
     const {
         avatar,
         avatarInitialsLimit,
-        avatarType,
-        bordered,
         children,
         className,
         defaultIcon,
-        floated,
+        editable,
+        editIcon,
+        editIconSize,
         image,
+        initialsColor,
         inline,
         isLoading,
         label,
         name,
+        onEditIconClick,
         onClick,
         onMouseOver,
         onMouseOut,
         relaxed,
+        shape,
         size,
         spaced,
-        style,
         transparent,
-        [ "data-testid" ]: testId
+        withBackgroundImage,
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
-    const classes = classNames({
-        bordered,
-        [ `floated-${ floated }` ]: floated,
-        inline,
-        relaxed,
-        [ `${ size }` ]: size, // Size is used as a class to support the custom size "little"
-        [ `spaced-${ spaced }` ]: spaced,
-        transparent,
-        [ `${ avatarType === "user" ? "user-avatar" : "app-avatar" }` ]: avatar,
-        [ `${ relaxLevel }` ]: relaxLevel
-    }, className);
+    const wrapperClasses = classNames(`${ AVATAR_MODULE_CSS_CLASS }-wrapper`,
+        {
+            inline
+        },
+        className
+    );
+
+    const containerClasses = classNames(`${ AVATAR_MODULE_CSS_CLASS }-container`,
+        {
+            [ shape ]: shape
+        }
+    );
+
+    const imgElementClasses = classNames(AVATAR_MODULE_CSS_CLASS,
+        {
+            "hoverable": onClick,
+            [ `initials-color-${ initialsColor }` ]: initialsColor,
+            relaxed,
+            [ `${ size }` ]: size, // Size is used as a class to support the custom size "little"
+            [ `spaced-${ spaced }` ]: spaced,
+            [ shape ]: shape,
+            transparent,
+            [ `${ relaxLevel }` ]: relaxLevel,
+            "with-background-image": withBackgroundImage
+        }
+    );
 
     // If loading, show the placeholder.
     if (isLoading) {
         return (
             <Image
-                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-                bordered={ bordered }
-                floated={ floated }
-                circular={ avatarType === "user" }
-                rounded={ avatarType === "app" }
-                style={ style }
+                className={ imgElementClasses }
+                circular={ shape === "circular" }
                 data-testid={ `${ testId }-loading` }
             >
                 <Placeholder data-testid={ `${ testId }-loading-placeholder` }>
-                    <Placeholder.Image square />
+                    <Placeholder.Image square/>
                 </Placeholder>
             </Image>
         );
@@ -195,10 +227,6 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
      * @return {string}
      */
     const generateInitials = (): string => {
-        // App avatar only requires one letter.
-        if (avatarType === "app") {
-            return name.charAt(0).toUpperCase();
-        }
 
         const nameParts = name.split(" ");
 
@@ -209,110 +237,143 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         return name.charAt(0).toUpperCase();
     };
 
-    if (React.isValidElement(image)){
+    /**
+     * Renders a floating edit icon.
+     * @return {ReactElement}
+     */
+    const renderEditBubble = (): ReactElement => (
+        editable && (
+            <div className="edit-icon-container">
+                <GenericIcon
+                    link
+                    inline
+                    hoverable
+                    shape="circular"
+                    fill="default"
+                    icon={ editIcon ?? CameraIcon }
+                    size={ editIconSize }
+                    onClick={ onEditIconClick ?? onClick }
+                />
+            </div>
+        )
+    );
+
+    /**
+     * Renders a floating custom label.
+     * @return {React.ReactElement}
+     */
+    const renderCustomLabel = (): ReactElement => (
+        label && (
+            <div className="custom-label">
+                <Image
+                    avatar
+                    circular
+                    size="mini"
+                    src={ label }
+                />
+            </div>
+        )
+    );
+
+    if (React.isValidElement(image)) {
         return (
-            <Image
-                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-                bordered={ bordered }
-                floated={ floated }
-                circular={ avatarType === "user" }
-                rounded={ avatarType === "app" }
-                style={ style }
-                onClick={ onClick }
-                onMouseOver={ onMouseOver }
-                onMouseOut={ onMouseOut }
-                data-testid={ testId }
-            >
-                <div className="wrapper" data-testid={ `${ testId }-image-wrapper` }>{ image }</div>
-            </Image>
+            <div className={ wrapperClasses }>
+                <div className={ containerClasses }>
+                    <Image
+                        className={ imgElementClasses }
+                        circular={ shape === "circular" }
+                        onClick={ onClick }
+                        onMouseOver={ onMouseOver }
+                        onMouseOut={ onMouseOut }
+                        data-testid={ testId }
+                        { ...rest }
+                    >
+                        <div className="inner-content" data-testid={ `${ testId }-inner-content` }>
+                            { image }
+                        </div>
+                    </Image>
+                    { renderEditBubble() }
+                </div>
+            </div>
         )
     }
 
     if (image) {
         return (
-            <>
-                <Image
-                    className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-                    bordered={ bordered }
-                    floated={ floated }
-                    circular={ avatarType === "user" }
-                    rounded={ avatarType === "app" }
-                    style={ style }
-                    onClick={ onClick }
-                    onMouseOver={ onMouseOver }
-                    onMouseOut={ onMouseOut }
-                    data-testid={ testId }
-                >
-                    <div className="wrapper" data-testid={ `${ testId }-image-wrapper` }>
-                        {
-                            label
-                                ? (
-                                    <div className="custom-label">
-                                        <Image
-                                            avatar
-                                            circular
-                                            size="mini"
-                                            src={ label }
-                                        />
-                                    </div>
-                                )
-                                : null
-                        }
-                        { children }
-                        <img className="inner-image" alt="avatar" src={ image as string } />
-                    </div>
-                </Image>
-            </>
+            <div className={ wrapperClasses }>
+                <div className={ containerClasses }>
+                    { renderCustomLabel() }
+                    <Image
+                        className={ imgElementClasses }
+                        circular={ shape === "circular" }
+                        onClick={ onClick }
+                        onMouseOver={ onMouseOver }
+                        onMouseOut={ onMouseOut }
+                        data-testid={ testId }
+                        { ...rest }
+                    >
+                        <div className="inner-content" data-testid={ `${ testId }-inner-content` }>
+                            { children }
+                            <img className="inner-image" alt="avatar" src={ image as string }/>
+                        </div>
+                    </Image>
+                    { renderEditBubble() }
+                </div>
+            </div>
         );
     }
 
     if (avatar && name) {
         return (
-            <Image
-                className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-                bordered={ bordered }
-                floated={ floated }
-                verticalAlign="middle"
-                circular={ avatarType === "user" }
-                rounded={ avatarType === "app" }
-                centered
-                style={ style }
-                onClick={ onClick }
-                onMouseOver={ onMouseOver }
-                onMouseOut={ onMouseOut }
-                data-testid={ testId }
-            >
-                { children }
-                <span className="initials" data-testid={ `${ testId }-initials` }>{ generateInitials() }</span>
-            </Image>
+            <div className={ wrapperClasses }>
+                <div className={ containerClasses }>
+                    <Image
+                        centered
+                        className={ imgElementClasses }
+                        verticalAlign="middle"
+                        circular={ shape === "circular" }
+                        onClick={ onClick }
+                        onMouseOver={ onMouseOver }
+                        onMouseOut={ onMouseOut }
+                        data-testid={ testId }
+                        { ...rest }
+                    >
+                        { children }
+                        <span className="initials" data-testid={ `${ testId }-initials` }>{ generateInitials() }</span>
+                    </Image>
+                    { renderEditBubble() }
+                </div>
+            </div>
         );
     }
 
     return (
-        <Image
-            className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
-            bordered={ bordered }
-            floated={ floated }
-            verticalAlign="middle"
-            circular={ avatarType === "user" }
-            rounded={ avatarType === "app" }
-            centered
-            style={ style }
-            onClick={ onClick }
-            onMouseOver={ onMouseOver }
-            onMouseOut={ onMouseOut }
-            data-testid={ testId }
-        >
-            <div className="wrapper" data-testid={ `${ testId }-image-wrapper` }>
-                { children }
-                <img
-                    className="inner-image"
-                    alt="avatar"
-                    src={ defaultIcon }
-                    data-testid={ `${ testId }-image` }
-                />
+        <div className={ wrapperClasses }>
+            <div className={ containerClasses }>
+                <Image
+                    centered
+                    className={ imgElementClasses }
+                    verticalAlign="middle"
+                    circular={ shape === "circular" }
+                    onClick={ onClick }
+                    onMouseOver={ onMouseOver }
+                    onMouseOut={ onMouseOut }
+                    data-testid={ testId }
+                    { ...rest }
+                >
+                    <div className="content-wrapper" data-testid={ `${ testId }-image-content-wrapper` }>
+                        { children }
+                        <img
+                            className="inner-image"
+                            alt="avatar"
+                            src={ defaultIcon }
+                            data-testid={ `${ testId }-image` }
+                        />
+                    </div>
+                </Image>
+                { renderEditBubble() }
             </div>
-        </Image>
+        </div>
     );
 };
 
@@ -322,17 +383,20 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
 Avatar.defaultProps = {
     avatar: false,
     avatarInitialsLimit: 1,
-    avatarType: "user",
     bordered: true,
     className: "",
     "data-testid": "avatar",
-    inline: false,
+    editIconSize: "micro",
+    initialsColor: "white",
+    inline: true,
     isLoading: false,
     label: null,
     onClick: null,
     onMouseOut: null,
     onMouseOver: null,
     relaxed: false,
+    rounded: true,
+    shape: "circular",
     size: "mini",
     spaced: null,
     style: {},

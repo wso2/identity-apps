@@ -16,13 +16,12 @@
  * under the License.
  */
 
-import { SignInUtil } from "@wso2is/authentication";
-import { IdentityClient } from "@wso2is/authentication";
+import { IdentityClient, SignInUtil } from "@wso2is/authentication";
 import axios from "axios";
 import _ from "lodash";
 import { ApplicationConstants, SCIM2_ENT_USER_SCHEMA } from "../constants";
 import { history } from "../helpers";
-import { BasicProfileInterface, HttpMethods, MultiValue, ProfileSchema, ReadOnlyUserStatus } from "../models";
+import { BasicProfileInterface, HttpMethods, ProfileSchema, ReadOnlyUserStatus } from "../models";
 import { store } from "../store";
 import { toggleSCIMEnabled } from "../store/actions";
 
@@ -114,26 +113,6 @@ export const getGravatarImage = (email: string): Promise<string> => {
 };
 
 /**
- * This function iterates over all email addresses until it finds an email with a gravatar image
- * @param emails
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const findGravatar = async (emails: string[] | MultiValue[]): Promise<string> => {
-    let gravatar = "";
-    if (!_.isEmpty(emails)) {
-        for (const email of emails) {
-            try {
-                gravatar = await getGravatarImage(typeof email === "string" ? email : email.value);
-                return gravatar;
-            } catch (error) {
-                continue;
-            }
-        }
-    }
-    return gravatar;
-};
-
-/**
  * Retrieve the user profile details of the currently authenticated user.
  *
  * @returns {Promise<BasicProfileInterface>} a promise containing the user profile details.
@@ -152,30 +131,25 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
 
     return httpClient(requestConfig)
         .then(async (response) => {
-            let gravatar = "";
 
             if (response.status !== 200) {
                 return Promise.reject(new Error(`Failed get user profile info from:
                 ${store.getState().config.endpoints.me}`));
             }
-            if (_.isEmpty(response.data.userImage) && !response.data.profileUrl) {
-                gravatar = await findGravatar(response.data.emails);
-            }
-
-            const profileImage = response.data.profileUrl ? response.data.profileUrl : gravatar;
 
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
                 organisation: response.data[orgKey]?.organization ? response.data[orgKey].organization : "",
+                pendingEmails: response.data[SCIM2_ENT_USER_SCHEMA]
+                    ? response.data[SCIM2_ENT_USER_SCHEMA].pendingEmails
+                    : [],
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userImage: response.data.userImage || profileImage,
-                pendingEmails: response.data[SCIM2_ENT_USER_SCHEMA]
-                    ? response.data[SCIM2_ENT_USER_SCHEMA].pendingEmails
-                    : [],
+                // TODO: Validate if necessary.
+                userImage: response.data.userImage || response.data.profileUrl,
                 ...response.data,
                 userName: response.data.userName || ""
             };

@@ -14,12 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-export * from "./api";
-export * from "./components";
-export * from "./configs";
-export * from "./constants";
-export * from "./models";
-export * from "./pages";
-export * from "./utils";
+export * from "./edit-avatar-modal";

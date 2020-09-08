@@ -17,10 +17,12 @@
  *
  */
 
+import { ProfileInfoInterface } from "@wso2is/core/models";
+
 /**
- * Utility class for image related operations.
+ * Utility class for user management operations.
  */
-export class ImageUtils {
+export class UserManagementUtils {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -32,30 +34,15 @@ export class ImageUtils {
     private constructor() { }
 
     /**
-     * Checks if the passed in string is has a valid image extension.
+     * Check if a user is the authenticated user.
      *
-     * @param {string} str - String to evaluate
-     *
-     * @return {boolean} True if the string has a valid image extension.
+     * @param {ProfileInfoInterface} authenticatedUser - Current authenticated user.
+     * @param {ProfileInfoInterface} evaluatingUser - Profile of the evaluating user.
+     * @return {boolean} If the user is the authenticated user or not.
      */
-    public static isValidImageExtension(str: string): boolean {
-        const pattern = new RegExp(/\.(jpeg|jpg|gif|png|svg)$/);
+    public static isAuthenticatedUser(authenticatedUser: ProfileInfoInterface,
+                                      evaluatingUser: ProfileInfoInterface): boolean {
 
-        return !!str.match(pattern);
-    }
-
-    /**
-     * Checks if a URL points to a valid image.
-     *
-     * @param {string} url - Image URL.
-     * @param {(isValid: boolean) => void} callback - Reports image validity. 
-     */
-    public static isValidImageURL(url: string, callback: (isValid: boolean) => void): void {
-        const image = new Image();
-
-        image.onload = () => callback(true);
-        image.onerror = () => callback(false);
-
-        image.src = url;
+        return authenticatedUser?.id === evaluatingUser?.id;
     }
 }

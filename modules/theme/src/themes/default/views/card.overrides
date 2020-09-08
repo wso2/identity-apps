@@ -270,6 +270,9 @@
         &.small {
             width: @selectionCardSmallWidth;
         }
+        &.x100 {
+            width: @selectionCardX100Width;
+        }
         &.x120 {
             width: @selectionCardX120Width;
         }
@@ -307,7 +310,7 @@
 
             .header {
                 font-size: @selectionCardHeaderFontSize;
-                line-height: @selectionCardHeaderFontSize;
+                line-height: @selectionCardHeaderLineHeight;
                 max-width: @selectionCardHeaderMaxWidth;
                 white-space: nowrap;
                 text-overflow: ellipsis;

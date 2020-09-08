@@ -16,14 +16,23 @@
  * under the License.
  */
 
-import { ProfileInfoInterface, emptyProfileInfo } from "@wso2is/core/models";
-import { PageLayout, UserAvatar } from "@wso2is/react-components";
-import React, { ReactElement, useEffect, useState } from "react";
+import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import {
+    AlertInterface,
+    AlertLevels,
+    ProfileInfoInterface,
+    ProfileSchemaInterface,
+    emptyProfileInfo
+} from "@wso2is/core/models";
+import { addAlert, getProfileInformation } from "@wso2is/core/store";
+import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-components";
+import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
-import { getUserDetails } from "../api";
+import { getUserDetails, updateUserInfo } from "../api";
 import { EditUser } from "../components";
+import { UserManagementUtils } from "../utils";
 
 /**
  * User Edit page.
@@ -33,12 +42,17 @@ import { EditUser } from "../components";
 const UserEditPage = (): ReactElement => {
 
     const { t } = useTranslation();
+    
+    const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
+    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
+    const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
 
     useEffect(() => {
         const path = history.location.pathname.split("/");
@@ -70,25 +84,93 @@ const UserEditPage = (): ReactElement => {
 
     const handleUserUpdate = (id: string) => {
         getUser(id);
+        
+        if (UserManagementUtils.isAuthenticatedUser(profileInfo, user)) {
+            dispatch(getProfileInformation(true, profileSchemas));
+        }
     };
 
     const handleBackButtonClick = () => {
         history.push(AppConstants.PATHS.get("USERS"));
     };
 
+    /**
+     * Handles edit avatar modal submit action.
+     *
+     * @param {<HTMLButtonElement>} e - Event.
+     * @param {string} url - Selected image URL.
+     */
+    const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
+        const data = {
+            Operations: [
+                {
+                    op: "replace",
+                    value: {
+                        profileUrl: url
+                    }
+                }
+            ],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+        };
+
+        updateUserInfo(user?.id, data)
+            .then(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t(
+                        "adminPortal:components.user.profile.notifications.updateProfileInfo.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "adminPortal:components.user.profile.notifications.updateProfileInfo.success.message"
+                    )
+                }));
+
+                handleUserUpdate(user?.id);
+            })
+            .catch((error) => {
+                if (error.response
+                    && error.response.data
+                    && (error.response.data.description || error.response.data.detail)) {
+
+                    dispatch(addAlert<AlertInterface>({
+                        description: error.response.data.description || error.response.data.detail,
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.user.profile.notifications.updateProfileInfo.error.message"
+                        )
+                    }));
+                    
+                    return;
+                }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t(
+                        "adminPortal:components.user.profile.notifications.updateProfileInfo.genericError.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "adminPortal:components.user.profile.notifications.updateProfileInfo.genericError.message"
+                    )
+                }));
+            })
+            .finally(() => {
+                setShowEditAvatarModal(false);
+            });
+    };
+
     return (
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
-            title={ t(user?.name?.givenName && user.name.familyName ? user.name.givenName + " " + user.name.familyName :
-                "Administrator") }
+            title={ resolveUserDisplayName(user, null, "Administrator") }
             description={ t("" + user.emails && user.emails !== undefined ? user.emails[0].toString() :
                 user.userName) }
             image={ (
                 <UserAvatar
-                    name={ user.userName }
+                    editable
+                    name={ resolveUserDisplayName(user) }
                     size="tiny"
-                    floated="left"
-                    image={ user.profileUrl }
+                    image={ user?.profileUrl }
+                    onClick={ () => setShowEditAvatarModal(true) }
                 />
             ) }
             backButton={ {
@@ -105,6 +187,71 @@ const UserEditPage = (): ReactElement => {
                 handleUserUpdate={ handleUserUpdate }
                 readOnlyUserStores={ readOnlyUserStoresList }
             />
+            {
+                showEditAvatarModal && (
+                    <EditAvatarModal
+                        open={ showEditAvatarModal }
+                        name={ resolveUserDisplayName(user) }
+                        emails={ resolveUserEmails(user?.emails) }
+                        onClose={ () => setShowEditAvatarModal(false) }
+                        onCancel={ () => setShowEditAvatarModal(false) }
+                        onSubmit={ handleAvatarEditModalSubmit }
+                        heading={ t("console:common.modals.editAvatarModal.heading") }
+                        submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
+                        cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }
+                        translations={ {
+                            gravatar: {
+                                errors: {
+                                    noAssociation: {
+                                        content: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.content"),
+                                        header: t("console:common.modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.header")
+                                    }
+                                },
+                                heading: t("console:common.modals.editAvatarModal.content.gravatar.heading")
+                            },
+                            hostedAvatar: {
+                                heading: t("console:common.modals.editAvatarModal.content.hostedAvatar.heading"),
+                                input: {
+                                    errors: {
+                                        http: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.content"),
+                                            header: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.header")
+                                        },
+                                        invalid: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.content"),
+                                            pointing: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.pointing")
+                                        }
+                                    },
+                                    hint: t("console:common.modals.editAvatarModal.content.hostedAvatar.input.hint"),
+                                    placeholder: t("console:common.modals.editAvatarModal.content." +
+                                        "hostedAvatar.input.placeholder"),
+                                    warnings: {
+                                        dataURL: {
+                                            content: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.content"),
+                                            header: t("console:common.modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.header")
+                                        }
+                                    }
+                                }
+                            },
+                            systemGenAvatars: {
+                                heading: t("console:common.modals.editAvatarModal.content.systemGenAvatars.heading"),
+                                types: {
+                                    initials: t("console:common.modals.editAvatarModal.content.systemGenAvatars." +
+                                        "types.initials")
+                                }
+                            }
+                        } }
+                    />
+                )
+            }
         </PageLayout>
     );
 };
