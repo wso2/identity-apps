@@ -196,11 +196,4 @@ export const handleSignOut = () => (dispatch) => {
             AuthenticateUtils.removeAuthenticationCallbackUrl();
             dispatch(setSignOut());
         })
-        .catch(() => {
-            const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
-
-            rpIFrame.onload = () => {
-                AuthenticateUtils.checkUserSessionStatus();
-            };
-        });
 };

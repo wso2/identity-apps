@@ -16,7 +16,6 @@
 * under the License.
 */
 
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -83,18 +82,6 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
         }
     } else {
         window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
-    }
-} else if (state === "vYCfsNV12p") {
-    //Checks if the the user has an active session with IdP before logging out
-    const code = new URL(window.location.href).searchParams.get("code");
-    if (!!code && code.length !== 0) {
-        //The user has an active session.
-        //So, log in the user and then go to the logout page to log the user out.
-        AuthenticateUtils.updateAuthenticationCallbackUrl(config.routes.logout);
-        window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.login;
-    } else {
-        //The user is logged out of the IdP.So, redirect the user to the login page.
-        window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.login;
     }
 } else {
     // Tracking user interactions

@@ -68,33 +68,4 @@ export class AuthenticateUtils {
     public static removeAuthenticationCallbackUrl(): void {
         window.sessionStorage.removeItem("auth_callback_url");
     }
-
-    public static checkUserSessionStatus(): void {
-        const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
-        const promptNoneIFrame: HTMLIFrameElement = rpIFrame.contentWindow.document.getElementById(
-            "promptNoneIFrame"
-        ) as HTMLIFrameElement;
-        const config = window.parent[ "AppUtils" ].getConfig();
-
-        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
-        const stringLength = 43;
-        let pkceChallenge = "";
-        for (let i = 0; i < stringLength; i++) {
-            const rnum = Math.floor(Math.random() * chars.length);
-            pkceChallenge += chars.substring(rnum, rnum + 1);
-        }
-
-        promptNoneIFrame.src =
-            sessionStorage.getItem("authorization_endpoint") +
-            "?response_type=code" +
-            "&client_id=" +
-            config.clientID +
-            "&scope=openid" +
-            "&redirect_uri=" +
-            config.loginCallbackURL +
-            "&state=vYCfsNV12p" +
-            "&prompt=none" +
-            "&code_challenge_method=S256&code_challenge=" +
-            pkceChallenge;
-    }
 }
