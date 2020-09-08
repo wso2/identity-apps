@@ -31,6 +31,10 @@ export const meta: StoryMetaInterface = {
         {
             description: "Usage of a Data Table with an operations bar enabled.",
             title: "With operations bar Enabled"
+        },
+        {
+            description: "Usage of a sortable Data Table.",
+            title: "Sortable"
         }
     ],
     title: `${ StoryCategories.COMPONENTS }/Data Table`
