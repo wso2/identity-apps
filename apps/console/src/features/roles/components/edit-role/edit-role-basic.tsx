@@ -216,8 +216,8 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         <>
             <EmphasizedSegment>
                 <Forms
-                    onSubmit={ (values) => {
-                        updateRoleName(values)
+                    onSubmit={ () => {
+                        updateRoleName()
                     } }
                 >
                     <Grid>
