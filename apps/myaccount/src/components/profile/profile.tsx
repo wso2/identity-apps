@@ -59,7 +59,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
-    const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
     const [ editingForm, setEditingForm ] = useState(new Map<string, boolean>());
@@ -100,14 +99,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             });
 
         setProfileSchema(sortedSchemas);
-
-        const url = sortedSchemas.filter((schema: ProfileSchema) => {
-            return schema.name === "profileUrl";
-        });
-
-        if (sortedSchemas.length > 0) {
-            setUrlSchema(url[0]);
-        }
 
     }, [profileDetails.profileSchemas]);
 
