@@ -486,7 +486,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             <Responsive
                 as={ Tab }
                 className="settings-section-tab"
-                menu={ { secondary: true, pointing: true, attached: "top" } }
+                menu={ {
+                    attached: "top",
+                    pointing: true,
+                    secondary: true
+                } }
                 panes={
                     panes.map((pane) => {
                         return {

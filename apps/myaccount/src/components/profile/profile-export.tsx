@@ -75,7 +75,8 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                 } else {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.description"
+                            "userPortal:components.profileExport.notifications.downloadProfileInfo." +
+                            "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(

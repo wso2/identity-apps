@@ -79,7 +79,11 @@ export class UserAgentParser {
                                                 : ua.match(/Bot|Crawler|Spider|Yahoo|ia_archiver|Covario-IDS|findlinks|DataparkSearch|larbin|Mediapartners-Google|NG-Search|Snappy|Teoma|Jeeves|TinEye/i) && !ua.match(/Mobile/i) ? "desktop" : "mobile";
         /* eslint-enable max-len, no-useless-escape */
 
-        return { type, vendor: null, model: null };
+        return {
+            model: null,
+            type,
+            vendor: null
+        }
     }
 
     /**

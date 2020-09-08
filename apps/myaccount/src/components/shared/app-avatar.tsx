@@ -38,8 +38,8 @@ export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarPro
     const { image, className, name, onCard } = props;
 
     const appAvatarClassNames = classNames({
-        [ "default-app-icon" ]: onCard,
-        [ "bg-image" ]: !onCard
+        ["bg-image"]: !onCard,
+        ["default-app-icon"]: onCard
     }, className);
 
     if (image) {

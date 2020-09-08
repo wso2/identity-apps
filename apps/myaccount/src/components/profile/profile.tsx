@@ -132,7 +132,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value !== ""
                                 ? tempProfileInfo.set(schema.name,
                                 profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value as string)
-                                : tempProfileInfo.set(schema.name, profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] as string);
+                                : tempProfileInfo.set(
+                                    schema.name, profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] as string);
                         }
                     } else {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
