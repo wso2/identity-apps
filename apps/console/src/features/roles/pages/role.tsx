@@ -391,6 +391,35 @@ const RolesPage = (): ReactElement => {
                     totalListSize={ initialRolList?.Resources?.length }
                 >
                     <RoleList
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                data-testid="role-mgt-roles-list-advanced-search"
+                                onFilter={ handleUserFilter  }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: "Name",
+                                        value: "displayName"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterAttribute." +
+                                        "placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterCondition" +
+                                        ".placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder")
+                                }
+                                placeholder={ t("adminPortal:components.roles.advancedSearch.placeholder") }
+                                defaultSearchAttribute="displayName"
+                                defaultSearchOperator="sw"
+                                triggerClearQuery={ triggerClearQuery }
+                            />
+                        ) }
                         data-testid="role-mgt-roles-list"
                         handleRoleDelete={ handleOnDelete }
                         isGroup={ false }

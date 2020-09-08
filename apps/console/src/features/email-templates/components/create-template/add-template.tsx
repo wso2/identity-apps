@@ -206,7 +206,6 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
                             <Form.Field>
-                                <label>Locale</label>
                                 <Field
                                     type="dropdown"
                                     placeholder={

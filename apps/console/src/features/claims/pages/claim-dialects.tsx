@@ -364,6 +364,37 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                     totalListSize={ filteredDialects?.length }
                 >
                     <ClaimsList
+                        advancedSearch={
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleDialectFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("adminPortal:components.claims.dialects.attributes.dialectURI"),
+                                        value: "dialectURI"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.claims.dialects.advancedSearch.form.inputs" +
+                                        ".filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.claims.dialects.advancedSearch.form.inputs" +
+                                        ".filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.claims.dialects.advancedSearch.form.inputs" +
+                                        ".filterValue.placeholder")
+                                }
+                                placeholder={
+                                    t("adminPortal:components.claims.dialects.advancedSearch.placeholder")
+                                }
+                                defaultSearchAttribute="dialectURI"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${ testId }-advanced-search` }
+                            />
+                        }
                         isLoading={ isLoading }
                         list={ paginate(filteredDialects, listItemLimit, offset) }
                         localClaim={ ListType.DIALECT }

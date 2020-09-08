@@ -121,12 +121,11 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             }
             title={ t("devPortal:pages.oidcScopes.title") }
             description={ t("devPortal:pages.oidcScopes.subTitle") }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 showTopActionPanel={ false }
-                onPageChange={ null }
+                onPageChange={ () => null }
                 showPagination={ false }
                 totalPages={ null }
                 data-testid={ `${ testId }-list-layout` }
