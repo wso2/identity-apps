@@ -20,7 +20,7 @@ import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-if (!window[ "AppUtils" ]|| !window[ "AppUtils" ]?.getConfig()) {
+if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
         serverOrigin: "https://localhost:9443",
         superTenant: "carbon.super",
@@ -28,7 +28,7 @@ if (!window[ "AppUtils" ]|| !window[ "AppUtils" ]?.getConfig()) {
     });
 }
 
-window[ "AppUtils" ] = AppUtils;
+window["AppUtils"] = AppUtils;
 
 function getRandomPKCEChallenge() {
     const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
@@ -82,7 +82,7 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
     } else {
         window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
     }
-} else{
+} else {
     // Tracking user interactions
     let IDLE_TIMEOUT = 600;
     if (config?.session != null && config.session.userIdconstimeOut != null && config.session.userIdconstimeOut > 1) {
@@ -127,12 +127,38 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
             if (_idleSecondsCounter >= IDLE_TIMEOUT) {
                 window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
             } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
-                // eslint-disable-next-line no-console
-                console.log(
-                    "You will be logged out of the system after " +
-                        (IDLE_TIMEOUT - IDLE_WARNING_TIMEOUT) +
-                        " seconds! Click OK to stay logged in."
-                );
+                const warningSearchParamKey = "session_timeout_warning";
+                const currentURL = new URL(window.location.href);
+
+                // If the URL already has the timeout warning search para, delete it first.
+                if (
+                    currentURL &&
+                    currentURL.searchParams &&
+                    currentURL.searchParams.get(warningSearchParamKey) !== null
+                ) {
+                    currentURL.searchParams.delete(warningSearchParamKey);
+                }
+
+                const existingSearchParams = currentURL.search;
+
+                // NOTE: This variable is used for push state.
+                // If already other search params are available simply append using `&`,
+                // otherwise just add the param using `?`.
+                const searchParam =
+                    existingSearchParams + (existingSearchParams ? "&" : "?") + warningSearchParamKey + "=" + "true";
+
+                // Append the search param to the URL object.
+                currentURL.searchParams.append(warningSearchParamKey, "true");
+
+                const state = {
+                    idleTimeout: IDLE_TIMEOUT,
+                    idleWarningTimeout: IDLE_WARNING_TIMEOUT,
+                    url: currentURL.href
+                };
+
+                window.history.pushState(state, null, searchParam);
+
+                dispatchEvent(new PopStateEvent("popstate", { state: state }));
             }
 
             // Keep user session intact if the user is active
