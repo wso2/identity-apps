@@ -231,12 +231,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListPropsInterface> = (
         <>
             <DataTable<InterfaceRemoteRepoConfig>
                 className="remote-fetch-table"
-                extensions={ [
-                    {
-                        component: advancedSearch,
-                        position: "top"
-                    }
-                ] }
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,

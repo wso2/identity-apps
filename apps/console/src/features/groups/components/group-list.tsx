@@ -338,12 +338,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         <>
             <DataTable<GroupsInterface>
                 className="groups-list"
-                extensions={ [
-                    {
-                        component: advancedSearch,
-                        position: "top"
-                    }
-                ] }
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,

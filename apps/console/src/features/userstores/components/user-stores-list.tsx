@@ -365,12 +365,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
             { deleteConfirm && showDeleteConfirm() }
             <DataTable<UserStoreListItem>
                 className="userstores-table"
-                extensions={ [
-                    {
-                        component: advancedSearch,
-                        position: "top"
-                    }
-                ] }
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,

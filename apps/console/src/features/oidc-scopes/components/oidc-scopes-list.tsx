@@ -292,12 +292,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         <>
             <DataTable<OIDCScopesListInterface>
                 className="oidc-scopes-list"
-                extensions={ [
-                    {
-                        component: advancedSearch,
-                        position: "top"
-                    }
-                ] }
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit,
