@@ -101,7 +101,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (initialValues.accessToken.bindingType !== "None") {
             setIsTokenBindingTypeSelected(true);
         }
-    }, [ initialValues.accessToken.bindingType ]);
+    }, [ initialValues?.accessToken?.bindingType ]);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
