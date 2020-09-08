@@ -23,10 +23,10 @@ import {
 } from "../../models";
 
 export const WSTrustProtocolTemplateItem: ApplicationTemplateListItemInterface = {
+    authenticationProtocol: "ws-trust",
     id: DefaultProtocolTemplate.WS_TRUST,
-    name: "WS Trust",
     image: "wsTrust",
-    authenticationProtocol: "ws-trust"
+    name: "WS Trust"
 };
 
 export const WSTrustProtocolTemplate: ApplicationTemplateInterface = {
