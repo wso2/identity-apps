@@ -68,6 +68,7 @@
 @EditRoleSegmentHeaderWidth: 270px !important;
 @EditRoleSegmentHeaderButtonMarginBottom: 0.4em !important;
 @EditRoleSegmentFooterHeight: 60px !important;
+@EditRoleSegmentMaxHeight: 490px;
 
 /*************************************
     Roles listing variation

@@ -346,6 +346,35 @@
     }
 }
 
+/*******************************************
+     OIDC Scope Attribute List Variation
+*******************************************/
+
+.ui.segment {
+    &.oidc-scopes-attributes-list-segment {
+        max-height: @EditRoleSegmentMaxHeight;
+        overflow: auto;
+
+        .ui.input {
+            margin-bottom: @EditRoleSegmentHeaderMarginBottom;
+            width: @EditRoleSegmentHeaderWidth;
+        }
+
+        .ui.table {
+            border-left: none;
+            border-right: none;
+        }
+
+        i {
+            margin-right: auto;
+        }
+
+        .ui.button {
+            margin-bottom: @EditRoleSegmentHeaderButtonMarginBottom;
+        }
+    }
+}
+
 /***********************************
   Secondary Segment with lighter BG
 ************************************/

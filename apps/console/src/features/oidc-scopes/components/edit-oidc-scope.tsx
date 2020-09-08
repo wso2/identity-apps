@@ -61,7 +61,6 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const {
         scope,
-        isLoading,
         onUpdate,
         ["data-testid"]: testId
     } = props;
@@ -72,8 +71,8 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
 
     const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
     const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
-    const [ filterSelectedClaims, setFilterSelectedClaims ] = useState<ExternalClaim[]>([]);
-    const [ selectedClaims, setSelectedClaims ] = useState<ExternalClaim[]>([]);
+    const [ tempSelectedAttributes, setTempSelectedAttributes ] = useState<ExternalClaim[]>([]);
+    const [ unselectedAttributes, setUnselectedAttributes ] = useState<ExternalClaim[]>([]);
     const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
 
@@ -91,12 +90,12 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         }
 
         mapSelectedAttributes();
-    }, [ OIDCAttributes, scope.claims ]);
+    }, [ OIDCAttributes, scope ]);
 
     const getOIDCAttributes = (claimId: string) => {
+        setIsClaimRequestLoading(true);
         getAllExternalClaims(claimId, null)
             .then((response) => {
-                setIsClaimRequestLoading(true);
                 setOIDCAttributes(response);
             })
             .catch((error) => {
@@ -130,13 +129,23 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         }
 
         const selected = [];
-        const unselected = [];
         scope?.claims?.map((claim) => {
-            selected.push(OIDCAttributes.find((item) => item.claimURI == claim));
-            // unselected.push(OIDCAttributes.filter((item) => item.claimURI !== claim));
+            selected.push(OIDCAttributes.find((item) => item?.claimURI == claim));
         });
+
         setSelectedAttributes(selected);
-        // setOIDCAttributes(unselected);
+        setTempSelectedAttributes(selected);
+        setUnselectedAttributes(OIDCAttributes.filter(x => !selected?.includes(x)));
+    };
+
+    const searchSelectedAttributes = (event) => {
+        const changeValue = event.target.value;
+        if (changeValue.length > 0) {
+            setTempSelectedAttributes(selectedAttributes.filter((item) =>
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+        } else {
+            setTempSelectedAttributes(selectedAttributes);
+        }
     };
 
     const updateOIDCScope = (attributes: string[]): void => {
@@ -184,12 +193,9 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
             <OIDCScopeAttributes
                 onUpdateAttributes={ updateOIDCScope }
                 selectedClaims={ selectedAttributes }
-                setSelectedClaims={ setFilterSelectedClaims }
-                setInitialSelectedClaims={ setSelectedAttributes }
+                unselectedClaims={ unselectedAttributes }
                 showAddModal={ showSelectionModal }
                 setShowAddModal={ setShowSelectionModal }
-                availableClaims={ OIDCAttributes }
-                setAvailableClaims={ setOIDCAttributes }
                 data-testid={ `${ testId }-wizard` }
             />
         )}
@@ -215,15 +221,15 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                             scope?.claims?.length > 0 ? (
                                 <Segment.Group fluid>
                                     <Segment
-                                        data-testid="user-mgt-roles-list"
-                                        className="user-role-edit-header-segment"
+                                        data-testid="scope-attributes-list"
+                                        className="oidc-scopes-attributes-list-segment"
                                     >
                                         <Grid.Row>
                                             <Grid.Column>
                                                 <Input
                                                     data-testid="scope-mgt-claim-list-search-input"
                                                     icon={ <Icon name="search"/> }
-                                                    onChange={ null }
+                                                    onChange={ searchSelectedAttributes }
                                                     placeholder={ t("devPortal:components.oidcScopes.editScope." +
                                                         "claimList.searchClaims") }
                                                     floated="right"
@@ -247,11 +253,11 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                             <Table singleLine basic>
                                                 <Table.Body>
                                                     {
-                                                        scope?.claims?.map((claim, index) => {
+                                                        tempSelectedAttributes?.map((claim, index) => {
                                                             return (
                                                                 <Table.Row key={ index }>
                                                                     <Table.Cell width={ 15 }>
-                                                                        { claim }
+                                                                        { claim.claimURI }
                                                                     </Table.Cell>
                                                                     <Table.Cell textAlign="center">
                                                                         <Popup
@@ -261,7 +267,9 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                                                     color="grey"
                                                                                     name="trash alternate"
                                                                                     onClick={ () =>
-                                                                                        handleRemoveAttribute(claim)
+                                                                                        handleRemoveAttribute(
+                                                                                            claim.claimURI
+                                                                                        )
                                                                                     }
                                                                                 />
                                                                             }

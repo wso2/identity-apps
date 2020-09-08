@@ -1082,6 +1082,17 @@ export interface DevPortalNS {
                 deleteOIDClaim: Notification;
                 updateOIDCScope: Notification;
             };
+            placeholders: {
+                emptyList: {
+                    action: string;
+                    subtitles: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                    title: string;
+                };
+            };
         };
         overview: {
             banner: {
