@@ -26,7 +26,7 @@ export const SAMLProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     id: DefaultProtocolTemplate.SAML,
     name: "SAML",
     image: "saml",
-    authenticationProtocol: "saml",
+    authenticationProtocol: "saml"
 };
 
 export const SAMLProtocolTemplate: ApplicationTemplateInterface = {

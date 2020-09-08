@@ -246,7 +246,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                                             description: t("adminPortal:components.groups.notifications." +
                                                 "createPermission." +
                                                 "error.description",
-                                                {description: error.response.data.detail}),
+                                                { description: error.response.data.detail }),
                                             level: AlertLevels.ERROR,
                                             message: t("adminPortal:components.groups.notifications.createPermission." +
                                                 "error.message")

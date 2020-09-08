@@ -27,7 +27,7 @@ export const OAuthProtocolTemplateItem: ApplicationTemplateListItemInterface = {
     id: DefaultProtocolTemplate.OIDC,
     name: "OIDC",
     image: "oidc",
-    authenticationProtocol: "oidc",
+    authenticationProtocol: "oidc"
 };
 
 export const OAuthProtocolTemplate: ApplicationTemplateInterface = {

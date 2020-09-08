@@ -26,7 +26,7 @@ export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterfac
     id: DefaultProtocolTemplate.WS_FEDERATION,
     name: "Passive STS",
     image: "wsFed",
-    authenticationProtocol: "passive-sts",
+    authenticationProtocol: "passive-sts"
 };
 
 export const PassiveStsProtocolTemplate: ApplicationTemplateInterface = {

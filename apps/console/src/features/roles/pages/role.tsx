@@ -17,7 +17,7 @@
  */
 
 import { getRolesList, getUserStoreList } from "@wso2is/core/api";
-import { AlertInterface, AlertLevels, RolesInterface, RoleListInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";

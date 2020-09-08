@@ -26,11 +26,11 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
+    Fragment,
     FunctionComponent,
     ReactElement,
     SyntheticEvent,
-    useState,
-    Fragment
+    useState
 } from "react";
 
 /**

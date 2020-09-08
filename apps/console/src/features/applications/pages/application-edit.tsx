@@ -507,7 +507,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             icon: {
                 icon: HelpPanelIcons.tabs.guide
             }
-        },
+        }
         // TODO : Should be removed after getting started flow is implemented.
         /*{
             content: (

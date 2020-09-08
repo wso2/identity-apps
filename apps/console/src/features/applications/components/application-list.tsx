@@ -237,7 +237,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         ];
 
         actions.push({
-            hidden: ({ value: app}: { value: ApplicationListItemInterface }) => !hasRequiredScopes(
+            hidden: ({ value: app }: { value: ApplicationListItemInterface }) => !hasRequiredScopes(
                 featureConfig?.applications,
                 featureConfig?.applications?.scopes?.delete, allowedScopes)
                 || ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(app?.name),

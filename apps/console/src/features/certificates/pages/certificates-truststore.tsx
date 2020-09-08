@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, PaginationProps } from "semantic-ui-react";
-import { AdvancedSearchWithBasicFilters, filterList, sortList, UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../core";
 import { listClientCertificates } from "../api";
 import { CertificatesList } from "../components";
 

@@ -37,7 +37,7 @@ import {
     LocalAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
-    OutboundProvisioningConnectorMetaInterface,
+    OutboundProvisioningConnectorMetaInterface
 } from "../models";
 
 /**

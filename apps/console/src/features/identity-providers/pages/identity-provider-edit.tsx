@@ -34,13 +34,13 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     HelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
-    history,
-    setHelpPanelDocsContentURL, AppConstants
+    history, setHelpPanelDocsContentURL
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";

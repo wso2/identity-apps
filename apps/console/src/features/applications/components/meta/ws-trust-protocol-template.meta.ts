@@ -26,7 +26,7 @@ export const WSTrustProtocolTemplateItem: ApplicationTemplateListItemInterface =
     id: DefaultProtocolTemplate.WS_TRUST,
     name: "WS Trust",
     image: "wsTrust",
-    authenticationProtocol: "ws-trust",
+    authenticationProtocol: "ws-trust"
 };
 
 export const WSTrustProtocolTemplate: ApplicationTemplateInterface = {
