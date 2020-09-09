@@ -24,8 +24,7 @@ import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffec
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { AuthenticatorAccordion } from "../../../core";
-import { EmptyPlaceholderIllustrations } from "../../../core";
+import { AuthenticatorAccordion, EmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,

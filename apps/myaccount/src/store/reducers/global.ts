@@ -18,7 +18,7 @@
  */
 
 import { GlobalInterface } from "../../models";
-import { GlobalActions, GlobalActionTypes } from "../actions/types";
+import { GlobalActionTypes, GlobalActions } from "../actions/types";
 
 /**
  * Initial state.

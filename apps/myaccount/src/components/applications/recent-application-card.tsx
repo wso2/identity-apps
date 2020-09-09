@@ -42,7 +42,7 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
     const { app, onAppNavigate, showFavouriteIcon } = props;
 
     const appImageContainerClassNames = classNames({
-        [ "default" ]: !app.image,
+        [ "default" ]: !app.image
     }, "application-image");
 
     return (

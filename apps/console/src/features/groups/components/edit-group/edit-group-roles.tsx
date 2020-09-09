@@ -221,47 +221,39 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "remove",
-                        "path": "groups",
-                        "value": [
-                            {
-                                "value": group.id
-                            }
-                        ]
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "remove",
+                    "path": "groups",
+                    "value": [{
+                        "value": group.id
+                    }]
+                }]
+            },
+            method: "PATCH"
         };
 
         let addOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "add",
-                        "path": "groups",
-                        "value": [
-                            {
-                                "value": group.id
-                            }
-                        ]
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "add",
+                    "path": "groups",
+                    "value": [{
+                        "value": group.id
+                    }]
+                }]
+            },
+            method: "PATCH"
         };
 
         const removeOperations = [];
@@ -528,9 +520,17 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         const role = roleName.split("/");
         if (role.length > 0) {
             if (role[0] == "Application") {
-                return { labelText: "Application", labelColor: null, name: "application-label" };
+                return {
+                    labelColor: null,
+                    labelText: "Application",
+                    name: "application-label"
+                };
             } else {
-                return { labelText: "Internal", labelColor: null, name: "internal-label" };
+                return {
+                    labelColor: null,
+                    labelText: "Internal",
+                    name: "internal-label"
+                };
             }
         }
     };

@@ -167,7 +167,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     // Role Mapping.
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
-    
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const getClaims = () => {
@@ -295,40 +295,6 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
             }
         });
         setClaimMapping(claimMappingList);
-    };
-
-    const createOptions = () => {
-        const newDialectOptions: DropdownOptionsInterface[] = [];
-        // tslint:disable-next-line:no-shadowed-variable
-        dialect.map((element: ClaimDialect) => {
-            const option: DropdownOptionsInterface = {
-                key: element.id,
-                text: element.dialectURI,
-                value: element.dialectURI
-            };
-            newDialectOptions.push(option);
-        });
-        return newDialectOptions;
-    };
-
-    const selectDialect = (e, { name, value }) => {
-        if (value !== null && selectedDialect.dialectURI !== value) {
-            const selectedId = findDialectID(value);
-            let isLocalDialect = selectedDialect.localDialect;
-            if (value !== localDialectURI) {
-                isLocalDialect = false;
-            } else {
-                isLocalDialect = true;
-            }
-            setSelectedDialect({
-                dialectURI: value,
-                id: selectedId,
-                localDialect: isLocalDialect
-            });
-            setSelectedExternalClaims([]);
-            setSelectedClaims([]);
-            getMappedClaims(selectedId);
-        }
     };
 
     const changeSelectedDialect = (dialectURI: string) => {

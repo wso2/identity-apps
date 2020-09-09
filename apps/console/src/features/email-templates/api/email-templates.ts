@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { IdentityClient } from "@wso2is/authentication";
 import { HttpMethods } from "@wso2is/core/models";
-import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { EmailTemplate, EmailTemplateDetails, EmailTemplateType } from "../models";

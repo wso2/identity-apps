@@ -35,10 +35,8 @@ import { Button, Grid, Icon } from "semantic-ui-react";
 import {
     AppState,
     AuthenticatorAccordion,
-    CORSOriginsListInterface,
     EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
-    getCORSOrigins,
     store
 } from "../../../core";
 import {

@@ -19,8 +19,8 @@
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
-    FeatureAccessConfigInterface,
-    CommonUIConfigInterface
+    CommonUIConfigInterface,
+    FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 

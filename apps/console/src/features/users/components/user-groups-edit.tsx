@@ -320,44 +320,38 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "remove",
-                        "path": "members[display eq" + " " + user.userName + "]"
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "remove",
+                    "path": "members[display eq" + " " + user.userName + "]"
+                }]
+            },
+            method: "PATCH"
         };
 
         let addOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "add",
-                        "value": {
-                            "members": [
-                                {
-                                    "display": user.userName,
-                                    "value": user.id
-                                }
-                            ]
-                        }
+                "Operations": [{
+                    "op": "add",
+                    "value": {
+                        "members": [{
+                            "display": user.userName,
+                            "value": user.id
+                        }]
                     }
-                ]
-            }
+                }]
+            },
+            method: "PATCH"
         };
 
         const removeOperations = [];

@@ -89,7 +89,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         [ `spaced-${ spaced }` ]: spaced,
         transparent,
         [ `${ avatarType === "user" ? "user-avatar" : "app-avatar" }` ]: avatar,
-        [ `${ relaxLevel }` ]: relaxLevel,
+        [ `${ relaxLevel }` ]: relaxLevel
     }, className);
 
     // If loading, show the placeholder.

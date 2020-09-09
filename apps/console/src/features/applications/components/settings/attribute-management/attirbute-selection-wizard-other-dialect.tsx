@@ -55,7 +55,6 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
 
     const {
         selectedExternalClaims,
-        setSelectedExternalClaims,
         setAvailableExternalClaims,
         setInitialSelectedExternalClaims,
         showAddModal,
@@ -74,19 +73,6 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
     const [checkedAssignedListItems, setCheckedAssignedListItems] = useState<ExtendedExternalClaimInterface[]>([]);
     const [isSelectUnassignedClaimsAllClaimsChecked, setIsSelectUnassignedClaimsAllClaimsChecked] = useState(false);
     const [isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked] = useState(false);
-
-    const getClaimName = (claimURI: string): string => {
-        if (typeof claimURI === "string") {
-            const claimArray = claimURI.split("/");
-            if (claimArray.length > 1) {
-                return claimArray[claimArray.length - 1];
-            } else {
-                return claimArray[0];
-            }
-        }
-
-        return claimURI;
-    };
 
     const handleAttributeModal = () => {
         setShowAddModal(false);

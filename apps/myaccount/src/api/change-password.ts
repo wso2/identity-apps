@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { IdentityClient } from "@wso2is/authentication";
 import { AxiosHttpClient } from "@wso2is/http";
-import { IdentityClient, Storage } from "@wso2is/authentication";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 

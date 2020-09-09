@@ -20,11 +20,11 @@
 import _ from "lodash";
 import {
     BasicProfileInterface,
-    emptyProfileCompletion,
     MultiValue,
     ProfileAttribute,
     ProfileCompletion,
-    ProfileSchema
+    ProfileSchema,
+    emptyProfileCompletion
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";

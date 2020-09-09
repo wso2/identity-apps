@@ -318,43 +318,37 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "remove",
-                        "path": "groups"
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "remove",
+                    "path": "groups"
+                }]
+            },
+            method: "PATCH"
         };
 
         let addOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "add",
-                        "value": {
-                            "groups": [
-                                {
-                                    "value": user.id
-                                }
-                            ]
-                        }
+                "Operations": [{
+                    "op": "add",
+                    "value": {
+                        "groups": [{
+                            "value": user.id
+                        }]
                     }
-                ]
-            }
+                }]
+            },
+            method: "PATCH"
         };
 
         const removeOperations = [];

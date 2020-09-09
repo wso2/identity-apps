@@ -18,7 +18,7 @@
  */
 
 import { ProfileReducerStateInterface } from "../../models";
-import { ProfileActions, ProfileActionTypes } from "../actions/types/profile";
+import { ProfileActionTypes, ProfileActions } from "../actions/types/profile";
 
 /**
  * Initial state.
@@ -36,7 +36,8 @@ const initialState: ProfileReducerStateInterface = {
  * @param action - Action type
  * @returns The new state
  */
-export const profileReducer = (state: ProfileReducerStateInterface = initialState, action: ProfileActions): ProfileReducerStateInterface => {
+export const profileReducer = (
+    state: ProfileReducerStateInterface = initialState, action: ProfileActions): ProfileReducerStateInterface => {
     switch (action.type) {
         case ProfileActionTypes.SET_PROFILE_COMPLETION:
             return {

@@ -16,8 +16,8 @@
  * under the License.
  */
 
+import { IdentityClient } from "@wso2is/authentication";
 import { Claim, HttpMethods } from "@wso2is/core/models";
-import { IdentityClient, Storage } from "@wso2is/authentication";
 import { store } from "../../core";
 import { AddExternalClaim } from "../models";
 

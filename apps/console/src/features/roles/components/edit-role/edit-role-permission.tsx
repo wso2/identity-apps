@@ -39,7 +39,7 @@ interface RolePermissionDetailProps {
  * Component to update permissions of the selected role.
  * @param props Contains role id to get permission details.
  */
-export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props: 
+export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps> = (props:
     RolePermissionDetailProps): ReactElement => {
 
     const { t } = useTranslation();
@@ -48,10 +48,9 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     const {
         roleObject,
         onRoleUpdate,
-        isGroup,
-        isReadOnly
+        isGroup
     } = props;
-    
+
     const onPermissionUpdate = (updatedPerms: Permission[]) => {
         updateRolePermissions(roleObject.id, updatedPerms.map(permissionsObject => permissionsObject.fullPath))
             .then(() => {
@@ -114,7 +113,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                 }
             })
     };
-    
+
     return (
         <div className="permissions-edit-container">
             <PermissionList isEdit isRole onSubmit={ onPermissionUpdate } roleObject={ roleObject } />

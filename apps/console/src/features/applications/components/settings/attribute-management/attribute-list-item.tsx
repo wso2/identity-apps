@@ -53,7 +53,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         claimURI,
         displayName,
         localDialect,
-        mappedURI,
         updateMapping,
         addToMapping,
         selectMandatory,
@@ -71,18 +70,6 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     const [errorInClaimMapping, setErrorInClaimMapping] = useState(false);
     const [mandatory, setMandatory] = useState(false);
     const [requested, setRequested] = useState(true);
-
-    const getClaimName = (claimURI: string): string => {
-        if (typeof claimURI === "string") {
-            const claimArray = claimURI.split("/");
-            if (claimArray.length > 1) {
-                return claimArray[claimArray.length - 1];
-            } else {
-                return claimArray[0];
-            }
-        }
-        return claimURI;
-    };
 
     const handleMandatoryCheckChange = () => {
         if (mandatory) {

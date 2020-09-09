@@ -77,7 +77,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 ): ReactElement => {
 
     const {
-        updateList,
         closeWizard,
         currentStep,
         [ "data-testid" ]: testId
@@ -354,7 +353,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             }
         }
     };
-    
+
     /**
      * This function handles adding the user.
      */
@@ -542,10 +541,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
                     initialValues={
                         {
-                            initialGroupList: initialGroupList,
                             groupList: groupList,
-                            tempGroupList: tempGroupList,
-                            initialTempGroupList: initialTempGroupList
+                            initialGroupList: initialGroupList,
+                            initialTempGroupList: initialTempGroupList,
+                            tempGroupList: tempGroupList
                         }
                     }
                     handleGroupListChange={ (groups) => handleGroupListChange(groups) }

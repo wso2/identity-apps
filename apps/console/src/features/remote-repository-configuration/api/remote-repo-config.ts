@@ -16,14 +16,14 @@
  * under the License.
  */
 
+import { IdentityClient } from "@wso2is/authentication";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { IdentityClient, Storage } from "@wso2is/authentication";
 import { store } from "../../core";
-import { 
+import {
     InterfaceConfigDetails,
     InterfaceEditDetails,
-    InterfaceRemoteRepoConfigDetails, 
+    InterfaceRemoteRepoConfigDetails,
     InterfaceRemoteRepoListResponse } from "../models";
 
 /**
@@ -111,12 +111,12 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
 
 export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetails): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
+        data: configObj,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        data: configObj,
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteRepoConfig
     };
@@ -131,12 +131,12 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
 
 export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetails): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
+        data: configObj,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        data: configObj,
         method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
     };

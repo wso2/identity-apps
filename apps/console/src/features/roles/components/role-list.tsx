@@ -34,8 +34,8 @@ import {
 import React, { ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Icon, Image, Label, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import {AppConstants, EmptyPlaceholderIllustrations, history} from "../../core";
-import { APPLICATION_DOMAIN, ROLE_VIEW_PATH } from "../constants";
+import { AppConstants, EmptyPlaceholderIllustrations, history } from "../../core";
+import { APPLICATION_DOMAIN } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
@@ -99,11 +99,11 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
 
 /**
  * List component for Role Management list
- * 
+ *
  * @param props contains the role list as a prop to populate
  */
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
-    
+
     const {
         actionsColumnWidth,
         descriptionColumnWidth,

@@ -19,8 +19,8 @@
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Label, List, Responsive, SemanticCOLORS } from "semantic-ui-react";
-import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
 import { ApprovalsEdit } from "./approvals-edit";
+import { ApprovalStatus, ApprovalTaskSummary } from "../../models";
 
 /**
  * Prop types for the approvals list component.

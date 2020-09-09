@@ -22,7 +22,7 @@ import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Button, Grid, Icon, Modal } from "semantic-ui-react";
 import { AssignGroupsUsers } from "./assign-groups-users";
 import { RoleBasics } from "./role-basics";
@@ -30,7 +30,6 @@ import { PermissionList } from "./role-permission";
 import { CreateRoleSummary } from "./role-sumary";
 import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
-import { AppState } from "../../../core/store";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
 import { createRole } from "../../api";
@@ -69,7 +68,7 @@ interface WizardStateInterface {
 
 /**
  * Component to handle addition of a new role to the system.
- * 
+ *
  * @param props props related to the create role wizard
  */
 export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: CreateRoleProps): ReactElement => {
@@ -172,13 +171,13 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         }
 
         const roleData: CreateRoleInterface = {
+            "displayName": basicData?.BasicDetails ? basicData?.BasicDetails?.roleName : basicData?.roleName,
+            "groups": groups,
+            "permissions": permissions,
             "schemas": [
                 "urn:ietf:params:scim:schemas:extension:2.0:Role"
             ],
-            "displayName": basicData?.BasicDetails ? basicData?.BasicDetails?.roleName : basicData?.roleName,
-            "users" : users,
-            "groups": groups,
-            "permissions": permissions
+            "users": users
         };
 
         // Create Role API Call.
@@ -229,7 +228,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
 
     /**
      * Method to handle the create role wizard finish action.
-     * 
+     *
      */
     const handleRoleWizardFinish = () => {
         addRole(wizardState)
@@ -312,9 +311,9 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 initialUsersList={ wizardState && wizardState[ WizardStepsFormTypes?.USER_LIST ] }
                 initialGroupList={
                     {
+                        groupList: groupList,
                         initialGroupList: initialGroupList,
                         initialTempGroupList: initialTempGroupList,
-                        groupList: groupList,
                         tempGroupList: tempGroupList
                     }
                 }
@@ -362,7 +361,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
             case 3:
                 setFinishSubmit();
                 break;
-            
+
         }
     };
 

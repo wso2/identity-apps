@@ -87,7 +87,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.userSessions.notifications.fetchSessions.error.message"
-                        ),
+                        )
                     });
 
                     return;
@@ -158,7 +158,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.userSessions.notifications.revokeUserSession.error.message"
-                        ),
+                        )
                     });
                 } else {
                     onAlertFired({

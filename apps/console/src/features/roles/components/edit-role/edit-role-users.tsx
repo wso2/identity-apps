@@ -81,15 +81,13 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             }
 
             const groupData: PatchGroupDataInterface = {
-                schemas: [
-                    "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-                ],
                 Operations: [{
                     "op": "replace",
                     "value": {
                         "members": newUsers
                     }
-                }]
+                }],
+                schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
             };
 
             updateGroupDetails(roleObject.id, groupData)
@@ -115,14 +113,12 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             }
 
             const roleData: PatchRoleDataInterface = {
-                schemas: [
-                    "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-                ],
                 Operations: [{
                     "op": "replace",
                     "path": "users",
                     "value": newUsers
-                }]
+                }],
+                schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
             };
 
             updateRoleDetails(roleObject.id, roleData)

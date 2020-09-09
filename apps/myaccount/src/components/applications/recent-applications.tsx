@@ -18,8 +18,8 @@
 
 import React, { FunctionComponent } from "react";
 import { Grid } from "semantic-ui-react";
-import { Application } from "../../models";
 import { RecentApplicationCard } from "./recent-application-card";
+import { Application } from "../../models";
 
 /**
  * Proptypes for the recent applications component.

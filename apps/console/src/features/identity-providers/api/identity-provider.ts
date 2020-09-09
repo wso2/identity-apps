@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, Storage } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosError, AxiosResponse } from "axios";
@@ -37,7 +37,7 @@ import {
     LocalAuthenticatorInterface,
     OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
-    OutboundProvisioningConnectorMetaInterface,
+    OutboundProvisioningConnectorMetaInterface
 } from "../models";
 
 /**

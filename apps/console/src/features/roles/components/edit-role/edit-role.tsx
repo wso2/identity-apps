@@ -39,21 +39,18 @@ interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
 
 /**
  * Component which will allow editing of a selected role.
- * 
+ *
  * @param props contains role details to be edited.
  */
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
 
     const {
         roleObject,
-        onRoleUpdate,
-        readOnlyUserStores,
-        featureConfig
+        onRoleUpdate
     } = props;
 
     const { t } = useTranslation();
 
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const isGroupAndRoleSeparationEnabled: boolean = useSelector(
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 

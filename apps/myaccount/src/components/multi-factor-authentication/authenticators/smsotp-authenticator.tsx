@@ -100,7 +100,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     level: AlertLevels.SUCCESS,
                     message: t(
                         "userPortal:components.mfa.smsOtp.notifications.updateMobile.success.message"
-                    ),
+                    )
                 });
 
                 dispatch(getProfileInformation());

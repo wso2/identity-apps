@@ -27,10 +27,10 @@ import {
     Responsive,
     SemanticICONS
 } from "semantic-ui-react";
+import { UserSessionsEdit } from "./user-sessions-edit";
 import { UserAgentParser } from "../../helpers";
 import { UserSession } from "../../models";
 import { ThemeIcon } from "../shared";
-import { UserSessionsEdit } from "./user-sessions-edit";
 
 /**
  * Proptypes for the user sessions list component.

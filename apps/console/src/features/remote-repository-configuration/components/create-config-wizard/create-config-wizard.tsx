@@ -42,13 +42,12 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
 
     const { t } = useTranslation();
 
-    const { 
+    const {
         closeWizard,
-        initStep,
         updateList,
         [ "data-testid" ]: testId
     } = props;
-    
+
     const dispatch = useDispatch();
 
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
@@ -57,10 +56,10 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
     const handleFormSubmit = (values: InterfaceRemoteConfigForm): void => {
         const configs: InterfaceRemoteRepoConfigDetails = {
             actionListener: {
-                type: "POLLING",
                 attributes: {
                     frequency: values.pollingfreq
-                }
+                },
+                type: "POLLING"
             },
             configurationDeployer: {
                 attributes: {},

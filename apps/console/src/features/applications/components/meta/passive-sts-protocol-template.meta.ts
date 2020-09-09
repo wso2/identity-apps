@@ -23,10 +23,10 @@ import {
 } from "../../models";
 
 export const PassiveStsProtocolTemplateItem: ApplicationTemplateListItemInterface = {
-    id: DefaultProtocolTemplate.WS_FEDERATION,
-    name: "Passive STS",
-    image: "wsFed",
     authenticationProtocol: "passive-sts",
+    id: DefaultProtocolTemplate.WS_FEDERATION,
+    image: "wsFed",
+    name: "Passive STS"
 };
 
 export const PassiveStsProtocolTemplate: ApplicationTemplateInterface = {

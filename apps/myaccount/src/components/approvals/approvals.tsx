@@ -20,12 +20,12 @@ import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Dropdown, Icon, Menu, Responsive, SemanticCOLORS, Tab } from "semantic-ui-react";
+import { ApprovalsList } from "./approvals-list";
 import { fetchPendingApprovalDetails, fetchPendingApprovals, updatePendingApprovalStatus } from "../../api";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, ApprovalStatus, ApprovalTaskDetails } from "../../models";
 import { toSentenceCase } from "../../utils";
 import { SettingsSection } from "../shared";
-import { ApprovalsList } from "./approvals-list";
 
 /**
  * Proptypes for the approvals component.
@@ -114,7 +114,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.approvals.notifications.fetchPendingApprovals.error.message"
-                        ),
+                        )
                     });
                 }
 
@@ -279,7 +279,7 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.approvals.notifications.fetchApprovalDetails.error.message"
-                        ),
+                        )
                     });
 
                     return;
@@ -486,7 +486,11 @@ export const Approvals: FunctionComponent<ApprovalsProps> = (
             <Responsive
                 as={ Tab }
                 className="settings-section-tab"
-                menu={ { secondary: true, pointing: true, attached: "top" } }
+                menu={ {
+                    attached: "top",
+                    pointing: true,
+                    secondary: true
+                } }
                 panes={
                     panes.map((pane) => {
                         return {

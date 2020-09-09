@@ -27,9 +27,9 @@ import {
     AlertLevels,
     AnswersInterface,
     ChallengesQuestionsInterface,
-    createEmptyChallenge,
     QuestionSetsInterface,
     QuestionsInterface,
+    createEmptyChallenge
 } from "../../../models";
 import { EditSection, ThemeIcon } from "../../shared";
 
@@ -219,8 +219,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             "success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t("userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
-                            "success.message"),
+                        message: t("userPortal:components.accountRecovery.questionRecovery." +
+                            "notifications.updateQuestions." +
+                            "success.message")
                     });
                 })
                 .catch((error) => {
@@ -307,12 +308,14 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                     };
                                 }) }
                                 label={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "forms.securityQuestionsForm" +
                                     ".inputs.question.label"
                                 ) }
                                 name={ "question " + questionSet.questionSetId }
                                 placeholder={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "forms.securityQuestionsForm" +
                                     ".inputs.question.placeholder"
                                 ) }
                                 required={ true }
@@ -327,7 +330,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             />
                             <Field
                                 label={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
+                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "forms.securityQuestionsForm." +
                                     "inputs.answer.label"
                                 ) }
                                 name={ "answer " + questionSet.questionSetId }

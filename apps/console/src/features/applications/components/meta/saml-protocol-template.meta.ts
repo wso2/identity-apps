@@ -23,10 +23,10 @@ import {
 } from "../../models";
 
 export const SAMLProtocolTemplateItem: ApplicationTemplateListItemInterface = {
-    id: DefaultProtocolTemplate.SAML,
-    name: "SAML",
-    image: "saml",
     authenticationProtocol: "saml",
+    id: DefaultProtocolTemplate.SAML,
+    image: "saml",
+    name: "SAML"
 };
 
 export const SAMLProtocolTemplate: ApplicationTemplateInterface = {
@@ -35,8 +35,8 @@ export const SAMLProtocolTemplate: ApplicationTemplateInterface = {
         inboundProtocolConfiguration: {
             saml: {
                 manualConfiguration: {
-                    issuer: "",
-                    assertionConsumerUrls: [""]
+                    assertionConsumerUrls: [""],
+                    issuer: ""
                 }
             }
         },

@@ -37,9 +37,7 @@ interface AppFooterProps {
  * @param {AppFooterProps} props - Props supplied to the footer component.
  * @return {JSX.Element}
  */
-export const AppFooter: React.FunctionComponent<AppFooterProps> = (
-    props: AppFooterProps
-): JSX.Element => {
+export const AppFooter: React.FunctionComponent<AppFooterProps> = (): JSX.Element => {
     const { t } = useTranslation();
 
     const { state } = useContext(ThemeContext);
