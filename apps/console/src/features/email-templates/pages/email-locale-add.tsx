@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the "License"); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
@@ -22,6 +22,7 @@ import { AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { RouteComponentProps } from "react-router";
 import { AppConstants, history } from "../../core";
 import { getEmailTemplate } from "../api";
 import { AddLocaleTemplate } from "../components";
@@ -33,6 +34,14 @@ import { EmailTemplateDetails } from "../models";
 type AddTemplateLocalePageInterface = TestableComponentInterface
 
 /**
+ * Route parameters interface.
+ */
+interface RouteParams {
+    templateTypeId: string;
+    templateId: string;
+}
+
+/**
  * Component will render add view for a email template based on
  * locale for selected email template type.
  *
@@ -41,17 +50,19 @@ type AddTemplateLocalePageInterface = TestableComponentInterface
  * @return {React.ReactElement}
  */
 const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
-    props: AddTemplateLocalePageInterface
+    props: AddTemplateLocalePageInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
     const {
+        match,
         [ "data-testid" ]: testId
     } = props;
 
+    const templateTypeId = match?.params?.templateTypeId;
+    const templateId = match?.params?.templateId;
+
     const { t } = useTranslation();
 
-    const [ templateTypeId, setTemplateTypeId ] = useState<string>("");
-    const [ templateId, setTemplateId ] = useState<string>("");
     const [ localeName, setLocaleName ] = useState<string>("");
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
     const [ emailTemplateName, setEmailTemplateName ] = useState<string>("");
@@ -60,39 +71,27 @@ const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
      * Util to handle back button event.
      */
     const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE").replace(":id", templateTypeId));
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
     };
 
     useEffect(() => {
-        const path: string[] = history.location.pathname.split("/");
-        let templateTypeId = "";
-        let templateId = "";
-        let countryCode = "";
-        let languageCode = "";
-        
-        //Handle edit flow if length is 5
-        if (path.length === 5) {
-            templateTypeId = path[ path.length - 3 ];
-            templateId =  path[ path.length - 1 ];
 
-            if (templateId.indexOf("_") !== -1) {
-                countryCode = templateId.split("_")[1];
-                languageCode = templateId.split("_")[0];
-            } else {
-                countryCode = templateId.split("-")[1];
-                languageCode = templateId.split("-")[0];
-            }
-
-            const language = CountryLanguage.getLanguage(languageCode).name;
-            const country = CountryLanguage.getCountry(countryCode).name;
-
-            setLocaleName(country ? language + " (" + country + ")" : language);
-        } else if (path.length === 4) {
-            templateTypeId = path[ path.length - 2 ];
+        if (!templateTypeId || !templateId) {
+            return;
         }
 
-        setTemplateId(templateId);
-        setTemplateTypeId(templateTypeId);
+        let countryCode = "";
+        let languageCode = "";
+
+        if (templateId.indexOf("_") !== -1) {
+            countryCode = templateId.split("_")[ 1 ];
+            languageCode = templateId.split("_")[ 0 ];
+        }
+
+        const language = CountryLanguage.getLanguage(languageCode).name;
+        const country = CountryLanguage.getCountry(countryCode).name;
+
+        setLocaleName(country ? language + " (" + country + ")" : language);
 
         getEmailTemplate(templateTypeId).then((response: AxiosResponse<EmailTemplateDetails>) => {
             if (response.status === 200) {
@@ -100,7 +99,7 @@ const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
                 setEmailTemplateName(response.data.displayName)
             }
         })
-    }, [emailTemplateTypeDetails !== undefined]);
+    }, [ templateTypeId, templateId ]);
 
     return (
         <PageLayout

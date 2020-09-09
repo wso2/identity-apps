@@ -62,18 +62,21 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
     const [ isTemplateTypesFetchRequestLoading, setIsTemplateTypesFetchRequestLoading ] = useState<boolean>(false);
 
     useEffect(() => {
-        getTemplateTypes()
-    }, [emailTemplateTypes.length]);
+        getTemplateTypes(listItemLimit, listOffset)
+    }, [ listOffset, listItemLimit ]);
 
-    const getTemplateTypes = (): void => {
+    const getTemplateTypes = (limit: number, offset: number): void => {
         setIsTemplateTypesFetchRequestLoading(true);
 
         getEmailTemplateTypes()
             .then((response: AxiosResponse<EmailTemplateType[]>) => {
                 if (response.status === 200) {
                     setEmailTemplateTypes(response.data);
-                    setEmailTemplateTypePage(listOffset, listItemLimit);
+                    paginate(response.data, offset, limit);
                 }
+            })
+            .catch(() => {
+                // Handle Error.
             })
             .finally(() => {
                 setIsTemplateTypesFetchRequestLoading(false);
@@ -89,7 +92,7 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
         setListOffset(offsetValue);
-        setEmailTemplateTypePage(offsetValue, listItemLimit);
+        paginate(emailTemplateTypes, offsetValue, listItemLimit);
     };
 
     /**
@@ -100,32 +103,24 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
-        setEmailTemplateTypePage(listOffset, data.value as number);
+        paginate(emailTemplateTypes, listOffset, data.value as number);
     };
 
     /**
      * Util method to paginate retrieved email template type list.
      * 
-     * @param offsetValue pagination offset value
-     * @param itemLimit pagination item limit
+     * @param {EmailTemplateType[]} list - Email template types.
+     * @param {number} offset - Pagination offset value.
+     * @param {number} limit - Pagination item limit.
      */
-    const setEmailTemplateTypePage = (offsetValue: number, itemLimit: number) => {
-        setPaginatedEmailTemplateTypes(emailTemplateTypes?.slice(offsetValue, itemLimit + offsetValue));
-    };
-
-    /**
-     * Dispatches the alert object to the redux store.
-     *
-     * @param {AlertInterface} alert - Alert object.
-     */
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
+    const paginate = (list: EmailTemplateType[], offset: number, limit: number): void => {
+        setPaginatedEmailTemplateTypes(list.slice(offset, limit + offset));
     };
 
     const deleteTemplateType = (templateTypeId: string) => {
         deleteEmailTemplateType(templateTypeId).then((response: AxiosResponse) => {
             if (response.status === 204) {
-                handleAlerts({
+                dispatch(addAlert<AlertInterface>({
                     description: t(
                         "adminPortal:components.emailTemplateTypes.notifications.deleteTemplateType.success.description"
                     ),
@@ -133,25 +128,25 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
                     message: t(
                         "adminPortal:components.emailTemplateTypes.notifications.deleteTemplateType.success.message"
                     )
-                });
+                }));
             }
-            getTemplateTypes();
+
+            getTemplateTypes(listItemLimit, listOffset);
         }).catch((error: AxiosError) => {
-            handleAlerts({
+            dispatch(addAlert<AlertInterface>({
                 description: error.response.data.description,
                 level: AlertLevels.ERROR,
                 message: t(
                     "adminPortal:components.emailTemplateTypes.notifications.deleteTemplateType.genericError.message"
                 )
-            });
+            }));
         })
     };
 
     return (
         <PageLayout
             action={
-                (isTemplateTypesFetchRequestLoading || emailTemplateTypes?.length > 0)
-                && (
+                (isTemplateTypesFetchRequestLoading || emailTemplateTypes?.length > 0) && (
                     <PrimaryButton
                         onClick={ () => setShowNewTypeWizard(true) }
                         data-testid={ `${ testId }-list-layout-add-button` }
@@ -188,7 +183,7 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
                     showNewTypeWizard && (
                         <EmailTemplateTypeWizard
                             onCloseHandler={ () => {
-                                getTemplateTypes();
+                                getTemplateTypes(listItemLimit, listOffset);
                                 setShowNewTypeWizard(false);
                             } }
                             data-testid={ `${ testId }-add-wizard` }

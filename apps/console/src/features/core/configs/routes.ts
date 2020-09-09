@@ -409,7 +409,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.emailTemplates",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE"),
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
                 protected: true,
                 showOnSidePanel: false
             },
@@ -421,7 +421,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.addEmailTemplate",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD"),
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATE"),
                 protected: true,
                 showOnSidePanel: false
             },
@@ -433,7 +433,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.addEmailTemplateLocale",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_LOCALE_ADD"),
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD"),
                 protected: true,
                 showOnSidePanel: false
             }
@@ -446,7 +446,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         id: "emailTemplates",
         name: "adminPortal:components.sidePanel.emailTemplates",
         order: 7,
-        path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
+        path: AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"),
         protected: true,
         showOnSidePanel: true
     },

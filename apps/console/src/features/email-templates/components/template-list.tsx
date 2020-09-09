@@ -104,9 +104,9 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
     const [ currentDeletingTemplate, setCurrentDeletingTemplate ] = useState<EmailTemplate>(undefined);
 
     const handleEditTemplate = (templateTypeId: string, templateId: string) => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_LOCALE_ADD")
-            .replace(":type", templateTypeId)
-            .replace(":id",  templateId));
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE")
+            .replace(":templateTypeId", templateTypeId)
+            .replace(":templateId",  templateId));
     };
 
     /**

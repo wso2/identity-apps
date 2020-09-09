@@ -69,25 +69,28 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
 
         setTemplateTypeId(templateTypeId);
 
-        getTemplates();
-    }, [emailTemplateTypeDetails !== undefined, emailTemplates.length]);
+        getTemplates(templateTypeId, listItemLimit, listOffset);
+    }, [ listOffset, listItemLimit ]);
 
     /**
      * Util method to get all locale templates.
      */
-    const getTemplates = () => {
+    const getTemplates = (typeId: string, limit: number, offset: number) => {
         setIsEmailTemplatesFetchRequestLoading(true);
 
-        getEmailTemplate(templateTypeId)
+        getEmailTemplate(typeId)
             .then((response: AxiosResponse<EmailTemplateDetails>) => {
                 if (response.status === 200) {
                     setEmailTemplateTypeDetails(response.data);
 
                     if (response.data.templates instanceof Array && response.data.templates.length !== 0) {
                         setEmailTemplates(response.data.templates);
-                        setEmailTemplateTypePage(listOffset, listItemLimit);
+                        paginate(response.data.templates, offset, limit);
                     }
                 }
+            })
+            .catch(() => {
+                // Handle Error.
             })
             .finally(() => {
                 setIsEmailTemplatesFetchRequestLoading(false);
@@ -103,7 +106,7 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
         setListOffset(offsetValue);
-        setEmailTemplateTypePage(offsetValue, listItemLimit);
+        paginate(emailTemplates, offsetValue, listItemLimit);
     };
 
     /**
@@ -114,40 +117,32 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
      */
     const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
         setListItemLimit(data.value as number);
-        setEmailTemplateTypePage(listOffset, data.value as number);
+        paginate(emailTemplates, listOffset, data.value as number);
     };
 
     /**
      * Util method to paginate retrieved email template type list.
-     * 
-     * @param offsetValue pagination offset value
-     * @param itemLimit pagination item limit
+     *
+     * @param {EmailTemplate[]} list - Email template list.
+     * @param {number} offset - Pagination offset value.
+     * @param {number} limit - Pagination item limit.
      */
-    const setEmailTemplateTypePage = (offsetValue: number, itemLimit: number) => {
-        setPaginatedEmailTemplates(emailTemplates?.slice(offsetValue, itemLimit + offsetValue));
+    const paginate = (list: EmailTemplate[], offset: number, limit: number) => {
+        setPaginatedEmailTemplates(list.slice(offset, limit + offset));
     };
 
     /**
      * Util to handle back button event.
      */
     const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES"));
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"));
     };
 
     /**
      * Util to handle back button event.
      */
     const handleAddNewTemplate = () => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD").replace(":id", templateTypeId));
-    };
-
-    /**
-     * Dispatches the alert object to the redux store.
-     *
-     * @param {AlertInterface} alert - Alert object.
-     */
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD").replace(":templateTypeId", templateTypeId));
     };
 
     /**
@@ -160,7 +155,7 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
     const deleteTemplateType = (templateTypeId: string, templateId: string) => {
         deleteLocaleTemplate(templateTypeId, templateId).then((response: AxiosResponse) => {
             if (response.status === 204) {
-                handleAlerts({
+                dispatch(addAlert<AlertInterface>({
                     description: t(
                         "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.description"
                     ),
@@ -168,17 +163,18 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
                     message: t(
                         "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.message"
                     )
-                });
+                }));
             }
-            getTemplates();
+
+            getTemplates(templateTypeId, listItemLimit, listOffset);
         }).catch((error: AxiosError) => {
-            handleAlerts({
+            dispatch(addAlert<AlertInterface>({
                 description: error.response.data.description,
                 level: AlertLevels.ERROR,
                 message: t(
                     "adminPortal:components.emailTemplates.notifications.deleteTemplate.genericError.message"
                 )
-            });
+            }));
         })
     };
     
@@ -188,7 +184,7 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
                 (isEmailTemplatesFetchRequestLoading || emailTemplates?.length > 0)
                 && (
                     <PrimaryButton
-                        onClick={ () => handleAddNewTemplate() }
+                        onClick={ handleAddNewTemplate }
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
