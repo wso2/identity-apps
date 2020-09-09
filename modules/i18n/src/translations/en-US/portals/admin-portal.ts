@@ -806,6 +806,20 @@ export const adminPortal: AdminPortalNS = {
                         message: "Email template type delete successful"
                     }
                 },
+                getTemplateTypes: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve the email template types.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the email template types.",
+                        message: "Retrieval successful"
+                    }
+                },
                 updateTemplateType: {
                     error: {
                         description: "{{description}}",
@@ -901,6 +915,20 @@ export const adminPortal: AdminPortalNS = {
                     success: {
                         description: "Successfully deleted the email template .",
                         message: "Email template delete successful"
+                    }
+                },
+                getTemplates: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve the email templates.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the email templates.",
+                        message: "Retrieval successful"
                     }
                 },
                 iframeUnsupported: {

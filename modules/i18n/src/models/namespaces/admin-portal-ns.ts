@@ -491,6 +491,7 @@ export interface AdminPortalNS {
             };
             notifications: {
                 deleteTemplateType: Notification;
+                getTemplateTypes: Notification;
                 updateTemplateType: Notification;
                 createTemplateType: Notification;
             };
@@ -532,6 +533,7 @@ export interface AdminPortalNS {
             notifications: {
                 deleteTemplate: Notification;
                 createTemplate: Notification;
+                getTemplates: Notification;
                 iframeUnsupported: Notification;
                 updateTemplate: Notification;
             };
