@@ -917,6 +917,20 @@ export const adminPortal: AdminPortalNS = {
                         message: "Email template delete successful"
                     }
                 },
+                getTemplateDetails: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Retrieval error"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve the email template details.",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the email template details.",
+                        message: "Retrieval successful"
+                    }
+                },
                 getTemplates: {
                     error: {
                         description: "{{description}}",
@@ -2571,6 +2585,16 @@ export const adminPortal: AdminPortalNS = {
         }
     },
     pages: {
+        addEmailTemplate: {
+            backButton: "Go back to {{name}} template",
+            subTitle: null,
+            title: "Add New Template"
+        },
+        editTemplate: {
+            backButton: "Go back to {{name}} template",
+            subTitle: null,
+            title: "{{template}}"
+        },
         emailLocaleAdd: {
             backButton: "Go back to {{name}} template",
             subTitle: null,

@@ -16,17 +16,19 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { PageLayout } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
 import { AppConstants, history } from "../../core";
 import { getEmailTemplate } from "../api";
 import { AddEmailTemplateForm } from "../components";
-import { EmailTemplateDetails } from "../models";
+import { EmailTemplateDetails, EmailTemplateFormModes } from "../models";
 
 /**
  * Props for the add Templates Locale page.
@@ -60,24 +62,32 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
     const templateTypeId = match?.params?.templateTypeId;
     const templateId = match?.params?.templateId;
 
+    const dispatch = useDispatch();
+
     const { t } = useTranslation();
 
     const [ localeName, setLocaleName ] = useState<string>("");
+    const [ formMode, setFormMode ] = useState<EmailTemplateFormModes>(EmailTemplateFormModes.ADD);
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
     const [ emailTemplateName, setEmailTemplateName ] = useState<string>("");
 
-    /**
-     * Util to handle back button event.
-     */
-    const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
-    };
-
     useEffect(() => {
-
+        // Return if the path doesn't have the template type id or template id URL params.
         if (!templateTypeId || !templateId) {
             return;
         }
+        
+        // If only template type id is there in the path, then the component should
+        // behave as a template adding component.
+        if (templateTypeId && (!templateId || templateId === AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM)) {
+            setFormMode(EmailTemplateFormModes.ADD);
+            
+            return;
+        }
+
+        // If both template type id & template if is there in the path, then the component should
+        // behave as a template editing component.
+        setFormMode(EmailTemplateFormModes.EDIT);
 
         let countryCode = "";
         let languageCode = "";
@@ -92,30 +102,72 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
 
         setLocaleName(country ? language + " (" + country + ")" : language);
 
-        getEmailTemplate(templateTypeId).then((response: AxiosResponse<EmailTemplateDetails>) => {
-            if (response.status === 200) {
-                setEmailTemplateTypeDetails(response.data);
-                setEmailTemplateName(response.data.displayName)
-            }
-        })
+        getEmailTemplate(templateTypeId)
+            .then((response: AxiosResponse<EmailTemplateDetails>) => {
+                if (response.status === 200) {
+                    setEmailTemplateTypeDetails(response.data);
+                    setEmailTemplateName(response.data.displayName);
+                    
+                    return;
+                }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                        ".genericError.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                        ".genericError.message")
+                }));
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert<AlertInterface>({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                            ".error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                        ".genericError.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("adminPortal:components.emailTemplates.notifications.getTemplateDetails" +
+                        ".genericError.message")
+                }));
+            });
     }, [ templateTypeId, templateId ]);
+
+    /**
+     * Util to handle back button event.
+     */
+    const handleBackButtonClick = (): void => {
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
+    };
 
     return (
         <PageLayout
-            title={ templateId === ""
-                ? t("adminPortal:pages.emailLocaleAddWithDisplayName.title",
-                    { displayName: emailTemplateTypeDetails?.displayName })
-                : t("adminPortal:pages.emailLocaleAdd.title", { name: localeName })
+            title={
+                formMode === EmailTemplateFormModes.EDIT
+                    ? t("adminPortal:pages.editTemplate.title",
+                    { template: emailTemplateTypeDetails?.displayName })
+                    : t("adminPortal:pages.addEmailTemplate.title")
             }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("adminPortal:pages.emailLocaleAdd.backButton", { name: emailTemplateName })
+                text: formMode === EmailTemplateFormModes.EDIT
+                    ? t("adminPortal:pages.editTemplate.backButton", { name: emailTemplateName })
+                    : t("adminPortal:pages.addEmailTemplate.backButton", { name: emailTemplateName })
             } }
             titleTextAlign="left"
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
             <AddEmailTemplateForm
+                mode={ formMode }
                 templateId={ templateId }
                 templateTypeId={ templateTypeId }
                 data-testid={ `${ testId }-form` }

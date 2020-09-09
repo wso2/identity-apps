@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EMAIL_STARTER_TEMPLATE } from "../constants";
+import { EmailTemplateManagementConstants } from "../constants";
 
 /**
  * Interface for the email template editor props.
@@ -63,7 +63,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
-            setContent(EMAIL_STARTER_TEMPLATE);
+            setContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
         } else {
             setContent(htmlContent);
         }

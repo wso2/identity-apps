@@ -27,14 +27,24 @@ import { useDispatch } from "react-redux";
 import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
-import { EmailTemplate, EmailTemplateType } from "../../models";
+import { EmailTemplate, EmailTemplateFormModes, EmailTemplateType } from "../../models";
 import { EmailTemplateEditor } from "../email-template-editor";
 
 /**
  * Interface for email templates form props.
  */
 interface AddEmailTemplateFormPropsInterface extends TestableComponentInterface {
-    templateId: string;
+    /**
+     * Form mode.
+     */
+    mode: EmailTemplateFormModes;
+    /**
+     * Template ID.
+     */
+    templateId?: string;
+    /**
+     * Template type id.
+     */
     templateTypeId: string;
 }
 
@@ -49,6 +59,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
 ): ReactElement => {
 
     const {
+        mode,
         templateId,
         templateTypeId,
         [ "data-testid" ]: testId
@@ -87,13 +98,13 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         });
 
         setLocaleList(localeDropDown);
-    }, [ localeList.length ]);
+    }, []);
 
     /**
      * Will get fired if there is a template ID to trigger edit flow.
      */
     useEffect(() => {
-        if (!templateId) {
+        if (!templateId || mode === EmailTemplateFormModes.ADD) {
             return;
         }
 
@@ -111,7 +122,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
             .catch((error) => {
                 // Handle errors.
             });
-    }, [ templateId ]);
+    }, [ templateId, mode ]);
 
     /**
      * Util method to handle create template based on the form data captured.
@@ -195,7 +206,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
     };
 
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
-        if (!templateId) {
+        if (!templateId || mode === EmailTemplateFormModes.ADD) {
             createTemplate(values);
 
             return;
@@ -208,45 +219,46 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
         <Forms onSubmit={ handleFormSubmit }>
             <Grid>
                 {
-                    templateId === "" &&
-                    <Grid.Row columns={ 1 }>
-                        <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
-                            <Form.Field>
-                                <Field
-                                    type="dropdown"
-                                    placeholder={
-                                        t("adminPortal:components.emailLocale.forms.addLocale.fields.locale" +
-                                            ".placeholder")
-                                    }
-                                    label={
-                                        t("adminPortal:components.emailLocale.forms.addLocale.fields.locale.label")
-                                    }
-                                    name="locale"
-                                    requiredErrorMessage={
-                                        t("adminPortal:components.emailLocale.forms.addLocale.fields.locale" +
-                                            ".validations.empty")
-                                    }
-                                    required={ true }
-                                    children={ localeList ? localeList.map(list => {
-                                        return {
-                                            key: list.key as string,
-                                            text: list.text as string,
-                                            value: list.value as string
+                    (mode === EmailTemplateFormModes.ADD) && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 4 }>
+                                <Form.Field>
+                                    <Field
+                                        type="dropdown"
+                                        placeholder={
+                                            t("adminPortal:components.emailLocale.forms.addLocale.fields.locale" +
+                                                ".placeholder")
                                         }
-                                    }) : [] }
-                                    listen={ (values: Map<string, FormValue>) => {
-                                        setLocale(values.get("locale").toString());
-                                    } }
-                                    search
-                                    value={ locale }
-                                    selection
-                                    fluid
-                                    scrolling
-                                    data-testid={ `${ testId }-locale-select` }
-                                />
-                            </Form.Field>
-                        </Grid.Column>
-                    </Grid.Row>
+                                        label={
+                                            t("adminPortal:components.emailLocale.forms.addLocale.fields.locale.label")
+                                        }
+                                        name="locale"
+                                        requiredErrorMessage={
+                                            t("adminPortal:components.emailLocale.forms.addLocale.fields.locale" +
+                                                ".validations.empty")
+                                        }
+                                        required={ true }
+                                        children={ localeList ? localeList.map(list => {
+                                            return {
+                                                key: list.key as string,
+                                                text: list.text as string,
+                                                value: list.value as string
+                                            }
+                                        }) : [] }
+                                        listen={ (values: Map<string, FormValue>) => {
+                                            setLocale(values.get("locale").toString());
+                                        } }
+                                        search
+                                        value={ locale }
+                                        selection
+                                        fluid
+                                        scrolling
+                                        data-testid={ `${ testId }-locale-select` }
+                                    />
+                                </Form.Field>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
                 }
 
                 <Grid.Row columns={ 1 }>
