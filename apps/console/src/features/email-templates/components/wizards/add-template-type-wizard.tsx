@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the "License"); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -25,25 +25,27 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
-import { AddEmailTemplateType } from "./add-template-type";
 import { AppConstants, history } from "../../../core";
 import { createNewTemplateType } from "../../api";
 import { AddEmailTemplateTypeWizardStepIcons } from "../../configs";
+import { AddEmailTemplateTypeForm } from "../forms";
 
-interface EmailTemplateTypeWizardProps extends TestableComponentInterface {
+/**
+ * Interface for add email template type wizard props.
+ */
+interface AddEmailTemplateTypeWizardPropsInterface extends TestableComponentInterface {
     onCloseHandler: () => void;
 }
 
 /**
  * Wizard component to add a new email template type.
  * TODO : This component is still WIP.
- * 
- * @param {EmailTemplateTypeWizardProps} props - props required for the wizard component.
  *
+ * @param {AddEmailTemplateTypeWizardPropsInterface} props - props required for the wizard component.
  * @return {React.ReactElement}
  */
-export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardProps> = (
-    props: EmailTemplateTypeWizardProps
+export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeWizardPropsInterface> = (
+    props: AddEmailTemplateTypeWizardPropsInterface
 ): ReactElement => {
 
     const {
@@ -62,52 +64,42 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
         createTemplateType(values.templateType);
     };
 
-    /**
-     * Dispatches the alert object to the redux store.
-     *
-     * @param {AlertInterface} alert - Alert object.
-     */
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
-    };
-
-    const WIZARD_STEPS = [{
+    const WIZARD_STEPS = [ {
         content: (
-            <AddEmailTemplateType 
-                onSubmit={ (values) =>  handleFormSubmit(values) }
+            <AddEmailTemplateTypeForm
+                onSubmit={ (values) => handleFormSubmit(values) }
                 triggerSubmit={ finishSubmit }
                 data-testid={ `${ testId }-form` }
             />
         ),
         icon: AddEmailTemplateTypeWizardStepIcons.general,
         title: t("adminPortal:components.emailTemplateTypes.wizards.addTemplateType.steps.templateType.heading")
-    }];
+    } ];
 
     const createTemplateType = (templateTypeName: string): void => {
-        createNewTemplateType(templateTypeName).then((response: AxiosResponse) => {
-            if (response.status === 201) {
-                handleAlerts({
-                    description: t(
-                        "adminPortal:components.emailTemplateTypes.notifications.createTemplateType.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "adminPortal:components.emailTemplateTypes.notifications.createTemplateType.success.message"
-                    )
-                });
-            }
+        createNewTemplateType(templateTypeName)
+            .then((response: AxiosResponse) => {
+                if (response.status === 201) {
+                    dispatch(addAlert<AlertInterface>({
+                        description: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
+                            ".success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
+                            ".success.message")
+                    }));
+                }
 
-            history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", response.data?.id));
-            onCloseHandler();
-        }).catch(error => {
-            handleAlerts({
-                description: error.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t(
-                    "adminPortal:components.emailTemplateTypes.notifications.createTemplateType.genericError.message"
-                )
-            });
-        })
+                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", response.data?.id));
+                onCloseHandler();
+            })
+            .catch(error => {
+                dispatch(addAlert<AlertInterface>({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
+                        ".genericError.message")
+                }));
+            })
     };
 
     return (
@@ -128,7 +120,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
-                {WIZARD_STEPS[currentStep].content}
+                { WIZARD_STEPS[ currentStep ].content }
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
@@ -136,7 +128,9 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
                                 floated="left"
-                                onClick={ () => { onCloseHandler() } }
+                                onClick={ () => {
+                                    onCloseHandler()
+                                } }
                                 data-testid={ `${ testId }-cancel-button` }
                             >
                                 { t("cancel") }
@@ -161,6 +155,6 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
 /**
  * Default props for the component.
  */
-EmailTemplateTypeWizard.defaultProps = {
+AddEmailTemplateTypeWizard.defaultProps = {
     "data-testid": "email-template-type-add-wizard"
 };

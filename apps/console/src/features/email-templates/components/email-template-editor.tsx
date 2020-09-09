@@ -1,27 +1,30 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the "License"); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EMAIL_STARTER_TEMPLATE } from "../../constants";
+import { EMAIL_STARTER_TEMPLATE } from "../constants";
 
+/**
+ * Interface for the email template editor props.
+ */
 interface EmailTemplateEditorPropsInterface extends TestableComponentInterface {
     htmlContent: string;
     isReadOnly: boolean;
@@ -33,11 +36,10 @@ interface EmailTemplateEditorPropsInterface extends TestableComponentInterface {
 }
 
 /**
- * Util component to handle email template editing functionality and 
+ * Util component to handle email template editing functionality and
  * rendering the html content on an Iframe.
- * 
- * @param {EmailTemplateEditorPropsInterface} props - props required to edit email template.
  *
+ * @param {EmailTemplateEditorPropsInterface} props - props required to edit email template.
  * @return {React.ReactElement}
  */
 export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInterface> = (
@@ -65,12 +67,12 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         } else {
             setContent(htmlContent);
         }
-    }, [htmlContent]);
+    }, [ htmlContent ]);
 
     return (
         <div className={ "email-code-editor " + customClass } data-testid={ testId }>
             {
-                isPreviewOnly ? 
+                isPreviewOnly ?
                     <div className="render-view" data-testid={ `${ testId }-preview-only-render-view` }>
                         <iframe id="iframe" srcDoc={ content }>
                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
@@ -79,9 +81,9 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                             </p>
                         </iframe>
                     </div>
-                :
+                    :
                     <ResourceTab
-                        defaultActiveTab={ isAddFlow ? 1 : 0  }
+                        defaultActiveTab={ isAddFlow ? 1 : 0 }
                         panes={ [
                             {
                                 menuItem: t("adminPortal:components.emailTemplates.editor.tabs.preview.tabName"),
@@ -117,7 +119,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                                 }
                                             } }
                                             readOnly={ isReadOnly }
-                                            theme={  "dark" }
+                                            theme={ "dark" }
                                             data-testid={ `${ testId }-code-editor` }
                                         />
                                     </ResourceTab.Pane>

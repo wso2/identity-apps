@@ -16,7 +16,5 @@
  * under the License.
  */
 
-export * from "./forms";
-export * from "./lists";
-export * from "./email-template-editor";
-export * from "./wizards";
+export * from "./template-list";
+export * from "./template-type-list";

@@ -32,18 +32,18 @@ import { EmailTemplate, EmailTemplateDetails } from "../models";
 /**
  * Props for the Email Templates page.
  */
-type EmailTemplatesPageInterface = TestableComponentInterface;
+type EmailTemplatesPagePropsInterface = TestableComponentInterface;
 
 /**
  * Component will list all available locale based email templates for
  * the selected email template type.
  *
- * @param {EmailTemplatesPageInterface} props - Props injected to the component.
+ * @param {EmailTemplatesPagePropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
-    props: EmailTemplatesPageInterface
+const EmailTemplates: FunctionComponent<EmailTemplatesPagePropsInterface> = (
+    props: EmailTemplatesPagePropsInterface
 ): ReactElement => {
 
     const {

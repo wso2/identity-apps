@@ -26,23 +26,23 @@ import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { UIConstants } from "../../core";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
-import { EmailTemplateTypeList, EmailTemplateTypeWizard } from "../components";
+import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
 import { EmailTemplateType } from "../models";
 
 /**
  * Props for the Email Templates Types page.
  */
-type EmailTemplateTypesPageInterface = TestableComponentInterface;
+type EmailTemplateTypesPagePropsInterface = TestableComponentInterface;
 
 /**
  * Component to list available email template types.
  *
- * @param {EmailTemplateTypesPageInterface} props - Props injected to the component.
+ * @param {EmailTemplateTypesPagePropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
-    props: EmailTemplateTypesPageInterface
+const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPagePropsInterface> = (
+    props: EmailTemplateTypesPagePropsInterface
 ): ReactElement => {
 
     const {
@@ -181,7 +181,7 @@ const EmailTemplateTypes: FunctionComponent<EmailTemplateTypesPageInterface> = (
                 />
                 {
                     showNewTypeWizard && (
-                        <EmailTemplateTypeWizard
+                        <AddEmailTemplateTypeWizard
                             onCloseHandler={ () => {
                                 getTemplateTypes(listItemLimit, listOffset);
                                 setShowNewTypeWizard(false);

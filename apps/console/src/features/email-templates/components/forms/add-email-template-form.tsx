@@ -28,12 +28,12 @@ import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
 import { EmailTemplate, EmailTemplateType } from "../../models";
-import { EmailTemplateEditor } from "../email-code-editor";
+import { EmailTemplateEditor } from "../email-template-editor";
 
 /**
  * Interface for email templates form props.
  */
-interface AddLocaleTemplatePropsInterface extends TestableComponentInterface {
+interface AddEmailTemplateFormPropsInterface extends TestableComponentInterface {
     templateId: string;
     templateTypeId: string;
 }
@@ -41,11 +41,11 @@ interface AddLocaleTemplatePropsInterface extends TestableComponentInterface {
 /**
  * Form to handle ADD/EDIT of a locale based email template.
  *
- * @param {AddLocaleTemplatePropsInterface} props - props required for component.
+ * @param {AddEmailTemplateFormPropsInterface} props - props required for component.
  * @return {React.ReactElement}
  */
-export const AddEmailTemplateForm: FunctionComponent<AddLocaleTemplatePropsInterface> = (
-    props: AddLocaleTemplatePropsInterface
+export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsInterface> = (
+    props: AddEmailTemplateFormPropsInterface
 ): ReactElement => {
 
     const {

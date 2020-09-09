@@ -25,7 +25,7 @@ import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 /**
  * Interface to capture role basics props.
  */
-interface AddEmailTemplateTypePropsInterface extends TestableComponentInterface {
+interface AddEmailTemplateTypeFormPropsInterface extends TestableComponentInterface {
     onSubmit: (values: any) => void;
     triggerSubmit: boolean;
 }
@@ -33,12 +33,11 @@ interface AddEmailTemplateTypePropsInterface extends TestableComponentInterface 
 /**
  * Form component to capture template type data.
  *
- * @param {AddEmailTemplateTypePropsInterface} props - props required for template type form component
- *
+ * @param {AddEmailTemplateTypeFormPropsInterface} props - props required for template type form component
  * @return {React.ReactElement}
  */
-export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsInterface> = (
-    props: AddEmailTemplateTypePropsInterface
+export const AddEmailTemplateTypeForm: FunctionComponent<AddEmailTemplateTypeFormPropsInterface> = (
+    props: AddEmailTemplateTypeFormPropsInterface
 ): ReactElement => {
 
     const {
@@ -97,6 +96,6 @@ export const AddEmailTemplateType: FunctionComponent<AddEmailTemplateTypePropsIn
 /**
  * Default props for the component.
  */
-AddEmailTemplateType.defaultProps = {
+AddEmailTemplateTypeForm.defaultProps = {
     "data-testid": "add-email-template-type-form"
 };

@@ -29,11 +29,14 @@ import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Flag, FlagNameValues, Icon, SemanticICONS } from "semantic-ui-react";
-import { ViewLocaleTemplate } from "./view-template";
-import { AppConstants, UIConstants, history } from "../../core";
-import { EmailTemplateIllustrations } from "../configs";
-import { EmailTemplate } from "../models";
+import { AppConstants, UIConstants, history } from "../../../core";
+import { EmailTemplateIllustrations } from "../../configs";
+import { EmailTemplate } from "../../models";
+import { ViewLocaleTemplate } from "../wizards";
 
+/**
+ * Interface for email template list props.
+ */
 interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     /**
      * Advanced Search component.
@@ -75,7 +78,6 @@ interface EmailTemplateListPropsInterface extends LoadableComponentInterface, Te
  * List component to render email template types.
  *
  * @param {EmailTemplateListPropsInterface} props - Props required to render the email template list.
- *
  * @return {React.ReactElement}
  */
 export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterface> = (

@@ -31,7 +31,7 @@ import { EmailTemplateDetails } from "../models";
 /**
  * Props for the add Templates Locale page.
  */
-type AddTemplateLocalePageInterface = TestableComponentInterface
+type AddTemplateLocalePagePropsInterface = TestableComponentInterface
 
 /**
  * Route parameters interface.
@@ -45,12 +45,11 @@ interface RouteParams {
  * Component will render add view for a email template based on
  * locale for selected email template type.
  *
- * @param {AddTemplateLocalePageInterface} props - Props injected to the component.
- *
+ * @param {AddTemplateLocalePagePropsInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
-    props: AddTemplateLocalePageInterface & RouteComponentProps<RouteParams>
+const AddTemplateLocale: FunctionComponent<AddTemplateLocalePagePropsInterface> = (
+    props: AddTemplateLocalePagePropsInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
     const {

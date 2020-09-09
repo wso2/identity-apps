@@ -17,3 +17,4 @@
 */
 
 export * from "./add-email-template-form";
+export * from "./add-email-template-type-form";
