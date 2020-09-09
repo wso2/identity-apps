@@ -31,7 +31,7 @@ import { EmailTemplateDetails } from "../models";
 /**
  * Props for the add Templates Locale page.
  */
-type AddTemplateLocalePagePropsInterface = TestableComponentInterface
+type EmailTemplateEditPagePropsInterface = TestableComponentInterface
 
 /**
  * Route parameters interface.
@@ -45,11 +45,11 @@ interface RouteParams {
  * Component will render add view for a email template based on
  * locale for selected email template type.
  *
- * @param {AddTemplateLocalePagePropsInterface} props - Props injected to the component.
+ * @param {EmailTemplateEditPagePropsInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-const AddTemplateLocale: FunctionComponent<AddTemplateLocalePagePropsInterface> = (
-    props: AddTemplateLocalePagePropsInterface & RouteComponentProps<RouteParams>
+const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterface> = (
+    props: EmailTemplateEditPagePropsInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
     const {
@@ -127,7 +127,7 @@ const AddTemplateLocale: FunctionComponent<AddTemplateLocalePagePropsInterface> 
 /**
  * Default props for the component.
  */
-AddTemplateLocale.defaultProps = {
+EmailTemplateEditPage.defaultProps = {
     "data-testid": "email-locale-add"
 };
 
@@ -136,4 +136,4 @@ AddTemplateLocale.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default AddTemplateLocale;
+export default EmailTemplateEditPage;

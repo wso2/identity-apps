@@ -402,7 +402,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         category: "adminPortal:components.sidePanel.categories.configurations",
         children: [
             {
-                component: lazy(() => import("../../email-templates/pages/email-templates")),
+                component: lazy(() => import("../../email-templates/pages/email-templates-page")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
@@ -414,7 +414,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: lazy(() => import("../../email-templates/pages/email-locale-add")),
+                component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
@@ -426,7 +426,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             },
             {
-                component: lazy(() => import("../../email-templates/pages/email-locale-add")),
+                component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
@@ -438,7 +438,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
                 showOnSidePanel: false
             }
         ],
-        component: lazy(() => import("../../email-templates/pages/email-template-types")),
+        component: lazy(() => import("../../email-templates/pages/email-template-types-page")),
         exact: true,
         icon: {
             icon: SidePanelIcons.emailTemplates

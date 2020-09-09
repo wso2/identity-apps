@@ -42,7 +42,7 @@ type EmailTemplatesPagePropsInterface = TestableComponentInterface;
  *
  * @return {React.ReactElement}
  */
-const EmailTemplates: FunctionComponent<EmailTemplatesPagePropsInterface> = (
+const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = (
     props: EmailTemplatesPagePropsInterface
 ): ReactElement => {
 
@@ -234,7 +234,7 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPagePropsInterface> = (
 /**
  * Default props for the component.
  */
-EmailTemplates.defaultProps = {
+EmailTemplatesPage.defaultProps = {
     "data-testid": "email-templates"
 };
 
@@ -243,4 +243,4 @@ EmailTemplates.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default EmailTemplates;
+export default EmailTemplatesPage;
