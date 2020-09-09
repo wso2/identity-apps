@@ -247,13 +247,27 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 dataIndex: "name",
                 id: "name",
                 key: "name",
+                render: (group: GroupsInterface): ReactNode => (
+                    <Header as="h6" image>
+                        <AnimatedAvatar
+                            name={ group.displayName }
+                            size="mini"
+                            data-testid={ `${ testId }-item-image` }
+                        />
+                        <Header.Content>
+                            { generateHeaderContent(group.displayName) }
+                        </Header.Content>
+                    </Header>
+                ),
                 title: t("adminPortal:components.groups.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
                 dataIndex: "lastModified",
+                hidden: !showMetaContent,
                 id: "lastModified",
                 key: "lastModified",
+                render: (group: GroupsInterface): ReactNode => CommonUtils.humanizeDateDifference(group.meta.created),
                 title: t("adminPortal:components.groups.list.columns.lastModified")
             },
             {
@@ -281,7 +295,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
             {
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.groups,
                     GroupConstants.FEATURE_DICTIONARY.get("GROUP_READ")),
-                icon: ({ value: group }: { value: GroupsInterface }): SemanticICONS => {
+                icon: (group: GroupsInterface): SemanticICONS => {
                     const userStore = group?.displayName?.split("/").length > 1
                         ? group?.displayName?.split("/")[0]
                         : "PRIMARY";
@@ -292,9 +306,9 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         ? "eye"
                         : "pencil alternate"
                 },
-                onClick: (e: SyntheticEvent, { value: group }: { value: GroupsInterface }): void =>
+                onClick: (e: SyntheticEvent, group: GroupsInterface): void =>
                     handleGroupEdit(group.id),
-                popupText: ({ value: group }: { value: GroupsInterface }): string => {
+                popupText: (group: GroupsInterface): string => {
                     const userStore = group?.displayName?.split("/").length > 1
                         ? group?.displayName?.split("/")[0]
                         : "PRIMARY";
@@ -310,7 +324,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
         ];
 
         actions.push({
-            hidden: ({ value: group }: { value: GroupsInterface }): boolean => {
+            hidden: (group: GroupsInterface): boolean => {
                 const userStore = group?.displayName?.split("/").length > 1
                     ? group?.displayName?.split("/")[0]
                     : "PRIMARY";
@@ -319,11 +333,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     || readOnlyUserStores?.includes(userStore.toString())
             },
             icon: (): SemanticICONS => "trash alternate",
-            onClick: (e: SyntheticEvent, { value: group }: { value: GroupsInterface }): void => {
-                const userStore = group?.displayName?.split("/").length > 1
-                    ? group?.displayName?.split("/")[0]
-                    : "PRIMARY";
-
+            onClick: (e: SyntheticEvent, group: GroupsInterface): void => {
                 setCurrentDeletedGroup(group);
                 setShowDeleteConfirmationModal(!showGroupDeleteConfirmation);
             },
@@ -345,33 +355,10 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     imageType: "square"
                 } }
                 actions={ resolveTableActions() }
-                columns={ resolveTableColumns }
-                data={
-                    (groupList && Array.isArray(groupList) && groupList.length > 0)
-                        ? groupList.map((group: GroupsInterface) => {
-                            return {
-                                id: group.id,
-                                key: group.id,
-                                lastModified: showMetaContent && CommonUtils.humanizeDateDifference(group.meta.created),
-                                name: (
-                                    <Header as="h6" image>
-                                        <AnimatedAvatar
-                                            name={ group.displayName }
-                                            size="mini"
-                                            data-testid={ `${ testId }-item-image` }
-                                        />
-                                        <Header.Content>
-                                            { generateHeaderContent(group.displayName) }
-                                        </Header.Content>
-                                    </Header>
-                                ),
-                                value: group
-                            }
-                        })
-                        : []
-                }
+                columns={ resolveTableColumns() }
+                data={ groupList }
                 onRowClick={
-                    (e: SyntheticEvent, { value: group }: { value: GroupsInterface }): void => {
+                    (e: SyntheticEvent, group: GroupsInterface): void => {
                         handleGroupEdit(group?.id);
                         onListItemClick(e, group);
                     }

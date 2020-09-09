@@ -689,7 +689,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     dataIndex: "dialectURI",
                     id: "dialectURI",
                     key: "dialectURI",
-                    render: (claim: ExternalClaim) => (
+                    render: (claim: ExternalClaim): ReactNode => (
                         (editClaim === claim?.id)
                             ? (
                                 <EditExternalClaim

@@ -140,7 +140,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (templateType: EmailTemplateType) => (
+                render: (templateType: EmailTemplateType): ReactNode => (
                     <Header as="h6" image>
                         <AnimatedAvatar
                             name={ templateType.displayName }

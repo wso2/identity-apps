@@ -626,7 +626,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (certificate: Certificate) => (
+                render: (certificate: Certificate): ReactNode => (
                     <Header as="h6" image>
                         <AnimatedAvatar
                             name={ certificate.alias }

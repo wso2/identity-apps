@@ -230,13 +230,27 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 dataIndex: "name",
                 id: "name",
                 key: "name",
+                render: (role: RolesInterface): ReactNode => (
+                    <Header as="h6" image>
+                        <AnimatedAvatar
+                            name={ role?.displayName[ 0 ] }
+                            size="mini"
+                            data-testid={ `${ testId }-item-image` }
+                        />
+                        <Header.Content>
+                            { generateHeaderContent(role?.displayName) }
+                        </Header.Content>
+                    </Header>
+                ),
                 title: t("adminPortal:components.roles.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
                 dataIndex: "lastModified",
+                hidden: !showMetaContent,
                 id: "lastModified",
                 key: "lastModified",
+                render: (role: RolesInterface) => CommonUtils.humanizeDateDifference(role?.meta?.created),
                 title: t("adminPortal:components.roles.list.columns.lastModified")
             },
             {
@@ -263,7 +277,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         return [
             {
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (e: SyntheticEvent, { value: role }: { value: RolesInterface }): void =>
+                onClick: (e: SyntheticEvent, role: RolesInterface): void =>
                     handleRoleEdit(role?.id),
                 popupText: (): string => t("adminPortal:components.roles.list.popups.edit",
                     { type: "Role" }),
@@ -271,7 +285,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
             },
             {
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (e: SyntheticEvent, { value: role }: { value: RolesInterface }): void => {
+                onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);
                     setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
                 },
@@ -294,33 +308,9 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={
-                    (roleList?.Resources && Array.isArray(roleList?.Resources) && roleList?.Resources.length > 0)
-                        ? roleList?.Resources?.map((role: RolesInterface) => {
-                            return {
-                                id: role.id,
-                                key: role.id,
-                                lastModified: showMetaContent
-                                    && CommonUtils.humanizeDateDifference(role?.meta?.created),
-                                name: (
-                                    <Header as="h6" image>
-                                        <AnimatedAvatar
-                                            name={ role?.displayName[ 0 ] }
-                                            size="mini"
-                                            data-testid={ `${ testId }-item-image` }
-                                        />
-                                        <Header.Content>
-                                            { generateHeaderContent(role?.displayName) }
-                                        </Header.Content>
-                                    </Header>
-                                ),
-                                value: role
-                            }
-                        })
-                        : []
-                }
+                data={ roleList?.Resources }
                 onRowClick={
-                    (e: SyntheticEvent, { value: role }: { value: RolesInterface }): void => {
+                    (e: SyntheticEvent, role: RolesInterface): void => {
                         handleRoleEdit(role?.id);
                         onListItemClick(e, role);
                     }

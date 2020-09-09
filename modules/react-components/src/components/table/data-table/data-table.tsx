@@ -246,7 +246,7 @@ export interface StrictColumnPropsInterface {
     /**
      * Give column render control to outside.
      */
-    render?: (item: TableDataInterface) => ReactElement;
+    render?: (item: TableDataInterface) => ReactNode;
 }
 
 /**

@@ -236,7 +236,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (idp: IdentityProviderInterface) => (
+                render: (idp: IdentityProviderInterface): ReactNode => (
                     <Header as="h6" image>
                         {
                             idp.image

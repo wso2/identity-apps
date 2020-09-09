@@ -225,7 +225,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (app: ApplicationListItemInterface) => {
+                render: (app: ApplicationListItemInterface): ReactNode => {
                     const template = applicationTemplates
                         && applicationTemplates instanceof Array
                         && applicationTemplates.length > 0

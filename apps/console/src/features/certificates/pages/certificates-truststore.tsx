@@ -228,7 +228,7 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                 <CertificatesList
                     advancedSearch={
                         <AdvancedSearchWithBasicFilters
-                            onFilter={ handleKeystoreFilter }
+                            onFilter={ handleTruststoreFilter }
                             filterAttributeOptions={ [
                                 {
                                     key: 0,
@@ -237,23 +237,22 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
                                     ".filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
                                     ".filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
                                     ".filterValue.placeholder")
                             }
                             placeholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.placeholder")
+                                t("adminPortal:components.certificates.truststore.advancedSearch.placeholder")
                             }
                             defaultSearchAttribute="alias"
                             defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
                             data-testid={ `${ testId }-advanced-search` }
                         />
                     }

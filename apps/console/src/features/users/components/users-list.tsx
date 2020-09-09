@@ -166,7 +166,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (user: UserBasicInterface) => {
+                render: (user: UserBasicInterface): ReactNode => {
                     const resolvedUserName = (user.name && user.name.givenName !== undefined)
                         ? user.name.givenName + " " + user.name.familyName
                         : user.userName;
@@ -226,7 +226,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             if (key === "meta.lastModified") {
                 dynamicColumn = {
                     ...dynamicColumn,
-                    render: (item: string) => CommonUtils.humanizeDateDifference(item)
+                    render: (item: string): ReactNode => CommonUtils.humanizeDateDifference(item)
                 }
             }
 

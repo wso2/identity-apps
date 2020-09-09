@@ -152,7 +152,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (template: EmailTemplate) => {
+                render: (template: EmailTemplate): ReactNode => {
                     let countryCode = "";
                     let languageCode = "";
 

@@ -196,7 +196,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 dataIndex: "name",
                 id: "name",
                 key: "name",
-                render: (scope: OIDCScopesListInterface) => (
+                render: (scope: OIDCScopesListInterface): ReactNode => (
                     <Header as="h6" image>
                         <AnimatedAvatar
                             name={ scope.name }
