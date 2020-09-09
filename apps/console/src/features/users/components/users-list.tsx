@@ -181,6 +181,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                                 name={ user.userName }
                                 size="mini"
                                 image={ user.profileUrl }
+                                spaced="right"
                             />
                             <Header.Content>
                                 { resolvedUserName }
