@@ -381,19 +381,32 @@ export const DataTable = <T extends object = {}>(
         className
     );
 
-    const [ columns, setColumns ] = useState<TableColumnInterface[]>(undefined);
+    const [ columns, setColumns ] = useState<TableColumnInterface[]>(initialColumns);
     const [ dynamicTableProps, setDynamicTableProps ] = useState<TableProps>(undefined);
 
     useEffect(() => {
-        // Changing the data on sort order change results in the triggering of this
-        // hook which resets the column state. This will be problematic if the columns
-        // are dynamically changed from outside.
-        if (columns) {
+        if (!initialColumns) {
             return;
         }
 
-        setColumns(initialColumns);
-        evaluateColumnProps(initialColumns);
+        // Changing the data on sort order change results in the triggering of this
+        // hook which resets the column state. This will be problematic if the columns
+        // are dynamically changed from outside.
+        const moderatedColumns: TableColumnInterface[] = [ ...initialColumns ];
+        const internalColumns: TableColumnInterface[] = [ ...columns ];
+
+        for (const moderatedColumn of moderatedColumns) {
+            for (const internalColumn of internalColumns) {
+                if (moderatedColumn.id === internalColumn.id) {
+                    moderatedColumn.sortOrder = internalColumn.sortOrder;
+                    
+                    break;
+                }
+            }
+        }
+
+        setColumns(moderatedColumns);
+        evaluateColumnProps(moderatedColumns);
     }, [ initialColumns ]);
 
     /**

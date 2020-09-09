@@ -66,7 +66,7 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
     /**
      * Application list.
      */
-    list: OIDCScopesListInterface;
+    list: OIDCScopesListInterface[];
     /**
      * On scope delete callback.
      */

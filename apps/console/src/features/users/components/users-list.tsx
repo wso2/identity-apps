@@ -226,7 +226,8 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             if (key === "meta.lastModified") {
                 dynamicColumn = {
                     ...dynamicColumn,
-                    render: (item: string): ReactNode => CommonUtils.humanizeDateDifference(item)
+                    render: (user: UserBasicInterface): ReactNode =>
+                        CommonUtils.humanizeDateDifference(user?.meta?.lastModified)
                 }
             }
 
