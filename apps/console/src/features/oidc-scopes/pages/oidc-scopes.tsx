@@ -57,7 +57,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
-    const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface>({});
+    const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface[]>([]);
     const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
@@ -74,8 +74,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const getOIDCScopes = (): void => {
         setScopesListRequestLoading(true);
 
-        getOIDCScopesList()
-            .then((response) => {
+        getOIDCScopesList<OIDCScopesListInterface[]>()
+            .then((response: OIDCScopesListInterface[]) => {
                 setScopeList(response);
             })
             .catch((error) => {

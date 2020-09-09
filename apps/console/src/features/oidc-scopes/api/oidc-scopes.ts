@@ -36,7 +36,7 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const getOIDCScopesList = <T>(): Promise<T> => {
+export const getOIDCScopesList = <T = {}>(): Promise<T> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",
