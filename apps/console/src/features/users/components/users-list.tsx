@@ -21,18 +21,18 @@ import { LoadableComponentInterface, SBACInterface, TestableComponentInterface }
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList,
-    ResourceListActionInterface,
-    ResourceListItem,
+    TableActionsInterface,
+    TableColumnInterface,
     UserAvatar
 } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Grid, Icon, List, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
+import { Header, Icon, ListItemProps, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -49,10 +49,11 @@ import { UserBasicInterface, UserListInterface } from "../models";
  */
 interface UsersListProps extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
     TestableComponentInterface {
+
     /**
-     * Width of the action panel column.
+     * Advanced Search component.
      */
-    actionsColumnWidth?: SemanticWIDTHS;
+    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
@@ -64,13 +65,18 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      */
     handleUserDelete?: (userId: string) => void;
     /**
+     * Callback to inform the new set of visible columns.
+     * @param {TableColumnInterface[]} columns - New columns.
+     */
+    onColumnSelectionChange?: (columns: TableColumnInterface[]) => void;
+    /**
      * Callback to be fired when the empty list placeholder action is clicked.
      */
     onEmptyListPlaceholderActionClick?: () => void;
     /**
      * On list item select callback.
      */
-    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
+    onListItemClick?: (event: SyntheticEvent, data: ListItemProps) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -100,14 +106,6 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
      */
     usersList: UserListInterface;
     /**
-     * Width of the description area.
-     */
-    descriptionColumnWidth?: SemanticWIDTHS;
-    /**
-     * Width of the meta info area.
-     */
-    metaColumnWidth?: SemanticWIDTHS;
-    /**
      * List of readOnly user stores.
      */
     readOnlyUserStores?: string[];
@@ -120,17 +118,16 @@ interface UsersListProps extends SBACInterface<FeatureConfigInterface>, Loadable
  */
 export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersListProps): ReactElement => {
     const {
-        actionsColumnWidth,
-        descriptionColumnWidth,
+        advancedSearch,
         defaultListItemLimit,
         handleUserDelete,
         isLoading,
         readOnlyUserStores,
         featureConfig,
+        onColumnSelectionChange,
         onEmptyListPlaceholderActionClick,
         onListItemClick,
         onSearchQueryClear,
-        metaColumnWidth,
         searchQuery,
         selection,
         showListItemActions,
@@ -158,130 +155,154 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     };
 
     /**
-     * The following function generate the meta list items by mapping the
-     * meta content columns selected by the user to the user details.
+     * Resolves data table columns.
      *
-     * @param user - UserBasicInterface
+     * @return {TableColumnInterface[]}
      */
-    const generateMetaContent = (user: UserBasicInterface) => {
-        const attributes = [];
-        let attribute = "";
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        const defaultColumns: TableColumnInterface[] = [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (user: UserBasicInterface): ReactNode => {
+                    const resolvedUserName = (user.name && user.name.givenName !== undefined)
+                        ? user.name.givenName + " " + user.name.familyName
+                        : user.userName;
+
+                    const resolvedDescription = user.emails
+                        ? user.emails[ 0 ].toString()
+                        : user.userName;
+
+                    return (
+                        <Header as="h6" image>
+                            <UserAvatar
+                                name={ user.userName }
+                                size="mini"
+                                image={ user.profileUrl }
+                                spaced="right"
+                            />
+                            <Header.Content>
+                                { resolvedUserName }
+                                <Header.Subheader>
+                                    { resolvedDescription }
+                                </Header.Subheader>
+                            </Header.Content>
+                        </Header>
+                    )
+                },
+                title: t("adminPortal:components.users.list.columns.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("adminPortal:components.users.list.columns.actions")
+            }
+        ];
+
+        if (!showMetaContent || !userMetaListContent) {
+            return defaultColumns;
+        }
+
+        const dynamicColumns: TableColumnInterface[]= [];
 
         for (const [key, value] of userMetaListContent.entries()) {
-            if (key !== "name" && key !== "emails" && key !== "profileUrl" && value !== "") {
-                if (key !== "" && (key === "meta.lastModified")) {
-                    if(user.meta) {
-                        const metaAttribute = key.split(".");
-                        attribute = user.meta[metaAttribute[1]];
-                        attribute && (attributes.push(CommonUtils.humanizeDateDifference(attribute)));
-                    }
-                } else {
-                    attribute = user[key];
-                    attributes.push(attribute);
+            if (key === "name" || key === "emails" || key === "profileUrl" || value === "") {
+                continue;
+            }
+
+            let dynamicColumn: TableColumnInterface = {
+                allowToggleVisibility: true,
+                dataIndex: value,
+                id: key,
+                key: key,
+                title: value
+            };
+
+            if (key === "meta.lastModified") {
+                dynamicColumn = {
+                    ...dynamicColumn,
+                    render: (user: UserBasicInterface): ReactNode =>
+                        CommonUtils.humanizeDateDifference(user?.meta?.lastModified)
                 }
             }
+
+            dynamicColumns.push(dynamicColumn);
         }
 
-        let metaColumnWidth: SemanticWIDTHS = 1;
+        dynamicColumns.unshift(defaultColumns[0]);
+        dynamicColumns.push(defaultColumns[1]);
 
-        return attributes.map((metaAttribute, index) => {
-            if (metaAttribute?.toString().length <= 20) {
-                metaColumnWidth = 2;
-            }
-            if (metaAttribute?.toString().length > 20) {
-                metaColumnWidth = 4;
-            }
-            if (metaAttribute?.toString().length >= 30 && metaAttribute?.toString().length <= 40) {
-                metaColumnWidth = 6;
-            }
-            return (
-                <Grid.Column width={ metaColumnWidth } key={ index }>
-                    <List.Content>
-                        <List.Description className="list-item-meta">
-                            { metaAttribute }
-                        </List.Description>
-                    </List.Content>
-                </Grid.Column>
-            );
-        });
-    };
-
-    const listContent = (user: UserBasicInterface) => {
-        if (userMetaListContent) {
-            return (
-                <Grid>
-                    { generateMetaContent(user)}
-                </Grid>
-            );
-        } else {
-            return (
-                <Grid>
-                    <Grid.Column width={ 6 }>
-                        <List.Content>
-                            <List.Description className="list-item-meta">
-                                { CommonUtils.humanizeDateDifference(user.meta.lastModified) }
-                            </List.Description>
-                        </List.Content>
-                    </Grid.Column>
-                </Grid>
-            );
-        }
+        return dynamicColumns;
     };
 
     /**
-     * Resolves list item actions based on user store mutability and app configs.
+     * Resolves data table actions.
      *
-     * @param user - User details.
-     *
-     * @return {ResourceListActionInterface[]} Resolved list actions.
+     * @return {TableActionsInterface[]}
      */
-    const resolveListItemActions = (user): ResourceListActionInterface[] => {
+    const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
             return;
         }
 
-        const userStore = user?.userName?.split("/").length > 1 ? user?.userName?.split("/")[0] : "PRIMARY";
-
-        const actions: ResourceListActionInterface[] = [
+        const actions: TableActionsInterface[] = [
             {
-                "data-testid": `${ testId }-edit-user-${ user.userName }-button`,
-                hidden: false,
-                icon: !hasRequiredScopes(
-                    featureConfig?.users,
-                    featureConfig?.users?.scopes?.update, allowedScopes)
-                    || !isFeatureEnabled(
-                    featureConfig?.users,
-                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
+                hidden: (): boolean => !isFeatureEnabled(featureConfig?.users,
+                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_READ")),
+                icon: (user: UserBasicInterface): SemanticICONS => {
+                    const userStore = user?.userName?.split("/").length > 1
+                        ? user?.userName?.split("/")[0]
+                        : "PRIMARY";
+
+                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    || !isFeatureEnabled(featureConfig?.users,
+                        UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    ? "eye" : "pencil alternate",
-                onClick: (): void => handleUserEdit(user.id),
-                popupText: !hasRequiredScopes(
-                    featureConfig?.users,
-                    featureConfig?.users?.scopes?.update, allowedScopes)
-                    || !isFeatureEnabled(
-                    featureConfig?.users,
-                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
+                        ? "eye"
+                        : "pencil alternate"
+                },
+                onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
+                    handleUserEdit(user?.id),
+                popupText: (user: UserBasicInterface): string => {
+                    const userStore = user?.userName?.split("/").length > 1
+                        ? user?.userName?.split("/")[0]
+                        : "PRIMARY";
+
+                    return !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)
+                    || !isFeatureEnabled(featureConfig?.users,
+                        UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
-                    ? t("common:view")
-                    : t("common:edit"),
-                type: "button"
+                        ? t("common:view")
+                        : t("common:edit")
+                },
+                renderer: "semantic-icon"
             }
         ];
 
         actions.push({
-            "data-testid": `${ testId }-delete-user-${ user.userName }-button`,
-            hidden: !hasRequiredScopes(
-                featureConfig?.users,
-                featureConfig?.users?.scopes?.delete, allowedScopes)
-                || readOnlyUserStores?.includes(userStore.toString()) || user.userName === "admin",
-            icon: "trash alternate",
-            onClick: (): void => {
+            hidden: (user: UserBasicInterface): boolean => {
+                const userStore = user?.userName?.split("/").length > 1
+                    ? user?.userName?.split("/")[0]
+                    : "PRIMARY";
+
+                return !isFeatureEnabled(featureConfig?.users,
+                    UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
+                    || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
+                    || readOnlyUserStores?.includes(userStore.toString())
+                    || user.userName === "admin"
+            },
+            icon: (): SemanticICONS => "trash alternate",
+            onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingUser(user);
             },
-            popupText: t("adminPortal:components.users.usersList.list" +
-                ".iconPopups.delete"),
-            type: "button"
+            popupText: (): string => t("adminPortal:components.users.usersList.list.iconPopups.delete"),
+            renderer: "semantic-icon"
         });
 
         return actions;
@@ -344,54 +365,28 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
 
     return (
         <>
-            <ResourceList
-                className="application-list"
+            <DataTable<UserBasicInterface>
+                className="users-table"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "circular"
                 } }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
-                selection={ selection }
-            >
-                {
-                    usersList?.Resources && usersList.Resources instanceof Array && usersList.Resources.length > 0
-                        ? usersList.Resources.map((user, index) => (
-                            <ResourceListItem
-                                key={ index }
-                                actions={ resolveListItemActions(user) }
-                                actionsFloated="right"
-                                avatar={ (
-                                    <UserAvatar
-                                        name={ user.userName }
-                                        size="mini"
-                                        floated="left"
-                                        image={ user.profileUrl }
-                                    />
-                                ) }
-                                itemHeader={ user.name && user.name.givenName !== undefined ? user.name.givenName +
-                                    " " + user.name.familyName : user.userName }
-                                itemDescription={ user.emails ? user.emails[ 0 ].toString() :
-                                    user.userName }
-                                metaContent={ showMetaContent ? listContent(user) : null }
-                                metaColumnWidth={ metaColumnWidth }
-                                descriptionColumnWidth={ descriptionColumnWidth }
-                                actionsColumnWidth={ actionsColumnWidth }
-                                onClick={ (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
-                                    if (!selection) {
-                                        return;
-                                    }
-
-                                    handleUserEdit(user.id);
-                                    onListItemClick(event, data);
-                                } }
-                            />
-                        ))
-                        : showPlaceholders()
-                }
-            </ResourceList>
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ usersList.Resources }
+                onColumnSelectionChange={ onColumnSelectionChange }
+                onRowClick={ (e: SyntheticEvent, user: UserBasicInterface): void => {
+                    handleUserEdit(user?.id);
+                    onListItemClick(e, user);
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
+                data-testid={ testId }
+            />
             {
                 deletingUser && (
                     <ConfirmationModal
@@ -443,9 +438,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
  * Default props for the component.
  */
 UsersList.defaultProps = {
-    actionsColumnWidth: 3,
-    descriptionColumnWidth: 3,
-    metaColumnWidth: 10,
+    selection: true,
     showListItemActions: true,
     showMetaContent: true
 };

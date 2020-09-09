@@ -26,15 +26,17 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, Image } from "semantic-ui-react";
+import { Header, Icon, Image, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -53,6 +55,14 @@ import { UserStoreListItem } from "../models";
 interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterface>, LoadableComponentInterface,
     TestableComponentInterface {
 
+    /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
     /**
      * The userstore list
      */
@@ -73,6 +83,14 @@ interface UserStoresListPropsInterface extends SBACInterface<FeatureConfigInterf
      * Search query for the list.
      */
     searchQuery: string;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
 }
 
 /**
@@ -87,12 +105,16 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        advancedSearch,
+        defaultListItemLimit,
         isLoading,
         featureConfig,
         list,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
         searchQuery,
+        selection,
+        showListItemActions,
         update,
         [ "data-testid" ]: testId
     } = props;
@@ -260,69 +282,107 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
         return null;
     };
 
+    const handleUserstoreEdit = (userstoreId: string) => {
+        history.push(AppConstants.PATHS.get("USERSTORES_EDIT").replace(":id", userstoreId));
+    };
+
+    /**
+     * Resolves data table columns.
+     *
+     * @return {TableColumnInterface[]}
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (userstore: UserStoreListItem) => (
+                    <Header as="h6" image>
+                        <Image
+                            floated="left"
+                            verticalAlign="middle"
+                            rounded
+                            centered
+                            size="mini"
+                            data-testid={ `${ testId }-item-image` }
+                        >
+                            <DatabaseAvatarGraphic />
+                        </Image>
+                        <Header.Content>
+                            { userstore.name }
+                            <Header.Subheader>
+                                { userstore.description }
+                            </Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("common:name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("common:actions")
+            }
+        ];
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (!showListItemActions) {
+            return [];
+        }
+
+        return [
+            {
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void => handleUserstoreEdit(userstore?.id),
+                popupText: (): string => t("common:edit"),
+                renderer: "semantic-icon"
+            },
+            {
+                hidden: (): boolean => !hasRequiredScopes(featureConfig?.userStores,
+                    featureConfig?.userStores?.scopes?.delete, allowedScopes),
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, userstore: UserStoreListItem): void =>
+                    initDelete(userstore?.id, userstore?.name),
+                popupText: (): string => t("common:delete"),
+                renderer: "semantic-icon"
+            }
+        ];
+    };
+
     return (
         <>
             { deleteConfirm && showDeleteConfirm() }
-            <ResourceList
+            <DataTable<UserStoreListItem>
+                className="userstores-table"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ list }
+                onRowClick={ (e: SyntheticEvent, userstore: UserStoreListItem): void => {
+                    handleUserstoreEdit(userstore?.id);
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
-            >
-                {
-                    list && list instanceof Array && list.length > 0
-                        ? list?.map((userStore: UserStoreListItem, index: number) => (
-                            <ResourceList.Item
-                                avatar={
-                                    <Image
-                                        floated="left"
-                                        verticalAlign="middle"
-                                        rounded
-                                        centered
-                                        size="mini"
-                                        data-testid={ `${ testId }-item-image` }
-                                    >
-                                        <DatabaseAvatarGraphic />
-                                    </Image>
-                                }
-                                key={ index }
-                                actions={ [
-                                    {
-                                        icon: "pencil alternate",
-                                        onClick: () => {
-                                            history.push(AppConstants.PATHS.get("USERSTORES_EDIT")
-                                                .replace(":id", userStore?.id));
-                                        },
-                                        popupText: t("common:edit"),
-                                        type: "button"
-                                    },
-                                    {
-                                        hidden: !hasRequiredScopes(
-                                            featureConfig?.userStores,
-                                            featureConfig?.userStores?.scopes?.delete,
-                                            allowedScopes),
-                                        icon: "trash alternate",
-                                        onClick: () => {
-                                            initDelete(userStore?.id, userStore?.name)
-                                        },
-                                        popupText: t("common:delete"),
-                                        type: "dropdown"
-                                    }
-                                ] }
-                                actionsFloated="right"
-                                itemHeader={ userStore.name }
-                                itemDescription={ userStore.description }
-                                data-testid={ `${ testId }-item` }
-                            />
-                        ))
-                        : showPlaceholders()
-                }
-            </ResourceList>
+            />
         </>
     )
 };
@@ -331,5 +391,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
  * Default props for the component.
  */
 UserStoresList.defaultProps = {
-    "data-testid": "userstores-list"
+    "data-testid": "userstores-list",
+    selection: true,
+    showListItemActions: true
 };

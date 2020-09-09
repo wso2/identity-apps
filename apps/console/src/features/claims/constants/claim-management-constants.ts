@@ -16,9 +16,25 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./components";
-export * from "./configs";
-export * from "./constants";
-export * from "./models";
-export * from "./pages";
+/**
+ * Class containing claim constants.
+ */
+export class ClaimManagementConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
+
+    /**
+     * Claim URI Attribute key.
+     * @constant
+     * @type {number}
+     * @default
+     */
+    public static readonly CLAIM_URI_ATTRIBUTE_KEY: string = "claimURI";
+}

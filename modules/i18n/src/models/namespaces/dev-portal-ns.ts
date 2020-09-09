@@ -140,6 +140,13 @@ export interface DevPortalNS {
                 };
             };
             list: {
+                columns: {
+                    name: string;
+                    lastDeployed: string;
+                    successfulDeployments: string;
+                    failedDeployments: string;
+                    actions: string;
+                };
                 confirmations: {
                     deleteConfig: Confirmation;
                 };
@@ -626,6 +633,10 @@ export interface DevPortalNS {
             };
             helpPanel: HelpPanelInterface;
             list: {
+                columns: {
+                    actions: string;
+                    name: string;
+                };
                 actions: {
                     add: string;
                 };
@@ -866,6 +877,10 @@ export interface DevPortalNS {
                     subHeading: string;
                 };
             };
+            list: {
+                actions: string;
+                name: string;
+            };
             modals: {
                 addAuthenticator: {
                     title: string;
@@ -1046,6 +1061,10 @@ export interface DevPortalNS {
                 };
             };
             list: {
+                columns: {
+                    actions: string;
+                    name: string;
+                };
                 empty: Placeholder;
             };
             wizards: {

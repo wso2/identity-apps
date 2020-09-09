@@ -19,28 +19,56 @@
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
     PrimaryButton,
-    ResourceList,
-    ResourceListItem
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
 import * as CountryLanguage from "country-language";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Flag, FlagNameValues, Icon } from "semantic-ui-react";
+import { Flag, FlagNameValues, Icon, SemanticICONS } from "semantic-ui-react";
 import { ViewLocaleTemplate } from "./view-template";
 import { AppConstants, UIConstants, history } from "../../core";
 import { EmailTemplateIllustrations } from "../configs";
 import { EmailTemplate } from "../models";
 
 interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
+     * ID of the template type.
+     */
     templateTypeId: string;
+    /**
+     * Templates list.
+     */
     templateList: EmailTemplate[];
+    /**
+     * On Delete callback.
+     * @param {string} templateTypeId - Deleting template's type ID.
+     * @param {string} templateId - Deleting template's ID.
+     */
     onDelete: (templateTypeId: string, templateId: string,) => void;
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
     onEmptyListPlaceholderActionClick: () => void;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
 }
 
 /**
@@ -55,11 +83,15 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
 ): ReactElement => {
 
     const {
+        advancedSearch,
+        defaultListItemLimit,
         isLoading,
         onEmptyListPlaceholderActionClick,
         onDelete,
         templateList,
         templateTypeId,
+        selection,
+        showListItemActions,
         [ "data-testid" ]: testId
     } = props;
 
@@ -108,80 +140,118 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
         return null;
     };
 
+    /**
+     * Resolves data table columns.
+     *
+     * @return {TableColumnInterface[]}
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (template: EmailTemplate): ReactNode => {
+                    let countryCode = "";
+                    let languageCode = "";
+
+                    if (template.id.indexOf("_") !== -1) {
+                        countryCode = template.id.split("_")[ 1 ];
+                        languageCode = template.id.split("_")[ 0 ];
+                    } else {
+                        countryCode = template.id.split("-")[ 1 ];
+                        languageCode = template.id.split("-")[ 0 ];
+                    }
+
+                    const language: string = CountryLanguage.getLanguage(languageCode).name;
+                    const country: string = CountryLanguage.getCountry(countryCode).name;
+
+                    return (
+                        <>
+                            <Flag
+                                className="email-template-flag "
+                                name={ countryCode.toLowerCase() as FlagNameValues }
+                                data-testid={ `${ testId }-flag-image` }
+                            />
+                            { country ? language + " (" + country + ")" : language }
+                        </>
+                    );
+                },
+                title: t("adminPortal:components.emailTemplates.list.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("adminPortal:components.emailTemplates.list.actions")
+            }
+        ];
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (!showListItemActions) {
+            return [];
+        }
+
+        return [
+            {
+                icon: (): SemanticICONS => "eye",
+                onClick: (e: SyntheticEvent, template: EmailTemplate) => {
+                    setCurrentViewTemplate(template.id);
+                    setShowViewLocaleWizard(true);
+                },
+                popupText: (): string => t("adminPortal:components.emailTemplates.buttons.viewTemplate"),
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, template: EmailTemplate) =>
+                    handleEditTemplate(templateTypeId, template.id),
+                popupText: (): string => t("adminPortal:components.emailTemplates.buttons.editTemplate"),
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, template: EmailTemplate) => {
+                    setCurrentDeletingTemplate(template);
+                    setShowTemplateDeleteConfirmation(true);
+                },
+                popupText: (): string => t("adminPortal:components.emailTemplates.buttons.deleteTemplate"),
+                renderer: "semantic-icon"
+            }
+        ]
+    };
+
     return (
         <>
-            <ResourceList
-                className="email-template-list"
+            <DataTable<EmailTemplate>
+                className="email-templates-table"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ templateList }
+                onRowClick={ (e: SyntheticEvent, template: EmailTemplate): void => {
+                    handleEditTemplate(templateTypeId, template.id);
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
-            >
-                {
-                    templateList && templateList instanceof Array && templateList.length > 0
-                        ? templateList && templateList.map((template: EmailTemplate, index: number): ReactElement => {
-                            let countryCode = "";
-                            let languageCode = "";
-
-                            if (template.id.indexOf("_") !== -1) {
-                                countryCode = template.id.split("_")[ 1 ];
-                                languageCode = template.id.split("_")[ 0 ];
-                            } else {
-                                countryCode = template.id.split("-")[ 1 ];
-                                languageCode = template.id.split("-")[ 0 ];
-                            }
-
-                            const language: string = CountryLanguage.getLanguage(languageCode).name;
-                            const country: string = CountryLanguage.getCountry(countryCode).name;
-
-                            return (
-                                <ResourceListItem
-                                    key={ index }
-                                    actionsFloated="right"
-                                    actions={ [ {
-                                        icon: "eye",
-                                        onClick: () => {
-                                            setCurrentViewTemplate(template.id);
-                                            setShowViewLocaleWizard(true);
-                                        },
-                                        popupText: t("adminPortal:components.emailTemplates.buttons.viewTemplate"),
-                                        type: "button"
-                                    }, {
-                                        icon: "pencil alternate",
-                                        onClick: () => handleEditTemplate(templateTypeId, template.id),
-                                        popupText: t("adminPortal:components.emailTemplates.buttons.editTemplate"),
-                                        type: "button"
-                                    }, {
-                                        icon: "trash alternate",
-                                        onClick: () => {
-                                            setCurrentDeletingTemplate(template);
-                                            setShowTemplateDeleteConfirmation(true);
-                                        },
-                                        popupText: t("adminPortal:components.emailTemplates.buttons.deleteTemplate"),
-                                        type: "button"
-                                    } ] }
-                                    itemHeader={
-                                        <>
-                                            <Flag
-                                                className="email-template-flag "
-                                                name={ countryCode.toLowerCase() as FlagNameValues }
-                                                data-testid={ `${ testId }-flag-image` }
-                                            />
-                                            { country ? language + " (" + country + ")" : language }
-                                        </>
-                                    }
-                                    data-testid={ `${ testId }-item` }
-                                />
-                            );
-                        })
-                        : showPlaceholders()
-                }
-            </ResourceList>
+            />
             {
                 showViewLocaleWizArd && (
                     <ViewLocaleTemplate
@@ -249,5 +319,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
  * Default props for the component.
  */
 EmailTemplateList.defaultProps = {
-    "data-testid": "email-template-list"
+    "data-testid": "email-template-list",
+    selection: true,
+    showListItemActions: true
 };

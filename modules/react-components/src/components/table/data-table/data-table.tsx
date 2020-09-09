@@ -20,6 +20,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 import React, { Fragment, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import {
     Dropdown,
@@ -62,7 +63,9 @@ export interface DataTableSubComponentsInterface {
 /**
  * Interface for the data table component.
  */
-export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "columns">, TestableComponentInterface {
+export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "columns" | "sortable">,
+    TestableComponentInterface {
+
     /**
      * Set of actions.
      */
@@ -161,15 +164,11 @@ export interface DataTablePropsInterface<T = {}> extends Omit<TableProps, "colum
 /**
  * Table Data Strict Interface.
  */
-export interface StrictDataPropsInterface<T = {}> {
+export interface StrictDataPropsInterface {
     /**
      * key prop for React.
      */
     key?: string | number;
-    /**
-     * The row value of the entry. Used for callbacks like onClick etc.
-     */
-    value?: T;
     /**
      * Props for the UI component.
      */
@@ -191,9 +190,15 @@ export interface DataRendererPropsInterface {
 }
 
 /**
+ * Table Data Interface.
+ */
+export interface TableDataInterface<T = {}> extends StrictDataPropsInterface, DynamicTableDataInterface,
+    DataTableCellPropsInterface { }
+
+/**
  * Table Data Dynamic Interface.
  */
-export interface TableDataInterface<T = {}> extends StrictDataPropsInterface<T>, DataTableCellPropsInterface {
+export interface DynamicTableDataInterface {
     [ key: string ]: any;
 }
 
@@ -214,9 +219,22 @@ export interface StrictColumnPropsInterface {
      */
     id: string;
     /**
+     * Get the new sort order.
+     * @param {DataTableSortOrder} sortOrder - New sort order.
+     */
+    getSortOrder?: (sortOrder: DataTableSortOrder, column: TableColumnInterface) => void;
+    /**
      * Should the column be hidden.
      */
     hidden?: boolean;
+    /**
+     * Is the column sortable.
+     */
+    sortable?: boolean;
+    /**
+     * Sort order.
+     */
+    sortOrder?: DataTableSortOrder;
     /**
      * Column title.
      */
@@ -225,12 +243,26 @@ export interface StrictColumnPropsInterface {
      * Index to find relevant data.
      */
     dataIndex: string | "action";
+    /**
+     * Give column render control to outside.
+     */
+    render?: (item: TableDataInterface) => ReactNode;
 }
+
+/**
+ * Data table sort order types.
+ */
+export type DataTableSortOrder = "" | "ascending" | "descending";
+
+/**
+ * Table Column Interface.
+ */
+export interface TableColumnInterface extends StrictColumnPropsInterface, DynamicTableColumnInterface { }
 
 /**
  * Table Column Dynamic Interface.
  */
-export interface TableColumnInterface extends StrictColumnPropsInterface {
+export interface DynamicTableColumnInterface {
     [ key: string ]: any;
 }
 
@@ -350,10 +382,55 @@ export const DataTable = <T extends object = {}>(
     );
 
     const [ columns, setColumns ] = useState<TableColumnInterface[]>(initialColumns);
+    const [ dynamicTableProps, setDynamicTableProps ] = useState<TableProps>(undefined);
 
     useEffect(() => {
-        setColumns(initialColumns);
+        if (!initialColumns) {
+            return;
+        }
+
+        // Changing the data on sort order change results in the triggering of this
+        // hook which resets the column state. This will be problematic if the columns
+        // are dynamically changed from outside.
+        const moderatedColumns: TableColumnInterface[] = [ ...initialColumns ];
+        const internalColumns: TableColumnInterface[] = [ ...columns ];
+
+        for (const moderatedColumn of moderatedColumns) {
+            for (const internalColumn of internalColumns) {
+                if (moderatedColumn.id === internalColumn.id) {
+                    moderatedColumn.sortOrder = internalColumn.sortOrder;
+                    
+                    break;
+                }
+            }
+        }
+
+        setColumns(moderatedColumns);
+        evaluateColumnProps(moderatedColumns);
     }, [ initialColumns ]);
+
+    /**
+     * Evaluate column props.
+     *
+     * @param {TableColumnInterface[]} columns - Columns.
+     */
+    const evaluateColumnProps = (columns: TableColumnInterface[]) => {
+        if (!isColumnsValid(columns)) {
+            return;
+        }
+
+        // Check if any of the columns have sortable prop. If yes, set `sortable` prop in the parent
+        // `Table` component to true.
+        const isSortable: boolean = columns.some((column: TableColumnInterface) => column.sortable);
+        
+        if (isSortable) {
+            setDynamicTableProps({
+                ...dynamicTableProps,
+                celled: true,
+                sortable: true
+            })
+        }
+    };
 
     const isColumnsValid = (columns: TableColumnInterface[]): boolean => {
         return (columns && Array.isArray(columns) && columns.length > 0);
@@ -499,6 +576,10 @@ export const DataTable = <T extends object = {}>(
             textAlign: columnTextAlign,
             title: columnTitle,
             hidden: columnHidden,
+            getSortOrder: getColumnSortOrder,
+            onClick: columnOnClick,
+            sortOrder: columnSortOrder,
+            sortable: columnSortable,
             ...rest
         } = column;
 
@@ -506,8 +587,52 @@ export const DataTable = <T extends object = {}>(
             return;
         }
 
+        const handleHeaderCellClick = (e: SyntheticEvent) => {
+            columnOnClick && columnOnClick(e);
+            
+            if (!columnSortable) {
+                return;
+            }
+
+            const modifiedColumns: TableColumnInterface[] = [ ...columns ];
+
+            modifiedColumns.forEach((evalColumn: TableColumnInterface) => {
+                if (!isEqual(evalColumn, column)) {
+                    return;
+                }
+
+                const newOrder: DataTableSortOrder = evalColumn.sortOrder === "ascending"
+                        ? "descending"
+                        : "ascending";
+
+                getColumnSortOrder && getColumnSortOrder(newOrder, column);
+
+                evalColumn.sortOrder = newOrder;
+            });
+
+            setColumns(modifiedColumns);
+        };
+
+        const resolveSortOrder = (order: DataTableSortOrder) => {
+            if (order === "ascending") {
+                return "ascending";
+            }
+
+            if (order === "descending") {
+                return "descending";
+            }
+
+            return null;
+        };
+
         return (
-            <DataTable.HeaderCell key={ columnKey ?? index } textAlign={ columnTextAlign } { ...rest }>
+            <DataTable.HeaderCell
+                key={ columnKey ?? index }
+                textAlign={ columnTextAlign }
+                onClick={ handleHeaderCellClick }
+                sorted={ resolveSortOrder(columnSortOrder) }
+                { ...rest }
+            >
                 { columnTitle }
             </DataTable.HeaderCell>
         );
@@ -577,6 +702,7 @@ export const DataTable = <T extends object = {}>(
             className={ classes }
             selectable={ !isLoading && selectable }
             data-testid={ testId }
+            { ...dynamicTableProps }
             { ...rest }
         >
             {
@@ -740,7 +866,8 @@ export const DataTable = <T extends object = {}>(
                                                             const {
                                                                 textAlign: columnTextAlign,
                                                                 width: columnWidth,
-                                                                hidden: columnHidden
+                                                                hidden: columnHidden,
+                                                                render: columnRenderer
                                                             } = column;
 
                                                             if (columnHidden) {
@@ -755,7 +882,11 @@ export const DataTable = <T extends object = {}>(
                                                                     { ...cellUIProps }
                                                                     { ...cellUIPropOverrides }
                                                                 >
-                                                                    { renderCell(item, column) }
+                                                                    {
+                                                                        columnRenderer
+                                                                            ? columnRenderer(item)
+                                                                            : renderCell(item, column)
+                                                                    }
                                                                 </DataTable.Cell>
                                                             )
                                                         })

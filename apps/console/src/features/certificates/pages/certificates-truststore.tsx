@@ -226,6 +226,36 @@ const CertificatesTruststore: FunctionComponent<CertificatesTruststorePageInterf
                 data-testid={ `${ testId }-list-layout` }
             >
                 <CertificatesList
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleTruststoreFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: "Alias",
+                                    value: "alias"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                    ".filterAttribute.placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                    ".filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("adminPortal:components.certificates.truststore.advancedSearch.form.inputs" +
+                                    ".filterValue.placeholder")
+                            }
+                            placeholder={
+                                t("adminPortal:components.certificates.truststore.advancedSearch.placeholder")
+                            }
+                            defaultSearchAttribute="alias"
+                            defaultSearchOperator="co"
+                            data-testid={ `${ testId }-advanced-search` }
+                        />
+                    }
                     isLoading={ isLoading }
                     list={ paginate(filteredCertificatesTruststore, listItemLimit, offset) }
                     update={ fetchCertificatesTruststore }

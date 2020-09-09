@@ -417,6 +417,41 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 totalListSize={ usersList.totalResults }
             >
                 <UsersList
+                    advancedSearch={ (
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleUserFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                        "filterAttributeOptions.username"),
+                                    value: "userName"
+                                },
+                                {
+                                    key: 1,
+                                    text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                        "filterAttributeOptions.email"),
+                                    value: "emails"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("adminPortal:components.users.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("adminPortal:components.users.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("adminPortal:components.users.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("adminPortal:components.users.advancedSearch.placeholder") }
+                            defaultSearchAttribute="userName"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                        />
+                    ) }
                     usersList={ usersList }
                     handleUserDelete={ handleUserDelete }
                     userMetaListContent={ userListMetaContent }

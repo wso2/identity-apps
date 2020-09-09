@@ -297,6 +297,40 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 <Grid.Column width={ 16 }>
                     <Divider hidden />
                     <ClaimsList
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleExternalClaimFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("adminPortal:components.claims.external.attributes.attributeURI"),
+                                        value: "claimURI"
+                                    },
+                                    {
+                                        key: 1,
+                                        text: t("adminPortal:components.claims.external.attributes.mappedClaim"),
+                                        value: "mappedLocalClaimURI"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                                        ".filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                                        ".filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.claims.external.advancedSearch.form.inputs" +
+                                        ".filterValue.placeholder")
+                                }
+                                placeholder={ t("adminPortal:components.claims.external.advancedSearch.placeholder") }
+                                defaultSearchAttribute="claimURI"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${ testId }-list-advanced-search` }
+                            />
+                        ) }
                         isLoading={ isLoading }
                         list={ paginate(filteredClaims, listItemLimit, offset) }
                         localClaim={ ListType.EXTERNAL }

@@ -332,6 +332,40 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                     data-testid={ `${ testId }-list-layout` }
                 >
                     <ClaimsList
+                        advancedSearch={
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleLocalClaimsFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("common:name"),
+                                        value: "displayName"
+                                    },
+                                    {
+                                        key: 1,
+                                        text: t("adminPortal:components.claims.local.attributes.attributeURI"),
+                                        value: "claimURI"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.claims.local.advancedSearch.form." +
+                                        "inputs.filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.claims.local.advancedSearch.form." +
+                                        "inputs.filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.claims.local.advancedSearch.form.inputs." +
+                                        "filterValue.placeholder")
+                                }
+                                placeholder={ t("adminPortal:components.claims.local.advancedSearch.placeholder") }
+                                defaultSearchAttribute="displayName"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${ testId }-list-advanced-search` }
+                            />
+                        }
                         isLoading={ isLoading }
                         list={ paginate(filteredClaims, listItemLimit, offset) }
                         localClaim={ ListType.LOCAL }

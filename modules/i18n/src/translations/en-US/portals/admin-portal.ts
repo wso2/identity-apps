@@ -106,6 +106,12 @@ export const adminPortal: AdminPortalNS = {
                         requiredErrorMessage: "Alias is required"
                     }
                 },
+                list: {
+                    columns: {
+                        actions: "Actions",
+                        name: "Name"
+                    }
+                },
                 notifications: {
                     addCertificate:{
                         genericError: {
@@ -460,6 +466,12 @@ export const adminPortal: AdminPortalNS = {
                 }
             },
             list: {
+                columns: {
+                    actions: "Actions",
+                    claimURI: "Claim URI",
+                    dialectURI: "Dialect URI",
+                    name: "Name"
+                },
                 confirmation: {
                     action: "Confirm",
                     content: "{{message}} Please proceed with caution.",
@@ -761,6 +773,10 @@ export const adminPortal: AdminPortalNS = {
                     }
                 }
             },
+            list: {
+                actions: "Actions",
+                name: "Name"
+            },
             notifications: {
                 createTemplateType: {
                     error: {
@@ -853,6 +869,10 @@ export const adminPortal: AdminPortalNS = {
                         tabName: "Preview"
                     }
                 }
+            },
+            list: {
+                actions: "Actions",
+                name: "Name"
             },
             notifications: {
                 createTemplate: {
@@ -1003,6 +1023,11 @@ export const adminPortal: AdminPortalNS = {
                 }
             },
             list: {
+                columns: {
+                    actions: "Actions",
+                    lastModified: "Last Modified",
+                    name: "Name"
+                },
                 storeOptions: "Select User Store"
             },
             notifications: {
@@ -1466,8 +1491,8 @@ export const adminPortal: AdminPortalNS = {
                     basic: "Basics",
                     groups: "Groups",
                     permissions: "Permissions",
-                    users: "Users",
-                    roles: "Roles"
+                    roles: "Roles",
+                    users: "Users"
                 },
                 users: {
                     list: {
@@ -1484,6 +1509,11 @@ export const adminPortal: AdminPortalNS = {
                 buttons: {
                     addButton: "New {{type}}",
                     filterDropdown: "Filter By"
+                },
+                columns: {
+                    actions: "Actions",
+                    lastModified: "Last Modified",
+                    name: "Name"
                 },
                 confirmations: {
                     deleteItem: {
@@ -2174,6 +2204,12 @@ export const adminPortal: AdminPortalNS = {
                 addNewUserBtn: "New User",
                 assignUserRoleBtn: "Assign roles",
                 metaColumnBtn: "Columns"
+            },
+            list: {
+                columns: {
+                    actions: "Actions",
+                    name: "Name"
+                }
             },
             notifications: {
                 addUser: {

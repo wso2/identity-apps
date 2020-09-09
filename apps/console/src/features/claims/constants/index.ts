@@ -16,9 +16,4 @@
  * under the License.
  */
 
-export * from "./api";
-export * from "./components";
-export * from "./configs";
-export * from "./constants";
-export * from "./models";
-export * from "./pages";
+export * from "./claim-management-constants";
