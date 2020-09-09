@@ -1,20 +1,20 @@
 /**
-* Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-*
-* WSO2 Inc. licenses this file to you under the Apache License,
-* Version 2.0 (the "License"); you may not use this file except
-* in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing,
-* software distributed under the License is distributed on an
-* "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-* KIND, either express or implied. See the License for the
-* specific language governing permissions and limitations
-* under the License.
-*/
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -30,19 +30,21 @@ import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent 
 import { EmailTemplate, EmailTemplateType } from "../../models";
 import { EmailTemplateEditor } from "../email-code-editor";
 
+/**
+ * Interface for email templates form props.
+ */
 interface AddLocaleTemplatePropsInterface extends TestableComponentInterface {
     templateId: string;
     templateTypeId: string;
 }
 
 /**
- * Component to handle ADD/EDIT of a locale based email template.
+ * Form to handle ADD/EDIT of a locale based email template.
  *
  * @param {AddLocaleTemplatePropsInterface} props - props required for component.
- *
  * @return {React.ReactElement}
  */
-export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterface> = (
+export const AddEmailTemplateForm: FunctionComponent<AddLocaleTemplatePropsInterface> = (
     props: AddLocaleTemplatePropsInterface
 ): ReactElement => {
 
@@ -70,8 +72,8 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
         const localeDropDown: DropdownItemProps[] = [];
 
         locales.forEach((locale, index) => {
-            const countryCode = locale.split("-")[1];
-            const languageCode = locale.split("-")[0];
+            const countryCode = locale.split("-")[ 1 ];
+            const languageCode = locale.split("-")[ 0 ];
 
             const language = CountryLanguage.getLanguage(languageCode).name;
             const country = CountryLanguage.getCountry(countryCode).name;
@@ -85,33 +87,31 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
         });
 
         setLocaleList(localeDropDown);
-
-    }, [localeList.length]);
+    }, [ localeList.length ]);
 
     /**
      * Will get fired if there is a template ID to trigger edit flow.
      */
     useEffect(() => {
-        getTemplateDetails(templateTypeId, templateId).then((response: AxiosResponse<EmailTemplate>) => {
-            if (response.status === 200) {
-                const templateDetails = response.data;
+        if (!templateId) {
+            return;
+        }
 
-                setLocale(templateDetails.id);
-                setSubject(templateDetails.subject);
-                setHtmlBodyContent(templateDetails.body);
-                setHtmlFooterContent(templateDetails.footer);
-            }
-        })
-    },[templateId != ""]);
+        getTemplateDetails(templateTypeId, templateId)
+            .then((response: AxiosResponse<EmailTemplate>) => {
+                if (response.status === 200) {
+                    const templateDetails = response.data;
 
-    /**
-     * Dispatches the alert object to the redux store.
-     *
-     * @param {AlertInterface} alert - Alert object.
-     */
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
-    };
+                    setLocale(templateDetails.id);
+                    setSubject(templateDetails.subject);
+                    setHtmlBodyContent(templateDetails.body);
+                    setHtmlFooterContent(templateDetails.footer);
+                }
+            })
+            .catch((error) => {
+                // Handle errors.
+            });
+    }, [ templateId ]);
 
     /**
      * Util method to handle create template based on the form data captured.
@@ -127,29 +127,31 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
             subject: values.get("emailSubject").toString()
         };
 
-        createLocaleTemplate(templateTypeId, templateDate).then((response: AxiosResponse<EmailTemplateType>) => {
-            if (response.status === 201) {
-                handleAlerts({
-                    description: t(
-                        "adminPortal:components.emailTemplates.notifications.createTemplate.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "adminPortal:components.emailTemplates.notifications.createTemplate.success.message"
-                    )
-                });
+        createLocaleTemplate(templateTypeId, templateDate)
+            .then((response: AxiosResponse<EmailTemplateType>) => {
+                if (response.status === 201) {
+                    dispatch(addAlert<AlertInterface>({
+                        description: t(
+                            "adminPortal:components.emailTemplates.notifications.createTemplate.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.emailTemplates.notifications.createTemplate.success.message"
+                        )
+                    }));
 
-                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
-            }
-        }).catch((error: AxiosError) => {
-            handleAlerts({
-                description: error.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t(
-                    "adminPortal:components.emailTemplates.notifications.createTemplate.genericError.message"
-                )
-            });
-        })
+                    history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
+                }
+            })
+            .catch((error: AxiosError) => {
+                dispatch(addAlert<AlertInterface>({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "adminPortal:components.emailTemplates.notifications.createTemplate.genericError.message"
+                    )
+                }));
+            })
     };
 
     /**
@@ -167,39 +169,43 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
             subject: values.get("emailSubject").toString()
         };
 
-        replaceLocaleTemplateContent(templateTypeId, templateId, templateDate).then((response: AxiosResponse) => {
-            if (response.status === 200) {
-                handleAlerts({
-                    description: t(
-                        "adminPortal:components.emailTemplates.notifications.updateTemplate.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
+        replaceLocaleTemplateContent(templateTypeId, templateId, templateDate)
+            .then((response: AxiosResponse) => {
+                if (response.status === 200) {
+                    dispatch(addAlert<AlertInterface>({
+                        description: t(
+                            "adminPortal:components.emailTemplates.notifications.updateTemplate.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.emailTemplates.notifications.updateTemplate.success.message"
+                        )
+                    }));
+                }
+            })
+            .catch(error => {
+                dispatch(addAlert<AlertInterface>({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.emailTemplates.notifications.updateTemplate.success.message"
+                        "adminPortal:components.emailTemplates.notifications.updateTemplate.genericError.message"
                     )
-                });
-            }
-        }).catch(error => {
-            handleAlerts({
-                description: error.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t(
-                    "adminPortal:components.emailTemplates.notifications.updateTemplate.genericError.message"
-                )
+                }));
             });
-        });
+    };
+
+    const handleFormSubmit = (values: Map<string, FormValue>): void => {
+        if (!templateId) {
+            createTemplate(values);
+
+            return;
+        }
+
+        updateTemplate(values);
     };
 
     return (
-        <Forms
-            onSubmit={ (values: Map<string, FormValue>) => {
-                if (templateId === "") {
-                    createTemplate(values)
-                } else {
-                    updateTemplate(values);
-                }
-            } }
-        >
+        <Forms onSubmit={ handleFormSubmit }>
             <Grid>
                 {
                     templateId === "" &&
@@ -324,6 +330,6 @@ export const AddLocaleTemplate: FunctionComponent<AddLocaleTemplatePropsInterfac
 /**
  * Default props for the component.
  */
-AddLocaleTemplate.defaultProps = {
+AddEmailTemplateForm.defaultProps = {
     "data-testid": "add-locale-template-form"
 };

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+export * from "./forms";
 export * from "./create-template";
 export * from "./template-list";
 export * from "./template-type-list";

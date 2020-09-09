@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router";
 import { AppConstants, history } from "../../core";
 import { getEmailTemplate } from "../api";
-import { AddLocaleTemplate } from "../components";
+import { AddEmailTemplateForm } from "../components";
 import { EmailTemplateDetails } from "../models";
 
 /**
@@ -116,7 +116,7 @@ const AddTemplateLocale: FunctionComponent<AddTemplateLocalePageInterface> = (
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-            <AddLocaleTemplate
+            <AddEmailTemplateForm
                 templateId={ templateId }
                 templateTypeId={ templateTypeId }
                 data-testid={ `${ testId }-form` }
