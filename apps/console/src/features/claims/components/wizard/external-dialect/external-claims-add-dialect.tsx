@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../..";
 import { EmptyPlaceholderIllustrations } from "../../../../core";
+import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
 import { AddExternalClaims } from "../../add";
 
@@ -113,11 +114,13 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                         const tempClaims = [ ...claims ];
 
                                         tempClaims.forEach((claim: AddExternalClaim) => {
-                                            if (!("claimURI" in editingClaim)) {
+                                            if (!isEqual(editingClaim, claim)) {
                                                 return;
                                             }
 
-                                            if (!isEqual(editingClaim, claim)) {
+                                            // `ClaimDialect` interface doesn't have `claimURI` key which results
+                                            // in TS error due to the usage of union type.
+                                            if (!(ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY in editingClaim)) {
                                                 return;
                                             }
 
@@ -130,13 +133,8 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                     onDelete={ (editingClaim: Claim | ExternalClaim | ClaimDialect |
                                         AddExternalClaim) => {
 
-                                        const tempClaims = claims.filter((claim: AddExternalClaim) => {
-                                            if (!("claimURI" in editingClaim)) {
-                                                return claim;
-                                            }
-
-                                            return !isEqual(editingClaim, claim);
-                                        });
+                                        const tempClaims = claims.filter((claim: AddExternalClaim) =>
+                                            !isEqual(editingClaim, claim));
 
                                         setClaims(tempClaims);
                                     } }
