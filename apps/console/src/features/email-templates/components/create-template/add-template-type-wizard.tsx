@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Modal } from "semantic-ui-react";
@@ -70,7 +70,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
         dispatch(addAlert(alert));
     };
 
-    const WIZARD_STEPS = [{
+    const WIZARD_STEPS = {
         content: (
             <AddEmailTemplateType 
                 onSubmit={ (values) =>  handleFormSubmit(values) }
@@ -80,7 +80,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
         ),
         icon: AddEmailTemplateTypeWizardStepIcons.general,
         title: t("adminPortal:components.emailTemplateTypes.wizards.addTemplateType.steps.templateType.heading")
-    }];
+    };
 
     const createTemplateType = (templateTypeName: string): void => {
         createNewTemplateType(templateTypeName).then((response: AxiosResponse) => {
@@ -127,7 +127,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
-                {WIZARD_STEPS[0].content}
+                {WIZARD_STEPS.content}
             </Modal.Content>
             <Modal.Actions>
                 <Grid>
