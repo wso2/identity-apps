@@ -55,7 +55,6 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
 
     const { t } = useTranslation();
 
-    const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
     const handleFormSubmit = (values: any): void => {
@@ -128,7 +127,7 @@ export const EmailTemplateTypeWizard: FunctionComponent<EmailTemplateTypeWizardP
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
-                {WIZARD_STEPS[currentStep].content}
+                {WIZARD_STEPS[0].content}
             </Modal.Content>
             <Modal.Actions>
                 <Grid>

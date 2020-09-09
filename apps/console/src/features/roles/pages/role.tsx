@@ -81,12 +81,11 @@ const RolesPage = (): ReactElement => {
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ isListUpdated, setListUpdated ] = useState(false);
     // TODO: Check the usage and delete if not required.
-    const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ userStore, setUserStore ] = useState(undefined);
+    const [ userStore ] = useState(undefined);
     const [ filterBy, setFilterBy ] = useState<string>("all");
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     // TODO: Check the usage and delete if not required.
-    const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
+    const [ isEmptyResults ] = useState<boolean>(false);
     const [ isRoleListFetchRequestLoading, setRoleListFetchRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
 
@@ -182,10 +181,7 @@ const RolesPage = (): ReactElement => {
                         storeOptions.push(storeOption);
                     }
                 );
-                setUserStoresList(storeOptions);
             });
-
-        setUserStoresList(storeOptions);
     };
 
     /**

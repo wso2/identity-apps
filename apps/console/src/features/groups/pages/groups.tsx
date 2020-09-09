@@ -74,7 +74,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ userStore, setUserStore ] = useState(undefined);
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     // TODO: Check the usage and delete id not required.
-    const [ isEmptyResults, setIsEmptyResults ] = useState<boolean>(false);
     const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
@@ -126,7 +125,6 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         setGroupsPage(0, listItemLimit, updatedResources);
                     } else {
                         setPaginatedGroups([]);
-                        setIsEmptyResults(true);
                     }
                 }
             })

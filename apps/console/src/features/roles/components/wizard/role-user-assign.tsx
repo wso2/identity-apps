@@ -70,8 +70,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const [ usersList, setUsersList ] = useState<UserBasicInterface[]>([]);
     const [ initialUserList, setInitialUserList ] = useState<UserBasicInterface[]>([]);
     const [ selectedUsers, setSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ initialSelectedUsers, setInitialSelectedUsers ] = useState<UserBasicInterface[]>([]);
-    const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
     
@@ -139,7 +138,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
-                        setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
                     }
                 }
@@ -161,7 +159,6 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             return selectedUserList.indexOf(user) == -1;
                         }));
                         setSelectedUsers(selectedUserList);
-                        setInitialSelectedUsers(selectedUserList);
                         setTempUserList(selectedUserList);
                     }
                 }
