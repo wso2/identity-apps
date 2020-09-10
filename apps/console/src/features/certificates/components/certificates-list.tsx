@@ -29,20 +29,22 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import {
-    Avatar,
+    AnimatedAvatar,
     Certificate as CertificateDisplay,
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
 import * as forge from "node-forge";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon, Modal } from "semantic-ui-react";
+import { Header, Icon, Modal, SemanticICONS } from "semantic-ui-react";
 import { AppState, EmptyPlaceholderIllustrations, FeatureConfigInterface, UIConstants } from "../../core";
 import {
     deleteKeystoreCertificate,
@@ -71,6 +73,14 @@ interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInte
     TestableComponentInterface {
 
     /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
      * The certificate list
      */
     list: Certificate[];
@@ -83,9 +93,21 @@ interface CertificatesListPropsInterface extends SBACInterface<FeatureConfigInte
      */
     onEmptyListPlaceholderActionClick?: () => void;
     /**
+     * On list item select callback.
+     */
+    onListItemClick?: (event: SyntheticEvent, certificate: Certificate) => void;
+    /**
      * Search query for the list.
      */
     searchQuery: string;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
     /**
      * Initiate an update
      */
@@ -108,12 +130,17 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
 ): ReactElement => {
 
     const {
+        advancedSearch,
+        defaultListItemLimit,
         featureConfig,
         isLoading,
         list,
         onEmptyListPlaceholderActionClick,
         onSearchQueryClear,
+        onListItemClick,
         searchQuery,
+        selection,
+        showListItemActions,
         update,
         type,
         [ "data-testid" ]: testId
@@ -507,148 +534,188 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             && hasRequiredScopes(featureConfig?.certificates, featureConfig?.certificates?.scopes?.read, allowedScopes);
     };
 
+    /**
+     * Handles certificate view.
+     * @param {Certificate} certificate - Certificate.
+     */
+    const handleCertificateView = (certificate: Certificate): void => {
+        if (type === KEYSTORE) {
+            retrieveCertificateAlias(certificate.alias, true)
+                .then((response: string) => {
+                    displayCertificate(certificate, response);
+                }).catch(error => {
+                    dispatch(addAlert({
+                        description: error?.description
+                            ?? t("adminPortal:components.certificates.keystore.notifications.getAlias." +
+                                "genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            ?? t("adminPortal:components.certificates.keystore.notifications.getAlias." +
+                                "genericError.message")
+                    }));
+                });
+
+            return;
+        }
+
+        retrieveClientCertificate(certificate.alias, true)
+            .then((response) => {
+                displayCertificate(certificate, response);
+            }).catch(error => {
+                dispatch(addAlert({
+                    description: error?.description
+                        ?? t("adminPortal:components.certificates.keystore.notifications.getCertificate." +
+                            "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        ?? t("adminPortal:components.certificates.keystore.notifications.getCertificate." +
+                            "genericError.message")
+                }));
+            })
+    };
+
+    /**
+     * Handles certificate download.
+     * @param {Certificate} certificate - Certificate.
+     */
+    const handleCertificateDownload = (certificate: Certificate) => {
+        if (type === KEYSTORE) {
+            retrieveCertificateAlias(certificate.alias, true)
+                .then((response: string) => {
+                    exportCertificate(certificate.alias, response);
+                }).catch(error => {
+                    dispatch(addAlert({
+                        description: error?.description
+                            ?? t("adminPortal:components.certificates.keystore.notifications.getAlias." +
+                                "genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            ?? t("adminPortal:components.certificates.keystore.notifications.getAlias." +
+                                "genericError.message")
+                    }));
+            });
+            
+            return;
+        }
+
+        retrieveClientCertificate(certificate.alias, true)
+            .then((response) => {
+                exportCertificate(certificate.alias, response);
+            }).catch(error => {
+                dispatch(addAlert({
+                    description: error?.description
+                        ?? t("adminPortal:components.certificates.keystore.notifications.getCertificate." +
+                            "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message
+                        ?? t("adminPortal:components.certificates.keystore.notifications.getCertificate." +
+                            "genericError.message")
+                }));
+            })
+    };
+
+    /**
+     * Resolves data table columns.
+     *
+     * @return {TableColumnInterface[]}
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (certificate: Certificate): ReactNode => (
+                    <Header as="h6" image>
+                        <AnimatedAvatar
+                            name={ certificate.alias }
+                            size="mini"
+                            data-testid={ `${ testId }-item-image` }
+                        />
+                        <Header.Content>
+                            { certificate.alias }
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("adminPortal:components.certificates.keystore.list.columns.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("adminPortal:components.certificates.keystore.list.columns.actions")
+            }
+        ]
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (!showListItemActions) {
+            return [];
+        }
+
+        return [
+            {
+                icon: (): SemanticICONS => "eye",
+                onClick: (e: SyntheticEvent, certificate: Certificate): void => handleCertificateView(certificate),
+                popupText: (): string => t("common:view"),
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "download",
+                onClick: (e: SyntheticEvent, certificate: Certificate): void => handleCertificateDownload(certificate),
+                popupText: (): string => t("common:export"),
+                renderer: "semantic-icon"
+            },
+            {
+                hidden: (): boolean => {
+                    const hasScopes: boolean = hasRequiredScopes(featureConfig?.certificates,
+                        featureConfig?.certificates?.scopes?.delete, allowedScopes);
+
+                    return !(type === KEYSTORE && hasScopes) || isSuper;
+                },
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, certificate: Certificate): void => initDelete(certificate),
+                popupText: (): string => t("common:delete"),
+                renderer: "semantic-icon"
+            }
+        ];
+    };
+
     return (
         <>
             { deleteID && showDeleteConfirm() }
             { certificateModal && renderCertificateModal() }
-            <ResourceList
+            <DataTable<Certificate>
+                className="certificates-list"
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
-                data-testid={ testId }
-            >
-                {
-                    list && list instanceof Array && list.length > 0
-                        ? hasRequiredPermissions()
-                            ? list?.map((certificate: Certificate, index: number) => {
-                                return (
-                                    <ResourceList.Item
-                                        avatar={
-                                            <Avatar
-                                                rounded
-                                                image={ <CertificateIllustrations.avatar /> }
-                                                transparent={ true }
-                                                shape="square"
-                                                spaced="right"
-                                                floated="left"
-                                                data-testid={ `${ testId }-item-image` }
-                                            />
-                                        }
-                                        key={ index }
-                                        actions={ [
-                                            {
-                                                icon: "eye",
-                                                onClick: () => {
-                                                    if (type === KEYSTORE) {
-                                                        retrieveCertificateAlias(certificate.alias, true)
-                                                            .then((response: string) => {
-                                                                displayCertificate(certificate, response);
-                                                            }).catch(error => {
-                                                                dispatch(addAlert({
-                                                                    description: error?.description
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getAlias." +
-                                                                            "genericError.description"),
-                                                                    level: AlertLevels.ERROR,
-                                                                    message: error?.message
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getAlias." +
-                                                                            "genericError.message")
-                                                                }));
-                                                            })
-                                                    } else {
-                                                        retrieveClientCertificate(certificate.alias, true)
-                                                            .then((response) => {
-                                                                displayCertificate(certificate, response);
-                                                            }).catch(error => {
-                                                                dispatch(addAlert({
-                                                                    description: error?.description
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getCertificate." +
-                                                                            "genericError.description"),
-                                                                    level: AlertLevels.ERROR,
-                                                                    message: error?.message
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getCertificate." +
-                                                                            "genericError.message")
-                                                                }));
-                                                            })
-                                                    }
-                                                },
-                                                popupText: t("common:view"),
-                                                type: "button"
-                                            },
-                                            {
-                                                icon: "download",
-                                                onClick: () => {
-                                                    if (type === KEYSTORE) {
-                                                        retrieveCertificateAlias(certificate.alias, true)
-                                                            .then((response: string) => {
-                                                                exportCertificate(certificate.alias, response);
-                                                            }).catch(error => {
-                                                                dispatch(addAlert({
-                                                                    description: error?.description
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getAlias." +
-                                                                            "genericError.description"),
-                                                                    level: AlertLevels.ERROR,
-                                                                    message: error?.message
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getAlias." +
-                                                                            "genericError.message")
-                                                                }));
-                                                            })
-                                                    } else {
-                                                        retrieveClientCertificate(certificate.alias, true)
-                                                            .then((response) => {
-                                                                exportCertificate(certificate.alias, response);
-                                                            }).catch(error => {
-                                                                dispatch(addAlert({
-                                                                    description: error?.description
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getCertificate." +
-                                                                            "genericError.description"),
-                                                                    level: AlertLevels.ERROR,
-                                                                    message: error?.message
-                                                                        ?? t("adminPortal:components.certificates." +
-                                                                            "keystore.notifications.getCertificate." +
-                                                                            "genericError.message")
-                                                                }));
-                                                            })
-                                                    }
-                                                },
-                                                popupText: t("common:export"),
-                                                type: "dropdown"
-                                            },
-                                            {
-                                                hidden: !(
-                                                    type === KEYSTORE
-                                                    && hasRequiredScopes(featureConfig?.certificates,
-                                                        featureConfig?.certificates?.scopes?.delete,
-                                                        allowedScopes)
-                                                )
-                                                    || isSuper,
-                                                icon: "trash alternate",
-                                                onClick: () => { initDelete(certificate) },
-                                                popupText: t("common:delete"),
-                                                type: "dropdown"
-                                            }
-                                        ] }
-                                        actionsFloated="right"
-                                        itemHeader={ certificate.alias }
-                                        data-testid={ `${ testId }-item` }
-                                    />
-                                )
-                            })
-                            : null
-                        : showPlaceholders()
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ hasRequiredPermissions() && list }
+                externalSearch={ advancedSearch }
+                onRowClick={
+                    (e: SyntheticEvent, certificate: Certificate): void => {
+                        handleCertificateView(certificate);
+                        onListItemClick && onListItemClick(e, certificate);
+                    }
                 }
-            </ResourceList>
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
+                data-testid={ testId }
+            />
         </>
     )
 };
@@ -657,5 +724,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
  * Default props for the component.
  */
 CertificatesList.defaultProps = {
-    "data-testid": "certificates-list"
+    "data-testid": "certificates-list",
+    selection: true,
+    showListItemActions: true
 };

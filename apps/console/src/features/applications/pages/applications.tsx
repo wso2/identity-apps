@@ -276,6 +276,35 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 data-testid={ `${ testId }-list-layout` }
             >
                 <ApplicationList
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleApplicationFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.applications.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("devPortal:components.applications.advancedSearch.placeholder") }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-list-advanced-search` }
+                        />
+                    }
                     featureConfig={ featureConfig }
                     isLoading={ isApplicationListRequestLoading }
                     list={ appList }

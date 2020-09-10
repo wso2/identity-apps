@@ -31,16 +31,13 @@ import {
     DataTable,
     EmptyPlaceholder,
     PrimaryButton,
-    TableActionsInterface
-}from "@wso2is/react-components";
+    TableActionsInterface,
+    TableColumnInterface
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    Header,
-    Icon,
-    SemanticICONS
-} from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
 import {
     AppConstants,
@@ -69,7 +66,7 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
     /**
      * Application list.
      */
-    list: OIDCScopesListInterface;
+    list: OIDCScopesListInterface[];
     /**
      * On scope delete callback.
      */
@@ -188,11 +185,52 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     };
 
     /**
-     * Resolves list item actions based on the scope.
+     * Resolves data table columns.
      *
-     * @return {TableActionsInterface[]} Resolved list actions.
+     * @return {TableColumnInterface[]}
      */
-    const resolveListActions = (): TableActionsInterface[] => {
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (scope: OIDCScopesListInterface): ReactNode => (
+                    <Header as="h6" image>
+                        <AnimatedAvatar
+                            name={ scope.name }
+                            size="mini"
+                            floated="left"
+                            data-testid={ `${ testId }-item-image` }
+                        />
+                        <Header.Content>
+                            { scope.displayName || scope.name }
+                            <Header.Subheader>
+                                { scope.description }
+                            </Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("devPortal:components.oidcScopes.list.columns.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("devPortal.components.oidcScopes.list.columns.actions")
+            }
+        ];
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
             return;
         }
@@ -203,7 +241,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                     featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (e: SyntheticEvent, { value: scope }: { value: OIDCScopesListInterface }): void =>
+                onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void =>
                     handleOIDCScopesEdit(scope?.name),
                 popupText: (): string => t("common:edit"),
                 renderer: "semantic-icon"
@@ -215,7 +253,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 featureConfig?.applications,
                 featureConfig?.applications?.scopes?.delete, allowedScopes),
             icon: (): SemanticICONS => "trash alternate",
-            onClick: (e: SyntheticEvent, { value: scope }: { value: OIDCScopesListInterface }): void => {
+            onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingScope(scope);
             },
@@ -260,70 +298,24 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     return (
         <>
             <DataTable<OIDCScopesListInterface>
-                className="oidc-scopes-list"
-                extensions={ [
-                    {
-                        component: advancedSearch,
-                        position: "top"
-                    }
-                ] }
+                className="oidc-scopes-table"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit,
                     imageType: "square"
                 } }
-                actions={ resolveListActions() }
-                columns={ [
-                    {
-                        allowToggleVisibility: false,
-                        dataIndex: "name",
-                        id: "name",
-                        key: "name",
-                        title: t("common:name")
-                    },
-                    {
-                        allowToggleVisibility: false,
-                        dataIndex: "action",
-                        id: "actions",
-                        key: "actions",
-                        textAlign: "right",
-                        title: t("common:actions")
-                    }
-                ] }
-                data={
-                    (list && Array.isArray(list) && list.length > 0)
-                        ? list.map((scope: OIDCScopesListInterface, index: number) => {
-                            return {
-                                id: scope.name,
-                                key: index,
-                                name: (
-                                    <Header as="h6" image>
-                                        <AnimatedAvatar
-                                            name={ scope.name }
-                                            size="mini"
-                                            floated="left"
-                                            data-testid={ `${ testId }-item-image` }
-                                        />
-                                        <Header.Content>
-                                            { scope.displayName || scope.name }
-                                            <Header.Subheader>
-                                                { scope.description }
-                                            </Header.Subheader>
-                                        </Header.Content>
-                                    </Header>
-                                ),
-                                value: scope
-                            }
-                        })
-                        : []
-                }
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ list }
                 onRowClick={
-                    (e: SyntheticEvent, { value: scope }: { value: OIDCScopesListInterface }): void => {
+                    (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
                         handleOIDCScopesEdit(scope?.name);
                         onListItemClick(e, scope);
                     }
                 }
                 placeholders={ showPlaceholders() }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
                 selectable={ selection }
                 showHeader={ false }
                 data-testid={ testId }

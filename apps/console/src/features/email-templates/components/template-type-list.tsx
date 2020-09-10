@@ -20,25 +20,49 @@ import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/
 import {
     AnimatedAvatar,
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
     PrimaryButton,
-    ResourceList,
-    ResourceListItem
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent , ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Image } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { AppConstants, UIConstants, history } from "../../core";
 import { EmailTemplateIllustrations } from "../configs";
 import { EmailTemplateType } from "../models";
 
 interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
+     * On Delete callback.
+     * @param {string} templateId - Deleting template's ID.
+     */
     onDelete: (templateId: string) => void;
+    /**
+     * Template type list.
+     */
     templateTypeList: EmailTemplateType[];
     /**
      * Callback to be fired when clicked on the empty list placeholder action.
      */
     onEmptyListPlaceholderActionClick: () => void;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
 }
 
 /**
@@ -53,10 +77,14 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
 ): ReactElement => {
 
     const {
+        advancedSearch,
+        defaultListItemLimit,
         isLoading,
         templateTypeList: templateList,
         onDelete,
         onEmptyListPlaceholderActionClick,
+        selection,
+        showListItemActions,
         [ "data-testid" ]: testId
     } = props;
 
@@ -100,63 +128,95 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
         return null;
     };
 
+    /**
+     * Resolves data table columns.
+     *
+     * @return {TableColumnInterface[]}
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (templateType: EmailTemplateType): ReactNode => (
+                    <Header as="h6" image>
+                        <AnimatedAvatar
+                            name={ templateType.displayName }
+                            size="mini"
+                            data-testid={ `${ testId }-item-image` }
+                        />
+                        <Header.Content>
+                            { templateType.displayName }
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("adminPortal:components.emailTemplateTypes.list.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("adminPortal:components.emailTemplateTypes.list.actions")
+            }
+        ];
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (!showListItemActions) {
+            return [];
+        }
+
+        return [
+            {
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, templateType: EmailTemplateType): void =>
+                    handleEditTemplate(templateType.id),
+                popupText: (): string => t("adminPortal:components.emailTemplateTypes.buttons.editTemplate"),
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, templateType: EmailTemplateType): void => {
+                    setCurrentDeletingTemplate(templateType);
+                    setShowTemplateTypeDeleteConfirmation(true);
+                },
+                popupText: (): string => t("adminPortal:components.emailTemplateTypes.buttons.deleteTemplate"),
+                renderer: "semantic-icon"
+            }
+        ];
+    };
+
     return (
         <>
-            <ResourceList
-                className="email-template-types-list"
+            <DataTable<EmailTemplateType>
+                className="email-template-types-table"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ templateList }
+                onRowClick={ (e: SyntheticEvent, templateType: EmailTemplateType): void => {
+                    handleEditTemplate(templateType?.id);
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
                 data-testid={ testId }
-            >
-                {
-                    templateList && templateList instanceof Array && templateList.length > 0
-                        ? templateList && templateList.map((template: EmailTemplateType, index: number) => (
-                            <ResourceListItem
-                                key={ index }
-                                actionsFloated="right"
-                                actions={ [{
-                                    icon: "pencil alternate",
-                                    onClick: () => handleEditTemplate(template.id),
-                                    popupText: t("adminPortal:components.emailTemplateTypes.buttons.editTemplate"),
-                                    type: "button"
-                                },{
-                                    icon: "trash alternate",
-                                    onClick: () => {
-                                        setCurrentDeletingTemplate(template);
-                                        setShowTemplateTypeDeleteConfirmation(true)
-
-                                    },
-                                    popupText: t("adminPortal:components.emailTemplateTypes.buttons.deleteTemplate"),
-                                    type: "button"
-                                }] }
-                                avatar={ (
-                                    <Image
-                                        floated="left"
-                                        verticalAlign="middle"
-                                        rounded
-                                        centered
-                                        size="mini"
-                                        data-testid={ `${ testId }-item-image` }
-                                    >
-                                        <AnimatedAvatar />
-                                        <span className="claims-letter">
-                                            { template.displayName[0].toLocaleUpperCase() }
-                                        </span>
-                                    </Image>
-                                ) }
-                                itemHeader={ template.displayName }
-                                data-testid={ `${ testId }-item` }
-                            />
-                        ))
-                        : showPlaceholders()
-                }
-            </ResourceList>
+            />
             {
                 showTemplateTypeDeleteConfirmation && (
                     <ConfirmationModal
@@ -216,5 +276,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
  * Default props for the component.
  */
 EmailTemplateTypeList.defaultProps = {
-    "data-testid": "email-template-types-list"
+    "data-testid": "email-template-types-list",
+    selection: true,
+    showListItemActions: true
 };

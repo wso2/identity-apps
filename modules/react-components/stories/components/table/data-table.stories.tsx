@@ -18,10 +18,20 @@
  */
 
 import { action } from "@storybook/addon-actions";
-import React, { ReactElement, SyntheticEvent } from "react";
+import cloneDeep from "lodash/cloneDeep";
+import orderBy from "lodash/orderBy";
+import React, { ReactElement, SyntheticEvent, useState } from "react";
 import { Divider, Form, Grid, Header, Label, SemanticICONS } from "semantic-ui-react";
 import { DEMO_DATA_LIST, DataTableDemoDataInterface, meta } from "./data-table.stories.meta";
-import { AdvancedSearch, AppAvatar, DataTable, LinkButton, PrimaryButton } from "../../../src";
+import {
+    AdvancedSearch,
+    AppAvatar,
+    DataTable,
+    DataTableSortOrder,
+    LinkButton,
+    PrimaryButton,
+    TableColumnInterface
+} from "../../../src";
 
 export default {
     parameters: {
@@ -42,7 +52,7 @@ export const BasicUsage = (): ReactElement => (
         actions={ [
             {
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (e: SyntheticEvent, { value: item }: { value: DataTableDemoDataInterface }): void => {
+                onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
                     action(`Clicked on ${ item.name }`)
                 },
                 popupText: (): string => "edit",
@@ -50,42 +60,33 @@ export const BasicUsage = (): ReactElement => (
             },
             {
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (e: SyntheticEvent, { value: item }: { value: DataTableDemoDataInterface }): void => {
+                onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
                     action(`Clicked on delete of ${ item.name }`)
                 },
                 popupText: (): string => "delete",
                 renderer: "semantic-icon"
             }
         ] }
-        data={
-            DEMO_DATA_LIST.map((item: DataTableDemoDataInterface, index: number) => {
-                return {
-                    clientId: <Label>{ item.clientId }</Label>,
-                    id: item.clientId,
-                    key: index,
-                    name: (
-                        <Header as="h6" image>
-                            <AppAvatar
-                                name={ item.name }
-                                image={ item.imageUrl }
-                                size="mini"
-                            />
-                            <Header.Content>
-                                { item.name }
-                                <Header.Subheader>{ item.description }</Header.Subheader>
-                            </Header.Content>
-                        </Header>
-                    ),
-                    value: item
-                }
-            })
-        }
+        data={ DEMO_DATA_LIST }
         columns={ [
             {
                 allowToggleVisibility: false,
                 dataIndex: "name",
                 id: "name",
                 key: 0,
+                render: (item) => (
+                    <Header as="h6" image>
+                        <AppAvatar
+                            name={ item.name }
+                            image={ item.imageUrl }
+                            size="mini"
+                        />
+                        <Header.Content>
+                            { item.name }
+                            <Header.Subheader>{ item.description }</Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
                 title: "Name"
             },
             {
@@ -93,6 +94,9 @@ export const BasicUsage = (): ReactElement => (
                 dataIndex: "clientId",
                 id: "clientId",
                 key: 1,
+                render: (item) => (
+                    <Label>{ item.clientId }</Label>
+                ),
                 title: "Client ID"
             },
             {
@@ -104,7 +108,7 @@ export const BasicUsage = (): ReactElement => (
             }
         ] }
         onRowClick={
-            (e: SyntheticEvent, { value: item }: { value: DataTableDemoDataInterface }): void => {
+            (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
                 action(`Clicked on the row of ${ item.name }`)
             }
         }
@@ -134,7 +138,7 @@ export const WithOperationsBar = (): ReactElement => (
         actions={ [
             {
                 icon: (): SemanticICONS => "pencil alternate",
-                onClick: (e: SyntheticEvent, { value: item }: { value: DataTableDemoDataInterface }): void => {
+                onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
                     action(`Clicked on ${ item.name }`)
                 },
                 popupText: (): string => "edit",
@@ -142,38 +146,14 @@ export const WithOperationsBar = (): ReactElement => (
             },
             {
                 icon: (): SemanticICONS => "trash alternate",
-                onClick: (e: SyntheticEvent, { value: item }: { value: DataTableDemoDataInterface }): void => {
+                onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
                     action(`Clicked on delete of ${ item.name }`)
                 },
                 popupText: (): string => "delete",
                 renderer: "semantic-icon"
             }
         ] }
-        data={
-            DEMO_DATA_LIST.map((item: DataTableDemoDataInterface, index: number) => {
-                return {
-                    clientId: <Label>{ item.clientId }</Label>,
-                    id: item.clientId,
-                    key: index,
-                    name: (
-                        <Header as="h6" image>
-                            <AppAvatar
-                                name={ item.name }
-                                image={ item.imageUrl }
-                                size="mini"
-                            />
-                            <Header.Content>
-                                { item.name }
-                                <Header.Subheader>
-                                    { item.description }
-                                </Header.Subheader>
-                            </Header.Content>
-                        </Header>
-                    ),
-                    value: item
-                }
-            })
-        }
+        data={ DEMO_DATA_LIST }
         externalSearch={
             <AdvancedSearch
                 aligned="left"
@@ -261,6 +241,19 @@ export const WithOperationsBar = (): ReactElement => (
                 dataIndex: "name",
                 id: "name",
                 key: 0,
+                render: (item) => (
+                    <Header as="h6" image>
+                        <AppAvatar
+                            name={ item.name }
+                            image={ item.imageUrl }
+                            size="mini"
+                        />
+                        <Header.Content>
+                            { item.name }
+                            <Header.Subheader>{ item.description }</Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
                 title: "Name"
             },
             {
@@ -268,6 +261,9 @@ export const WithOperationsBar = (): ReactElement => (
                 dataIndex: "clientId",
                 id: "clientId",
                 key: 1,
+                render: (item) => (
+                    <Label>{ item.clientId }</Label>
+                ),
                 title: "Client ID"
             },
             {
@@ -279,7 +275,7 @@ export const WithOperationsBar = (): ReactElement => (
             }
         ] }
         onRowClick={
-            (e: SyntheticEvent, { value: item }: { value: DataTableDemoDataInterface }): void => {
+            (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
                 action(`Clicked on the row of ${ item.name }`)
             }
         }
@@ -290,6 +286,105 @@ WithOperationsBar.story = {
     parameters: {
         docs: {
             storyDescription: meta.stories[ 1 ].description
+        }
+    }
+};
+
+/**
+ * Story to display a sortable Data Table.
+ *
+ * @return {React.ReactElement}
+ */
+export const Sortable = (): ReactElement => {
+
+    const [ list, setList ] = useState<DataTableDemoDataInterface[]>(DEMO_DATA_LIST);
+
+    const handleListSorting = (order: DataTableSortOrder, column: TableColumnInterface) => {
+        const orderedList: DataTableDemoDataInterface[] = orderBy(cloneDeep(list), [ column.dataIndex ],
+            [ order === "ascending" ? "asc" : "desc" ]);
+        
+        setList(orderedList);
+    };
+
+    return (
+        <DataTable
+            padded
+            actions={ [
+                {
+                    icon: (): SemanticICONS => "pencil alternate",
+                    onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
+                        action(`Clicked on ${ item.name }`)
+                    },
+                    popupText: (): string => "edit",
+                    renderer: "semantic-icon"
+                },
+                {
+                    icon: (): SemanticICONS => "trash alternate",
+                    onClick: (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
+                        action(`Clicked on delete of ${ item.name }`)
+                    },
+                    popupText: (): string => "delete",
+                    renderer: "semantic-icon"
+                }
+            ] }
+            data={ list }
+            columns={ [
+                {
+                    allowToggleVisibility: false,
+                    dataIndex: "name",
+                    getSortOrder: handleListSorting,
+                    id: "name",
+                    key: 0,
+                    render: (item) => (
+                        <Header as="h6" image>
+                            <AppAvatar
+                                name={ item.name }
+                                image={ item.imageUrl }
+                                size="mini"
+                            />
+                            <Header.Content>
+                                { item.name }
+                                <Header.Subheader>{ item.description }</Header.Subheader>
+                            </Header.Content>
+                        </Header>
+                    ),
+                    sortOrder: "ascending",
+                    sortable: true,
+                    title: "Name"
+                },
+                {
+                    allowToggleVisibility: false,
+                    dataIndex: "clientId",
+                    getSortOrder: handleListSorting,
+                    id: "clientId",
+                    key: 1,
+                    render: (item) => (
+                        <Label>{ item.clientId }</Label>
+                    ),
+                    sortable: true,
+                    title: "Client ID"
+                },
+                {
+                    allowToggleVisibility: false,
+                    dataIndex: "action",
+                    id: "actions",
+                    key: 2,
+                    title: "Actions"
+                }
+            ] }
+            onRowClick={
+                (e: SyntheticEvent, item: DataTableDemoDataInterface): void => {
+                    action(`Clicked on the row of ${ item.name }`)
+                }
+            }
+        />
+    )
+};
+
+Sortable.story = {
+    parameters: {
+        docs: {
+            storyDescription: meta.stories[ 2 ].description
         }
     }
 };

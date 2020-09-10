@@ -16,14 +16,16 @@
 * under the License.
 */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { Claim, ClaimDialect, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { FormValue } from "@wso2is/forms";
 import { EmptyPlaceholder } from "@wso2is/react-components";
+import isEqual from "lodash/isEqual";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid } from "semantic-ui-react";
 import { ClaimsList, ListType } from "../..";
 import { EmptyPlaceholderIllustrations } from "../../../../core";
+import { ClaimManagementConstants } from "../../../constants";
 import { AddExternalClaim } from "../../../models";
 import { AddExternalClaims } from "../../add";
 
@@ -106,15 +108,34 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                                     isLoading={ false }
                                     list={ claims }
                                     localClaim={ ListType.ADD_EXTERNAL }
-                                    onEdit={ (index: number, values: Map<string, FormValue>) => {
+                                    onEdit={ (editingClaim: Claim | ExternalClaim | ClaimDialect | AddExternalClaim,
+                                              values: Map<string, FormValue>) => {
+
                                         const tempClaims = [ ...claims ];
-                                        tempClaims[ index ].mappedLocalClaimURI = values.get("localClaim").toString();
-                                        tempClaims[ index ].claimURI = values.get("claimURI").toString();
+
+                                        tempClaims.forEach((claim: AddExternalClaim) => {
+                                            if (!isEqual(editingClaim, claim)) {
+                                                return;
+                                            }
+
+                                            // `ClaimDialect` interface doesn't have `claimURI` key which results
+                                            // in TS error due to the usage of union type.
+                                            if (!(ClaimManagementConstants.CLAIM_URI_ATTRIBUTE_KEY in editingClaim)) {
+                                                return;
+                                            }
+
+                                            claim.claimURI = values.get("claimURI").toString();
+                                            claim.mappedLocalClaimURI = values.get("localClaim").toString();
+                                        });
+
                                         setClaims(tempClaims);
                                     } }
-                                    onDelete={ (index: number) => {
-                                        const tempClaims = [ ...claims ];
-                                        tempClaims.splice(index, 1);
+                                    onDelete={ (editingClaim: Claim | ExternalClaim | ClaimDialect |
+                                        AddExternalClaim) => {
+
+                                        const tempClaims = claims.filter((claim: AddExternalClaim) =>
+                                            !isEqual(editingClaim, claim));
+
                                         setClaims(tempClaims);
                                     } }
                                     data-testid={ `${ testId }-list` }

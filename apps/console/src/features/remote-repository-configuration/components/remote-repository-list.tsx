@@ -16,28 +16,78 @@
  * under the License.
  */
 
-import { 
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import {
     ConfirmationModal,
-    EmptyPlaceholder, 
+    DataTable,
+    EmptyPlaceholder,
     PrimaryButton,
-    ResourceList, 
-    ResourceListItem
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon } from "semantic-ui-react";
+import { Icon, SemanticICONS } from "semantic-ui-react";
 import { RemoteRepoDetails } from "./remote-repository-details";
 import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
 import { InterfaceRemoteRepoConfig } from "../models";
 
-interface RemoteRepoListProp {
+interface RemoteRepoListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
+    /**
+     * Default list item limit.
+     */
+    defaultListItemLimit?: number;
+    /**
+     * Repo objects list.
+     */
     repoObjectList: InterfaceRemoteRepoConfig[];
+    /**
+     * Delete callback.
+     * @param {InterfaceRemoteRepoConfig} repoConfig - Deleting repo config.
+     */
     handleConfigDelete: (repoConfig: InterfaceRemoteRepoConfig) => void;
+    /**
+     * Flag to show the create wizard.
+     * @param {boolean} state - Show/Hide state.
+     */
     showCreateWizard: (state: boolean) => void;
+    /**
+     * On trigger.
+     * @param {InterfaceRemoteRepoConfig} repoConfig
+     */
     handleOnTrigger: (repoConfig: InterfaceRemoteRepoConfig) => void;
+    /**
+     * Enable selection styles.
+     */
+    selection?: boolean;
+    /**
+     * Show list item actions.
+     */
+    showListItemActions?: boolean;
 }
 
-export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: RemoteRepoListProp): ReactElement => {
+/**
+ * Remote repo list.
+ *
+ * @param {RemoteRepoListPropsInterface} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
+export const RemoteRepoList: FunctionComponent<RemoteRepoListPropsInterface> = (
+    props: RemoteRepoListPropsInterface
+): ReactElement => {
+
+    const {
+        advancedSearch,
+        defaultListItemLimit,
+        isLoading,
+        selection,
+        showListItemActions,
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -87,77 +137,118 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListProp> = (props: Rem
         return null;
     };
 
-    const generateMetaContent = (repoObject: InterfaceRemoteRepoConfig) => {
-        return (
-            <div>
-                <p>{`Successfull Deployments : ${repoObject.successfulDeployments} , 
-                Failed Deployments : ${repoObject.failedDeployments}`}</p>
-            </div>
-        )
+    /**
+     * Resolves data table columns.
+     *
+     * @return {TableColumnInterface[]}
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                title: t("devPortal:components.remoteConfig.list.columns.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "lastDeployed",
+                id: "lastDeployed",
+                key: "lastDeployed",
+                title: t("devPortal:components.remoteConfig.list.columns.lastDeployed")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "successfulDeployments",
+                id: "successfulDeployments",
+                key: "successfulDeployments",
+                title: t("devPortal:components.remoteConfig.list.columns.successfulDeployments")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "failedDeployments",
+                id: "failedDeployments",
+                key: "failedDeployments",
+                title: t("devPortal:components.remoteConfig.list.columns.failedDeployments")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("devPortal:components.remoteConfig.list.columns.actions")
+            }
+        ]
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (!showListItemActions) {
+            return [];
+        }
+
+        return [
+            {
+                icon: (): SemanticICONS => "eye",
+                onClick: (e: SyntheticEvent, repo: InterfaceRemoteRepoConfig) => {
+                    setCurrentDetailsConfig(repo);
+                    setShowConfigDetailsModal(true);
+                },
+                popupText: (): string => "Trigger Config",
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "retweet",
+                onClick: (e: SyntheticEvent, repo: InterfaceRemoteRepoConfig) => handleOnTrigger(repo),
+                popupText: (): string => "Trigger Config",
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, repo: InterfaceRemoteRepoConfig) => handleRemoteRepoEdit(repo.id),
+                popupText: (): string => "Edit Config",
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, repo: InterfaceRemoteRepoConfig) => {
+                    setCurrentDeleteConfig(repo);
+                    setShowDeleteConfirmationModal(!showConfigDeleteConfirmation);
+                },
+                popupText: (): string => "Delete Config",
+                renderer: "semantic-icon"
+            }
+        ]
     };
 
     return (
         <>
-            <ResourceList
-                className="config-list"
+            <DataTable<InterfaceRemoteRepoConfig>
+                className="remote-fetch-table"
+                externalSearch={ advancedSearch }
+                isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
-            >
-                {
-                    repoObjectList && repoObjectList instanceof Array && repoObjectList.length > 0
-                        ? repoObjectList.map((repoObject: InterfaceRemoteRepoConfig, index) => (
-                            <ResourceListItem
-                                key={ index }
-                                actionsFloated="right"
-                                metaContent={ generateMetaContent(repoObject) }
-                                metaColumnWidth={ 5 }
-                                actionsColumnWidth={ 4 }
-                                itemDescription={ repoObject.lastDeployed ? 
-                                    `Last Deployed : ${repoObject.lastDeployed}` : "" 
-                                }
-                                actions={ [
-                                    {
-                                        icon: "eye",
-                                        onClick: () => {
-                                            setCurrentDetailsConfig(repoObject);
-                                            setShowConfigDetailsModal(true);
-                                        },
-                                        popupText: "Trigger Config",
-                                        type: "button"
-                                    },
-                                    {
-                                        icon: "retweet",
-                                        onClick: (): void => { handleOnTrigger(repoObject) },
-                                        popupText: "Trigger Config",
-                                        type: "button"
-                                    },
-                                    {
-                                        icon: "pencil alternate",
-                                        onClick: (): void => handleRemoteRepoEdit(repoObject.id),
-                                        popupText: "Edit Config",
-                                        type: "button"
-                                    },
-                                    {
-                                        icon: "trash alternate",
-                                        onClick: () => {
-                                            setCurrentDeleteConfig(repoObject);
-                                            setShowDeleteConfirmationModal(!showConfigDeleteConfirmation);
-                                        },
-                                        popupText: "Delete Config",
-                                        type: "button"
-                                    }
-                                ] }
-                                itemHeader={ repoObject.name }
-                            />
-                        ))
-                        : showPlaceholders()
-                }
-            </ResourceList>
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ repoObjectList }
+                onRowClick={ (e: SyntheticEvent, repo: InterfaceRemoteRepoConfig): void => {
+                    handleRemoteRepoEdit(repo.id);
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
+                data-testid={ testId }
+            />
             {
                 showConfigDeleteConfirmation && 
                     <ConfirmationModal

@@ -26,22 +26,24 @@ import { CommonUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
-    LinkButton, PrimaryButton,
-    ResourceList,
-    ResourceListItem
+    LinkButton,
+    PrimaryButton,
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Icon, Image, Label, ListItemProps, SemanticWIDTHS } from "semantic-ui-react";
-import { AppConstants, EmptyPlaceholderIllustrations, history } from "../../core";
+import { Header, Icon, Label, SemanticICONS } from "semantic-ui-react";
+import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../core";
 import { APPLICATION_DOMAIN } from "../constants";
 
 interface RoleListProps extends LoadableComponentInterface, TestableComponentInterface {
     /**
-     * Width of the action panel column.
+     * Advanced Search component.
      */
-    actionsColumnWidth?: SemanticWIDTHS;
+    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
@@ -62,7 +64,7 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
     /**
      * On list item select callback.
      */
-    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
+    onListItemClick?: (event: SyntheticEvent, role: RolesInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -87,14 +89,6 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
      * Show/Hide meta content.
      */
     showMetaContent?: boolean;
-    /**
-     * Width of the description area.
-     */
-    descriptionColumnWidth?: SemanticWIDTHS;
-    /**
-     * Width of the meta info area.
-     */
-    metaColumnWidth?: SemanticWIDTHS;
 }
 
 /**
@@ -105,8 +99,7 @@ interface RoleListProps extends LoadableComponentInterface, TestableComponentInt
 export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleListProps): ReactElement => {
 
     const {
-        actionsColumnWidth,
-        descriptionColumnWidth,
+        advancedSearch,
         defaultListItemLimit,
         handleRoleDelete,
         isLoading,
@@ -114,7 +107,6 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         onListItemClick,
         onSearchQueryClear,
         roleList,
-        metaColumnWidth,
         selection,
         searchQuery,
         showListItemActions,
@@ -226,88 +218,109 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
         return null;
     };
 
+    /**
+     * Resolves data table columns.
+     *
+     * @return {TableColumnInterface[]}
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (role: RolesInterface): ReactNode => (
+                    <Header as="h6" image>
+                        <AnimatedAvatar
+                            name={ role?.displayName[ 0 ] }
+                            size="mini"
+                            data-testid={ `${ testId }-item-image` }
+                        />
+                        <Header.Content>
+                            { generateHeaderContent(role?.displayName) }
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("adminPortal:components.roles.list.columns.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "lastModified",
+                hidden: !showMetaContent,
+                id: "lastModified",
+                key: "lastModified",
+                render: (role: RolesInterface) => CommonUtils.humanizeDateDifference(role?.meta?.created),
+                title: t("adminPortal:components.roles.list.columns.lastModified")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("adminPortal:components.roles.list.columns.actions")
+            }
+        ];
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (!showListItemActions) {
+            return;
+        }
+
+        return [
+            {
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, role: RolesInterface): void =>
+                    handleRoleEdit(role?.id),
+                popupText: (): string => t("adminPortal:components.roles.list.popups.edit",
+                    { type: "Role" }),
+                renderer: "semantic-icon"
+            },
+            {
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, role: RolesInterface): void => {
+                    setCurrentDeletedRole(role);
+                    setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
+                },
+                popupText: (): string => t("adminPortal:components.roles.list.popups.delete",
+                    { type: "Role" }),
+                renderer: "semantic-icon"
+            }
+        ];
+    };
+
     return (
         <>
-            <ResourceList
+            <DataTable<RolesInterface>
                 className="roles-list"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
-                    count: defaultListItemLimit,
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
                     imageType: "square"
                 } }
-                fill={ !showPlaceholders() }
-                celled={ false }
-                divided={ true }
-                selection={ selection }
-            >
-                {
-                    roleList?.Resources && roleList?.Resources instanceof Array && roleList?.Resources.length > 0
-                        ? roleList?.Resources?.map((role, index) => (
-                            <ResourceListItem
-                                data-testid={ `${ testId }-list-item-${ role?.displayName }` }
-                                key={ index }
-                                actionsFloated="right"
-                                actions={
-                                    showListItemActions
-                                        ? [
-                                            {
-                                                icon: "pencil alternate",
-                                                onClick: () => handleRoleEdit(role?.id),
-                                                popupText: t("adminPortal:components.roles.list.popups.edit",
-                                                    { type: "Role" }),
-                                                type: "button"
-                                            },
-                                            {
-                                                icon: "trash alternate",
-                                                onClick: () => {
-                                                    setCurrentDeletedRole(role);
-                                                    setShowDeleteConfirmationModal(!showRoleDeleteConfirmation);
-                                                },
-                                                popupText: t("adminPortal:components.roles.list.popups.delete",
-                                                    { type: "Role" }),
-                                                type: "button"
-                                            }
-                                        ]
-                                        : []
-                                }
-                                avatar={ (
-                                    <Image
-                                        floated="left"
-                                        verticalAlign="middle"
-                                        rounded
-                                        centered
-                                        size="mini"
-                                    >
-                                        <AnimatedAvatar/>
-                                        <span className="claims-letter">
-                                            { role?.displayName[ 0 ].toLocaleUpperCase() }
-                                        </span>
-                                    </Image>
-                                ) }
-                                itemHeader={ generateHeaderContent(role?.displayName) }
-                                metaContent={
-                                    showMetaContent
-                                        ? CommonUtils.humanizeDateDifference(role?.meta?.created)
-                                        : null
-                                }
-                                metaColumnWidth={ metaColumnWidth }
-                                descriptionColumnWidth={ descriptionColumnWidth }
-                                actionsColumnWidth={ actionsColumnWidth }
-                                onClick={
-                                    (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
-                                        if (!selection) {
-                                            return;
-                                        }
-
-                                        handleRoleEdit(role.id);
-                                        onListItemClick(event, data);
-                                    }
-                                }
-                            />
-                        ))
-                        : showPlaceholders()
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ roleList?.Resources }
+                onRowClick={
+                    (e: SyntheticEvent, role: RolesInterface): void => {
+                        handleRoleEdit(role?.id);
+                        onListItemClick(e, role);
+                    }
                 }
-            </ResourceList>
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
+                data-testid={ testId }
+            />
             {
                 showRoleDeleteConfirmation &&
                 <ConfirmationModal
@@ -359,10 +372,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
  * Default props for the component.
  */
 RoleList.defaultProps = {
-    actionsColumnWidth: 3,
-    descriptionColumnWidth: 3,
-    metaColumnWidth: 10,
-    selection: false,
+    selection: true,
     showListItemActions: true,
     showMetaContent: true
 };
