@@ -14,17 +14,6 @@
         {% endfor %}
         {% endif %}
     },
-    "extensions": {
-        {% if console.extensions is defined %}
-        {% for key, value in console.extensions.items() %}
-        {% if value is number %}
-            "{{ key }}": {{ value }}{{ "," if not loop.last }}
-        {% else %}
-            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
-        {% endif %}
-        {% endfor %}
-        {% endif %}
-    },
     "session": {
         {% if myaccount.session.params is defined %}
             {% for param, value in myaccount.session.params.items() %}
