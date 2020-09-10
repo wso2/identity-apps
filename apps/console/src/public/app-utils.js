@@ -103,6 +103,7 @@ var AppUtils = AppUtils || (function() {
                 debug: _config.debug,
                 developerApp: _config.developerApp,
                 documentation: _config.documentation,
+                extensions: _config.extensions,
                 loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName +
                     _config.loginCallbackPath,
                 logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
