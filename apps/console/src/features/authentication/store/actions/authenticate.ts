@@ -37,9 +37,11 @@ import {
     setSignIn,
     setSignOut
 } from "@wso2is/core/store";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
-import { history, store } from "../../../core";
+import { UAParser } from "ua-parser-js";
+import { store } from "../../../core";
 import { HttpUtils } from "../../../core/utils";
 
 /**
@@ -145,7 +147,7 @@ export const initializeAuthentication = () => (dispatch) => {
         responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
         scope: [TokenConstants.SYSTEM_SCOPE],
         serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-        storage: Storage.WebWorker
+        storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
     });
     auth.on("http-request-error", HttpUtils.onHttpRequestError);
     auth.on("http-request-finish", HttpUtils.onHttpRequestFinish);
@@ -191,9 +193,7 @@ export const handleSignOut = () => (dispatch) => {
     const auth = IdentityClient.getInstance();
     auth.signOut()
         .then(() => {
+            AuthenticateUtils.removeAuthenticationCallbackUrl();
             dispatch(setSignOut());
         })
-        .catch(() => {
-            history.push(store?.getState()?.config?.deployment?.appLoginPath);
-        });
 };

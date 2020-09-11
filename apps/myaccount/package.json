@@ -60,5 +60,8 @@
         "rimraf": "*",
         "thread-loader": "*",
         "ua-parser-js": "*"
-    }
+    },
+    "browserslist":[
+        "> 0.2%"
+    ]
 }

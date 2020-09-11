@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -14,19 +14,10 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-const fs = require("fs-extra");
-const path = require("path");
-
-const source = path.join(__dirname, "..", "src", "plugins");
-const destination = path.join(__dirname, "..", "dist", "plugins");
-
-fs.copy(source, destination)
-    .then(() => {
-        console.log("Plugins successfully copied!");
-    })
-    .catch((error) => {
-        console.log(`An error occurred while copying plugins to the dist folder. ${error}`);
-    });
+module.exports = {
+    plugins: [
+        require("autoprefixer")
+    ]
+};

@@ -33,6 +33,8 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
 import { Config, UIConstants, store } from "./features/core";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());

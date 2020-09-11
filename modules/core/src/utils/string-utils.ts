@@ -109,11 +109,11 @@ export class StringUtils {
      */
     public static removeSlashesFromPath(path: string, leading = true, trailing = true): string {
         if (leading && trailing) {
-            return path.replace(/^\/+|\/+$/g, "");
+            return path?.replace(/^\/+|\/+$/g, "");
         } else if (leading) {
-            return path.replace(/^\/+/g, "");
+            return path?.replace(/^\/+/g, "");
         } else if (trailing) {
-            return path.replace(/\/+$/g, "");
+            return path?.replace(/\/+$/g, "");
         }
 
         return path;

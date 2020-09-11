@@ -40,7 +40,6 @@ import {
 } from "../constants";
 import {
     AuthCode,
-    ConfigInterface,
     CustomGrantRequestParams,
     HttpClient,
     Message,
@@ -388,12 +387,12 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             }
         };
 
-        const message: Message<ConfigInterface> = {
+        const message: Message<WebWorkerConfigInterface> = {
             data: config,
             type: INIT
         };
 
-        return communicate<ConfigInterface, null>(message)
+        return communicate<WebWorkerConfigInterface, null>(message)
             .then(() => {
                 initialized = true;
 
@@ -446,25 +445,6 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
     };
 
     /**
-     * Listens for the authorization code in the callback URL.
-     * If present, this will continue with the authentication flow and resolve if successfully authenticated.
-     * @returns {Promise<UserInfo>} Promise that resolves on successful authentication.
-     */
-    const listenForAuthCode = (): Promise<UserInfo> => {
-        if (!initialized) {
-            return Promise.reject(
-                "Error while listening to authorization code. The object has not been initialized yet."
-            );
-        }
-
-        if (hasAuthorizationCode()) {
-            return sendAuthorizationCode();
-        } else {
-            return Promise.reject("No Authorization Code found.");
-        }
-    };
-
-    /**
      * Initiates the authentication flow.
      *
      * @returns {Promise<UserInfo>} A promise that resolves when authentication is successful.
@@ -492,9 +472,25 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
 
                             location.href = response.code;
 
-                            return Promise.reject("Redirecting to get authorization code...");
+                            return Promise.resolve({
+                                allowedScopes: "",
+                                displayName: "",
+                                email: "",
+                                username: ""
+                            });
                         } else {
-                            return Promise.reject("Something went wrong during authentication");
+                            if (response.type === AUTH_REQUIRED && !response.code) {
+                                return Promise.reject(
+                                    "Something went wrong during authentication." +
+                                        " No authorization url was received." +
+                                        JSON.stringify(response)
+                                );
+                            } else {
+                                return Promise.reject(
+                                    "Something went wrong during authentication." +
+                                        "Unknown response received. " + JSON.stringify(response)
+                                );
+                            }
                         }
                     })
                     .catch((error) => {
@@ -625,7 +621,6 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             httpRequest,
             httpRequestAll,
             initialize,
-            listenForAuthCode,
             onHttpRequestError,
             onHttpRequestFinish,
             onHttpRequestStart,

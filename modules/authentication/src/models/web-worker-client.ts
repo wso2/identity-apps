@@ -17,7 +17,7 @@
  */
 
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
-import { ConfigInterface } from ".";
+import { WebWorkerConfigInterface } from ".";
 import { ServiceResourcesType } from "./endpoints";
 import { SignInResponse, UserInfo } from "./message";
 
@@ -26,8 +26,7 @@ export interface WebWorkerClientInterface {
     httpRequestAll<T = any>(configs: AxiosRequestConfig[]): Promise<AxiosResponse<T>[]>;
     signOut(): Promise<boolean>;
     signIn(): Promise<UserInfo>;
-    initialize(config: ConfigInterface): Promise<boolean>;
-    listenForAuthCode(): Promise<UserInfo>;
+    initialize(config: WebWorkerConfigInterface): Promise<boolean>;
     customGrant(requestParams: CustomGrantRequestParams): Promise<AxiosResponse | boolean | SignInResponse>;
     endUserSession(): Promise<boolean>;
     getServiceEndpoints(): Promise<ServiceResourcesType>;

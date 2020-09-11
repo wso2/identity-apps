@@ -16,8 +16,8 @@
  * under the License.
  */
 
-function loadUserConfig(configFile, callback) { 
-    var request = new XMLHttpRequest();
+function loadUserConfig(configFile, callback) {
+    const request = new XMLHttpRequest();
 
     request.overrideMimeType("application/json");
     request.open("GET", configFile, false);
@@ -31,7 +31,7 @@ function loadUserConfig(configFile, callback) {
         if ((request.responseText.trim().length === 0) ||
             (request.responseText.trim() === "") ||
             (request.responseText.trim() === "{}")) {
-            
+
             callback(null);
         }
         else {
@@ -40,34 +40,34 @@ function loadUserConfig(configFile, callback) {
     }
 }
 
-function extend(out) {
-    out = out || {};
+function extend(...args) {
+    args = args || [];
 
-    for (var i = 1; i < arguments.length; i++) {
-        if (!arguments[i])
+    for (let i = 1; i < args.length; i++) {
+        if (!args[i])
         continue;
 
-        for (var key in arguments[i]) {
-            if ({}.hasOwnProperty.call(arguments[i], key)) {
-                out[key] = arguments[i][key];
+        for (const key in args[i]) {
+            if ({}.hasOwnProperty.call(args[i], key)) {
+                args[key] = args[i][key];
             }
         }
     }
 
-    return out;
+    return args;
 }
 
-var AppUtils = AppUtils || (function() {
-    var _args = {},
-        _default = {},
-        _config = {};
+export const AppUtils = (function() {
+    let _args: any = {},
+        _default: any = {},
+        _config: any = {};
 
-    var fallbackServerOrigin = "https://localhost:9443";
+    const fallbackServerOrigin = "https://localhost:9443";
 
     return {
         getAppBase: function() {
-            var path = this.getLocationPathWithoutTenant();
-            var pathChuncks = path.split("/");
+            const path = this.getLocationPathWithoutTenant();
+            const pathChuncks = path.split("/");
 
             if (pathChuncks.length <= 1) {
                 return "/";
@@ -106,7 +106,7 @@ var AppUtils = AppUtils || (function() {
                 extensions: _config.extensions,
                 loginCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName +
                     _config.loginCallbackPath,
-                logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName + 
+                logoutCallbackURL: _config.clientOrigin + this.getTenantPath() + "/" + _config.appBaseName +
                     _config.logoutCallbackPath,
                 productVersion: _config.productVersion,
                 productVersionConfig: _config.ui.productVersionConfig,
@@ -121,8 +121,8 @@ var AppUtils = AppUtils || (function() {
         },
 
         getLocationPathWithoutTenant: function() {
-            var path = window.location.pathname;
-            var pathChunks = path.split("/");
+            const path = window.location.pathname;
+            const pathChunks = path.split("/");
 
             if ( (pathChunks[1] === this.getTenantPrefix()) && (pathChunks[2] === this.getTenantName()) ) {
                 pathChunks.splice(1, 2);
@@ -138,11 +138,11 @@ var AppUtils = AppUtils || (function() {
         },
 
         getTenantName: function() {
-            var paths = window.location.pathname.split("/");
-            var tenantIndex = paths.indexOf(this.getTenantPrefix());
+            const paths = window.location.pathname.split("/");
+            const tenantIndex = paths.indexOf(this.getTenantPrefix());
 
             if (tenantIndex > 0) {
-                var tenantName = paths[tenantIndex + 1];
+                const tenantName = paths[tenantIndex + 1];
                 return (tenantName) ? tenantName : "";
             } else {
                 return "";
@@ -169,10 +169,10 @@ var AppUtils = AppUtils || (function() {
 
             _config = _default;
 
-            var userConfigFile = this.getAppBase() + "/deployment.config.json";
+            const userConfigFile = this.getAppBase() + "/deployment.config.json";
 
             loadUserConfig(userConfigFile, function(response) {
-                var configResponse = JSON.parse(response);
+                const configResponse = JSON.parse(response);
 
                 if (!{}.hasOwnProperty.call(configResponse, "accountApp"))
                     throw "'accountApp' config is missing in " + _args.deploymentConfigFile;
@@ -189,7 +189,7 @@ var AppUtils = AppUtils || (function() {
                 if (!{}.hasOwnProperty.call(configResponse, "ui"))
                     throw "'ui' config is missing in " + _args.deploymentConfigFile;
 
-                _config = extend({}, _default, JSON.parse(response));   
+                _config = extend({}, _default, JSON.parse(response));
             });
         },
 

@@ -16,21 +16,24 @@
  * under the License.
  */
 
-export * from "./alert";
-export * from "./api";
-export * from "./applications";
-export * from "./approvals";
-export * from "./auth";
-export * from "./authenticated-user";
-export * from "./consents";
-export * from "./locales";
-export * from "./profile";
-export * from "./security-questions";
-export * from "./storage";
-export * from "./tokens";
-export * from "./user-sessions";
-export * from "./global";
-export * from "./loaders";
-export * from "./app-config";
-export * from "./reducer-state";
-export * from "./ua-parser";
+module.exports = {
+    env: {
+        test: {
+            plugins: [ "@babel/plugin-transform-modules-commonjs" ]
+        }
+    },
+    plugins: [ ["@babel/plugin-proposal-decorators", { "legacy": true }], "@babel/plugin-proposal-class-properties" ],
+    presets: [
+        [
+            "@babel/preset-env",
+            {
+                corejs: {
+                    proposals: true,
+                    version: "3.6"
+                },
+                useBuiltIns: "entry"
+            }
+        ],
+        "@babel/preset-typescript"
+    ]
+};

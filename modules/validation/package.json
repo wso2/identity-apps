@@ -10,10 +10,11 @@
         "validation"
     ],
     "main": "dist/index.js",
+    "module": "src/index.ts",
     "types": "dist/index.d.ts",
     "scripts": {
         "prebuild": "npm run clean",
-        "build": "node scripts/build-module.js && npm run compile",
+        "build": "npm run compile",
         "clean": "rimraf ./dist",
         "compile": "run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
@@ -23,11 +24,14 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "peerDependencies": {
-        "@hapi/joi": "*",
+        "joi": "*",
         "axios": "^0.19.2"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",
         "run-script-os": "^1.0.7"
+    },
+    "dependencies": {
+        "fastestsmallesttextencoderdecoder": "^1.0.22"
     }
 }

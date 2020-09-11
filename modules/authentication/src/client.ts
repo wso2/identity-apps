@@ -25,7 +25,8 @@ import {
     ServiceResourcesType,
     UserInfo,
     WebWorkerClientInterface,
-    WebWorkerConfigInterface
+    WebWorkerConfigInterface,
+    isWebWorkerConfig
 } from "./models";
 import {
     customGrant as customGrantUtil,
@@ -65,6 +66,7 @@ export class IdentityClient {
     private _client: WebWorkerClientInterface;
     private _storage: Storage;
     private _initialized: boolean;
+    private _startedInitialize: boolean = false;
     private _onSignInCallback: (response: UserInfo) => void;
     private _onSignOutCallback: (response: any) => void;
     private _onEndUserSession: (response: any) => void;
@@ -89,9 +91,10 @@ export class IdentityClient {
         return this._instance;
     }
 
-    public initialize(config: ConfigInterface): Promise<boolean> {
+    public initialize(config: ConfigInterface | WebWorkerConfigInterface): Promise<boolean> {
         this._storage = config.storage ?? Storage.SessionStorage;
         this._initialized = false;
+        this._startedInitialize = true;
 
         const startCallback = (request: AxiosRequestConfig): void => {
             request.headers = {
@@ -102,8 +105,7 @@ export class IdentityClient {
             this._onHttpRequestStart && typeof this._onHttpRequestStart === "function" && this._onHttpRequestStart();
         };
 
-
-        if (this._storage !== Storage.WebWorker) {
+        if (!isWebWorkerConfig(config)) {
             this._authConfig = { ...DefaultConfig, ...config };
             this._initialized = true;
             this._httpClient = AxiosHttpClient.getInstance();
@@ -135,7 +137,7 @@ export class IdentityClient {
                 })
                 .catch((error) => {
                     return Promise.reject(error);
-                });
+                })
         }
     }
 
@@ -160,19 +162,23 @@ export class IdentityClient {
      * @memberof IdentityClient
      */
     public async signIn(): Promise<any> {
-        let iterationToWait = 20;
+        if (!this._startedInitialize) {
+            return Promise.reject("The object has not been initialized yet.");
+        }
+
+        let iterationToWait = 0;
 
         const sleep = (): Promise<any> => {
-            return new Promise(resolve => setTimeout(resolve, 500));
-        }
+            return new Promise((resolve) => setTimeout(resolve, 500));
+        };
 
-        while (!this._initialized && iterationToWait !== 0) {
+        while (!this._initialized) {
+            if (iterationToWait === 21) {
+                // eslint-disable-next-line no-console
+                console.warn("It is taking longer than usual for the object to be initialized");
+            }
             await sleep();
-            iterationToWait--;
-        }
-
-        if (!this._initialized) {
-            return Promise.reject("The object has not been initialized yet.");
+            iterationToWait++;
         }
 
         if (this._storage === Storage.WebWorker) {
@@ -180,7 +186,9 @@ export class IdentityClient {
                 .signIn()
                 .then((response) => {
                     if (this._onSignInCallback) {
-                        this._onSignInCallback(response);
+                        if (response.allowedScopes || response.displayName || response.email || response.username) {
+                            this._onSignInCallback(response);
+                        }
                     }
 
                     return Promise.resolve(response);
@@ -193,7 +201,10 @@ export class IdentityClient {
         return handleSignIn(this._authConfig)
             .then(() => {
                 if (this._onSignInCallback) {
-                    this._onSignInCallback(getUserInfoUtil(this._authConfig));
+                    const userInfo = getUserInfoUtil(this._authConfig);
+                    if (userInfo.allowedScopes || userInfo.displayName || userInfo.email || userInfo.username) {
+                        this._onSignInCallback(getUserInfoUtil(this._authConfig));
+                    }
                 }
 
                 return Promise.resolve(getUserInfoUtil(this._authConfig));
@@ -253,7 +264,7 @@ export class IdentityClient {
         }
 
         const requests: Promise<AxiosResponse<any>>[] = [];
-        config.forEach(request => {
+        config.forEach((request) => {
             requests.push(this._httpClient.request(request));
         });
 
