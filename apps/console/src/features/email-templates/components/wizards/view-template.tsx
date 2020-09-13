@@ -22,10 +22,10 @@ import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Modal } from "semantic-ui-react";
-import { EmailTemplateEditor } from "./email-code-editor";
-import { getTemplateDetails } from "../api";
-import { ViewLocaleTemplateWizardStepIcons } from "../configs";
-import { EmailTemplate } from "../models";
+import { getTemplateDetails } from "../../api";
+import { ViewLocaleTemplateWizardStepIcons } from "../../configs";
+import { EmailTemplate } from "../../models";
+import { EmailTemplateEditor } from "../email-template-editor";
 
 interface ViewLocaleTemplatePropsInterface extends TestableComponentInterface {
     onCloseHandler: () => void;
@@ -64,6 +64,9 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                     setTemplateData(response.data);
                 }
             })
+            .catch(() => {
+                // Handle the error.
+            });
     },[templateData !== undefined]);
 
     const WIZARD_STEPS = [{

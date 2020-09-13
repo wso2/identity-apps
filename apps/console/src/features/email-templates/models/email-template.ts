@@ -45,3 +45,14 @@ export interface EmailTemplate {
     footer: string;
     id?: string;
 }
+
+/**
+ * Enum for the email template edit form modes..
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum EmailTemplateFormModes {
+    ADD = "ADD",
+    EDIT = "EDIT"
+}

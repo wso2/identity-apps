@@ -16,6 +16,5 @@
 * under the License.
 */
 
-export * from "./add-template";
-export * from "./add-template-type";
-export * from "./add-template-type-wizard";
+export * from "./add-email-template-form";
+export * from "./add-email-template-type-form";

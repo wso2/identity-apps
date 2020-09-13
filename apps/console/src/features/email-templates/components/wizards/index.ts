@@ -16,4 +16,5 @@
 * under the License.
 */
 
-export * from "./email-editor";
+export * from "./add-template-type-wizard";
+export * from "./view-template";

@@ -20,9 +20,10 @@ import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { RouteComponentProps } from "react-router";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
 import { AppConstants, UIConstants, history } from "../../core";
 import { deleteLocaleTemplate, getEmailTemplate } from "../api";
@@ -32,23 +33,33 @@ import { EmailTemplate, EmailTemplateDetails } from "../models";
 /**
  * Props for the Email Templates page.
  */
-type EmailTemplatesPageInterface = TestableComponentInterface;
+type EmailTemplatesPagePropsInterface = TestableComponentInterface;
+
+/**
+ * Route parameters interface.
+ */
+interface RouteParams {
+    templateTypeId: string;
+}
 
 /**
  * Component will list all available locale based email templates for
  * the selected email template type.
  *
- * @param {EmailTemplatesPageInterface} props - Props injected to the component.
+ * @param {EmailTemplatesPagePropsInterface} props - Props injected to the component.
  *
  * @return {React.ReactElement}
  */
-const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
-    props: EmailTemplatesPageInterface
+const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = (
+    props: EmailTemplatesPagePropsInterface & RouteComponentProps<RouteParams>
 ): ReactElement => {
 
     const {
+        match,
         [ "data-testid" ]: testId
     } = props;
+
+    const templateTypeId = match?.params?.templateTypeId;
 
     const dispatch = useDispatch();
 
@@ -57,37 +68,67 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
 
-    const [ templateTypeId, setTemplateTypeId ] = useState<string>("");
     const [ emailTemplateTypeDetails, setEmailTemplateTypeDetails ] = useState<EmailTemplateDetails>(undefined);
     const [ emailTemplates, setEmailTemplates ] = useState<EmailTemplate[]>([]);
     const [ paginatedEmailTemplates, setPaginatedEmailTemplates ] = useState<EmailTemplate[]>([]);
     const [ isEmailTemplatesFetchRequestLoading, setIsEmailTemplatesFetchRequestLoading ] = useState<boolean>(false);
 
+    /**
+     * Fetch the email templates when the template type id is available in the URL location.
+     */
     useEffect(() => {
-        const path = history.location.pathname.split("/");
-        const templateTypeId = path[ path.length - 1 ];
+        if (!templateTypeId) {
+            return;
+        }
 
-        setTemplateTypeId(templateTypeId);
-
-        getTemplates();
-    }, [emailTemplateTypeDetails !== undefined, emailTemplates.length]);
+        getTemplates(templateTypeId, listItemLimit, listOffset);
+    }, [ listOffset, listItemLimit, templateTypeId ]);
 
     /**
      * Util method to get all locale templates.
      */
-    const getTemplates = () => {
+    const getTemplates = (typeId: string, limit: number, offset: number): void => {
         setIsEmailTemplatesFetchRequestLoading(true);
 
-        getEmailTemplate(templateTypeId)
+        getEmailTemplate(typeId)
             .then((response: AxiosResponse<EmailTemplateDetails>) => {
                 if (response.status === 200) {
                     setEmailTemplateTypeDetails(response.data);
 
                     if (response.data.templates instanceof Array && response.data.templates.length !== 0) {
                         setEmailTemplates(response.data.templates);
-                        setEmailTemplateTypePage(listOffset, listItemLimit);
+                        paginate(response.data.templates, offset, limit);
                     }
+
+                    return;
                 }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                        ".genericError.message")
+                }));
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("adminPortal:components.emailTemplates.notifications.getTemplates.error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.emailTemplates.notifications.getTemplates" +
+                        ".genericError.message")
+                }));
             })
             .finally(() => {
                 setIsEmailTemplatesFetchRequestLoading(false);
@@ -96,99 +137,116 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
 
     /**
      * Handler for pagination page change.
-     * 
+     *
      * @param event pagination page change event
      * @param data pagination page change data
      */
-    const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
         setListOffset(offsetValue);
-        setEmailTemplateTypePage(offsetValue, listItemLimit);
+        paginate(emailTemplates, offsetValue, listItemLimit);
     };
 
     /**
      * Handler for Items per page dropdown change.
-     * 
+     *
      * @param event drop down event
      * @param data drop down data
      */
-    const handleItemsPerPageDropdownChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
+    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
-        setEmailTemplateTypePage(listOffset, data.value as number);
+        paginate(emailTemplates, listOffset, data.value as number);
     };
 
     /**
      * Util method to paginate retrieved email template type list.
-     * 
-     * @param offsetValue pagination offset value
-     * @param itemLimit pagination item limit
-     */
-    const setEmailTemplateTypePage = (offsetValue: number, itemLimit: number) => {
-        setPaginatedEmailTemplates(emailTemplates?.slice(offsetValue, itemLimit + offsetValue));
-    };
-
-    /**
-     * Util to handle back button event.
-     */
-    const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES"));
-    };
-
-    /**
-     * Util to handle back button event.
-     */
-    const handleAddNewTemplate = () => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD").replace(":id", templateTypeId));
-    };
-
-    /**
-     * Dispatches the alert object to the redux store.
      *
-     * @param {AlertInterface} alert - Alert object.
+     * @param {EmailTemplate[]} list - Email template list.
+     * @param {number} offset - Pagination offset value.
+     * @param {number} limit - Pagination item limit.
      */
-    const handleAlerts = (alert: AlertInterface) => {
-        dispatch(addAlert(alert));
+    const paginate = (list: EmailTemplate[], offset: number, limit: number): void => {
+        setPaginatedEmailTemplates(list.slice(offset, limit + offset));
     };
 
     /**
-     * Util method to delete locale email template based on the provided email template 
+     * Util to handle back button event.
+     */
+    const handleBackButtonClick = (): void => {
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"));
+    };
+
+    /**
+     * Util to handle back button event.
+     */
+    const handleAddNewTemplate = (): void => {
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD").replace(":templateTypeId", templateTypeId));
+    };
+
+    /**
+     * Util method to delete locale email template based on the provided email template
      * type id and locale based email template id.
-     * 
+     *
      * @param templateTypeId - template type id
      * @param templateId - locale template id
      */
-    const deleteTemplateType = (templateTypeId: string, templateId: string) => {
-        deleteLocaleTemplate(templateTypeId, templateId).then((response: AxiosResponse) => {
-            if (response.status === 204) {
-                handleAlerts({
-                    description: t(
-                        "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.message"
-                    )
-                });
-            }
-            getTemplates();
-        }).catch((error: AxiosError) => {
-            handleAlerts({
-                description: error.response.data.description,
-                level: AlertLevels.ERROR,
-                message: t(
-                    "adminPortal:components.emailTemplates.notifications.deleteTemplate.genericError.message"
-                )
-            });
-        })
+    const deleteTemplateType = (templateTypeId: string, templateId: string): void => {
+        deleteLocaleTemplate(templateTypeId, templateId)
+            .then((response: AxiosResponse) => {
+                if (response.status === 204) {
+                    dispatch(addAlert<AlertInterface>({
+                        description: t(
+                            "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.emailTemplates.notifications.deleteTemplate.success.message"
+                        )
+                    }));
+
+                    getTemplates(templateTypeId, listItemLimit, listOffset);
+
+                    return;
+                }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                        ".genericError.message")
+                }));
+            })
+            .catch((error: AxiosError) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    dispatch(addAlert<AlertInterface>({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "adminPortal:components.emailTemplates.notifications.deleteTemplate.error.message"
+                        )
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
+                        ".genericError.message")
+                }));
+            })
     };
-    
+
     return (
         <PageLayout
             action={
                 (isEmailTemplatesFetchRequestLoading || emailTemplates?.length > 0)
                 && (
                     <PrimaryButton
-                        onClick={ () => handleAddNewTemplate() }
+                        onClick={ handleAddNewTemplate }
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
@@ -238,7 +296,7 @@ const EmailTemplates: FunctionComponent<EmailTemplatesPageInterface> = (
 /**
  * Default props for the component.
  */
-EmailTemplates.defaultProps = {
+EmailTemplatesPage.defaultProps = {
     "data-testid": "email-templates"
 };
 
@@ -247,4 +305,4 @@ EmailTemplates.defaultProps = {
  * TODO: Change this to a named export once react starts supporting named exports for code splitting.
  * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
  */
-export default EmailTemplates;
+export default EmailTemplatesPage;

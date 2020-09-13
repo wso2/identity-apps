@@ -29,10 +29,13 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, history } from "../../core";
-import { EmailTemplateIllustrations } from "../configs";
-import { EmailTemplateType } from "../models";
+import { AppConstants, UIConstants, history } from "../../../core";
+import { EmailTemplateIllustrations } from "../../configs";
+import { EmailTemplateType } from "../../models";
 
+/**
+ * Interface for email template list props.
+ */
 interface EmailTemplateListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
     /**
      * Advanced Search component.
@@ -94,7 +97,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
     const [ currentDeletingTemplate, setCurrentDeletingTemplate ] = useState<EmailTemplateType>(undefined);
 
     const handleEditTemplate = (templateTypeId: string) => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE").replace(":id", templateTypeId));
+        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
     };
 
     /**

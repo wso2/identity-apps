@@ -16,6 +16,6 @@
  * under the License.
  */
 
-export * from "./email-locale-add";
-export * from "./email-template-types";
-export * from "./email-templates";
+export * from "./email-template-edit-page";
+export * from "./email-template-types-page";
+export * from "./email-templates-page";

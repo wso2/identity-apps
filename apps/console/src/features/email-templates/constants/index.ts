@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./email-constants";
+export * from "./email-template-management-constants";

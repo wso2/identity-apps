@@ -16,15 +16,5 @@
  * under the License.
  */
 
-/**
- * A Boilerplate template to start email template editing.
- */
-export const EMAIL_STARTER_TEMPLATE = `<!DOCTYPE html>
-<html>
-    <head>
-        <title>HTML Email Template</title>
-    </head>
-    <body>
-        <p>Hello {{user.claim.givenname}}!</p>
-    </body>
-</html>`;
+export * from "./template-list";
+export * from "./template-type-list";

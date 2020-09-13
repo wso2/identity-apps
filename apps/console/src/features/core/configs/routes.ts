@@ -402,43 +402,43 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         category: "adminPortal:components.sidePanel.categories.configurations",
         children: [
             {
-                component: lazy(() => import("../../email-templates/pages/email-templates")),
+                component: lazy(() => import("../../email-templates/pages/email-templates-page")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
                 },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.emailTemplates",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE"),
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
                 protected: true,
                 showOnSidePanel: false
             },
             {
-                component: lazy(() => import("../../email-templates/pages/email-locale-add")),
+                component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
                 },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.addEmailTemplate",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD"),
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATE"),
                 protected: true,
                 showOnSidePanel: false
             },
             {
-                component: lazy(() => import("../../email-templates/pages/email-locale-add")),
+                component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
                 exact: true,
                 icon: {
                     icon: SidePanelIcons.childIcon
                 },
                 id: "emailTemplates",
                 name: "adminPortal:components.sidePanel.addEmailTemplateLocale",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_LOCALE_ADD"),
+                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD"),
                 protected: true,
                 showOnSidePanel: false
             }
         ],
-        component: lazy(() => import("../../email-templates/pages/email-template-types")),
+        component: lazy(() => import("../../email-templates/pages/email-template-types-page")),
         exact: true,
         icon: {
             icon: SidePanelIcons.emailTemplates
@@ -446,7 +446,7 @@ const ADMIN_VIEW_ROUTES: RouteInterface[] = [
         id: "emailTemplates",
         name: "adminPortal:components.sidePanel.emailTemplates",
         order: 7,
-        path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
+        path: AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"),
         protected: true,
         showOnSidePanel: true
     },
