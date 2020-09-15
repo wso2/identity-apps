@@ -29,6 +29,7 @@ import {
     REQUEST_PARAMS,
     SCOPE,
     Storage,
+    TENANT_DOMAIN,
     TOKEN_TYPE,
     USERNAME
 } from "../constants";
@@ -126,6 +127,7 @@ export function endAuthenticatedSession(requestParams: ConfigInterface | WebWork
     removeSessionParameter(ID_TOKEN, requestParams);
     removeSessionParameter(REFRESH_TOKEN, requestParams);
     removeSessionParameter(SCOPE, requestParams);
+    removeSessionParameter(TENANT_DOMAIN, requestParams);
     removeSessionParameter(TOKEN_TYPE, requestParams);
     removeSessionParameter(USERNAME, requestParams);
 }
@@ -150,6 +152,7 @@ export function initUserSession(
     setSessionParameter(ID_TOKEN, tokenResponse.idToken, requestParams);
     setSessionParameter(SCOPE, tokenResponse.scope, requestParams);
     setSessionParameter(REFRESH_TOKEN, tokenResponse.refreshToken, requestParams);
+    setSessionParameter(TENANT_DOMAIN, authenticatedUser.tenantDomain, requestParams);
     setSessionParameter(TOKEN_TYPE, tokenResponse.tokenType, requestParams);
     setSessionParameter(USERNAME, authenticatedUser.username, requestParams);
 }
@@ -168,6 +171,7 @@ export function getAllSessionParameters(requestParams: ConfigInterface | WebWork
         idToken: getSessionParameter(ID_TOKEN, requestParams),
         refreshToken: getSessionParameter(REFRESH_TOKEN, requestParams),
         scope: getSessionParameter(SCOPE, requestParams),
+        tenantDomain: getSessionParameter(TENANT_DOMAIN, requestParams),
         tokenType: getSessionParameter(TOKEN_TYPE, requestParams),
         username: getSessionParameter(USERNAME, requestParams)
     };
