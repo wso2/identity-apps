@@ -43,6 +43,11 @@
             if (sessionState !== "null") {
                 sessionStorage.setItem("session_state", sessionState);
             }
+
+            var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
+            var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
+
         </script>
     </head>
     <body>
