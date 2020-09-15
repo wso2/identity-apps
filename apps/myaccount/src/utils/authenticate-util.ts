@@ -17,12 +17,7 @@
  *
  */
 
-import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys,
-    IdentityClient
-} from "@wso2is/authentication";
-import * as TokenConstants from "../constants";
+import { IdentityClient } from "@wso2is/authentication";
 import { store } from "../store";
 import { handleSignIn } from "../store/actions";
 
@@ -38,24 +33,4 @@ export const endUserSession = (): void => {
         .catch(() => {
             // TODO: Add a notification message.
         });
-};
-
-/**
- * Checks if the logged in user has login scope.
- *
- * @return {boolean}
- */
-export const hasLoginPermission = (): boolean => {
-    const scopes = store.getState().authenticate.scope.split(" ");
-    return scopes.includes(TokenConstants.LOGIN_SCOPE);
-};
-
-/**
- * Checks if the logged in user has a specific scope.
- *
- * @return {boolean}
- */
-export const hasScope = (scope: string): boolean => {
-    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
-    return scopes.includes(scope);
 };
