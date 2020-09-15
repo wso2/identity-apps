@@ -22,9 +22,9 @@ import "regenerator-runtime/runtime";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
-        serverOrigin: "https://localhost:9443",
-        superTenant: "carbon.super",
-        tenantPrefix: "t"
+        serverOrigin: serverOriginGlobal ?? "https://localhost:9443",
+        superTenant: superTenantGlobal ?? "carbon.super",
+        tenantPrefix: tenantPrefixGlobal ?? "t"
     });
 }
 

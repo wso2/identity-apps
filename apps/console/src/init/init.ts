@@ -24,9 +24,9 @@ if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
         accountAppOrigin: "https://localhost:9000",
         developerAppOrigin: "https://localhost:9001",
-        serverOrigin: "https://localhost:9443",
-        superTenant: "carbon.super",
-        tenantPrefix: "t"
+        serverOrigin: serverOriginGlobal ?? "https://localhost:9443",
+        superTenant: superTenantGlobal ?? "carbon.super",
+        tenantPrefix: tenantPrefixGlobal ?? "t"
     });
 
     window["AppUtils"] = AppUtils;
