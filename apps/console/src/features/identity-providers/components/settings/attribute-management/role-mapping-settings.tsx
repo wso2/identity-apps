@@ -24,6 +24,7 @@ import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
 import { handleGetRoleListError } from "../../utils";
+import { getGroupList } from "../../../../groups/api";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -85,7 +86,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     };
 
     useEffect(() => {
-        getRolesList(null)
+        getGroupList(null)
             .then((response) => {
                 if (response.status === 200) {
                     const allRole: RoleListInterface = response.data;
