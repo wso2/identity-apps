@@ -20,8 +20,8 @@
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { AxiosHttpClient, AxiosHttpClientInstance } from "@wso2is/http";
 import { I18n } from "@wso2is/i18n";
+import axios from "axios";
 import _ from "lodash";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
@@ -41,8 +41,6 @@ import { setAvailableAuthenticatorsMeta } from "../store/actions";
  * Utility class for identity provider operations.
  */
 export class IdentityProviderManagementUtils {
-
-    private static httpClient: AxiosHttpClientInstance = AxiosHttpClient.getInstance();
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -103,8 +101,8 @@ export class IdentityProviderManagementUtils {
             return getLocalAuthenticators();
         };
 
-        return this.httpClient.all([ loadLocalAuthenticators(), loadFederatedAuthenticators() ])
-            .then(this.httpClient.spread((local: LocalAuthenticatorInterface[],
+        return axios.all([ loadLocalAuthenticators(), loadFederatedAuthenticators() ])
+            .then(axios.spread((local: LocalAuthenticatorInterface[],
                                           federated: IdentityProviderListResponseInterface) => {
 
                 const localAuthenticators: GenericAuthenticatorInterface[] = [];
