@@ -25,8 +25,10 @@ import {
     TOKEN_ENDPOINT
 } from "@wso2is/authentication";
 import { TokenConstants } from "@wso2is/core/constants";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import _ from "lodash";
+import { UAParser } from "ua-parser-js";
 import { getProfileLinkedAccounts } from ".";
 import { addAlert } from "./global";
 import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
@@ -37,7 +39,6 @@ import {
     getUserReadOnlyStatus,
     switchAccount
 }from "../../api";
-import { history } from "../../helpers";
 import {
     AlertLevels,
     AuthenticatedUserInterface,
@@ -238,7 +239,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [ TokenConstants.SYSTEM_SCOPE ],
             serverOrigin: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
-            storage: Storage.WebWorker
+            storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
         });
     auth.on("sign-in", (response) => {
         dispatch(
@@ -282,11 +283,9 @@ export const handleSignOut = () => (dispatch) => {
     auth
         .signOut()
         .then(() => {
+            AuthenticateUtils.removeAuthenticationCallbackUrl();
             dispatch(setSignOut());
         })
-        .catch(() => {
-            history.push(store?.getState()?.config?.deployment?.appLoginPath);
-        });
 };
 
 /**

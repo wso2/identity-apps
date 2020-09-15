@@ -222,7 +222,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".emailTemplates.heading"),
                             image: OverviewPageIllustrations.quickLinks.emailTemplates,
                             onClick: () => {
-                                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES"))
+                                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"))
                             }
                         }
                     ] }

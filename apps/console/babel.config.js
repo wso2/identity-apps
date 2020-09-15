@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,19 +18,23 @@
 
 module.exports = {
     env: {
-        development: {
-            compact: false
-        },
         test: {
-            plugins: ["@babel/plugin-transform-modules-commonjs"]
+            plugins: [ "@babel/plugin-transform-modules-commonjs" ]
         }
     },
+    plugins: [ "@babel/plugin-proposal-class-properties" ],
     presets: [
         [
             "@babel/preset-env",
             {
-                "useBuiltIns": "entry"
+                corejs: {
+                    proposals: true,
+                    version: "3.6"
+                },
+                useBuiltIns: "entry"
             }
-        ]
+        ],
+        "@babel/preset-typescript",
+        "@babel/react"
     ]
 };

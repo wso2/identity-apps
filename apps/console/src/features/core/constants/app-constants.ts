@@ -43,6 +43,13 @@ export class AppConstants {
     public static readonly DEVELOPER_VIEW_BASE_PATH: string = window["AppUtils"].getConfig().developerApp.basePath;
 
     /**
+     * URL param for email template add state.
+     * NOTE: Not needed if the same component is not used for edit and add,
+     * @type {string}
+     */
+    public static readonly EMAIL_TEMPLATE_ADD_URL_PARAM: string = "add-template";
+
+    /**
      * App routing paths.
      * @constant
      * @type {Map<string, string>}
@@ -56,11 +63,12 @@ export class AppConstants {
         .set("CLAIM_DIALECTS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/claim-dialects`)
         .set("CUSTOMIZE", "/customize")
         .set("DEVELOPER_OVERVIEW", `${ AppConstants.DEVELOPER_VIEW_BASE_PATH }/overview`)
-        .set("EMAIL_TEMPLATES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates`)
-        .set("EMAIL_TEMPLATE", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:id`)
-        .set("EMAIL_TEMPLATE_ADD", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:id/add-template`)
-        .set("EMAIL_TEMPLATE_LOCALE_ADD", `${
-            AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:type/add-template/:id`)
+        .set("EMAIL_TEMPLATE_TYPES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates`)
+        .set("EMAIL_TEMPLATES", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:templateTypeId`)
+        .set("EMAIL_TEMPLATE", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:templateTypeId/:templateId`)
+        .set("EMAIL_TEMPLATE_ADD", `${
+            AppConstants.ADMIN_VIEW_BASE_PATH }/email-templates/:templateTypeId/${
+            AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM }`)
         .set("EXTERNAL_DIALECT_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/edit-external-dialect/:id`)
         .set("GROUPS", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/groups`)
         .set("GROUP_EDIT", `${ AppConstants.ADMIN_VIEW_BASE_PATH }/groups/:id`)

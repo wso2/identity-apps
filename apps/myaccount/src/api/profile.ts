@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { IdentityClient, SignInUtil } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
+import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import _ from "lodash";
 import { ApplicationConstants, SCIM2_ENT_USER_SCHEMA } from "../constants";
@@ -98,7 +99,7 @@ export const getGravatarImage = (email: string): Promise<string> => {
     if (_.isEmpty(email)) {
         return Promise.reject("Email is null");
     } else {
-        const url: string = SignInUtil.getGravatar(email);
+        const url: string = CommonUtils.getGravatar(email);
         return new Promise((resolve, reject) => {
             axios
                 .get(url)
