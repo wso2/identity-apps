@@ -25,6 +25,7 @@ import { AuthenticateUtils } from "../utils";
  *
  * @param {FeatureAccessConfigInterface} feature - Evaluating feature.
  * @param {string | string[]} key - Feature key/keys to check.
+ *
  * @return {boolean} True is feature is enabled and false if not.
  */
 export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: string | string[]): boolean => {
@@ -50,6 +51,8 @@ export const isFeatureEnabled = (feature: FeatureAccessConfigInterface, key: str
  *
  * @param {FeatureAccessConfigInterface} feature - Evaluating feature.
  * @param {string[]} scopes - Set of scopes to check.
+ * @param {string} allowedScopes - Set of allowed scopes.
+ *
  * @return {boolean} True is scopes are enough and false if not.
  */
 export const hasRequiredScopes = (

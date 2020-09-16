@@ -49,6 +49,7 @@ import { AppState } from "./store";
 import { initializeAuthentication } from "./store/actions";
 
 import { filteredRoutes } from "./utils";
+import {hasRequiredScopes} from "@wso2is/core/dist/src/helpers";
 
 /**
  * Main App component.
@@ -209,6 +210,7 @@ export const App = (): ReactElement => {
                                                                             <ProtectedRoute
                                                                                 component={ route.component }
                                                                                 path={ route.path }
+                                                                                route={ route }
                                                                                 key={ index }
                                                                             />
                                                                         )
