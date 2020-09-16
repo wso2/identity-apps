@@ -26,7 +26,6 @@ import org.wso2.carbon.identity.application.common.model.ClaimMapping;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationConfig;
 import org.wso2.carbon.identity.application.common.model.InboundAuthenticationRequestConfig;
 import org.wso2.carbon.identity.application.common.model.LocalAndOutboundAuthenticationConfig;
-import org.wso2.carbon.identity.application.common.model.Property;
 import org.wso2.carbon.identity.application.common.model.ServiceProvider;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
@@ -50,6 +49,7 @@ import static org.wso2.identity.apps.common.util.AppPortalConstants.DISPLAY_NAME
 import static org.wso2.identity.apps.common.util.AppPortalConstants.EMAIL_CLAIM_URI;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.GRANT_TYPE_ACCOUNT_SWITCH;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_AUTH2_TYPE;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.INBOUND_CONFIG_TYPE;
 
 /**
  * App portal utils.
@@ -129,11 +129,7 @@ public class AppPortalUtils {
                 = new InboundAuthenticationRequestConfig();
         inboundAuthenticationRequestConfig.setInboundAuthKey(consumerKey);
         inboundAuthenticationRequestConfig.setInboundAuthType(INBOUND_AUTH2_TYPE);
-        Property property = new Property();
-        property.setName("oauthConsumerSecret");
-        property.setValue(consumerSecret);
-        Property[] properties = { property };
-        inboundAuthenticationRequestConfig.setProperties(properties);
+        inboundAuthenticationRequestConfig.setInboundConfigType(INBOUND_CONFIG_TYPE);
         List<InboundAuthenticationRequestConfig> inboundAuthenticationRequestConfigs = Arrays
                 .asList(inboundAuthenticationRequestConfig);
         InboundAuthenticationConfig inboundAuthenticationConfig = new InboundAuthenticationConfig();
