@@ -17,16 +17,9 @@
  */
 
 import { IdentityClient } from "@wso2is/authentication";
-import { AxiosHttpClient } from "@wso2is/http";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
-/**
- * Get an axios instance.
- *
- * @type {AxiosHttpClientInstance}
- */
-const httpClient = AxiosHttpClient.getInstance();
 
 const httpRequest = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
@@ -43,7 +36,8 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     // different, the server responds with a status code `401`. The callbacks handle 401 errors and
     // terminates the session. To bypass the callbacks disable the handler when the client is initialized.
     // TODO: Remove this once the API supports current password validation.
-    httpClient.disableHandler();
+    // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
+    // httpClient.disableHandler();
 
     const requestConfig = {
         auth: {
@@ -79,7 +73,8 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
             return Promise.reject(error);
         })
         .finally(() => {
+            // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
             // TODO: Remove this once the API supports current password validation.
-            httpClient.enableHandler();
+            // httpClient.enableHandler();
         });
 };
