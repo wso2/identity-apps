@@ -31,21 +31,6 @@
         <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.min.css" rel="stylesheet" type="text/css"/>
 
         <title><%= htmlWebpackPlugin.options.title %></title>
-
-        <script>
-            // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
-            // In such cases, the code is added to the sessionStorage under the key "code".
-            const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
-
-            if (authorizationCode !== "null") {
-                window.sessionStorage.setItem("code", authorizationCode);
-            }
-
-            var sessionState = "<%= htmlWebpackPlugin.options.sessionState %>";
-            if (sessionState !== "null") {
-                sessionStorage.setItem("session_state", sessionState);
-            }
-        </script>
     </head>
     <body>
         <noscript>
