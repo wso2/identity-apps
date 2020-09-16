@@ -30,6 +30,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import {
     addAlert,
+    setInitialized,
     setProfileInfo,
     setProfileInfoRequestLoadingStatus,
     setProfileSchemaRequestLoadingStatus,
@@ -39,6 +40,7 @@ import {
 } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
+import axios from "axios";
 import _ from "lodash";
 import { UAParser } from "ua-parser-js";
 import { store } from "../../../core";
@@ -138,17 +140,34 @@ export const getProfileInformation = () => (dispatch): void => {
 
 export const initializeAuthentication = () => (dispatch) => {
     const auth = IdentityClient.getInstance();
-    auth.initialize({
-        baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-        callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
-        clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-        clientID: window["AppUtils"].getConfig().clientID,
-        enablePKCE: true,
-        responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-        scope: [TokenConstants.SYSTEM_SCOPE],
-        serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-        storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
-    });
+
+    const initialize = (response?: any): void => {
+        auth.initialize({
+            authorizationCode: response?.data?.authCode,
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
+            enablePKCE: true,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
+            scope: [TokenConstants.SYSTEM_SCOPE],
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            sessionState: response?.data?.sessionState,
+            signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+            signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+            storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
+        });
+
+        dispatch(setInitialized(true));
+    };
+
+    if (process.env.NODE_ENV === "production") {
+        axios.get(window["AppUtils"].getAppBase() + "/auth.jsp").then((response) => {
+            initialize(response);
+        });
+    } else {
+        initialize();
+    }
+
     auth.on("http-request-error", HttpUtils.onHttpRequestError);
     auth.on("http-request-finish", HttpUtils.onHttpRequestFinish);
     auth.on("http-request-start", HttpUtils.onHttpRequestStart);
