@@ -44,18 +44,22 @@ import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import _ from "lodash";
 import { UAParser } from "ua-parser-js";
-import { store } from "../../../core";
+import { Config, store } from "../../../core";
 import { HttpUtils } from "../../../core/utils";
 
 /**
  *  Gets profile information by making an API call
  */
-export const getProfileInformation = () => (dispatch): void => {
+export const getProfileInformation = (
+    meEndpoint: string = Config.getServiceResourceEndpoints().me,
+    clientOrigin: string = window["AppUtils"].getConfig().clientOriginWithTenant
+) => (dispatch): void => {
+
     dispatch(setProfileInfoRequestLoadingStatus(true));
 
     // Get the profile info.
     // TODO: Add the function to handle SCIM disabled error.
-    getProfileInfo(null)
+    getProfileInfo(meEndpoint, clientOrigin, null)
         .then((infoResponse: ProfileInfoInterface) => {
             if (infoResponse.responseStatus !== 200) {
                 dispatch(

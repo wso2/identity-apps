@@ -81,19 +81,23 @@ export const getGravatarImage = (email: string,
 /**
  * Retrieve the user profile details of the currently authenticated user.
  *
+ * @param {string} endpoint - Me endpoint absolute path.
+ * @param {string} clientOrigin - Tenant qualified client origin.
  * @param {() => void} onSCIMDisabled - Callback to be fired if SCIM is disabled for the user store.
  * @returns {Promise<ProfileInfoInterface>} Profile information as a Promise.
  * @throws {IdentityAppsApiException}
  */
-export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoInterface> => {
+export const getProfileInfo = (endpoint: string,
+                               clientOrigin: string,
+                               onSCIMDisabled?: () => void): Promise<ProfileInfoInterface> => {
 
     const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 
     const requestConfig = {
-        headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost, AcceptHeaderValues.APP_JSON,
+        headers: HTTPRequestHeaders(clientOrigin, AcceptHeaderValues.APP_JSON,
             ContentTypeHeaderValues.APP_SCIM),
         method: HttpMethods.GET,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).me
+        url: endpoint
     };
 
     return httpClient(requestConfig)
@@ -135,7 +139,7 @@ export const getProfileInfo = (onSCIMDisabled: () => void): Promise<ProfileInfoI
 
                 // Fire `onSCIMDisabled` callback which will navigate the
                 // user to the corresponding error page.
-                onSCIMDisabled();
+                onSCIMDisabled && onSCIMDisabled();
             }
 
             throw new IdentityAppsApiException(

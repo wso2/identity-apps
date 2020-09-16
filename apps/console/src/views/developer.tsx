@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getProfileInfo } from "@wso2is/core/api";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
@@ -43,6 +42,7 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
+import { getProfileInformation } from "../features/authentication/store";
 import {
     AppState,
     AppUtils,
@@ -112,9 +112,11 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(developerViewRoutes, featureConfig,
             allowedScopes));
 
-        if (isEmpty(profileInfo)) {
-            dispatch(getProfileInfo(null));
+        if (!isEmpty(profileInfo)) {
+            return;
         }
+
+        dispatch(getProfileInformation());
     }, [ featureConfig ]);
 
     useEffect(() => {

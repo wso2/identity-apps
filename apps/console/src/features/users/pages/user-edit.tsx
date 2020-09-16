@@ -21,7 +21,6 @@ import {
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
-    ProfileSchemaInterface,
     emptyProfileInfo
 } from "@wso2is/core/models";
 import { addAlert, getProfileInformation } from "@wso2is/core/store";
@@ -47,7 +46,6 @@ const UserEditPage = (): ReactElement => {
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
-    const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
 
     const [ user, setUserProfile ] = useState<ProfileInfoInterface>(emptyProfileInfo);
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
@@ -86,7 +84,7 @@ const UserEditPage = (): ReactElement => {
         getUser(id);
         
         if (UserManagementUtils.isAuthenticatedUser(profileInfo, user)) {
-            dispatch(getProfileInformation(true, profileSchemas));
+            dispatch(getProfileInformation());
         }
     };
 
