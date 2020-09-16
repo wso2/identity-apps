@@ -24,6 +24,7 @@ import { CommonAuthReducerStateInterface } from "@wso2is/core/models";
 export const commonAuthenticateReducerInitialState: CommonAuthReducerStateInterface = {
     displayName: "",
     emails: "",
+    initialized: false,
     isAuthenticated: false,
     loginInit: false,
     logoutInit: false,
