@@ -44,20 +44,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    Footer,
-    Header,
-    ProtectedRoute,
-    SidePanelIcons,
-    SidePanelMiscIcons,
-    UIConstants,
-    adminViewRoutes,
-    history
-} from "../features/core";
+import { Footer, Header, ProtectedRoute } from "../features/core/components";
+import { SidePanelIcons, SidePanelMiscIcons, getAdminViewRoutes } from "../features/core/configs";
+import { AppConstants, UIConstants } from "../features/core/constants";
+import { history } from "../features/core/helpers";
+import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
+import { AppState } from "../features/core/store";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../features/server-configurations";
 
 /**
@@ -101,8 +93,11 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         (state: AppState) => state.governanceConnector.categories);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
-    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(adminViewRoutes);
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(adminViewRoutes[ 0 ]);
+    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
+    const [
+        selectedRoute,
+        setSelectedRoute
+    ] = useState<RouteInterface | ChildRouteInterface>(getAdminViewRoutes()[ 0 ]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
@@ -115,12 +110,18 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(adminViewRoutes, featureConfig,
-            allowedScopes));
+        setFilteredRoutes(
+            RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+                getAdminViewRoutes(),
+                featureConfig,
+                allowedScopes)
+        );
 
-        if (isEmpty(profileInfo)) {
-            dispatch(getProfileInformation());
+        if (!isEmpty(profileInfo)) {
+            return;
         }
+
+        dispatch(getProfileInformation());
     }, []);
 
     useEffect(() => {

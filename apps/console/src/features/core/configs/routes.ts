@@ -30,7 +30,7 @@ import { AppConstants } from "../constants";
 const extensions = EXTENSION_ROUTES();
 
 /**
- * Developer View Routes array.
+ * Get Developer View Routes.
  *
  * @remarks
  * Having a unique id for every route is mandatory.
@@ -47,585 +47,609 @@ const extensions = EXTENSION_ROUTES();
  *     path: "/applications"
  *  }
  */
-const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
-    {
-        category: "devPortal:components.sidePanel.categories.application",
-        children: [
-            {
-                component: lazy(() => import("../../applications/pages/application-template")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
+export const getDeveloperViewRoutes = (): RouteInterface[] => {
+
+    return [
+        ...extensions,
+        {
+            category: "devPortal:components.sidePanel.categories.application",
+            children: [
+                {
+                    component: lazy(() => import("../../applications/pages/application-template")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "applicationTemplate",
+                    name: "Application Templates",
+                    path: AppConstants.getPaths().get("APPLICATION_TEMPLATES"),
+                    protected: true,
+                    showOnSidePanel: false
                 },
-                id: "applicationTemplate",
-                name: "Application Templates",
-                path: AppConstants.PATHS.get("APPLICATION_TEMPLATES"),
-                protected: true,
-                showOnSidePanel: false
+                {
+                    component: lazy(() => import("../../applications/pages/application-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "applicationsEdit",
+                    name: "Application Edit",
+                    path: AppConstants.getPaths().get("APPLICATION_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../applications/pages/applications")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.applications
             },
-            {
-                component: lazy(() => import("../../applications/pages/application-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "applicationsEdit",
-                name: "Application Edit",
-                path: AppConstants.PATHS.get("APPLICATION_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../applications/pages/applications")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.applications
+            id: "applications",
+            name: "common:applications",
+            order: 1,
+            path: AppConstants.getPaths().get("APPLICATIONS"),
+            protected: true,
+            showOnSidePanel: true
         },
-        id: "applications",
-        name: "common:applications",
-        order: 1,
-        path: AppConstants.PATHS.get("APPLICATIONS"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        category: "devPortal:components.sidePanel.categories.identityProviders",
-        children: [
-            {
-                component: lazy(() => import("../../identity-providers/pages/identity-provider-template")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
+        {
+            category: "devPortal:components.sidePanel.categories.identityProviders",
+            children: [
+                {
+                    component: lazy(() => import("../../identity-providers/pages/identity-provider-template")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "identityProviderTemplate",
+                    name: "Identity Provider Templates",
+                    path: AppConstants.getPaths().get("IDP_TEMPLATES"),
+                    protected: true,
+                    showOnSidePanel: false
                 },
-                id: "identityProviderTemplate",
-                name: "Identity Provider Templates",
-                path: AppConstants.PATHS.get("IDP_TEMPLATES"),
-                protected: true,
-                showOnSidePanel: false
+                {
+                    component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "identityProvidersEdit",
+                    name: "Identity Providers Edit",
+                    path: AppConstants.getPaths().get("IDP_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../identity-providers/pages/identity-providers")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.identityProviders
             },
-            {
-                component: lazy(() => import("../../identity-providers/pages/identity-provider-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "identityProvidersEdit",
-                name: "Identity Providers Edit",
-                path: AppConstants.PATHS.get("IDP_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../identity-providers/pages/identity-providers")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.identityProviders
+            id: "identityProviders",
+            name: "common:identityProviders",
+            order: 2,
+            path: AppConstants.getPaths().get("IDP"),
+            protected: true,
+            showOnSidePanel: true
         },
-        id: "identityProviders",
-        name: "common:identityProviders",
-        order: 2,
-        path: AppConstants.PATHS.get("IDP"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    /*{
-        category: "devPortal:components.sidePanel.categories.application",
-        children: [
-            {
-                component: lazy(() =>
-                    import("../../remote-repository-configuration/pages/remote-repository-config-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "remote-repo-edit",
-                name: "Remote Repo Config Edit",
-                path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../remote-repository-configuration/pages/remote-repository-config")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.remoteFetch
+        /*{
+            category: "devPortal:components.sidePanel.categories.application",
+            children: [
+                {
+                    component: lazy(() =>
+                        import("../../remote-repository-configuration/pages/remote-repository-config-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "remote-repo-edit",
+                    name: "Remote Repo Config Edit",
+                    path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../remote-repository-configuration/pages/remote-repository-config")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.remoteFetch
+            },
+            id: "remote-repo",
+            name: "Remote Repo Config",
+            order: 3,
+            path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
+            protected: true,
+            showOnSidePanel: true
+        },*/
+        {
+            category: "devPortal:components.sidePanel.categories.general",
+            children: [
+                {
+                    component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "oidcScopesEdit",
+                    name: "OIDC Scopes Edit",
+                    path: AppConstants.getPaths().get("OIDC_SCOPES_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.scopes
+            },
+            id: "oidcScopes",
+            name: "OIDC Scopes",
+            order: 4,
+            path: AppConstants.getPaths().get("OIDC_SCOPES"),
+            protected: true,
+            showOnSidePanel: false
         },
-        id: "remote-repo",
-        name: "Remote Repo Config",
-        order: 3,
-        path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
-        protected: true,
-        showOnSidePanel: true
-    },*/
-    {
-        category: "devPortal:components.sidePanel.categories.general",
-        children: [
-            {
-                component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "oidcScopesEdit",
-                name: "OIDC Scopes Edit",
-                path: AppConstants.PATHS.get("OIDC_SCOPES_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.scopes
+        {
+            component: lazy(() => import("../pages/customize")),
+            icon: {
+                icon: SidePanelIcons.overview
+            },
+            id: "customize",
+            name: "Customize",
+            path: AppConstants.getPaths().get("CUSTOMIZE"),
+            protected: true,
+            showOnSidePanel: false
         },
-        id: "oidcScopes",
-        name: "OIDC Scopes",
-        order: 4,
-        path: AppConstants.PATHS.get("OIDC_SCOPES"),
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: lazy(() => import("../pages/customize")),
-        icon: {
-            icon: SidePanelIcons.overview
-        },
-        id: "customize",
-        name: "Customize",
-        path: AppConstants.PATHS.get("CUSTOMIZE"),
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: null,
-        icon: null,
-        id: "404",
-        name: "404",
-        path: "*",
-        protected: true,
-        redirectTo: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
-        showOnSidePanel: false
-    }
-];
+        {
+            component: null,
+            icon: null,
+            id: "404",
+            name: "404",
+            path: "*",
+            protected: true,
+            redirectTo: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
+            showOnSidePanel: false
+        }
+    ]
+};
 
 /**
- * Admin View Layout Routes array.
+ * Get all the Admin View Routes.
+ *
+ * @return {RouteInterface[]}
  */
-const ADMIN_VIEW_ROUTES: RouteInterface[] = [
-    {
-        category: "adminPortal:components.sidePanel.categories.users",
-        children: [
-            {
-                component: lazy(() => import("../../users/pages/user-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "usersEdit",
-                name: "adminPortal:components.sidePanel.editUsers",
-                path: AppConstants.PATHS.get("USER_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../users/pages/users")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.users
-        },
-        id: "users",
-        name: "adminPortal:components.sidePanel.users",
-        order: 1,
-        path: AppConstants.PATHS.get("USERS"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        category: "adminPortal:components.sidePanel.categories.users",
-        children: [
-            {
-                component: lazy(() => import("../../groups/pages/group-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "groupsEdit",
-                name: "adminPortal:components.sidePanel.editGroups",
-                path: AppConstants.PATHS.get("GROUP_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../groups/pages/groups")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.groups
-        },
-        id: "groups",
-        name: "adminPortal:components.sidePanel.groups",
-        order: 2,
-        path: AppConstants.PATHS.get("GROUPS"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        category: "adminPortal:components.sidePanel.categories.users",
-        children: [
-            {
-                component: lazy(() => import("../../roles/pages/role-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "rolesEdit",
-                name: "adminPortal:components.sidePanel.editRoles",
-                path: AppConstants.PATHS.get("ROLE_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../roles/pages/role")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.roles
-        },
-        id: "roles",
-        name: "adminPortal:components.sidePanel.roles",
-        order: 3,
-        path: AppConstants.PATHS.get("ROLES"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        category: "adminPortal:components.sidePanel.categories.attributes",
-        children: [
-            {
-                component: lazy(() => import("../../claims/pages/local-claims-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "editLocalClaims",
-                name: "adminPortal:components.sidePanel.editLocalClaims",
-                path: AppConstants.PATHS.get("LOCAL_CLAIMS_EDIT"),
-                protected: true,
-                showOnSidePanel: false
+export const getAdminViewRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            category: "adminPortal:components.sidePanel.categories.users",
+            children: [
+                {
+                    component: lazy(() => import("../../users/pages/user-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "usersEdit",
+                    name: "adminPortal:components.sidePanel.editUsers",
+                    path: AppConstants.getPaths().get("USER_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../users/pages/users")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.users
             },
-            {
-                component: lazy(() => import("../../claims/pages/local-claims")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "localDialect",
-                name: "adminPortal:components.sidePanel.localDialect",
-                path: AppConstants.PATHS.get("LOCAL_CLAIMS"),
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: lazy(() => import("../../claims/pages/external-dialect-edit")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "editExternalDialect",
-                name: "adminPortal:components.sidePanel.editExternalDialect",
-                path: AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../claims/pages/claim-dialects")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.claims
+            id: "users",
+            name: "adminPortal:components.sidePanel.users",
+            order: 1,
+            path: AppConstants.getPaths().get("USERS"),
+            protected: true,
+            showOnSidePanel: true
         },
-        id: "attributeDialects",
-        name: "adminPortal:components.sidePanel.attributeDialects",
-        order: 6,
-        path: AppConstants.PATHS.get("CLAIM_DIALECTS"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        category: "adminPortal:components.sidePanel.categories.userstores",
-        children: [
-            {
-                component: lazy(() => import("../../userstores/pages/user-stores-edit")),
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "edit-user-store",
-                name: "adminPortal:components.sidePanel.editUserstore",
-                path: AppConstants.PATHS.get("USERSTORES_EDIT"),
-                protected: true,
-                showOnSidePanel: false
+        {
+            category: "adminPortal:components.sidePanel.categories.users",
+            children: [
+                {
+                    component: lazy(() => import("../../groups/pages/group-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "groupsEdit",
+                    name: "adminPortal:components.sidePanel.editGroups",
+                    path: AppConstants.getPaths().get("GROUP_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../groups/pages/groups")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.groups
             },
-            {
-                component: lazy(() => import("../../userstores/pages/userstores-templates")),
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "userstore-templates",
-                name: "adminPortal:components.sidePanel.userstoreTemplates",
-                path: AppConstants.PATHS.get("USERSTORE_TEMPLATES"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../userstores/pages/user-stores")),
-        icon: {
-            icon: SidePanelIcons.userStore
+            id: "groups",
+            name: "adminPortal:components.sidePanel.groups",
+            order: 2,
+            path: AppConstants.getPaths().get("GROUPS"),
+            protected: true,
+            showOnSidePanel: true
         },
-        id: "userStores",
-        name: "adminPortal:components.sidePanel.userstores",
-        order: 4,
-        path: AppConstants.PATHS.get("USERSTORES"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        category: "adminPortal:components.sidePanel.categories.certificates",
-        component: lazy(() => import("../../certificates/pages/certificates-keystore")),
-        icon: {
-            icon: SidePanelIcons.certificate
-        },
-        id: "certificates",
-        name: "adminPortal:components.sidePanel.certificates",
-        order: 5,
-        path: AppConstants.PATHS.get("CERTIFICATES"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        category: "adminPortal:components.sidePanel.categories.configurations",
-        children: [
-            {
-                component: lazy(() => import("../../email-templates/pages/email-templates-page")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "emailTemplates",
-                name: "adminPortal:components.sidePanel.emailTemplates",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATES"),
-                protected: true,
-                showOnSidePanel: false
+        {
+            category: "adminPortal:components.sidePanel.categories.users",
+            children: [
+                {
+                    component: lazy(() => import("../../roles/pages/role-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "rolesEdit",
+                    name: "adminPortal:components.sidePanel.editRoles",
+                    path: AppConstants.getPaths().get("ROLE_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../roles/pages/role")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.roles
             },
-            {
-                component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "emailTemplates",
-                name: "adminPortal:components.sidePanel.addEmailTemplate",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE"),
-                protected: true,
-                showOnSidePanel: false
-            },
-            {
-                component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
-                exact: true,
-                icon: {
-                    icon: SidePanelIcons.childIcon
-                },
-                id: "emailTemplates",
-                name: "adminPortal:components.sidePanel.addEmailTemplateLocale",
-                path: AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD"),
-                protected: true,
-                showOnSidePanel: false
-            }
-        ],
-        component: lazy(() => import("../../email-templates/pages/email-template-types-page")),
-        exact: true,
-        icon: {
-            icon: SidePanelIcons.emailTemplates
+            id: "roles",
+            name: "adminPortal:components.sidePanel.roles",
+            order: 3,
+            path: AppConstants.getPaths().get("ROLES"),
+            protected: true,
+            showOnSidePanel: true
         },
-        id: "emailTemplates",
-        name: "adminPortal:components.sidePanel.emailTemplates",
-        order: 7,
-        path: AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"),
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        component: lazy(() => import("../../server-configurations/pages/governance-connectors")),
-        exact: true,
-        icon: null,
-        id: "governanceConnectors",
-        name: "adminPortal:components.sidePanel.governanceConnectors",
-        order: 8,
-        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS"),
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: null,
-        icon: null,
-        id: "404",
-        name: "404",
-        path: "*",
-        protected: true,
-        redirectTo: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
-        showOnSidePanel: false
-    }
-];
+        {
+            category: "adminPortal:components.sidePanel.categories.attributes",
+            children: [
+                {
+                    component: lazy(() => import("../../claims/pages/local-claims-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "editLocalClaims",
+                    name: "adminPortal:components.sidePanel.editLocalClaims",
+                    path: AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("../../claims/pages/local-claims")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "localDialect",
+                    name: "adminPortal:components.sidePanel.localDialect",
+                    path: AppConstants.getPaths().get("LOCAL_CLAIMS"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("../../claims/pages/external-dialect-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "editExternalDialect",
+                    name: "adminPortal:components.sidePanel.editExternalDialect",
+                    path: AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../claims/pages/claim-dialects")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.claims
+            },
+            id: "attributeDialects",
+            name: "adminPortal:components.sidePanel.attributeDialects",
+            order: 6,
+            path: AppConstants.getPaths().get("CLAIM_DIALECTS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "adminPortal:components.sidePanel.categories.userstores",
+            children: [
+                {
+                    component: lazy(() => import("../../userstores/pages/user-stores-edit")),
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "edit-user-store",
+                    name: "adminPortal:components.sidePanel.editUserstore",
+                    path: AppConstants.getPaths().get("USERSTORES_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("../../userstores/pages/userstores-templates")),
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "userstore-templates",
+                    name: "adminPortal:components.sidePanel.userstoreTemplates",
+                    path: AppConstants.getPaths().get("USERSTORE_TEMPLATES"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../userstores/pages/user-stores")),
+            icon: {
+                icon: SidePanelIcons.userStore
+            },
+            id: "userStores",
+            name: "adminPortal:components.sidePanel.userstores",
+            order: 4,
+            path: AppConstants.getPaths().get("USERSTORES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "adminPortal:components.sidePanel.categories.certificates",
+            component: lazy(() => import("../../certificates/pages/certificates-keystore")),
+            icon: {
+                icon: SidePanelIcons.certificate
+            },
+            id: "certificates",
+            name: "adminPortal:components.sidePanel.certificates",
+            order: 5,
+            path: AppConstants.getPaths().get("CERTIFICATES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "adminPortal:components.sidePanel.categories.configurations",
+            children: [
+                {
+                    component: lazy(() => import("../../email-templates/pages/email-templates-page")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "emailTemplates",
+                    name: "adminPortal:components.sidePanel.emailTemplates",
+                    path: AppConstants.getPaths().get("EMAIL_TEMPLATES"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "emailTemplates",
+                    name: "adminPortal:components.sidePanel.addEmailTemplate",
+                    path: AppConstants.getPaths().get("EMAIL_TEMPLATE"),
+                    protected: true,
+                    showOnSidePanel: false
+                },
+                {
+                    component: lazy(() => import("../../email-templates/pages/email-template-edit-page")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "emailTemplates",
+                    name: "adminPortal:components.sidePanel.addEmailTemplateLocale",
+                    path: AppConstants.getPaths().get("EMAIL_TEMPLATE_ADD"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../email-templates/pages/email-template-types-page")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.emailTemplates
+            },
+            id: "emailTemplates",
+            name: "adminPortal:components.sidePanel.emailTemplates",
+            order: 7,
+            path: AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../../server-configurations/pages/governance-connectors")),
+            exact: true,
+            icon: null,
+            id: "governanceConnectors",
+            name: "adminPortal:components.sidePanel.governanceConnectors",
+            order: 8,
+            path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: null,
+            icon: null,
+            id: "404",
+            name: "404",
+            path: "*",
+            protected: true,
+            redirectTo: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
+            showOnSidePanel: false
+        }
+    ]
+};
+/**
+ * Get default page layout routes.
+ *
+ * @return {RouteInterface[]}
+ */
+export const getDefaultLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: lazy(() => import("../pages/privacy")),
+            icon: null,
+            id: "privacy",
+            name: "adminPortal:components.sidePanel.privacy",
+            path: AppConstants.getPaths().get("PRIVACY"),
+            protected: true,
+            showOnSidePanel: false
+        }
+    ];
+};
 
 /**
- * Default page layout routes array.
+ * Get error page layout routes.
+ *
+ * @return {RouteInterface[]}
  */
-const DEFAULT_LAYOUT_ROUTES: RouteInterface[] = [
-    {
-        component: lazy(() => import("../pages/privacy")),
-        icon: null,
-        id: "privacy",
-        name: "adminPortal:components.sidePanel.privacy",
-        path: AppConstants.PATHS.get("PRIVACY"),
-        protected: true,
-        showOnSidePanel: false
-    }
-];
+export const getErrorLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: lazy(() => import("../pages/errors/unauthorized")),
+            icon: null,
+            id: "unauthorized",
+            name: "Unauthorized",
+            path: AppConstants.getPaths().get("UNAUTHORIZED"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../pages/errors/404")),
+            icon: null,
+            id: "pageNotFound",
+            name: "404",
+            path: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
+            protected: true,
+            showOnSidePanel: false
+        }
+    ];
+};
 
 /**
- * Error page layout routes array.
+ * Get auth page layout routes.
+ *
+ * @return {RouteInterface[]}
  */
-const ERROR_LAYOUT_ROUTES: RouteInterface[] = [
-    {
-        component: lazy(() => import("../pages/errors/unauthorized")),
-        icon: null,
-        id: "unauthorized",
-        name: "Unauthorized",
-        path: AppConstants.PATHS.get("UNAUTHORIZED"),
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: lazy(() => import("../pages/errors/404")),
-        icon: null,
-        id: "pageNotFound",
-        name: "404",
-        path: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
-        protected: true,
-        showOnSidePanel: false
-    }
-];
+export const getAuthLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: lazy(() => import("../../authentication/pages/sign-in")),
+            icon: null,
+            id: "authLayoutLogin",
+            name: "Login",
+            path: AppConstants.getPaths().get("LOGIN"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../../authentication/pages/sign-out")),
+            icon: null,
+            id: "authLayoutLogout",
+            name: "Logout",
+            path: AppConstants.getPaths().get("LOGOUT"),
+            protected: false,
+            showOnSidePanel: false
+        }
+    ];
+};
 
 /**
- * Default page layout routes array.
+ * Get all the app layout routes.
+ *
+ * @return {RouteInterface[]}
  */
-const AUTH_LAYOUT_ROUTES: RouteInterface[] = [
-    {
-        component: lazy(() => import("../../authentication/pages/sign-in")),
-        icon: null,
-        id: "authLayoutLogin",
-        name: "Login",
-        path: window[ "AppUtils" ].getConfig().routes.login,
-        protected: false,
-        showOnSidePanel: false
-    },
-    {
-        component: lazy(() => import("../../authentication/pages/sign-out")),
-        icon: null,
-        id: "authLayoutLogout",
-        name: "Logout",
-        path: window[ "AppUtils" ].getConfig().routes.logout,
-        protected: false,
-        showOnSidePanel: false
-    }
-];
+export const getAppLayoutRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: AuthLayout,
+            icon: null,
+            id: "appRouteLogin",
+            name: "Login",
+            path: AppConstants.getPaths().get("LOGIN"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: AuthLayout,
+            icon: null,
+            id: "appRouteLogout",
+            name: "Logout",
+            path: AppConstants.getPaths().get("LOGOUT"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: DefaultLayout,
+            icon: null,
+            id: "appRoutePrivacy",
+            name: "Privacy",
+            path: AppConstants.getPaths().get("PRIVACY"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: ErrorLayout,
+            exact: true,
+            icon: null,
+            id: "unauthorized",
+            name: "Unauthorized",
+            path: AppConstants.getPaths().get("UNAUTHORIZED"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: ErrorLayout,
+            exact: true,
+            icon: null,
+            id: "appRoute404",
+            name: "Error",
+            path: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: AdminView,
+            icon: null,
+            id: "admin",
+            name: "Admin",
+            path: AppConstants.getAdminViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: DeveloperView,
+            icon: null,
+            id: "developer",
+            name: "Developer",
+            path: AppConstants.getDeveloperViewBasePath(),
+            protected: false,
+            showOnSidePanel: false
+        }
+    ];
+};
 
 /**
- * Default page layout routes array.
+ * Get base layout routes.
+ *
+ * @return {RouteInterface[]}
  */
-const APP_ROUTES: RouteInterface[] = [
-    {
-        component: AuthLayout,
-        icon: null,
-        id: "appRouteLogin",
-        name: "Login",
-        path: window[ "AppUtils" ].getConfig().routes.login,
-        protected: false,
-        showOnSidePanel: false
-    },
-    {
-        component: AuthLayout,
-        icon: null,
-        id: "appRouteLogout",
-        name: "Logout",
-        path: window[ "AppUtils" ].getConfig().routes.logout,
-        protected: false,
-        showOnSidePanel: false
-    },
-    {
-        component: DefaultLayout,
-        icon: null,
-        id: "appRoutePrivacy",
-        name: "Privacy",
-        path: AppConstants.PATHS.get("PRIVACY"),
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: ErrorLayout,
-        exact: true,
-        icon: null,
-        id: "unauthorized",
-        name: "Unauthorized",
-        path: AppConstants.PATHS.get("UNAUTHORIZED"),
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: ErrorLayout,
-        exact: true,
-        icon: null,
-        id: "appRoute404",
-        name: "Error",
-        path: AppConstants.PATHS.get("PAGE_NOT_FOUND"),
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: AdminView,
-        icon: null,
-        id: "admin",
-        name: "Admin",
-        path: AppConstants.ADMIN_VIEW_BASE_PATH,
-        protected: false,
-        showOnSidePanel: false
-    },
-    {
-        component: DeveloperView,
-        icon: null,
-        id: "developer",
-        name: "Developer",
-        path: AppConstants.DEVELOPER_VIEW_BASE_PATH,
-        protected: false,
-        showOnSidePanel: false
-    }
-];
-
-/**
- * Default page layout routes array.
- */
-const BASE_ROUTES: RouteInterface[] = [
-    {
-        component: AppLayout,
-        icon: null,
-        id: "app",
-        name: "App",
-        path: "/",
-        protected: false,
-        showOnSidePanel: false
-    }
-];
-
-export const appRoutes = APP_ROUTES;
-export const baseRoutes = BASE_ROUTES;
-export const authLayoutRoutes = AUTH_LAYOUT_ROUTES;
-export const defaultLayoutRoutes = DEFAULT_LAYOUT_ROUTES;
-export const errorLayoutRoutes = ERROR_LAYOUT_ROUTES;
-export const developerViewRoutes = [ ...extensions, ...DEVELOPER_VIEW_ROUTES ];
-export const adminViewRoutes = ADMIN_VIEW_ROUTES;
+export const getBaseRoutes = (): RouteInterface[] => {
+    return [
+        {
+            component: AppLayout,
+            icon: null,
+            id: "app",
+            name: "App",
+            path: "/",
+            protected: false,
+            showOnSidePanel: false
+        }
+    ];
+};

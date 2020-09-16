@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertInterface } from "@wso2is/core/models";
+import { AlertInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import {
     Alert,
@@ -36,14 +36,10 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import {
-    AppState,
-    Footer,
-    Header,
-    ProtectedRoute,
-    UIConstants,
-    defaultLayoutRoutes
-} from "../features/core";
+import { Footer, Header, ProtectedRoute } from "../features/core/components";
+import { getDefaultLayoutRoutes } from "../features/core/configs";
+import { AppConstants, UIConstants } from "../features/core/constants";
+import { AppState } from "../features/core/store";
 
 /**
  * Default page layout component Prop types.
@@ -74,6 +70,7 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
 
+    const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
@@ -91,6 +88,13 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
         }
         setFooterHeight(document.getElementById("app-footer")?.offsetHeight);
     });
+
+    /**
+     * Listen for base name changes and updated the layout routes.
+     */
+    useEffect(() => {
+        setDefaultLayoutRoutes(getDefaultLayoutRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
      * Handles the layout on change event.

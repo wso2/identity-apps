@@ -23,11 +23,12 @@ import {
     ProfileInfoInterface,
     emptyProfileInfo
 } from "@wso2is/core/models";
-import { addAlert, getProfileInformation } from "@wso2is/core/store";
+import { addAlert } from "@wso2is/core/store";
 import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
 import { getUserDetails, updateUserInfo } from "../api";
 import { EditUser } from "../components";
