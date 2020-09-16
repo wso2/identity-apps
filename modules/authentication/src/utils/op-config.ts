@@ -20,7 +20,6 @@ import axios from "axios";
 import { getSessionParameter, removeSessionParameter, setSessionParameter } from "./session-storage";
 import {
     AUTHORIZATION_ENDPOINT,
-    CALLBACK_URL,
     CLIENT_ID,
     END_SESSION_ENDPOINT,
     ISSUER,
@@ -32,7 +31,9 @@ import {
     Storage,
     TENANT,
     TOKEN_ENDPOINT,
-    USERNAME
+    USERNAME,
+    SIGN_IN_REDIRECT_URL,
+    SIGN_OUT_REDIRECT_URL
 } from "../constants";
 import { ConfigInterface, ServiceResourcesType, WebWorkerConfigInterface } from "../models";
 
@@ -113,10 +114,17 @@ export const setOPConfigInitiated = (requestParams: ConfigInterface | WebWorkerC
 };
 
 /**
- * Set callback URL.
+ * Set sign-in redirect URL.
  */
-export const setCallbackURL = (url: string, requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
-    setSessionParameter(CALLBACK_URL, url, requestParams);
+export const setSignInRedirectURL = (url: string, requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
+    setSessionParameter(SIGN_IN_REDIRECT_URL, url, requestParams);
+};
+
+/**
+ * Set sign-out redirect URL.
+ */
+export const setSignOutRedirectURL = (url: string, requestParams: ConfigInterface | WebWorkerConfigInterface): void => {
+    setSessionParameter(SIGN_OUT_REDIRECT_URL, url, requestParams);
 };
 
 /**
@@ -187,7 +195,8 @@ export const initOPConfiguration = (
             setIssuer(response.data.issuer, requestParams);
             setClientID(requestParams);
             setOIDCSessionIFrameURL(response.data.check_session_iframe, requestParams);
-            setCallbackURL(requestParams.callbackURL, requestParams);
+            setSignInRedirectURL(requestParams.signInRedirectURL, requestParams);
+            setSignOutRedirectURL(requestParams.signOutRedirectURL, requestParams);
             setOPConfigInitiated(requestParams);
             return Promise.resolve(
                 "Initialized OpenID Provider configuration from: " + serverHost + SERVICE_RESOURCES.wellKnown
@@ -221,7 +230,8 @@ export const initOPConfiguration = (
                     (requestParams?.endpoints?.oidcSessionIFrame || SERVICE_RESOURCES.oidcSessionIFrame),
                 requestParams
             );
-            setCallbackURL(requestParams.callbackURL, requestParams);
+            setSignInRedirectURL(requestParams.signInRedirectURL, requestParams);
+            setSignOutRedirectURL(requestParams.signOutRedirectURL, requestParams);
             setOPConfigInitiated(requestParams);
 
             return Promise.resolve(
@@ -249,7 +259,8 @@ export const resetOPConfiguration = (requestParams: ConfigInterface | WebWorkerC
         removeSessionParameter(ISSUER, requestParams);
         removeSessionParameter(CLIENT_ID, requestParams);
         removeSessionParameter(TENANT, requestParams);
-        removeSessionParameter(CALLBACK_URL, requestParams);
+        removeSessionParameter(SIGN_IN_REDIRECT_URL, requestParams);
+        removeSessionParameter(SIGN_OUT_REDIRECT_URL, requestParams);
     } else {
         requestParams.session.clear();
     }

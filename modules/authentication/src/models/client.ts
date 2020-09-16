@@ -24,7 +24,8 @@ import { Storage } from "../constants";
 
 interface BaseConfigInterface {
     authorizationType?: string;
-    callbackURL: string;
+    signInRedirectURL: string;
+    signOutRedirectURL: string;
     clientHost: string;
     clientID: string;
     clientSecret?: string;
@@ -35,6 +36,8 @@ interface BaseConfigInterface {
     scope?: string[];
     serverOrigin: string;
     endpoints?: ServiceResourcesType;
+    authorizationCode?: string;
+    sessionState?: string;
 }
 /**
  * SDK Client config parameters.

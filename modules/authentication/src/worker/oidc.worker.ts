@@ -35,7 +35,7 @@ import {
     SIGNED_IN,
     SIGN_IN
 } from "../constants";
-import { SignInResponse, WebWorkerClass, WebWorkerClientConfigInterface, WebWorkerInterface } from "../models";
+import { SignInResponse, WebWorkerClass, WebWorkerClientConfigInterface, WebWorkerInterface, SignInResponseWorker } from "../models";
 import { generateFailureDTO, generateSuccessDTO } from "../utils";
 
 const ctx: WebWorkerClass<any> = self as any;
@@ -67,12 +67,12 @@ ctx.onmessage = ({ data, ports }) => {
             if (!webWorker) {
                 port.postMessage(generateFailureDTO("Worker has not been initiated."));
             } else {
-                if (data?.data?.code) {
+                if (data?.data?.code || data?.data?.pkce) {
                     webWorker.setAuthCode(data.data.code, data?.data?.sessionState, data?.data?.pkce);
                 }
                 webWorker
                     .signIn()
-                    .then((response: SignInResponse) => {
+                    .then((response: SignInResponseWorker) => {
                         if (response.type === SIGNED_IN) {
                             port.postMessage(
                                 generateSuccessDTO({

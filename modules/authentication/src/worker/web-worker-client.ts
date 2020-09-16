@@ -36,7 +36,8 @@ import {
     REQUEST_SUCCESS,
     SESSION_STATE,
     SIGNED_IN,
-    SIGN_IN
+    SIGN_IN,
+    LOGOUT_URL
 } from "../constants";
 import {
     AuthCode,
@@ -49,7 +50,8 @@ import {
     UserInfo,
     WebWorkerClientInterface,
     WebWorkerConfigInterface,
-    WebWorkerSingletonClientInterface
+    WebWorkerSingletonClientInterface,
+    SignInResponseWorker
 } from "../models";
 import { getAuthorizationCode } from "../utils";
 
@@ -312,8 +314,12 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
             return Promise.reject("Array elements of baseUrls must all be string values");
         }
 
-        if (typeof config.callbackURL !== "string") {
-            return Promise.reject("The callbackURL must be a string");
+        if (typeof config.signInRedirectURL !== "string") {
+            return Promise.reject("The sign-in redirect URL must be a string");
+        }
+
+        if (typeof config.signOutRedirectURL !== "string") {
+            return Promise.reject("The sign-out redirect URL must be a string");
         }
 
         if (typeof config.clientHost !== "string") {
@@ -427,11 +433,16 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
         sessionStorage.removeItem(PKCE_CODE_VERIFIER);
         sessionStorage.removeItem(AUTHORIZATION_CODE);
 
-        return communicate<AuthCode, SignInResponse>(message)
+        return communicate<AuthCode, SignInResponseWorker>(message)
             .then((response) => {
                 if (response.type === SIGNED_IN) {
                     signedIn = true;
-                    return Promise.resolve(response.data);
+
+                    sessionStorage.setItem(LOGOUT_URL, response.data.logoutUrl);
+
+                    const data = response.data;
+                    delete data.logoutUrl;
+                    return Promise.resolve(data);
                 }
 
                 return Promise.reject(
@@ -451,7 +462,7 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
      */
     const signIn = (): Promise<UserInfo> => {
         if (initialized) {
-            if (hasAuthorizationCode()) {
+            if (hasAuthorizationCode() || sessionStorage.getItem(PKCE_CODE_VERIFIER)) {
                 return sendAuthorizationCode();
             } else {
                 const message: Message<null> = {
@@ -459,12 +470,16 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
                     type: SIGN_IN
                 };
 
-                return communicate<null, SignInResponse>(message)
+                return communicate<null, SignInResponseWorker>(message)
                     .then((response) => {
                         if (response.type === SIGNED_IN) {
                             signedIn = true;
 
-                            return Promise.resolve(response.data);
+                            sessionStorage.setItem(LOGOUT_URL, response.data.logoutUrl);
+
+                            const data = response.data;
+                            delete data.logoutUrl;
+                            return Promise.resolve(data);
                         } else if (response.type === AUTH_REQUIRED && response.code) {
                             if (response.pkce) {
                                 sessionStorage.setItem(PKCE_CODE_VERIFIER, response.pkce);
@@ -488,7 +503,8 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
                             } else {
                                 return Promise.reject(
                                     "Something went wrong during authentication." +
-                                        "Unknown response received. " + JSON.stringify(response)
+                                        "Unknown response received. " +
+                                        JSON.stringify(response)
                                 );
                             }
                         }
@@ -509,6 +525,14 @@ export const WebWorkerClient: WebWorkerSingletonClientInterface = (function(): W
      */
     const signOut = (): Promise<boolean> => {
         if (!signedIn) {
+            if (sessionStorage.getItem(LOGOUT_URL)) {
+                const logoutUrl = sessionStorage.getItem(LOGOUT_URL);
+                sessionStorage.removeItem(LOGOUT_URL);
+                window.location.href = logoutUrl;
+
+                return Promise.resolve(true);
+            }
+
             return Promise.reject("You have not signed in yet");
         }
 
