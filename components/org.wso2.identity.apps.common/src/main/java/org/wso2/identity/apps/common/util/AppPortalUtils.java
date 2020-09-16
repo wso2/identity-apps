@@ -109,7 +109,7 @@ public class AppPortalUtils {
     }
 
     /**
-     * Create portal application.
+     * Create portal SaaS application.
      *
      * @param appName        Application name.
      * @param appOwner       Application owner.
@@ -124,6 +124,7 @@ public class AppPortalUtils {
         ServiceProvider serviceProvider = new ServiceProvider();
         serviceProvider.setApplicationName(appName);
         serviceProvider.setDescription(appDescription);
+        serviceProvider.setSaasApp(true);
 
         InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig
                 = new InboundAuthenticationRequestConfig();
