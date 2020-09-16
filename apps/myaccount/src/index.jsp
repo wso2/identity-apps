@@ -20,6 +20,11 @@
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
+<%
+    session.setAttribute("authCode",request.getParameter("code"));
+    session.setAttribute("sessionState", request.getParameter("session_state"));
+%>
+
 <!DOCTYPE html>
 <html>
     <head>
