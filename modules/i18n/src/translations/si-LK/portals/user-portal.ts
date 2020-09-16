@@ -1281,6 +1281,14 @@ export const userPortal: UserPortalNS = {
             },
             title: "පිටුව හමු නොවීය"
         },
+        accessDeniedError: {
+            action: "නැවත ආරම්භක පිටුව වෙත",
+            subtitles: {
+                0: "ඔබට මෙම පිටුවට ප්‍රවේශ වීමට අවසර නැති බව පෙනේ.",
+                1: "කරුණාකර වෙනත් ගිණුමක් සමඟ පුරනය වීමට උත්සාහ කරන්න"
+            },
+            title: "ප්‍රවේශයට අවසර නැත"
+        },
         emptySearchResult: {
             action: "සෙවුම් විමසුම හිස් කරන්න",
             subtitles: {
