@@ -23,7 +23,8 @@ import {
     CommonAuthenticateActionTypes,
     ResetAuthenticationActionInterface,
     SetSignInActionInterface,
-    SetSignOutActionInterface
+    SetSignOutActionInterface,
+    SetInitializedActionInterface
 } from "./types";
 import { TokenConstants } from "../../constants";
 import { AuthenticatedUserInterface } from "../../models";
@@ -45,6 +46,16 @@ export const setSignIn = (userInfo: AuthenticatedUserInterface): SetSignInAction
  */
 export const setSignOut = (): SetSignOutActionInterface => ({
     type: CommonAuthenticateActionTypes.SET_SIGN_OUT
+});
+
+/**
+ * Redux action to set initialized.
+ *
+ * @return {SetSignOutActionInterface} An action of type `SET_INITIALIZED`.
+ */
+export const setInitialized = (flag: boolean): SetInitializedActionInterface => ({
+    payload: flag,
+    type: CommonAuthenticateActionTypes.SET_INITIALIZED
 });
 
 /**
