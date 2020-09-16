@@ -29,6 +29,7 @@ import { handleSignIn } from "../../store/actions";
  */
 export const SignIn = (props) => {
     const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
+    const isInitialized = useSelector((state: AppState) => state.authenticationInformation.initialized);
 
     const error = new URLSearchParams(props.location.search).get("error_description");
 
@@ -48,7 +49,7 @@ export const SignIn = (props) => {
 
     useEffect(() => {
         if (!isAuth && !error) {
-            handleSignIn();
+            isInitialized && handleSignIn();
         } else if (error === ApplicationConstants.USER_DENIED_CONSENT) {
             // dispatch(handleSignIn());
             // TODO: Send it to an error page
@@ -58,12 +59,12 @@ export const SignIn = (props) => {
                 JSON.parse(sessionStorage.getItem("request_params")).clientId &&
                 JSON.parse(sessionStorage.getItem("request_params")).clientId !== GlobalConfig.clientID) {
                 sessionStorage.clear();
-                handleSignIn();
+                isInitialized && handleSignIn();
             } else {
                 loginSuccessRedirect();
             }
         }
-    }, [isAuth]);
+    }, [isAuth, isInitialized]);
 
     return null;
 };
