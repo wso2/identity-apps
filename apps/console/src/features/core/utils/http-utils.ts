@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { Storage } from "@wso2is/authentication";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AppConstants } from "../constants";

@@ -17,7 +17,6 @@
  *
  */
 
-import { Storage } from "@wso2is/authentication";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { ApplicationConstants } from "../constants";
 import { history } from "../helpers";
