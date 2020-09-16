@@ -40,7 +40,7 @@ export const getEmailTemplateTypes = (): Promise<AxiosResponse<EmailTemplateType
         url: store.getState().config.endpoints.emailTemplateType
     };
 
-    return httpClient<EmailTemplateType[]>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<EmailTemplateType[]>) => {
             return Promise.resolve(response);
         })
@@ -68,7 +68,7 @@ export const createNewTemplateType = (templateType: string): Promise<AxiosRespon
         url: store.getState().config.endpoints.emailTemplateType
     };
 
-    return httpClient<EmailTemplateType>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<EmailTemplateType>) => {
             return Promise.resolve(response);
         })
@@ -116,7 +116,7 @@ export const getEmailTemplate = (templateId: string): Promise<AxiosResponse<Emai
         url: store.getState().config.endpoints.emailTemplateType + "/" + templateId
     };
 
-    return httpClient<EmailTemplateDetails>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<EmailTemplateDetails>) => {
             return Promise.resolve(response);
         })
@@ -144,7 +144,7 @@ export const getTemplateDetails = (
         url: store.getState().config.endpoints.emailTemplateType + "/" + templateTypeId + "/templates/" + templateId
     };
 
-    return httpClient<EmailTemplate>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<EmailTemplate>) => {
             return Promise.resolve(response);
         })
@@ -174,7 +174,7 @@ export const createLocaleTemplate = (
         url: store.getState().config.endpoints.emailTemplateType + "/" + templateTypeId
     };
 
-    return httpClient<EmailTemplateType>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<EmailTemplateType>) => {
             return Promise.resolve(response);
         })

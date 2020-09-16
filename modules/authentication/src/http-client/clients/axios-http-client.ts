@@ -33,7 +33,6 @@ import { AxiosHttpClientInstance, HttpClient, HttpClientStatic } from "../models
  * @example
  * Example usage.
  * ```
- * import { AxiosHttpClient } from "@wso2is/http";
  *
  * const httpClient = AxiosHttpClient.getInstance();
  * httpClient.init(true, onRequestStart, onRequestSuccess, onRequestError, onRequestFinish);

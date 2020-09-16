@@ -26,8 +26,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/authentication": "^1.0.407",
-        "@wso2is/http": "^1.0.407"
+        "@wso2is/authentication": "^1.0.407"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",

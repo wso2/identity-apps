@@ -40,6 +40,8 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
     const { location } = props;
 
     const isAuthenticated = useSelector((state: AppState) => state.auth.isAuthenticated);
+    const isInitialized = useSelector((state: AppState) => state.auth.initialized);
+
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const error = new URLSearchParams(location.search).get("error_description");
@@ -61,7 +63,7 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
 
     useEffect(() => {
         if (!isAuthenticated && !error) {
-            handleSignIn();
+            isInitialized && handleSignIn();
             return;
         }
 
@@ -75,7 +77,7 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
         }
 
         loginSuccessRedirect();
-    }, [ isAuthenticated ]);
+    }, [ isAuthenticated, isInitialized ]);
 
     return null;
 };

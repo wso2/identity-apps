@@ -18,7 +18,7 @@
 
 import { getEndSessionEndpoint, resetOPConfiguration } from "./op-config";
 import { endAuthenticatedSession, getSessionParameter } from "./session-storage";
-import { CALLBACK_URL, ID_TOKEN } from "../constants";
+import { ID_TOKEN, SIGN_OUT_REDIRECT_URL } from "../constants";
 import { Storage } from "../constants/storage";
 import { ConfigInterface, WebWorkerConfigInterface, isWebWorkerConfig } from "../models";
 
@@ -43,7 +43,7 @@ export function sendSignOutRequest(requestParams: ConfigInterface | WebWorkerCon
         return Promise.reject(new Error("Invalid id_token found in the session."));
     }
 
-    const callbackURL = getSessionParameter(CALLBACK_URL, requestParams);
+    const callbackURL = getSessionParameter(SIGN_OUT_REDIRECT_URL, requestParams);
 
     if (!callbackURL || callbackURL.trim().length === 0) {
         return Promise.reject(new Error("No callback URL found in the session."));

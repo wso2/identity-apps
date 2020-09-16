@@ -24,6 +24,7 @@ export interface AuthStateInterface {
     displayName: string;
     emails: string;
     isAuth: boolean;
+    initialized: boolean;
     location: string;
     loginInit: boolean;
     logoutInit: boolean;

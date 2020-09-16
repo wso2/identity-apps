@@ -35,5 +35,6 @@ export const END_SESSION_ENDPOINT = "end_session_endpoint";
 export const JWKS_ENDPOINT = "jwks_uri";
 export const OP_CONFIG_INITIATED = "op_config_initiated";
 export const TENANT = "tenant";
-export const CALLBACK_URL = "callback_url";
+export const SIGN_IN_REDIRECT_URL = "sign_in_redirect_url";
+export const SIGN_OUT_REDIRECT_URL = "sign_out_redirect_url";
 export const OIDC_SESSION_IFRAME_ENDPOINT = "oidc_session_iframe_endpoint";

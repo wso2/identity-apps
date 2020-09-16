@@ -31,6 +31,10 @@ export interface CommonAuthReducerStateInterface {
      */
     emails: string;
     /**
+     * Flag to specify if the authentication SDK has been initialized or not.
+     */
+    initialized: boolean;
+    /**
      * Flag to determine if the user is authenticated.
      */
     isAuthenticated: boolean;

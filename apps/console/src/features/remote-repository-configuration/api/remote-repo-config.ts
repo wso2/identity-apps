@@ -43,7 +43,7 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteRepoConfig
     };
-    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             return Promise.resolve(response);
         })
@@ -62,7 +62,7 @@ export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteRepoConfig + "/" + id
     };
-    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             return Promise.resolve(response);
         })
@@ -100,7 +100,7 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteRepoConfig + "/" + id + "/status"
     };
-    return httpClient<InterfaceConfigDetails>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceConfigDetails>) => {
             return Promise.resolve(response);
         })

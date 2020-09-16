@@ -51,12 +51,19 @@ const SET_PROFILE_INFO = "SET_PROFILE_INFO";
 const SET_SCHEMAS = "SET_SCHEMAS";
 
 /**
+ * Action type to set the initialized flag.
+ * @type {string}
+ */
+const SET_INITIALIZED = "SET_INITIALIZED";
+
+/**
  * Export action types
  *
  * @type {object}
  */
 export const authenticateActionTypes = {
     RESET_AUTHENTICATION,
+    SET_INITIALIZED,
     SET_PROFILE_INFO,
     SET_SCHEMAS,
     SET_SIGN_IN,
