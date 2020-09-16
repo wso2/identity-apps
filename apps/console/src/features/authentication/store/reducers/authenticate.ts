@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { CommonAuthReducerStateInterface } from "@wso2is/core/models";
+import { AuthReducerStateInterface } from "../../../core/models";
 
 /**
  * Initial state for the common authenticate reducer.
  */
-export const commonAuthenticateReducerInitialState: CommonAuthReducerStateInterface = {
+export const commonAuthenticateReducerInitialState: AuthReducerStateInterface = {
     displayName: "",
     emails: "",
     initialized: false,

@@ -23,14 +23,13 @@ import {
     SetSignInActionInterface,
     SetSignOutActionInterface
 } from "./types";
-import { AuthenticatedUserInterface } from "../../models";
 
 /**
  * Redux action to set sign in.
  *
  * @return {SetSignInActionInterface} An action of type `SET_SIGN_IN`
  */
-export const setSignIn = (userInfo: AuthenticatedUserInterface): SetSignInActionInterface => ({
+export const setSignIn = <T>(userInfo: T): SetSignInActionInterface<T> => ({
     payload: userInfo,
     type: CommonAuthenticateActionTypes.SET_SIGN_IN
 });

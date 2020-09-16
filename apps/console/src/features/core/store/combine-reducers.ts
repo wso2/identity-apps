@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AuthenticatedUserInterface } from "@wso2is/authentication";
 import {
     AlertInterface,
     LinkedAccountInterface,
@@ -41,10 +42,11 @@ import {
     helpPanelReducer
 } from "./reducers";
 import { applicationReducer } from "../../applications";
-import { commonAuthenticateReducerInitialState } from "../../authentication/store/reducers/authenticate";
+import { commonAuthenticateReducerInitialState } from "../../authentication/store";
 import { identityProviderReducer } from "../../identity-providers";
 import { governanceConnectorReducer } from "../../server-configurations";
 import {
+    AuthReducerStateInterface,
     DeploymentConfigInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
@@ -58,7 +60,9 @@ import {
  */
 export const reducers = combineReducers({
     application: applicationReducer,
-    auth: commonAuthenticateReducer(commonAuthenticateReducerInitialState),
+    auth: commonAuthenticateReducer<
+        AuthReducerStateInterface,
+        AuthenticatedUserInterface>(commonAuthenticateReducerInitialState),
     config: commonConfigReducer<
         DeploymentConfigInterface,
         ServiceResourceEndpointsInterface,

@@ -18,6 +18,7 @@
 
 import {
     AUTHORIZATION_ENDPOINT,
+    AuthenticatedUserInterface,
     Hooks,
     IdentityClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
@@ -179,7 +180,8 @@ export const initializeAuthentication = () => (dispatch) => {
     auth.on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
     auth.on(Hooks.SignIn, (response) => {
         dispatch(
-            setSignIn({
+            setSignIn<AuthenticatedUserInterface>({
+                displayName: response.displayName,
                 // eslint-disable-next-line @typescript-eslint/camelcase
                 display_name: response.displayName,
                 email: response.email,
