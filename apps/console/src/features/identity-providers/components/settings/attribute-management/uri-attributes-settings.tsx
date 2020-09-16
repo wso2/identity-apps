@@ -64,6 +64,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Form>
                         <Form.Select
                             fluid
+                            required={ true }
                             options={ dropDownOptions }
                             value={ getValidatedInitialValue(initialSubjectUri) }
                             placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.placeHolder") }
@@ -74,6 +75,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             }
                             search
                             fullTextSearch={ false }
+                            error={ _.isEmpty(getValidatedInitialValue(initialSubjectUri)) && {
+                                content: t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                    "subject.validation.empty"),
+                                pointing: "above"
+                            } }
                             label={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.label") }
                             data-testid={ `${ testId }-form-element-subject` }
                         />
@@ -94,6 +100,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Form>
                             <Form.Select
                                 fluid
+                                required={ true }
                                 options={ dropDownOptions }
                                 value={ getValidatedInitialValue(initialRoleUri) }
                                 placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings." +
@@ -105,6 +112,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 }
                                 search
                                 fullTextSearch={ false }
+                                error={ _.isEmpty(getValidatedInitialValue(initialRoleUri)) && {
+                                    content: t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                        "role.validation.empty"),
+                                    pointing: "above"
+                                } }
                                 label={ t("devPortal:components.idp.forms.uriAttributeSettings.role.label") }
                                 data-testid={ `${ testId }-form-element-role` }
                             />
