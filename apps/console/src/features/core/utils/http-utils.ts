@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { OPConfigurationUtil, Storage } from "@wso2is/authentication";
+import { Storage } from "@wso2is/authentication";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AppConstants } from "../constants";
@@ -71,9 +71,8 @@ export class HttpUtils {
             error.response &&
             error.response.request &&
             error.response.request.responseURL &&
-            error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint(Storage.SessionStorage)
+            error.response.request.responseURL === sessionStorage.getItem("token_endpoint")
         ) {
-
             if (error.response.status === 400) {
                 history.push(window["AppUtils"].getConfig().routes.logout);
                 return;

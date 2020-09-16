@@ -152,7 +152,7 @@ export const endUserSession = (onSuccess: () => void, onError: (error: Error) =>
     dispatch(setTokenRevokeRequestLoadingStatus(true));
     const oAuth = IdentityClient.getInstance();
     oAuth
-        .revokeToken()
+        .endUserSession()
         .then(() => {
             // Fire the on success callback.
             onSuccess();

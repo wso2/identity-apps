@@ -18,6 +18,7 @@
 
 import {
     AUTHORIZATION_ENDPOINT,
+    Hooks,
     IdentityClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
     ServiceResourcesType,
@@ -235,10 +236,10 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 export const initializeAuthentication = () =>(dispatch)=> {
     const auth = IdentityClient.getInstance();
 
-    auth.on("http-request-error", onHttpRequestError);
-    auth.on("http-request-finish", onHttpRequestFinish);
-    auth.on("http-request-start", onHttpRequestStart);
-    auth.on("http-request-success", onHttpRequestSuccess);
+    auth.on(Hooks.HttpRequestError, onHttpRequestError);
+    auth.on(Hooks.HttpRequestFinish, onHttpRequestFinish);
+    auth.on(Hooks.HttpRequestStart, onHttpRequestStart);
+    auth.on(Hooks.HttpRequestSuccess, onHttpRequestSuccess);
 
     const initialize = (response?: any): void => {
         auth.initialize({
@@ -267,7 +268,7 @@ export const initializeAuthentication = () =>(dispatch)=> {
         initialize();
     }
 
-    auth.on("sign-in", (response) => {
+    auth.on(Hooks.SignIn, (response) => {
         dispatch(
             setSignIn({
                 // eslint-disable-next-line @typescript-eslint/camelcase
