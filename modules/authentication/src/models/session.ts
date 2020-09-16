@@ -22,6 +22,4 @@ import { TokenResponseInterface } from "./token-response";
 /**
  * Interface of the user session.
  */
-export interface SessionInterface extends AuthenticatedUserInterface, TokenResponseInterface {
-
-}
+export interface SessionInterface extends Omit<AuthenticatedUserInterface, "scope">, TokenResponseInterface { }

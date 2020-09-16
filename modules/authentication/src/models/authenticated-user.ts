@@ -34,6 +34,10 @@ export interface AuthenticatedUserInterface {
      */
     email?: string;
     /**
+     * Available scopes. 
+     */
+    scope?: string;
+    /**
      * Authenticated user's tenant domain.
      */
     tenantDomain?: string;
