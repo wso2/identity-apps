@@ -27,6 +27,7 @@ import {
 import { TokenConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
+import axios from "axios";
 import _ from "lodash";
 import { UAParser } from "ua-parser-js";
 import { getProfileLinkedAccounts } from ".";
@@ -95,6 +96,16 @@ export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
     payload: schemas,
     type: authenticateActionTypes.SET_SCHEMAS
 });
+
+/**
+ * Dispatches an action of type `SET_INITIALIZED`
+ * @param schemas
+ */
+export const setInitialized = (flag: boolean): AuthAction => ({
+    payload: flag,
+    type: authenticateActionTypes.SET_INITIALIZED
+});
+
 
 /**
  * Get SCIM2 schemas
@@ -229,18 +240,33 @@ export const initializeAuthentication = () =>(dispatch)=> {
     auth.on("http-request-start", onHttpRequestStart);
     auth.on("http-request-success", onHttpRequestSuccess);
 
-    auth.initialize({
-        baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-        clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
-        clientID: window["AppUtils"].getConfig().clientID,
-        enablePKCE: true,
-        responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-        scope: [TokenConstants.SYSTEM_SCOPE],
-        serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
-        signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-        storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
-    });
+    const initialize = (response?: any): void => {
+        auth.initialize({
+            authorizationCode: response?.data?.authCode,
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
+            enablePKCE: true,
+            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
+            scope: [TokenConstants.SYSTEM_SCOPE],
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            sessionState: response?.data?.sessionState,
+            signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+            signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+            storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
+        });
+
+        dispatch(setInitialized(true));
+    }
+
+    if (process.env.NODE_ENV === "production") {
+        axios.get(window[ "AppUtils" ].getAppBase() + "/auth.jsp").then((response) => {
+            initialize(response);
+        });
+    } else {
+        initialize();
+    }
+
     auth.on("sign-in", (response) => {
         dispatch(
             setSignIn({
