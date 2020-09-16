@@ -22,9 +22,9 @@ import { getProfileInformation } from "./profile";
 import {
     CommonAuthenticateActionTypes,
     ResetAuthenticationActionInterface,
+    SetInitializedActionInterface,
     SetSignInActionInterface,
-    SetSignOutActionInterface,
-    SetInitializedActionInterface
+    SetSignOutActionInterface
 } from "./types";
 import { TokenConstants } from "../../constants";
 import { AuthenticatedUserInterface } from "../../models";
@@ -82,13 +82,14 @@ export const handleSignIn = () => (dispatch) => {
     oAuth
         .initialize({
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+            signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             storage: Storage.WebWorker
         })
         .then(() => {
