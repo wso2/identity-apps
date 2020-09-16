@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, SignInResponse } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ProfileConstants } from "../constants";
@@ -27,7 +27,6 @@ import {
     ContentTypeHeaderValues,
     GravatarFallbackTypes,
     HttpMethods,
-    LinkedAccountInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface
 } from "../models";
@@ -252,49 +251,5 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                 error.request,
                 error.response,
                 error.config);
-        });
-};
-
-/**
- * Switches the logged in user's account to one of the linked accounts
- * associated to the corresponding user.
- *
- * @param {LinkedAccountInterface} account - The target account.
- * @param {string[]} scopes - Required scopes array.
- * @param {string} clientID - Client ID.
- * @param {string} clientHost - Client Host URL.
- * @return {Promise<any>}
- * @throws {IdentityAppsApiException}
- */
-export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
-    return auth
-        .customGrant({
-            attachToken: false,
-            data: {
-                clientId: "{{clientId}}",
-                grantType: "account_switch",
-                scope: "{{scope}}",
-                "tenant-domain": account.tenantDomain,
-                token: "{{token}}",
-                username: account.username,
-                "userstore-domain": account.userStoreDomain
-            },
-            id: "switch-account",
-            returnResponse: true,
-            returnsSession: true,
-            signInRequired: true
-        })
-        .then((response: SignInResponse) => {
-            return Promise.resolve(response?.data);
-        })
-        .catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                ProfileConstants.ACCOUNT_SWITCH_REQUEST_ERROR,
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
-            );
         });
 };
