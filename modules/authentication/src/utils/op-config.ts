@@ -28,12 +28,12 @@ import {
     OP_CONFIG_INITIATED,
     REVOKE_TOKEN_ENDPOINT,
     SERVICE_RESOURCES,
+    SIGN_IN_REDIRECT_URL,
+    SIGN_OUT_REDIRECT_URL,
     Storage,
     TENANT,
     TOKEN_ENDPOINT,
-    USERNAME,
-    SIGN_IN_REDIRECT_URL,
-    SIGN_OUT_REDIRECT_URL
+    USERNAME
 } from "../constants";
 import { ConfigInterface, ServiceResourcesType, WebWorkerConfigInterface } from "../models";
 

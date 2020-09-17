@@ -23,6 +23,7 @@ import {
     AUTHORIZATION_ENDPOINT,
     DISPLAY_NAME,
     EMAIL,
+    ID_TOKEN,
     OIDC_SESSION_IFRAME_ENDPOINT,
     PKCE_CODE_VERIFIER,
     SCOPE,
@@ -40,25 +41,25 @@ import {
     ServiceResourcesType,
     SessionData,
     SignInResponse,
+    SignInResponseWorker,
     UserInfo,
     WebWorkerClientConfigInterface,
     WebWorkerConfigInterface,
     WebWorkerInterface,
-    WebWorkerSingletonInterface,
-    SignInResponseWorker
+    WebWorkerSingletonInterface
 } from "../models";
 import {
     customGrant as customGrantUtil,
     endAuthenticatedSession,
+    getEndSessionEndpoint,
     getServiceEndpoints as getServiceEndpointsUtil,
+    getSessionParameter,
     getUserInfo as getUserInfoUtil,
     handleSignIn,
     handleSignOut,
     resetOPConfiguration,
     sendRefreshTokenRequest as sendRefreshTokenRequestUtil,
-    sendRevokeTokenRequest as sendRevokeTokenRequestUtil,
-    getEndSessionEndpoint,
-    getSessionParameter
+    sendRevokeTokenRequest as sendRevokeTokenRequestUtil
 } from "../utils";
 
 export const WebWorker: WebWorkerSingletonInterface = (function (): WebWorkerSingletonInterface {
