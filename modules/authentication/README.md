@@ -4,7 +4,7 @@ Provide OpenID Connect (OIDC) and OAuth2 protocol support for JavaScript client 
 
 ## Install
 Add following dependency in your package.json file.
-`"@wso2is/authentication": "^0.1.0"`
+`"@asgardio/oidc-js": "^0.1.0"`
 
 ## Usage
 

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, SignInResponse } from "@wso2is/authentication";
+import { IdentityClient, SignInResponse } from "@asgardio/oidc-js";
 import { HttpMethods, LinkedAccountInterface } from "../models";
 import { store } from "../store";
 

@@ -17,7 +17,7 @@
  *
  */
 
-import { AuthenticateSessionUtil } from "@wso2is/authentication";
+import { AuthenticateSessionUtil } from "@asgardio/oidc-js";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { staticDecorator } from "../helpers";
 import { AxiosHttpClientInstance, HttpClient, HttpClientStatic } from "../models";
