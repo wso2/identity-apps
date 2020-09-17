@@ -51,6 +51,15 @@ export class AppConstants {
     }
 
     /**
+     * Get the main view base path.
+     *
+     * @return {string}
+     */
+    public static getMainViewBasePath(): string {
+        return this.getTenantQualifiedAppBasePath();
+    }
+
+    /**
      * Get tenant qualified app base name. ex: `t/<BASENAME>`
      *
      * @return {string}
@@ -143,7 +152,7 @@ export class AppConstants {
             .set("APPLICATION_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/applications/:id`)
             .set("CERTIFICATES", `${ AppConstants.getAdminViewBasePath() }/certificates`)
             .set("CLAIM_DIALECTS", `${ AppConstants.getAdminViewBasePath() }/claim-dialects`)
-            .set("CUSTOMIZE", "/customize")
+            .set("CUSTOMIZE", `${ AppConstants.getMainViewBasePath() }/customize`)
             .set("DEVELOPER_OVERVIEW", `${ AppConstants.getDeveloperViewBasePath() }/overview`)
             .set("EMAIL_TEMPLATE_TYPES", `${ AppConstants.getAdminViewBasePath() }/email-templates`)
             .set("EMAIL_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/email-templates/:templateTypeId`)
@@ -164,15 +173,15 @@ export class AppConstants {
             .set("LOGOUT",  window[ "AppUtils" ].getConfig().routes.logout)
             .set("OIDC_SCOPES", `${ AppConstants.getDeveloperViewBasePath() }/oidc-scopes`)
             .set("OIDC_SCOPES_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/oidc-scopes/:id`)
-            .set("PAGE_NOT_FOUND", "/404")
-            .set("PRIVACY", "/privacy")
+            .set("PAGE_NOT_FOUND", `${ AppConstants.getMainViewBasePath() }/404`)
+            .set("PRIVACY", `${ AppConstants.getMainViewBasePath() }/privacy`)
             .set("REMOTE_REPO_CONFIG", `${ AppConstants.getDeveloperViewBasePath() }/remote-repository-config`)
             .set("REMOTE_REPO_CONFIG_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/remote-repository-config/:id`)
             .set("ROLES", `${ AppConstants.getAdminViewBasePath() }/roles`)
             .set("ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id`)
             .set("ROOT", "/")
             .set("GOVERNANCE_CONNECTORS", `${ AppConstants.getAdminViewBasePath() }/governance-connectors/:id`)
-            .set("UNAUTHORIZED", "/unauthorized")
+            .set("UNAUTHORIZED", `${ AppConstants.getMainViewBasePath() }/unauthorized`)
             .set("USERS", `${ AppConstants.getAdminViewBasePath() }/users`)
             .set("USER_EDIT", `${ AppConstants.getAdminViewBasePath() }/users/:id`)
             .set("USERSTORES", `${ AppConstants.getAdminViewBasePath() }/user-stores`)

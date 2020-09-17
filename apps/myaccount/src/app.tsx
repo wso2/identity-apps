@@ -46,7 +46,7 @@ import {
 } from "./models";
 import { AppState } from "./store";
 import { initializeAuthentication } from "./store/actions";
-import { filteredRoutes } from "./utils";
+import { filterRoutes } from "./utils";
 
 /**
  * Main App component.
@@ -140,7 +140,7 @@ export const App = (): ReactElement => {
      */
     const handleSessionTimeoutAbort = (url: URL): void => {
         history.push({
-            pathname: (url.pathname).replace(config.deployment.appBaseName, ""),
+            pathname: url.pathname,
             search: url.search
         });
     };
@@ -211,7 +211,7 @@ export const App = (): ReactElement => {
                                                     />
                                                     {
                                                         config
-                                                            ? filteredRoutes(appRoutes, config)
+                                                            ? filterRoutes(appRoutes, config)
                                                                 .map((route, index) => {
                                                                     return (
                                                                         route.protected ?

@@ -89,7 +89,7 @@ export const onHttpRequestError = (error: any): null => {
     }
 
     // If the user doesn't have login permission, redirect to login error page.
-    if (!AuthenticateUtils.hasLoginPermission(store?.getState()?.auth?.scope)) {
+    if (store.getState()?.auth?.scope && !AuthenticateUtils.hasLoginPermission(store.getState().auth.scope)) {
         history.push(AppConstants.getPaths().get("LOGIN_ERROR"));
         return;
     }

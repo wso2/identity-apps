@@ -43,7 +43,7 @@ export const checkEnabled = (appConfig: any, key: string): boolean => {
  * @param {object} appConfig - App config.
  * @return {RouteInterface[]}
  */
-export const filteredRoutes = (routes: RouteInterface[], appConfig: object): RouteInterface[] => {
+export const filterRoutes = (routes: RouteInterface[], appConfig: object): RouteInterface[] => {
 
     return routes.filter((route: RouteInterface) => {
         return checkEnabled(appConfig, route.id);

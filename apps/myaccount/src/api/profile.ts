@@ -20,6 +20,7 @@ import { IdentityClient } from "@wso2is/authentication";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import _ from "lodash";
+import { Config } from "../configs";
 import { AppConstants, SCIM2_ENT_USER_SCHEMA } from "../constants";
 import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, ProfileSchema, ReadOnlyUserStatus } from "../models";
@@ -73,7 +74,7 @@ export const getUserReadOnlyStatus = (): Promise<ReadOnlyUserStatus> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.isReadOnlyUser
+        url: Config.getServiceResourceEndpoints().isReadOnlyUser
     };
 
     return httpClient(requestConfig)

@@ -152,16 +152,16 @@ export class AppConstants {
             .set("APPLICATIONS", `${ this.getMainViewBasePath() }/applications`)
             .set("LOGIN", window[ "AppUtils" ].getConfig().routes.login)
             .set("LOGOUT", window[ "AppUtils" ].getConfig().routes.logout)
-            .set("LOGIN_ERROR", "/login-error")
+            .set("LOGIN_ERROR", `${ this.getMainViewBasePath() }/login-error`)
             .set("OVERVIEW", `${ this.getMainViewBasePath() }/overview`)
-            .set("PAGE_NOT_FOUND", "/404")
+            .set("PAGE_NOT_FOUND", `${ this.getMainViewBasePath() }/404`)
             .set("PROFILE_INFO", `${ this.getMainViewBasePath() }/personal-info`)
             .set("PERSONAL_INFO", `${ this.getMainViewBasePath() }/personal-info`)
             .set("SECURITY", `${ this.getMainViewBasePath() }/security`)
             .set("OPERATIONS", `${ this.getMainViewBasePath() }/operations`)
-            .set("PRIVACY", "/privacy")
+            .set("PRIVACY", `${ this.getMainViewBasePath() }/privacy`)
             .set("ROOT", "/")
-            .set("UNAUTHORIZED", "/unauthorized");
+            .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/unauthorized`);
     }
 
     /**
