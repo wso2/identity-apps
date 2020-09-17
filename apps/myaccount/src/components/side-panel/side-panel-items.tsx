@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
-import { SidePanelIcons } from "../../configs";
+import { SidePanelIcons, getAppRoutes } from "../../configs";
 import { AppConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { FeatureConfigInterface } from "../../models";
@@ -108,7 +108,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
         <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
             {
                 appConfig && (
-                    filteredRoutes(appConfig).map((route, index) => (
+                    filteredRoutes(getAppRoutes(), appConfig).map((route, index) => (
                         (route.showOnSidePanel
                             && hasRequiredScopes(appConfig[route.id], appConfig[route.id]?.scopes?.read, allowedScopes)
                             && validateSidePanelVisibility(route.path))
