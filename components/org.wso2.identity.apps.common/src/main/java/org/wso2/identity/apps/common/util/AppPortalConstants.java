@@ -24,6 +24,7 @@ package org.wso2.identity.apps.common.util;
 public class AppPortalConstants {
 
     public static final String INBOUND_AUTH2_TYPE = "oauth2";
+    public static final String INBOUND_CONFIG_TYPE = "standardAPP";
 
     public static final String EMAIL_CLAIM_URI = "http://wso2.org/claims/emailaddress";
 
