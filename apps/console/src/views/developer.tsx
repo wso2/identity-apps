@@ -100,8 +100,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        const pathname = location.pathname.replace(config.deployment.appBaseName, "");
-        setSelectedRoute(RouteUtils.getInitialActiveRoute(pathname, filteredRoutes));
+        setSelectedRoute(RouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
     }, [ filteredRoutes ]);
 
     useEffect(() => {
