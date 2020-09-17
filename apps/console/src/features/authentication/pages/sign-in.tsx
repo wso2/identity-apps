@@ -41,19 +41,17 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
 
     const error = new URLSearchParams(location.search).get("error_description");
 
-    const getAuthenticationCallbackUrl = () => {
-        return window.sessionStorage.getItem("auth_callback_url");
-    };
-
     const loginSuccessRedirect = () => {
-        const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
-        const location =
-            !AuthenticationCallbackUrl
-            || AuthenticationCallbackUrl === config.deployment.appLoginPath
-                ? config.deployment.appHomePath
-                : AuthenticationCallbackUrl;
 
-        history.push(location);
+        // TODO: Fix the auth callback isssue here.
+        /* const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl();
+
+        const location = !AuthenticationCallbackUrl
+            || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                ? AppConstants.getAppHomePath()
+                : AuthenticationCallbackUrl;*/
+
+        history.push(AppConstants.getAppHomePath());
     };
 
     useEffect(() => {

@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { AuthenticateUtils } from "@wso2is/core/utils";
 import { FunctionComponent, ReactElement, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
