@@ -239,8 +239,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
-                // TODO: Enable this when the rest API is improved.
-                // tokenBindingValidation: values.get("ValidateBinding")?.length > 0,
+                tokenBindingValidation: values.get("ValidateBinding")?.length > 0,
                 type: values.get("type"),
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
             },
