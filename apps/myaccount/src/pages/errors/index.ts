@@ -18,3 +18,4 @@
 
 export * from "./404";
 export * from "./login-error";
+export * from "./access-denied-error";

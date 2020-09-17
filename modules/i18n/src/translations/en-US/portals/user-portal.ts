@@ -1285,6 +1285,14 @@ export const userPortal: UserPortalNS = {
             },
             title: "Page not found"
         },
+        accessDeniedError: {
+            action: "Back to home",
+            subtitles: {
+                0: "It seems like you are not allowed to access this page.",
+                1: "Please try signing in with a different account."
+            },
+            title: "Access not granted"
+        },
         emptySearchResult: {
             action: "Clear search query",
             subtitles: {

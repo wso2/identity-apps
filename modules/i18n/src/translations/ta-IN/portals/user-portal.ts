@@ -1315,6 +1315,14 @@ export const userPortal: UserPortalNS = {
             },
             title: "பக்கம் காணப்படவில்லை"
         },
+        accessDeniedError: {
+            action: "முகப்பிற்கு திரும்பு",
+            subtitles: {
+                0: "இந்தப் பக்கத்தை அணுக உங்களுக்கு அனுமதி இல்லை என்று தெரிகிறது.",
+                1: "வேறு கணக்கில் உள்நுழைய முயற்சிக்கவும்."
+            },
+            title: "அணுகல் வழங்கப்படவில்லை"
+        },
         emptySearchResult: {
             action: "தேடல் கேள்வியினை அழி",
             subtitles: {

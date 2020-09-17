@@ -1267,6 +1267,14 @@ export const userPortal: UserPortalNS = {
             },
             title: "página não encontrada"
         },
+        accessDeniedError: {
+            action: "Voltar para casa",
+            subtitles: {
+                0: "Parece que você não tem permissão para acessar esta página.",
+                1: "Tente fazer login com uma conta diferente."
+            },
+            title: "Acesso não concedido"
+        },
         emptySearchResult: {
             action: "Limpar consulta de pesquisa",
             subtitles: {
