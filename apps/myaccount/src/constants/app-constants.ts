@@ -150,6 +150,8 @@ export class AppConstants {
         return new Map<string, string>()
             .set("ACCESS_DENIED_ERROR", `${ this.getMainViewBasePath() }/access-denied-error`)
             .set("APPLICATIONS", `${ this.getMainViewBasePath() }/applications`)
+            .set("LOGIN", window[ "AppUtils" ].getConfig().routes.login)
+            .set("LOGOUT", window[ "AppUtils" ].getConfig().routes.logout)
             .set("LOGIN_ERROR", "/login-error")
             .set("OVERVIEW", `${ this.getMainViewBasePath() }/overview`)
             .set("PAGE_NOT_FOUND", "/404")

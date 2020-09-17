@@ -35,7 +35,7 @@ export const getAppRoutes = (): RouteInterface[] => {
             icon: null,
             id: "authLayoutLogin",
             name: "Login",
-            path: AppConstants.getAppLoginPath(),
+            path: AppConstants.getPaths().get("LOGIN"),
             protected: false,
             showOnSidePanel: false
         },
@@ -44,7 +44,7 @@ export const getAppRoutes = (): RouteInterface[] => {
             icon: null,
             id: "authLayoutLogout",
             name: "Logout",
-            path: AppConstants.getAppLogoutPath(),
+            path: AppConstants.getPaths().get("LOGOUT"),
             protected: false,
             showOnSidePanel: false
         },

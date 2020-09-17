@@ -160,6 +160,8 @@ export class AppConstants {
             .set("IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`)
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/local-claims`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-local-claims/:id`)
+            .set("LOGIN",  window[ "AppUtils" ].getConfig().routes.login)
+            .set("LOGOUT",  window[ "AppUtils" ].getConfig().routes.logout)
             .set("OIDC_SCOPES", `${ AppConstants.getDeveloperViewBasePath() }/oidc-scopes`)
             .set("OIDC_SCOPES_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/oidc-scopes/:id`)
             .set("PAGE_NOT_FOUND", "/404")
