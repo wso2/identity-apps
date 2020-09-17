@@ -167,7 +167,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                 contentTopMargin={ true }
                 backButton={ {
                     onClick: () => {
-                        history.push(AppConstants.PATHS.get("USERSTORES"));
+                        history.push(AppConstants.getPaths().get("USERSTORES"));
                     },
                     text: t("adminPortal:components.userstores.pageLayout.templates.back")
                 }

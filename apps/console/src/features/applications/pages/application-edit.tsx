@@ -146,7 +146,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if(!isFeatureEnabled(featureConfig.applications,
             ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT"))) {
 
-            history.push(AppConstants.PATHS.get("PAGE_NOT_FOUND"));
+            history.push(AppConstants.getPaths().get("PAGE_NOT_FOUND"));
         }
     }, [ featureConfig ]);
 
@@ -437,14 +437,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
     /**
      * Called when an application is deleted.
      */
     const handleApplicationDelete = (): void => {
-        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
     /**

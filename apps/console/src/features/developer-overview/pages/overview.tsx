@@ -171,7 +171,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         className="basic-card"
                         link={ false }
                         as="div"
-                        onClick={ () => history.push(AppConstants.PATHS.get("APPLICATIONS")) }
+                        onClick={ () => history.push(AppConstants.getPaths().get("APPLICATIONS")) }
                     >
                         <GenericIcon
                             square
@@ -194,7 +194,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         className="basic-card"
                         link={ false }
                         as="div"
-                        onClick={ () => history.push(AppConstants.PATHS.get("IDP")) }
+                        onClick={ () => history.push(AppConstants.getPaths().get("IDP")) }
                     >
                         <GenericIcon
                             square
@@ -217,7 +217,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         className="basic-card"
                         link={ false }
                         as="div"
-                        onClick={ () => history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG")) }
+                        onClick={ () => history.push(AppConstants.getPaths().get("REMOTE_REPO_CONFIG")) }
                     >
                         <GenericIcon
                             square

@@ -90,7 +90,7 @@ const UserEditPage = (): ReactElement => {
     };
 
     const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("USERS"));
+        history.push(AppConstants.getPaths().get("USERS"));
     };
 
     /**

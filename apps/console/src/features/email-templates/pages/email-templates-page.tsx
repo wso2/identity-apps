@@ -173,14 +173,14 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
      * Util to handle back button event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"));
+        history.push(AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"));
     };
 
     /**
      * Util to handle back button event.
      */
     const handleAddNewTemplate = (): void => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_ADD").replace(":templateTypeId", templateTypeId));
+        history.push(AppConstants.getPaths().get("EMAIL_TEMPLATE_ADD").replace(":templateTypeId", templateTypeId));
     };
 
     /**

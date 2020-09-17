@@ -45,9 +45,9 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      * The login path and the login error path have been skipped.
      */
-    if ((history.location.pathname !== config.deployment.appLoginPath)
-        && (history.location.pathname !== AppConstants.PATHS.get("UNAUTHORIZED"))
-        && (history.location.pathname !== AppConstants.PATHS.get("PAGE_NOT_FOUND"))) {
+    if ((history.location.pathname !== window["AppUtils"].getConfig().appLogoPath)
+        && (history.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
+        && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND"))) {
 
         AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
     } else {

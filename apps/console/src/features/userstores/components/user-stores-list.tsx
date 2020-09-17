@@ -283,7 +283,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
     };
 
     const handleUserstoreEdit = (userstoreId: string) => {
-        history.push(AppConstants.PATHS.get("USERSTORES_EDIT").replace(":id", userstoreId));
+        history.push(AppConstants.getPaths().get("USERSTORES_EDIT").replace(":id", userstoreId));
     };
 
     /**

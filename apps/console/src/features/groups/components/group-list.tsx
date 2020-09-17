@@ -131,7 +131,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
     const [ currentDeletedGroup, setCurrentDeletedGroup ] = useState<GroupsInterface>();
 
     const handleGroupEdit = (groupId: string) => {
-        history.push(AppConstants.PATHS.get("GROUP_EDIT").replace(":id", groupId));
+        history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", groupId));
     };
 
     /**

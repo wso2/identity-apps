@@ -52,7 +52,7 @@ const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG"));
+        history.push(AppConstants.getPaths().get("REMOTE_REPO_CONFIG"));
     };
 
     /**
@@ -81,7 +81,7 @@ const RemoteRepositoryEditPage: FunctionComponent = (): ReactElement => {
                 )
             });
         });
-        history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG"));
+        history.push(AppConstants.getPaths().get("REMOTE_REPO_CONFIG"));
     };
 
     const handleOnConfigUpdate = (id: string, values: InterfaceEditDetails): void => {

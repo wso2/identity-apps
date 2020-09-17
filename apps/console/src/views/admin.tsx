@@ -165,7 +165,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         },
                         id: category.id,
                         name: category.name,
-                        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
+                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
                         protected: true,
                         showOnSidePanel: true
                     });

@@ -201,7 +201,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             description={ t("adminPortal:components.userstores.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
-                    history.push(AppConstants.PATHS.get("USERSTORES"));
+                    history.push(AppConstants.getPaths().get("USERSTORES"));
                 },
                 text: t ("adminPortal:components.userstores.pageLayout.edit.back")
             } }

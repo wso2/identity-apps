@@ -116,7 +116,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             onClose();
 
-            history.push(AppConstants.PATHS.get("USERSTORES"));
+            history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch(error => {
             dispatch(addAlert({
                 description: error?.description ?? t("adminPortal:components.userstores.notifications.addUserstore" +

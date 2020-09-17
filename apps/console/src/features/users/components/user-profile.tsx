@@ -178,7 +178,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         "adminPortal:components.users.notifications.deleteUser.success.message"
                     )
                 });
-                history.push(AppConstants.PATHS.get("USERS"));
+                history.push(AppConstants.getPaths().get("USERS"));
             });
     };
 

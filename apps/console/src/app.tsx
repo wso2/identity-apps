@@ -133,7 +133,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         }
 
         history.push({
-            pathname: AppConstants.PATHS.get("UNAUTHORIZED"),
+            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
             search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
         });
     }, [ config, loginInit ]);

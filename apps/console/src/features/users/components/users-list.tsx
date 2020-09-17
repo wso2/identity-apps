@@ -145,7 +145,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const handleUserEdit = (userId: string) => {
-        history.push(AppConstants.PATHS.get("USER_EDIT").replace(":id", userId));
+        history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", userId));
     };
 
     const deleteUser = (id: string): void => {
