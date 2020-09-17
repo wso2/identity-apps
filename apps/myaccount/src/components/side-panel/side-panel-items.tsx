@@ -25,7 +25,7 @@ import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react";
 import { fetchApplications } from "../../api";
 import { SidePanelIcons } from "../../configs";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
@@ -98,7 +98,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
      * @return {boolean}
      */
     const validateSidePanelVisibility = (path: string): boolean => {
-        if (path === ApplicationConstants.APPLICATIONS_PAGE_PATH) {
+        if (path === AppConstants.APPLICATIONS_PAGE_PATH) {
             return isApplicationsPageVisible;
         }
         return true;

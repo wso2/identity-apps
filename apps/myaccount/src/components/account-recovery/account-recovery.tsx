@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { EmailRecovery, SecurityQuestionsComponent } from "./options";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
@@ -64,7 +64,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
                         ) &&
                         isFeatureEnabled(
                             featureConfig?.security,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
+                            AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
                         )
                         ? (
                             <SecurityQuestionsComponent onAlertFired={ onAlertFired } />
@@ -81,7 +81,7 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
                         ) &&
                         isFeatureEnabled(
                             featureConfig?.security,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
+                            AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
                         )
                         ? (
                             <EmailRecovery onAlertFired={ onAlertFired } />

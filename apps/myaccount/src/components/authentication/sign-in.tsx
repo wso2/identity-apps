@@ -18,7 +18,7 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { GlobalConfig } from "../../configs";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
@@ -50,7 +50,7 @@ export const SignIn = (props) => {
     useEffect(() => {
         if (!isAuth && !error) {
             isInitialized && handleSignIn();
-        } else if (error === ApplicationConstants.USER_DENIED_CONSENT) {
+        } else if (error === AppConstants.USER_DENIED_CONSENT) {
             // dispatch(handleSignIn());
             // TODO: Send it to an error page
         } else {

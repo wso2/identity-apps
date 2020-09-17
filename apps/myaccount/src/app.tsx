@@ -36,7 +36,7 @@ import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
 import { SignIn, SignOut } from "./components/authentication";
 import { Config } from "./configs";
-import { ApplicationConstants } from "./constants";
+import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
@@ -91,7 +91,7 @@ export const App = (): ReactElement => {
             return;
         }
 
-        history.push(ApplicationConstants.PATHS.get("UNAUTHORIZED"));
+        history.push(AppConstants.PATHS.get("UNAUTHORIZED"));
     }, [ loginInit, allowedScopes, config ]);
 
     /**

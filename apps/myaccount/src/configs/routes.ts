@@ -19,28 +19,13 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { AppLayout } from "@wso2is/react-components";
 import { lazy } from "react";
-import { ApplicationConstants } from "../constants";
+import { AppConstants } from "../constants";
 import * as TokenConstants from "../constants/token-constants";
-
-/**
- * Interface to handle route types.
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export interface Route {
-    component: any;
-    icon?: string;
-    id: string;
-    name: string;
-    path: string;
-    protected: boolean;
-    scope?: string;
-    showOnSidePanel: boolean;
-}
 
 /**
  * Routes array.
  */
-const ROUTES: Route[] = [
+const ROUTES: RouteInterface[] = [
     {
         component: lazy(() => import("../pages/overview")),
         icon: "overview",
@@ -55,7 +40,7 @@ const ROUTES: Route[] = [
         icon: "apps",
         id: "applications",
         name: "common:applications",
-        path: ApplicationConstants.APPLICATIONS_PAGE_PATH,
+        path: AppConstants.APPLICATIONS_PAGE_PATH,
         protected: true,
         showOnSidePanel: true
     },
@@ -108,7 +93,7 @@ const ROUTES: Route[] = [
         component: lazy(() => import("../pages/errors/login-error")),
         id: "loginError",
         name: "Login error",
-        path: ApplicationConstants.LOGIN_ERROR_PAGE_PATH,
+        path: AppConstants.LOGIN_ERROR_PAGE_PATH,
         protected: true,
         showOnSidePanel: false
     },

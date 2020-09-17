@@ -21,7 +21,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Redirect, Route } from "react-router-dom";
 import { GlobalConfig } from "../../configs";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 
@@ -35,8 +35,8 @@ export const ProtectedRoute = ({ component: Component, route, ...rest }) => {
      * The login path and the login error path have been skipped.
      */
     if ((history.location.pathname !== GlobalConfig.appLoginPath)
-        && (history.location.pathname !== ApplicationConstants.LOGIN_ERROR_PAGE_PATH)
-        && (history.location.pathname !== ApplicationConstants.PAGE_NOT_FOUND_PATH)) {
+        && (history.location.pathname !== AppConstants.LOGIN_ERROR_PAGE_PATH)
+        && (history.location.pathname !== AppConstants.PAGE_NOT_FOUND_PATH)) {
         AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
     }
     else {

@@ -19,7 +19,7 @@
 /**
  * Class containing app constants.
  */
-export class ApplicationConstants {
+export class AppConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside

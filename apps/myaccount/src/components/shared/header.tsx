@@ -39,7 +39,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
@@ -222,7 +222,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 {
                     icon: "arrow right",
                     name: t("common:personalInfo"),
-                    onClick: () => history.push(ApplicationConstants.PATHS.get("PROFILE_INFO"))
+                    onClick: () => history.push(AppConstants.PATHS.get("PROFILE_INFO"))
                 },
                 {
                     icon: "power off",

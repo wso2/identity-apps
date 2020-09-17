@@ -18,7 +18,7 @@
  */
 
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import { ApplicationConstants } from "../constants";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
 import { store } from "../store";
 import { hideGlobalLoader, showGlobalLoader } from "../store/actions";
@@ -43,16 +43,16 @@ export const onHttpRequestSuccess = (): void => {
  * Set up the http client by registering the callback functions.
  */
 const endUserSessionWithoutLoops = (): void => {
-    if (!sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME)) {
-        sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+    if (!sessionStorage.getItem(AppConstants.AUTH_ERROR_TIME)) {
+        sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
     } else {
         const currentTime = new Date().getTime();
-        const errorTime = parseInt(sessionStorage.getItem(ApplicationConstants.AUTH_ERROR_TIME), 10);
+        const errorTime = parseInt(sessionStorage.getItem(AppConstants.AUTH_ERROR_TIME), 10);
         if (currentTime - errorTime >= 10000) {
-            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
             history.push(window["AppUtils"].getConfig().routes.logout);
         } else {
-            sessionStorage.setItem(ApplicationConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
+            sessionStorage.setItem(AppConstants.AUTH_ERROR_TIME, new Date().getTime().toString());
             return;
         }
     }
@@ -90,7 +90,7 @@ export const onHttpRequestError = (error: any): null => {
 
     // If the user doesn't have login permission, redirect to login error page.
     if (!AuthenticateUtils.hasLoginPermission(store?.getState()?.auth?.scope)) {
-        history.push(ApplicationConstants.LOGIN_ERROR_PAGE_PATH);
+        history.push(AppConstants.LOGIN_ERROR_PAGE_PATH);
         return;
     }
 

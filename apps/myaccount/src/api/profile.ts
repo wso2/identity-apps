@@ -20,7 +20,7 @@ import { IdentityClient } from "@wso2is/authentication";
 import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import _ from "lodash";
-import { ApplicationConstants, SCIM2_ENT_USER_SCHEMA } from "../constants";
+import { AppConstants, SCIM2_ENT_USER_SCHEMA } from "../constants";
 import { history } from "../helpers";
 import { BasicProfileInterface, HttpMethods, ProfileSchema, ReadOnlyUserStatus } from "../models";
 import { store } from "../store";
@@ -169,7 +169,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 store.dispatch(toggleSCIMEnabled(false));
 
                 // Navigate to login error page.
-                history.push(ApplicationConstants.LOGIN_ERROR_PAGE_PATH);
+                history.push(AppConstants.LOGIN_ERROR_PAGE_PATH);
             }
 
             return Promise.reject(error);

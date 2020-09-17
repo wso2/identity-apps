@@ -21,7 +21,7 @@ import React, { FunctionComponent } from "react";
 import { useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { AccountSecurityWidget, AccountStatusWidget, ConsentManagementWidget, UserSessionsWidget } from "./widgets";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 
@@ -42,7 +42,7 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
                     { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS")
+                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_STATUS")
                         ) ? (
                             <AccountStatusWidget />
                         ) : null }
@@ -51,7 +51,7 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
                     { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY")
+                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_ACTIVITY")
                         ) ? (
                             <UserSessionsWidget />
                         ) : null }
@@ -60,7 +60,7 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
                     { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY")
+                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_ACCOUNT_SECURITY")
                         ) ? (
                             <AccountSecurityWidget />
                         ) : null }
@@ -69,7 +69,7 @@ export const Overview: FunctionComponent<{}> = (): JSX.Element => {
                     { hasRequiredScopes(accessConfig?.overview, accessConfig?.overview?.scopes?.read, allowedScopes) &&
                         isFeatureEnabled(
                             accessConfig?.overview,
-                            ApplicationConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS")
+                            AppConstants.FEATURE_DICTIONARY.get("OVERVIEW_CONSENTS")
                         ) ? (
                             <ConsentManagementWidget />
                         ) : null }

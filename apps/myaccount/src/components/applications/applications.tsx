@@ -24,7 +24,7 @@ import { Divider, Grid } from "semantic-ui-react";
 import { AllApplications } from "./all-applications";
 import { RecentApplications } from "./recent-applications";
 import { fetchApplications } from "../../api";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import {
     AlertInterface,
@@ -115,7 +115,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      */
     const populateRecentApplications = (): void => {
         const applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
-            getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
+            getValueFromLocalStorage(AppConstants.APPLICATION_SETTINGS_STORAGE_KEY)
         );
 
         // Check if the current logged in user already has an entry in the settings.
@@ -163,7 +163,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
      */
     const updateRecentApplications = (id: string): void => {
         let applicationSettings: StorageApplicationSettingsInterface = JSON.parse(
-            getValueFromLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY)
+            getValueFromLocalStorage(AppConstants.APPLICATION_SETTINGS_STORAGE_KEY)
         );
 
         // Check if the current logged in user already has an entry in the settings.
@@ -205,7 +205,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
         applicationSettings[username].recentApplications.unshift(id);
 
         // Set the new array in localstorage.
-        setValueInLocalStorage(ApplicationConstants.APPLICATION_SETTINGS_STORAGE_KEY,
+        setValueInLocalStorage(AppConstants.APPLICATION_SETTINGS_STORAGE_KEY,
             JSON.stringify(applicationSettings));
 
         // Re-populate the recent apps array.

@@ -17,7 +17,7 @@
  */
 
 import { isEmpty } from "lodash";
-import { ApplicationConstants } from "../constants";
+import { AppConstants } from "../constants";
 import { AuthStateInterface } from "../models";
 
 /**
@@ -54,7 +54,7 @@ export const resolveUserDisplayName = (state: AuthStateInterface): string => {
  */
 export const resolveUsername = (username: string, userStoreDomain: string): string => {
     // check if the user store is `PRIMARY`.
-    if (userStoreDomain === ApplicationConstants.PRIMARY_USER_STORE_IDENTIFIER) {
+    if (userStoreDomain === AppConstants.PRIMARY_USER_STORE_IDENTIFIER) {
         return username;
     }
     return `${userStoreDomain}/${username}`;
@@ -77,7 +77,7 @@ export const resolveUserStoreEmbeddedUsername = (username: string): string => {
     }
 
     // check if the user store is `PRIMARY`.
-    if (parts[0] === ApplicationConstants.PRIMARY_USER_STORE_IDENTIFIER) {
+    if (parts[0] === AppConstants.PRIMARY_USER_STORE_IDENTIFIER) {
         return parts[1];
     }
 
