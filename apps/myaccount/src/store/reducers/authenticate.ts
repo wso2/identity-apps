@@ -33,6 +33,7 @@ const authenticateInitialState: AuthStateInterface = {
     profileInfo: createEmptyProfile(),
     profileSchemas: [],
     scope: "",
+    tenantDomain: "",
     username: ""
 };
 
@@ -54,7 +55,8 @@ const authenticateReducer = (state: AuthStateInterface = authenticateInitialStat
                     isAuth: true,
                     loginInit: true,
                     logoutInit: false,
-                    scope:action.payload.scope,
+                    scope: action.payload.scope,
+                    tenantDomain: action.payload.tenantDomain,
                     username: action.payload.username
                 };
             }
