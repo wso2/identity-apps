@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ResponseModeTypes, Storage } from "@wso2is/authentication";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -25,7 +26,7 @@ import {
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
 export type ConfigInterface = CommonConfigInterface<
-    CommonDeploymentConfigInterface,
+    DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
@@ -122,3 +123,8 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      */
     authenticatorApp?: AuthenticatorAppListInterface;
 }
+
+/**
+ * Portal Deployment config interface inheriting the common configs from core module.
+ */
+export type DeploymentConfigInterface = CommonDeploymentConfigInterface<ResponseModeTypes, Storage>;

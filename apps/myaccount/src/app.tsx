@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { CommonDeploymentConfigInterface } from "@wso2is/core//models";
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
 import { emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
@@ -41,6 +40,7 @@ import { ApplicationConstants } from "./constants";
 import { history } from "./helpers";
 import {
     ConfigReducerStateInterface,
+    DeploymentConfigInterface,
     FeatureConfigInterface,
     ServiceResourceEndpointsInterface,
     UIConfigInterface
@@ -72,7 +72,7 @@ export const App = (): ReactElement => {
     useEffect(() => {
         // Replace `RuntimeConfigInterface` with the proper deployment config interface,
         // once runtime config is refactored.
-        dispatch(setDeploymentConfigs<CommonDeploymentConfigInterface>(Config.getDeploymentConfig()));
+        dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));

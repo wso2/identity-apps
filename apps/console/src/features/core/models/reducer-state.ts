@@ -47,4 +47,4 @@ export interface HelpPanelReducerStateInterface {
     visibility: boolean;
 }
 
-export type AuthReducerStateInterface = CommonAuthReducerStateInterface & AuthenticatedUserInterface;
+export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInterface { }
