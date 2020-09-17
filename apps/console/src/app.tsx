@@ -76,14 +76,11 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        // Replace `RuntimeConfigInterface` with the proper deployment config interface,
-        // once runtime config is refactored.
         dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
-        dispatch(initializeAuthentication());
-    }, []);
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
      * Listen for base name changes and updated the routes.
@@ -154,7 +151,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
      * Handles session logout.
      */
     const handleSessionLogout = (): void => {
-        history.push(config.deployment.appLogoutPath);
+        history.push(AppConstants.getAppLogoutPath());
     };
 
     return (
@@ -201,8 +198,13 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                 <Switch>
                                                     <Redirect
                                                         exact={ true }
-                                                        path="/"
-                                                        to={ config.deployment.appLoginPath }
+                                                        path={ AppConstants.getAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
+                                                    />
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path={ AppConstants.getTenantQualifiedAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
                                                     />
                                                     {
                                                         baseRoutes.map((route, index) => {

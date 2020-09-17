@@ -543,7 +543,7 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
             icon: null,
             id: "authLayoutLogin",
             name: "Login",
-            path: AppConstants.getPaths().get("LOGIN"),
+            path: AppConstants.getAppLoginPath(),
             protected: false,
             showOnSidePanel: false
         },
@@ -552,7 +552,7 @@ export const getAuthLayoutRoutes = (): RouteInterface[] => {
             icon: null,
             id: "authLayoutLogout",
             name: "Logout",
-            path: AppConstants.getPaths().get("LOGOUT"),
+            path: AppConstants.getAppLogoutPath(),
             protected: false,
             showOnSidePanel: false
         }
@@ -641,13 +641,14 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
  * @return {RouteInterface[]}
  */
 export const getBaseRoutes = (): RouteInterface[] => {
+
     return [
         {
             component: AppLayout,
             icon: null,
             id: "app",
             name: "App",
-            path: "/",
+            path: AppConstants.getPaths().get("ROOT"),
             protected: false,
             showOnSidePanel: false
         }

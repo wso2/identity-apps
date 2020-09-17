@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { StringUtils } from "@wso2is/core/utils";
+
 /**
  * Class containing app constants.
  */
@@ -49,12 +51,75 @@ export class AppConstants {
     }
 
     /**
-     * Get tenant qualified app base name.
+     * Get tenant qualified app base name. ex: `t/<BASENAME>`
      *
      * @return {string}
      */
     public static getTenantQualifiedAppBasename(): string {
         return window["AppUtils"].getConfig().appBaseWithTenant;
+    }
+
+    /**
+     * Get tenant qualified app base path. ex: `/t/<BASENAME>`
+     *
+     * @return {string}
+     */
+    public static getTenantQualifiedAppBasePath(): string {
+        return "/" + StringUtils.removeSlashesFromPath(this.getTenantQualifiedAppBasename());
+    }
+
+    /**
+     * Get app base name. ex: `<BASENAME>`
+     *
+     * @return {string}
+     */
+    public static getAppBasename(): string {
+        return window["AppUtils"].getConfig().appBase;
+    }
+
+    /**
+     * Get tenant qualified app base path. ex: `/<BASENAME>`
+     *
+     * @return {string}
+     */
+    public static getAppBasePath(): string {
+        return "/" + StringUtils.removeSlashesFromPath(this.getAppBasename());
+    }
+
+    /**
+     * Get the app home path.
+     *
+     * @return {string}
+     */
+    public static getAppHomePath(): string {
+        return window["AppUtils"].getConfig().routes.home;
+    }
+
+    /**
+     * Get the app login path.
+     *
+     * @return {string}
+     */
+    public static getAppLoginPath(): string {
+        return window[ "AppUtils" ].getConfig().routes.login;
+    }
+
+    /**
+     * Get the app login path.
+     *
+     * @return {string}
+     */
+    public static getAppLogoutPath(): string {
+        return window[ "AppUtils" ].getConfig().routes.logout;
+    }
+
+    /**
+     * Get the app Client ID.
+     *
+     * @return {string}
+     */
+    public static getClientID(): string {
+        return window["AppUtils"].getConfig().clientID;
     }
 
     /**
@@ -95,8 +160,6 @@ export class AppConstants {
             .set("IDP_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/identity-providers/:id`)
             .set("LOCAL_CLAIMS", `${ AppConstants.getAdminViewBasePath() }/local-claims`)
             .set("LOCAL_CLAIMS_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-local-claims/:id`)
-            .set("LOGIN",  window[ "AppUtils" ].getConfig().routes.login)
-            .set("LOGOUT",  window[ "AppUtils" ].getConfig().routes.logout)
             .set("OIDC_SCOPES", `${ AppConstants.getDeveloperViewBasePath() }/oidc-scopes`)
             .set("OIDC_SCOPES_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/oidc-scopes/:id`)
             .set("PAGE_NOT_FOUND", "/404")
@@ -105,6 +168,7 @@ export class AppConstants {
             .set("REMOTE_REPO_CONFIG_EDIT", `${ AppConstants.getDeveloperViewBasePath() }/remote-repository-config/:id`)
             .set("ROLES", `${ AppConstants.getAdminViewBasePath() }/roles`)
             .set("ROLE_EDIT", `${ AppConstants.getAdminViewBasePath() }/roles/:id`)
+            .set("ROOT", "/")
             .set("GOVERNANCE_CONNECTORS", `${ AppConstants.getAdminViewBasePath() }/governance-connectors/:id`)
             .set("UNAUTHORIZED", "/unauthorized")
             .set("USERS", `${ AppConstants.getAdminViewBasePath() }/users`)

@@ -22,6 +22,7 @@ import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState }
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../features/core/components";
 import { getAppLayoutRoutes } from "../features/core/configs";
+import { AppConstants } from "../features/core/constants";
 
 /**
  * Implementation of the Main app layout skeleton.
@@ -38,7 +39,7 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
      */
     useEffect(() => {
         setAppRoutes(getAppLayoutRoutes());
-    }, [ window["AppUtils"].getConfig().appBaseWithTenant ]);
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     return (
         <AppLayoutSkeleton>
