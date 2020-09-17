@@ -25,8 +25,14 @@ import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 
+/**
+ * Protected route props interface.
+ */
 interface ProtectedRoutePropsInterface extends RouteProps {
-    route: RouteInterface;
+    /**
+     * Route object.
+     */
+    route?: RouteInterface;
 }
 
 /**
