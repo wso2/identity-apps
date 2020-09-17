@@ -22,9 +22,11 @@ import {
     Hooks,
     IdentityClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
+    ResponseModeTypes,
     ServiceResourcesType,
     Storage,
-    TOKEN_ENDPOINT
+    TOKEN_ENDPOINT,
+    UserInfo
 } from "@wso2is/authentication";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
 import { TokenConstants } from "@wso2is/core/constants";
@@ -40,12 +42,13 @@ import {
     setSignIn,
     setSignOut
 } from "@wso2is/core/store";
-import { AuthenticateUtils } from "@wso2is/core/utils";
+import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
 import _ from "lodash";
 import { UAParser } from "ua-parser-js";
-import { Config, store } from "../../../core";
+import { Config } from "../../../core/configs";
+import { store } from "../../../core/store";
 import { HttpUtils } from "../../../core/utils";
 
 /**
@@ -145,7 +148,16 @@ export const getProfileInformation = (
 };
 
 export const initializeAuthentication = () => (dispatch) => {
+
     const auth = IdentityClient.getInstance();
+
+    const responseModeFallback: ResponseModeTypes = process.env.NODE_ENV === "production"
+        ? "form_post"
+        : "query";
+
+    const storageFallback: Storage = new UAParser().getBrowser().name === "IE"
+        ? Storage.SessionStorage
+        : Storage.WebWorker;
 
     const initialize = (response?: any): void => {
         auth.initialize({
@@ -153,14 +165,28 @@ export const initializeAuthentication = () => (dispatch) => {
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
-            enablePKCE: true,
-            responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: [TokenConstants.SYSTEM_SCOPE],
-            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
+                ?? true,
+            endpoints: {
+                authorize: window["AppUtils"].getConfig().idpConfigs?.authorizeEndpointURL,
+                jwks: window["AppUtils"].getConfig().idpConfigs?.jwksEndpointURL,
+                logout: window["AppUtils"].getConfig().idpConfigs?.logoutEndpointURL,
+                oidcSessionIFrame: window["AppUtils"].getConfig().idpConfigs?.oidcSessionIFrameEndpointURL,
+                revoke: window["AppUtils"].getConfig().idpConfigs?.tokenRevocationEndpointURL,
+                token: window["AppUtils"].getConfig().idpConfigs?.tokenEndpointURL,
+                wellKnown: window["AppUtils"].getConfig().idpConfigs?.wellKnownEndpointURL
+            },
+            responseMode: window["AppUtils"].getConfig().idpConfigs?.responseMode
+                ?? responseModeFallback,
+            scope: window["AppUtils"].getConfig().idpConfigs?.scope
+                ?? [ TokenConstants.SYSTEM_SCOPE ],
+            serverOrigin: window["AppUtils"].getConfig().idpConfigs?.serverOrigin
+                ?? window["AppUtils"].getConfig().idpConfigs.serverOrigin,
             sessionState: response?.data?.sessionState,
             signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-            storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
+            storage: window["AppUtils"].getConfig().idpConfigs?.storage
+                ?? storageFallback
         });
 
         dispatch(setInitialized(true));
@@ -178,7 +204,14 @@ export const initializeAuthentication = () => (dispatch) => {
     auth.on(Hooks.HttpRequestFinish, HttpUtils.onHttpRequestFinish);
     auth.on(Hooks.HttpRequestStart, HttpUtils.onHttpRequestStart);
     auth.on(Hooks.HttpRequestSuccess, HttpUtils.onHttpRequestSuccess);
-    auth.on(Hooks.SignIn, (response) => {
+    auth.on(Hooks.SignIn, (response: UserInfo) => {
+
+        // Update the app base name with the newly resolved tenant.
+        window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
+
+        // Update the context with new config once the basename is changed.
+        ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
+
         dispatch(
             setSignIn<AuthenticatedUserInterface>({
                 displayName: response.displayName,
@@ -186,6 +219,7 @@ export const initializeAuthentication = () => (dispatch) => {
                 display_name: response.displayName,
                 email: response.email,
                 scope: response.allowedScopes,
+                tenantDomain: response.tenantDomain,
                 username: response.username
             })
         );
@@ -200,7 +234,8 @@ export const initializeAuthentication = () => (dispatch) => {
                 throw error;
             });
 
-        dispatch(getProfileInformation());
+        dispatch(getProfileInformation(Config.getServiceResourceEndpoints().me,
+            window["AppUtils"].getConfig().clientOriginWithTenant));
     });
 };
 
