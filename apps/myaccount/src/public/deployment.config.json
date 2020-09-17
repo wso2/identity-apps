@@ -1,6 +1,17 @@
 {
     "appBaseName": "myaccount",
+    "appBaseNameForHistoryAPI": "/",
     "clientID": "MY_ACCOUNT",
+    "debug": false,
+    "idpConfigs": {
+        "enablePKCE": true,
+        "responseMode": "query",
+        "scope": [ "SYSTEM" ],
+        "serverOrigin": "https://localhost:9443",
+        "storage": "webWorker"
+    },
+    "i18nResourcePath": "",
+    "isSaas": true,
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
     "productVersion": "",
@@ -16,6 +27,7 @@
         "sessionRefreshTimeOut": 300,
         "checkSessionInterval": 3
     },
+    "tenantResolutionStrategy": "id_token",
     "ui": {
         "appCopyright": "WSO2 Identity Server",
         "appTitle": "My Account | WSO2 Identity Server",
