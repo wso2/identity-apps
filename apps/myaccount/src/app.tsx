@@ -17,7 +17,7 @@
  */
 
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
     setI18nConfigs,
@@ -28,14 +28,13 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, SessionManagementProvider, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { ReactElement, Suspense, useContext, useEffect } from "react";
+import React, { ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { ProtectedRoute } from "./components";
-import { SignIn, SignOut } from "./components/authentication";
-import { Config } from "./configs";
+import { Config, getAppRoutes } from "./configs";
 import { AppConstants } from "./constants";
 import { history } from "./helpers";
 import {
@@ -47,7 +46,6 @@ import {
 } from "./models";
 import { AppState } from "./store";
 import { initializeAuthentication } from "./store/actions";
-
 import { filteredRoutes } from "./utils";
 
 /**
@@ -66,18 +64,31 @@ export const App = (): ReactElement => {
     const loginInit: boolean = useSelector((state: AppState) => state.authenticationInformation.loginInit);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
+    const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppRoutes());
+
     /**
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        // Replace `RuntimeConfigInterface` with the proper deployment config interface,
-        // once runtime config is refactored.
+        dispatch(initializeAuthentication());
+    }, []);
+
+    /**
+     * Set the deployment configs in redux state.
+     */
+    useEffect(() => {
         dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
-        dispatch(initializeAuthentication());
-    }, []);
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
+
+    /**
+     * Listen for base name changes and updated the routes.
+     */
+    useEffect(() => {
+        setAppRoutes(getAppRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
      * Checks if the portal access should be granted based on the feature config.
@@ -91,7 +102,7 @@ export const App = (): ReactElement => {
             return;
         }
 
-        history.push(AppConstants.PATHS.get("UNAUTHORIZED"));
+        history.push(AppConstants.getPaths().get("UNAUTHORIZED"));
     }, [ loginInit, allowedScopes, config ]);
 
     /**
@@ -138,7 +149,7 @@ export const App = (): ReactElement => {
      * Handles session logout.
      */
     const handleSessionLogout = (): void => {
-        history.push(config.deployment.appLogoutPath);
+        history.push(AppConstants.getAppLogoutPath());
     };
 
     return (
@@ -185,46 +196,49 @@ export const App = (): ReactElement => {
                                                 <Switch>
                                                     <Redirect
                                                         exact={ true }
-                                                        path="/"
-                                                        to={ window[ "AppUtils" ].getConfig().routes.login }
+                                                        path={ AppConstants.getPaths().get("ROOT") }
+                                                        to={ AppConstants.getAppLoginPath() }
                                                     />
-                                                    <Route
-                                                        path={ window[ "AppUtils" ].getConfig().routes.login }
-                                                        render={ (props) => {
-                                                            return <SignIn { ...props } />;
-                                                        } }
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path={ AppConstants.getAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
                                                     />
-                                                    <Route
-                                                        path={ window[ "AppUtils" ].getConfig().routes.logout }
-                                                        render={ () => {
-                                                            return <SignOut/>;
-                                                        } }
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path={ AppConstants.getTenantQualifiedAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
                                                     />
                                                     {
                                                         config
-                                                            ? filteredRoutes(config).map((route, index) => {
-                                                                return (
-                                                                    route.protected ?
-                                                                        (
-                                                                            <ProtectedRoute
-                                                                                component={ route.component }
-                                                                                path={ route.path }
-                                                                                route={ route }
-                                                                                key={ index }
-                                                                            />
-                                                                        )
-                                                                        :
-                                                                        (
-                                                                            <Route
-                                                                                path={ route.path }
-                                                                                render={ (props) =>
-                                                                                    (<route.component { ...props } />)
-                                                                                }
-                                                                                key={ index }
-                                                                            />
-                                                                        )
-                                                                );
-                                                            })
+                                                            ? filteredRoutes(appRoutes, config)
+                                                                .map((route, index) => {
+                                                                    return (
+                                                                        route.protected ?
+                                                                            (
+                                                                                <ProtectedRoute
+                                                                                    component={ route.component }
+                                                                                    path={ route.path }
+                                                                                    key={ index }
+                                                                                    route={ route }
+                                                                                    exact={ route.exact }
+                                                                                />
+                                                                            )
+                                                                            :
+                                                                            (
+                                                                                <Route
+                                                                                    path={ route.path }
+                                                                                    render={ (props) => (
+                                                                                        <route.component
+                                                                                            { ...props }
+                                                                                        />
+                                                                                    ) }
+                                                                                    key={ index }
+                                                                                    exact={ route.exact }
+                                                                                />
+                                                                            )
+                                                                    );
+                                                                })
                                                             : null
                                                     }
                                                 </Switch>

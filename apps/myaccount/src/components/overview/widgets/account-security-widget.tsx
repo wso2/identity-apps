@@ -19,6 +19,7 @@
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { WidgetIcons } from "../../../configs";
+import { AppConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
 
@@ -31,7 +32,7 @@ export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
     const { t } = useTranslation();
 
     const navigate = () => {
-        history.push("/security");
+        history.push(AppConstants.getPaths().get("SECURITY"));
     };
 
     return (

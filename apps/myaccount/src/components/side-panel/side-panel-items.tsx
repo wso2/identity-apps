@@ -98,7 +98,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
      * @return {boolean}
      */
     const validateSidePanelVisibility = (path: string): boolean => {
-        if (path === AppConstants.APPLICATIONS_PAGE_PATH) {
+        if (path === AppConstants.getPaths().get("APPLICATIONS")) {
             return isApplicationsPageVisible;
         }
         return true;

@@ -222,12 +222,12 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                 {
                     icon: "arrow right",
                     name: t("common:personalInfo"),
-                    onClick: () => history.push(AppConstants.PATHS.get("PROFILE_INFO"))
+                    onClick: () => history.push(AppConstants.getPaths().get("PROFILE_INFO"))
                 },
                 {
                     icon: "power off",
                     name: t("common:logout"),
-                    onClick: () => history.push(window[ "AppUtils" ].getConfig().routes.logout)
+                    onClick: () => history.push(AppConstants.getAppLogoutPath())
                 }
             ] }
             profileInfo={ profileInfo }

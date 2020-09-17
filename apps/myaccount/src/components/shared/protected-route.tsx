@@ -16,39 +16,58 @@
  * under the License.
  */
 
+import { RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
-import React from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
-import { Redirect, Route } from "react-router-dom";
-import { GlobalConfig } from "../../configs";
+import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
 import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 
-export const ProtectedRoute = ({ component: Component, route, ...rest }) => {
+interface ProtectedRoutePropsInterface extends RouteProps {
+    route: RouteInterface;
+}
 
-    const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
+/**
+ * Protected route component.
+ *
+ * @param {RouteProps} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
+export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
+    props: ProtectedRoutePropsInterface
+): ReactElement => {
+
+    const {
+        component: Component,
+        route,
+        ...rest
+    } = props;
+
+    const isAuthenticated: boolean = useSelector((state: any) => state.authenticationInformation.isAuth);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      * The login path and the login error path have been skipped.
      */
-    if ((history.location.pathname !== GlobalConfig.appLoginPath)
-        && (history.location.pathname !== AppConstants.LOGIN_ERROR_PAGE_PATH)
-        && (history.location.pathname !== AppConstants.PAGE_NOT_FOUND_PATH)) {
+    if ((history.location.pathname !== AppConstants.getAppLoginPath())
+        && (history.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
+        && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND"))) {
+
         AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
-    }
-    else {
-        AuthenticateUtils.updateAuthenticationCallbackUrl(GlobalConfig.appHomePath);
+    } else {
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstants.getAppHomePath());
     }
 
     /**
      * Checks if the users have the required scope and direct them to the relevant
      *
-     * @param props
+     * @param {RouteComponentProps<any>} props - Route props.
+     * @return {React.ReactElement}
      */
-    const resolveComponents = (props) => {
+    const resolveComponents = (props: RouteComponentProps<any>): ReactElement => {
         const scopes = allowedScopes?.split(" ");
 
         if (!route?.scope) {
@@ -58,16 +77,16 @@ export const ProtectedRoute = ({ component: Component, route, ...rest }) => {
         if (scopes?.includes(route?.scope)) {
             return <Component { ...props } />;
         } else {
-            return <Redirect to={ ApplicationConstants.ACCESS_DENIED_ERROR_PAGE_PATH } />;
+            return <Redirect to={ AppConstants.getPaths().get("ACCESS_DENIED_ERROR") } />;
         }
     };
 
     return (
         <Route
-            render={ (props) =>
-                isAuth
-                    ? <>{ resolveComponents(props) }</>
-                    : <Redirect to={ GlobalConfig.appLoginPath } />
+            render={ (renderProps: RouteComponentProps<any>) =>
+                isAuthenticated
+                    ? resolveComponents(renderProps)
+                    : <Redirect to={ AppConstants.getAppLoginPath() } />
             }
             { ...rest }
         />

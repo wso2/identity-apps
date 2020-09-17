@@ -169,7 +169,7 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 store.dispatch(toggleSCIMEnabled(false));
 
                 // Navigate to login error page.
-                history.push(AppConstants.LOGIN_ERROR_PAGE_PATH);
+                history.push(AppConstants.getPaths().get("LOGIN_ERROR"));
             }
 
             return Promise.reject(error);
