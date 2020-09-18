@@ -36,6 +36,7 @@
         <link href="<%= htmlWebpackPlugin.options.publicPath %>/libs/themes/default/theme.min.css" rel="stylesheet" type="text/css"/>
 
         <title><%= htmlWebpackPlugin.options.title %></title>
+
         <script>
             var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
             var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";

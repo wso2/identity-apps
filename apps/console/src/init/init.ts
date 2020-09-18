@@ -22,11 +22,10 @@ import "regenerator-runtime/runtime";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
-        accountAppOrigin: "https://localhost:9000",
-        developerAppOrigin: "https://localhost:9001",
-        serverOrigin: serverOriginGlobal ?? "https://localhost:9443",
-        superTenant: superTenantGlobal ?? "carbon.super",
-        tenantPrefix: tenantPrefixGlobal ?? "t"
+        accountAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9000",
+        serverOrigin: serverOriginGlobal,
+        superTenant: superTenantGlobal,
+        tenantPrefix: tenantPrefixGlobal
     });
 
     window["AppUtils"] = AppUtils;
