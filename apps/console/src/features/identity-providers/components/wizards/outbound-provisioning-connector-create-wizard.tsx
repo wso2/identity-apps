@@ -345,8 +345,7 @@ export const OutboundProvisioningConnectorCreateWizard:
         {
             content: (
                 <WizardSummary
-                    provisioningConnectorMetadata={
-                        wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ] }
+                    provisioningConnectorMetadata={ connectorMetaData }
                     authenticatorMetadata={ undefined }
                     triggerSubmit={ finishSubmit }
                     identityProvider={ generateWizardSummary() }
