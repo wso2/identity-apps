@@ -71,6 +71,7 @@ export const getGravatarImage = (email: string,
                 ProfileConstants.GRAVATAR_IMAGE_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
+                error.request,
                 error.response,
                 error.config);
         })
@@ -106,6 +107,7 @@ export const getProfileInfo = (endpoint: string,
                     ProfileConstants.PROFILE_INFO_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
                     response.status,
+                    response.request,
                     response,
                     response.config);
             }
@@ -143,6 +145,7 @@ export const getProfileInfo = (endpoint: string,
                 ProfileConstants.PROFILE_INFO_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
+                error.request,
                 error.response,
                 error.config);
         });
@@ -171,6 +174,7 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
                     ProfileConstants.PROFILE_INFO_UPDATE_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
                     response.status,
+                    response.request,
                     response,
                     response.config);
             }
@@ -182,6 +186,7 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
                 ProfileConstants.PROFILE_INFO_UPDATE_REQUEST_ERROR,
                 error.stack,
                 error.code,
+                error.request,
                 error.response,
                 error.config);
         });
@@ -231,6 +236,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                     ProfileConstants.SCHEMA_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
                     response.status,
+                    response.request,
                     response,
                     response.config);
             }
@@ -242,6 +248,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                 ProfileConstants.SCHEMA_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
+                error.request,
                 error.response,
                 error.config);
         });

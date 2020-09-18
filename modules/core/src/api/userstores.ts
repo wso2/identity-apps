@@ -53,6 +53,7 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
                     UserstoreConstants.USERSTORES_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
                     response.status,
+                    response.request,
                     response,
                     response.config);
             }
@@ -64,6 +65,7 @@ export const getUserStoreList = (): Promise<UserstoreListResponseInterface[] | a
                 UserstoreConstants.USERSTORES_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
+                error.request,
                 error.response,
                 error.config);
         });

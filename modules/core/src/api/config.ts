@@ -40,6 +40,7 @@ export const getAppConfig = <T>(configFileName = AppConstants.DEFAULT_APP_CONFIG
                 AppConstants.APP_CONFIG_FETCH_ERROR_MESSAGE,
                 error.stack,
                 error.code,
+                error.request,
                 error.response,
                 error.config);
         });
