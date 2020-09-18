@@ -17,13 +17,13 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+import { Grid, Label } from "semantic-ui-react";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -79,8 +79,9 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
 
     const { t } = useTranslation();
 
-    const [assertionConsumerUrls, setAssertionConsumerUrls] = useState("");
-    const [showAssertionConsumerUrlError, setAssertionConsumerUrlError] = useState(false);
+    const [ assertionConsumerUrls, setAssertionConsumerUrls ] = useState<string>("");
+    const [ showAssertionConsumerUrlError, setAssertionConsumerUrlError ] = useState<boolean>(false);
+    const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
 
     useEffect(() => {
         if (isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
@@ -238,8 +239,29 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                     t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs" +
                                         ".validations.invalid")
                                 }
-                                validation={ (value: string): boolean => {
-                                    return FormValidation.url(value);
+                                validation={ (value: string) => {
+
+                                    let label: ReactElement = null;
+
+                                    if (URLUtils.isHttpUrl(value)) {
+                                        label = (
+                                            <Label basic color="orange" className="mt-2">
+                                                { t("console:common.validations.inSecureURL.description") }
+                                            </Label>
+                                        );
+                                    }
+
+                                    if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                        label = (
+                                            <Label basic color="orange" className="mt-2">
+                                                { t("console:common.validations.unrecognizedURL.description") }
+                                            </Label>
+                                        );
+                                    }
+
+                                    setAssertionConsumerURLsErrorLabel(label);
+
+                                    return true;
                                 } }
                                 computerWidth={ 10 }
                                 required={ true }
@@ -255,6 +277,8 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                 getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                     submitUrl = submitFunction;
                                 } }
+                                showPredictions={ false }
+                                customLabel={ assertionConsumerURLsErrorLabel }
                             />
                         ) }
                     </Grid>

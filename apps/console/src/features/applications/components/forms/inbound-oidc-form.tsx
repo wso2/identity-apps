@@ -17,13 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import {
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -93,6 +94,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         isTokenBindingTypeSelected,
         setIsTokenBindingTypeSelected
     ] = useState<boolean>(false);
+    const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
+    const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
 
     /**
      * Sets if a valid token binding type is selected.
@@ -570,7 +573,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ".validations.empty")
                             }
                             validation={ (value: string) => {
-                                return FormValidation.url(value);
+
+                                let label: ReactElement = null;
+
+                                if (URLUtils.isHttpUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.inSecureURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.unrecognizedURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                setCallbackURLsErrorLabel(label);
+
+                                return true;
                             } }
                             showError={ showURLError }
                             setShowError={ setShowURLError }
@@ -584,6 +608,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                 submitUrl = submitFunction;
                             } }
+                            showPredictions={ false }
+                            customLabel={ callbackURLsErrorLabel }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -605,7 +631,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             ".validations.empty")
                                     }
                                     validation={ (value: string) => {
-                                        return FormValidation.url(value);
+
+                                        let label: ReactElement = null;
+
+                                        if (URLUtils.isHttpUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.inSecureURL.description") }
+                                                </Label>
+                                            );
+                                        }
+
+                                        if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
+
+                                        setAllowedOriginsErrorLabel(label);
+
+                                        return true;
                                     } }
                                     computerWidth={ 10 }
                                     setShowError={ setShowOriginError }
@@ -621,6 +668,8 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ) => {
                                         submitOrigin = submitOriginFunction;
                                     } }
+                                    showPredictions={ false }
+                                    customLabel={ allowedOriginsErrorLabel }
                                 />
                             </Grid.Column>
                         </Grid.Row>

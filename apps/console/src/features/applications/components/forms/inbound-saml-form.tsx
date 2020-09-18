@@ -17,13 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid } from "semantic-ui-react";
+import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import {
     LogoutMethods,
     MetadataPropertyInterface,
@@ -61,6 +62,11 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
+
+    const [ assertionConsumerURLsErrorLabel, setAssertionConsumerURLsErrorLabel ] = useState<ReactElement>(null);
+    const [ audiencesErrorLabel, setAudiencesErrorLabel ] = useState<ReactElement>(null);
+    const [ recipientsErrorLabel, setRecipientsErrorLabel ] = useState<ReactElement>(null);
+    const [ returnToURLsErrorLabel, setReturnToURLsErrorLabel ] = useState<ReactElement>(null);
 
     // creates dropdown options
     const getAllowedOptions = (metadataProp: MetadataPropertyInterface, isLabel?: boolean) => {
@@ -278,7 +284,28 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ".validations.invalid")
                             }
                             validation={ (value: string) => {
-                                return FormValidation.url(value);
+
+                                let label: ReactElement = null;
+
+                                if (URLUtils.isHttpUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.inSecureURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.unrecognizedURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                setAssertionConsumerURLsErrorLabel(label);
+
+                                return true;
                             } }
                             required={ true }
                             showError={ showAssertionConsumerUrlError }
@@ -290,6 +317,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             addURLTooltip={ t("common:addURL") }
                             duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-assertion-consumer-url-input` }
+                            showPredictions={ false }
+                            customLabel={ assertionConsumerURLsErrorLabel }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -653,7 +682,28 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ".fields.audience.validations.invalid")
                             }
                             validation={ (value: string) => {
-                                return FormValidation.url(value);
+
+                                let label: ReactElement = null;
+
+                                if (URLUtils.isHttpUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.inSecureURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.unrecognizedURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                setAudiencesErrorLabel(label);
+
+                                return true;
                             } }
                             showError={ showAudienceError }
                             setShowError={ setAudienceError }
@@ -665,6 +715,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             addURLTooltip={ t("common:addURL") }
                             duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-audience-url-input` }
+                            showPredictions={ false }
+                            customLabel={ audiencesErrorLabel }
                         />
                         <URLInput
                             urlState={ recipients }
@@ -683,7 +735,28 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ".fields.recipients.validations.invalid")
                             }
                             validation={ (value: string) => {
-                                return FormValidation.url(value);
+
+                                let label: ReactElement = null;
+
+                                if (URLUtils.isHttpUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.inSecureURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.unrecognizedURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                setRecipientsErrorLabel(label);
+
+                                return true;
                             } }
                             showError={ showRecipientsError }
                             setShowError={ setRecipientsError }
@@ -695,6 +768,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             addURLTooltip={ t("common:addURL") }
                             duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-recipients-url-input` }
+                            showPredictions={ false }
+                            customLabel={ recipientsErrorLabel }
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
@@ -1105,7 +1180,28 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ".idpInitiatedSLO.fields.returnToURLs.validations.invalid")
                             }
                             validation={ (value: string) => {
-                                return FormValidation.url(value);
+
+                                let label: ReactElement = null;
+
+                                if (URLUtils.isHttpUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.inSecureURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.unrecognizedURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                setReturnToURLsErrorLabel(label);
+
+                                return true;
                             } }
                             showError={ returnToURLSError }
                             setShowError={ setReturnToURLSError }
@@ -1114,6 +1210,8 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             addURLTooltip={ t("common:addURL") }
                             duplicateURLErrorMessage={ t("common:duplicateURLError") }
                             data-testid={ `${ testId }-return-to-urls-input` }
+                            showPredictions={ false }
+                            customLabel={ returnToURLsErrorLabel }
                         />
 
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>

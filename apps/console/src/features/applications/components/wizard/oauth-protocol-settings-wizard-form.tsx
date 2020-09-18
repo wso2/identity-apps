@@ -17,14 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+import { Grid, Label } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../models";
 
 /**
@@ -101,6 +101,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
     const [ showURLError, setShowURLError ] = useState(false);
+    const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     // TODO enable after fixing callbackURL.
     // const [showCallbackUrl, setShowCallbackUrl] = useState(false);
 
@@ -279,7 +280,28 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         ".validations.empty")
                                 }
                                 validation={ (value: string) => {
-                                    return FormValidation.url(value);
+                                    
+                                    let label: ReactElement = null;
+
+                                    if (URLUtils.isHttpUrl(value)) {
+                                        label = (
+                                            <Label basic color="orange" className="mt-2">
+                                                { t("console:common.validations.inSecureURL.description") }
+                                            </Label>
+                                        );
+                                    }
+
+                                    if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                        label = (
+                                            <Label basic color="orange" className="mt-2">
+                                                { t("console:common.validations.unrecognizedURL.description") }
+                                            </Label>
+                                        );
+                                    }
+                                    
+                                    setCallbackURLsErrorLabel(label);
+
+                                    return true;
                                 } }
                                 computerWidth={ 10 }
                                 setShowError={ setShowURLError }
@@ -295,6 +317,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                     submitUrl = submitFunction;
                                 } }
                                 required={ true }
+                                showPredictions={ false }
+                                customLabel={ callbackURLsErrorLabel }
                             />
                         ) }
                         { !fields || fields.includes("publicClient") && (
