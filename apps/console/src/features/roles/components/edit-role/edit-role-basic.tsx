@@ -30,9 +30,8 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react"
 import { AppConstants, history } from "../../../core";
-import { updateGroupDetails } from "../../../groups/api";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
-import { deleteRoleById, updateRole } from "../../api";
+import { deleteRoleById, updateRole, updateRoleDetails } from "../../api";
 import { PatchRoleDataInterface } from "../../models";
 
 /**
@@ -178,7 +177,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
         };
 
         if (isGroup || isGroupAndRoleSeparationEnabled) {
-            updateGroupDetails(roleObject.id, roleData)
+            updateRoleDetails(roleObject.id, roleData)
                 .then(() => {
                     onRoleUpdate();
                     handleAlerts({

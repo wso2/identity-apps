@@ -49,6 +49,7 @@ import {
 } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations, updateResources } from "../../../core";
 import { getGroupList } from "../../../groups/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN } from "../../constants";
 
 interface RoleGroupsPropsInterface extends TestableComponentInterface {
     /**
@@ -131,7 +132,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         let domain = "Primary";
         const domainName: string[] = role?.displayName?.split("/");
 
-        if (domainName.length > 1) {
+        if (domainName.length > 1 && domainName[0] !== APPLICATION_DOMAIN && domainName[0] !== INTERNAL_DOMAIN) {
             domain = domainName[0];
         }
         getGroupList(domain)
@@ -147,7 +148,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             _.forEachRight (role.groups, (group) => {
                 const groupName = group.display.split("/");
 
-                if (groupName.length > 1) {
+                if (groupName?.length === 1) {
                     groupsMap.set(group.display, group.value);
                 }
             });
@@ -318,11 +319,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
+            failOnErrors: 1,
             Operations: [],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
+            failOnErrors: 1,
             Operations: [],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
@@ -367,11 +370,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             });
         }
 
-        if (removedIds && removedIds.length > 0) {
+        if (removedIds && removedIds?.length > 0) {
             removedIds.map((id) => {
                 removeOperation = {
                     ...removeOperation,
-                    ...{ path: "/Groups/" + id }
+                    ...{ path: "/Roles/" + id }
                 };
                 removeOperations.push(removeOperation);
             });
@@ -527,7 +530,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             {
                                 groupList?.map((group, index)=> {
                                     const groupName = group.displayName?.split("/");
-                                    if (groupName.length >= 1) {
+                                    if (groupName?.length === 1) {
                                         return (
                                             <TransferListItem
                                                 handleItemChange={
@@ -553,7 +556,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             }
                         </TransferList>
                         <TransferList
-                            isListEmpty={ !(tempGroupList.length > 0) }
+                            isListEmpty={ !(tempGroupList?.length > 0) }
                             listType="selected"
                             listHeaders={ [
                                 t("adminPortal:components.transferList.list.headers.0"),
@@ -568,7 +571,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             {
                                 tempGroupList?.map((role, index)=> {
                                     const userGroup = role.displayName.split("/");
-                                    if (userGroup.length >= 1) {
+                                    if (userGroup?.length === 1) {
                                         return (
                                             <TransferListItem
                                                 handleItemChange={
@@ -708,7 +711,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                 {
                                                     assignedGroups?.map((group) => {
                                                         const userGroup = group.display.split("/");
-                                                        if (userGroup.length > 1) {
+                                                        if (userGroup?.length > 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     <Table.Cell>

@@ -205,8 +205,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 _.forEachRight (user.groups, (group) => {
                     const groupName = group?.display?.split("/");
 
-                    if (groupName.length > 1) {
-                        groupsMap.set(group.display, group.value);
+                    if (groupName?.length > 1) {
+                        groupsMap?.set(group.display, group.value);
                     }
                 });
                 setPrimaryRolesList(groupsMap);
@@ -244,23 +244,29 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
+            failOnErrors: 1,
             Operations: [],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
+            failOnErrors: 1,
             Operations: [],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
             data: {
+                "schemas": [
+                    "urn:ietf:params:scim:schemas:core:2.0:Role"
+                ],
                 "Operations": [{
                     "op": "remove",
-                    "path": "users",
-                    "value": [{
-                        "value": user.id
-                    }]
+                    "value": {
+                        "users": [{
+                            "value": user.id
+                        }]
+                    }
                 }]
             },
             method: "PATCH"
@@ -268,12 +274,16 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
         let addOperation = {
             data: {
+                "schemas": [
+                    "urn:ietf:params:scim:schemas:core:2.0:Role"
+                ],
                 "Operations": [{
                     "op": "add",
-                    "path": "users",
-                    "value": [{
-                        "value": user.id
-                    }]
+                    "value": {
+                        "users": [{
+                            "value": user.id
+                        }]
+                    }
                 }]
             },
             method: "PATCH"
@@ -295,7 +305,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             });
         }
 
-        if (removedIds && removedIds.length > 0) {
+        if (removedIds && removedIds?.length > 0) {
             removedIds.map((id) => {
                 removeOperation = {
                     ...removeOperation,
@@ -549,7 +559,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      */
     const createItemLabel = (roleName: string) => {
         const role = roleName?.split("/");
-        if (role.length > 0) {
+        if (role?.length > 0) {
             if (role[0] == "Application") {
                 return {
                     labelColor: null,
@@ -614,7 +624,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 data-testid="user-mgt-update-roles-modal"
                             >
                                 <TransferList
-                                    isListEmpty={ !(roleList.length > 0) }
+                                    isListEmpty={ !(roleList?.length > 0) }
                                     listType="unselected"
                                     listHeaders={ [
                                         t("adminPortal:components.transferList.list.headers.0"),
@@ -629,14 +639,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         roleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName.length >= 1) {
+                                            if (roleName?.length >= 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
                                                             () => handleUnassignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={ roleName?.length == 1 ? roleName[0] : roleName[1] }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -651,7 +661,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     }
                                 </TransferList>
                                 <TransferList
-                                    isListEmpty={ !(tempRoleList.length > 0) }
+                                    isListEmpty={ !(tempRoleList?.length > 0) }
                                     listType="selected"
                                     listHeaders={ [
                                         t("adminPortal:components.transferList.list.headers.0"),
@@ -666,14 +676,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         tempRoleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName.length >= 1) {
+                                            if (roleName?.length >= 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
                                                             () => handleAssignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={ roleName?.length == 1 ? roleName[0] : roleName[1] }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -726,7 +736,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
             assignedRoles && assignedRoles?.map((role) => {
                 const groupName = role?.display?.split("/");
-                if (groupName.length > 1) {
+                if (groupName?.length > 1) {
                     isMatch = re.test(role.display);
                     if (isMatch) {
                         filteredRoleList.push(role);
@@ -833,7 +843,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 {
                                                     assignedRoles?.map((group) => {
                                                         const userRole = group?.display?.split("/");
-                                                        if (userRole.length > 1) {
+                                                        if (userRole?.length >= 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     {
@@ -853,7 +863,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                     }
                                                                     <Table.Cell width={ 8 }>
                                                                         {
-                                                                            userRole.length == 1
+                                                                            userRole?.length == 1
                                                                             ? userRole[0] : userRole[1]
                                                                         }
                                                                     </Table.Cell>

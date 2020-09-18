@@ -118,26 +118,20 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                         />
                     </ResourceTab.Pane>
                 )
+            },{
+                menuItem: t("adminPortal:components.roles.edit.menuItems.roles"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <GroupRolesList
+                            data-testid="group-mgt-edit-group-roles"
+                            group={ group }
+                            onGroupUpdate={ onGroupUpdate }
+                            isReadOnly={ isReadOnly }
+                        />
+                    </ResourceTab.Pane>
+                )
             }
         ];
-
-        if (isGroupAndRoleSeparationEnabled) {
-            panes.push(
-                {
-                    menuItem: t("adminPortal:components.roles.edit.menuItems.roles"),
-                    render: () => (
-                        <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <GroupRolesList
-                                data-testid="group-mgt-edit-group-roles"
-                                group={ group }
-                                onGroupUpdate={ onGroupUpdate }
-                                isReadOnly={ isReadOnly }
-                            />
-                        </ResourceTab.Pane>
-                    )
-                }
-            );
-        }
 
         return panes;
     };
