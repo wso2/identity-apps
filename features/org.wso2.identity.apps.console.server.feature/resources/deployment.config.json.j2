@@ -46,6 +46,12 @@
         {% for key, value in console.idp_configs.items() %}
         {% if value is string %}
             "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% elif value is iterable %}
+            "{{ key }}": [
+                {% for item in value %}
+                    "{{ item }}"{{ "," if not loop.last }}
+                {% endfor %}
+            ]{{ "," if not loop.last }}
         {% else %}
             "{{ key }}": {{ value }}{{ "," if not loop.last }}
         {% endif %}
