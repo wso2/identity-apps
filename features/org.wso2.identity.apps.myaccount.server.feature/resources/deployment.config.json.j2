@@ -28,9 +28,10 @@
         {% endfor %}
         {% endif %}
     },
+    {% if myaccount.idp_configs is defined %}
     "idpConfigs": {
-        {% if console.idp_configs.items() is defined %}
-        {% for key, value in console.idp_configs.items() %}
+        {% if myaccount.idp_configs.items() is defined %}
+        {% for key, value in myaccount.idp_configs.items() %}
         {% if value is string %}
             "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
         {% elif value is iterable %}
@@ -45,6 +46,7 @@
         {% endfor %}
         {% endif %}
     },
+    {% endif %}
     {% if myaccount.is_sass is defined %}
         "isSaas": "{{ myaccount.is_sass }}",
     {% endif %}

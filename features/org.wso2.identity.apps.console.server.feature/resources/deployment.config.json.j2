@@ -41,6 +41,7 @@
         "structureFileType": "{{ console.documentation.structure_file_type }}",
         "structureFileURL": "{{ console.documentation.structure_file_url }}"
     },
+    {% if console.idp_configs is defined %}
     "idpConfigs": {
         {% if console.idp_configs.items() is defined %}
         {% for key, value in console.idp_configs.items() %}
@@ -58,6 +59,7 @@
         {% endfor %}
         {% endif %}
     },
+    {% endif %}
     "i18nResourcePath": "{{ console.i18n_resource_path }}",
     {% if console.is_sass is defined %}
         "isSaas": "{{ console.is_sass }}",
