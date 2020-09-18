@@ -68,6 +68,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
         activeView,
         fluid,
         onSidePanelToggleClick,
+        [ "data-testid" ]: testId,
         ...rest
     } = props;
 
@@ -190,9 +191,10 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
             profileInfo={ profileInfo }
             showUserDropdown={ true }
             onSidePanelToggleClick={ onSidePanelToggleClick }
+            data-testid={ testId }
             { ...rest }
         >
-            <div className="secondary-panel">
+            <div className="secondary-panel" data-testid={ `${ testId }-secondary-panel` }>
                 <Container fluid={ fluid }>
                     <Menu className="inner-menu">
                         <Menu.Item
@@ -202,6 +204,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             onClick={ () => {
                                 history.push(config.deployment.developerApp.path);
                             } }
+                            data-testid={ `${ testId }-developer-portal-switch` }
                         />
                         <Menu.Item
                             name={ config.deployment.adminApp.displayName }
@@ -210,6 +213,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                             onClick={ () => {
                                 history.push(config.deployment.adminApp.path);
                             } }
+                            data-testid={ `${ testId }-admin-portal-switch` }
                         />
                     </Menu>
                 </Container>
@@ -222,5 +226,6 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
  * Default props for the component.
  */
 Header.defaultProps = {
+    "data-testid": "app-header",
     fluid: true
 };
