@@ -183,7 +183,7 @@ export const AppUtils = (function() {
                 documentation: _config.documentation,
                 extensions: _config.extensions,
                 idpConfigs: this.resolveIdpConfigs(),
-                isSaas: _config.isSaas,
+                isSaas: this.isSaas(),
                 loginCallbackURL: this.constructRedirectURLs(_config.loginCallbackPath),
                 logoutCallbackURL: this.constructRedirectURLs(_config.logoutCallbackPath),
                 productVersion: _config.productVersion,
@@ -315,8 +315,6 @@ export const AppUtils = (function() {
                     throw "'appBaseName' config is missing in " + _args.deploymentConfigFile;
                 if (!{}.hasOwnProperty.call(configResponse, "clientID"))
                     throw "'clientID' config is missing in " + _args.deploymentConfigFile;
-                if (!{}.hasOwnProperty.call(configResponse, "idpConfigs"))
-                    throw "'idpConfigs' are missing in " + _args.deploymentConfigFile;
                 if (!{}.hasOwnProperty.call(configResponse, "loginCallbackPath"))
                     throw "'loginCallbackPath' config is missing in " + _args.deploymentConfigFile;
                 if (!{}.hasOwnProperty.call(configResponse, "logoutCallbackPath"))
