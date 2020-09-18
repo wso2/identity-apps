@@ -165,13 +165,15 @@
     %>
 
     <% if (Boolean.parseBoolean(loginFailed)) { %>
-    <div class="ui visible negative message" id="error-msg"><%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %></div>
+    <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
+        <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
+    </div>
     <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
-    <div class="ui visible negative message" id="error-msg">
+    <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
     </div>
     <% } else { %>
-        <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
+        <div class="ui visible negative message" style="display: none;" id="error-msg" data-testid="login-page-error-message"></div>
     <% } %>
 
     <% if (!isIdentifierFirstLogin(inputType)) { %>
@@ -184,13 +186,14 @@
                     name="usernameUserInput"
                     tabindex="1"
                     placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "username")%>"
+                    data-testid="login-page-username-input"
                     required>
                 <i aria-hidden="true" class="user icon"></i>
                 <input id="username" name="username" type="hidden" value="<%=username%>">
             </div>
         </div>
     <% } else { %>
-        <input id="username" name="username" type="hidden" value="<%=username%>">
+        <input id="username" name="username" type="hidden" data-testid="login-page-username-input" value="<%=username%>">
     <% } %>
         <div class="field">
             <div class="ui fluid left icon input">
@@ -201,7 +204,9 @@
                     value=""
                     autocomplete="off"
                     tabindex="2"
-                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>">
+                    placeholder="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "password")%>"
+                    data-testid="login-page-password-input"
+                >
                 <i aria-hidden="true" class="lock icon"></i>
             </div>
         </div>
@@ -210,7 +215,9 @@
     %>
         <div class="field">
             <div class="g-recaptcha"
-                 data-sitekey="<%=Encode.forHtmlContent(request.getParameter("reCaptchaKey"))%>">
+                data-sitekey="<%=Encode.forHtmlContent(request.getParameter("reCaptchaKey"))%>"
+                data-testid="login-page-g-recaptcha"
+            >
             </div>
         </div>
     <%
@@ -270,12 +277,21 @@
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType)) { %>
-                <a id="usernameRecoverLink" tabindex="5" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>">
+                <a id="usernameRecoverLink"
+                    tabindex="5"
+                    href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>"
+                    data-testid="login-page-username-recovery-button"
+                >
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
                 </a>
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% } %>
-            <a id="passwordRecoverLink" tabindex="6" href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>">
+            <a
+                id="passwordRecoverLink"
+                tabindex="6"
+                href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>"
+                data-testid="login-page-password-recovery-button"
+            >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
             </a>
             ?
@@ -284,7 +300,7 @@
 
         <% if (isIdentifierFirstLogin(inputType)) { %>
         <div class="field">
-            <a id="backLink" tabindex="7" onclick="goBack()">
+            <a id="backLink" tabindex="7" onclick="goBack()" data-testid="login-page-back-button">
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.different.account")%>
             </a>
         </div>
@@ -295,7 +311,13 @@
 
     <div class="field">
         <div class="ui checkbox">
-            <input tabindex="3" type="checkbox" id="chkRemember" name="chkRemember">
+            <input
+                tabindex="3"
+                type="checkbox"
+                id="chkRemember"
+                name="chkRemember"
+                data-testid="login-page-remember-me-checkbox"
+            >
             <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.me")%></label>
         </div>
     </div>
@@ -304,15 +326,15 @@
 
     <div class="ui divider hidden"></div>
 
-    <div class="cookie-policy-message">
+    <div class="cookie-policy-message" data-testid="login-page-policy-messages">
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies.short.description")%>
-        <a href="cookie_policy.do" target="policy-pane">
+        <a href="cookie_policy.do" target="policy-pane" data-testid="login-page-cookie-policy-link">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.cookies")%>
         </a>
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.for.more.details")%>
         <br><br>
         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description")%>
-        <a href="privacy_policy.do" target="policy-pane">
+        <a href="privacy_policy.do" target="policy-pane" data-testid="login-page-privacy-policy-link">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.general")%>
         </a>
     </div>
@@ -327,7 +349,9 @@
                 class="ui large button link-button"
                 id="registerLink"
                 tabindex="8"
-                role="button">
+                role="button"
+                data-testid="login-page-create-account-button"
+            >
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
             </button>
             <% } %>
@@ -337,7 +361,9 @@
                 type="submit"   
                 class="ui primary large button"
                 tabindex="4"
-                role="button">
+                role="button"
+                data-testid="login-page-continue-login-button"
+            >
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
             </button>
         </div>
@@ -349,7 +375,9 @@
         <div class="form-actions">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
             <a id="registerLink"
-                href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>">
+                href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>"
+                data-testid="login-page-resend-confirmation-email-link"
+            >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail")%>
             </a>
         </div>

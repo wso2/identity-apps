@@ -696,6 +696,7 @@ export interface UserPortalNS {
     };
     placeholders: {
         404: Placeholder;
+        accessDeniedError: Placeholder;
         emptySearchResult: Placeholder;
         genericError: Placeholder;
         loginError: Placeholder;

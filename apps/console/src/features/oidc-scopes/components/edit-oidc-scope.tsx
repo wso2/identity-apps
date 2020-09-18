@@ -261,6 +261,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                                     </Table.Cell>
                                                                     <Table.Cell textAlign="center">
                                                                         <Popup
+                                                                            position="top right"
                                                                             content="Remove attribute"
                                                                             trigger={
                                                                                 <Icon

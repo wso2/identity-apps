@@ -77,6 +77,16 @@ export const console: ConsoleNS = {
                 primaryButton: "Stay logged in",
                 secondaryButton: "Logout"
             }
+        },
+        validations: {
+            inSecureURL: {
+                description: "The entered URL a non-SSL URL. Please proceed with caution.",
+                heading: "Insecure URL"
+            },
+            unrecognizedURL: {
+                description: "The entered URL neither HTTP nor HTTPS. Please proceed with caution.",
+                heading: "Unrecognized URL"
+            }
         }
     }
 };

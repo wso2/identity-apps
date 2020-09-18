@@ -76,8 +76,9 @@ export class Config {
             fidoEnd: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn`,
             fidoStart: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/start-registration`,
-            fidoStartUsernameless: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/
-            start-usernameless-registration`,
+            fidoStartUsernameless: `${
+                this.getDeploymentConfig().serverHost
+            }/api/users/v2/me/webauthn/start-usernameless-registration`,
             isReadOnlyUser:`${
                 this.getDeploymentConfig().serverHost
             }/scim2/Me?attributes=urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser`,

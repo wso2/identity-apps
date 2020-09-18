@@ -42,7 +42,13 @@ export enum CommonAuthenticateActionTypes {
      *
      * @type {string}
      */
-    SET_SIGN_OUT = "SET_SIGN_OUT"
+    SET_SIGN_OUT = "SET_SIGN_OUT",
+    /**
+     * Redux action type to set initialized.
+     *
+     * @type {string}
+     */
+    SET_INITIALIZED = "SET_INITIALIZED"
 }
 
 /**
@@ -68,6 +74,14 @@ export interface SetSignOutActionInterface extends CommonAuthenticateBaseActionI
 }
 
 /**
+ * Set initialized action interface.
+ */
+export interface SetInitializedActionInterface extends CommonAuthenticateBaseActionInterface {
+    type: CommonAuthenticateActionTypes.SET_INITIALIZED;
+    payload: boolean;
+}
+
+/**
  * Reset authentication action interface.
  */
 export interface ResetAuthenticationActionInterface extends CommonAuthenticateBaseActionInterface {
@@ -79,4 +93,5 @@ export interface ResetAuthenticationActionInterface extends CommonAuthenticateBa
  */
 export type CommonAuthenticateActions = ResetAuthenticationActionInterface
     | SetSignInActionInterface
-    | SetSignOutActionInterface;
+    | SetSignOutActionInterface
+    | SetInitializedActionInterface;

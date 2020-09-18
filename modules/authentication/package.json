@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/authentication",
-    "version": "1.0.405",
+    "version": "1.0.412",
     "description": "Authentication module for WSO2 Identity Server Webapps.",
     "keywords": [
         "WSO2",
@@ -10,6 +10,7 @@
         "authentication"
     ],
     "main": "dist/main.js",
+    "types": "dist/index.d.ts",
     "scripts": {
         "lint": "tslint -t stylish --project .",
         "build": "rimraf dist && npm run type-check && webpack -p --env.NODE_ENV=production",

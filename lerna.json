@@ -2,7 +2,7 @@
     "packages": [
         "apps/*",
         "components/theme",
-        "modules/*"
+        "modules/!(http)"
     ],
-    "version": "1.0.405"
+    "version": "1.0.412"
 }

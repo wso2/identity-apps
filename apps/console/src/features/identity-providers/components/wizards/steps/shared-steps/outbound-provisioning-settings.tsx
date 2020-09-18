@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
+import { ContentLoader } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import {
     IdentityProviderInterface,
@@ -29,7 +30,9 @@ import { OutboundProvisioningConnectorFormFactory } from "../../../forms";
 /**
  * Proptypes for the outbound provisioning settings wizard form component.
  */
-interface OutboundProvisioningSettingsWizardFormPropsInterface extends TestableComponentInterface {
+interface OutboundProvisioningSettingsWizardFormPropsInterface extends TestableComponentInterface,
+    LoadableComponentInterface {
+
     metadata: OutboundProvisioningConnectorMetaInterface;
     initialValues: IdentityProviderInterface;
     onSubmit: (values: IdentityProviderInterface) => void;
@@ -50,6 +53,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
     const {
         metadata,
         initialValues,
+        isLoading,
         onSubmit,
         triggerSubmit,
         defaultConnector,
@@ -72,19 +76,18 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         });
     };
 
-    // Sets the selected connector as the default outbound provisioning connector when there's no default connector
-    // in the identity provider.
-    const defaultOutboundProvisioningConnector = initialValues?.provisioning?.outboundConnectors?.connectors.length > 0
-        ? initialValues?.provisioning?.outboundConnectors?.connectors.find(connector => connector.connectorId
-            === initialValues?.provisioning?.outboundConnectors.defaultConnectorId) : defaultConnector;
     return (
-        <OutboundProvisioningConnectorFormFactory
-            metadata={ metadata }
-            initialValues={ defaultOutboundProvisioningConnector }
-            onSubmit={ handleSubmit }
-            triggerSubmit={ triggerSubmit }
-            enableSubmitButton={ false }
-            data-testid={ testId }
-        />
+        !isLoading
+            ? (
+                <OutboundProvisioningConnectorFormFactory
+                    metadata={ metadata }
+                    initialValues={ defaultConnector }
+                    onSubmit={ handleSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ false }
+                    data-testid={ testId }
+                />
+            )
+            : <ContentLoader/>
     );
 };

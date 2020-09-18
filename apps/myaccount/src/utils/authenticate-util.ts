@@ -18,8 +18,6 @@
  */
 
 import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys,
     IdentityClient
 } from "@wso2is/authentication";
 import * as TokenConstants from "../constants";
@@ -56,6 +54,6 @@ export const hasLoginPermission = (): boolean => {
  * @return {boolean}
  */
 export const hasScope = (scope: string): boolean => {
-    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
+    const scopes = store.getState().authenticationInformation.scope;
     return scopes.includes(scope);
 };

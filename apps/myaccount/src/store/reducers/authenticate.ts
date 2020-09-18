@@ -25,6 +25,7 @@ import { authenticateActionTypes } from "../actions/types";
 const authenticateInitialState: AuthStateInterface = {
     displayName: "",
     emails: "",
+    initialized: false,
     isAuth: false,
     location: window["AppUtils"].getConfig().routes.home,
     loginInit: false,
@@ -77,6 +78,11 @@ const authenticateReducer = (state: AuthStateInterface = authenticateInitialStat
             return {
                 ...state,
                 profileSchemas: action.payload
+            };
+        case authenticateActionTypes.SET_INITIALIZED:
+            return {
+                ...state,
+                initialized: action.payload
             };
         default:
             return state;

@@ -128,7 +128,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         protected: true,
         showOnSidePanel: true
     },
-    {
+    /*{
         category: "devPortal:components.sidePanel.categories.application",
         children: [
             {
@@ -156,7 +156,7 @@ const DEVELOPER_VIEW_ROUTES: RouteInterface[] = [
         path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
         protected: true,
         showOnSidePanel: true
-    },
+    },*/
     {
         category: "devPortal:components.sidePanel.categories.general",
         children: [

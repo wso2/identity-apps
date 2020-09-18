@@ -152,6 +152,7 @@ export const EmptyPlaceholderIllustrations = {
     emptyList: BoxIcon,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,
+    accessDeniedError: ForbiddenIcon,
     pageNotFound: BlockedMagnifierIcon,
     search: EmptySearchResultsIllustration
 };

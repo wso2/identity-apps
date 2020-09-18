@@ -22,6 +22,7 @@ import { getProfileInformation } from "./profile";
 import {
     CommonAuthenticateActionTypes,
     ResetAuthenticationActionInterface,
+    SetInitializedActionInterface,
     SetSignInActionInterface,
     SetSignOutActionInterface
 } from "./types";
@@ -48,6 +49,16 @@ export const setSignOut = (): SetSignOutActionInterface => ({
 });
 
 /**
+ * Redux action to set initialized.
+ *
+ * @return {SetSignOutActionInterface} An action of type `SET_INITIALIZED`.
+ */
+export const setInitialized = (flag: boolean): SetInitializedActionInterface => ({
+    payload: flag,
+    type: CommonAuthenticateActionTypes.SET_INITIALIZED
+});
+
+/**
  * Redux action to reset authentication.
  *
  * @return {ResetAuthenticationActionInterface} An action of type `RESET_AUTHENTICATION`
@@ -71,13 +82,14 @@ export const handleSignIn = () => (dispatch) => {
     oAuth
         .initialize({
             baseUrls: [window["AppUtils"].getConfig().serverOrigin],
-            callbackURL: window["AppUtils"].getConfig().loginCallbackURL,
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
             scope: [TokenConstants.SYSTEM_SCOPE],
             serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+            signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             storage: Storage.WebWorker
         })
         .then(() => {
@@ -141,7 +153,7 @@ export const endUserSession = (onSuccess: () => void, onError: (error: Error) =>
     dispatch(setTokenRevokeRequestLoadingStatus(true));
     const oAuth = IdentityClient.getInstance();
     oAuth
-        .revokeToken()
+        .endUserSession()
         .then(() => {
             // Fire the on success callback.
             onSuccess();

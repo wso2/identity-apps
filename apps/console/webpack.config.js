@@ -266,6 +266,12 @@ module.exports = (env) => {
                     force: true,
                     from: "public",
                     to: "."
+                },
+                {
+                    context: path.join(__dirname, "src"),
+                    force: true,
+                    from: "auth.jsp",
+                    to: "."
                 }
             ]),
             isProduction

@@ -90,10 +90,6 @@ export function getAuthorizationCode(requestParams?: ConfigInterface | WebWorker
         if (new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE)) {
             return new URL(window.location.href).searchParams.get(AUTHORIZATION_CODE);
         }
-
-        if (window.sessionStorage.getItem(AUTHORIZATION_CODE)) {
-            return window.sessionStorage.getItem(AUTHORIZATION_CODE);
-        }
     } else {
         if (requestParams.session.get(AUTHORIZATION_CODE)) {
             return requestParams.session.get(AUTHORIZATION_CODE);
@@ -107,7 +103,7 @@ export function getAuthorizationCode(requestParams?: ConfigInterface | WebWorker
  * Get token request headers.
  *
  * @param {string} clientHost
- * @returns {{headers: {Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}}
+ * @returns {{Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}
  */
 export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
     return {
@@ -144,7 +140,7 @@ export function sendAuthorizationRequest(
     }
 
     authorizeRequest += "&scope=" + scope;
-    authorizeRequest += "&redirect_uri=" + requestParams.callbackURL;
+    authorizeRequest += "&redirect_uri=" + requestParams.signInRedirectURL;
 
     if (requestParams.responseMode) {
         authorizeRequest += "&response_mode=" + requestParams.responseMode;
@@ -260,7 +256,7 @@ export function sendTokenRequest(
     }
 
     body.push("grant_type=authorization_code");
-    body.push(`redirect_uri=${requestParams.callbackURL}`);
+    body.push(`redirect_uri=${requestParams.signInRedirectURL}`);
 
     if (requestParams.enablePKCE) {
         body.push(`code_verifier=${getSessionParameter(PKCE_CODE_VERIFIER, requestParams)}`);

@@ -100,6 +100,14 @@ export class ApplicationConstants {
     public static readonly LOGIN_ERROR_PAGE_PATH: string = "/login-error";
 
     /**
+     * Path to the access denied error page.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ACCESS_DENIED_ERROR_PAGE_PATH: string = "/access-denied-error";
+
+    /**
      * Path to the 404 page.
      * @constant
      * @type {string}

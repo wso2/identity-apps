@@ -314,7 +314,7 @@
                                     id="icon-<%=iconId%>"
                                     title="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "sign.in.with")%> FIDO">
                                     <i class="usb icon"></i>
-                                    <img src="libs/theme/assets/images/icons/fido-logo.png" height="13px" /> Key
+                                    <img src="libs/themes/default/assets/images/icons/fido-logo.png" height="13px" /> Key
                                 </button>
                             </div>
                             <%
