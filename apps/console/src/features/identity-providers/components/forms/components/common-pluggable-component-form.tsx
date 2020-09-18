@@ -179,11 +179,11 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
         setDynamicValues({
             ...dynamicValues,
-            properties: dynamicValues.properties.map((prop: CommonPluggableComponentPropertyInterface):
+            properties: dynamicValues?.properties?.map((prop: CommonPluggableComponentPropertyInterface):
             CommonPluggableComponentPropertyInterface => {
                 return prop.key === key ? {
                     key: key,
-                    value: values.get(key)?.includes(key).toString()
+                    value: values?.get(key)?.includes(key)?.toString()
                 } : prop;
             })
         });
