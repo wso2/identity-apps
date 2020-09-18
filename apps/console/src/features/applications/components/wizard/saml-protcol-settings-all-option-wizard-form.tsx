@@ -17,13 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ContentLoader, FileUpload, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+import { Grid, Label } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../../core";
 
 /**
@@ -72,6 +73,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     const [fileContent, setFileContent] = useState("");
     const [filePasteContent, setFilePasteContent] = useState("");
     const [emptyFileError, setEmptyFileError] = useState(false);
+    const [ assertionURLsErrorLabel, setAssertionURLsErrorLabel ] = useState<ReactElement>(null);
 
     useEffect(() => {
         if (_.isEmpty(initialValues?.inboundProtocolConfiguration?.saml)) {
@@ -292,8 +294,29 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                         t("devPortal:components.applications.forms.inboundSAML.fields" +
                                             ".assertionURLs.validations.invalid")
                                     }
-                                    validation={ (value: string): boolean => {
-                                        return FormValidation.url(value);
+                                    validation={ (value: string) => {
+
+                                        let label: ReactElement = null;
+
+                                        if (URLUtils.isHttpUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.inSecureURL.description") }
+                                                </Label>
+                                            );
+                                        }
+
+                                        if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
+
+                                        setAssertionURLsErrorLabel(label);
+
+                                        return true;
                                     } }
                                     required={ true }
                                     computerWidth={ 10 }
@@ -306,6 +329,8 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
                                     data-testid={ `${ testId }-assertion-consumer-url-input` }
+                                    showPredictions={ false }
+                                    customLabel={ assertionURLsErrorLabel }
                                 />
                             </>
                         )

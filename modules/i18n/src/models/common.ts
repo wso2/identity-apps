@@ -163,3 +163,11 @@ export interface ModalInterface {
     primaryButton: string;
     secondaryButton: string;
 }
+
+/**
+ * Interface for Validations
+ */
+export interface ValidationInterface {
+    heading: string;
+    description: string;
+}

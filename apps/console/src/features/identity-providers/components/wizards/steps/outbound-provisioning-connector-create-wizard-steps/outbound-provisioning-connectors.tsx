@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Forms } from "@wso2is/forms";
 import { Heading, SelectionCard } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { OutboundProvisioningConnectorListItemInterface } from "../../../../models";
@@ -39,15 +39,32 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
     props: OutboundProvisioningConnectorsPropsInterface
 ): ReactElement => {
 
-    const { onSubmit, triggerSubmit, [ "data-testid" ]: testId } = props;
+    const {
+        initialSelection,
+        onSubmit,
+        triggerSubmit,
+        [ "data-testid" ]: testId
+    } = props;
+
+    const { t } = useTranslation();
 
     const [
         selectedConnector,
         setSelectedConnector
     ] = useState<OutboundProvisioningConnectorListItemInterface>(undefined);
 
-    const { t } = useTranslation();
-    
+    /**
+     * Select the connector instance based on the initial selection.
+     */
+    useEffect(() => {
+
+        if (!(OutboundConnectors && Array.isArray(OutboundConnectors) && OutboundConnectors.length > 0)) {
+            return;
+        }
+
+        setSelectedConnector(OutboundConnectors.find((connector) => initialSelection === connector.connectorId));
+    }, [ initialSelection ]);
+
     /**
      * Handles inbound protocol selection.
      * 
@@ -87,7 +104,11 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                                                 header={ connector.displayName }
                                                 image={ connector.icon }
                                                 onClick={ (): void => handleConnectorSelection(connector) }
-                                                selected={ selectedConnector?.connectorId === connector.connectorId }
+                                                selected={
+                                                    selectedConnector
+                                                        ? selectedConnector.connectorId === connector.connectorId
+                                                        : index === 0
+                                                }
                                                 size="small"
                                                 data-testid={ `${ testId }-connector-${ index }` }
                                             />

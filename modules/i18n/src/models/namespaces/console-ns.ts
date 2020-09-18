@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ModalInterface } from "../common";
+import { ModalInterface, ValidationInterface } from "../common";
 
 /**
  * Model for the Console namespace
@@ -26,6 +26,10 @@ export interface ConsoleNS {
         modals: {
             editAvatarModal: ModalInterface;
             sessionTimeoutModal: ModalInterface;
+        };
+        validations: {
+            inSecureURL: ValidationInterface;
+            unrecognizedURL: ValidationInterface;
         };
     };
 }
