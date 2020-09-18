@@ -38,7 +38,6 @@ export const fetchFromURL = <T>(url: string): Promise<T> => {
                 CommonConstants.AXIOS_FETCH_REQUEST_ERROR_MESSAGE,
                 error.stack,
                 error.code,
-                error.request,
                 error.response,
                 error.config);
         });

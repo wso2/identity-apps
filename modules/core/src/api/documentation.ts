@@ -76,7 +76,6 @@ export const getPortalDocumentationStructure = <T = {}>(
                 DocumentationConstants.STRUCTURE_FETCH_ERROR,
                 error.stack,
                 error.code,
-                error.request,
                 error.response,
                 error.config);
         });
@@ -129,7 +128,6 @@ export const getRawDocumentation = <T = {}>(
                 DocumentationConstants.RAW_CONTENT_FETCH_ERROR,
                 error.stack,
                 error.code,
-                error.request,
                 error.response,
                 error.config);
         });

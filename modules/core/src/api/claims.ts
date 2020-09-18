@@ -59,7 +59,6 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
                     ClaimConstants.ALL_LOCAL_CLAIMS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
                     response.status,
-                    response.request,
                     response,
                     response.config);
             }
@@ -71,7 +70,6 @@ export const getAllLocalClaims = (params: ClaimsGetParams): Promise<Claim[]> => 
                 ClaimConstants.ALL_LOCAL_CLAIMS_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
-                error.request,
                 error.response,
                 error.config);
         });
@@ -100,7 +98,6 @@ export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> =>
                     ClaimConstants.DIALECTS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
                     response.status,
-                    response.request,
                     response,
                     response.config);
             }
@@ -112,7 +109,6 @@ export const getDialects = (params: ClaimsGetParams): Promise<ClaimDialect[]> =>
                 ClaimConstants.DIALECTS_FETCH_REQUEST_ERROR,
                 error.stack,
                 error.code,
-                error.request,
                 error.response,
                 error.config);
         });
@@ -143,7 +139,6 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
                     ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_INVALID_RESPONSE_CODE_ERROR,
                     null,
                     response.status,
-                    response.request,
                     response,
                     response.config);
             }
@@ -156,7 +151,6 @@ export const getAllExternalClaims = (dialectID: string, params: ClaimsGetParams)
                     ClaimConstants.ALL_EXTERNAL_CLAIMS_FETCH_REQUEST_ERROR,
                     error.stack,
                     error.code,
-                    error.request,
                     error.response,
                     error.config);
             }
