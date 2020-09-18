@@ -331,9 +331,12 @@ export const OutboundProvisioningConnectorCreateWizard:
                 <OutboundProvisioningSettings
                     metadata={ connectorMetaData }
                     isLoading={ isConnectorMetadataRequestLoading }
-                    initialValues={ identityProvider }
-                    onSubmit={ (values): void => handleWizardFormSubmit(
-                        values, WizardStepsFormTypes.CONNECTOR_DETAILS) }
+                    initialValues={
+                        (wizardState && wizardState [ WizardStepsFormTypes.CONNECTOR_DETAILS ]) ?? identityProvider
+                    }
+                    onSubmit={ (values): void => {
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.CONNECTOR_DETAILS)
+                    } }
                     triggerSubmit={ submitConnectorSettings }
                     defaultConnector={ defaultConnector }
                     data-testid={ `${ testId }-provisioning-settings` }
@@ -345,8 +348,7 @@ export const OutboundProvisioningConnectorCreateWizard:
         {
             content: (
                 <WizardSummary
-                    provisioningConnectorMetadata={
-                        wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ] }
+                    provisioningConnectorMetadata={ connectorMetaData }
                     authenticatorMetadata={ undefined }
                     triggerSubmit={ finishSubmit }
                     identityProvider={ generateWizardSummary() }
