@@ -68,7 +68,7 @@ export const AppUtils = (function() {
     const appBaseForHistoryAPIFallback = "/";
     const urlPathForSuperTenantOriginsFallback = "";
     const isSaasFallback = true;
-    const tenantResolutionStrategyFallback = "location";
+    const tenantResolutionStrategyFallback = "id_token";
 
     return {
         /**
