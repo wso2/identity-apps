@@ -25,6 +25,7 @@ import {
 import React, { FunctionComponent, ReactElement, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { AppConstants } from "../constants";
 import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 
@@ -83,7 +84,7 @@ export const Footer: FunctionComponent<FooterPropsInterface> = (
             links={ [
                 {
                     name: t("common:privacy"),
-                    to: "/privacy"
+                    to: AppConstants.getPaths().get("PRIVACY")
                 }
             ] }
             { ...rest }
