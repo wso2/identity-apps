@@ -55,14 +55,16 @@ export const AuthenticatorFormFactory: FunctionComponent<AuthenticatorFormFactor
 
     switch (type) {
         default:
-            return <CommonAuthenticatorForm
-                initialValues={ initialValues }
-                metadata={ metadata }
-                onSubmit={ onSubmit }
-                triggerSubmit={ triggerSubmit }
-                enableSubmitButton={ enableSubmitButton }
-                data-testid={ testId }
-            />;
+            return (
+                <CommonAuthenticatorForm
+                    initialValues={ initialValues }
+                    metadata={ metadata }
+                    onSubmit={ onSubmit }
+                    triggerSubmit={ triggerSubmit }
+                    enableSubmitButton={ enableSubmitButton }
+                    data-testid={ testId }
+                />
+            );
     }
 };
 
