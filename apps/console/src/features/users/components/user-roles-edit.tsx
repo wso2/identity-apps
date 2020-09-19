@@ -639,14 +639,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         roleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName?.length >= 1) {
+                                            if (roleName?.length > 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
                                                             () => handleUnassignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName?.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={ roleName?.length > 1 ? roleName[1] : roleName[0] }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -676,7 +676,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         tempRoleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName?.length >= 1) {
+                                            if (roleName?.length > 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
@@ -843,7 +843,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 {
                                                     assignedRoles?.map((group) => {
                                                         const userRole = group?.display?.split("/");
-                                                        if (userRole?.length >= 1) {
+                                                        if (userRole?.length > 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     {

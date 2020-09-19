@@ -148,7 +148,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             _.forEachRight (role.groups, (group) => {
                 const groupName = group.display.split("/");
 
-                if (groupName?.length === 1) {
+                if (groupName?.length >= 1) {
                     groupsMap.set(group.display, group.value);
                 }
             });
@@ -163,12 +163,16 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const groupListCopy = primaryGroups ? [ ...primaryGroups ] : [];
 
         const addedGroups = [];
-        _.forEachRight(groupListCopy, (group) => {
-            if (primaryGroupsList?.has(group.displayName)) {
-                addedGroups.push(group);
-                groupListCopy.splice(groupListCopy.indexOf(group), 1);
+            if (groupListCopy && primaryGroupsList) {
+                _.forEach(groupListCopy, (group) => {
+                    for (const [key, value] of primaryGroupsList) {
+                        if (value == group.id) {
+                            addedGroups.push(group);
+                            groupListCopy.splice(groupListCopy.indexOf(group), 1);
+                        }
+                    }
+                });
             }
-        });
         setTempGroupList(addedGroups);
         setInitialTempGroupList(addedGroups);
         setGroupList(groupListCopy);
@@ -308,10 +312,10 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     /**
      * This function handles assigning the roles to the user.
      *
-     * @param user - User object
+     * @param role - Role object
      * @param groups - Assigned groups
      */
-    const updateUserGroup = (user: any, groups: any) => {
+    const updateRoleGroup = (role: any, groups: any) => {
         const groupIds = [];
 
         groups.map((group) => {
@@ -334,7 +338,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             data: {
                 "Operations": [{
                     "op": "remove",
-                    "path": "groups"
+                    "path": "roles"
                 }]
             },
             method: "PATCH"
@@ -345,8 +349,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 "Operations": [{
                     "op": "add",
                     "value": {
-                        "groups": [{
-                            "value": user.id
+                        "roles": [{
+                            "value": role.id
                         }]
                     }
                 }]
@@ -374,7 +378,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             removedIds.map((id) => {
                 removeOperation = {
                     ...removeOperation,
-                    ...{ path: "/Roles/" + id }
+                    ...{ path: "/Groups/" + id }
                 };
                 removeOperations.push(removeOperation);
             });
@@ -530,7 +534,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             {
                                 groupList?.map((group, index)=> {
                                     const groupName = group.displayName?.split("/");
-                                    if (groupName?.length === 1) {
+                                    if (groupName?.length >= 1) {
                                         return (
                                             <TransferListItem
                                                 handleItemChange={
@@ -571,7 +575,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             {
                                 tempGroupList?.map((role, index)=> {
                                     const userGroup = role.displayName.split("/");
-                                    if (userGroup?.length === 1) {
+                                    if (userGroup?.length >= 1) {
                                         return (
                                             <TransferListItem
                                                 handleItemChange={
@@ -614,7 +618,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             <PrimaryButton
                                 data-testid="user-mgt-update-groups-modal-save-button"
                                 floated="right"
-                                onClick={ () => updateUserGroup(role, tempGroupList) }
+                                onClick={ () => updateRoleGroup(role, tempGroupList) }
                             >
                                 { t("common:save") }
                             </PrimaryButton>
