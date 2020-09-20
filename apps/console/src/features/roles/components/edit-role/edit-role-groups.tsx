@@ -164,19 +164,18 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         const addedGroups = [];
             if (groupListCopy && primaryGroupsList) {
+                const primaryGroupValues = Array.from(primaryGroupsList?.values());
+
                 _.forEach(groupListCopy, (group) => {
-                    for (const [key, value] of primaryGroupsList) {
-                        if (value == group.id) {
-                            addedGroups.push(group);
-                            groupListCopy.splice(groupListCopy.indexOf(group), 1);
-                        }
+                    if (primaryGroupValues.includes(group?.id)) {
+                        addedGroups.push(group);
                     }
                 });
             }
         setTempGroupList(addedGroups);
         setInitialTempGroupList(addedGroups);
-        setGroupList(groupListCopy);
-        setInitialGroupList(groupListCopy);
+        setGroupList(groupListCopy.filter(x => !addedGroups?.includes(x)));
+        setInitialGroupList(groupListCopy.filter(x => !addedGroups?.includes(x)));
     };
 
     /**

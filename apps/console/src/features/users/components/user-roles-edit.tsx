@@ -93,6 +93,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
+    const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
 
     // The following constant holds the state of role already assigned roles.
     const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
@@ -153,6 +154,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             return;
         }
         mapUserRoles();
+        resolveUserRoles();
     }, []);
 
     /**
@@ -163,31 +165,57 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             return;
         }
         mapUserRoles();
+        resolveUserRoles();
     }, [ user ]);
 
     useEffect(() => {
         getRolesList(null)
             .then((response) => {
-                setInitialRoleList(response.data.Resources);
+                setPrimaryRoles(response.data.Resources);
             });
     }, []);
+
+    /**
+     * Resolves user roles depending on whether the separation is enabled.
+     */
+    const resolveUserRoles = (): void => {
+        if (isGroupAndRoleSeparationEnabled) {
+            setAssignedRoles(user?.roles);
+        } else {
+            const userRoles = [];
+
+            user?.groups?.map((group) => {
+                const displayName = group?.display?.split("/");
+
+                if(displayName?.length > 1
+                    && (displayName[0] == APPLICATION_DOMAIN || displayName[0] == INTERNAL_DOMAIN)) {
+                    userRoles.push(group);
+                }
+            });
+            setAssignedRoles(userRoles);
+        }
+    };
 
     /**
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        const roleListCopy = [ ...initialRoleList ];
-
+        const roleListCopy = primaryRoles ? [ ...primaryRoles ] : [];
         const addedRoles = [];
+
+        if (roleListCopy && primaryRolesList) {
+            const primaryRolesValues = Array.from(primaryRolesList?.values());
+
             _.forEachRight(roleListCopy, (role) => {
-                if (primaryRolesList?.has(role.displayName)) {
+                if (primaryRolesValues?.includes(role.id)) {
                     addedRoles.push(role);
-                    roleListCopy.splice(roleListCopy.indexOf(role), 1);
                 }
             });
-            setTempRoleList(addedRoles);
-            setInitialTempRoleList(addedRoles);
-            setRoleList(roleListCopy);
+        }
+        setTempRoleList(addedRoles);
+        setInitialTempRoleList(addedRoles);
+        setRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
+        setInitialRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
     };
 
     /**
@@ -205,12 +233,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 _.forEachRight (user.groups, (group) => {
                     const groupName = group?.display?.split("/");
 
-                    if (groupName?.length > 1) {
+                    if (groupName?.length >= 1) {
                         groupsMap?.set(group.display, group.value);
                     }
                 });
                 setPrimaryRolesList(groupsMap);
-                setAssignedRoles(user.groups);
             }
 
             return;
@@ -225,7 +252,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 }
             });
             setPrimaryRolesList(rolesMap);
-            setAssignedRoles(user.roles);
         }
     };
 
@@ -639,7 +665,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         roleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName?.length > 1) {
+                                            if (roleName?.length >= 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
@@ -676,7 +702,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         tempRoleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName?.length > 1) {
+                                            if (roleName?.length >= 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
@@ -843,7 +869,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 {
                                                     assignedRoles?.map((group) => {
                                                         const userRole = group?.display?.split("/");
-                                                        if (userRole?.length > 1) {
+                                                        if (userRole?.length >= 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     {
