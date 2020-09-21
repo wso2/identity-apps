@@ -343,18 +343,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             method: "PATCH"
         };
 
-        let addOperation = {
+        const addOperation = {
             data: {
-                "Operations": [{
-                    "op": "add",
-                    "value": {
-                        "roles": [{
-                            "value": role.id
-                        }]
-                    }
-                }]
+                "Operations": []
             },
-            method: "PATCH"
+            method: "PATCH",
+            path: "/Roles/" + role.id
         };
 
         const removeOperations = [];
@@ -434,16 +428,18 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 });
         } else {
             groupIds.map((id) => {
-                addOperation = {
-                    ...addOperation,
-                    ...{ path: "/Groups/" + id }
-                };
-                addOperations.push(addOperation);
+                addOperations.push({
+                    "op": "add",
+                    "value": {
+                        "groups": [{
+                            "value": id
+                        }]
+                    }
+                });
             });
 
-            addOperations.map((operation) => {
-                bulkAddData.Operations.push(operation);
-            });
+            addOperation.data.Operations = addOperations;
+            bulkAddData.Operations.push(addOperation);
 
             updateResources(bulkAddData)
                 .then(() => {
