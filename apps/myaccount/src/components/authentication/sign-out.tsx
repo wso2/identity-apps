@@ -27,12 +27,12 @@ import { handleSignOut } from "../../store/actions";
 export const SignOut = () => {
     const dispatch = useDispatch();
     const logoutInit = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
-
+    const isInitialized = useSelector((state: AppState) => state.authenticationInformation.initialized);
     useEffect(() => {
         if (!logoutInit) {
-            dispatch(handleSignOut());
+            isInitialized && dispatch(handleSignOut());
         }
-    }, [logoutInit]);
+    }, [ logoutInit, isInitialized]);
 
     return null;
 };

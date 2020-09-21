@@ -31,12 +31,12 @@ export const SignOut: FunctionComponent<{}> = (): ReactElement => {
     const dispatch = useDispatch();
 
     const logoutInit: boolean = useSelector((state: AppState) => state.auth.logoutInit);
-
+    const isInitialized = useSelector((state: AppState) => state.auth.initialized);
     useEffect(() => {
         if (!logoutInit) {
-            dispatch(handleSignOut());
+            isInitialized && dispatch(handleSignOut());
         }
-    }, [ logoutInit ]);
+    }, [ logoutInit, isInitialized ]);
 
     return null;
 };
