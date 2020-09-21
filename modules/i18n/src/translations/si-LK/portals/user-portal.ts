@@ -1058,7 +1058,7 @@ export const userPortal: UserPortalNS = {
                         message: "දෝෂයක් ඇතිවිය"
                     },
                     genericError: {
-                        description: "පැතිකඩ සම්පුර්ණ කිරීමේදී ගණනය කිරීමේදී දෝෂයක් ඇතිවිය",
+                        description: "පැතිකඩ සම්පුර්ණ කිරීම ගණනය කිරීමේදී දෝෂයක් ඇතිවිය",
                         message: "දෝෂයක් ඇතිවිය"
                     },
                     success: {
