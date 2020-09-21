@@ -34,7 +34,8 @@ export const SignIn = (props) => {
     const error = new URLSearchParams(props.location.search).get("error_description");
 
     const getAuthenticationCallbackUrl = () => {
-        return window.sessionStorage.getItem("auth_callback_url");
+        const key = "auth_callback_url_" + window[ "AppUtils" ]?.getAppBase()?.split("/")[ 1 ];
+        return window.sessionStorage.getItem(key);
     };
 
     const loginSuccessRedirect = () => {
