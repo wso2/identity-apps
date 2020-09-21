@@ -59,13 +59,15 @@ export class AuthenticateUtils {
      * @param {string} location - history path.
      */
     public static updateAuthenticationCallbackUrl(location: string): void {
-        window.sessionStorage.setItem("auth_callback_url", location);
+        const key = "auth_callback_url_" + window[ "AppUtils" ]?.getAppBase()?.split("/")[ 1 ];
+        window.sessionStorage.setItem(key, location);
     }
 
     /**
      * Removes the authentication callback URL from the session storage.
      */
     public static removeAuthenticationCallbackUrl(): void {
-        window.sessionStorage.removeItem("auth_callback_url");
+        const key = "auth_callback_url_" + window["AppUtils"]?.getAppBase()?.split("/")[1];
+        window.sessionStorage.removeItem(key);
     }
 }
