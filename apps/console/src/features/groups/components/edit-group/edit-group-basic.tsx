@@ -19,7 +19,6 @@
 import {
     AlertInterface,
     AlertLevels,
-    RolesInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -31,67 +30,67 @@ import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react"
 import { AppConstants, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
-import { deleteRoleById, updateRoleDetails } from "../../api";
-import { PatchRoleDataInterface } from "../../models";
+import { deleteGroupById, updateGroupDetails } from "../../api";
+import { GroupsInterface, PatchGroupDataInterface } from "../../models";
 
 /**
  * Interface to contain props needed for component
  */
-interface BasicRoleProps extends TestableComponentInterface {
+interface BasicGroupProps extends TestableComponentInterface {
     /**
-     * Role details
+     * Group details
      */
-    roleObject: RolesInterface;
+    groupObject: GroupsInterface;
     /**
-     * Show if it is role.
+     * Show if it is group.
      */
     isGroup: boolean;
     /**
-     * Handle role update callback.
+     * Handle group update callback.
      */
-    onRoleUpdate: () => void;
+    onGroupUpdate: () => void;
     /**
      * Show if the user is read only.
      */
     isReadOnly?: boolean;
     /**
-     * Enable roles and groups separation.
+     * Enable group and groups separation.
      */
     isGroupAndRoleSeparationEnabled?: boolean;
 }
 
 /**
- * Component to edit basic role details.
+ * Component to edit basic group details.
  *
- * @param props Role object containing details which needs to be edited.
+ * @param props Group object containing details which needs to be edited.
  */
-export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: BasicRoleProps): ReactElement => {
+export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: BasicGroupProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const {
-        roleObject,
-        onRoleUpdate,
+        groupObject,
+        onGroupUpdate,
         isGroup,
         isReadOnly,
         [ "data-testid" ]: testId
     } = props;
 
-    const [ showRoleDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ showGroupDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ labelText, setLableText ] = useState<string>("");
     const [ nameValue, setNameValue ] = useState<string>("");
     const [ userStoreRegEx, setUserStoreRegEx ] = useState<string>("");
-    const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
+    const [ isGroupNamePatternValid, setIsGroupNamePatternValid ] = useState<boolean>(true);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
     useEffect(() => {
-        if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
-            setNameValue(roleObject.displayName.split("/")[1]);
-            setLableText(roleObject.displayName.split("/")[0]);
-        } else if (roleObject) {
-            setNameValue(roleObject.displayName);
+        if (groupObject && groupObject.displayName.indexOf("/") !== -1) {
+            setNameValue(groupObject.displayName.split("/")[1]);
+            setLableText(groupObject.displayName.split("/")[0]);
+        } else if (groupObject) {
+            setNameValue(groupObject.displayName);
         }
-    }, [ roleObject ]);
+    }, [ groupObject ]);
 
     useEffect(() => {
         if (userStoreRegEx !== "") {
@@ -105,7 +104,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     }, [ nameValue ]);
 
     const fetchUserstoreRegEx = async (): Promise<string> => {
-        // TODO: Enable when the role object includes user store.
+        // TODO: Enable when the group object includes user store.
         // if (roleObject && roleObject.displayName.indexOf("/") !== -1) {
         //     // Get the role name regEx for the secondary user store
         //     const userstore = roleObject.displayName.split("/")[0].toString().toLowerCase();
@@ -122,13 +121,13 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     };
 
     /**
-     * The following function handles the role name change.
+     * The following function handles the group name change.
      *
      * @param event
      * @param data
      */
-    const handleRoleNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
-        setIsRoleNamePatternValid(validateInputAgainstRegEx(data?.value, userStoreRegEx));
+    const handleGroupNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
+        setIsGroupNamePatternValid(validateInputAgainstRegEx(data?.value, userStoreRegEx));
     };
 
     /**
@@ -141,16 +140,16 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     };
 
     /**
-     * Function which will handle role deletion action.
+     * Function which will handle group deletion action.
      *
-     * @param id - Role ID which needs to be deleted
+     * @param id - Group ID which needs to be deleted
      */
     const handleOnDelete = (id: string): void => {
-        deleteRoleById(id).then(() => {
+        deleteGroupById(id).then(() => {
             handleAlerts({
-                description: t("adminPortal:components.roles.notifications.deleteRole.success.description"),
+                description: t("adminPortal:components.groups.notifications.deleteGroup.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("adminPortal:components.roles.notifications.deleteRole.success.message")
+                message: t("adminPortal:components.groups.notifications.deleteGroup.success.message")
             });
             if (isGroup) {
                 history.push(AppConstants.PATHS.get("GROUPS"));
@@ -161,37 +160,36 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
     };
 
     /**
-     * Method to update role name for the selected role.
+     * Method to update group name for the selected group.
      *
      */
-    const updateRoleName = (values: Map<string, FormValue>): void => {
-        const newRoleName: string = values?.get("roleName")?.toString();
+    const updateGroupName = (values: Map<string, FormValue>): void => {
+        const newGroupName = values?.get("groupName")?.toString();
 
-        const roleData: PatchRoleDataInterface = {
+        const groupData: PatchGroupDataInterface = {
             Operations: [{
                 "op": "replace",
                 "path": "displayName",
-                "value": labelText ? labelText + "/" + newRoleName : newRoleName
+                "value": labelText ? labelText + "/" + newGroupName : newGroupName
             }],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
 
-        updateRoleDetails(roleObject.id, roleData)
+        updateGroupDetails(groupObject.id, groupData)
             .then(() => {
-                onRoleUpdate();
+                onGroupUpdate();
                 handleAlerts({
-                    description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                    description: t("adminPortal:components.groups.notifications.updateGroup.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.roles.notifications.updateRole.success.message")
+                    message: t("adminPortal:components.groups.notifications.updateGroup.success.message")
                 });
             }).catch(() => {
             handleAlerts({
-                description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
+                description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("adminPortal:components.roles.notifications.updateRole.error.message")
+                message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
             });
         });
-
     };
 
     return (
@@ -199,48 +197,48 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             <EmphasizedSegment>
                 <Forms
                     onSubmit={ (values) => {
-                        updateRoleName(values)
+                        updateGroupName(values)
                     } }
                 >
                     <Grid>
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
                                 <Form.Field
-                                    error={ !isRoleNamePatternValid }
+                                    error={ !isGroupNamePatternValid }
                                 >
                                     <label
                                         data-testid={
                                             isGroup
                                                 ? `${ testId }-group-name-label`
-                                                : `${ testId }-role-name-label`
+                                                : `${ testId }-group-name-label`
                                         }
                                     >
                                         {
                                             isGroup
                                                 ? t("adminPortal:components.groups.edit.basics.fields.groupName.name")
-                                                : t("adminPortal:components.roles.edit.basics.fields.roleName.name")
+                                                : t("adminPortal:components.roles.edit.basics.fields.groupName.name")
                                         }
                                     </label>
                                     <Field
                                         required={ true }
-                                        name={ "roleName" }
+                                        name={ "groupName" }
                                         label={ labelText !== "" ? labelText + " /" : null }
                                         requiredErrorMessage={
                                             isGroup
                                                 ? t("adminPortal:components.groups.edit.basics.fields.groupName" +
                                                 ".required")
-                                                : t("adminPortal:components.roles.edit.basics.fields.roleName" +
+                                                : t("adminPortal:components.roles.edit.basics.fields.groupName" +
                                                 ".required")
                                         }
                                         placeholder={
                                             isGroup
                                                 ? t("adminPortal:components.groups.edit.basics.fields.groupName." +
                                                 "placeholder")
-                                                : t("adminPortal:components.roles.edit.basics.fields.roleName." +
+                                                : t("adminPortal:components.roles.edit.basics.fields.groupName." +
                                                 "placeholder")
                                         }
                                         value={ nameValue }
-                                        onChange={ handleRoleNameChange }
+                                        onChange={ handleGroupNameChange }
                                         type="text"
                                         data-testid={
                                             isGroup
@@ -251,19 +249,19 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                         readOnly={ isReadOnly }
                                     />
                                     {
-                                        !isRoleNamePatternValid && (
+                                        !isGroupNamePatternValid && (
                                             isGroup
                                                 ?
                                                 <Label basic color="red" pointing>
                                                     { t("adminPortal:components.roles.addRoleWizard.forms." +
-                                                        "roleBasicDetails.roleName.validations.invalid",
+                                                        "roleBasicDetails.groupName.validations.invalid",
                                                         { type: "group" }) }
                                                 </Label>
                                                 :
                                                 <Label basic color="red" pointing>
                                                     { t("adminPortal:components.roles.addRoleWizard.forms." +
-                                                        "roleBasicDetails.roleName.validations.invalid",
-                                                        { type: "role" }) }
+                                                        "roleBasicDetails.groupName.validations.invalid",
+                                                        { type: "group" }) }
                                                 </Label>
                                         )
                                     }
@@ -284,7 +282,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                                     ? `${ testId }-group-update-button`
                                                     : `${ testId }-role-update-button`
                                             }
-                                            disabled={ !isRoleNamePatternValid && !isRegExLoading }
+                                            disabled={ !isGroupNamePatternValid && !isRegExLoading }
                                         >
                                             { t("adminPortal:components.roles.edit.basics.buttons.update") }
                                         </Button>
@@ -321,7 +319,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                     : t("adminPortal:components.roles.edit.basics.dangerZone.subheader",
                                     { type: "role" })
                             }
-                            onActionClick={ () => setShowDeleteConfirmationModal(!showRoleDeleteConfirmation) }
+                            onActionClick={ () => setShowDeleteConfirmationModal(!showGroupDeleteConfirmation) }
                             data-testid={
                                 isGroup
                                     ? `${ testId }-group-danger-zone`
@@ -332,49 +330,49 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 )
             }
             {
-                showRoleDeleteConfirmation &&
-                    <ConfirmationModal
-                        onClose={ (): void => setShowDeleteConfirmationModal(false) }
-                        type="warning"
-                        open={ showRoleDeleteConfirmation }
-                        assertion={ roleObject.displayName }
-                        assertionHint={
-                            (
-                                <p>
-                                    <Trans
-                                        i18nKey={
-                                            "adminPortal:components.roles.edit.basics.confirmation.assertionHint"
-                                        }
-                                        tOptions={ { roleName: roleObject.displayName } }
-                                    >
-                                        Please type <strong>{ roleObject.displayName }</strong> to confirm.
-                                    </Trans>
-                                </p>
-                            )
-                        }
-                        assertionType="input"
-                        primaryAction="Confirm"
-                        secondaryAction="Cancel"
-                        onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={ (): void => handleOnDelete(roleObject.id) }
-                        data-testid={
-                            isGroup
-                                ? `${ testId }-group-confirmation-modal`
-                                : `${ testId }-role-confirmation-modal`
-                        }
-                    >
-                        <ConfirmationModal.Header>
-                            { t("adminPortal:components.roles.edit.basics.confirmation.header") }
-                        </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
-                            { t("adminPortal:components.roles.edit.basics.confirmation.message",
-                                { type: isGroup ? "group." : "role." }) }
-                        </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
-                            { t("adminPortal:components.roles.edit.basics.confirmation.content",
-                                { type: isGroup ? "group." : "role." }) }
-                        </ConfirmationModal.Content>
-                    </ConfirmationModal>
+                showGroupDeleteConfirmation &&
+                <ConfirmationModal
+                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                    type="warning"
+                    open={ showGroupDeleteConfirmation }
+                    assertion={ groupObject.displayName }
+                    assertionHint={
+                        (
+                            <p>
+                                <Trans
+                                    i18nKey={
+                                        "adminPortal:components.roles.edit.basics.confirmation.assertionHint"
+                                    }
+                                    tOptions={ { roleName: groupObject.displayName } }
+                                >
+                                    Please type <strong>{ groupObject.displayName }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        )
+                    }
+                    assertionType="input"
+                    primaryAction="Confirm"
+                    secondaryAction="Cancel"
+                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                    onPrimaryActionClick={ (): void => handleOnDelete(groupObject.id) }
+                    data-testid={
+                        isGroup
+                            ? `${ testId }-group-confirmation-modal`
+                            : `${ testId }-role-confirmation-modal`
+                    }
+                >
+                    <ConfirmationModal.Header>
+                        { t("adminPortal:components.roles.edit.basics.confirmation.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("adminPortal:components.roles.edit.basics.confirmation.message",
+                            { type: isGroup ? "group." : "role." }) }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("adminPortal:components.groups.edit.basics.confirmation.content",
+                            { type: isGroup ? "group." : "role." }) }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
             }
         </>
     )

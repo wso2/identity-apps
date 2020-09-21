@@ -97,6 +97,14 @@ const ROUTES: Route[] = [
         showOnSidePanel: false
     },
     {
+        component: lazy(() => import("../pages/errors/access-denied-error")),
+        id: "accessDeniedError",
+        name: "Access denied error",
+        path: ApplicationConstants.ACCESS_DENIED_ERROR_PAGE_PATH,
+        protected: true,
+        showOnSidePanel: false
+    },
+    {
         component: lazy(() => import("../pages/errors/login-error")),
         id: "loginError",
         name: "Login error",

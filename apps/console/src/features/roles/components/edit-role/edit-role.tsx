@@ -95,7 +95,20 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                         />
                     </ResourceTab.Pane>
                 )
-            },{
+            },
+            {
+                menuItem: t("adminPortal:components.roles.edit.menuItems.groups"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <RoleGroupsList
+                            data-testid="role-mgt-edit-role-groups"
+                            role={ roleObject }
+                            onRoleUpdate={ onRoleUpdate }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
                 menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
@@ -110,23 +123,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 )
             }
         ];
-
-        if (isGroupAndRoleSeparationEnabled) {
-            panes.push(
-                {
-                    menuItem: t("adminPortal:components.roles.edit.menuItems.groups"),
-                    render: () => (
-                        <ResourceTab.Pane controlledSegmentation attached={ false }>
-                            <RoleGroupsList
-                                data-testid="role-mgt-edit-role-groups"
-                                role={ roleObject }
-                                onRoleUpdate={ onRoleUpdate }
-                            />
-                        </ResourceTab.Pane>
-                    )
-                }
-            );
-        }
 
         return panes;
     };

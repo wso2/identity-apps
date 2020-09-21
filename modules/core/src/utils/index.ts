@@ -23,7 +23,6 @@ export * from "./common-utils";
 export * from "./context-utils";
 export * from "./crypto-utils";
 export * from "./encode-decode-utils";
-export * from "./http-utils";
 export * from "./image-utils";
 export * from "./profile-utils";
 export * from "./route-utils";

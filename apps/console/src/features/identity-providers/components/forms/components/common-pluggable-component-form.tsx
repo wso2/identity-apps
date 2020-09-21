@@ -52,7 +52,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
     const interpretValueByType = (value: FormValue, key: string, type: string) => {
 
-        switch (type.toUpperCase()) {
+        switch (type?.toUpperCase()) {
             case CommonConstants.BOOLEAN: {
                 return value?.includes(key);
             }
@@ -74,10 +74,13 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
 
         values?.forEach((value, key) => {
             const propertyMetadata = getPropertyMetadata(key, metadata?.properties);
-            properties.push({
-                key: key,
-                value: interpretValueByType(value, key, propertyMetadata?.type)
-            });
+
+            if (key !== undefined && !_.isEmpty(value)) {
+                properties.push({
+                    key: key,
+                    value: interpretValueByType(value, key, propertyMetadata?.type)
+                });
+            }
         });
 
         if (initialValues?.properties) {
@@ -145,8 +148,8 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
             // by the API is removed, that will break the app. In that case, metadata API needs to updated to
             // send a displayName for such required elements.
             if (!_.isEmpty(metaProperty?.displayName)) {
-                const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(property =>
-                    property.key === metaProperty.key);
+                const property: CommonPluggableComponentPropertyInterface = dynamicValues?.properties?.find(
+                    property => property.key === metaProperty.key);
 
                 let field: ReactElement;
                 if (!isCheckboxWithSubProperties(metaProperty)) {
@@ -176,11 +179,11 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
         setDynamicValues({
             ...dynamicValues,
-            properties: dynamicValues.properties.map((prop: CommonPluggableComponentPropertyInterface):
+            properties: dynamicValues?.properties?.map((prop: CommonPluggableComponentPropertyInterface):
             CommonPluggableComponentPropertyInterface => {
                 return prop.key === key ? {
                     key: key,
-                    value: values.get(key)?.includes(key).toString()
+                    value: values?.get(key)?.includes(key)?.toString()
                 } : prop;
             })
         });

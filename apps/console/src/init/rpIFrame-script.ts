@@ -19,10 +19,10 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-const config = window.parent["AppUtils"].getConfig();
-const clientId = config.clientID;
+const config = window.parent["AppUtils"]?.getConfig();
+const clientId = config?.clientID;
 const targetOrigin = sessionStorage.getItem("oidc_session_iframe_endpoint");
-const redirectUri = config.loginCallbackURL;
+const redirectUri = config?.loginCallbackURL;
 
 function checkSession() {
     const sessionState = sessionStorage.getItem("session_state");

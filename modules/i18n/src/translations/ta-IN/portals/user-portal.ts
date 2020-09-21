@@ -1088,6 +1088,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "பிழை ஏற்பட்டுவிட்டது"
+                    },
+                    genericError: {
+                        description: "சுயவிவர நிறைவு கணக்கிடும்போது பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    success: {
+                        description: "சுயவிவர நிறைவு வெற்றிகரமாக கணக்கிடப்பட்டது",
+                        message: "கணக்கீடு வெற்றிகரமாக"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "பயனர் விபரத்தை பெறும் பொழுது தவறேற்பட்டுவிட்டது",
@@ -1314,6 +1328,14 @@ export const userPortal: UserPortalNS = {
                     "அழுத்தி முகப்புப் பக்கத்திற்குச் செல்லுங்கள்."
             },
             title: "பக்கம் காணப்படவில்லை"
+        },
+        accessDeniedError: {
+            action: "முகப்பிற்கு திரும்பு",
+            subtitles: {
+                0: "இந்தப் பக்கத்தை அணுக உங்களுக்கு அனுமதி இல்லை என்று தெரிகிறது.",
+                1: "வேறு கணக்கில் உள்நுழைய முயற்சிக்கவும்."
+            },
+            title: "அணுகல் வழங்கப்படவில்லை"
         },
         emptySearchResult: {
             action: "தேடல் கேள்வியினை அழி",

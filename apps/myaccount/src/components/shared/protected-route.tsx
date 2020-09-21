@@ -23,10 +23,12 @@ import { Redirect, Route } from "react-router-dom";
 import { GlobalConfig } from "../../configs";
 import { ApplicationConstants } from "../../constants";
 import { history } from "../../helpers";
+import { AppState } from "../../store";
 
-export const ProtectedRoute = ({ component: Component, ...rest }) => {
+export const ProtectedRoute = ({ component: Component, route, ...rest }) => {
 
     const isAuth = useSelector((state: any) => state.authenticationInformation.isAuth);
+    const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     /**
      * Update existing location path in the state to recall upon page refresh or authentication callback.
@@ -41,12 +43,31 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
         AuthenticateUtils.updateAuthenticationCallbackUrl(GlobalConfig.appHomePath);
     }
 
+    /**
+     * Checks if the users have the required scope and direct them to the relevant
+     *
+     * @param props
+     */
+    const resolveComponents = (props) => {
+        const scopes = allowedScopes?.split(" ");
+
+        if (!route?.scope) {
+            return (<Component { ...props } />);
+        }
+
+        if (scopes?.includes(route?.scope)) {
+            return <Component { ...props } />;
+        } else {
+            return <Redirect to={ ApplicationConstants.ACCESS_DENIED_ERROR_PAGE_PATH } />;
+        }
+    };
+
     return (
         <Route
             render={ (props) =>
-                isAuth ?
-                    <Component { ...props } /> :
-                    <Redirect to={ GlobalConfig.appLoginPath } />
+                isAuth
+                    ? <>{ resolveComponents(props) }</>
+                    : <Redirect to={ GlobalConfig.appLoginPath } />
             }
             { ...rest }
         />

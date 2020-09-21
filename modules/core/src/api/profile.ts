@@ -18,7 +18,6 @@
 
 import { IdentityClient, SignInResponse } from "@wso2is/authentication";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import _ from "lodash";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ProfileConstants } from "../constants";
 import { IdentityAppsApiException } from "../exceptions";
@@ -26,7 +25,6 @@ import { HTTPRequestHeaders } from "../helpers";
 import {
     AcceptHeaderValues,
     ContentTypeHeaderValues,
-    GravatarConfig,
     GravatarFallbackTypes,
     HttpMethods,
     LinkedAccountInterface,
@@ -277,6 +275,7 @@ export const switchAccount = (account: LinkedAccountInterface): Promise<any> => 
                 username: account.username,
                 "userstore-domain": account.userStoreDomain
             },
+            id: "switch-account",
             returnResponse: true,
             returnsSession: true,
             signInRequired: true

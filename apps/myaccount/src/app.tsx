@@ -209,6 +209,7 @@ export const App = (): ReactElement => {
                                                                             <ProtectedRoute
                                                                                 component={ route.component }
                                                                                 path={ route.path }
+                                                                                route={ route }
                                                                                 key={ index }
                                                                             />
                                                                         )

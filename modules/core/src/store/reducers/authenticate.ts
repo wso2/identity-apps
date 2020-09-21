@@ -46,12 +46,17 @@ export const commonAuthenticateReducer = (initialState: CommonAuthReducerStateIn
             }
             return {
                 ...state
-            }
+            };
         case CommonAuthenticateActionTypes.SET_SIGN_OUT:
             return {
                 ...state,
                 loginInit: false,
                 logoutInit: true
+            };
+        case CommonAuthenticateActionTypes.SET_INITIALIZED:
+            return {
+                ...state,
+                initialized: action.payload
             };
         case CommonAuthenticateActionTypes.RESET_AUTHENTICATION:
             return {

@@ -170,6 +170,11 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
      * @param groupDetails - basic data required to create group.
      */
     const addGroup = (groupDetails: any): void => {
+        let groupName = "";
+
+        groupDetails?.BasicDetails?.domain !== "primary"
+            ? groupName = groupDetails?.BasicDetails?.domain + "/" + groupDetails?.BasicDetails?.groupName
+            : groupName = groupDetails?.BasicDetails?.groupName;
 
         const members: CreateGroupMemberInterface[] = [];
         const users = groupDetails?.UserList;
@@ -183,7 +188,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
         }
 
         const groupData: CreateGroupInterface = {
-            "displayName": groupDetails?.BasicDetails ? groupDetails?.BasicDetails?.groupName : groupDetails?.groupName,
+            "displayName": groupName,
             "members" : members,
             "schemas": [
                 "urn:ietf:params:scim:schemas:core:2.0:Group"

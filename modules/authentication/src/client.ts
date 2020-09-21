@@ -137,7 +137,7 @@ export class IdentityClient {
                 })
                 .catch((error) => {
                     return Promise.reject(error);
-                })
+                });
         }
     }
 
@@ -353,6 +353,18 @@ export class IdentityClient {
     }
 
     public on(hook: Hooks.CustomGrant, callback: (response?: any) => void, id: string): void;
+    public on(
+        hook:
+            | Hooks.EndUserSession
+            | Hooks.HttpRequestError
+            | Hooks.HttpRequestFinish
+            | Hooks.HttpRequestStart
+            | Hooks.HttpRequestSuccess
+            | Hooks.Initialize
+            | Hooks.SignIn
+            | Hooks.SignOut,
+        callback: (response?: any) => void
+    );
     public on(hook: Hooks, callback: (response?: any) => void, id?: string): void {
         if (callback && typeof callback === "function") {
             switch (hook) {

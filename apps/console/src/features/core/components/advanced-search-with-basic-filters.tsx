@@ -135,8 +135,9 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 
     const { t } = useTranslation();
 
-    const [ isFormSubmitted, setIsFormSubmitted ] = useState(false);
-    const [ externalSearchQuery, setExternalSearchQuery ] = useState("");
+    const [ isFormSubmitted, setIsFormSubmitted ] = useState<boolean>(false);
+    const [ isFiltersReset, setIsFiltersReset ] = useState<boolean>(false);
+    const [ externalSearchQuery, setExternalSearchQuery ] = useState<string>("");
 
     /**
      * Handles the form submit.
@@ -182,6 +183,13 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
      */
     const handleExternalSearchQueryClear = (): void => {
         setExternalSearchQuery("");
+    };
+
+    /**
+     * Handles resetting the filters.
+     */
+    const handleResetFilter = (): void => {
+        setIsFiltersReset(true);
     };
 
     /**
@@ -231,7 +239,11 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
             <Grid>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
-                        <Forms onSubmit={ (values) => handleFormSubmit(values) }>
+                        <Forms
+                            onSubmit={ (values) => handleFormSubmit(values) }
+                            resetState={ isFiltersReset }
+                            onChange={ () => setIsFiltersReset(false) }
+                        >
                             <Field
                                 children={
                                     filterAttributeOptions.map((attribute, index) => {
@@ -326,6 +338,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
                                             size="small"
                                             type="reset"
                                             data-testid={ `${ testId }-reset-button` }
+                                            onClick={ () => handleResetFilter() }
                                         >
                                             { resetButtonLabel ? resetButtonLabel : t("common:resetFilters") }
                                         </LinkButton>

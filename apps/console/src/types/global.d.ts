@@ -16,20 +16,6 @@
  * under the License.
  */
 
-import { ModalInterface, ValidationInterface } from "../common";
-
-/**
- * Model for the Console namespace
- */
-export interface ConsoleNS {
-    common: {
-        modals: {
-            editAvatarModal: ModalInterface;
-            sessionTimeoutModal: ModalInterface;
-        };
-        validations: {
-            inSecureURL: ValidationInterface;
-            unrecognizedURL: ValidationInterface;
-        };
-    };
-}
+declare const serverOriginGlobal: string;
+declare const superTenantGlobal: string;
+declare const tenantPrefixGlobal: string;

@@ -1059,6 +1059,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred"
+                    },
+                    genericError: {
+                        description: "Error occurred while assessing the profile completion",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Profile completion was assessed successfully",
+                        message: "Calculation Successful"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
@@ -1284,6 +1298,14 @@ export const userPortal: UserPortalNS = {
                 1: "Please check the URL or click on the button below to be redirected back to the home page."
             },
             title: "Page not found"
+        },
+        accessDeniedError: {
+            action: "Back to home",
+            subtitles: {
+                0: "It seems like you are not allowed to access this page.",
+                1: "Please try signing in with a different account."
+            },
+            title: "Access not granted"
         },
         emptySearchResult: {
             action: "Clear search query",

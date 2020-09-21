@@ -45,7 +45,7 @@ export class AuthenticateUtils {
     public static endUserSession(): void {
         const auth = IdentityClient.getInstance();
 
-        auth.IdentityClient()
+        auth.endUserSession()
             .then(() => {
                 store.dispatch(handleSignIn());
             })

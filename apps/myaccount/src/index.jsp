@@ -20,6 +20,11 @@
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
+<jsp:scriptlet>
+    session.setAttribute("authCode",request.getParameter("code"));
+    session.setAttribute("sessionState", request.getParameter("session_state"));
+</jsp:scriptlet>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -33,18 +38,9 @@
         <title><%= htmlWebpackPlugin.options.title %></title>
 
         <script>
-            // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
-            // In such cases, the code is added to the sessionStorage under the key "code".
-            const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
-
-            if (authorizationCode !== "null") {
-                window.sessionStorage.setItem("code", authorizationCode);
-            }
-
-            var sessionState = "<%= htmlWebpackPlugin.options.sessionState %>";
-            if (sessionState !== "null") {
-                sessionStorage.setItem("session_state", sessionState);
-            }
+            var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
+            var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
         </script>
     </head>
     <body>

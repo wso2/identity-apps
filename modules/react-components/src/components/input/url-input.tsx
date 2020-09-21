@@ -20,6 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
     ReactElement,
+    ReactNode,
     useCallback,
     useEffect,
     useState
@@ -46,6 +47,14 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
     required?: boolean;
     disabled?: boolean;
     hideComponent?: boolean;
+    /**
+     * Custom label to be passed from outside.
+     */
+    customLabel?: ReactNode;
+    /**
+     * Show/Hide predictions.
+     */
+    showPredictions?: boolean;
     /**
      * Make the form read only.
      */
@@ -89,6 +98,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     const {
         addURLTooltip,
+        customLabel,
         duplicateURLErrorMessage,
         isAllowEnabled,
         allowedOrigins,
@@ -107,6 +117,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         required,
         disabled,
         hideComponent,
+        showPredictions,
         computerWidth,
         readOnly,
         getSubmit,
@@ -414,6 +425,31 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         }
     };
 
+    /**
+     * Resolves the error label.
+     *
+     * @return {React.ReactElement | React.ReactNode}
+     */
+    const resolveValidationLabel = (): ReactElement | ReactNode => {
+        if (!validURL) {
+            return (
+                <Label basic color="red" pointing>
+                    { validationErrorMsg }
+                </Label>
+            );
+        }
+
+        if (duplicateURL) {
+            return (
+                <Label basic color="red" pointing>
+                    { duplicateURLErrorMessage }
+                </Label>
+            );
+        }
+        
+        return customLabel;
+    };
+
     return (!hideEntireComponent &&
         <>
             <Grid.Row columns={ 1 } className={ "urlComponentLabelRow" }>
@@ -465,43 +501,31 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             inverted
                         />
                     </Input>
-                    {
-                        !validURL &&
-                        (
-                            <Label basic color="red" pointing>
-                                { validationErrorMsg }
-                            </Label>
-                        )
-                    }
-                    {
-                        duplicateURL &&
-                        (
-                            <Label basic color="red" pointing>
-                                { duplicateURLErrorMessage }
-                            </Label>
-                        )
-                    }
+                    { resolveValidationLabel() }
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row className={ "urlComponentInputRow" }>
-                <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
-                    {
-                        (predictValue.length > 0) &&
-                        predictValue.map((predict) => {
-                            return (
-                                <Label
-                                    key={ predict }
-                                    basic
-                                    color="grey"
-                                    onClick={ () => onPredictClick(predict) }
-                                >
-                                    { predict }
-                                </Label>
-                            );
-                        })
-                    }
-                </Grid.Column>
-            </Grid.Row>
+            {
+                showPredictions && (
+                    <Grid.Row className={ "urlComponentInputRow" }>
+                        <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
+                            {
+                                (predictValue.length > 0) && predictValue.map((predict) => {
+                                    return (
+                                        <Label
+                                            key={ predict }
+                                            basic
+                                            color="grey"
+                                            onClick={ () => onPredictClick(predict) }
+                                        >
+                                            { predict }
+                                        </Label>
+                                    );
+                                })
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
                     return (
@@ -550,5 +574,6 @@ URLInput.defaultProps = {
     "data-testid": "url-input",
     duplicateURLErrorMessage: "This URL is already added. Please select a different one.",
     isAllowEnabled: true,
-    labelEnabled: false
+    labelEnabled: false,
+    showPredictions: true
 };

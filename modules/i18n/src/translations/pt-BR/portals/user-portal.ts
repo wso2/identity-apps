@@ -1041,6 +1041,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Ocorreu um erro"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao calcular a conclusão do perfil",
+                        message: "Algo deu errado"
+                    },
+                    success: {
+                        description: "A conclusão do perfil foi calculada com sucesso",
+                        message: "Cálculo bem sucedido"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
@@ -1266,6 +1280,14 @@ export const userPortal: UserPortalNS = {
                     "inicial."
             },
             title: "página não encontrada"
+        },
+        accessDeniedError: {
+            action: "Voltar para casa",
+            subtitles: {
+                0: "Parece que você não tem permissão para acessar esta página.",
+                1: "Tente fazer login com uma conta diferente."
+            },
+            title: "Acesso não concedido"
         },
         emptySearchResult: {
             action: "Limpar consulta de pesquisa",

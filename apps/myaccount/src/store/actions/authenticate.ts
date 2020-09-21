@@ -18,6 +18,7 @@
 
 import {
     AUTHORIZATION_ENDPOINT,
+    Hooks,
     IdentityClient,
     OIDC_SESSION_IFRAME_ENDPOINT,
     ServiceResourcesType,
@@ -27,6 +28,7 @@ import {
 import { TokenConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
+import axios from "axios";
 import _ from "lodash";
 import { UAParser } from "ua-parser-js";
 import { getProfileLinkedAccounts } from ".";
@@ -97,6 +99,16 @@ export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
 });
 
 /**
+ * Dispatches an action of type `SET_INITIALIZED`
+ * @param schemas
+ */
+export const setInitialized = (flag: boolean): AuthAction => ({
+    payload: flag,
+    type: authenticateActionTypes.SET_INITIALIZED
+});
+
+
+/**
  * Get SCIM2 schemas
  */
 export const getScimSchemas = (profileInfo: BasicProfileInterface = null) => (dispatch): void => {
@@ -147,10 +159,22 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
                         if (updateProfileCompletion && !isCompletionCalculated) {
-                            getProfileCompletion(
-                                infoResponse,
-                                store.getState().authenticationInformation.profileSchemas
-                            );
+                            try {
+                                getProfileCompletion(
+                                    infoResponse,
+                                    store.getState().authenticationInformation.profileSchemas
+                                );
+                            } catch (e) {
+                                dispatch(
+                                    addAlert({
+                                        description: I18n.instance.t("userPortal:components.profile.notifications" +
+                                            ".getProfileCompletion.genericError.description"),
+                                        level: AlertLevels.ERROR,
+                                        message: I18n.instance.t("userPortal:components.profile.notifications" +
+                                            ".getProfileCompletion.genericError.message")
+                                    })
+                                );
+                            }
                         }
 
                         return;
@@ -224,24 +248,39 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 export const initializeAuthentication = () =>(dispatch)=> {
     const auth = IdentityClient.getInstance();
 
-    auth.on("http-request-error", onHttpRequestError);
-    auth.on("http-request-finish", onHttpRequestFinish);
-    auth.on("http-request-start", onHttpRequestStart);
-    auth.on("http-request-success", onHttpRequestSuccess);
+    auth.on(Hooks.HttpRequestError, onHttpRequestError);
+    auth.on(Hooks.HttpRequestFinish, onHttpRequestFinish);
+    auth.on(Hooks.HttpRequestStart, onHttpRequestStart);
+    auth.on(Hooks.HttpRequestSuccess, onHttpRequestSuccess);
 
-    auth
-        .initialize({
-            baseUrls: [ window[ "AppUtils" ].getConfig().serverOrigin ],
-            callbackURL: window[ "AppUtils" ].getConfig().loginCallbackURL,
-            clientHost: window[ "AppUtils" ].getConfig().clientOriginWithTenant,
-            clientID: window[ "AppUtils" ].getConfig().clientID,
+    const initialize = (response?: any): void => {
+        auth.initialize({
+            authorizationCode: response?.data?.authCode,
+            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
+            clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: true,
             responseMode: process.env.NODE_ENV === "production" ? "form_post" : null,
-            scope: [ TokenConstants.SYSTEM_SCOPE ],
-            serverOrigin: window[ "AppUtils" ].getConfig().serverOriginWithTenant,
+            scope: [TokenConstants.SYSTEM_SCOPE],
+            serverOrigin: window["AppUtils"].getConfig().serverOriginWithTenant,
+            sessionState: response?.data?.sessionState,
+            signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
+            signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             storage: new UAParser().getBrowser().name === "IE" ? Storage.SessionStorage : Storage.WebWorker
         });
-    auth.on("sign-in", (response) => {
+
+        dispatch(setInitialized(true));
+    }
+
+    if (process.env.NODE_ENV === "production") {
+        axios.get(window[ "AppUtils" ].getAppBase() + "/auth.jsp").then((response) => {
+            initialize(response);
+        });
+    } else {
+        initialize();
+    }
+
+    auth.on(Hooks.SignIn, (response) => {
         dispatch(
             setSignIn({
                 // eslint-disable-next-line @typescript-eslint/camelcase

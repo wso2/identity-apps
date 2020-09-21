@@ -1052,6 +1052,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    genericError: {
+                        description: "පැතිකඩ සම්පුර්ණ කිරීම ගණනය කිරීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "පැතිකඩ සම්පුර්ණ කිරීම සාර්ථකව ගණනය කරන ලදි",
+                        message: "දෝෂයක් ඇතිවිය"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
@@ -1280,6 +1294,14 @@ export const userPortal: UserPortalNS = {
                 1: "කරුණාකර URL එක පරීක්ෂා කරන්න හෝ නැවත මුල් පිටුවට ගමන් කිරීමට පහත බොත්තම ක්ලික් කරන්න."
             },
             title: "පිටුව හමු නොවීය"
+        },
+        accessDeniedError: {
+            action: "නැවත ආරම්භක පිටුව වෙත",
+            subtitles: {
+                0: "ඔබට මෙම පිටුවට ප්‍රවේශ වීමට අවසර නැති බව පෙනේ.",
+                1: "කරුණාකර වෙනත් ගිණුමක් සමඟ පුරනය වීමට උත්සාහ කරන්න"
+            },
+            title: "ප්‍රවේශයට අවසර නැත"
         },
         emptySearchResult: {
             action: "සෙවුම් විමසුම හිස් කරන්න",

@@ -22,13 +22,13 @@ import "regenerator-runtime/runtime";
 
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
-        serverOrigin: "https://localhost:9443",
-        superTenant: "carbon.super",
-        tenantPrefix: "t"
+        serverOrigin: serverOriginGlobal,
+        superTenant: superTenantGlobal,
+        tenantPrefix: tenantPrefixGlobal
     });
-}
 
-window["AppUtils"] = AppUtils;
+    window["AppUtils"] = AppUtils;
+}
 
 function getRandomPKCEChallenge() {
     const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
