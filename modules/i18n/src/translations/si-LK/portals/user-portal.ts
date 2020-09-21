@@ -1052,6 +1052,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    genericError: {
+                        description: "පැතිකඩ සම්පුර්ණ කිරීම ගණනය කිරීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "පැතිකඩ සම්පුර්ණ කිරීම සාර්ථකව ගණනය කරන ලදි",
+                        message: "දෝෂයක් ඇතිවිය"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
