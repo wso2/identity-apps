@@ -87,6 +87,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
+    const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
 
     // The following constant holds the state of role already assigned roles.
     const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
@@ -146,8 +147,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         if (!(group)) {
             return;
         }
-        setAssignedRoles(group.roles);
         mapUserRoles();
+        setAssignedRoles(group.roles);
     }, []);
 
     /**
@@ -164,7 +165,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     useEffect(() => {
         getRolesList(null)
             .then((response) => {
-                setInitialRoleList(response.data.Resources);
+                setPrimaryRoles(response.data.Resources);
             });
     }, []);
 
@@ -172,18 +173,22 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        const roleListCopy = [ ...initialRoleList ];
-
+        const roleListCopy = primaryRoles ? [ ...primaryRoles ] : [];
         const addedRoles = [];
-        _.forEachRight(roleListCopy, (role) => {
-            if (primaryRolesList?.has(role.displayName)) {
-                addedRoles.push(role);
-                roleListCopy.splice(roleListCopy.indexOf(role), 1);
-            }
-        });
+
+        if (roleListCopy && primaryRolesList) {
+            const primaryRolesValues = Array.from(primaryRolesList?.values());
+
+            _.forEach(roleListCopy, (role) => {
+                if (primaryRolesValues?.includes(role.id)) {
+                    addedRoles.push(role);
+                }
+            });
+        }
         setTempRoleList(addedRoles);
         setInitialTempRoleList(addedRoles);
-        setRoleList(roleListCopy);
+        setRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
+        setInitialRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
     };
 
     /**

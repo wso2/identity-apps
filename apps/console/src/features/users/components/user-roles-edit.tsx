@@ -93,6 +93,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
+    const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
 
     // The following constant holds the state of role already assigned roles.
     const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
@@ -153,6 +154,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             return;
         }
         mapUserRoles();
+        resolveUserRoles();
     }, []);
 
     /**
@@ -163,31 +165,57 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             return;
         }
         mapUserRoles();
+        resolveUserRoles();
     }, [ user ]);
 
     useEffect(() => {
         getRolesList(null)
             .then((response) => {
-                setInitialRoleList(response.data.Resources);
+                setPrimaryRoles(response.data.Resources);
             });
     }, []);
+
+    /**
+     * Resolves user roles depending on whether the separation is enabled.
+     */
+    const resolveUserRoles = (): void => {
+        if (isGroupAndRoleSeparationEnabled) {
+            setAssignedRoles(user?.roles);
+        } else {
+            const userRoles = [];
+
+            user?.groups?.map((group) => {
+                const displayName = group?.display?.split("/");
+
+                if(displayName?.length > 1
+                    && (displayName[0] == APPLICATION_DOMAIN || displayName[0] == INTERNAL_DOMAIN)) {
+                    userRoles.push(group);
+                }
+            });
+            setAssignedRoles(userRoles);
+        }
+    };
 
     /**
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        const roleListCopy = [ ...initialRoleList ];
-
+        const roleListCopy = primaryRoles ? [ ...primaryRoles ] : [];
         const addedRoles = [];
+
+        if (roleListCopy && primaryRolesList) {
+            const primaryRolesValues = Array.from(primaryRolesList?.values());
+
             _.forEachRight(roleListCopy, (role) => {
-                if (primaryRolesList?.has(role.displayName)) {
+                if (primaryRolesValues?.includes(role.id)) {
                     addedRoles.push(role);
-                    roleListCopy.splice(roleListCopy.indexOf(role), 1);
                 }
             });
-            setTempRoleList(addedRoles);
-            setInitialTempRoleList(addedRoles);
-            setRoleList(roleListCopy);
+        }
+        setTempRoleList(addedRoles);
+        setInitialTempRoleList(addedRoles);
+        setRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
+        setInitialRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
     };
 
     /**
@@ -205,12 +233,11 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 _.forEachRight (user.groups, (group) => {
                     const groupName = group?.display?.split("/");
 
-                    if (groupName.length > 1) {
-                        groupsMap.set(group.display, group.value);
+                    if (groupName?.length >= 1) {
+                        groupsMap?.set(group.display, group.value);
                     }
                 });
                 setPrimaryRolesList(groupsMap);
-                setAssignedRoles(user.groups);
             }
 
             return;
@@ -225,7 +252,6 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 }
             });
             setPrimaryRolesList(rolesMap);
-            setAssignedRoles(user.roles);
         }
     };
 
@@ -244,23 +270,29 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
+            failOnErrors: 1,
             Operations: [],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
+            failOnErrors: 1,
             Operations: [],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
             data: {
+                "schemas": [
+                    "urn:ietf:params:scim:schemas:core:2.0:Role"
+                ],
                 "Operations": [{
                     "op": "remove",
-                    "path": "users",
-                    "value": [{
-                        "value": user.id
-                    }]
+                    "value": {
+                        "users": [{
+                            "value": user.id
+                        }]
+                    }
                 }]
             },
             method: "PATCH"
@@ -268,12 +300,16 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
         let addOperation = {
             data: {
+                "schemas": [
+                    "urn:ietf:params:scim:schemas:core:2.0:Role"
+                ],
                 "Operations": [{
                     "op": "add",
-                    "path": "users",
-                    "value": [{
-                        "value": user.id
-                    }]
+                    "value": {
+                        "users": [{
+                            "value": user.id
+                        }]
+                    }
                 }]
             },
             method: "PATCH"
@@ -295,7 +331,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             });
         }
 
-        if (removedIds && removedIds.length > 0) {
+        if (removedIds && removedIds?.length > 0) {
             removedIds.map((id) => {
                 removeOperation = {
                     ...removeOperation,
@@ -549,7 +585,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
      */
     const createItemLabel = (roleName: string) => {
         const role = roleName?.split("/");
-        if (role.length > 0) {
+        if (role?.length > 0) {
             if (role[0] == "Application") {
                 return {
                     labelColor: null,
@@ -614,7 +650,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 data-testid="user-mgt-update-roles-modal"
                             >
                                 <TransferList
-                                    isListEmpty={ !(roleList.length > 0) }
+                                    isListEmpty={ !(roleList?.length > 0) }
                                     listType="unselected"
                                     listHeaders={ [
                                         t("adminPortal:components.transferList.list.headers.0"),
@@ -629,14 +665,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         roleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName.length >= 1) {
+                                            if (roleName?.length >= 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
                                                             () => handleUnassignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={ roleName?.length > 1 ? roleName[1] : roleName[0] }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -651,7 +687,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     }
                                 </TransferList>
                                 <TransferList
-                                    isListEmpty={ !(tempRoleList.length > 0) }
+                                    isListEmpty={ !(tempRoleList?.length > 0) }
                                     listType="selected"
                                     listHeaders={ [
                                         t("adminPortal:components.transferList.list.headers.0"),
@@ -666,14 +702,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     {
                                         tempRoleList?.map((role, index) => {
                                             const roleName = role?.displayName?.split("/");
-                                            if (roleName.length >= 1) {
+                                            if (roleName?.length >= 1) {
                                                 return (
                                                     <TransferListItem
                                                         handleItemChange={
                                                             () => handleAssignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={ roleName?.length == 1 ? roleName[0] : roleName[1] }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -726,7 +762,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
             assignedRoles && assignedRoles?.map((role) => {
                 const groupName = role?.display?.split("/");
-                if (groupName.length > 1) {
+                if (groupName?.length > 1) {
                     isMatch = re.test(role.display);
                     if (isMatch) {
                         filteredRoleList.push(role);
@@ -833,7 +869,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 {
                                                     assignedRoles?.map((group) => {
                                                         const userRole = group?.display?.split("/");
-                                                        if (userRole.length > 1) {
+                                                        if (userRole?.length >= 1) {
                                                             return (
                                                                 <Table.Row>
                                                                     {
@@ -853,7 +889,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                     }
                                                                     <Table.Cell width={ 8 }>
                                                                         {
-                                                                            userRole.length == 1
+                                                                            userRole?.length == 1
                                                                             ? userRole[0] : userRole[1]
                                                                         }
                                                                     </Table.Cell>
