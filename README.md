@@ -44,6 +44,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
        "HEAD",
        "OPTIONS",
        "PUT",
+       "PATCH",
        "HEAD",
        "DELETE"
     ]
