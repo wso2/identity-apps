@@ -1065,7 +1065,7 @@ export const userPortal: UserPortalNS = {
                         message: "Error occurred"
                     },
                     genericError: {
-                        description: "Error occurred while calculating the profile completion",
+                        description: "Error occurred while assessing the profile completion",
                         message: "Something went wrong"
                     },
                     success: {
