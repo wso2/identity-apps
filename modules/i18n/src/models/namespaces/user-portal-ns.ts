@@ -640,6 +640,7 @@ export interface UserPortalNS {
                 };
             };
             notifications: {
+                getProfileCompletion: Notification;
                 getProfileInfo: Notification;
                 getUserReadOnlyStatus: Notification;
                 updateProfileInfo: Notification;

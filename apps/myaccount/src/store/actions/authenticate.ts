@@ -159,10 +159,22 @@ export const getProfileInformation = (updateProfileCompletion = false) => (dispa
 
                         // If `updateProfileCompletion` flag is enabled, update the profile completion.
                         if (updateProfileCompletion && !isCompletionCalculated) {
-                            getProfileCompletion(
-                                infoResponse,
-                                store.getState().authenticationInformation.profileSchemas
-                            );
+                            try {
+                                getProfileCompletion(
+                                    infoResponse,
+                                    store.getState().authenticationInformation.profileSchemas
+                                );
+                            } catch (e) {
+                                dispatch(
+                                    addAlert({
+                                        description: I18n.instance.t("userPortal:components.profile.notifications" +
+                                            ".getProfileCompletion.genericError.description"),
+                                        level: AlertLevels.ERROR,
+                                        message: I18n.instance.t("userPortal:components.profile.notifications" +
+                                            ".getProfileCompletion.genericError.message")
+                                    })
+                                );
+                            }
                         }
 
                         return;

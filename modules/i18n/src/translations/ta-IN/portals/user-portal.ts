@@ -1088,6 +1088,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "பிழை ஏற்பட்டுவிட்டது"
+                    },
+                    genericError: {
+                        description: "சுயவிவர நிறைவு கணக்கிடும்போது பிழை ஏற்பட்டது",
+                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
+                    },
+                    success: {
+                        description: "சுயவிவர நிறைவு வெற்றிகரமாக கணக்கிடப்பட்டது",
+                        message: "கணக்கீடு வெற்றிகரமாக"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "பயனர் விபரத்தை பெறும் பொழுது தவறேற்பட்டுவிட்டது",

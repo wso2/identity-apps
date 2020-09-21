@@ -1059,6 +1059,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred"
+                    },
+                    genericError: {
+                        description: "Error occurred while calculating the profile completion",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Profile completion was calculated successfully",
+                        message: "Calculation Successful"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
