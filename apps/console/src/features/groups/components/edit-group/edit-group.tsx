@@ -23,11 +23,11 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 // TODO: Move to shared components.
 import { useSelector } from "react-redux";
+import { BasicGroupDetails } from "./edit-group-basic";
 import { GroupRolesList } from "./edit-group-roles";
 import { GroupUsersList } from "./edit-group-users";
 import { FeatureConfigInterface } from "../../../core/models";
 import { AppState } from "../../../core/store";
-import { BasicRoleDetails } from "../../../roles";
 import { GroupConstants } from "../../constants";
 import { GroupsInterface } from "../../models";
 
@@ -96,11 +96,11 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                 menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
-                        <BasicRoleDetails
+                        <BasicGroupDetails
                             data-testid="group-mgt-edit-group-basic"
                             isGroup={ true }
-                            roleObject={ group }
-                            onRoleUpdate={ onGroupUpdate }
+                            groupObject={ group }
+                            onGroupUpdate={ onGroupUpdate }
                             isReadOnly={ isReadOnly }
                         />
                     </ResourceTab.Pane>
