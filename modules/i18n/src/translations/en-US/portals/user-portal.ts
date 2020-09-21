@@ -1069,7 +1069,7 @@ export const userPortal: UserPortalNS = {
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Profile completion was calculated successfully",
+                        description: "Profile completion was assessed successfully",
                         message: "Calculation Successful"
                     }
                 },
