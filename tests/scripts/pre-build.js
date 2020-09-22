@@ -16,10 +16,10 @@
  * under the License.
  */
 
-const { execSync } = require("child_process");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 
+// eslint-disable-next-line no-console
 const log = console.log;
 
 // Path of the cypress.json file.

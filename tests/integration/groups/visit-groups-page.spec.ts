@@ -19,7 +19,7 @@
 
 /// <reference types="cypress" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is-testing/cypress-base";
+import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
 
 const USERNAME = Cypress.env("TENANT_USERNAME");
 const PASSWORD = Cypress.env("TENANT_PASSWORD");
@@ -29,7 +29,7 @@ const CONSOLE = Cypress.env("CONSOLE_BASE_URL");
 describe("ITC-001-[groups]-User visits the groups page.", () => {
 
     beforeEach(() => {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL);
+        cy.login(USERNAME, PASSWORD, SERVER_URL, CONSOLE);
         CookieUtils.preserveAllSessionCookies();
     });
 

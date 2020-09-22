@@ -16,25 +16,31 @@
  *under the License.
  */
 
- /// <reference types="Cypress" />
+/// <reference types="Cypress" />
 
- // LOGIN LOCATORS
- const USERNAME_INPUT = "#usernameUserInput",
-       PASSWORD_INPUT = "#password",
-       CONTINUE_BUTTON = "Continue";
- // LOGOUT LOCATORS
- const HEADER_AVATAR_ICON = '[data-testid="app-header-user-avatar"]',
-       LOGOUT_BUTTON = '[data-testid="app-header-dropdown-link-"]';
+// LOGIN LOCATORS
+const USERNAME_INPUT = "#usernameUserInput";
+const PASSWORD_INPUT = "#password";
+const CONTINUE_BUTTON = "Continue";
+
+// LOGOUT LOCATORS
+const HEADER_AVATAR_ICON = "[data-testid=\"app-header-user-avatar\"]";
+const LOGOUT_BUTTON = "[data-testid=\"app-header-dropdown-link-\"]";
 
 
- //METHODS TO GET LOCATORS FOR HANDLE ELEMENTS IN LANDING PAGE.
- const loginUsernameInputField = () => cy.get(USERNAME_INPUT);
- const loginPasswordInputField = () => cy.get(PASSWORD_INPUT);
- //const loginPasswordInputField = () => cy.get(LOGIN_PASSWORD_INPUT_FIELD);
- const submitLoginButton = () => cy.contains(CONTINUE_BUTTON);
- const clickHeaderAvatarIcon = () => cy.get(HEADER_AVATAR_ICON).click();
- const clickLogoutButton = () => cy.get(LOGOUT_BUTTON).click();
+//METHODS TO GET LOCATORS FOR HANDLE ELEMENTS IN LANDING PAGE.
+const loginUsernameInputField = () => cy.get(USERNAME_INPUT);
+const loginPasswordInputField = () => cy.get(PASSWORD_INPUT);
+//const loginPasswordInputField = () => cy.get(LOGIN_PASSWORD_INPUT_FIELD);
+const submitLoginButton = () => cy.contains(CONTINUE_BUTTON);
+const clickHeaderAvatarIcon = () => cy.get(HEADER_AVATAR_ICON).click();
+const clickLogoutButton = () => cy.get(LOGOUT_BUTTON).click();
 
- //EXPORT METHODS
- module.exports = { loginUsernameInputField,  loginPasswordInputField, submitLoginButton, clickHeaderAvatarIcon, clickLogoutButton }
-
+//EXPORT METHODS
+module.exports = {
+    loginUsernameInputField,
+    loginPasswordInputField,
+    submitLoginButton,
+    clickHeaderAvatarIcon,
+    clickLogoutButton
+};

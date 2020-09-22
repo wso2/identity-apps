@@ -16,11 +16,11 @@
  *under the License.
  */
 
-const addContext = require('mochawesome/addContext');
+const addContext = require("mochawesome/addContext");
 const MAX_TEST_NAME_LENGTH = 1000;
 
-Cypress.on('test:after:run', (test, runnable) => {
-  if (test.state === 'failed') {
+Cypress.on("test:after:run", (test, runnable) => {
+  if (test.state === "failed") {
     const fullTestName = getFullTestName(runnable);
 
     const imagePath = `screenshots/${Cypress.spec.name}/${fullTestName} (failed).png`;
@@ -41,7 +41,7 @@ function getFullTestName(runnable) {
   return name
     .filter(Boolean)
     .map((n) => n.trim())
-    .join(' -- ')
+    .join(" -- ")
     .substring(0, MAX_TEST_NAME_LENGTH);
 }
 
