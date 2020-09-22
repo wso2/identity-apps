@@ -16,6 +16,7 @@
   ~ under the License.
 --%>
 
+<jsp:directive.include file="localize.jsp" />
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.EncodedControl" %>
 <%@ page import="java.nio.charset.StandardCharsets" %>
 <%@ page import="java.util.ResourceBundle" %>

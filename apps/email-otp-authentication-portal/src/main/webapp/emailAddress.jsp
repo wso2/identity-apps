@@ -61,7 +61,7 @@
 		<%
 			} else {
 		%>
-		<jsp:directive.include file="includes/header.jsp" />
+		<jsp:include page="includes/header.jsp" />
 		<%
 			}
 		%>
@@ -84,7 +84,7 @@
 					<%
 						} else {
 					%>
-					<jsp:directive.include file="includes/product-title.jsp" />
+					<jsp:include page="includes/product-title.jsp" />
 					<%
 						}
 					%>
@@ -156,7 +156,7 @@
 			<%
 				} else {
 			%>
-			<jsp:directive.include file="includes/product-footer.jsp" />
+			<jsp:include page="includes/product-footer.jsp" />
 			<%
 				}
 			%>
@@ -170,7 +170,7 @@
 			<%
 				} else {
 			%>
-			<jsp:directive.include file="includes/footer.jsp" />
+			<jsp:include page="includes/footer.jsp" />
 			<%
 				}
 			%>
@@ -181,7 +181,7 @@
 						var emailAddress = document
 								.getElementById("EMAIL_ADDRESS").value;
 						if (emailAddress == "") {
-							document.getElementById('alertDiv').innerHTML 
+							document.getElementById('alertDiv').innerHTML
 								= '<div id="error-msg" class="ui negative message">Please enter the emailAddress!</div>'
 								  +'<div class="ui divider hidden"></div>';
 						} else {
