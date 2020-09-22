@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/myaccount",
-    "version": "1.0.420",
+    "version": "1.0.421",
     "description": "WSO2 Identity Server My Account",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -27,13 +27,13 @@
         "test": "jest --passWithNoTests"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.420",
-        "@wso2is/core": "^1.0.420",
-        "@wso2is/forms": "^1.0.420",
-        "@wso2is/i18n": "^1.0.420",
-        "@wso2is/react-components": "^1.0.420",
-        "@wso2is/theme": "^1.0.420",
-        "@wso2is/validation": "^1.0.420",
+        "@wso2is/authentication": "^1.0.421",
+        "@wso2is/core": "^1.0.421",
+        "@wso2is/forms": "^1.0.421",
+        "@wso2is/i18n": "^1.0.421",
+        "@wso2is/react-components": "^1.0.421",
+        "@wso2is/theme": "^1.0.421",
+        "@wso2is/validation": "^1.0.421",
         "qrcode.react": "^1.0.0"
     },
     "devDependencies": {
