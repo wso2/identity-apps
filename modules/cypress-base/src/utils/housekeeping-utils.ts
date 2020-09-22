@@ -19,7 +19,13 @@
 
 /// <reference types="cypress" />
 
-export class StorageUtils {
+import { CookieUtils } from "./cookie-utils";
+import { StorageUtils } from "./storage-utils";
+
+/**
+ * Class containing housekeeping related utils.
+ */
+export class HousekeepingUtils {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -29,7 +35,11 @@ export class StorageUtils {
      */
     private constructor() { }
 
-    public static clearLocalStorage(): void {
-        cy.clearLocalStorage();
+    /**
+     * Reusable function to perform usual cleanup tasks.
+     */
+    public static performCleanUpTasks(): void {
+        CookieUtils.clearAllCookies();
+        StorageUtils.clearLocalStorage();
     }
 }

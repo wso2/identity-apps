@@ -17,7 +17,10 @@
  *
  */
 
-export class LoginPageDomConstants {
+/**
+ * Class containing Header DOM constants.
+ */
+export class HeaderDomConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -25,10 +28,8 @@ export class LoginPageDomConstants {
      *
      * @hideconstructor
      */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
-
-    public static readonly USERNAME_INPUT_DATA_ATTR: string = "#usernameUserInput";
-    public static readonly PASSWORD_INPUT_DATA_ATTR: string = "#password";
-    public static readonly CONTINUE_BUTTON_DATA_ATTR: string = "Continue";
+    
+    public static readonly AVATAR_ICON_DATA_ATTR: string = "app-header-user-avatar";
+    public static readonly LOGOUT_BUTTON_DATA_ATTR: string = "app-header-dropdown-link";
 }

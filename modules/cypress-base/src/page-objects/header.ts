@@ -17,18 +17,28 @@
  *
  */
 
+/// <reference types="cypress" />
+
 import { HeaderDomConstants } from "../constants";
 
-/// <reference types="cypress" />
-/// <reference path="../commands/index.d.ts" />
-
+/**
+ * Class containing Header component objects.
+ */
 export class Header {
 
-    public getUserAvatar() {
+    /**
+     * Get the data attribute for user avatar.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getUserAvatar(): Cypress.Chainable<Element> {
         return cy.dataTestId(HeaderDomConstants.AVATAR_ICON_DATA_ATTR);
     }
 
-    public getLogoutButton() {
+    /**
+     * Get the data attribute for logout button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getLogoutButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(HeaderDomConstants.LOGOUT_BUTTON_DATA_ATTR);
     }
 }

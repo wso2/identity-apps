@@ -17,13 +17,10 @@
  *
  */
 
-/// <reference types="cypress" />
-
-import { ServerConstants } from "../constants";
-
-export class CookieUtils {
-
-    public static debug: boolean = true;
+/**
+ * Class containing Server i.e. Identity Server Related constants.
+ */
+export class ServerConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -31,15 +28,9 @@ export class CookieUtils {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() {
-        Cypress.Cookies.debug(CookieUtils.debug);
     }
 
-    public static preserveAllSessionCookies(): void {
-        Cypress.Cookies.preserveOnce(ServerConstants.SESSION_COOKIES.join());
-    }
-
-    public static clearAllCookies(): void {
-        cy.clearCookies();
-    }
+    public static readonly SESSION_COOKIES: string[] = [ "atbv", "commonAuthId", "JSESSIONID", "opbs" ];
 }
