@@ -14,16 +14,18 @@
             "es5",
             "dom"
         ],
-        "outDir": "dist/src",
-        "rootDir": "src",
         "target": "es5",
         "types": [
             "cypress",
             "node"
-        ]
+        ],
+        "sourceMap": false
     },
     "include": [
-        "**/*.ts"
+        "integration",
+        "fixtures",
+        "plugins",
+        "support"
     ],
     "exclude": [ "node_modules", "./output" ],
     "extends": "../configs/common.tsconfig.json"

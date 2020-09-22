@@ -2,7 +2,7 @@
     "fixturesFolder": "./fixtures",
     "integrationFolder": "./integration",
     "pageLoadTimeout": 300000,
-    "pluginsFile": "./plugins/index.js",
+    "pluginsFile": "./plugins/index.ts",
     "reporter": "cypress-mochawesome-reporter",
     "reporterOptions": {
         "reportDir": "output/results",

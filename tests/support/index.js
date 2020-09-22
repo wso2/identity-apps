@@ -17,7 +17,7 @@
  */
 
 // Import reusable commands.
-import "@wso2is-testing/cypress-base/commands";
+import "@wso2is/cypress-base/commands";
 
 // Import internal commands.
 import "./commands";
