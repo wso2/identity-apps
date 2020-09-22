@@ -104,6 +104,9 @@ apps/*/cache
 apps/myaccount/src/themes/
 apps/console/src/themes/
 
+# Integration tests.
+tests/coutput/
+
 .classpath
 .settings
 .factorypath
