@@ -20,11 +20,5 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-/**
- * Export Client SDK
- */
-export * from "./client";
-export * from "./models";
-export * from "./constants/endpoints";
-export * from "./constants/storage";
-export * from "./constants/hooks";
+// Export the public API.
+export * from "./public-api";

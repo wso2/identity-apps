@@ -63,6 +63,7 @@ export interface UserInfo {
     username: string;
     displayName: string;
     allowedScopes: string;
+    tenantDomain: string;
 }
 
 export interface UserInfoWorker extends UserInfo {

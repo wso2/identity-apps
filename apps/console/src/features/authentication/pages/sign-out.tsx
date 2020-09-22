@@ -26,7 +26,7 @@ import { handleSignOut } from "../store/actions";
  *
  * @return {React.ReactElement}
  */
-export const SignOut: FunctionComponent<{}> = (): ReactElement => {
+const SignOut: FunctionComponent<{}> = (): ReactElement => {
 
     const dispatch = useDispatch();
 

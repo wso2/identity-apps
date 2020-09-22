@@ -797,7 +797,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 {
                     icon: (): SemanticICONS => "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void => {
-                        history.push(AppConstants.PATHS.get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id))
+                        history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id))
                     },
                     popupText: (): string => t("common:edit"),
                     renderer: "semantic-icon"
@@ -819,7 +819,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 {
                     icon: (): SemanticICONS => "pencil alternate",
                     onClick: (e: SyntheticEvent, dialect: ClaimDialect): void => {
-                        history.push(AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT").replace(":id", dialect.id));
+                        history.push(AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT").replace(":id", dialect.id));
                     },
                     popupText: (): string =>  t("common:edit"),
                     renderer: "semantic-icon"
@@ -901,9 +901,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
     const resolveTableRowClick = (e: SyntheticEvent, item: Claim | ExternalClaim | ClaimDialect | any): void => {
 
         if (isLocalClaim(list)) {
-            history.push(AppConstants.PATHS.get("LOCAL_CLAIMS_EDIT").replace(":id", item.id));
+            history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", item.id));
         } else if (isDialect(list)) {
-            history.push(AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT").replace(":id", item.id));
+            history.push(AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT").replace(":id", item.id));
         } else if (isExternalClaim(list)) {
             setEditClaim(editClaim ? "" : item.id);
         } else {

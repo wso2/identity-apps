@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
+import { AuthenticatedUserInterface } from "@wso2is/authentication";
+import { CommonAuthReducerStateInterface, CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
     DeploymentConfigInterface,
@@ -45,3 +46,5 @@ export interface HelpPanelReducerStateInterface {
     docStructure: PortalDocumentationStructureInterface;
     visibility: boolean;
 }
+
+export interface AuthReducerStateInterface extends CommonAuthReducerStateInterface, AuthenticatedUserInterface { }

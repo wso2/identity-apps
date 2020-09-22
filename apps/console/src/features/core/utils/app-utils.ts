@@ -19,6 +19,7 @@
 import { StorageIdentityAppsSettingsInterface } from "@wso2is/core/models";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import cloneDeep from "lodash/cloneDeep";
+import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { store } from "../store";
 
@@ -49,9 +50,15 @@ export class AppUtils {
             return;
         }
 
-        const preferences = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
+        let preferences = {};
+        
+        try {
+            preferences = JSON.parse(LocalStorageUtils.getValueFromLocalStorage(tenantName));
+        } catch (e) {
+            preferences = {};
+        }
 
-        return preferences[ username ];
+        return get(preferences, username);
     }
 
     /**

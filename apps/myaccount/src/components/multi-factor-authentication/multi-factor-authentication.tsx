@@ -23,7 +23,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { List } from "semantic-ui-react";
 import { FIDOAuthenticator, SMSOTPAuthenticator, TOTPAuthenticator } from "./authenticators";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import { AlertInterface, FeatureConfigInterface } from "../../models";
 import { AppState } from "../../store";
 import { SettingsSection } from "../shared";
@@ -52,7 +52,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                     && hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
                         featureConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_SMS")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_SMS")
                     ) ? (
                         <List.Item className="inner-list-item">
                             <SMSOTPAuthenticator onAlertFired={ onAlertFired } />
@@ -62,7 +62,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         featureConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_FIDO")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_FIDO")
                     ) ? (
                         <List.Item className="inner-list-item">
                             <FIDOAuthenticator onAlertFired={ onAlertFired } />
@@ -72,7 +72,7 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                 { hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         featureConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_TOTP")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_TOTP")
                     ) ? (
                         <List.Item className="inner-list-item">
                             <TOTPAuthenticator onAlertFired={ onAlertFired } />

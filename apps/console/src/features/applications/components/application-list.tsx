@@ -170,7 +170,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * @param {string} appId - Application id.
      */
     const handleApplicationEdit = (appId: string): void => {
-        history.push(AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", appId));
+        history.push(AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId));
     };
 
     /**

@@ -297,7 +297,9 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
                                                         <span
                                                             className="local-dialect-direct"
                                                             onClick={ () => {
-                                                                history.push(AppConstants.PATHS.get("LOCAL_CLAIMS"));
+                                                                history.push(
+                                                                    AppConstants.getPaths().get("LOCAL_CLAIMS")
+                                                                );
                                                             } }
                                                             data-testid={ `${ testId }-local-dialect-view-button` }
                                                         >

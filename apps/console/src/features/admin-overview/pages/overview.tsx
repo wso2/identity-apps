@@ -172,7 +172,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".heading"),
                             image: OverviewPageIllustrations.quickLinks.groups,
                             onClick: () => {
-                                history.push(AppConstants.PATHS.get("GROUPS"))
+                                history.push(AppConstants.getPaths().get("GROUPS"))
                             }
                         },
                         {
@@ -182,7 +182,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".heading"),
                             image: OverviewPageIllustrations.quickLinks.roles,
                             onClick: () => {
-                                history.push(AppConstants.PATHS.get("ROLES"))
+                                history.push(AppConstants.getPaths().get("ROLES"))
                             }
                         },
                         {
@@ -192,7 +192,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".dialects.heading"),
                             image: OverviewPageIllustrations.quickLinks.dialects,
                             onClick: () => {
-                                history.push(AppConstants.PATHS.get("CLAIM_DIALECTS"))
+                                history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"))
                             }
                         },
                         {
@@ -202,7 +202,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".certificates.heading"),
                             image: OverviewPageIllustrations.quickLinks.certificates,
                             onClick: () => {
-                                history.push(AppConstants.PATHS.get("CERTIFICATES"))
+                                history.push(AppConstants.getPaths().get("CERTIFICATES"))
                             }
                         },
                         {
@@ -212,7 +212,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".generalConfigs.heading"),
                             image: OverviewPageIllustrations.quickLinks.generalConfigs,
                             onClick: () => {
-                                history.push(AppConstants.PATHS.get("SERVER_CONFIGS"))
+                                history.push(AppConstants.getPaths().get("SERVER_CONFIGS"))
                             }
                         },
                         {
@@ -222,7 +222,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".emailTemplates.heading"),
                             image: OverviewPageIllustrations.quickLinks.emailTemplates,
                             onClick: () => {
-                                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATE_TYPES"))
+                                history.push(AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"))
                             }
                         }
                     ] }
@@ -233,7 +233,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     heading={ t("adminPortal:components.overview.widgets.insights.groups.heading") }
                     subHeading={ t("adminPortal:components.overview.widgets.insights.groups.subHeading") }
                     primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                    onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("GROUPS")) }
+                    onPrimaryActionClick={ () => history.push(AppConstants.getPaths().get("GROUPS")) }
                     showExtraContent={ groupList instanceof Array && groupList.length > 0 }
                 >
                     <GroupList
@@ -241,7 +241,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
                         data-testid="group-mgt-groups-list"
                         isLoading={ isGroupsListRequestLoading }
-                        onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.PATHS.get("GROUPS")) }
+                        onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.getPaths().get("GROUPS")) }
                         showListItemActions={ false }
                         showMetaContent={ false }
                         groupList={ groupList }
@@ -253,7 +253,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                     heading={ t("adminPortal:components.overview.widgets.insights.users.heading") }
                     subHeading={ t("adminPortal:components.overview.widgets.insights.users.subHeading") }
                     primaryAction={ <><Icon name="location arrow"/>{ t("common:explore") }</> }
-                    onPrimaryActionClick={ () => history.push(AppConstants.PATHS.get("USERS")) }
+                    onPrimaryActionClick={ () => history.push(AppConstants.getPaths().get("USERS")) }
                     showExtraContent={
                         usersList?.Resources
                         && usersList.Resources instanceof Array
@@ -265,7 +265,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                         defaultListItemLimit={ UIConstants.DEFAULT_STATS_LIST_ITEM_LIMIT }
                         isLoading={ isUserListRequestLoading }
                         usersList={ usersList }
-                        onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.PATHS.get("USERS")) }
+                        onEmptyListPlaceholderActionClick={ () => history.push(AppConstants.getPaths().get("USERS")) }
                         showListItemActions={ false }
                         showMetaContent={ false }
                         data-testid={ `${ testId }-list` }

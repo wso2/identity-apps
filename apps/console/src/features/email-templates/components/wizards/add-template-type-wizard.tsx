@@ -89,7 +89,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                     }));
                 }
 
-                history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", response.data?.id));
+                history.push(AppConstants.getPaths().get("EMAIL_TEMPLATES").replace(":templateTypeId", response.data?.id));
                 onCloseHandler();
             })
             .catch(error => {

@@ -17,13 +17,13 @@
  */
 
 import { EmptyPlaceholder } from "@wso2is/react-components";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { ErrorPageLayout } from "../../layouts";
-import * as React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { ErrorPageLayout } from "../../layouts";
+import { AppConstants } from "../../constants";
 
 /**
  * Access denied error page.
@@ -31,7 +31,9 @@ import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
  * @return {React.ReactElement}
  */
 const AccessDeniedErrorPage = (): ReactElement => {
+
     const { t } = useTranslation();
+
     return (
         <ErrorPageLayout>
             <EmptyPlaceholder
@@ -39,7 +41,7 @@ const AccessDeniedErrorPage = (): ReactElement => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to={ GlobalConfig.appHomePath }
+                        to={ AppConstants.getAppHomePath() }
                     >
                         { t("userPortal:placeholders.accessDeniedError.action") }
                     </Button>

@@ -3,6 +3,7 @@
         "path": "/myaccount/overview"
     },
     "appBaseName": "console",
+    "appBaseNameForHistoryAPI": "/",
     "clientID": "CONSOLE",
     "debug": false,
     "adminApp": {
@@ -26,7 +27,15 @@
         "structureFileType": "YAML",
         "structureFileURL": "https://api.github.com/repos/wso2/docs-is/contents/en/mkdocs.yml"
     },
+    "idpConfigs": {
+        "enablePKCE": true,
+        "responseMode": "query",
+        "scope": [ "SYSTEM" ],
+        "serverOrigin": "https://localhost:9443",
+        "storage": "webWorker"
+    },
     "i18nResourcePath": "",
+    "isSaas": true,
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
     "productVersion": "",
@@ -42,6 +51,7 @@
         "sessionRefreshTimeOut": 300,
         "checkSessionInterval": 3
     },
+    "tenantResolutionStrategy": "id_token",
     "ui": {
         "appCopyright": "WSO2 Identity Server",
         "appTitle": "Console | WSO2 Identity Server",

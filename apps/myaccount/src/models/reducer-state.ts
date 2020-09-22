@@ -16,15 +16,20 @@
  * under the License.
  */
 
-import { CommonConfigReducerStateInterface, CommonDeploymentConfigInterface } from "@wso2is/core/models";
+import { CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { FeatureConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "./app-config";
+import {
+    DeploymentConfigInterface,
+    FeatureConfigInterface,
+    ServiceResourceEndpointsInterface,
+    UIConfigInterface
+} from "./app-config";
 
 /**
  * Dev portal config reducer state interface.
  */
 export type ConfigReducerStateInterface = CommonConfigReducerStateInterface<
-    CommonDeploymentConfigInterface,
+    DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,

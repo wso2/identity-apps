@@ -280,7 +280,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         if (availableAuthenticators) {
             dispatch(setAvailableAuthenticatorsMeta(undefined));
         }
-        history.push(AppConstants.PATHS.get("IDP"));
+        history.push(AppConstants.getPaths().get("IDP"));
     };
 
     /**

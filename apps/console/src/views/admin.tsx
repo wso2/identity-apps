@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getProfileInfo } from "@wso2is/core/api";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
@@ -44,20 +43,13 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    Footer,
-    Header,
-    ProtectedRoute,
-    SidePanelIcons,
-    SidePanelMiscIcons,
-    UIConstants,
-    adminViewRoutes,
-    history
-} from "../features/core";
+import { getProfileInformation } from "../features/authentication/store";
+import { Footer, Header, ProtectedRoute } from "../features/core/components";
+import { SidePanelIcons, SidePanelMiscIcons, getAdminViewRoutes } from "../features/core/configs";
+import { AppConstants, UIConstants } from "../features/core/constants";
+import { history } from "../features/core/helpers";
+import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
+import { AppState } from "../features/core/store";
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../features/server-configurations";
 
 /**
@@ -101,26 +93,34 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         (state: AppState) => state.governanceConnector.categories);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
-    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(adminViewRoutes);
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(adminViewRoutes[ 0 ]);
+    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
+    const [
+        selectedRoute,
+        setSelectedRoute
+    ] = useState<RouteInterface | ChildRouteInterface>(getAdminViewRoutes()[ 0 ]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        const pathname = location.pathname.replace(config.deployment.appBaseName, "");
-        setSelectedRoute(RouteUtils.getInitialActiveRoute(pathname, filteredRoutes));
+        setSelectedRoute(RouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
     }, [ filteredRoutes ]);
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(adminViewRoutes, featureConfig,
-            allowedScopes));
+        setFilteredRoutes(
+            RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+                getAdminViewRoutes(),
+                featureConfig,
+                allowedScopes)
+        );
 
-        if (isEmpty(profileInfo)) {
-            dispatch(getProfileInfo(null));
+        if (!isEmpty(profileInfo)) {
+            return;
         }
+
+        dispatch(getProfileInformation());
     }, []);
 
     useEffect(() => {
@@ -164,7 +164,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         },
                         id: category.id,
                         name: category.name,
-                        path: AppConstants.PATHS.get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
+                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
                         protected: true,
                         showOnSidePanel: true
                     });

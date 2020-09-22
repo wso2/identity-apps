@@ -145,7 +145,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
     /**

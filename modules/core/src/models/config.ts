@@ -49,7 +49,7 @@ export interface CommonConfigInterface<T, S, U, V, W> {
 /**
  * Common config interface for deployment settings.
  */
-export interface CommonDeploymentConfigInterface {
+export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
     /**
      * Base name of the application (tenant qualified).
      * ex: `/t/wos2.com/sample-portal`
@@ -92,6 +92,10 @@ export interface CommonDeploymentConfigInterface {
      * Portal Documentation configs.
      */
     documentation?: DocumentationInterface;
+    /**
+     * Identity SDK configurations.
+     */
+    idpConfigs: IdpConfigInterface<T, S>;
     /**
      * Callback to directed on successful login.
      * ex: `/sample-portal/login`
@@ -332,4 +336,58 @@ export interface SBACInterface<T> {
      * Feature config.
      */
     featureConfig?: T;
+}
+
+/**
+ * Interface for IDP configs.
+ */
+export interface IdpConfigInterface<T = {}, S = {}> {
+    /**
+     * If PKCE enabled or not.
+     */
+    enablePKCE: boolean;
+    /**
+     * Authorization code response mode.
+     */
+    responseMode: T;
+    /**
+     * Scopes requested with the token.
+     */
+    scope: string[];
+    /**
+     * Server origin URL.
+     */
+    serverOrigin: string;
+    /**
+     * Token storage strategy.
+     */
+    storage: S;
+    /**
+     * Authorization endpoint URL provided from outside.
+     */
+    authorizeEndpointURL?: string;
+    /**
+     * JWKS endpoint URL provided from outside.
+     */
+    jwksEndpointURL?: string;
+    /**
+     * OIDC logout endpoint URL provided from outside.
+     */
+    logoutEndpointURL?: string;
+    /**
+     * OIDC session iframe endpoint URL provided from outside.
+     */
+    oidcSessionIFrameEndpointURL?: string;
+    /**
+     * Token revocation endpoint URL provided from outside.
+     */
+    tokenRevocationEndpointURL?: string;
+    /**
+     * Token endpoint URL provided from outside.
+     */
+    tokenEndpointURL?: string;
+    /**
+     * Well known endpoint URL provided from outside.
+     */
+    wellKnownEndpointURL?: string;
 }

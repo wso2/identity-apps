@@ -18,9 +18,10 @@
 
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Footer, ThemeContext } from "@wso2is/react-components";
-import React, { useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { AppConstants } from "../../constants";
 import { ConfigReducerStateInterface } from "../../models";
 import { AppState } from "../../store";
 
@@ -35,9 +36,10 @@ interface AppFooterProps {
  * Footer component.
  *
  * @param {AppFooterProps} props - Props supplied to the footer component.
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const AppFooter: React.FunctionComponent<AppFooterProps> = (): JSX.Element => {
+export const AppFooter: React.FunctionComponent<AppFooterProps> = (): ReactElement => {
+
     const { t } = useTranslation();
 
     const { state } = useContext(ThemeContext);
@@ -73,7 +75,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (): JSX.Elemen
             links={ [
                 {
                     name: t("common:privacy"),
-                    to: "/privacy"
+                    to: AppConstants.getPaths().get("PRIVACY")
                 }
             ] }
         />

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Route, routes } from "../configs";
+import { RouteInterface } from "@wso2is/core/models";
 
 /**
  * Returns true if a given key in the JSON object is set to true
@@ -38,10 +38,14 @@ export const checkEnabled = (appConfig: any, key: string): boolean => {
 
 /**
  * This filters the routes based on the application configuration
- * @param appConfig
+ *
+ * @param {RouteInterface[]} routes - Routes to be filtered.
+ * @param {object} appConfig - App config.
+ * @return {RouteInterface[]}
  */
-export const filteredRoutes = (appConfig): Route[] => {
-    return routes.filter((route: Route) => {
+export const filterRoutes = (routes: RouteInterface[], appConfig: object): RouteInterface[] => {
+
+    return routes.filter((route: RouteInterface) => {
         return checkEnabled(appConfig, route.id);
     });
 };

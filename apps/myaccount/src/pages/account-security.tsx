@@ -28,7 +28,7 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
-import { ApplicationConstants } from "../constants";
+import { AppConstants } from "../constants";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -64,7 +64,7 @@ const AccountSecurityPage = (): ReactElement => {
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_CHANGE_PASSWORD")
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -77,7 +77,7 @@ const AccountSecurityPage = (): ReactElement => {
                     hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY")
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -92,7 +92,7 @@ const AccountSecurityPage = (): ReactElement => {
                 { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA")
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -107,7 +107,7 @@ const AccountSecurityPage = (): ReactElement => {
                 { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_ACTIVE_SESSIONS")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACTIVE_SESSIONS")
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
@@ -119,7 +119,7 @@ const AccountSecurityPage = (): ReactElement => {
                 { hasRequiredScopes(accessConfig?.security, accessConfig?.security?.scopes?.read, allowedScopes) &&
                     isFeatureEnabled(
                         accessConfig?.security,
-                        ApplicationConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
+                        AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>

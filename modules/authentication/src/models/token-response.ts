@@ -33,3 +33,33 @@ export interface TokenRequestHeader {
     "Access-Control-Allow-Origin": string;
     "Content-Type": string;
 }
+
+/**
+ * Interface for the payload of a Decoded ID Token.
+ */
+export interface DecodedIdTokenPayloadInterface {
+    /**
+     * The audience for which this token is intended.
+     */
+    aud: string | string[];
+    /**
+     * The uid corresponding to the user who the ID token belonged to.
+     */
+    sub: string;
+    /**
+     * The issuer identifier for the issuer of the response.
+     */
+    iss: string;
+    /**
+     * The email of the user to whom the ID token belongs.
+     */
+    email?: string;
+    /**
+     * Name by which the user wishes to be referred to.
+     */
+    preferred_username?: string;
+    /**
+     * The tenant domain of the user to whom the ID token belongs.
+     */
+    tenant_domain?: string;
+}

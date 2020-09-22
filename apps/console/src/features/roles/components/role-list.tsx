@@ -120,7 +120,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
     const [ currentDeletedRole, setCurrentDeletedRole ] = useState<RolesInterface>();
 
     const handleRoleEdit = (roleId: string) => {
-        history.push(AppConstants.PATHS.get("ROLE_EDIT").replace(":id", roleId));
+        history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", roleId));
     };
 
     /**

@@ -192,7 +192,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 );
 
                 closeWizard();
-                history.push(AppConstants.PATHS.get("ROLE_EDIT").replace(":id", response.data.id));
+                history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", response.data.id));
             }
 
         }).catch(error => {

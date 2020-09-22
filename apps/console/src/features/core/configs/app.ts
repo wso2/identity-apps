@@ -83,6 +83,7 @@ export class Config {
                 structureFileURL: window["AppUtils"].getConfig().documentation?.structureFileURL
                     ?? DocumentationConstants.DEFAULT_STRUCTURE_FILE_URL
             },
+            idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,

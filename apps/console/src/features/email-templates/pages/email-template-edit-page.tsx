@@ -145,7 +145,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
      * Util to handle back button event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
+        history.push(AppConstants.getPaths().get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
     };
 
     return (

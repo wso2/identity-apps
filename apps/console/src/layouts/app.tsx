@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import { RouteInterface } from "@wso2is/core/models";
 import { AppLayout as AppLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, Suspense } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ProtectedRoute, appRoutes } from "../features/core";
+import { ProtectedRoute } from "../features/core/components";
+import { getAppLayoutRoutes } from "../features/core/configs";
+import { AppConstants } from "../features/core/constants";
 
 /**
  * Implementation of the Main app layout skeleton.
@@ -28,6 +31,15 @@ import { ProtectedRoute, appRoutes } from "../features/core";
  * @return {React.Element}
  */
 export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
+
+    const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppLayoutRoutes());
+
+    /**
+     * Listen for base name changes and updated the layout routes.
+     */
+    useEffect(() => {
+        setAppRoutes(getAppLayoutRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     return (
         <AppLayoutSkeleton>

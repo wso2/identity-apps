@@ -22,7 +22,6 @@ import { useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, RouteProps } from "react-router-dom";
 import { AppConstants } from "../constants";
 import { history } from "../helpers";
-import { ConfigReducerStateInterface } from "../models";
 import { AppState } from "../store";
 
 /**
@@ -39,19 +38,18 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
     } = props;
 
     const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     /**
      * Update existing location path in the state to recall upon page refresh or authentication callback.
      * The login path and the login error path have been skipped.
      */
-    if ((history.location.pathname !== config.deployment.appLoginPath)
-        && (history.location.pathname !== AppConstants.PATHS.get("UNAUTHORIZED"))
-        && (history.location.pathname !== AppConstants.PATHS.get("PAGE_NOT_FOUND"))) {
+    if ((history.location.pathname !== AppConstants.getAppLoginPath())
+        && (history.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
+        && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND"))) {
 
         AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
     } else {
-        AuthenticateUtils.updateAuthenticationCallbackUrl(config.deployment.appHomePath);
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstants.getAppHomePath());
     }
 
     return (
@@ -61,7 +59,7 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
                     ? Component
                         ? <Component { ...renderProps } />
                         : null
-                    : <Redirect to={ config.deployment.appLoginPath } />
+                    : <Redirect to={ AppConstants.getAppLoginPath() } />
             }
             { ...rest }
         />

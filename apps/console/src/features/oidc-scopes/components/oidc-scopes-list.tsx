@@ -140,7 +140,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
      * @param {string} scopeName - scope name.
      */
     const handleOIDCScopesEdit = (scopeName: string): void => {
-        history.push(AppConstants.PATHS.get("OIDC_SCOPES_EDIT").replace(":id", scopeName));
+        history.push(AppConstants.getPaths().get("OIDC_SCOPES_EDIT").replace(":id", scopeName));
     };
 
     /**
