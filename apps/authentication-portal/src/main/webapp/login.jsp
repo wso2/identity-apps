@@ -34,7 +34,7 @@
 <%@ page import="java.util.Map" %>
 
 <%@ include file="includes/localize.jsp" %>
-<jsp:include page="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";

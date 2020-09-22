@@ -25,7 +25,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <%@include file="includes/localize.jsp" %>
-<jsp:include page="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/init-url.jsp"/>
 <jsp:include page="includes/template-mapper.jsp"/>
 
 <%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>

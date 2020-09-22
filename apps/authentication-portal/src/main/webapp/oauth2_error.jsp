@@ -21,7 +21,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="includes/localize.jsp" %>
-<jsp:include page="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
     String errorCode = request.getParameter("oauthErrorCode");

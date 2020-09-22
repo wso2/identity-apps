@@ -32,8 +32,7 @@
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
-<jsp:include page="includes/init-loginform-action-url.jsp"/>
-
+<jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
 <script>
     function submitIdentifier () {
         var userName = document.getElementById("username");

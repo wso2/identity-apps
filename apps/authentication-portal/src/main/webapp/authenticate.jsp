@@ -36,7 +36,7 @@
 <%@ page import="java.io.File" %>
 
 <%@include file="includes/localize.jsp" %>
-<jsp:include page="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
     String sessionDataKey = request.getParameter(SESSION_DATA_KEY);

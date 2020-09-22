@@ -22,7 +22,7 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 
 <%@include file="includes/localize.jsp" %>
-<jsp:include page="includes/init-url.jsp"/>
+<jsp:directive.include file="includes/init-url.jsp"/>
 
 <%
     String sessionDataKey = request.getParameter("sessionDataKey");
