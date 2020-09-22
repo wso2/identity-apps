@@ -1,0 +1,23 @@
+{
+    "name": "@wso2is-testing/cypress-base",
+    "version": "0.0.0",
+    "description": "> TODO: description",
+    "author": "Brion Mario <info@brionmario.com>",
+    "homepage": "https://github.com/wso2/product-is/tree/master/modules/cypress-base#readme",
+    "license": "ISC",
+    "main": "src/index.ts",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/brionmario/product-is.git"
+    },
+    "scripts": {
+        "test": "echo \"Error: run tests from root\" && exit 1"
+    },
+    "bugs": {
+        "url": "https://github.com/brionmario/product-is/issues"
+    },
+    "peerDependencies": {
+        "cypress": "*",
+        "typescript": "*"
+    }
+}
