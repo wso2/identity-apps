@@ -16,7 +16,7 @@
   ~ under the License.
 --%>
 
-<!-- localize.jsp MUST already be included in the calling script -->
+<jsp:directive.include file="localize.jsp" />
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <!-- footer -->
