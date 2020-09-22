@@ -16,6 +16,7 @@
   ~ under the License.
 --%>
 
+<%@ include file="localize.jsp" %>
 <!-- page content -->
 <div class="ui grid">
     <div class="two column row"></div>
@@ -62,16 +63,16 @@
                         <h3 id="security">Security</h3>
                         <ul>
                             <li>WSO2 IS uses selected cookies to identify and prevent security risks.
-                                For example, WSO2 IS may use these cookies to store your session information in order 
+                                For example, WSO2 IS may use these cookies to store your session information in order
                                 to prevent others from changing your password without your username and password.<br><br>
                             </li>
                             <li>WSO2 IS uses session cookies to maintain your active session.<br><br></li>
-                            <li>WSO2 IS may use temporary cookies when performing multi-factor authentication and 
+                            <li>WSO2 IS may use temporary cookies when performing multi-factor authentication and
                                 federated authentication.<br><br>
                             </li>
-                            <li>WSO2 IS may use permanent cookies to detect that you have previously used the same 
-                                device to log in. This is to to calculate the &ldquo;risk level&rdquo; associated 
-                                with your current login attempt. This is primarily to protect you and your account 
+                            <li>WSO2 IS may use permanent cookies to detect that you have previously used the same
+                                device to log in. This is to to calculate the &ldquo;risk level&rdquo; associated
+                                with your current login attempt. This is primarily to protect you and your account
                                 from possible attack.
                             </li>
                         </ul>
