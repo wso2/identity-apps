@@ -21,7 +21,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="includes/localize.jsp" %>
-<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:include page="includes/init-url.jsp"/>
 
 <%
     String errorCode = request.getParameter("oauthErrorCode");
@@ -34,7 +34,7 @@
         errorMsgContext = errorMsg.split(regex)[0] + regex;
         errorMsgApp = errorMsg.split(regex)[1];
     }
-%>  
+%>
 
 <!doctype html>
 <html>
@@ -46,7 +46,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -60,7 +60,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
@@ -84,7 +84,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -94,9 +94,9 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
-    
+
 </body>
 </html>

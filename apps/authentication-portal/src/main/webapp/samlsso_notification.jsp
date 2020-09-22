@@ -32,22 +32,22 @@
 <%
     String stat = request.getParameter(Constants.STATUS);
     String statusMessage = request.getParameter(Constants.STATUS_MSG);
-    
+
     String errorStat = stat;
     String errorMsg = statusMessage;
-    
+
     boolean unrecognizedStatus = true;
     if (EXCEPTION_STATUS.equals(stat) || INVALID_MESSAGE_STATUS.equals(stat)) {
         errorStat = "error.when.processing.authentication.request";
         unrecognizedStatus = false;
     }
-    
+
     boolean unrecognizedStatusMsg = true;
     if (EXCEPTION_MESSAGE.equals(statusMessage) || INVALID_MESSAGE_MESSAGE.equals(statusMessage)) {
         errorMsg = "please.try.login.again";
         unrecognizedStatusMsg = false;
     }
-    
+
     if (stat == null || statusMessage == null || unrecognizedStatus || unrecognizedStatusMsg) {
         errorStat = "authentication.error";
         errorMsg = "something.went.wrong.during.authentication";
@@ -65,7 +65,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -79,7 +79,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
@@ -97,7 +97,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -107,7 +107,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 </body>
 </html>

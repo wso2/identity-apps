@@ -33,25 +33,25 @@
 <%@ page import="java.util.stream.Stream" %>
 <%@ page import="java.util.Set" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    
+
 <%@ include file="includes/localize.jsp" %>
-<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:include page="includes/init-url.jsp"/>
 
 <%
     String app = request.getParameter("application");
     String scopeString = request.getParameter("scope");
     boolean displayScopes = Boolean.parseBoolean(getServletContext().getInitParameter("displayScopes"));
-    
+
     String[] requestedClaimList = new String[0];
     String[] mandatoryClaimList = new String[0];
     if (request.getParameter(Constants.REQUESTED_CLAIMS) != null) {
         requestedClaimList = request.getParameter(Constants.REQUESTED_CLAIMS).split(Constants.CLAIM_SEPARATOR);
     }
-    
+
     if (request.getParameter(Constants.MANDATORY_CLAIMS) != null) {
         mandatoryClaimList = request.getParameter(Constants.MANDATORY_CLAIMS).split(Constants.CLAIM_SEPARATOR);
     }
-    
+
     /*
         This parameter decides whether the consent page will only be used to get consent for sharing claims with the
         Service Provider. If this param is 'true' and user has already given consents for the OIDC scopes, we will be
@@ -70,7 +70,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -84,16 +84,16 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
                 <form class="ui large form" action="<%=oauth2AuthorizeURL%>" method="post" id="profile" name="oauth2_authz">
-                    <h4><%=Encode.forHtml(request.getParameter("application"))%> 
+                    <h4><%=Encode.forHtml(request.getParameter("application"))%>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>:</h4>
 
                     <div class="ui divider hidden"></div>
-                    
+
                     <div class="segment-form">
 
                         <!-- Prompting for consent is only needed if we have mandatory or requested claims without any consent -->
@@ -174,7 +174,7 @@
                                         List<String> openIdScopes = Stream.of(scopeString.split(" "))
                                                 .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
                                                 .collect(Collectors.toList());
-                        
+
                                         if (CollectionUtils.isNotEmpty(openIdScopes)) {
                                 %>
 
@@ -186,12 +186,12 @@
                                                 String scopesAsString = String.join(" ", openIdScopes);
                                                 Set<Scope> scopes = new OAuth2ScopeService().getScopes(null, null,
                                                         true, scopesAsString);
-        
+
                                                 for (Scope scope : scopes) {
                                                     String displayName = scope.getDisplayName();
                                                     String description = scope.getDescription();
                                                     openIdScopes.remove(scope.getName());
-            
+
                                                     if (displayName != null) {
                                         %>
                                         <div class="item">
@@ -213,7 +213,7 @@
                                             } catch (IdentityOAuth2ScopeException e) {
                                                 // Ignore the error
                                             }
-    
+
                                             // Unregistered scopes if exist, get the consent with provided scope name.
                                             if (CollectionUtils.isNotEmpty(openIdScopes)) {
                                                 for (String scope : openIdScopes) {
@@ -282,7 +282,7 @@
                             <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                                     value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
                             <input type="hidden" name="consent" id="consent" value="deny"/>
-               
+
                             <input class="ui large button link-button" type="reset"
                                 onclick="deny(); return false;"
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>" />
@@ -303,7 +303,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -313,7 +313,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <div class="ui modal mini" id="modal_claim_validation">
@@ -389,7 +389,7 @@
             document.getElementById('consent').value = "deny";
             document.getElementById("profile").submit();
         }
-        
+
         function hideModal(elem) {
             $(elem).closest('.modal').modal('hide');
         }
@@ -397,7 +397,7 @@
         $('.checkbox.read-only').checkbox({
             uncheckable: false
         });
-        
+
         $(document).ready(function () {
             $("#consent_select_all").click(function () {
                 if (this.checked) {

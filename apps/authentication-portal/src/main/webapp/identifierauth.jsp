@@ -32,7 +32,7 @@
 <%@ page import="org.wso2.carbon.identity.core.URLBuilderException" %>
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
-<jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
+<jsp:include page="includes/init-loginform-action-url.jsp"/>
 
 <script>
     function submitIdentifier () {
@@ -68,7 +68,7 @@
     <% } else { %>
         <div class="ui visible negative message" style="display: none;" id="error-msg"></div>
     <% } %>
-    
+
     <div class="field">
         <div class="ui fluid left icon input">
             <input
@@ -107,19 +107,19 @@
         String identityMgtEndpointContext = "";
         String urlEncodedURL = "";
         String urlParameters = "";
-        
+
         if (StringUtils.isNotBlank(recoveryEPAvailable)) {
             isRecoveryEPAvailable = Boolean.valueOf(recoveryEPAvailable);
         } else {
             isRecoveryEPAvailable = isRecoveryEPAvailable();
         }
-        
+
         if (StringUtils.isNotBlank(enableSelfSignUpEndpoint)) {
             isSelfSignUpEPAvailable = Boolean.valueOf(enableSelfSignUpEndpoint);
         } else {
             isSelfSignUpEPAvailable = isSelfSignUpEPAvailable();
         }
-  
+
         if (isRecoveryEPAvailable || isSelfSignUpEPAvailable) {
             String scheme = request.getScheme();
             String serverName = request.getServerName();

@@ -47,7 +47,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -61,14 +61,14 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
                 <p><%=AuthenticationEndpointUtil.i18n(resourceBundle, "you.are.redirected.back.to")%>
                     <%=Encode.forHtmlContent(assertionConsumerURL)%>.
                     <%=AuthenticationEndpointUtil.i18n(resourceBundle, "if.the.redirection.fails.please.click")%>.</p>
-                
+
                 <form method="post" action="<%=assertionConsumerURL%>">
                     <div class="align-right buttons">
                         <input type="hidden" name="SAMLResponse" value="<%=Encode.forHtmlAttribute(samlResp)%>"/>
@@ -87,7 +87,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -97,7 +97,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">

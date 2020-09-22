@@ -31,13 +31,13 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout" onload="loadFunc()">
     <main class="center-segment">
         <div class="ui container medium center aligned middle">
-            
+
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -45,7 +45,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment left aligned">
@@ -84,9 +84,9 @@
     %>
     <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
-    
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -94,15 +94,15 @@
     %>
     <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">
-    
+
         var userCode;
-    
+
         function loadFunc() {
-    
+
             const urlParams = new URLSearchParams(window.location.search);
             userCode = urlParams.get('user_code');
             document.getElementById("user_code").value = userCode;

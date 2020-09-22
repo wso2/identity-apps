@@ -34,7 +34,7 @@
 <%@ page import="java.util.Map" %>
 
 <%@ include file="includes/localize.jsp" %>
-<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:include page="includes/init-url.jsp"/>
 
 <%!
     private static final String FIDO_AUTHENTICATOR = "FIDOAuthenticator";
@@ -111,7 +111,7 @@
             response.sendRedirect(redirectURL);
         }
     }
-    
+
     // Login context request url.
     String sessionDataKey = request.getParameter("sessionDataKey");
     String relyingParty = request.getParameter("relyingParty");
@@ -134,7 +134,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 
     <%
@@ -156,7 +156,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
@@ -167,7 +167,7 @@
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "login")%>
                     <% } %>
                 </h3>
-                
+
                 <div class="segment-form">
                     <%
                         if (localAuthenticatorNames.size() > 0) {
@@ -202,7 +202,7 @@
                     <%
                             }
                         }
-                
+
                                 if (includeBasicAuth) {
                                     %>
                                         <%@ include file="basicauth.jsp" %>
@@ -213,13 +213,13 @@
                     %>
                     <%if (idpAuthenticatorMapping != null &&
                             idpAuthenticatorMapping.get(Constants.RESIDENT_IDP_RESERVED_NAME) != null) { %>
-                
+
                     <%} %>
                     <%
                         if ((hasLocalLoginOptions && localAuthenticatorNames.size() > 1) || (!hasLocalLoginOptions)
                                 || (hasLocalLoginOptions && idpAuthenticatorMapping != null && idpAuthenticatorMapping.size() > 1)) {
                     %>
-                    <% if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR) || 
+                    <% if (localAuthenticatorNames.contains(BASIC_AUTHENTICATOR) ||
                             localAuthenticatorNames.contains(IDENTIFIER_EXECUTOR)) { %>
                     <div class="ui divider hidden"></div>
                     <div class="ui horizontal divider">
@@ -264,7 +264,7 @@
                                     </div>
                                 <% } else { %>
                                     <div class="field">
-                                        <button class="ui icon button fluid" 
+                                        <button class="ui icon button fluid"
                                             onclick="handleNoDomain(this,
                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpName))%>',
                                                 '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getValue()))%>')"
@@ -278,7 +278,7 @@
                                 if (localAuthenticatorNames.contains(IWA_AUTHENTICATOR)) {
                             %>
                             <div class="field">
-                                <button class="ui blue labeled icon button fluid" 
+                                <button class="ui blue labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'IWAAuthenticator')"
@@ -292,7 +292,7 @@
                                 if (localAuthenticatorNames.contains(X509_CERTIFICATE_AUTHENTICATOR)) {
                             %>
                             <div class="field">
-                                <button class="ui grey labeled icon button fluid" 
+                                <button class="ui grey labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'x509CertificateAuthenticator')"
@@ -307,7 +307,7 @@
                                 if (localAuthenticatorNames.contains(FIDO_AUTHENTICATOR)) {
                             %>
                             <div class="field">
-                                <button class="ui grey basic labeled icon button fluid" 
+                                <button class="ui grey basic labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'FIDOAuthenticator')"
@@ -322,7 +322,7 @@
                                 if (localAuthenticatorNames.contains("totp")) {
                             %>
                             <div class="field">
-                                <button class="ui brown labeled icon button fluid" 
+                                <button class="ui brown labeled icon button fluid"
                                     onclick="handleNoDomain(this,
                                         '<%=Encode.forJavaScriptAttribute(Encode.forUriComponent(idpEntry.getKey()))%>',
                                         'totp')"
@@ -334,7 +334,7 @@
                             <%
                                         }
                                     }
-                    
+
                                 }
                             } %>
                             </div>
@@ -352,7 +352,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -362,7 +362,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script>
@@ -399,7 +399,7 @@
                 var h = $(document).height();
                 $('.overlay').css("width", w + "px").css("height", h + "px").show();
             });
-            
+
             $('.overlay').click(function () {
                 $(this).hide();
                 $('.main-link').next().hide();
@@ -424,7 +424,7 @@
                 }
             %>
         });
-    
+
         function myFunction(key, value, name) {
             var object = document.getElementById(name);
             var domain = object.value;
@@ -458,7 +458,7 @@
                     "<%=multiOptionURIParam%>";
             }
         }
-    
+
         window.onunload = function(){};
 
         function changeUsername (e) {

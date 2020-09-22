@@ -20,7 +20,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <%@ include file="includes/localize.jsp" %>
-<jsp:directive.include file="includes/init-url.jsp"/>
+<jsp:include page="includes/init-url.jsp"/>
 
 <!doctype html>
 <html>
@@ -32,7 +32,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -46,7 +46,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
@@ -60,12 +60,12 @@
                     <div class="field">
                         <button
                             type="submit"
-                            onclick="javascript: approved(); return false;"   
+                            onclick="javascript: approved(); return false;"
                             class="ui primary large button"
                             role="button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "yes")%></button>
                         <button
                             type="submit"
-                            onclick="javascript: deny(); return false;"   
+                            onclick="javascript: deny(); return false;"
                             class="ui large button link-button"
                             role="button"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "no")%></button>
                     </div>
@@ -82,7 +82,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -92,7 +92,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">

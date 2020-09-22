@@ -37,13 +37,13 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout" onload="talkToDevice();">
     <main class="center-segment">
         <div class="ui container medium center aligned middle">
-            
+
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -51,7 +51,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment left aligned">
@@ -60,9 +60,9 @@
                 </h3>
 
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "touch.your.u2f.device")%>
-                
+
                 <div class="ui divider hidden"></div>
-                
+
                 <div> <img class="img-responsive" src="images/U2F.png"> </div>
 
                 <form method="POST" action="<%=commonauthURL%>" id="form" onsubmit="return false;">
@@ -80,9 +80,9 @@
     %>
     <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
-    
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -90,9 +90,9 @@
     %>
     <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:include page="includes/footer.jsp"/>
     <% } %>
-    
+
     <script type="text/javascript" src="js/u2f-api.js"></script>
     <script type="text/javascript">
 

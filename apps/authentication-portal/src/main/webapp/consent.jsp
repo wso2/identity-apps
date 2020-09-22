@@ -47,7 +47,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -61,7 +61,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
 
@@ -73,7 +73,7 @@
                     </h4>
 
                     <div class="ui divider hidden"></div>
-                    
+
                     <div class="segment-form">
                         <div class="ui secondary segment">
                             <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "requested.attributes")%> :</h5>
@@ -178,7 +178,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -188,7 +188,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <div class="ui modal mini" id="modal_claim_validation" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -211,7 +211,7 @@
         function approved() {
             var mandatoryClaimCBs = $(".mandatory-claim");
             var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
-    
+
             if (checkedMandatoryClaimCBs.length == mandatoryClaimCBs.length) {
                 document.getElementById('consent').value = "approve";
                 document.getElementById("profile").submit();
