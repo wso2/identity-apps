@@ -41,6 +41,7 @@ import { BasicUserDetailsInterface } from "../models";
 interface AddUserProps {
     initialValues: any;
     triggerSubmit: boolean;
+    emailVerificationEnabled: boolean;
     onSubmit: (values: any) => void;
 }
 
@@ -54,6 +55,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const {
         initialValues,
         triggerSubmit,
+        emailVerificationEnabled,
         onSubmit
     } = props;
 
@@ -515,20 +517,22 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            data-testid="user-mgt-add-user-form-passwordOption-radio-button"
-                            type="radio"
-                            label={ t("adminPortal:components.user.forms.addUserForm.buttons.radioButton.label") }
-                            name="passwordOption"
-                            default="createPw"
-                            listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
-                            children={ passwordOptions }
-                            value={ initialValues && initialValues.passwordOption }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { emailVerificationEnabled &&
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                data-testid="user-mgt-add-user-form-passwordOption-radio-button"
+                                type="radio"
+                                label={ t("adminPortal:components.user.forms.addUserForm.buttons.radioButton.label") }
+                                name="passwordOption"
+                                default="createPw"
+                                listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
+                                children={ passwordOptions }
+                                value={ initialValues && initialValues.passwordOption }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                }
                 { handlePasswordOptions() }
             </Grid>
         </Forms>
