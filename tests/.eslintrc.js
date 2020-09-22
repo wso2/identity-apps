@@ -16,7 +16,13 @@
  * under the License.
  *
  */
-/// <reference types="cypress" />
-Cypress.Commands.add("dataTestId", function (value) {
-    return cy.get("[data-testid=" + value + "]");
-});
+
+module.exports = {
+    extends: [
+        "plugin:cypress/recommended",
+        "../.eslintrc.js"
+    ],
+    rules: {
+        "cypress/no-unnecessary-waiting": [ "off" ]
+    }
+};
