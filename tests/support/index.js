@@ -16,7 +16,9 @@
  *under the License.
  */
 
-// Import commands.js using ES2015 syntax:
-import './commands';
-import './register';
+// Import reusable commands.
+import "@wso2is-testing/cypress-base/commands";
 
+// Import internal commands.
+import "./commands";
+import "./register";
