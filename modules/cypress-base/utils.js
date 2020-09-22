@@ -17,5 +17,4 @@
  *
  */
 
-export * from "./constants";
-export * from "./utils";
+module.exports = require("./dist/utils");

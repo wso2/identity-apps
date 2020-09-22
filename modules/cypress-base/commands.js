@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
@@ -17,5 +16,5 @@
  * under the License.
  *
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-require("./dom");
+
+module.exports = require("./dist/commands");
