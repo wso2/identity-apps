@@ -87,6 +87,14 @@ regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logo
 8. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
 9. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
 
+## Running Integration Tests
+
+Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
+
+```bash
+npm run test:integration
+```
+
 ## Reporting Issues
 
 We encourage you to report issues, improvements and feature requests regarding the project through [GitHub Issue Tracker](https://github.com/wso2/identity-apps/issues).
