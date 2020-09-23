@@ -104,8 +104,9 @@ apps/*/cache
 apps/myaccount/src/themes/
 apps/console/src/themes/
 
-# Integration tests output files.
+# Integration test module.
 tests/coutput/
+tests/dist/
 
 .classpath
 .settings
