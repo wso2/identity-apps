@@ -663,7 +663,7 @@
         <encoder.wso2.version>1.2.0.wso2v1</encoder.wso2.version>
         <encoder-jsp.version>1.2.2</encoder-jsp.version>
         <org.apache.cxf.version>3.3.7</org.apache.cxf.version>
-        <httpcomponents-httpclient.wso2.version>4.3.1.wso2v2</httpcomponents-httpclient.wso2.version>
+        <httpcomponents-httpclient.wso2.version>4.3.6.wso2v2</httpcomponents-httpclient.wso2.version>
         <httpcore.version>4.3.3.wso2v1</httpcore.version>
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
