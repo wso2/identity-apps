@@ -26,7 +26,7 @@
 
 <%@include file="includes/localize.jsp" %>
 <jsp:directive.include file="includes/init-url.jsp"/>
-<jsp:include page="includes/template-mapper.jsp"/>
+<jsp:directive.include file="includes/template-mapper.jsp"/>
 
 <%@ taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
