@@ -17,6 +17,7 @@
  *
  */
 
+import { DecodedIdTokenPayloadInterface } from "@asgardio/oidc-js";
 import { TokenConstants } from "../constants";
 
 /**
@@ -76,5 +77,27 @@ export class AuthenticateUtils {
      */
     public static removeAuthenticationCallbackUrl(): void {
         window.sessionStorage.removeItem("auth_callback_url");
+    }
+
+    /**
+     * Extracts the tenant domain from the ID token payload.
+     *
+     * @param {DecodedIdTokenPayloadInterface} payload - Decoded ID token payload.
+     * @param {string} uidSeparator - Separator to split the uid.
+     * @return {string} Extracted tenant domain.
+     */
+    public static getTenantDomainFromIdTokenPayload (payload: DecodedIdTokenPayloadInterface,
+                                                    uidSeparator: string = "@"): string  {
+
+        // If the `tenant_domain` claim is available in the ID token payload, give precedence.
+        if (payload.tenant_domain) {
+            return payload.tenant_domain;
+        }
+
+        // Try to extract the tenant domain from the `sub` claim.
+        const uid = payload.sub;
+        const tokens = uid.split(uidSeparator);
+
+        return tokens[ tokens.length - 1 ];
     }
 }
