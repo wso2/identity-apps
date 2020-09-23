@@ -18,7 +18,7 @@
 
 module.exports = {
     globals: {
-        "window": true,
+        "window": true
     },
     moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
     roots: [
