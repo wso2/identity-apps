@@ -1,19 +1,19 @@
 {
-    "baseUrl": ".",
-    "paths": {
-        "*": ["types/*"],
-        "@wso2is/cypress-base/commands": ["node_modules/@wso2is/cypress-base/dist/commands"],
-        "@wso2is/cypress-base/constants": ["node_modules/@wso2is/cypress-base/dist/constants"],
-        "@wso2is/cypress-base/page-objects": ["node_modules/@wso2is/cypress-base/dist/page-objects"],
-        "@wso2is/cypress-base/utils": ["node_modules/@wso2is/cypress-base/dist/utils"]
-    },
     "compilerOptions": {
+        "baseUrl": ".",
         "declaration": true,
         "experimentalDecorators": true,
         "lib": [
-            "es5",
+            "es6",
             "dom"
         ],
+        "paths": {
+            "*": ["types/*"],
+            "@wso2is/cypress-base/commands": ["node_modules/@wso2is/cypress-base/dist/commands"],
+            "@wso2is/cypress-base/constants": ["node_modules/@wso2is/cypress-base/dist/constants"],
+            "@wso2is/cypress-base/page-objects": ["node_modules/@wso2is/cypress-base/dist/page-objects"],
+            "@wso2is/cypress-base/utils": ["node_modules/@wso2is/cypress-base/dist/utils"]
+        },
         "target": "es5",
         "types": [
             "cypress",
