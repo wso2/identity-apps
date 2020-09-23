@@ -24,7 +24,10 @@
         "start": "run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
         "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "test": "../../node_modules/.bin/jest --passWithNoTests"
+        "test": "npm run jest --passWithNoTests",
+        "jest": "run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest",
+        "jest:default": "./node_modules/.bin/jest"
     },
     "dependencies": {
         "@wso2is/authentication": "^1.0.422",
@@ -37,8 +40,11 @@
         "country-language": "^0.1.7"
     },
     "devDependencies": {
+        "@types/jest": "^26.0.14",
         "eslint-plugin-node": "^11.0.0",
-        "run-script-os": "^1.0.7"
+        "jest": "^26.4.2",
+        "run-script-os": "^1.0.7",
+        "ts-jest": "^26.4.0"
     },
     "peerDependencies": {
         "@svgr/webpack": "*",

@@ -21,7 +21,10 @@
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "eslint --ext .js,.ts .",
-        "test": "jest --passWithNoTests"
+        "test": "npm run jest --passWithNoTests",
+        "jest": "run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest",
+        "jest:default": "./node_modules/.bin/jest"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -29,13 +32,15 @@
         "@wso2is/authentication": "^1.0.422"
     },
     "devDependencies": {
+        "@types/jest": "^26.0.14",
+        "jest": "^26.4.2",
         "rimraf": "^3.0.2",
-        "run-script-os": "^1.0.7"
+        "run-script-os": "^1.0.7",
+        "ts-jest": "^26.4.0"
     },
     "peerDependencies": {
         "@types/crypto-js": "*",
         "@types/history": "*",
-        "@types/jest": "*",
         "@types/js-yaml": "*",
         "@types/lodash": "*",
         "@types/node": "*",
@@ -46,14 +51,12 @@
         "axios": "*",
         "crypto-js": "*",
         "history": "*",
-        "jest": "*",
         "js-yaml": "*",
         "lodash": "*",
         "moment": "*",
         "node-forge": "*",
         "react": "*",
         "react-notification-system": "*",
-        "ts-jest": "*",
         "tslint": "*",
         "typescript": "*",
         "ua-parser-js": "*"

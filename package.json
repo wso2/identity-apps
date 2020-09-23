@@ -21,7 +21,7 @@
         "remove-maven-folders": "npx lerna exec -- rimraf -rf target npm ./apps/myaccount/src/main ./apps/console/src/main && rimraf -rf target npm ./apps/user-portal/src/main ./apps/console/src/main",
         "update-version": "node scripts/update-version.js",
         "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-        "test": "lerna run test --stream"
+        "test": "lerna run test --stream --ignore @wso2is/integration-tests"
     },
     "author": "WSO2",
     "license": "Apache-2.0",

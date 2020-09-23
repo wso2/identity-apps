@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import React from 'react';
-import { render, screen } from '@testing-library/react'
+import React from "react";
+import { render, screen } from "@testing-library/react"
 import "@testing-library/jest-dom/extend-expect"
 import SamplePage from "../example";
 
-describe('Test Suite - Sample Extension Component.', () => {
-    test('Test proper rendering of Sample Extension component', () => {
+describe("Test Suite - Sample Extension Component.", () => {
+    test("Test proper rendering of Sample Extension component", () => {
         render(<SamplePage />);
-        expect(screen.getByText('Dynamic Component')).toBeInTheDocument();
+        expect(screen.getByText("Dynamic Component")).toBeInTheDocument();
     });
 });

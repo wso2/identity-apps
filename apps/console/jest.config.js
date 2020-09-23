@@ -20,14 +20,14 @@ module.exports = {
     globals: {
         "window": true
     },
-    moduleFileExtensions: ["js", "jsx", 'ts', 'tsx', "json", "node"],
+    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
     roots: [
-        'src'
+        "src"
     ],
-    testMatch: ['<rootDir>/**/?(*.)test.{ts,tsx}'],
+    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
     transform: {
-        '^.+\\.(ts|tsx)?$': 'ts-jest',
-        "^.+\\.(js|jsx)?$": 'babel-jest'
+        "^.+\\.(ts|tsx)?$": "ts-jest",
+        "^.+\\.(js|jsx)?$": "babel-jest"
     },
     modulePaths: [
         "<rootDir>"
@@ -38,7 +38,7 @@ module.exports = {
         }
     },
     transformIgnorePatterns: [
-        '/node_modules/?(?!@wso2is)'
+        "/node_modules/?(?!@wso2is)"
     ],
     testPathIgnorePatterns: [
         "<rootDir>/(build|docs|node_modules)/"

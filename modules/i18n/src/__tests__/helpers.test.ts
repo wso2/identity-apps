@@ -36,7 +36,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "English (United States)",
             "namespaces": [ "common", "devPortal" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     },
     "pt-BR": {
         "meta": {
@@ -45,7 +47,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "Português (Brazil)",
             "namespaces": [ "common" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     },
     "si-LK": {
         "meta": {
@@ -54,7 +58,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "සිංහල (Sri Lanka)",
             "namespaces": [ "common" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     },
     "ta-IN": {
         "meta": {
@@ -63,7 +69,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "தமிழ் (India)",
             "namespaces": [ "common" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     }
 };
 
@@ -101,10 +109,9 @@ describe("If default supported resources retrieval helper function", () => {
         expect(typeof getResourcesSupportedByDefault(LANGUAGE_BUNDLES)).toBe("object");
     });
 
-    // TODO - Fix test failure
-    // test("Should return resources for all the supported languages", () => {
-    //     expect(Object.keys(getResourcesSupportedByDefault(LANGUAGE_BUNDLES))).toEqual(DEFAULT_SUPPORTED_LANGUAGES);
-    // });
+    test("Should return resources for all the supported languages", () => {
+        expect(Object.keys(getResourcesSupportedByDefault(LANGUAGE_BUNDLES))).toEqual(DEFAULT_SUPPORTED_LANGUAGES);
+    });
 });
 
 describe("If supported language checker helper function", () => {
