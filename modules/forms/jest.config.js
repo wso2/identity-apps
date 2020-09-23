@@ -15,19 +15,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 module.exports = {
-        transform: {
-            "^.+\\.tsx$": "ts-jest",
-            "^.+\\.ts$": "ts-jest",
-            "^.+\\.js$": "babel-jest",
-            "^.+\\.jsx$": "babel-jest"
-        },
-        moduleNameMapper: {
-            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$"
-                : "<rootDir>/test-configs/file-mock.js",
-            "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js"
-        },
-        setupFilesAfterEnv: [
-            "<rootDir>/test-configs/setup-test.ts"
-        ]
-}
+    globals: {
+        "window": true,
+    },
+    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
+    roots: [
+        "src"
+    ],
+    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
+    transform: {
+        "^.+\\.(ts|tsx)?$": "ts-jest",
+        "^.+\\.(js|jsx)?$": "babel-jest"
+    },
+    modulePaths: [
+        "<rootDir>"
+    ],
+    globals: {
+        "ts-jest": {
+            tsConfig: "tsconfig.json"
+        }
+    },
+    transformIgnorePatterns: [
+        "/node_modules/?(?!@wso2is)"
+    ],
+    testPathIgnorePatterns: [
+        "<rootDir>/(build|docs|node_modules)/"
+    ],
+    setupFilesAfterEnv: [
+        "<rootDir>/test-configs/setup-test.js"
+    ],
+    verbose: true
+};

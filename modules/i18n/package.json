@@ -47,6 +47,7 @@
         "react-i18next": "*",
         "rimraf": "*",
         "ts-jest": "*",
-        "typescript": "*"
+        "typescript": "*",
+        "babel-jest": "*"
     }
 }
