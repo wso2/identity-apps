@@ -91,8 +91,16 @@ regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logo
 
 Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
 
+#### Headless mode
+
 ```bash
 npm run test:integration
+```
+
+#### Interactive mode
+
+```bash
+npm run test:integration:interactive
 ```
 
 ## Reporting Issues
