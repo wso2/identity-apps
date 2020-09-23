@@ -18,6 +18,7 @@
  */
 
 /// <reference types="cypress" />
+/// <reference types="../../support" />
 
 import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
 

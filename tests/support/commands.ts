@@ -88,16 +88,16 @@ Cypress.Commands.add("recursiveEachChild", ($element) => {
     $element.children().each(function () {
         const $currentElement = $(this);
         // Loop children
-        recursiveEach($currentElement);
+        // recursiveEach($currentElement);
     });
 });
 
 /**
  * This method is used to validate the URL is valid.
  */
-Cypress.Commands.add("isUrlValid", (userInput) => {
+Cypress.Commands.add("isUrlValid", (userInput: string): Promise<boolean> => {
     const pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-    return pattern.test(userInput);
+    return Promise.resolve(pattern.test(userInput));
 });
 
 /**
@@ -107,13 +107,13 @@ Cypress.Commands.add("isUrlValid", (userInput) => {
  * @param  {} ScenarioNo
  * @param  {} noUsers
  */
-Cypress.Commands.add("CreateUsersData", (ScenarioNo, noUsers) => {
+Cypress.Commands.add("CreateUsersData", (ScenarioNo: number | string, noUsers: number): Promise<any> => {
 
-    const testData = {};
+    const testData: { users: any[] } = {
+        users: []
+    };
 
     if (noUsers > 0) {
-        testData.users = [];
-
         for (let i = 1; i <= noUsers; i++) {
             testData.users.push({});
             testData.users[ i - 1 ][ "userName" ] = "Testuser_" + ScenarioNo + "_" + i;
@@ -131,7 +131,7 @@ Cypress.Commands.add("CreateUsersData", (ScenarioNo, noUsers) => {
             testData.users[ i - 1 ][ "mobileNumber" ] = "94777000777";
         }
 
-        return testData;
+        return Promise.resolve(testData);
     }
 });
 
