@@ -134,7 +134,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
      * @param {string} idpId Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
-        history.push(AppConstants.PATHS.get("IDP_EDIT").replace(":id", idpId));
+        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idpId));
     };
 
     /**

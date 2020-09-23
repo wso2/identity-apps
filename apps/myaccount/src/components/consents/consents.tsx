@@ -28,7 +28,7 @@ import {
     revokeConsentedApp,
     updateConsentedClaims
 } from "../../api/consents";
-import { ApplicationConstants } from "../../constants";
+import { AppConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -218,7 +218,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * @param {ConsentInterface} consent - Consent which needs to be revoked.
      */
     const revokeAppConsent = (consent: ConsentInterface): void => {
-        const self: number = ApplicationConstants.PORTAL_SP_DESCRIPTION.localeCompare(consent.spDisplayName);
+        const self: number = AppConstants.PORTAL_SP_DESCRIPTION.localeCompare(consent.spDisplayName);
 
         revokeConsentedApp(consent.consentReceiptID)
             .then(() => {
@@ -402,7 +402,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * @return {JSX.Element}
      */
     const consentRevokeModal = (): JSX.Element => {
-        const self: number = ApplicationConstants.PORTAL_SP_DESCRIPTION.localeCompare(
+        const self: number = AppConstants.PORTAL_SP_DESCRIPTION.localeCompare(
             revokingConsent.spDisplayName);
 
         return (

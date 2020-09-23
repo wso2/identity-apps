@@ -16,22 +16,24 @@
  * under the License.
  */
 
-import React, { FunctionComponent } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { WidgetIcons } from "../../../configs";
+import { AppConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
 
 /**
- * Consent management widget
+ * Consent management widget.
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const ConsentManagementWidget: FunctionComponent<{}> = (): JSX.Element => {
+export const ConsentManagementWidget: FunctionComponent<{}> = (): ReactElement => {
+
     const { t } = useTranslation();
 
     const navigate = () => {
-        history.push("/security");
+        history.push(AppConstants.getPaths().get("SECURITY"));
     };
 
     return (

@@ -35,6 +35,7 @@ import {
     removeSessionParameter,
     setSessionParameter
 } from "./session-storage";
+import { getTenantDomainFromIdTokenPayload } from "./token";
 import {
     ACCESS_TOKEN,
     AUTHORIZATION_CODE,
@@ -51,22 +52,25 @@ import {
     SERVICE_RESOURCES,
     SESSION_STATE,
     SIGNED_IN,
+    Storage,
+    TENANT_DOMAIN,
     TOKEN_ENDPOINT,
     TOKEN_TAG,
     USERNAME,
     USERNAME_TAG
 } from "../constants";
-import { Storage } from "../constants/storage";
 import {
+    AuthenticatedUserInterface,
     ConfigInterface,
     CustomGrantRequestParams,
+    DecodedIdTokenPayloadInterface,
     SignInResponse,
+    TokenRequestHeader,
+    TokenResponseInterface,
     UserInfo,
     WebWorkerConfigInterface,
     isWebWorkerConfig
 } from "../models";
-import { AuthenticatedUserInterface } from "../models/authenticated-user";
-import { TokenRequestHeader, TokenResponseInterface } from "../models/token-response";
 
 /**
  * Checks whether authorization code is present.
@@ -103,7 +107,7 @@ export function getAuthorizationCode(requestParams?: ConfigInterface | WebWorker
  * Get token request headers.
  *
  * @param {string} clientHost
- * @returns {{Accept: string; "Access-Control-Allow-Origin": string; "Content-Type": string}}
+ * @returns {TokenRequestHeader}
  */
 export const getTokenRequestHeaders = (clientHost: string): TokenRequestHeader => {
     return {
@@ -405,12 +409,14 @@ export function sendRevokeTokenRequest(
  * @returns {AuthenticatedUserInterface} authenticated user.
  */
 export const getAuthenticatedUser = (idToken: string): AuthenticatedUserInterface => {
-    const payload = JSON.parse(atob(idToken.split(".")[1]));
-    const emailAddress = payload.email ? payload.email : null;
+    const payload: DecodedIdTokenPayloadInterface = JSON.parse(atob(idToken.split(".")[1]));
+    const emailAddress: string = payload.email ? payload.email : null;
+    const tenantDomain: string = getTenantDomainFromIdTokenPayload(payload);
 
     return {
         displayName: payload.preferred_username ? payload.preferred_username : payload.sub,
         email: emailAddress,
+        tenantDomain,
         username: payload.sub
     };
 };
@@ -476,9 +482,9 @@ export function handleSignIn(requestParams: ConfigInterface | WebWorkerConfigInt
  * Replaces template tags with actual values.
  *
  * @param {string} text Input string.
- * @param {string} scope Scope.
+ * @param {ConfigInterface | WebWorkerConfigInterface} authConfig - Auth config object.
  *
- * @returns String with template tags replaced with actual values.
+ * @return {string} String with template tags replaced with actual values.
  */
 const replaceTemplateTags = (
     text: string,
@@ -504,8 +510,8 @@ const replaceTemplateTags = (
 /**
  * Allows using custom grant types.
  *
- * @param {CustomGrantRequestParams} requestParams The request parameters.
- *
+ * @param {CustomGrantRequestParams} requestParams - The request parameters.
+ * @param {ConfigInterface | WebWorkerConfigInterface} authConfig - Auth config object.
  * @returns {Promise<boolean|AxiosResponse>} A promise that resolves with a boolean value or the request response
  * if the the `returnResponse` attribute in the `requestParams` object is set to `true`.
  */
@@ -600,6 +606,7 @@ export const getUserInfo = (config: ConfigInterface | WebWorkerConfigInterface):
         allowedScopes: getSessionParameter(SCOPE, config),
         displayName: getSessionParameter(DISPLAY_NAME, config),
         email: getSessionParameter(EMAIL, config),
+        tenantDomain: getSessionParameter(TENANT_DOMAIN, config),
         username: getSessionParameter(USERNAME, config)
     };
 };

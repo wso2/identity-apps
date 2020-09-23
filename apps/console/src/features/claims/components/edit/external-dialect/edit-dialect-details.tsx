@@ -71,7 +71,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                             ".updateDialect.success.message")
                                     }));
                                     history.push(
-                                        AppConstants.PATHS.get("EXTERNAL_DIALECT_EDIT")
+                                        AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT")
                                             .replace(":id", window.btoa(dialectURI).replace(/=/g, ""))
                                     );
                                 })

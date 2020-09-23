@@ -171,14 +171,14 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("IDP"));
+        history.push(AppConstants.getPaths().get("IDP"));
     };
 
     /**
      * Called when an idp is deleted.
      */
     const handleIdentityProviderDelete = (): void => {
-        history.push(AppConstants.PATHS.get("IDP"));
+        history.push(AppConstants.getPaths().get("IDP"));
     };
 
     /**

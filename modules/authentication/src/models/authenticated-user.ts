@@ -20,7 +20,29 @@
  * Interface of the authenticated user.
  */
 export interface AuthenticatedUserInterface {
+    /**
+     * Authenticated user's display name.
+     */
     displayName?: string;
+    /**
+     * Authenticated user's display name.
+     * @deprecated Use `displayName` instead.
+     */
+    display_name?: string;
+    /**
+     * User's email.
+     */
     email?: string;
+    /**
+     * Available scopes. 
+     */
+    scope?: string;
+    /**
+     * Authenticated user's tenant domain.
+     */
+    tenantDomain?: string;
+    /**
+     * Authenticated user's username.
+     */
     username: string;
 }

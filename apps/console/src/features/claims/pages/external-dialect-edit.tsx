@@ -194,7 +194,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
      */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID).then(() => {
-            history.push(AppConstants.PATHS.get("CLAIM_DIALECTS"));
+            history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
             dispatch(addAlert(
                 {
                     description: t("adminPortal:components.claims.dialects.notifications." +
@@ -241,7 +241,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             description={ t("adminPortal:components.claims.dialects.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
-                    history.push(AppConstants.PATHS.get("CLAIM_DIALECTS"));
+                    history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                 },
                 text: t ("adminPortal:components.claims.dialects.pageLayout.edit.back")
             } }

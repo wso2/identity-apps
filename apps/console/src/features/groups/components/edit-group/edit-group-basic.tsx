@@ -152,9 +152,9 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                 message: t("adminPortal:components.groups.notifications.deleteGroup.success.message")
             });
             if (isGroup) {
-                history.push(AppConstants.PATHS.get("GROUPS"));
+                history.push(AppConstants.getPaths().get("GROUPS"));
             } else {
-                history.push(AppConstants.PATHS.get("ROLES"));
+                history.push(AppConstants.getPaths().get("ROLES"));
             }
         });
     };

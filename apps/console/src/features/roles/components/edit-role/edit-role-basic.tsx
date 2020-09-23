@@ -153,9 +153,9 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                 message: t("adminPortal:components.roles.notifications.deleteRole.success.message")
             });
             if (isGroup) {
-                history.push(AppConstants.PATHS.get("GROUPS"));
+                history.push(AppConstants.getPaths().get("GROUPS"));
             } else {
-                history.push(AppConstants.PATHS.get("ROLES"));
+                history.push(AppConstants.getPaths().get("ROLES"));
             }
         });
     };

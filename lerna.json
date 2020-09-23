@@ -2,7 +2,8 @@
     "packages": [
         "apps/*",
         "components/theme",
-        "modules/!(http)"
+        "modules/!(http)",
+        "tests/*"
     ],
-    "version": "1.0.417"
+    "version": "1.0.422"
 }

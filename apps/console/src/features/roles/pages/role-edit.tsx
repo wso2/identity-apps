@@ -67,7 +67,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("ROLES"));
+        history.push(AppConstants.getPaths().get("ROLES"));
     };
 
     return (

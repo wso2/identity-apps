@@ -21,7 +21,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
-import { EmptyPlaceholderIllustrations, GlobalConfig } from "../../configs";
+import { EmptyPlaceholderIllustrations } from "../../configs";
+import { AppConstants } from "../../constants";
 import { ErrorPageLayout } from "../../layouts";
 
 /**
@@ -38,7 +39,7 @@ const PageNotFound = (): ReactElement => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to={ GlobalConfig.appHomePath }
+                        to={ AppConstants.getAppHomePath() }
                     >
                         { t("userPortal:placeholders.404.action") }
                     </Button>

@@ -77,7 +77,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
     };
 
     const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("GROUPS"));
+        history.push(AppConstants.getPaths().get("GROUPS"));
     };
 
     return (

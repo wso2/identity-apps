@@ -275,7 +275,7 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
                 title={ t("adminPortal:components.claims.local.pageLayout.local.title") }
                 description={ t("adminPortal:components.claims.local.pageLayout.local.description") }
                 backButton={ {
-                    onClick: () => { history.push(AppConstants.PATHS.get("CLAIM_DIALECTS")) },
+                    onClick: () => { history.push(AppConstants.getPaths().get("CLAIM_DIALECTS")) },
                     text: t("adminPortal:components.claims.local.pageLayout.local.back")
                 } }
                 data-testid={ `${ testId }-page-layout` }

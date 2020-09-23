@@ -297,7 +297,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                     && (
                         <PrimaryButton
                             onClick={ (): void => {
-                                history.push(AppConstants.PATHS.get("IDP_TEMPLATES"));
+                                history.push(AppConstants.getPaths().get("IDP_TEMPLATES"));
                             } }
                             data-testid={ `${ testId }-add-button` }
                         >
@@ -382,7 +382,7 @@ const IdentityProvidersPage: FunctionComponent<IDPPropsInterface> = (
                         isLoading={ isIdPListRequestLoading }
                         list={ idpList }
                         onEmptyListPlaceholderActionClick={
-                            () => history.push(AppConstants.PATHS.get("IDP_TEMPLATES"))
+                            () => history.push(AppConstants.getPaths().get("IDP_TEMPLATES"))
                         }
                         onIdentityProviderDelete={ handleIdentityProviderDelete }
                         onSearchQueryClear={ handleSearchQueryClear }

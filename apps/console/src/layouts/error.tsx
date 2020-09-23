@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import { RouteInterface } from "@wso2is/core/models";
 import { ContentLoader, ErrorLayout as ErrorLayoutSkeleton } from "@wso2is/react-components";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, Suspense, useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ProtectedRoute, errorLayoutRoutes } from "../features/core";
+import { ProtectedRoute } from "../features/core/components";
+import { getErrorLayoutRoutes } from "../features/core/configs";
+import { AppConstants } from "../features/core/constants";
 
 /**
  * Error layout Prop types.
@@ -44,6 +47,15 @@ export const ErrorLayout: FunctionComponent<PropsWithChildren<ErrorLayoutPropsIn
 ): ReactElement => {
 
     const { fluid } = props;
+
+    const [ errorLayoutRoutes, setErrorLayoutRoutes ] = useState<RouteInterface[]>(getErrorLayoutRoutes());
+
+    /**
+     * Listen for base name changes and updates the layout routes.
+     */
+    useEffect(() => {
+        setErrorLayoutRoutes(getErrorLayoutRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     return (
         <ErrorLayoutSkeleton fluid={ fluid }>

@@ -97,7 +97,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
     const [ currentDeletingTemplate, setCurrentDeletingTemplate ] = useState<EmailTemplateType>(undefined);
 
     const handleEditTemplate = (templateTypeId: string) => {
-        history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
+        history.push(AppConstants.getPaths().get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
     };
 
     /**

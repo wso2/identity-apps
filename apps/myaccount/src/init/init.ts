@@ -80,7 +80,15 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
             window.stop();
         }
     } else {
-        window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+
+        let logoutPath = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+
+        // SaaS app paths already contains the tenant and basename.
+        if (config.isSaas) {
+            logoutPath = config.clientOrigin + config.routes.logout;
+        }
+
+        window.top.location.href = logoutPath;
     }
 } else {
     // Tracking user interactions
@@ -125,7 +133,15 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
 
             // Logout user if idle
             if (_idleSecondsCounter >= IDLE_TIMEOUT) {
-                window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+
+                let logoutPath = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
+
+                // SaaS app paths already contains the tenant and basename.
+                if (config.isSaas) {
+                    logoutPath = config.clientOrigin + config.routes.logout;
+                }
+
+                window.top.location.href = logoutPath;
             } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
                 const warningSearchParamKey = "session_timeout_warning";
                 const currentURL = new URL(window.location.href);

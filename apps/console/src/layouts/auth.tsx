@@ -16,10 +16,13 @@
  * under the License.
  */
 
+import { RouteInterface } from "@wso2is/core/models";
 import { AuthLayout as AuthLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, Suspense } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
-import { ProtectedRoute, authLayoutRoutes } from "../features/core";
+import { ProtectedRoute } from "../features/core/components";
+import { getAuthLayoutRoutes } from "../features/core/configs";
+import { AppConstants } from "../features/core/constants";
 
 /**
  * Auth layout props interface.
@@ -44,6 +47,15 @@ export const AuthLayout: FunctionComponent<AuthLayoutPropsInterface> = (
 ): ReactElement => {
 
     const { fluid } = props;
+
+    const [ authLayoutRoutes, setAuthLayoutRoutes ] = useState<RouteInterface[]>(getAuthLayoutRoutes());
+
+    /**
+     * Listen for base name changes and updated the layout routes.
+     */
+    useEffect(() => {
+        setAuthLayoutRoutes(getAuthLayoutRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     return (
         <AuthLayoutSkeleton fluid={ fluid }>

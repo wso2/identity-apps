@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { getProfileInfo } from "@wso2is/core/api";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
@@ -43,19 +42,14 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import {
-    AppState,
-    AppUtils,
-    ConfigReducerStateInterface,
-    FeatureConfigInterface,
-    Footer,
-    Header,
-    ProtectedRoute,
-    SidePanelMiscIcons,
-    UIConstants,
-    developerViewRoutes,
-    history
-} from "../features/core";
+import { getProfileInformation } from "../features/authentication/store";
+import { Footer, Header, ProtectedRoute } from "../features/core/components";
+import { SidePanelMiscIcons, getDeveloperViewRoutes } from "../features/core/configs";
+import { UIConstants } from "../features/core/constants";
+import { history } from "../features/core/helpers";
+import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
+import { AppState } from "../features/core/store";
+import { AppUtils } from "../features/core/utils";
 
 /**
  * Developer View Prop types.
@@ -95,27 +89,35 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
-    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(developerViewRoutes);
-    const [ selectedRoute, setSelectedRoute ] = useState<RouteInterface | ChildRouteInterface>(developerViewRoutes[0]);
+    const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getDeveloperViewRoutes());
+    const [
+        selectedRoute,
+        setSelectedRoute
+    ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
     const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
     const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        const pathname = location.pathname.replace(config.deployment.appBaseName, "");
-        setSelectedRoute(RouteUtils.getInitialActiveRoute(pathname, filteredRoutes));
+        setSelectedRoute(RouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
     }, [ filteredRoutes ]);
 
     useEffect(() => {
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(developerViewRoutes, featureConfig,
-            allowedScopes));
+        setFilteredRoutes(
+            RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+                getDeveloperViewRoutes(),
+                featureConfig,
+                allowedScopes)
+        );
 
-        if (isEmpty(profileInfo)) {
-            dispatch(getProfileInfo(null));
+        if (!isEmpty(profileInfo)) {
+            return;
         }
-    }, [ featureConfig ]);
+
+        dispatch(getProfileInformation());
+    }, [ featureConfig, getDeveloperViewRoutes ]);
 
     useEffect(() => {
         setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);

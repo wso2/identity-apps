@@ -219,7 +219,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 && (
                     <PrimaryButton
                         onClick={ (): void => {
-                            history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
                         } }
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
@@ -310,7 +310,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     list={ appList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"))
+                        () => history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"))
                     }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }

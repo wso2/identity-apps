@@ -151,7 +151,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         )
                     }));
 
-                    history.push(AppConstants.PATHS.get("EMAIL_TEMPLATES").replace(":templateTypeId", templateTypeId));
+                    history.push(AppConstants.getPaths().get("EMAIL_TEMPLATES")
+                        .replace(":templateTypeId", templateTypeId));
                 }
             })
             .catch((error: AxiosError) => {

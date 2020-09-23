@@ -229,7 +229,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 && (
                     <PrimaryButton
                         onClick={ () => {
-                            history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));
+                            history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
                         } }
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
@@ -336,7 +336,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                     isLoading={ isLoading }
                     list={ paginate(filteredUserStores, listItemLimit, offset) }
                     onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"))
+                        () => history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"))
                     }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }

@@ -1,0 +1,53 @@
+{
+    "name": "@wso2is/integration-tests",
+    "version": "1.0.0",
+    "description": "This is cypress integration test suite for Identity Apps WSO2.",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "precypress:run": "rm -rf cypress/reports && rm -rf cypress/results && rm -rf cypress/screenshots",
+        "test": "npm run test:headless",
+        "test:headless": "npm run cy:headless",
+        "test:interactive": "npm run cy:interactive",
+        "cy:headless": "npx cypress run --headless",
+        "cy:interactive": "npx cypress open",
+        "cypress:report": "generate-mochawesome-report",
+        "lint": "eslint --ext .js,.ts .",
+        "precypressbuild": "node scripts/pre-build.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/wso2/product-is.git"
+    },
+    "keywords": [
+        "wso2-identity-cypress-tests"
+    ],
+    "author": "wso2-identity-server",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/wso2/product-is/issues"
+    },
+    "homepage": "https://github.com/wso2/product-is#readme",
+    "dependencies": {
+        "@types/chai": "^4.1.7",
+        "@types/mocha": "^5.2.7",
+        "cypress-mochawesome-reporter": "^1.0.2",
+        "cypress-multi-reporters": "^1.4.0",
+        "google-auth-library": "^6.0.0",
+        "googleapis": "^27.0.0",
+        "lodash.unescape": "^4.0.1",
+        "mocha": "^8.1.3",
+        "mochawesome": "^6.1.1",
+        "pify": "^5.0.0",
+        "util": "^0.12.2",
+        "winston": "^3.2.1"
+    },
+    "devDependencies": {
+        "cypress": "^5.2.0",
+        "eslint": "^7.4.0",
+        "eslint-plugin-cypress": "^2.11.1",
+        "eslint-plugin-import": "^2.22.0",
+        "lerna": "^3.22.1",
+        "typescript": "^4.0.2"
+    }
+}

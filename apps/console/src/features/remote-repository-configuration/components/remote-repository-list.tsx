@@ -104,7 +104,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListPropsInterface> = (
      * @param {string} configId - Identity provider id.
      */
     const handleRemoteRepoEdit = (configId: string): void => {
-        history.push(AppConstants.PATHS.get("REMOTE_REPO_CONFIG_EDIT").replace(":id", configId));
+        history.push(AppConstants.getPaths().get("REMOTE_REPO_CONFIG_EDIT").replace(":id", configId));
     };
 
     /**

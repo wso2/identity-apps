@@ -234,7 +234,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
                     history.push({
-                        pathname: AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", createdAppID),
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppID),
                         search: `?${ ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
                             ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE }`
                     });
@@ -243,7 +243,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
 
                 // Fallback to applications page, if the location header is not present.
-                history.push(AppConstants.PATHS.get("APPLICATIONS"));
+                history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {

@@ -29,5 +29,6 @@ export const SCOPE = "scope";
 export const SESSION_STATE = "session_state";
 export const TOKEN_TYPE = "token_type";
 export const REQUEST_PARAMS = "request_params";
+export const TENANT_DOMAIN = "tenant_domain";
 export const ISSUER = "issuer";
 export const LOGOUT_URL = "logout_url";

@@ -280,7 +280,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
             }
 
             closeWizard();
-            history.push(AppConstants.PATHS.get("GROUP_EDIT").replace(":id", response.data.id));
+            history.push(AppConstants.getPaths().get("GROUP_EDIT").replace(":id", response.data.id));
         }).catch(error => {
             if (!error.response || error.response.status === 401) {
                 closeWizard();
