@@ -34,38 +34,15 @@ import {
     UIConstants,
     store
 } from "../../core";
-import { GovernanceConnectorInterface, getConnectorCategory } from "../../server-configurations";
+import {
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants,
+    getConnectorCategory
+} from "../../server-configurations";
 import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
-
-/**
- * Th id of the account manage,ent policy connector category.
- *
- * @constant
- * @type {string}
- * @default
- */
-const ACCOUNT_MANAGEMENT_POLICY_CONNECTOR_ID = "QWNjb3VudCBNYW5hZ2VtZW50IFBvbGljaWVz";
-
-/**
- * The id of the user on boarding connector.
- *
- * @constant
- * @type {string}
- * @default
- */
-const USER_ONBOARDING_CONNECTOR_ID = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
-
-/**
- * The name of the email verification enabled key.
- *
- * @constant
- * @type {string}
- * @default
- */
-const EMAIL_VERIFICATION_ENABLED = "EmailVerification.Enable";
 
 /**
  * Users info page.
@@ -358,15 +335,16 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
      * Handles the click event of the create new user button.
      */
     const handleAddNewUserWizardClick = (): void => {
-        getConnectorCategory(ACCOUNT_MANAGEMENT_POLICY_CONNECTOR_ID)
+        getConnectorCategory(ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID)
             .then((response) => {
                 const connectors: GovernanceConnectorInterface[]  = response?.connectors;
                 const userOnboardingConnector = connectors.find(
-                    (connector: GovernanceConnectorInterface) => connector.id === USER_ONBOARDING_CONNECTOR_ID
+                    (connector: GovernanceConnectorInterface) => connector.id
+                        === ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID
                 );
 
                 const emailVerification = userOnboardingConnector.properties.find(
-                    property => property.name === EMAIL_VERIFICATION_ENABLED);
+                    property => property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
 
                 setEmailVerificationEnabled(emailVerification.value === "true");
             }).catch((error) => {
