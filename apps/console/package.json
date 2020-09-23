@@ -24,7 +24,7 @@
         "start": "run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
         "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "test": "npm run jest --passWithNoTests",
+        "test": "npm run jest -- --passWithNoTests",
         "jest": "run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
         "jest:default": "./node_modules/.bin/jest"
