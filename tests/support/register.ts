@@ -20,28 +20,29 @@ const addContext = require("mochawesome/addContext");
 const MAX_TEST_NAME_LENGTH = 1000;
 
 Cypress.on("test:after:run", (test, runnable) => {
-  if (test.state === "failed") {
+    if (test.state !== "failed") {
+        return;
+    }
+
     const fullTestName = getFullTestName(runnable);
 
-    const imagePath = `screenshots/${Cypress.spec.name}/${fullTestName} (failed).png`;
+    const imagePath = `screenshots/${ Cypress.spec.name }/${ fullTestName } (failed).png`;
 
-    addContext({ test }, imagePath);
-  }
+    addContext({test}, imagePath);
 });
 
-function getFullTestName(runnable) {
-  let item = runnable;
-  const name = [runnable.title];
+const getFullTestName = (runnable) => {
+    let item = runnable;
+    const name = [runnable.title];
 
-  while (item.parent) {
-    name.unshift(item.parent.title);
-    item = item.parent;
-  }
+    while (item.parent) {
+        name.unshift(item.parent.title);
+        item = item.parent;
+    }
 
-  return name
-    .filter(Boolean)
-    .map((n) => n.trim())
-    .join(" -- ")
-    .substring(0, MAX_TEST_NAME_LENGTH);
-}
-
+    return name
+        .filter(Boolean)
+        .map((n) => n.trim())
+        .join(" -- ")
+        .substring(0, MAX_TEST_NAME_LENGTH);
+};

@@ -18,7 +18,7 @@
 
 /// <reference types="cypress" />
 
-import * as LandingPageLocators from "./utils/landing-page";
+import { LoginPage } from "@wso2is/cypress-base/page-objects";
 
 /**
  * This method is used to validate Login user.
@@ -29,14 +29,19 @@ Cypress.Commands.add("login", (username, password, env, account) => {
     cy.window().then((win) => {
         win.onbeforeunload = null;
     });
+
     cy.visit(env + Cypress.env("TENANT_DOMAIN") + account, {
         onBeforeLoad: (win) => {
             win.sessionStorage.clear();
         }
     });
-    LandingPageLocators.loginUsernameInputField().type(username);
-    LandingPageLocators.loginPasswordInputField().type(password, {log: false});
-    LandingPageLocators.submitLoginButton().click({delay: 70});
+
+    const loginPage = new LoginPage();
+
+    loginPage.getLoginUsernameInputField().type(username);
+    loginPage.getLoginPasswordInputField().type(password, { log: false });
+    loginPage.getLoginFormSubmitButton().click();
+
     cy.wait(5000);
 });
 
@@ -45,11 +50,14 @@ Cypress.Commands.add("login", (username, password, env, account) => {
  */
 Cypress.Commands.add("logout", () => {
 
-    LandingPageLocators.clickHeaderAvatarIcon();
-    LandingPageLocators.clickLogoutButton();
+    const loginPage = new LoginPage();
+
+    loginPage.clickOnLogoutButton();
+
     cy.url().should("include", Cypress.env("BASE_URL") +
         Cypress.env("TENANT_DOMAIN") + Cypress.env("AUTH_ENDPOINT_URL") +
         Cypress.env("LOGOUT_URL_QUERY"));
+
     cy.wait(3000);
 });
 
@@ -78,7 +86,7 @@ Cypress.Commands.add("checkIfEleExists", (ele) => {
 Cypress.Commands.add("recursiveEachChild", ($element) => {
 
     $element.children().each(function () {
-        var $currentElement = $(this);
+        const $currentElement = $(this);
         // Loop children
         recursiveEach($currentElement);
     });
@@ -105,23 +113,24 @@ Cypress.Commands.add("CreateUsersData", (ScenarioNo, noUsers) => {
 
     if (noUsers > 0) {
         testData.users = [];
-        for (let i = 1; i <= noUsers; i++) {
 
+        for (let i = 1; i <= noUsers; i++) {
             testData.users.push({});
-            testData.users[i - 1]["userName"] = "Testuser_" + ScenarioNo + "_" + i;
-            testData.users[i - 1]["password"] = "TestUserwso2_" + ScenarioNo + "_" + i;
-            testData.users[i - 1]["familyName"] = "TestUserFamilyname_" + ScenarioNo + "_" + i;
-            testData.users[i - 1]["givenName"] = "TestUserGivenname_" + ScenarioNo + "_" + i;
-            testData.users[i - 1]["primaryEmailValue"] = "TesterprimEmail_" + ScenarioNo + "_" + i;
-            testData.users[i - 1]["primaryEmailType"] = "home";
-            testData.users[i - 1]["secondaryEmailValue"] = "TestersecEmail_" + ScenarioNo + "_" + i;
-            testData.users[i - 1]["secondaryEmailType"] = "work";
-            testData.users[i - 1]["oraganization"] = "wso2";
-            testData.users[i - 1]["homePhoneNumber"] = "+94112233440";
-            testData.users[i - 1]["im"] = "TestIM";
-            testData.users[i - 1]["country"] = "Sri Lanka";
-            testData.users[i - 1]["mobileNumber"] = "94777000777";
+            testData.users[ i - 1 ][ "userName" ] = "Testuser_" + ScenarioNo + "_" + i;
+            testData.users[ i - 1 ][ "password" ] = "TestUserwso2_" + ScenarioNo + "_" + i;
+            testData.users[ i - 1 ][ "familyName" ] = "TestUserFamilyname_" + ScenarioNo + "_" + i;
+            testData.users[ i - 1 ][ "givenName" ] = "TestUserGivenname_" + ScenarioNo + "_" + i;
+            testData.users[ i - 1 ][ "primaryEmailValue" ] = "TesterprimEmail_" + ScenarioNo + "_" + i;
+            testData.users[ i - 1 ][ "primaryEmailType" ] = "home";
+            testData.users[ i - 1 ][ "secondaryEmailValue" ] = "TestersecEmail_" + ScenarioNo + "_" + i;
+            testData.users[ i - 1 ][ "secondaryEmailType" ] = "work";
+            testData.users[ i - 1 ][ "oraganization" ] = "wso2";
+            testData.users[ i - 1 ][ "homePhoneNumber" ] = "+94112233440";
+            testData.users[ i - 1 ][ "im" ] = "TestIM";
+            testData.users[ i - 1 ][ "country" ] = "Sri Lanka";
+            testData.users[ i - 1 ][ "mobileNumber" ] = "94777000777";
         }
+
         return testData;
     }
 });
@@ -139,22 +148,23 @@ Cypress.Commands.add("createUserWithGivenFixtureData", (url, authrzUserName, aut
                                                         failOnStatusCode) => {
 
     cy.fixture(fixturesFile).as("reqBody");
-    cy.get("@reqBody").then(reqBody => {
 
-        return cy.request({
-            "method": "POST",
-            "url": url,
-            "failOnStatusCode": failOnStatusCode,
-            "auth": {
-                "username": authrzUserName,
-                "password": authrzPassword
-            },
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "body": reqBody
+    cy.get("@reqBody")
+        .then(reqBody => {
+            return cy.request({
+                "method": "POST",
+                "url": url,
+                "failOnStatusCode": failOnStatusCode,
+                "auth": {
+                    "username": authrzUserName,
+                    "password": authrzPassword
+                },
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": reqBody
+            });
         });
-    });
 });
 
 /**
@@ -215,16 +225,13 @@ Cypress.Commands.add("createUser", (url, authrzUserName, authrzPassword, userInf
 Cypress.Commands.add("deleteUser", (url, authrzUserName, authrzPassword, userId, failOnStatusCode) => {
 
     return cy.request({
-
         method: "DELETE",
         url: url + userId,
         failOnStatusCode: failOnStatusCode,
-
         "auth": {
             "username": authrzUserName,
             "password": authrzPassword
         },
-
         "headers": {
             "Content-Type": "application/json"
         }
@@ -242,30 +249,28 @@ Cypress.Commands.add("deleteUser", (url, authrzUserName, authrzPassword, userId,
 Cypress.Commands.add("filterUser", (url, authrzUserName, authrzPassword, paramters, failOnStatusCode) => {
 
     if ("id" in paramters) {
-
-        url = url + paramters["id"].id + "?";
+        url = url + paramters[ "id" ].id + "?";
     } else {
-
         url = url.slice(0, -1) + "?";
     }
-    for (const x in paramters) {
 
+    for (const x in paramters) {
         if (x === "id") {
             continue;
         }
 
-        const value = paramters[x];
+        const value = paramters[ x ];
 
-        for (var y in value) {
-            url = url + x + "=" + value[y] + "&";
+        for (let y in value) {
+            url = url + x + "=" + value[ y ] + "&";
         }
     }
 
     url = url.slice(0, -1);
+
     cy.log(url);
 
     return cy.request({
-
         method: "GET",
         url: url,
         failOnStatusCode: failOnStatusCode,
@@ -292,7 +297,6 @@ Cypress.Commands.add("filterUser", (url, authrzUserName, authrzPassword, paramte
 Cypress.Commands.add("getUserFromUserId", (url, authrzUserName, authrzPassword, userId, failOnStatusCode) => {
 
     return cy.request({
-
         method: "GET",
         url: url + userId,
         failOnStatusCode: failOnStatusCode,
@@ -319,14 +323,14 @@ Cypress.Commands.add("getUserFromUserId", (url, authrzUserName, authrzPassword, 
  */
 Cypress.Commands.add("patchUser", (url, authrzUserName, authrzPassword, operations, userId, failOnStatusCode) => {
 
-    var requestBody = "\"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]," + operations;
+    let requestBody = "\"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:PatchOp\"]," + operations;
 
     requestBody = requestBody.slice(0, -1);
     requestBody = "{" + requestBody + "}";
+
     cy.log(requestBody);
 
     return cy.request({
-
         "method": "PATCH",
         "url": url + userId,
         "failOnStatusCode": failOnStatusCode,
@@ -354,7 +358,6 @@ Cypress.Commands.add("patchUser", (url, authrzUserName, authrzPassword, operatio
 Cypress.Commands.add("patchUser", (url, authrzUserName, authrzPassword, userInfor, failOnStatusCode) => {
 
     return cy.request({
-
         method: "PUT",
         url: url + userInfor.id,
         failOnStatusCode: failOnStatusCode,
@@ -401,22 +404,23 @@ Cypress.Commands.add("patchUserWithGivenFixtureData", (url, authrzUserName, auth
                                                        fixturesFileData) => {
 
     cy.fixture(fixturesFileData).as("reqBody");
-    cy.get("@reqBody").then(reqBody => {
-        return cy.request({
 
-            method: "PUT",
-            url: url + userId,
-            failOnStatusCode: failOnStatusCode,
-            "auth": {
-                "username": authrzUserName,
-                "password": authrzPassword
-            },
-            "headers": {
-                "Content-Type": "application/json"
-            },
-            "body": reqBody
+    cy.get("@reqBody")
+        .then(reqBody => {
+            return cy.request({
+                method: "PUT",
+                url: url + userId,
+                failOnStatusCode: failOnStatusCode,
+                "auth": {
+                    "username": authrzUserName,
+                    "password": authrzPassword
+                },
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": reqBody
+            });
         });
-    });
 });
 
 /**
@@ -431,16 +435,19 @@ Cypress.Commands.add("patchUserWithGivenFixtureData", (url, authrzUserName, auth
  */
 Cypress.Commands.add("searchUser", (url, authrzUserName, authrzPassword, searchParam, failOnStatusCode) => {
 
-    var requestBody = "\"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:SearchRequest\"],";
-    for (var x in searchParam) {
+    let requestBody = "\"schemas\": [\"urn:ietf:params:scim:api:messages:2.0:SearchRequest\"],";
 
-        var value = searchParam[x];
-        for (var y in value) {
-            requestBody = requestBody + x + ":" + value[y] + ",";
+    for (let x in searchParam) {
+        const value = searchParam[ x ];
+
+        for (let y in value) {
+            requestBody = requestBody + x + ":" + value[ y ] + ",";
         }
     }
+
     requestBody = requestBody.slice(0, -1);
     requestBody = "{" + requestBody + "}";
+
     return cy.request({
         "method": "POST",
         "url": url,
@@ -469,28 +476,27 @@ Cypress.Commands.add("searchUser", (url, authrzUserName, authrzPassword, searchP
  */
 Cypress.Commands.add("createUserInBulk", (url, authrzUserName, authrzPassword, failCount, failOnStatusCode, userInfor) => {
 
-    //Generate operaions
-    var operations = "[";
-    var operaStr;
+    //Generate operations
+    let operations = "[";
+    let operaStr;
 
-    var keyCount = Object.keys(userInfor.users).length;
-    var i = 0;
-    for (i = 0; i < keyCount; i++) {
-        cy.log(i);
+    const keyCount = Object.keys(userInfor.users).length;
 
-        var userName = userInfor.users[i].userName;
-        var password = userInfor.users[i].password;
-        var familyName = userInfor.users[i].firstName;
-        var givenName = userInfor.users[i].givenName;
-        var primaryEmailValue = userInfor.users[i].primaryEmailValue;
-        var primaryEmailType = userInfor.users[i].primaryEmailType;
-        var secondaryEmailValue = userInfor.users[i].secondaryEmailValue;
-        var secondaryEmailType = userInfor.users[i].secondaryEmailType;
-        var homePhoneNumber = userInfor.users[i].homePhoneNumber;
-        var mobileNumber = userInfor.users [i].mobileNumber;
+    for (let i = 0; i < keyCount; i++) {
+        cy.log(i.toString());
 
-        var operationsBlock = {
+        const userName = userInfor.users[ i ].userName;
+        const password = userInfor.users[ i ].password;
+        const familyName = userInfor.users[ i ].firstName;
+        const givenName = userInfor.users[ i ].givenName;
+        const primaryEmailValue = userInfor.users[ i ].primaryEmailValue;
+        const primaryEmailType = userInfor.users[ i ].primaryEmailType;
+        const secondaryEmailValue = userInfor.users[ i ].secondaryEmailValue;
+        const secondaryEmailType = userInfor.users[ i ].secondaryEmailType;
+        const homePhoneNumber = userInfor.users[ i ].homePhoneNumber;
+        const mobileNumber = userInfor.users [ i ].mobileNumber;
 
+        const operationsBlock = {
             "method": "POST",
             "path": "/Users",
             "bulkId": "qwerty",
@@ -535,7 +541,8 @@ Cypress.Commands.add("createUserInBulk", (url, authrzUserName, authrzPassword, f
 
     operations = operations.slice(0, -1);
     operations = operations + "]";
-    var operationsJsonObject = JSON.parse(operations);
+
+    const operationsJsonObject = JSON.parse(operations);
 
     return cy.request({
         "method": "POST",
@@ -602,27 +609,29 @@ Cypress.Commands.add("createUserInBulkWithGivenFixctureData", (url, authrzUserNa
  */
 Cypress.Commands.add("deleteUserInBulk", (url, authrzUserName, authrzPassword, failOnStatusCode, userIds, failCount) => {
 
-    //Generate operaions
-    var operations = "[";
-    var operaStr;
+    //Generate operations
+    let operations = "[";
+    let operaStr;
 
-    var keyCount = Object.keys(userIds).length;
-    var i = 0;
-    for (i = 0; i < keyCount; i++) {
-        var userId = userIds[i];
-        var operationsBlock = {
+    const keyCount = Object.keys(userIds).length;
+
+    for (let i = 0; i < keyCount; i++) {
+        const userId = userIds[ i ];
+        const operationsBlock = {
             "path": "/Users/" + userId,
             "method": "DELETE"
         };
+
         operaStr = JSON.stringify(operationsBlock);
         operations = operations + operaStr + ",";
     }
 
     operations = operations.slice(0, -1);
     operations = operations + "]";
-    var operationsJsonObject = JSON.parse(operations);
-    return cy.request({
 
+    const operationsJsonObject = JSON.parse(operations);
+
+    return cy.request({
         "method": "POST",
         "url": url,
         "failOnStatusCode": failOnStatusCode,
@@ -651,7 +660,7 @@ let LOCAL_STORAGE_MEMORY = {};
  */
 Cypress.Commands.add("saveLocalStorageCache", () => {
     Object.keys(localStorage).forEach(key => {
-        LOCAL_STORAGE_MEMORY[key] = localStorage[key];
+        LOCAL_STORAGE_MEMORY[ key ] = localStorage[ key ];
     });
 });
 
@@ -660,7 +669,7 @@ Cypress.Commands.add("saveLocalStorageCache", () => {
  */
 Cypress.Commands.add("restoreLocalStorageCache", () => {
     Object.keys(LOCAL_STORAGE_MEMORY).forEach(key => {
-        localStorage.setItem(key, LOCAL_STORAGE_MEMORY[key]);
+        localStorage.setItem(key, LOCAL_STORAGE_MEMORY[ key ]);
     });
 });
 
@@ -671,4 +680,3 @@ Cypress.Commands.add("clearLocalStorageCache", () => {
     localStorage.clear();
     LOCAL_STORAGE_MEMORY = {};
 });
-

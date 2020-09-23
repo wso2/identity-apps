@@ -58,13 +58,14 @@ export class LoginPage {
      * @return {Cypress.Chainable<JQuery<HTMLElement>>}
      */
     public getLoginFormSubmitButton(): Cypress.Chainable<JQuery<HTMLElement>> {
-        return cy.get(LoginPageDomConstants.CONTINUE_BUTTON_DATA_ATTR);
+        return cy.contains(LoginPageDomConstants.CONTINUE_BUTTON_DATA_ATTR);
     };
 
     /**
      * Click on the Logout button on the header component.
      */
     public clickOnLogoutButton(): void {
+        this.header.getUserAvatar().click();
         this.header.getLogoutButton().click();
     };
 }
