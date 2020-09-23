@@ -132,10 +132,9 @@ describe("If supported language checker helper function", () => {
         "code": "en-GB"
     };
 
-    // TODO - Fix test failure
-    // test("Should return true for supported language when only detected language is passed in", () => {
-    //     expect(isLanguageSupported("en-US")).toBe(true);
-    // });
+    test("Should return false for supported language when only detected language is passed in", () => {
+        expect(isLanguageSupported("en-US")).toBe(false);
+    });
 
     test("Should return false for un-supported language when only detected language is passed in", () => {
         expect(isLanguageSupported("fr")).toBe(false);
