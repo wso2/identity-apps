@@ -11,7 +11,7 @@
         "json": true
     },
     "screenshotsFolder": "output/screenshots",
-    "supportFile": "support/index.js",
+    "supportFile": "support/index.ts",
     "testFiles": "**/*.spec.*",
     "video": false,
     "videosFolder": "output/videos"
