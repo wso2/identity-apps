@@ -29,26 +29,48 @@ const PASSWORD = Cypress.env("TENANT_PASSWORD");
 const SERVER_URL = Cypress.env("SERVER_URL");
 const PORTAL = Cypress.env("CONSOLE_BASE_URL");
 
-describe("ITC-001-[email-templates]-User can visit the email templates page.", () => {
-
-    beforeEach(() => {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL);
-        CookieUtils.preserveAllSessionCookies();
-    });
+describe("ITC-1.0.0-[email-templates]-User can visit the email templates page.", () => {
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
+        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL);
+        CookieUtils.preserveAllSessionCookies();
     });
     
     after(() => {
-        cy.logout();
+        // cy.logout();
     });
 
-    it("CDS_1.1 - User Navigates to manage portal and go to email templates page from the side panel", () => {
+    it("ITC-1.0.1-[email-templates]-User can visit email templates page from the side panel", () => {
         const header: Header = new Header();
         const emailTemplatesPage: EmailTemplatesListPage = new EmailTemplatesListPage();
 
         header.clickOnManagePortalSwitch();
         emailTemplatesPage.clickOnSidePanelItem();
+    });
+
+    it("ITC-1.0.2-[email-templates]-Properly renders the elements of the listing page", () => {
+        const emailTemplatesPage: EmailTemplatesListPage = new EmailTemplatesListPage();
+
+        // Check if page header exists and check if all the necessary elements are rendering.
+        emailTemplatesPage.getEmailTemplatesPageLayoutHeader().should("be.visible");
+        emailTemplatesPage.getEmailTemplatesPageLayoutHeaderTitle().should("be.visible");
+        emailTemplatesPage.getEmailTemplatesPageLayoutHeaderSubTitle().should("be.visible");
+
+        // Check if page header has an action.
+        emailTemplatesPage.getEmailTemplatesPageLayoutHeaderAction().should("be.visible");
+        emailTemplatesPage.getEmailTemplatesPageLayoutHeader()
+            .find("button")
+            .should("exist");
+
+        // Check if the email templates page exists.
+        emailTemplatesPage.getEmailTemplatesTable().should("be.visible");
+    });
+
+    it("ITC-1.0.3-[email-templates]-There exists at-least one email template on the list", () => {
+        const emailTemplatesPage: EmailTemplatesListPage = new EmailTemplatesListPage();
+
+        // Check if at-least on row is present. Assumes that the email templates are always present in a new pack.
+        emailTemplatesPage.getEmailTemplatesTableRow().should("exist");
     });
 });

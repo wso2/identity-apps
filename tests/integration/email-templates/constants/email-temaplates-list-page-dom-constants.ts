@@ -31,5 +31,12 @@ export class EmailTemplatesListPageDomConstants {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
-    public static readonly EMAIL_TEMPLATES_SIDE_PANEL_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
+    public static readonly SIDE_PANEL_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
+    public static readonly TABLE_DATA_ATTR: string = "email-template-types-list";
+    public static readonly TABLE_ROW_DATA_ATTR: string = "data-table-row";
+    public static readonly PAGE_LAYOUT_HEADER: string = "email-template-types-page-layout-page-header";
+    public static readonly PAGE_LAYOUT_HEADER_TITLE: string = "email-template-types-page-layout-page-header-header";
+    public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE: string = "email-template-types-page-layout-page-header-" +
+        "sub-header";
+    public static readonly PAGE_LAYOUT_HEADER_ACTION: string = "email-template-types-list-layout-add-button";
 }

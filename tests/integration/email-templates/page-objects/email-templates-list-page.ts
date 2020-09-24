@@ -36,6 +36,54 @@ export class EmailTemplatesListPage {
      * Click on the email templates side panel item.
      */
     public clickOnSidePanelItem(): void {
-        cy.dataTestId(EmailTemplatesListPageDomConstants.EMAIL_TEMPLATES_SIDE_PANEL_ITEM_DATA_ATTR).click();
+        cy.dataTestId(EmailTemplatesListPageDomConstants.SIDE_PANEL_ITEM_DATA_ATTR).click();
+    };
+
+    /**
+     * Get the data attribute of the email templates table.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplatesTable(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageDomConstants.TABLE_DATA_ATTR);
+    };
+
+    /**
+     * Get the data attribute of the email templates table row.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplatesTableRow(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageDomConstants.TABLE_DATA_ATTR);
+    };
+
+    /**
+     * Get the data attribute of the email templates page layout header.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplatesPageLayoutHeader(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageDomConstants.PAGE_LAYOUT_HEADER);
+    };
+
+    /**
+     * Get the data attribute of the email templates page layout header title.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplatesPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageDomConstants.PAGE_LAYOUT_HEADER_TITLE);
+    };
+
+    /**
+     * Get the data attribute of the email templates page layout header sub title.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplatesPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageDomConstants.PAGE_LAYOUT_HEADER_SUB_TITLE);
+    };
+
+    /**
+     * Get the data attribute of the email templates page layout header action.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplatesPageLayoutHeaderAction(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageDomConstants.PAGE_LAYOUT_HEADER_ACTION);
     };
 }
