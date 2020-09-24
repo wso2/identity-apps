@@ -16,30 +16,14 @@
  * under the License.
  */
 
-module.exports = {
-    globals: {
-        "window": true
-    },
-    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
-    roots: [
-        "src"
-    ],
-    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
-    transform: {
-        "^.+\\.(ts|tsx)?$": "ts-jest",
-        "^.+\\.(js|jsx)?$": "babel-jest"
-    },
-    modulePaths: [
-        "<rootDir>"
-    ],
-    transformIgnorePatterns: [
-        "/node_modules/?(?!@wso2is)"
-    ],
-    testPathIgnorePatterns: [
-        "<rootDir>/(build|docs|node_modules)/"
-    ],
-    setupFilesAfterEnv: [
-        "<rootDir>/test-configs/setup-test.js"
-    ],
-    verbose: true
-};
+import React from "react";
+import { render, screen } from "@testing-library/react"
+import "@testing-library/jest-dom/extend-expect"
+import SamplePage from "../example";
+
+describe("Test Suite - Sample Extension Component.", () => {
+    test("Test proper rendering of Sample Extension component", () => {
+        render(<SamplePage />);
+        expect(screen.getByText("Dynamic Component")).toBeInTheDocument();
+    });
+});

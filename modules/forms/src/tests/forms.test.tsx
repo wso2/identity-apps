@@ -540,8 +540,8 @@ describe("Test if the Forms is working fine", () => {
         ], true));
 
         // check if the first two elements belong to the same group
-        expect(getAllByText(constants.BUTTON_VALUE)[0].parentElement.parentElement).toBe(
-            getByText(constants.SUBMIT).parentElement.parentElement
+        expect(getAllByText(constants.BUTTON_VALUE)[0].parentElement.parentElement.className).toBe(
+            getByText(constants.SUBMIT).parentElement.parentElement.className
         );
 
         // check if the first and the last element do not belong to the same group
@@ -550,6 +550,7 @@ describe("Test if the Forms is working fine", () => {
         );
 
     });
+
     test("Test if a field inside a group is working fine", () => {
 
         const { getByText, getByPlaceholderText, getByDisplayValue } = render(getForm([

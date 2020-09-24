@@ -32,12 +32,22 @@ module.exports = {
     modulePaths: [
         "<rootDir>"
     ],
+    globals: {
+        "ts-jest": {
+            tsConfig: "tsconfig.json"
+        }
+    },
     transformIgnorePatterns: [
         "/node_modules/?(?!@wso2is)"
     ],
     testPathIgnorePatterns: [
         "<rootDir>/(build|docs|node_modules)/"
     ],
+    moduleNameMapper: {
+        "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$"
+            : "<rootDir>/test-configs/file-mock.js",
+        "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js"
+    },
     setupFilesAfterEnv: [
         "<rootDir>/test-configs/setup-test.js"
     ],

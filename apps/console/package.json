@@ -24,7 +24,7 @@
         "start": "run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
         "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "test": "jest --passWithNoTests"
+        "test": "../../node_modules/.bin/jest --passWithNoTests"
     },
     "dependencies": {
         "@wso2is/authentication": "^1.0.424",
@@ -34,7 +34,10 @@
         "@wso2is/react-components": "^1.0.424",
         "@wso2is/theme": "^1.0.424",
         "@wso2is/validation": "^1.0.424",
-        "country-language": "^0.1.7"
+        "country-language": "^0.1.7",
+        "@types/jest": "^26.0.14",
+        "jest": "^26.4.2",
+        "ts-jest": "^26.4.0"
     },
     "devDependencies": {
         "eslint-plugin-node": "^11.0.0",

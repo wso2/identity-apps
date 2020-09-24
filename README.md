@@ -87,6 +87,23 @@ regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logo
 8. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
 9. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
 
+## Running Unit Tests
+
+Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+and you can run the unit test suites using the following commands.
+
+#### Run Tests for all modules
+
+```bash
+npm run test
+```
+
+#### Run Tests for individual module
+
+```bash
+npx lerna run test --scope @wso2is/forms
+```
+
 ## Running Integration Tests
 
 Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.

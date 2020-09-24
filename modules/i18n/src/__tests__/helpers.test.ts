@@ -36,7 +36,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "English (United States)",
             "namespaces": [ "common", "devPortal" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     },
     "pt-BR": {
         "meta": {
@@ -45,7 +47,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "Português (Brazil)",
             "namespaces": [ "common" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     },
     "si-LK": {
         "meta": {
@@ -54,7 +58,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "සිංහල (Sri Lanka)",
             "namespaces": [ "common" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     },
     "ta-IN": {
         "meta": {
@@ -63,7 +69,9 @@ const LANGUAGE_BUNDLES: LocaleBundles = {
             "name": "தமிழ் (India)",
             "namespaces": [ "common" ]
         },
-        "resources": {}
+        "resources": {
+            "i18key": "i18value"
+        }
     }
 };
 
@@ -124,8 +132,8 @@ describe("If supported language checker helper function", () => {
         "code": "en-GB"
     };
 
-    test("Should return true for supported language when only detected language is passed in", () => {
-        expect(isLanguageSupported("en-US")).toBe(true);
+    test("Should return false for supported language when only detected language is passed in", () => {
+        expect(isLanguageSupported("en-US")).toBe(false);
     });
 
     test("Should return false for un-supported language when only detected language is passed in", () => {
