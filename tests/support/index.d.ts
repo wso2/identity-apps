@@ -20,9 +20,14 @@
 declare namespace Cypress {
     interface Chainable {
         /**
-         * Custom command to select DOM element by data-cy attribute.
-         * @example cy.dataCy('greeting')
+         * Custom command to log users to portals.
          */
-        login(username: string, password: string, env: string, account: string): Chainable<Element>;
+        login(username: string, password: string, serverURL: string, portal: string,
+              tenantDomain?: string, waitTime?: number): Cypress.CanReturnChainable;
+
+        /**
+         * Custom command to log users out from portals.
+         */
+        logout(waitTime?: number): Chainable<Element>;
     }
 }

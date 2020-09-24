@@ -18,9 +18,9 @@
  */
 
 /**
- * Class containing Header DOM constants.
+ * Class containing Email Templates Listing Page DOM constants.
  */
-export class HeaderDomConstants {
+export class EmailTemplatesListPageDomConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -28,10 +28,8 @@ export class HeaderDomConstants {
      *
      * @hideconstructor
      */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
-    
-    public static readonly AVATAR_ICON_DATA_ATTR: string = "app-header-user-avatar";
-    public static readonly LOGOUT_BUTTON_DATA_ATTR: string = "app-header-dropdown-link-Logout";
-    public static readonly MANAGE_SWITCH_DATA_ATTR: string = "app-header-admin-portal-switch";
-    public static readonly DEVELOP_SWITCH_DATA_ATTR: string = "app-header-developer-portal-switch";
+
+    public static readonly EMAIL_TEMPLATES_SIDE_PANEL_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
 }

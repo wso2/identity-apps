@@ -21,6 +21,8 @@
 /// <reference types="../../support" />
 
 import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
+import { Header } from "@wso2is/cypress-base/page-objects";
+import { EmailTemplatesListPage } from "./page-objects";
 
 const USERNAME = Cypress.env("TENANT_USERNAME");
 const PASSWORD = Cypress.env("TENANT_PASSWORD");
@@ -37,8 +39,16 @@ describe("ITC-001-[email-templates]-User can visit the email templates page.", (
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
     });
+    
+    after(() => {
+        cy.logout();
+    });
 
-    it("CDS_1.1 - User login and navigation in the develop section", function () {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL);
+    it("CDS_1.1 - User Navigates to manage portal and go to email templates page from the side panel", () => {
+        const header: Header = new Header();
+        const emailTemplatesPage: EmailTemplatesListPage = new EmailTemplatesListPage();
+
+        header.clickOnManagePortalSwitch();
+        emailTemplatesPage.clickOnSidePanelItem();
     });
 });

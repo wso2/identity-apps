@@ -17,21 +17,25 @@
  *
  */
 
+/// <reference types="cypress" />
+
+import { EmailTemplatesListPageDomConstants } from "../constants";
+
 /**
- * Class containing Header DOM constants.
+ * Class containing Email Templates Page objects.
  */
-export class HeaderDomConstants {
+export class EmailTemplatesListPage {
 
     /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
-     *
-     * @hideconstructor
+     * Generates a Login Page objects instance.
+     * @constructor
      */
-    private constructor() { }
-    
-    public static readonly AVATAR_ICON_DATA_ATTR: string = "app-header-user-avatar";
-    public static readonly LOGOUT_BUTTON_DATA_ATTR: string = "app-header-dropdown-link-Logout";
-    public static readonly MANAGE_SWITCH_DATA_ATTR: string = "app-header-admin-portal-switch";
-    public static readonly DEVELOP_SWITCH_DATA_ATTR: string = "app-header-developer-portal-switch";
+    constructor() { }
+
+    /**
+     * Click on the email templates side panel item.
+     */
+    public clickOnSidePanelItem(): void {
+        cy.dataTestId(EmailTemplatesListPageDomConstants.EMAIL_TEMPLATES_SIDE_PANEL_ITEM_DATA_ATTR).click();
+    };
 }
