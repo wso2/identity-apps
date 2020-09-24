@@ -41,4 +41,18 @@ export class Header {
     public getLogoutButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(HeaderDomConstants.LOGOUT_BUTTON_DATA_ATTR);
     }
+
+    /**
+     * Click on the developer portal switch.
+     */
+    public clickOnDevelopPortalSwitch(): void {
+        cy.dataTestId(HeaderDomConstants.DEVELOP_SWITCH_DATA_ATTR).click();
+    }
+
+    /**
+     * Click on the manage portal switch.
+     */
+    public clickOnManagePortalSwitch(): void {
+        cy.dataTestId(HeaderDomConstants.MANAGE_SWITCH_DATA_ATTR).click();
+    }
 }

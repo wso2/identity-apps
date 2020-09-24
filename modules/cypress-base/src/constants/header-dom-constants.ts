@@ -31,5 +31,7 @@ export class HeaderDomConstants {
     private constructor() { }
     
     public static readonly AVATAR_ICON_DATA_ATTR: string = "app-header-user-avatar";
-    public static readonly LOGOUT_BUTTON_DATA_ATTR: string = "app-header-dropdown-link";
+    public static readonly LOGOUT_BUTTON_DATA_ATTR: string = "app-header-dropdown-link-Logout";
+    public static readonly MANAGE_SWITCH_DATA_ATTR: string = "app-header-admin-portal-switch";
+    public static readonly DEVELOP_SWITCH_DATA_ATTR: string = "app-header-developer-portal-switch";
 }
