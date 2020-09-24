@@ -292,6 +292,15 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
         if (id === "expert-mode") {
             setSelectedTemplate(ExpertModeTemplate)
+            setSelectedTemplateWithUniqueName({
+                ...ExpertModeTemplate,
+                idp: {
+                    ...selectedTemplate?.idp,
+                    name: ""
+                }
+            });
+
+            setShowWizard(true);
         } else {
             getTemplate(id);
         }
