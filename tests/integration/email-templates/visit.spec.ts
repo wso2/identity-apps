@@ -18,8 +18,9 @@
  */
 
 /// <reference types="cypress" />
+/// <reference types="../../support" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is-testing/cypress-base";
+import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
 
 const USERNAME = Cypress.env("TENANT_USERNAME");
 const PASSWORD = Cypress.env("TENANT_PASSWORD");

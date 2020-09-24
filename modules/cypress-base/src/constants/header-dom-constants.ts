@@ -14,22 +14,22 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-const fs = require("fs");
-const path = require("path");
+/**
+ * Class containing Header DOM constants.
+ */
+export class HeaderDomConstants {
 
-// eslint-disable-next-line no-console
-const log = console.log;
-
-// Path of the cypress.json file.
-const cypressConfigFilePath = path.join(__dirname, "..", "cypress.json");
-
-log("Pre build script for cypress tests started.....");
-
-// Check if the cypress.json file exists, if not terminate the script.
-if (!fs.existsSync(cypressConfigFilePath)) {
-    log("\nCouldn't find the cypress.json file." + "Terminating the script...");
-    // Terminate the script.
-    process.exit();
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() { }
+    
+    public static readonly AVATAR_ICON_DATA_ATTR: string = "app-header-user-avatar";
+    public static readonly LOGOUT_BUTTON_DATA_ATTR: string = "app-header-dropdown-link";
 }

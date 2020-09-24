@@ -3,7 +3,7 @@
         "apps/*",
         "components/theme",
         "modules/!(http)",
-        "tests/*"
+        "tests"
     ],
     "version": "1.0.423"
 }

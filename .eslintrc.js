@@ -99,6 +99,7 @@ module.exports = {
                 "@typescript-eslint/no-inferrable-types": "off",
                 "react/display-name": 0,
                 "no-use-before-define": "off",
+                "@typescript-eslint/no-empty-function": [ "error", { "allow": ["constructors"] } ],
                 "@typescript-eslint/no-use-before-define": [
                     "warn",
                     {

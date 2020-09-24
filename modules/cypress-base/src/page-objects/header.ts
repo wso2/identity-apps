@@ -19,25 +19,26 @@
 
 /// <reference types="cypress" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
+import { HeaderDomConstants } from "../constants";
 
-const USERNAME = Cypress.env("TENANT_USERNAME");
-const PASSWORD = Cypress.env("TENANT_PASSWORD");
-const SERVER_URL = Cypress.env("SERVER_URL");
-const CONSOLE = Cypress.env("CONSOLE_BASE_URL");
+/**
+ * Class containing Header component objects.
+ */
+export class Header {
 
-describe("ITC-001-[groups]-User visits the groups page.", () => {
+    /**
+     * Get the data attribute for user avatar.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getUserAvatar(): Cypress.Chainable<Element> {
+        return cy.dataTestId(HeaderDomConstants.AVATAR_ICON_DATA_ATTR);
+    }
 
-    beforeEach(() => {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, CONSOLE);
-        CookieUtils.preserveAllSessionCookies();
-    });
-
-    before(() => {
-        HousekeepingUtils.performCleanUpTasks();
-    });
-
-    it("CDS_1.1 - User login and navigation in the develop section", function () {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, CONSOLE);
-    });
-});
+    /**
+     * Get the data attribute for logout button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getLogoutButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(HeaderDomConstants.LOGOUT_BUTTON_DATA_ATTR);
+    }
+}
