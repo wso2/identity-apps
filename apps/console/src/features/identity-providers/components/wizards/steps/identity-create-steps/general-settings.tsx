@@ -52,7 +52,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
         [ "data-testid" ]: testId
     } = props;
 
-    const [ isNameValid, setIsNameValid ] = useState(false);
+    const [ isNameValid, setIsNameValid ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
