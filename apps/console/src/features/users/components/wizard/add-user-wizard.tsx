@@ -381,7 +381,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         givenName: userInfo.firstName
                     },
                     password,
-                    profileUrl: userInfo.profileUrl, 
+                    profileUrl: userInfo.profileUrl,
                     userName
                 }
             )
@@ -608,7 +608,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">

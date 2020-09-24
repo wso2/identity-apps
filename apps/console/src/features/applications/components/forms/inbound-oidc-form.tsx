@@ -452,6 +452,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             setShowRegenerateConfirmationModal(false);
                                         } }
                                         data-testid={ `${ testId }-oidc-regenerate-confirmation-modal` }
+                                        closeOnDimmerClick={ false }
                                     >
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-oidc-regenerate-confirmation-modal-header` }
@@ -501,6 +502,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             setShowRevokeConfirmationModal(false);
                                         } }
                                         data-testid={ `${ testId }-oidc-revoke-confirmation-modal` }
+                                        closeOnDimmerClick={ false }
                                     >
                                         <ConfirmationModal.Header
                                             data-testid={ `${ testId }-oidc-revoke-confirmation-modal-header` }

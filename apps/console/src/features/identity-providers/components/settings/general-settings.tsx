@@ -209,6 +209,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                     (): void => handleIdentityProviderDelete()
                                 }
                                 data-testid={ `${ testId }-delete-idp-confirmation` }
+                                closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteIDP.header") }

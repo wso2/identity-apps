@@ -394,7 +394,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 className="wizard identity-provider-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
-                closeOnDimmerClick
+                closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
             >

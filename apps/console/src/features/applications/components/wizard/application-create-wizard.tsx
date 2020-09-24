@@ -209,7 +209,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param {MainApplicationInterface} application - The application to be created.
      */
     const createNewApplication = (application: MainApplicationInterface): void => {
-        
+
         let submittingApplication = application;
 
         // Add template mapping.
@@ -738,7 +738,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     className="wizard application-create-wizard"
                     dimmer="blurring"
                     onClose={ handleWizardClose }
-                    closeOnDimmerClick
+                    closeOnDimmerClick={ false }
                     closeOnEscape
                     data-testid={ `${ testId }-modal` }
                 >

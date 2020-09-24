@@ -234,6 +234,7 @@ export const AddUserWizardSummary: FunctionComponent<AddUserWizardSummaryProps> 
                 showEditAvatarModal && (
                     <EditAvatarModal
                         open={ showEditAvatarModal }
+                        closeOnDimmerClick={ false }
                         name={ modifiedSummary?.firstName }
                         emails={ [ modifiedSummary?.email ] }
                         onClose={ () => setShowEditAvatarModal(false) }

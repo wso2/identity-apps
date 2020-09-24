@@ -299,6 +299,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete() }
                         data-testid={ `${ testId }-application-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-application-delete-confirmation-modal-header` }

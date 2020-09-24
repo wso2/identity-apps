@@ -187,7 +187,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
             size="small"
             onClose={ closeWizard }
             data-testid={ testId }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">

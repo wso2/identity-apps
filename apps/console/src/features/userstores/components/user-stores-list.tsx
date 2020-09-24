@@ -209,6 +209,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                     });
             } }
             data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }

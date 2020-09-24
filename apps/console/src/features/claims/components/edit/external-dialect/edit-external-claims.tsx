@@ -260,6 +260,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                         dimmer="blurring"
                         size="small"
                         data-testid={ `${ testId }-add-external-claim-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <Modal.Header>
                             { t("adminPortal:components.claims.external.pageLayout.edit.header") }

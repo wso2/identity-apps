@@ -107,6 +107,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteLocalClaim(claim.id) }
             data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header>
                 { t("adminPortal:components.claims.local.confirmation.header") }
