@@ -18,26 +18,6 @@
  */
 
 /// <reference types="cypress" />
+/// <reference path="../../types/index.d.ts" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
-
-const USERNAME = Cypress.env("TENANT_USERNAME");
-const PASSWORD = Cypress.env("TENANT_PASSWORD");
-const SERVER_URL = Cypress.env("SERVER_URL");
-const CONSOLE = Cypress.env("CONSOLE_BASE_URL");
-
-describe("ITC-001-[groups]-User visits the groups page.", () => {
-
-    beforeEach(() => {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, CONSOLE);
-        CookieUtils.preserveAllSessionCookies();
-    });
-
-    before(() => {
-        HousekeepingUtils.performCleanUpTasks();
-    });
-
-    it("CDS_1.1 - User login and navigation in the develop section", function () {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, CONSOLE);
-    });
-});
+import "./dom";

@@ -104,6 +104,22 @@ npm run test
 npx lerna run test --scope @wso2is/forms
 ```
 
+## Running Integration Tests
+
+Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
+
+#### Headless mode
+
+```bash
+npm run test:integration
+```
+
+#### Interactive mode
+
+```bash
+npm run test:integration:interactive
+```
+
 ## Reporting Issues
 
 We encourage you to report issues, improvements and feature requests regarding the project through [GitHub Issue Tracker](https://github.com/wso2/identity-apps/issues).

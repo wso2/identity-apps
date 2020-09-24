@@ -14,22 +14,23 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
+ *
  */
 
-const fs = require("fs");
-const path = require("path");
+/**
+ * Class containing Server i.e. Identity Server Related constants.
+ */
+export class ServerConstants {
 
-// eslint-disable-next-line no-console
-const log = console.log;
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() {
+    }
 
-// Path of the cypress.json file.
-const cypressConfigFilePath = path.join(__dirname, "..", "cypress.json");
-
-log("Pre build script for cypress tests started.....");
-
-// Check if the cypress.json file exists, if not terminate the script.
-if (!fs.existsSync(cypressConfigFilePath)) {
-    log("\nCouldn't find the cypress.json file." + "Terminating the script...");
-    // Terminate the script.
-    process.exit();
+    public static readonly SESSION_COOKIES: string[] = [ "atbv", "commonAuthId", "JSESSIONID", "opbs" ];
 }

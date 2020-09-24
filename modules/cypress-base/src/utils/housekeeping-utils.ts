@@ -19,25 +19,27 @@
 
 /// <reference types="cypress" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
+import { CookieUtils } from "./cookie-utils";
+import { StorageUtils } from "./storage-utils";
 
-const USERNAME = Cypress.env("TENANT_USERNAME");
-const PASSWORD = Cypress.env("TENANT_PASSWORD");
-const SERVER_URL = Cypress.env("SERVER_URL");
-const CONSOLE = Cypress.env("CONSOLE_BASE_URL");
+/**
+ * Class containing housekeeping related utils.
+ */
+export class HousekeepingUtils {
 
-describe("ITC-001-[groups]-User visits the groups page.", () => {
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() { }
 
-    beforeEach(() => {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, CONSOLE);
-        CookieUtils.preserveAllSessionCookies();
-    });
-
-    before(() => {
-        HousekeepingUtils.performCleanUpTasks();
-    });
-
-    it("CDS_1.1 - User login and navigation in the develop section", function () {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, CONSOLE);
-    });
-});
+    /**
+     * Reusable function to perform usual cleanup tasks.
+     */
+    public static performCleanUpTasks(): void {
+        CookieUtils.clearAllCookies();
+        StorageUtils.clearLocalStorage();
+    }
+}

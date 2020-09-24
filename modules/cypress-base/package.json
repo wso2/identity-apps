@@ -1,0 +1,41 @@
+{
+    "name": "@wso2is/cypress-base",
+    "version": "1.0.420",
+    "description": "Commonly used commands, configs, utilities for cypress integration tests for WSO2 Identity Apps",
+    "author": "WSO2",
+    "license": "Apache-2.0",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "keywords": [
+        "WSO2",
+        "WSO2 IS",
+        "WSO2 Identity Server",
+        "WSO2 Identity Apps",
+        "integration-tests",
+        "cypress",
+        "cypress-base"
+    ],
+    "scripts": {
+        "build": "npm run compile",
+        "clean": "npm run rimraf ./dist",
+        "compile": "run-script-os",
+        "compile:win32": ".\\node_modules\\.bin\\tsc -p tsconfig.json",
+        "compile:default": "./node_modules/.bin/tsc -p tsconfig.json",
+        "rimraf": "run-script-os",
+        "rimraf:win32": ".\\node_modules\\.bin\\rimraf",
+        "rimraf:default": "./node_modules/.bin/rimraf",
+        "prebuild": "npm run clean"
+    },
+    "devDependencies": {
+        "@types/node": "^13.9.2",
+        "@typescript-eslint/eslint-plugin": "^2.19.2",
+        "@typescript-eslint/parser": "^2.19.2",
+        "cypress": "^5.2.0",
+        "eslint": "^7.4.0",
+        "eslint-plugin-cypress": "^2.11.1",
+        "eslint-plugin-import": "^2.20.2",
+        "rimraf": "^3.0.2",
+        "run-script-os": "^1.0.7",
+        "typescript": "^4.0.2"
+    }
+}
