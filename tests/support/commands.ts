@@ -34,7 +34,8 @@ const LOGOUT_URL_QUERY: string = Cypress.env("LOGOUT_URL_QUERY");
  * @param {string} password - User's Password.
  * @param {string} serverURL - Identity Server URL.
  * @param {string} portal - Relative path of the portal to login.
- * @param {string} tenantDomain - Optional tenant domain. If not provided, will be taken from env.
+ * @param {string} tenantDomain - Override tenant domain. If not provided, will be taken from env.
+ * @param {number} waitTime - Configure wait time.
  * @returns {Cypress.CanReturnChainable}
  */
 Cypress.Commands.add("login", (username: string,
@@ -68,6 +69,10 @@ Cypress.Commands.add("login", (username: string,
 /**
  * Custom command to log users out from portals.
  * @example cy.logout()
+ *
+ * @param {string} tenantDomain - Override tenant domain. If not provided, will be taken from env.
+ * @param {number} waitTime - Configure wait time.
+ * @returns {Cypress.CanReturnChainable}
  */
 Cypress.Commands.add("logout", (waitTime: number = 3000): Cypress.CanReturnChainable => {
 
@@ -82,22 +87,25 @@ Cypress.Commands.add("logout", (waitTime: number = 3000): Cypress.CanReturnChain
 });
 
 /**
- * This method is used to validate if element is present or not.
- * element is expect as an input.
+ * Custom command to used to validate if an element is present or not.
+ *
+ * @param {Element | any} element - Element to check.
+ * @param {number} waitTime - Configure wait time.
+ * @returns {Cypress.CanReturnChainable}
  */
-Cypress.Commands.add("checkIfEleExists", (ele) => {
-
-    return new Promise((resolve, reject) => {
-        cy.get("body").find(ele).its("length").then(res => {
-            if (res > 0) {
-                // do task to perform
-                cy.get(ele).select("100").wait(2000);
-                resolve();
-            } else {
-                reject();
+Cypress.Commands.add("checkIfElementExists", (element: Element | any,
+                                              waitTime: number = 3000): Cypress.Chainable<boolean> => {
+    return cy.get("body")
+        .find(element)
+        .its("length")
+        .then((response) => {
+            if (response > 0) {
+                cy.get(element).select("100").wait(waitTime);
+                return true;
             }
+
+            return false;
         });
-    });
 });
 
 /**

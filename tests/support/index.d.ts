@@ -29,5 +29,10 @@ declare namespace Cypress {
          * Custom command to log users out from portals.
          */
         logout(waitTime?: number): Chainable<Element>;
+
+        /**
+         * Custom command to used to validate if an element is present or not.
+         */
+        checkIfElementExists(element: Element | any, waitTime?: number): Promise<any>;
     }
 }
