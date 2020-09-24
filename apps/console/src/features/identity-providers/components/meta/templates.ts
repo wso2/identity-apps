@@ -32,7 +32,7 @@ export const ExpertModeTemplate = {
                 uri: ""
             }
         },
-        description: "Identity provider with minimum configurations",
+        description: "",
         federatedAuthenticators: {
             authenticators: [],
             defaultAuthenticatorId: ""
@@ -41,7 +41,7 @@ export const ExpertModeTemplate = {
         image: "",
         isFederationHub: false,
         isPrimary: false,
-        name: "ExpertIDP",
+        name: "",
         provisioning: {},
         roles: {
             mappings: [],
