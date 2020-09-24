@@ -29,14 +29,14 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/authentication": "^1.0.422"
+        "@wso2is/authentication": "^1.0.422",
+        "ts-jest": "^26.4.0",
+        "jest": "^26.4.2",
+        "@types/jest": "^26.0.14"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.14",
-        "jest": "^26.4.2",
         "rimraf": "^3.0.2",
-        "run-script-os": "^1.0.7",
-        "ts-jest": "^26.4.0"
+        "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
         "@types/crypto-js": "*",

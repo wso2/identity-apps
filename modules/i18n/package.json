@@ -30,15 +30,15 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.0.422"
-    },
-    "devDependencies": {
+        "@wso2is/core": "^1.0.422",
         "@types/jest": "^26.0.14",
         "babel-jest": "^26.3.0",
         "jest": "^26.4.2",
-        "rimraf": "^3.0.2",
-        "run-script-os": "^1.0.7",
         "ts-jest": "^26.4.0"
+    },
+    "devDependencies": {
+        "rimraf": "^3.0.2",
+        "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
         "@types/i18next": "*",

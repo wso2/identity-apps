@@ -34,14 +34,14 @@
         "@wso2is/react-components": "^1.0.422",
         "@wso2is/theme": "^1.0.422",
         "@wso2is/validation": "^1.0.422",
-        "country-language": "^0.1.7"
+        "country-language": "^0.1.7",
+        "@types/jest": "^26.0.14",
+        "jest": "^26.4.2",
+        "ts-jest": "^26.4.0"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.14",
         "eslint-plugin-node": "^11.0.0",
-        "jest": "^26.4.2",
-        "run-script-os": "^1.0.7",
-        "ts-jest": "^26.4.0"
+        "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
