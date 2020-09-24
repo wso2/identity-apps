@@ -87,7 +87,7 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body>
@@ -118,7 +118,7 @@
     %>
     <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="application/javascript">

@@ -39,12 +39,11 @@
 <%@ page import="org.wso2.carbon.identity.core.ServiceURLBuilder" %>
 
 <jsp:directive.include file="includes/init-loginform-action-url.jsp"/>
-
 <script>
     function goBack() {
         window.history.back();
     }
-    
+
     // Handle form submission preventing double submission.
     $(document).ready(function(){
         $.fn.preventDoubleSubmission = function() {
@@ -56,7 +55,7 @@
                     console.warn("Prevented a possible double submit event");
                 } else {
                     e.preventDefault();
-                    
+
                     var userName = document.getElementById("username");
                     var usernameUserInput = document.getElementById("usernameUserInput");
 
@@ -269,9 +268,9 @@
                     return;
                 }
             }
-        } 
+        }
     %>
-    
+
     <div class="buttons">
         <% if (isRecoveryEPAvailable) { %>
         <div class="field">
@@ -358,7 +357,7 @@
         </div>
         <div class="column mobile center aligned tablet right aligned computer right aligned buttons tablet no-margin-right-last-child computer no-margin-right-last-child">
             <button
-                type="submit"   
+                type="submit"
                 class="ui primary large button"
                 tabindex="4"
                 role="button"
@@ -368,7 +367,7 @@
             </button>
         </div>
     </div>
-    
+
     <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
     <div class="ui divider hidden"></div>
     <div class="field">

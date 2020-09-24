@@ -33,13 +33,13 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
     <main class="center-segment">
         <div class="ui container medium center aligned middle">
-            
+
             <!-- product-title -->
             <%
                 File productTitleFile = new File(getServletContext().getRealPath("extensions/product-title.jsp"));
@@ -47,7 +47,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment left aligned">
@@ -92,9 +92,9 @@
     %>
     <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
-    
+
     <!-- footer -->
     <%
         File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
@@ -102,9 +102,9 @@
     %>
     <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:include page="includes/footer.jsp"/>
     <% } %>
-    
+
     <script type="text/javascript" src="js/u2f-api.js"></script>
     <script type="text/javascript" src="libs/base64js/base64js-1.3.0.min.js"></script>
     <script type="text/javascript" src="libs/base64url.js"></script>
@@ -130,7 +130,7 @@
                 $.ajax({
                     type: "GET",
                     url: "/api/users/v1/me/webauthn/start-authentication?username=admin&" +
-                        "tenantDomain=carbon.super&storeDomain=PRIMARY&appId=https://localhost:9443&" + 
+                        "tenantDomain=carbon.super&storeDomain=PRIMARY&appId=https://localhost:9443&" +
                         "sessionDataKey="+getParameterByName("sessionDataKey"),
                     success: function (data) {
                         if (data) {
@@ -171,7 +171,7 @@
                             authenticatorData: base64url.fromByteArray(response.response.authenticatorData),
                             clientDataJSON: base64url.fromByteArray(response.response.clientDataJSON),
                             signature: base64url.fromByteArray(response.response.signature),
-                            userHandle: response.response.userHandle && 
+                            userHandle: response.response.userHandle &&
                                 base64url.fromByteArray(response.response.userHandle)
                         },
                         clientExtensionResults,

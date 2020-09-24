@@ -55,7 +55,7 @@
         %>
         <jsp:include page="extensions/header.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
         <% } %>
 
         <!--[if lt IE 9]>
@@ -75,7 +75,7 @@
                 %>
                 <jsp:include page="extensions/product-title.jsp"/>
                 <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
 
                 <div class="ui segment">
@@ -117,7 +117,7 @@
                             <input type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
-                            
+
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
                                 <%
@@ -141,7 +141,7 @@
         %>
         <jsp:include page="extensions/product-footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
         <% } %>
 
         <!-- footer -->
@@ -151,7 +151,7 @@
         %>
         <jsp:include page="extensions/footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
         <script type="text/javascript">
@@ -159,7 +159,7 @@
                 $('#authenticate').click(function () {
                     var code = document.getElementById("OTPCode").value;
                     if (code == "") {
-                        document.getElementById('alertDiv').innerHTML 
+                        document.getElementById('alertDiv').innerHTML
                             = '<div id="error-msg" class="ui negative message">Please enter the code!</div>'
                               +'<div class="ui divider hidden"></div>';
                     } else {

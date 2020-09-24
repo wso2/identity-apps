@@ -59,7 +59,7 @@
         %>
         <jsp:include page="extensions/header.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
         <% } %>
         <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
@@ -77,7 +77,7 @@
                 %>
                 <jsp:include page="extensions/product-title.jsp"/>
                 <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
 
                 <div class="ui segment">
@@ -133,7 +133,7 @@
                                         <a id="resend">Resend Code</a>
                                     </div>
                                 <% } } %>
-                                <input 
+                                <input
                                     type="button" name="authenticate" id="authenticate"
                                     value="Authenticate" class="ui primary button"/>
                             </div>
@@ -142,8 +142,8 @@
                     </div>
                 </div>
             </div>
-        </main> 
-        
+        </main>
+
         <!-- product-footer -->
         <%
             File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
@@ -151,7 +151,7 @@
         %>
         <jsp:include page="extensions/product-footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
         <% } %>
 
         <!-- footer -->
@@ -161,7 +161,7 @@
         %>
         <jsp:include page="extensions/footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
         <script type="text/javascript">

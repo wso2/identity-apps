@@ -55,7 +55,7 @@
         %>
         <jsp:include page="extensions/header.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
         <% } %>
         <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
@@ -73,7 +73,7 @@
                 %>
                 <jsp:include page="extensions/product-title.jsp"/>
                 <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
 
                 <div class="ui segment">
@@ -103,7 +103,7 @@
                                 <input type="text" id='MOBILE_NUMBER' name="MOBILE_NUMBER"
                                         class="input-xlarge" size='30'/>
                             </div>
-                            <input type="hidden" name="sessionDataKey" 
+                            <input type="hidden" name="sessionDataKey"
                                     value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
 
                             <div class="align-right buttons">
@@ -114,7 +114,7 @@
                     </div>
                 </div>
             </div>
-        </main> 
+        </main>
 
         <!-- product-footer -->
         <%
@@ -123,7 +123,7 @@
         %>
         <jsp:include page="extensions/product-footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
         <% } %>
 
         <!-- footer -->
@@ -133,7 +133,7 @@
         %>
         <jsp:include page="extensions/footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
         <script type="text/javascript">

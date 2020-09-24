@@ -18,7 +18,7 @@
 
 <%@ page import="java.io.File" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-    
+
 <%@ include file="includes/localize.jsp" %>
 
 <!doctype html>
@@ -31,7 +31,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -46,7 +46,7 @@
                     %>
                         <jsp:include page="extensions/product-title.jsp"/>
                     <% } else { %>
-                        <jsp:directive.include file="includes/product-title.jsp"/>
+                        <jsp:include page="includes/product-title.jsp"/>
                     <% } %>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                 %>
                     <jsp:include page="extensions/cookie-policy-content.jsp"/>
                 <% } else { %>
-                    <jsp:directive.include file="includes/cookie-policy-content.jsp"/>
+                    <jsp:include page="includes/cookie-policy-content.jsp"/>
                 <% } %>
             </div>
         </div>
@@ -74,7 +74,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -84,7 +84,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript" src="js/u2f-api.js"></script>
