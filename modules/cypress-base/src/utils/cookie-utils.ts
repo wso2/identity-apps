@@ -42,7 +42,9 @@ export class CookieUtils {
      * Preserves all session related cookies.
      */
     public static preserveAllSessionCookies(): void {
-        Cypress.Cookies.preserveOnce(ServerConstants.SESSION_COOKIES.join());
+        for (const cookie of ServerConstants.SESSION_COOKIES) {
+            Cypress.Cookies.preserveOnce(cookie);
+        }
     }
 
     /**
