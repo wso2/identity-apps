@@ -57,5 +57,6 @@
         >
         </iframe>
         <div id="root"></div>
+        <div style="filter: none!important;" id="alert"></div>
     </body>
 </html>
