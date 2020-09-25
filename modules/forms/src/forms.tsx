@@ -162,7 +162,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * @param requiredFieldsParam
          * @param validFieldsParam
          */
-        const validate = (
+        const validate = async (
             name: string,
             requiredFieldsParam: Map<string, boolean>,
             validFieldsParam: Map<string, Validation>
@@ -198,7 +198,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 && inputField.validation
                 && !(form.get(name) === null || form.get(name) === "")
             ) {
-                inputField.validation(form.get(name) as string, validation, new Map(form));
+                await inputField.validation(form.get(name) as string, validation, new Map(form));
             }
 
             validFieldsParam.set(name, {
@@ -212,11 +212,11 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * @param event
          * @param name
          */
-        const handleBlur = (event: React.KeyboardEvent, name: string) => {
+        const handleBlur = async (event: React.KeyboardEvent, name: string) => {
             const tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
             const tempValidFields: Map<string, Validation> = new Map(validFields);
 
-            validate(name, tempRequiredFields, tempValidFields);
+            await validate(name, tempRequiredFields, tempValidFields);
 
             setValidFields(tempValidFields);
             setRequiredFields(tempRequiredFields);
@@ -255,7 +255,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                  *                                              -> Then:
                  *                                                  Assign false
                  *                                              -> Else:
-                 *                                                  Assign an empty string value to the 
+                 *                                                  Assign an empty string value to the
                  *                                                  corresponding FormValue key
                  */
                 if (isInputField(inputField)) {
@@ -312,7 +312,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
              * This removes all the redundant elements from the passed Map object and returns the stripped Map object
              * @param iterable a Map object which should have redundant elements removed
              * @param neededFields a Set object containing the names of the needed fields
-             * 
+             *
              * @returns {Map} stripped Map object
              */
             const removeRedundant = (iterable: Map<string, any>, neededFields: Set<string>): Map<string, any> => {
