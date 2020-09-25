@@ -16,17 +16,19 @@
 * under the License.
 */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms } from "@wso2is/forms";
+import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
-import { testConnection } from "../../api";
+import { getUserStores, testConnection } from "../../api";
 import { JDBC } from "../../constants";
-import { TestConnection, TypeProperty, UserstoreType } from "../../models";
+import { TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
 
 /**
- * Prop types of the `GeneralDetails` component 
+ * Prop types of the `GeneralDetails` component
  */
 interface GeneralDetailsUserstorePropsInterface extends TestableComponentInterface {
     /**
@@ -83,8 +85,10 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
 
     const { t } = useTranslation();
 
+    const dispatch = useDispatch();
+
     /**
-     * Enum containing the icons a test connection button can have 
+     * Enum containing the icons a test connection button can have
      */
     enum TestButtonIcon {
         TESTING = "spinner",
@@ -95,7 +99,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
 
     /**
      * This returns of the icon for the test button.
-     * 
+     *
      * @returns {TestButtonIcon} The icon of the test button.
      */
     const findTestButtonIcon = (): TestButtonIcon => {
@@ -122,7 +126,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
 
     /**
      * This finds the right color for the test button
-     * 
+     *
      * @return {TestButtonColor} The color of the test button.
      */
     const findTestButtonColor = (): TestButtonColor => {
@@ -160,6 +164,34 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             placeholder={ t("adminPortal:components.userstores.forms.general.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             data-testid={ `${ testId }-form-name-input` }
+                            validation={ async (value: FormValue, validation: Validation) => {
+                                let userStores: UserStoreListItem[] = null;
+                                try {
+                                    userStores = await getUserStores(null);
+                                } catch (error) {
+                                    dispatch(addAlert(
+                                        {
+                                            description: error?.description
+                                                || t("adminPortal:components.userstores.notifications." +
+                                                    "fetchUserstores.genericError" +
+                                                    ".description"),
+                                            level: AlertLevels.ERROR,
+                                            message: error?.message
+                                                || t("adminPortal:components.userstores.notifications." +
+                                                    "fetchUserstores.genericError.message")
+                                        }
+                                    ));
+                                }
+
+                                if (userStores.find((userstore: UserStoreListItem) => userstore.name === value)) {
+                                    validation.isValid = false;
+                                    validation.errorMessages.push(
+                                        t("adminPortal:components.userstores.forms.general." +
+                                            "name.validationErrorMessages.alreadyExistsErrorMessage")
+                                    );
+                                }
+                            }
+                            }
                         />
                         <Field
                             label={ t("adminPortal:components.userstores.forms.general.type.label") }
