@@ -2424,7 +2424,10 @@ export const adminPortal: AdminPortalNS = {
                     name: {
                         label: "Name",
                         placeholder: "Enter a name",
-                        requiredErrorMessage: "Name is a required field"
+                        requiredErrorMessage: "Name is a required field",
+                        validationErrorMessages: {
+                            alreadyExistsErrorMessage: "A userstore with this name already exists."
+                        }
                     },
                     type: {
                         label: "Type",
