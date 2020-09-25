@@ -43,7 +43,7 @@ Cypress.Commands.add("login", (username: string,
                                serverURL: string,
                                portal: string,
                                tenantDomain: string = TENANT_DOMAIN,
-                               waitTime: number = 5000): Cypress.CanReturnChainable => {
+                               waitTime: number = 3000): Cypress.CanReturnChainable => {
 
     cy.window()
         .then((win: Cypress.AUTWindow) => {

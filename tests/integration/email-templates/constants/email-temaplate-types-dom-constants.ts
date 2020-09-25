@@ -20,7 +20,7 @@
 /**
  * Class containing Email Templates Listing Page DOM constants.
  */
-export class EmailTemplatesListPageDomConstants {
+export class EmailTemplateTypesDomConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -32,6 +32,8 @@ export class EmailTemplatesListPageDomConstants {
     private constructor() { }
 
     public static readonly SIDE_PANEL_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
+
+    // Table
     public static readonly TABLE_DATA_ATTR: string = "email-template-types-list";
     public static readonly TABLE_BODY_DATA_ATTR: string = "data-table-body";
     public static readonly TABLE_ROW_DATA_ATTR: string = "data-table-row";
@@ -39,9 +41,19 @@ export class EmailTemplatesListPageDomConstants {
     public static readonly TABLE_ROW_EDIT_BUTTON_DATA_ATTR: string = "email-template-types-list-item-edit-button";
     public static readonly TABLE_ROW_DELETE_BUTTON_DATA_ATTR: string = "email-template-types-list-item-delete-button";
     public static readonly TABLE_ROW_IMAGE_DATA_ATTR: string = "email-template-types-list-item-image";
-    public static readonly PAGE_LAYOUT_HEADER: string = "email-template-types-page-layout-page-header";
-    public static readonly PAGE_LAYOUT_HEADER_TITLE: string = "email-template-types-page-layout-page-header-header";
-    public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE: string = "email-template-types-page-layout-page-header-" +
-        "sub-header";
+
+    // Page Layout.
+    public static readonly PAGE_LAYOUT_HEADER_DATA_ATTR: string = "email-template-types-page-layout-page-header";
+    public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "email-template-types-page-layout-page-" +
+        "header-header";
+    public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "email-template-types-page-layout-" +
+        "page-header-sub-header";
     public static readonly PAGE_LAYOUT_HEADER_ACTION: string = "email-template-types-list-layout-add-button";
+
+    // Wizard.
+    public static readonly ADD_WIZARD_DATA_ATTR: string = "email-template-types-add-wizard";
+    public static readonly CREATE_TEMPLATE_TYPE_BUTTON_DATA_ATTR: string = "email-template-types-add-wizard-create" +
+        "-button";
+    public static readonly TEMPLATE_TYPE_NAME_INPUT_DATA_ATTR: string = "email-template-types-add-wizard-form-type" +
+        "-input";
 }

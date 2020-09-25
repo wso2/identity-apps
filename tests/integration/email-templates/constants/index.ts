@@ -17,4 +17,4 @@
  *
  */
 
-export * from "./email-temaplates-list-page-dom-constants";
+export * from "./email-temaplate-types-dom-constants";
