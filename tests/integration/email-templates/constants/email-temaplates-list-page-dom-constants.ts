@@ -33,7 +33,12 @@ export class EmailTemplatesListPageDomConstants {
 
     public static readonly SIDE_PANEL_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
     public static readonly TABLE_DATA_ATTR: string = "email-template-types-list";
+    public static readonly TABLE_BODY_DATA_ATTR: string = "data-table-body";
     public static readonly TABLE_ROW_DATA_ATTR: string = "data-table-row";
+    public static readonly TABLE_ROW_HEADING_DATA_ATTR: string = "email-template-types-list-item-heading";
+    public static readonly TABLE_ROW_EDIT_BUTTON_DATA_ATTR: string = "email-template-types-list-item-edit-button";
+    public static readonly TABLE_ROW_DELETE_BUTTON_DATA_ATTR: string = "email-template-types-list-item-delete-button";
+    public static readonly TABLE_ROW_IMAGE_DATA_ATTR: string = "email-template-types-list-item-image";
     public static readonly PAGE_LAYOUT_HEADER: string = "email-template-types-page-layout-page-header";
     public static readonly PAGE_LAYOUT_HEADER_TITLE: string = "email-template-types-page-layout-page-header-header";
     public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE: string = "email-template-types-page-layout-page-header-" +

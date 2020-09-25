@@ -48,11 +48,11 @@ export class EmailTemplatesListPage {
     };
 
     /**
-     * Get the data attribute of the email templates table row.
+     * Get the data attribute of the email templates table body.
      * @return {Cypress.Chainable<Element>}
      */
-    public getEmailTemplatesTableRow(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplatesListPageDomConstants.TABLE_DATA_ATTR);
+    public getEmailTemplatesTableBody(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageDomConstants.TABLE_BODY_DATA_ATTR);
     };
 
     /**
