@@ -16,10 +16,8 @@
  * under the License.
  */
 
-import { AlertInterface, RouteInterface } from "@wso2is/core/models";
-import { initializeAlertSystem } from "@wso2is/core/store";
+import { RouteInterface } from "@wso2is/core/models";
 import {
-    Alert,
     ContentLoader,
     DefaultLayout as DefaultLayoutSkeleton,
     TopLoadingBar
@@ -32,8 +30,7 @@ import React, {
     useEffect,
     useState
 } from "react";
-import { System } from "react-notification-system";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { Footer, Header, ProtectedRoute } from "../features/core/components";
@@ -64,10 +61,6 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
 
     const { fluid } = props;
 
-    const dispatch = useDispatch();
-
-    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
-    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
@@ -115,23 +108,9 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
         setIsMobileViewport(false);
     };
 
-    const handleAlertSystemInitialize = (system) => {
-        dispatch(initializeAlertSystem(system));
-    };
-
     return (
         <DefaultLayoutSkeleton
             fluid={ fluid }
-            alert={ (
-                <Alert
-                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
-                    alertsPosition="br"
-                    alertSystem={ alertSystem }
-                    alert={ alert }
-                    onAlertSystemInitialize={ handleAlertSystemInitialize }
-                    withIcon={ true }
-                />
-            ) }
             topLoadingBar={ (
                 <TopLoadingBar
                     height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
