@@ -26,9 +26,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
+import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore, updateUserStore } from "../../api";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
-
 /**
  * Prop types of `EditBasicDetailsUserStore` component
  */
@@ -140,7 +140,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                             message: t("adminPortal:components.userstores.notifications." +
                                 "delay.message")
                         }));
-                        update();
+
+                        history.push(AppConstants.getPaths().get("USERSTORES"))
                     })
                     .catch(error => {
                         dispatch(addAlert({
