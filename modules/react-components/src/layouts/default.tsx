@@ -73,7 +73,6 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
 ): ReactElement => {
 
     const {
-        alert,
         children,
         className,
         desktopContentTopSpacing,
@@ -107,7 +106,6 @@ export const DefaultLayout: FunctionComponent<PropsWithChildren<DefaultLayoutPro
 
     return (
         <BaseLayout
-            alert={ alert }
             topLoadingBar={ topLoadingBar }
         >
             <Responsive
