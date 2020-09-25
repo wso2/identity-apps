@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "@wso2is/authentication";
+import { AuthenticatedUserInterface } from "@asgardio/oidc-js";
 import { CommonAuthReducerStateInterface, CommonConfigReducerStateInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import {
