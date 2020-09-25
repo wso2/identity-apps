@@ -212,19 +212,17 @@ export const initializeAuthentication = () => (dispatch) => {
         // Update the context with new config once the basename is changed.
         ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());
 
-        auth.getDecodedIDToken().then((decodedToken) => {
-            dispatch(
-                setSignIn<AuthenticatedUserInterface>({
-                    displayName: response.displayName,
-                    // eslint-disable-next-line @typescript-eslint/camelcase
-                    display_name: response.displayName,
-                    email: response.email,
-                    scope: response.allowedScopes,
-                    tenantDomain: AuthenticateUtils.getTenantDomainFromIdTokenPayload(decodedToken),
-                    username: response.username
-                })
-            );
-        });
+        dispatch(
+            setSignIn<AuthenticatedUserInterface>({
+                displayName: response.displayName,
+                // eslint-disable-next-line @typescript-eslint/camelcase
+                display_name: response.displayName,
+                email: response.email,
+                scope: response.allowedScopes,
+                tenantDomain: response.tenantDomain,
+                username: response.username
+            })
+        );
 
         auth.getServiceEndpoints()
             .then((response: ServiceResourcesType) => {
