@@ -17,6 +17,7 @@
  *
  */
 
+export * from "./common-utils";
 export * from "./cookie-utils";
 export * from "./housekeeping-utils";
 export * from "./storage-utils";

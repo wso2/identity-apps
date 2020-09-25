@@ -17,16 +17,29 @@
  *
  */
 
-import { CommonUtils } from "../utils";
-
 /// <reference types="cypress" />
 
 /**
- * Custom command to select DOM element by data-testid attribute.
- *
- * @param {string} value - Attribute value.
- * @returns {Cypress.CanReturnChainable}
+ * Class containing common utils.
  */
-Cypress.Commands.add("dataTestId", (value: string): Cypress.CanReturnChainable => {
-    return cy.get(CommonUtils.resolveDataTestId(value));
-});
+export class CommonUtils {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() {}
+
+    /**
+     * Resolves the data test id when a raw attribute value is passed in.
+     * @example CommonUtils.resolveDataTestId("sample-id") -> [data-testid="sample-id"]
+     *
+     * @param {string} value - Attribute value.
+     * @returns {string}
+     */
+    public static resolveDataTestId(value: string): string {
+        return `[data-testid=${ value }]`;
+    }
+}
