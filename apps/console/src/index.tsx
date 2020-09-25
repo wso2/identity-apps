@@ -32,7 +32,7 @@ import * as ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { App } from "./app";
-import { Config, UIConstants, store } from "./features/core";
+import { AlertWrapper, Config, UIConstants, store } from "./features/core";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
@@ -94,6 +94,24 @@ ReactDOM.render(
         </Provider>
     ),
     document.getElementById("root")
+);
+
+
+ReactDOM.render(
+    (
+        <Provider store={ store }>
+            <ThemeProvider
+                initialState={ {
+                    theme: window[ "AppUtils" ].getConfig().ui?.theme?.name ?? UIConstants.DEFAULT_THEME
+                } }
+            >
+                <BrowserRouter>
+                    <AlertWrapper/>
+                </BrowserRouter>
+            </ThemeProvider>
+        </Provider>
+    ),
+    document.getElementById("alert")
 );
 
 // Accept HMR for updated modules
