@@ -26,6 +26,11 @@ import { AppState } from "..";
 import { UIConstants } from "../constants";
 
 
+/**
+ * This components wraps the `Alert` component and passes prop values from the Redux store.
+ *
+ * @return {ReactElement} AlertWrapper - A component that wraps the `Alert` component.
+ */
 export const AlertWrapper = (): ReactElement => {
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
