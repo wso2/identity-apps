@@ -194,7 +194,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                             }
                         />
                         <Field
-                            label={ t("adminPortal:components.userstores.forms.general.type.label") }
+                            label={ t("adminPortal:components.userstores.forms.general.description.label") }
                             name="description"
                             type="text"
                             required={ false }
