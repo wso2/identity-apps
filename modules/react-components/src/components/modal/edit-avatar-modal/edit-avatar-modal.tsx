@@ -209,7 +209,6 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
      * Triggered on component mount.
      */
     useEffect(() => {
-        setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
         setSelectedGravatarSize(GRAVATAR_IMAGE_MIN_SIZE);
     }, []);
 
@@ -275,7 +274,12 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
     }, [ selectedGravatarEmail, isGravatarQualified ]);
 
     useEffect(() => {
-        imageUrl && setHostedURL(imageUrl);
+        if (imageUrl) {
+            setHostedURL(imageUrl);
+            setSelectedAvatarType(AvatarTypes.URL);
+        } else {
+            setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
+        }
     }, [ imageUrl ]);
 
     /**
@@ -291,7 +295,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
         // Once the email selection is changed, switch the selected type to `Gravatar`.
         setSelectedAvatarType(AvatarTypes.GRAVATAR);
-        
+
         // Set the default option.
         if (gravatarURLs) {
             setOutputURL(gravatarURLs.get("Gravatar") ?? gravatarURLs.get("Retro"));
@@ -453,7 +457,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
             return;
         }
-        
+
         if (avatarType !== AvatarTypes.URL) {
             setHostedURLError(null);
 
@@ -530,6 +534,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         <Modal
             data-testid={ testId }
             className={ classes }
+            closeOnDimmerClick={ false }
             { ...rest }
         >
             <Modal.Header>{ heading }</Modal.Header>
@@ -627,7 +632,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         </div>
                                     </Grid.Column>
                                 </Grid.Row>
-                            ) 
+                            )
                         }
                         <Grid.Row className="pb-0">
                             <Grid.Column width={ 16 }>
