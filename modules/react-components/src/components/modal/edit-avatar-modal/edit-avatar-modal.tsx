@@ -90,6 +90,10 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
      * i18n translations for modal content.
      */
     translations?: EditAvatarModalContentI18nInterface;
+    /**
+     * Existing profile image url.
+     */
+    imageUrl?: string;
 }
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
@@ -168,6 +172,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         className,
         emails,
         heading,
+        imageUrl,
         name,
         onCancel,
         onSubmit,
@@ -268,6 +273,10 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
         setGravatarURLs(urls);
     }, [ selectedGravatarEmail, isGravatarQualified ]);
+
+    useEffect(() => {
+        imageUrl && setHostedURL(imageUrl);
+    }, [ imageUrl ]);
 
     /**
      * Handles selected gravatar email change.
@@ -648,6 +657,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         onChange={ handleHostedURLFieldOnChange }
                                         error={ hostedURLError }
                                         loading={ isHostedURLValidationRequestLoading }
+                                        value={ hostedURL }
                                     />
                                     {
                                         hostedURL && isHostedURLValid && (
@@ -676,6 +686,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                         || isHostedURLValidationRequestLoading
                         || !outputURL
                         || (selectedAvatarType === AvatarTypes.URL && !isHostedURLValid)
+                        || (selectedAvatarType === AvatarTypes.URL && hostedURL === imageUrl)
                     }
                     onClick={ handleModalSubmit }
                 >
