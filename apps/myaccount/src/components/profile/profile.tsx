@@ -61,7 +61,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
-    const [ editingForm, setEditingForm ] = useState(new Map<string, boolean>());
+    const [ editingForm, setEditingForm ] = useState<string>(undefined);
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
 
@@ -149,17 +149,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     }, [profileSchema, profileDetails.profileInfo]);
 
     /**
-     * The following method handles the onClick event of the cancel button.
-     *
-     * @param formName - Name of the form
-     */
-    const hideFormEditView = (formName: string): void => {
-        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
-        tempEditingForm.set(formName, false);
-        setEditingForm(tempEditingForm);
-    };
-
-    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values
@@ -230,18 +219,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         });
 
         // Hide corresponding edit view
-        hideFormEditView(formName);
-    };
-
-    /**
-     * The following method handles the onClick event of the edit button.
-     *
-     * @param formName - Name of the form
-     */
-    const showFormEditView = (formName: string): void => {
-        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
-        tempEditingForm.set(formName, true);
-        setEditingForm(tempEditingForm);
+        setEditingForm(undefined);
     };
 
     /**
@@ -262,7 +240,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param {Profile Schema} schema
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
-        if (editingForm && editingForm.size > 0 && editingForm.get(schema.name)) {
+        if (editingForm === schema.name) {
             const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
@@ -337,7 +315,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         <Field
                                             className="link-button"
                                             onClick={ () => {
-                                                hideFormEditView(schema.name);
+                                                setEditingForm(undefined);
                                             } }
                                             size="small"
                                             type="button"
@@ -403,7 +381,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             : (
                                                 <a
                                                     className="placeholder-text"
-                                                    onClick={ () => { showFormEditView(schema.name); } }
+                                                    onClick={ () => { setEditingForm(schema.name); } }
                                                 >
                                                     {t("userPortal:components.profile.forms.generic.inputs.placeholder",
                                                         {
@@ -438,7 +416,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         className="list-icon"
                                                         size="small"
                                                         color="grey"
-                                                        onClick={ () => showFormEditView(schema.name) }
+                                                        onClick={ () => setEditingForm(schema.name) }
                                                         name={ !isEmpty(profileInfo.get(schema.name))
                                                             ? "pencil alternate"
                                                             : null }
