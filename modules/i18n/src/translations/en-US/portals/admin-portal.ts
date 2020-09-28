@@ -2305,6 +2305,13 @@ export const adminPortal: AdminPortalNS = {
                         1: "Something went wrong while fetching the user list"
                     },
                     title: "No Users Found"
+                },
+                userstoreError: {
+                    subtitles: {
+                        0: "An error occurred while trying to fetch users from the userstore",
+                        1: "Please make sure the connection details of the userstore are accurate."
+                    },
+                    title: "Couldn't fetch users from the userstore"
                 }
             },
             usersList: {
