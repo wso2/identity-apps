@@ -95,10 +95,12 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 setUserStoreError(false);
             }).catch((error) => {
                 dispatch(addAlert({
-                    description: error?.response?.data?.description ?? error?.response?.data?.detail ?? "",
+                    description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message ?? ""
-                }))
+                    message: error?.response?.data?.message
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.message")
+                }));
                 setUserStoreError(true);
                 setUsersList({
                     Resources: [],
@@ -493,8 +495,9 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             >
                 { userStoreError
                     ? <EmptyPlaceholder
-                        subtitle={ ["This userstore is corrupt"] }
-                        title="An error occurred"
+                        subtitle={ [ t("adminPortal:components.users.placeholders.userstoreError.subtitles.0"),
+                            t("adminPortal:components.users.placeholders.userstoreError.subtitles.1")     ] }
+                        title={ t("adminPortal:components.users.placeholders.userstoreError.title") }
                         image={ EmptyPlaceholderIllustrations.genericError }
                         imageSize="tiny"
                     />
