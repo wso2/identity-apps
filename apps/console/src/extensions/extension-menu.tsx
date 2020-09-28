@@ -18,7 +18,7 @@
 
 import { RouteInterface } from "@wso2is/core/models";
 import  { lazy } from "react";
-import * as getConfig from "./config";
+import getConfig from "./config";
 
 /**
  * This will dynamically add extension routes to the application.
@@ -26,7 +26,7 @@ import * as getConfig from "./config";
  * @return {RouteInterface[]}
  */
 export const EXTENSION_ROUTES = (): RouteInterface[]  => {
-    const routes: RouteInterface[]  = getConfig()?.routes;
+    const routes: RouteInterface[]  = getConfig?.routes;
 
     routes.forEach(route => {
         const routePath = route.components;
