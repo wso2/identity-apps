@@ -23,99 +23,99 @@ export const userPortal: UserPortalNS = {
         accountRecovery: {
             codeRecovery: {
                 descriptions: {
-                    add: "Add or update code recovery options"
+                    add: "Ajouter ou mettre à jour les options pour les codes de récupération."
                 },
-                heading: "Code Recovery"
+                heading: "Codes de récupération"
             },
             emailRecovery: {
                 descriptions: {
-                    add: "Add or update recovery email address",
-                    update: "Update recovery email address ({{email}})"
+                    add: "Ajouter ou mettre à jour l'e-mail de récupération",
+                    update: "Mettre à jour de l'e-mail de récupération ({{email}}}"
                 },
                 forms: {
                     emailResetForm: {
                         inputs: {
                             email: {
-                                label: "Email address",
-                                placeholder: "Enter the recovery email address",
+                                label: "Adresse e-mail",
+                                placeholder: "Entrez l'e-mail de récupération",
                                 validations: {
-                                    empty: "Enter an email address",
-                                    invalidFormat: "The email address is not of the correct format"
+                                    empty: "Entrez une adresse e-mail",
+                                    invalidFormat: "Format d'adresse e-mail invalide"
                                 }
                             }
                         }
                     }
                 },
-                heading: "Email recovery",
+                heading: "E-mail de récupération",
                 notifications: {
                     updateEmail: {
                         error: {
                             description: "{{description}}",
-                            message: "Error updating the recovery email"
+                            message: "Erreur lors de la  mise à jour de l'e-mail de récupération"
                         },
                         genericError: {
-                            description: "Error occurred while updating the recovery email",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la mise à jour de l'e-mail de récupération",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The email address in the user profile has been updated successfully",
-                            message: "Email Address Updated Successfully"
+                            description: "L'adresse e-mail dans le profil de l'utilisateur a été mise à jour avec succès",
+                            message: "Adresse e-mail mise à jour avec succès"
                         }
                     }
                 }
             },
             questionRecovery: {
                 descriptions: {
-                    add: "Add or update account recovery challenge questions"
+                    add: "Ajouter ou mettre à jour les questions de sécurité"
                 },
                 forms: {
                     securityQuestionsForm: {
                         inputs: {
                             answer: {
-                                label: "Answer",
-                                placeholder: "Enter your answer",
+                                label: "Réponse",
+                                placeholder: "Entrez votre réponse",
                                 validations: {
-                                    empty: "Answer is a required field"
+                                    empty: "La réponse est obligatoire"
                                 }
                             },
                             question: {
                                 label: "Question",
-                                placeholder: "Select a security question",
+                                placeholder: "Sélectionnez une question de sécurité",
                                 validations: {
-                                    empty: "At least one security question must be selected"
+                                    empty: "Au moins une question de sécurité doit être sélectionnée"
                                 }
                             }
                         }
                     }
                 },
-                heading: "Security questions",
+                heading: "Questions de sécurité",
                 notifications: {
                     addQuestions: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while adding the security questions"
+                            message: "Une erreur s'est produite lors de l'ajout des questions de sécurité"
                         },
                         genericError: {
-                            description: "Error occurred while adding the security questions",
-                            message: "Something went wrong."
+                            description: "Une erreur s'est produite lors de l'ajout des questions de sécurité",
+                            message: "Quelque chose s'est mal passé."
                         },
                         success: {
-                            description: "The required security questions were added successfully",
-                            message: "Security questions were successfully added"
+                            description: "Les questions de sécurité ont été ajoutées avec succès",
+                            message: "Les questions de sécurité ont été ajoutées avec succès"
                         }
                     },
                     updateQuestions: {
                         error: {
                             description: "{{description}}",
-                            message: "Error updating the security questions"
+                            message: "Erreur lors de la mise à jour des questions de sécurité"
                         },
                         genericError: {
-                            description: "Error occurred while updating the security questions",
-                            message: "Something went wrong."
+                            description: "Une erreur s'est produite lors de la mise à jour des questions de sécurité",
+                            message: "Quelque chose s'est mal passé."
                         },
                         success: {
-                            description: "The required security questions were updated successfully",
-                            message: "Security Questions were successfully updated"
+                            description: "Les questions de sécurité ont été mises à jour avec succès",
+                            message: "Les questions de sécurité ont été mises à jour avec succès"
                         }
                     }
                 }
@@ -125,96 +125,96 @@ export const userPortal: UserPortalNS = {
             form: {
                 inputs: {
                     filterAttribute: {
-                        label: "Filter attribute",
-                        placeholder: "E.g. Name, Description etc.",
+                        label: "Attribut à filtrer",
+                        placeholder: "Ex. Nom, Description, etc.",
                         validations: {
-                            empty: "Filter attribute is a required field."
+                            empty: "L'attribut est obligatoire."
                         }
                     },
                     filterCondition: {
-                        label: "Filter condition",
-                        placeholder: "E.g. Starts with etc.",
+                        label: "Condition",
+                        placeholder: "Ex. Commence par, etc.",
                         validations: {
-                            empty: "Filter condition is a required field."
+                            empty: "La condition de filtrage est obligatoire."
                         }
                     },
                     filterValue: {
-                        label: "Filter value",
-                        placeholder: "E.g. admin, wso2 etc.",
+                        label: "Valeur à rechercher",
+                        placeholder: "Ex. admin, wso2, etc.",
                         validations: {
-                            empty: "Filter value is a required field."
+                            empty: "La valeur est obligatoire."
                         }
                     }
                 }
             },
             hints: {
                 querySearch: {
-                    actionKeys: "Shift + Enter",
-                    label: "To search as a query"
+                    actionKeys: "Maj + Entrée",
+                    label: "Chercher en tant que requête"
                 }
             },
             options: {
-                header: "Advanced search"
+                header: "Recherche avancée"
             },
-            placeholder: "Search by {{attribute}}",
+            placeholder: "Recherche par {{attribute}}",
             popups: {
-                clear: "clear search",
-                dropdown: "Show options"
+                clear: "Effacer la recherche",
+                dropdown: "Afficher les options"
             },
-            resultsIndicator: "Showing results for the query \"{{query}}\""
+            resultsIndicator: "Affichage des résultats pour la requête \"{{query}}\""
         },
         applications: {
             advancedSearch: {
                 form: {
                     inputs: {
                         filterAttribute: {
-                            placeholder: "E.g. Name, Description etc."
+                            placeholder: "Ex. Nom, Description, etc."
                         },
                         filterCondition: {
-                            placeholder: "E.g. Starts with etc."
+                            placeholder: "Ex. Commence par, etc."
                         },
                         filterValue: {
-                            placeholder: "E.g. Zoom, Salesforce etc."
+                            placeholder: "Ex. Zoom, Salesforce, etc."
                         }
                     }
                 },
-                placeholder: "Search by application name"
+                placeholder: "Recherche par application"
             },
             all: {
-                heading: "All Applications"
+                heading: "Toutes les applications"
             },
             favourite: {
-                heading: "Favourites"
+                heading: "Favoris"
             },
             notifications: {
                 fetchApplications: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving applications"
+                        message: "Erreur lors de la récupération des applications"
                     },
                     genericError: {
-                        description: "Couldn't retrieve applications",
-                        message: "Something went wrong"
+                        description: "Impossible de récupérer les applications",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the applications.",
-                        message: "Applications retrieval successful"
+                        description: "Récupération des applications effectuée avec succès",
+                        message: "Récupération des applications réussie"
                     }
                 }
             },
             placeholders: {
                 emptyList: {
-                    action: "Refresh list",
+                    action: "Rafraîchir la liste",
                     subtitles: {
-                        0: "The applications list returned empty.",
-                        1: "This could be due to having no discoverable applications.",
-                        2: "Please ask an admin to enable discoverability for applications."
+                        0: "La liste des applications est vide",
+                        1: "Il n'y a peut-être pas d'applications visibles.",
+                        2: "Veuillez demander à un administrateur d'activer la découverte des applications."
                     },
-                    title: "No Applications"
+                    title: "Pas d'applications"
                 }
             },
             recent: {
-                heading: "Recent Applications"
+                heading: "Applications récentes"
             }
         },
         approvals: {
@@ -222,43 +222,43 @@ export const userPortal: UserPortalNS = {
                 fetchApprovalDetails: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving the approval details"
+                        message: "Erreur lors de la récupération des détails de l'approbation"
                     },
                     genericError: {
-                        description: "Couldn't update the approval details",
-                        message: "Something went wrong"
+                        description: "Impossible de mettre à jour les détails de l'approbation",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the approval details",
-                        message: "Approval details retrieval successful"
+                        description: "Détails de l'approbation récupérés avec succès",
+                        message: "Récupération des détails de l'approbation réussie"
                     }
                 },
                 fetchPendingApprovals: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving pending approvals"
+                        message: "Erreur de récupération des approbations en attente"
                     },
                     genericError: {
-                        description: "Couldn't retrieve pending approvals",
-                        message: "Something went wrong"
+                        description: "Impossible à récupérer la liste des approbations en attente",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved pending approvals",
-                        message: "Pending approvals retrieval successful"
+                        description: "Liste des approbations en attente récupérée avec succès",
+                        message: "Récupération des approbations en attente réussie"
                     }
                 },
                 updatePendingApprovals: {
                     error: {
                         description: "{{description}}",
-                        message: "Error updating the approval"
+                        message: "Erreur lors de la mise à jour de l'approbation"
                     },
                     genericError: {
-                        description: "Couldn't update the approval",
-                        message: "Something went wrong"
+                        description: "Impossible de mettre à jour l'approbation",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully updated the approval",
-                        message: "Update successful"
+                        description: "Approbation mis à jour avec succès",
+                        message: "Mise à jour réussie"
                     }
                 }
             }
@@ -268,45 +268,45 @@ export const userPortal: UserPortalNS = {
                 passwordResetForm: {
                     inputs: {
                         confirmPassword: {
-                            label: "Confirm password",
-                            placeholder: "Enter the new password",
+                            label: "Confirmation du nouveau mot de passe",
+                            placeholder: "Confirmez le nouveau mot de passe",
                             validations: {
-                                empty: "Confirm password is a required field",
-                                mismatch: "The password confirmation doesn't match"
+                                empty: "Veuillez confirmer votre nouveau mot de passe",
+                                mismatch: "Les nouveaux mots de passes saisis ne correspondent pas"
                             }
                         },
                         currentPassword: {
-                            label: "Current password",
-                            placeholder: "Enter the current password",
+                            label: "Mot de passe actuel",
+                            placeholder: "Entrez le mot de passe actuel",
                             validations: {
-                                empty: "Current password is a required field",
-                                invalid: "Current password is invalid"
+                                empty: "Veuillez saisir votre mot de passe actuel",
+                                invalid: "Le mot de passe actuel que vous avez saisi est invalide."
                             }
                         },
                         newPassword: {
-                            label: "New password",
-                            placeholder: "Enter the new password",
+                            label: "Nouveau mot de passe",
+                            placeholder: "Entrez le nouveau mot de passe",
                             validations: {
-                                empty: "New password is a required field"
+                                empty: "Veuillez saisir votre nouveau mot de passe"
                             }
                         }
                     },
                     validations: {
                         genericError: {
-                            description: "Something went wrong. Please try again",
-                            message: "Change password error"
+                            description: "Quelque chose s'est mal passé. Veuillez réessayer",
+                            message: "Erreur lors de la modification du mot de passe"
                         },
                         invalidCurrentPassword: {
-                            description: "The current password you entered appears to be invalid. Please try again",
-                            message: "Change password error"
+                            description: "Le mot de passe actuel que vous avez saisi semble être invalide. Veuillez réessayer",
+                            message: "Erreur lors de la modification du mot de passe"
                         },
                         submitError: {
                             description: "{{description}}",
-                            message: "Change password error"
+                            message: "Erreur lors de la modification du mot de passe"
                         },
                         submitSuccess: {
-                            description: "The password has been changed successfully",
-                            message: "Password reset successful"
+                            description: "Le mot de passe a été modifié avec succès",
+                            message: "Réinitialisation du mot de passe réussie"
                         }
                     }
                 }
@@ -315,142 +315,142 @@ export const userPortal: UserPortalNS = {
                 confirmationModal: {
                     heading: "Confirmation",
                     message:
-                        "Changing the password will result in the termination of the current session. You will " +
-                        "have to login with the newly changed password. Do you wish to continue?"
+                        "La modification du mot de passe entraînera la fin de la session en cours. Vous devrez " +
+                        "vous reconnecter avec votre nouveau mot de passe. Voulez-vous continuer ?"
                 }
             }
         },
         consentManagement: {
             editConsent: {
-                collectionMethod: "Collection Method",
+                collectionMethod: "Méthode de recueil",
                 dangerZones: {
                     revoke: {
-                        actionTitle: "Revoke",
-                        header: "Revoke consent",
-                        subheader: "You will have to provide consent for this application again."
+                        actionTitle: "Révoquer",
+                        header: "Révoquer le consentement",
+                        subheader: "Vous devrez à nouveau donner votre consentement pour accéder à nouveau à cette application."
                     }
                 },
                 description: "Description",
                 piiCategoryHeading:
-                    "Manage consent for the collection and sharing of your personal information " +
-                    "with the application. Uncheck the attributes that you need to revoke and press the update " +
-                    "button to save the changes or press the revoke button to remove the consent for all the " +
-                    "attributes.",
-                state: "State",
+                    "Gérez le consentement pour la collecte et le partage de vos informations personnelles " +
+                    "avec l'application. Décochez les attributs que vous souhaitez révoquer puis validez en " +
+                    "cliquant sur le bouton de Mettre à jour pour enregistrer les modifications ou cliquez " +
+                    "sur le bouton de Révoquer pour supprimer le consentement pour tous les attributs.",
+                state: "État",
                 version: "Version"
             },
             modals: {
                 consentRevokeModal: {
-                    heading: "Are you sure?",
+                    heading: "Etes-vous sûr ?",
                     message:
-                        "This operation is not reversible. This will permanently revoke consent for all the " +
-                        "attributes. Are you sure you want to proceed?",
-                    warning: "Please note that you will be redirected to the login consent page"
+                        "Cette opération est irréversible. Cela révoquera définitivement le consentement pour tous les " +
+                        "attributs. Êtes-vous sûr de vouloir continuer ?",
+                    warning: "Veuillez noter que vous serez redirigé vers la page de recueil de consentement"
                 }
             },
             notifications: {
                 consentReceiptFetch: {
                     error: {
                         description: "{{description}}",
-                        message: "Something went wrong"
+                        message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "Couldn't load information on the selected application",
-                        message: "Something went wrong"
+                        description: "Impossible de charger des informations sur l'application sélectionnée",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the consent receipt",
-                        message: "Successful retrieval"
+                        description: "Preuve de consentement récupéré avec succès",
+                        message: "Récupération réussie"
                     }
                 },
                 consentedAppsFetch: {
                     error: {
                         description: "{{description}}",
-                        message: "Something went wrong"
+                        message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "Couldn't load the list of consented applications",
-                        message: "Something went wrong"
+                        description: "Impossible de charger la liste des applications autorisées",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the consented applications list",
-                        message: "Successful retrieval"
+                        description: "Liste des applications autorisées récupérée avec succès",
+                        message: "Récupération réussie"
                     }
                 },
                 revokeConsentedApp: {
                     error: {
                         description: "{{description}}",
-                        message: "Consents Revoke Error"
+                        message: "Erreur lors de la révocation de consentements"
                     },
                     genericError: {
-                        description: "Couldn't revoke consent for the application",
-                        message: "Something went wrong"
+                        description: "Erreur lors de la révocation de consentements accordés à l'application",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The consent has been successfully revoked for the application",
-                        message: "Consents Revoke Success"
+                        description: "Le consentement accordé à l'application a été révoqué avec succès",
+                        message: "Consentement révoqué avec succès"
                     }
                 },
                 updateConsentedClaims: {
                     error: {
                         description: "{{description}}",
-                        message: "Something went wrong"
+                        message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "The consented claims failed to update for the application",
-                        message: "Something went wrong"
+                        description: "Les attributs partagés avec l'application n'ont pas été mis à jour",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The consented claims have been successfully updated for the application",
-                        message: "Consented claims updated successfully"
+                        description: "Les attributs partagés avec l'application ont été mis à jour avec succès",
+                        message: "Mise à jour des attributs partagés réussie"
                     }
                 }
             }
         },
         federatedAssociations: {
-            deleteConfirmation: "This will remove this external login from your account. Do you want to continue " +
-                "removing?",
+            deleteConfirmation: "Ceci supprimera l'accès à votre compte par le service d'authentification tiers. " +
+                "Confirmez-vous la suppression ?",
             notifications: {
                 getFederatedAssociations: {
                     error: {
                         description: "{{description}}",
-                        message: "Something went wrong"
+                        message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "Couldn't retrieve External Logins",
-                        message: "Something went wrong"
+                        description: "Impossible de récupérer les services d'authentifications tiers ayant accès à votre compte",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "External Logins have been retrieved successfully",
-                        message: "External Logins retrieved successfully"
+                        description: "Les services d'auhtentifications tiers ayant accès à votre compte ont été récupérées avec succès",
+                        message: "Services d'authentifications tiers récupérés avec succès"
                     }
                 },
                 removeAllFederatedAssociations: {
                     error: {
                         description: "{{description}}",
-                        message: "Something went wrong"
+                        message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "External Logins couldn't be removed",
-                        message: "Something went wrong"
+                        description: "Impossible de supprimer tous les services d'authentifications tiers ayant accès à votre",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "All the External Logins have been removed successfully",
-                        message: "External Logins removed successfully"
+                        description: "Accès supprimé avec succès pour tous les services d'authentifications tiers ayant eu accès à votre compte.",
+                        message: "Accès supprimés avec succès"
                     }
                 },
                 removeFederatedAssociation: {
                     error: {
                         description: "{{description}}",
-                        message: "Something went wrong"
+                        message: "Quelque chose s'est mal passé"
                     },
                     genericError: {
-                        description: "The External Login couldn't be removed",
-                        message: "Something went wrong"
+                        description: "L'accès a votre compte par le service d'authentification tiers n'a pu être supprimé",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The External Login has been removed successfully",
-                        message: "The External Login removed successfully"
+                        description: "L'accès à votre compte par le service d'authentification tiers a été supprimé avec succès",
+                        message: "Accès supprimé avec succès"
                     }
                 }
             }
@@ -461,26 +461,26 @@ export const userPortal: UserPortalNS = {
         linkedAccounts: {
             accountTypes: {
                 local: {
-                    label: "Add local user account"
+                    label: "Associer un compte utilisateur"
                 }
             },
-            deleteConfirmation: "This will remove the linked account from your account. Do you want to continue " +
-                "removing?",
+            deleteConfirmation: "Ceci supprimera l'association avec votre compte. Confirmez-vous" +
+                "la suppression ?",
             forms: {
                 addAccountForm: {
                     inputs: {
                         password: {
-                            label: "Password",
-                            placeholder: "Enter the password",
+                            label: "Mot de passe",
+                            placeholder: "Saisissez le mot de passe",
                             validations: {
-                                empty: "Password is a required field"
+                                empty: "Le mot de passe est obligatoire"
                             }
                         },
                         username: {
-                            label: "Username",
-                            placeholder: "Enter the username",
+                            label: "Nom d'utilisateur",
+                            placeholder: "Saisissez le nom d'utilisateur",
                             validations: {
-                                empty: "Username is a required field"
+                                empty: "Le nom d'utilisateur est obligatoire"
                             }
                         }
                     }
@@ -490,204 +490,205 @@ export const userPortal: UserPortalNS = {
                 addAssociation: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving linked user accounts"
+                        message: "Erreur lors de la récupération des comptes associés"
                     },
                     genericError: {
-                        description: "Error occurred while adding the linked account",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de l'association au compte",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The required linked user account added successfully",
-                        message: "Linked user account added successfully"
+                        description: "L'association au compte a été ajoutée avec succès",
+                        message: "Compte associé avec succès"
                     }
                 },
                 getAssociations: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving linked user accounts"
+                        message: "Erreur lors de la récupération des comptes associés"
                     },
                     genericError: {
-                        description: "Error occurred while retrieving the linked user accounts",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des comptes associés",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The required user profile details are retrieved successfully",
-                        message: "Linked user accounts retrieved successfully"
+                        description: "Les informations requises sur le profil de l'utilisateur ont été récupérés avec succès",
+                        message: "Détails des comptes associés récupérés avec succès"
                     }
                 },
                 removeAllAssociations: {
                     error: {
                         description: "{{description}}",
-                        message: "Error removing linked user accounts"
+                        message: "Erreur lors de la suppression des comptes associés"
                     },
                     genericError: {
-                        description: "Error occurred while removing the linked user accounts",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la suppression des comptes associés",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "All the linked user accounts have been removed",
-                        message: "Linked accounts removed successfully"
+                        description: "Tous les comptes associés ont été supprimés",
+                        message: "Comptes associés supprimés avec succès"
                     }
                 },
                 removeAssociation: {
                     error: {
                         description: "{{description}}",
-                        message: "Error removing the linked user account"
+                        message: "Erreur lors de la suppression du compte associé"
                     },
                     genericError: {
-                        description: "Error occurred while removing the linked user account",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la suppression du compte associé",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The linked user accounts have been removed",
-                        message: "Linked account removed successfully"
+                        description: "Le compte associé a été supprimé",
+                        message: "Compte associé supprimé avec succès"
                     }
                 },
                 switchAccount: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while switching the account"
+                        message: "Une erreur s'est produite lors du changement de compte"
                     },
                     genericError: {
-                        description: "Error occurred while switching the account",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors du changement de compte",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The account has been switched successfully",
-                        message: "Account switched successfully"
+                        description: "Le changement de compte a été réalisé avec succès",
+                        message: "Changement de compte réalisé avec succès"
                     }
                 }
             }
         },
         mfa: {
             authenticatorApp: {
-                description: "Scan the QR code using an Authenticator App to use TOTP" + " as a second " +
-                    "authentication factor",
-                heading: "via Authenticator App",
-                hint: "Show the QR Code",
+                description: "Scanner le code QR à l'aide d'une application d'authentification pour "+
+                    "utiliser un TOTP comme deuxième facteur d'authentification",
+                heading: "à l'aide d'une application d'authentification",
+                hint: "Afficher le code QR",
                 modals: {
-                    done: "Success! Now you can use your Authentication App for two-factor authentication",
+                    done: "Réussi ! Vous pouvez maintenant utiliser votre application d'authentification pour une authentification en deux étapes",
                     scan: {
-                        authenticatorApps: "Authenticator Apps",
-                        generate: "Generate a new code",
-                        heading: "Scan this QR Code using an Authenticator App",
-                        messageBody: "You can find a list of Authenticator Apps available here.",
-                        messageHeading: "Don't have an Authenticator App installed?"
+                        authenticatorApps: "Applications d'authentification",
+                        generate: "Générer un nouveau code",
+                        heading: "Scannez ce code QR à l'aide d'une application d'authentification",
+                        messageBody: "Vous pouvez utiliser une application d'authentification compatible dans cette liste :",
+                        messageHeading: "Vous n'avez pas d'application d'authentification ?"
                     },
                     verify: {
-                        error: "Verification failed. Please try again.",
-                        heading: "Enter the verification code from the Authentication App",
-                        label: "Verification Code",
-                        placeholder: "Enter your verification code",
-                        reScan: "Re-scan",
-                        reScanQuestion: "Want to scan the QR code again?",
-                        requiredError: "Enter the verification code"
+                        error: "La vérification a échoué. Veuillez réessayer.",
+                        heading: "Entrez le code de vérification fourni par l'application d'authentification",
+                        label: "Code de vérification",
+                        placeholder: "Entrez votre code de vérification",
+                        reScan: "Re-scanner",
+                        reScanQuestion: "Voulez-vous scanner le code QR à nouveau ?",
+                        requiredError: "Veuillez entrer votre code de vérification"
                     }
                 },
                 notifications: {
                     initError: {
                         error: {
                             description: "{{error}}",
-                            message: "Something went wrong"
+                            message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the QR code",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération du code QR",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     refreshError: {
                         error: {
                             description: "{{error}}",
-                            message: "Something went wrong"
+                            message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "An error occurred while trying to get a new QR code",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération d'un nouveau code QR",
+                            message: "Quelque chose s'est mal passé"
                         }
                     }
                 }
             },
             fido: {
-                description: "Authenticate yourself by connecting a biometric device or a FIDO key",
+                description: "Authentifiez-vous à l'aide un dispositif biométrique ou dispositif FIDO",
                 form: {
-                    label: "Security Device",
-                    placeholder: "Enter a device name",
-                    remove: "Remove the device",
-                    required: "Please enter a name for your security device"
+                    label: "Dispositif de sécurité",
+                    placeholder: "Entrez un nom pour le dispositif",
+                    remove: "Supprimer le dispositif",
+                    required: "Veuillez saisir un nom pour votre dispositif de sécurité"
                 },
-                heading: "via Security Device",
+                heading: "à l'aide d'un dispositif de sécurité",
                 modals: {
                     deviceRegistrationErrorModal: {
-                        description: "The device registration was interrupted. If this was not intentional you " +
-                            "may retry the same flow or try again with an older security key.",
-                        heading: "Device Registration Failed"
+                        description: "L'enregistrement du dispositif a été interrompu. " +
+                            "Si ce n'était pas intentionnel, veuillez recommencer la procédure d'ajout " +
+                            "du dispositif ou réessayer avec un dispositif moins récent.",
+                        heading: "Échec de l'enregistrement du dispositif"
                     }
                 },
                 notifications: {
                     removeDevice: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while removing the device"
+                            message: "Une erreur s'est produite lors de la suppression du dispositif"
                         },
                         genericError: {
-                            description: "Error occurred while removing the device",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la suppression du dispositif",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The device was successfully removed from the list",
-                            message: "Your Device Removed Successfully"
+                            description: "Le dispositif a été supprimé de votre compte avec succès",
+                            message: "Dispositif retiré avec succès"
                         }
                     },
                     startFidoFlow: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while retrieving the device"
+                            message: "Une erreur s'est produite lors de l'accès au dispositif"
                         },
                         genericError: {
-                            description: "Error occurred while retrieving the device",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de l'accès au dispositif",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The device was successfully registered and now you can use it as an " +
-                                "authentication factor",
-                            message: "Your Device Registered Successfully"
+                            description: "Le dispositif a été enregistré avec succès. Vous pouvez dès " +
+                                "à présent l'utiliser comme un facteur d'authentification",
+                            message: "Votre dispositif a été enregistré avec succès"
                         }
                     },
                     updateDeviceName: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while updating the security device name"
+                            message: "Une erreur s'est produite lors de la mise à jour du nom du dispositif"
                         },
                         genericError: {
-                            description: "Error occurred while updating the security device name",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la mise à jour du nom du dispositif",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The name of your security device was successfully updated",
-                            message: "Security Device name updated successfully"
+                            description: "Le nom de votre dispositif a été mis à jour avec succès",
+                            message: "Nom du dispositif mis à jour avec succès"
                         }
                     }
                 },
-                tryButton: "Try with an older Device"
+                tryButton: "Essayez avec un dispositif moins récent"
             },
             smsOtp: {
                 descriptions: {
-                    hint: "You'll receive a text message containing a one-time verification code"
+                    hint: "Vous recevrez un SMS contenant un code de vérification à usage unique"
                 },
-                heading: "via SMS",
+                heading: "à l'aide d'un SMS",
                 notifications: {
                     updateMobile: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while updating the mobile number"
+                            message: "Une erreur s'est produite lors de la mise à jour du numéro de téléphone de récupération"
                         },
                         genericError: {
-                            description: "Error occurred while updating the mobile number",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la mise à jour du numéro de téléphone de récupération",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The mobile number in the user profile is updated successfully",
-                            message: "Mobile number updated successfully"
+                            description: "Le numéro de téléphone portable dans le profil de l'utilisateur est mis à jour avec succès",
+                            message: "Numéro de récupération mis à jour avec succès"
                         }
                     }
                 }
@@ -697,33 +698,33 @@ export const userPortal: UserPortalNS = {
             widgets: {
                 accountActivity: {
                     actionTitles: {
-                        update: "Manage account activity"
+                        update: "Gérer l'activité de votre compte compte"
                     },
-                    description: "You are currently logged in from the following device",
-                    header: "Account activity"
+                    description: "Vous êtes actuellement connecté à partir de l'appareil suivant",
+                    header: "Activité du compte"
                 },
                 accountSecurity: {
                     actionTitles: {
-                        update: "Update account security"
+                        update: "Sécuriser votre compte"
                     },
-                    description: "Settings and recommendations to help you keep your account secure",
-                    header: "Account security"
+                    description: "Paramètres et recommandations pour vous aider à sécuriser votre compte",
+                    header: "Sécurité du compte"
                 },
                 accountStatus: {
-                    complete: "Your profile is complete",
-                    completedFields: "Completed fields",
-                    completionPercentage: "Your profile completion is at {{percentage}}%",
-                    inComplete: "Complete your profile",
-                    inCompleteFields: "Incomplete fields",
-                    mandatoryFieldsCompletion: "{{completed}} out of {{total}} mandatory fields completed",
-                    optionalFieldsCompletion: "{{completed}} out of {{total}} optional fields completed"
+                    complete: "Votre profil est complet",
+                    completedFields: "Attributs complétés",
+                    completionPercentage: "Votre profil est complété à {{percentage}}%",
+                    inComplete: "Complétez votre profil",
+                    inCompleteFields: "Attributs incomplets",
+                    mandatoryFieldsCompletion: "{{completed}} attributs complétés sur {{total}} obligatoires",
+                    optionalFieldsCompletion: "{{completed}} attributs complétés sur {{total}} optionnels"
                 },
                 consentManagement: {
                     actionTitles: {
-                        manage: "Manage consents"
+                        manage: "Gérer vos consentements"
                     },
-                    description: "Control the data you want to share with applications",
-                    header: "Consents control"
+                    description: "Contrôlez les données que vous souhaitez partager avec d'autres applications",
+                    header: "Gestion du consentement"
                 }
             }
         },
@@ -966,58 +967,58 @@ export const userPortal: UserPortalNS = {
         },
         profile: {
             fields: {
-                addressesHome: "Home address",
-                addressesWork: "Work address",
+                addressesHome: "Adresse personnelle",
+                addressesWork: "Adresse professionnelle",
                 emails: "Email",
-                emailsHome: "Home email",
-                emailsOther: "Other email",
-                emailsWork: "Work email",
+                emailsHome: "E-mail personnel",
+                emailsOther: "Autre adresse e-mail",
+                emailsWork: "E-mail professionnel",
                 generic: {
-                    default: "Add {{fieldName}}"
+                    default: "Ajouter l'attribut {{fieldName}}"
                 },
-                nameFamilyName: "Last name",
-                nameGivenName: "First name",
-                phoneNumbers: "Phone number",
-                phoneNumbersHome: "Home phone number",
-                phoneNumbersMobile: "Mobile number",
-                phoneNumbersOther: "Other phone number",
-                phoneNumbersWork: "Work phone number",
-                profileImage: "Profile Image",
+                nameFamilyName: "Nom de famille",
+                nameGivenName: "Prénom",
+                phoneNumbers: "Numéros de téléphone",
+                phoneNumbersHome: "Numéro de téléphone personnel",
+                phoneNumbersMobile: "Numéro de téléphone portable",
+                phoneNumbersOther: "Autre numéro de téléphone",
+                phoneNumbersWork: "Numéro de téléphone au professionnel",
+                profileImage: "Image de profil",
                 profileUrl: "URL",
-                userName: "Username"
+                userName: "Nom d'utilisateur"
             },
             forms: {
                 emailChangeForm: {
                     inputs: {
                         email: {
                             label: "Email",
-                            note: "NOTE: This will change the email address in your profile",
-                            placeholder: "Enter your email address",
+                            note: "NOTE: Cela modifiera l'adresse e-mail dans votre profil utilisateur",
+                            placeholder: "Veuillez saisir votre adresse e-mail",
                             validations: {
-                                empty: "Email address is a required field",
-                                invalidFormat: "The email address is not of the correct format"
+                                empty: "L'adresse e-mail est obligatoire",
+                                invalidFormat: "Format de l'adresse e-mail saisie invalide"
                             }
                         }
                     }
                 },
                 generic: {
                     inputs: {
-                        placeholder: "Enter your {{fieldName}}",
+                        placeholder: "Entrez votre {{fieldName}}",
                         validations: {
-                            empty: "{{fieldName}} is a required field",
-                            invalidFormat: "The {{fieldName}} is not of the correct format"
+                            empty: "L'attribut {{fieldName}} est obligatoire",
+                            invalidFormat: "Le format de l'attribut {{fieldName}} saisi est invalide"
                         }
                     }
                 },
                 mobileChangeForm: {
                     inputs: {
                         mobile: {
-                            label: "Mobile number",
-                            note: "NOTE: This will change the mobile number in your profile",
-                            placeholder: "Enter your mobile number",
+                            label: "Numéro de téléphone portable",
+                            note: "NOTE: Le numéro de téléphone portable associé de votre profil utilisateur sera modifié",
+                            placeholder: "Veuillez saisir votre numéro de portable",
                             validations: {
-                                empty: "Mobile number is a required field",
-                                invalidFormat: "The mobile number is not of the right format"
+                                empty: "Le numéro de portable est un champ obligatoire",
+                                invalidFormat: "Le format du numéro de téléphone portable saisi est invalide"
                             }
                         }
                     }
@@ -1025,17 +1026,17 @@ export const userPortal: UserPortalNS = {
                 nameChangeForm: {
                     inputs: {
                         firstName: {
-                            label: "First name",
-                            placeholder: "Enter the first name",
+                            label: "Prénom",
+                            placeholder: "Veuillez saisir votre prénom",
                             validations: {
-                                empty: "First name is a required field"
+                                empty: "Le prénom est obligatoire"
                             }
                         },
                         lastName: {
-                            label: "Last name",
-                            placeholder: "Enter the last name",
+                            label: "Nom de famille",
+                            placeholder: "Veuillez saisir votre nom de famille",
                             validations: {
-                                empty: "Last name is a required field"
+                                empty: "Le nom de famille est obligatoire"
                             }
                         }
                     }
@@ -1043,10 +1044,10 @@ export const userPortal: UserPortalNS = {
                 organizationChangeForm: {
                     inputs: {
                         organization: {
-                            label: "Organization",
-                            placeholder: "Enter your organization",
+                            label: "Organisation",
+                            placeholder: "Veuillez saisir votre organisation",
                             validations: {
-                                empty: "Organization is a required field"
+                                empty: "L'organisation est obligatoire"
                             }
                         }
                     }
@@ -1054,63 +1055,63 @@ export const userPortal: UserPortalNS = {
             },
             messages: {
                 emailConfirmation: {
-                    content: "Please confirm the email address update in order to add the new email to your profile.",
-                    header: "Confirmation pending!"
+                    content: "Veuillez confirmer votre adresse e-mail afin de pouvoir l'ajouter à votre profil",
+                    header: "Confirmation en attente !"
                 }
             },
             notifications: {
                 getProfileCompletion: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred"
+                        message: "Une erreur s'est produite"
                     },
                     genericError: {
-                        description: "Error occurred while assessing the profile completion",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de l'évaluation de la complétude du profil",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Profile completion was assessed successfully",
-                        message: "Calculation Successful"
+                        description: "La complétude du profil a été évalué avec succès",
+                        message: "Évaluation réussie"
                     }
                 },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while retrieving the profile details"
+                        message: "Une erreur s'est produite lors de la récupération des détails de votre profil"
                     },
                     genericError: {
-                        description: "Error occurred while retrieving the profile details",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des détails de votre profil",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The required user profile details are retrieved successfully",
-                        message: "Successfully retrieved user profile"
+                        description: "Les attributs obligatoires du profil utilisateur ont été récupérés avec succès",
+                        message: "Profil utilisateur récupéré avec succès"
                     }
                 },
                 getUserReadOnlyStatus: {
                     genericError: {
-                        description: "Error occurred while retrieving the read-only status of the user",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération du statut lecture-seule de l'utilisateur",
+                        message: "Quelque chose s'est mal passé"
                     }
                 },
                 updateProfileInfo: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while updating the profile details"
+                        message: "Une erreur s'est produite lors de la mise à jour des informations du profil"
                     },
                     genericError: {
-                        description: "Error occurred while updating the profile details",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la mise à jour des informations du profil",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The required user profile details were successfully updated",
-                        message: "User profile updated successfully"
+                        description: "Les attributs obligatoires du profil utilisateur ont été mis à jour avec succès",
+                        message: "Profil utilisateur mis à jour avec succès"
                     }
                 }
             },
             placeholders: {
                 SCIMDisabled: {
-                    heading: "This feature is not available for your account"
+                    heading: "Cette fonctionnalité n'est pas disponible pour votre compte"
                 }
             }
         },
@@ -1119,88 +1120,88 @@ export const userPortal: UserPortalNS = {
                 downloadProfileInfo: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while downloading the user profile details"
+                        message: "Une erreur s'est produite lors du téléchargement des informations de votre profil utilisateur"
                     },
                     genericError: {
-                        description: "Error occurred while downloading the user profile details",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors du téléchargement des informations de votre profil utilisateur",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The file containing the required user profile details has started downloading",
-                        message: "User profile details download started"
+                        description: "Le téléchargement du fichier contenant les informations de votre profil utilisateur a commencé",
+                        message: "Le téléchargement des détails de votre profil utilisateur a débuté"
                     }
                 }
             }
         },
         userAvatar: {
-            infoPopover: "This image has been retrieved from <1>Gravatar</1> service.",
-            urlUpdateHeader: "Enter an image URL to set your profile picture"
+            infoPopover: "Cette image a été récupérée à partir du service <1>Gravatar</1>.",
+            urlUpdateHeader: "Entrez l'URL d'une image pour mettre à jour votre image de profil"
         },
         userSessions: {
-            browserAndOS: "{{browser}} on {{os}} {{version}}",
+            browserAndOS: "{{browser}} sur {{os}} {{version}}",
             dangerZones: {
                 terminate: {
-                    actionTitle: "Terminate",
-                    header: "Terminate session",
-                    subheader: "You will be logged out of the session on the particular device."
+                    actionTitle: "Déconnecter",
+                    header: "Se déconnecter",
+                    subheader: "L'accès à votre compte depuis cet appareil sera supprimé."
                 }
             },
-            lastAccessed: "Last accessed {{date}}",
+            lastAccessed: "Dernier accès il y a {{date}}",
             modals: {
                 terminateAllUserSessionsModal: {
                     heading: "Confirmation",
                     message:
-                        "This action will log you out of all the sessions on every device. Do you wish to " +
-                        "continue?"
+                        "Cette action supprimera l'accès à votre compte depuis tous les appareils. " +
+                        "Souhaitez-vous continuer ?"
                 },
                 terminateUserSessionModal: {
                     heading: "Confirmation",
                     message:
-                        "This action will log you out of the session on the particular device. Do you wish to " +
-                        "continue?"
+                        "Cette action supprimera l'accès à votre compte depuis cet appareil. " +
+                        "Souhaitez-vous continuer ?"
                 }
             },
             notifications: {
                 fetchSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving IDP session"
+                        message: "Erreur lors de la récupération des sessions authentifiées "
                     },
                     genericError: {
-                        description: "Couldn't retrieve any IDP sessions",
-                        message: "Something went wrong"
+                        description: "Impossible de récupérer les sessions authentifiées",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the IDP sessions",
-                        message: "IDP session retrieval successful"
+                        description: "Sessions authentifiées récupérées avec succès",
+                        message: "Récupération des sessions authentifiées réussie"
                     }
                 },
                 terminateAllUserSessions: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate IDP sessions"
+                        message: "Impossible de mettre fin à toutes les sessions authentitifées"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating IDP sessions",
-                        message: "Couldn't terminate IDP sessions"
+                        description: "Une erreur s'est produite lors de la fermeture des sessions authentifiées",
+                        message: "Impossible de mettre fin aux sessions authentifiées"
                     },
                     success: {
-                        description: "Successfully terminated all IDP sessions",
-                        message: "Terminated all IDP sessions"
+                        description: "Toutes les sessions authentifiées ont été supprimées",
+                        message: "Fermeture de toutes les sessions authentifiées"
                     }
                 },
                 terminateUserSession: {
                     error: {
                         description: "{{description}}",
-                        message: "Couldn't terminate the IDP session"
+                        message: "Impossible de mettre fin à la session authentifiée"
                     },
                     genericError: {
-                        description: "Something went wrong while terminating the IDP session",
-                        message: "Couldn't terminate the IDP session"
+                        description: "Une erreur s'est produite lors de la fermeture de la session authentifiée",
+                        message: "Impossible de mettre fin à la session authentifiée"
                     },
                     success: {
-                        description: "Successfully terminated the IDP session",
-                        message: "Session terminate success"
+                        description: "Fermeture de la session authentifiée effectuée avec succès",
+                        message: "Session supprimée avec succès"
                     }
                 }
             }
@@ -1212,202 +1213,204 @@ export const userPortal: UserPortalNS = {
                 gravatar: {
                     errors: {
                         noAssociation: {
-                            content: "It seems like the selected email is not registered on Gravatar. " +
-                                "Sign up for a Gravatar account by visiting Gravatar official website or use " +
-                                "one of the following.",
-                            header: "No matching Gravatar image found!"
+                            content: "Il semblerait que l'adresse e-mail sélectionnée ne soit pas enregistré sur Gravatar. " +
+                                "Veuillez créer un compte en vous rendant sur le site officiel de Gravatar " +
+                                "ou utilisez une des images ci-dessous.",
+                            header: "Aucune image n'a été trouvée sur Gravatar !"
                         }
                     },
-                    heading: "Gravatar based on "
+                    heading: "Gravatar associé à l'adresse email "
                 },
                 hostedAvatar: {
-                    heading: "Hosted Image",
+                    heading: "Image Internet",
                     input: {
                         errors: {
                             http: {
-                                content: "The selected URL points to an insecure image served over HTTP. " +
-                                    "Please proceed with caution.",
-                                header: "Insecure Content!"
+                                content: "L'URL sélectionnée pointe vers une ressource non sécurisée (HTTP). " +
+                                    "Soyez prudent.",
+                                header: "Contenu non sécurisé !"
                             },
                             invalid: {
-                                content: "Please enter a valid image URL"
+                                content: "Veuillez saisir une URL valide pointant vers une image"
                             }
                         },
-                        hint: "Enter a valid image URL which is hosted on a third party location.",
-                        placeholder: "Enter URL for the image.",
+                        hint: "Entrez l'URL valide d'une image hébergée sur un site tiers",
+                        placeholder: "Veuillez saisir l'URL de l'image",
                         warnings: {
                             dataURL: {
-                                content: "Using Data URLs with large character count might result in database " +
-                                    "issues. Proceed with caution.",
-                                header: "Double check the entered Data URL!"
+                                content: "L'utilisation d'URL comportant un grand nombre " +
+                                    "de caractères peut causer des problèmes dans la base " +
+                                    "de données. Procédez avec prudence",
+                                header: "Vérifiez l'URL saisie !"
                             }
                         }
                     }
                 },
                 systemGenAvatars: {
-                    heading: "System generated avatar",
+                    heading: "Avatar généré par le système",
                     types: {
-                        initials: "Initials"
+                        initials: "Initiales"
                     }
                 }
             },
-            description: null,
-            heading: "Update profile picture",
-            primaryButton: "Save",
-            secondaryButton: "Cancel"
+            description: "Mettre à jour votre photo de profil",
+            heading: "Photo de votre profil",
+            primaryButton: "Sauvegarder",
+            secondaryButton: "Annuler"
         },
         sessionTimeoutModal: {
-            description: "You will be logged out of the current session due to inactivity." +
-                "Please choose Stay logged in if you would like to continue the session.",
-            heading: "You will be logged out in <1>{{ time }}</1>.",
-            primaryButton: "Stay logged in",
-            secondaryButton: "Logout"
+            description: "Vous semblez inactif et allez être déconnecté. " +
+                "Sélectionnez <1>Rester connecté<1> pour poursuivre la session.",
+            heading: "Vous serez déconnecté(e) dans <1>{{ time }}</1>.",
+            primaryButton: "Rester connecté",
+            secondaryButton: "Se déconnecter"
         }
     },
     pages: {
         applications: {
-            subTitle: "Manage and maintain your applications",
+            subTitle: "Gérer et maintenir vos applications",
             title: "Applications"
         },
         operations: {
-            subTitle: "Review operational tasks that requires your approval",
-            title: "Operations"
+            subTitle: "Examiner les tâches opérationnelles qui nécessitent votre approbation",
+            title: "Gestion"
         },
         overview: {
-            subTitle: "Manage your personal information, account security, and privacy",
-            title: "Welcome, {{firstName}}"
+            subTitle: "Gérer vos informations personnelles, la sécurité de votre compte et vos options de confidentialité",
+            title: "Bienvenue, {{firstName}}"
         },
         personalInfo: {
-            subTitle: "Edit and export your personal profile and manage linked accounts",
-            title: "Personal info"
+            subTitle: "Modifier et exporter votre profil personnel et gérer vos comptes associés",
+            title: "Données personnelles"
         },
         privacy: {
             subTitle: "",
-            title: "WSO2 Identity Server Privacy Policy"
+            title: "Politique de confidentialité de WSO2 Identity Server"
         },
         security: {
-            subTitle: "Secure your account by managing consents, sessions, and security settings",
-            title: "Security"
+            subTitle: "Sécurisez votre compte en gérant les consentements, les sessions authentifiées et les paramètres de sécurité",
+            title: "Sécurité"
         }
     },
     placeholders: {
         404: {
-            action: "Back to home",
+            action: "Revenir à la page d'accueil",
             subtitles: {
-                0: "We couldn't find the page you are looking for.",
-                1: "Please check the URL or click on the button below to be redirected back to the home page."
+                0: "La page que vous essayez de consulter n'existe pas.",
+                1: "Veuillez vérifier l'URL ou cliquez sur le bouton ci-dessous pour être redirigé vers la page d'accueil."
             },
-            title: "Page not found"
+            title: "Page introuvable"
         },
         accessDeniedError: {
-            action: "Back to home",
+            action: "Revenir à la page d'accueil",
             subtitles: {
-                0: "It seems like you are not allowed to access this page.",
-                1: "Please try signing in with a different account."
+                0: "Il semblerait que vous ne soyez pas autorisé à accéder à cette page.",
+                1: "Veuillez vous connecter en utilisant un autre compte."
             },
-            title: "Access not granted"
+            title: "Accès non autorisé"
         },
         emptySearchResult: {
-            action: "Clear search query",
+            action: "Réinitialiser la recherche",
             subtitles: {
-                0: "We couldn't find any results for \"{{query}}\"",
-                1: "Please try a different search term."
+                0: "La recherche \"{{query}}\" n'a renvoyé aucun résultat.",
+                1: "Veuillez essayer avec d'autres paramètres."
             },
-            title: "No results found"
+            title: "Aucun résultat"
         },
         genericError: {
-            action: "Refresh the page",
+            action: "Rafraîchir la page",
             subtitles: {
-                0: "Something went wrong while displaying this page.",
-                1: "See the browser console for technical details."
+                0: "Quelque chose s'est mal passé lors de l'affichage de cette page.",
+                1: "Voir la console du navigateur pour les détails techniques."
             },
-            title: "Something went wrong"
+            title: "Quelque chose s'est mal passé"
         },
         loginError: {
-            action: "Continue logout",
+            action: "Se déconnecter",
             subtitles: {
-                0: "It seems like you don't have permission to use this portal.",
-                1: "Please sign in with a different account."
+                0: "Il semblerait que l'accès à ce portail ne vous est pas autorisé.",
+                1: "Veuillez vous connecter en utilisant un autre compte."
             },
-            title: "You are not authorized"
+            title: "Accès interdit"
         }
     },
     sections: {
         accountRecovery: {
             description:
-                "If you forget your password or username, recover your account " +
-                "using email, SMS, or challenge questions",
-            heading: "Account recovery"
+                "Configurez les paramètres de récupération de votre compte " +
+                "en cas d'oubli de votre nom d'utilisateur ou mot de passe.",
+            heading: "Récupération de votre compte"
         },
         approvals: {
             description:
-                "Approve or deny tasks related to workflow operations like adding users, " +
-                "updating user claims, deleting user roles, etc.",
-            heading: "Pending approvals",
+                "Approuver ou refuser les tâches opérationnelles telles que " +
+                "la création de compte, la mise à jour d'attributs utilisateurs, etc.",
+            heading: "Tâches en attente d'approbation",
             placeholders: {
                 emptyApprovalList: {
-                    heading: "You don't have any {{status}} pending approvals"
+                    heading: "Vous n'avez aucune tâche {{status}} en attente d'approbation"
                 }
             }
         },
         changePassword: {
             actionTitles: {
-                change: "Change your password"
+                change: "Changer mon mot de passe"
             },
-            description: "Update your password regularly and make sure it's unique from other passwords you use.",
-            heading: "Change password"
+            description: "Assurez-vous de mettre à jour régulièrement votre mot de passe et de ne pas le réutiliser sur d'autres sites.",
+            heading: "Changer de mot de passe"
         },
         consentManagement: {
             actionTitles: {
-                empty: "You have not granted consent to any application"
+                empty: "Vous n'avez accordé votre consentement à aucune application"
             },
             description:
-                "Revoke any consent given to an application or personal detail that you " + "have agreed to share",
-            heading: "Manage consents",
+                "Révoquer un consentement ou une information personnelle que vous avez accepté de partager.",
+            heading: "Gérer mes consentements",
             placeholders: {
                 emptyConsentList: {
-                    heading: "You have not granted consent to any application"
+                    heading: "Vous n'avez accordé aucun consentement"
                 }
             }
         },
         federatedAssociations: {
-            description: "View your accounts from other identity providers that are linked with this account",
-            heading: "External Logins"
+            description: "Visualisez les comptes enregistrés auprès de services d'authentifications tiers liés à votre compte",
+            heading: "Services d'authentification tiers"
         },
         linkedAccounts: {
             actionTitles: {
-                add: "Add account"
+                add: "Associer un autre compte"
             },
-            description: "Link/associate your other accounts, and access them seamlessly without re-login",
-            heading: "Linked accounts"
+            description: "Liez vos comptes et accédez à ceux-ci de manière transparente sans avoir à vous reconnecter",
+            heading: "Comptes associés"
         },
         mfa: {
             description:
-                "Add an extra layer of protection to your account by configuring multiple " +
-                "steps of authentication. You can choose from options like SMS or a security device",
-            heading: "Multi-factor authentication"
+                "Renforcez la protection de votre compte en configurant plusieurs " +
+                "étapes d'authentification. Vous pouvez par exemple utiliser un dispositif" +
+                " de sécurité ou recevoir un mot de passe à usage unique",
+            heading: "Authentification à plusieurs étapes"
         },
         profile: {
-            description: "Manage and update your personal details like name, email, mobile number, organization, etc.",
-            heading: "Profile"
+            description: "Gérez vos données personnelles telles que votre nom, votre adresse e-mail, votre numéro de téléphone portable, etc.",
+            heading: "Profil"
         },
         profileExport: {
             actionTitles: {
-                export: "Download as JSON"
+                export: "Exporter au format JSON"
             },
-            description: "Download all your profile data including personal data, security questions, and consents",
-            heading: "Export profile"
+            description: "Téléchargez toutes les données de votre profil utilisateur : données personnelles, questions de sécurité et consentements",
+            heading: "Télécharger mon profil"
         },
         userSessions: {
             actionTitles: {
-                empty: "No active IDP sessions",
-                terminateAll: "Terminate all sessions"
+                empty: "Pas de sessions authentifiées actives",
+                terminateAll: "Mettre fin à toutes les sessions"
             },
-            description: "Review all the identity provider sessions that are currently active on your account",
-            heading: "Active IDP sessions",
+            description: "Examiner toutes les sessions authentifiées avec votre compte",
+            heading: "Activités de votre compte",
             placeholders: {
                 emptySessionList: {
-                    heading: "There are no active IDP sessions for this user"
+                    heading: "Vous n'avez actuellement aucune session authentifiée"
                 }
             }
         }
