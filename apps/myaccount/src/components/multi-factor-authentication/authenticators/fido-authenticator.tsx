@@ -20,16 +20,17 @@ import { Field, Forms } from "@wso2is/forms";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
 import { MFAIcons } from "../../../configs";
+import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";
-import { EditSection, ModalComponent, ThemeIcon } from "../../shared";
-import { useSelector, useDispatch } from "react-redux";
 import { AppState } from "../../../store";
 import { setOpenAction } from "../../../store/actions";
-import { CommonConstants } from "../../../constants";
+import { EditSection, ModalComponent, ThemeIcon } from "../../shared";
+
 
 /**
  * FIDO key.
