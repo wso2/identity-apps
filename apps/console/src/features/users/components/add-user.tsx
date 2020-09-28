@@ -139,6 +139,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         getUsersList(null, null, "userName eq " + username, null, userStore)
             .then((response) => {
                 setIsUsernameValid(response?.totalResults === 0);
+            }).catch((error) => {
+
             });
         setIsUsernamePatternValid(validateInputAgainstRegEx(username, usernameRegEx));
     };
