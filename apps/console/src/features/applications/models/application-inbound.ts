@@ -78,7 +78,7 @@ interface AccessTokenConfigurationInterface {
     applicationAccessTokenExpiryInSeconds?: number;
     bindingType?: string;
     revokeTokensWhenIDPSessionTerminated?: boolean;
-    tokenBindingValidation?: boolean;
+    validateTokenBinding?: boolean;
 }
 
 interface RefreshTokenConfigurationInterface {

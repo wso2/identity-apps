@@ -242,9 +242,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
                 revokeTokensWhenIDPSessionTerminated: values.get("RevokeAccessToken")?.length > 0,
-                tokenBindingValidation: values.get("ValidateBinding")?.length > 0,
                 type: values.get("type"),
-                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds"))
+                userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
+                validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
             },
             allowedOrigins: resolveAllowedOrigins(origin ? origin : allowedOrigins),
             callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
@@ -583,7 +583,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     );
                                 }
 
-                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                if (!URLUtils.isHttpsOrHttpUrl(value)) {
                                     label = (
                                         <Label basic color="orange" className="mt-2">
                                             { t("console:common.validations.unrecognizedURL.description") }
@@ -641,7 +641,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             );
                                         }
 
-                                        if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
                                             label = (
                                                 <Label basic color="orange" className="mt-2">
                                                     { t("console:common.validations.unrecognizedURL.description") }
@@ -786,30 +786,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
                                     label={
-                                        "Revoke access token when the IdP session is terminated"
-                                    }
-                                    name="revokeTokensWhenIDPSessionTerminated"
-                                    default={
-                                        initialValues
-                                            ? initialValues.accessToken?.revokeTokensWhenIDPSessionTerminated
-                                            : metadata.revokeTokensWhenIDPSessionTerminated
-                                    }
-                                    type="toggle"
-                                    children={ getAllowedList(metadata.accessTokenBindingType, true) }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-access-token-type-radio-group` }
-                                    required={ false }
-                                    requiredErrorMessage=""
-                                />
-                                <Hint>
-                                    Revoke the access token when the IdP session it is bound to is terminated.
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
-                                <Field
-                                    label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.bindingType.label")
                                     }
@@ -835,21 +811,21 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                             <Field
-                                                name="ValidateBinding"
+                                                name="ValidateTokenBinding"
                                                 label=""
                                                 required={ false }
                                                 requiredErrorMessage=""
                                                 type="checkbox"
                                                 value={
-                                                    initialValues.accessToken?.tokenBindingValidation
-                                                        ? [ "validateBinding" ]
+                                                    initialValues.accessToken?.validateTokenBinding
+                                                        ? [ "validateTokenBinding" ]
                                                         : []
                                                 }
                                                 children={ [
                                                     {
                                                         label: t("devPortal:components.applications.forms.inboundOIDC" +
                                                             ".sections.accessToken.fields.validateBinding.label"),
-                                                        value: "validateBinding"
+                                                        value: "validateTokenBinding"
                                                     }
                                                 ] }
                                                 readOnly={ readOnly }
