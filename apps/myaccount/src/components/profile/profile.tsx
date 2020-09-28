@@ -534,6 +534,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         onClose={ () => setShowEditAvatarModal(false) }
                         onCancel={ () => setShowEditAvatarModal(false) }
                         onSubmit={ handleAvatarEditModalSubmit }
+                        imageUrl={ profileDetails?.profileInfo?.profileUrl }
                         heading={ t("userPortal:modals.editAvatarModal.heading") }
                         submitButtonText={ t("userPortal:modals.editAvatarModal.primaryButton") }
                         cancelButtonText={ t("userPortal:modals.editAvatarModal.secondaryButton") }
