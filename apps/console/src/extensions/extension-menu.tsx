@@ -26,7 +26,7 @@ import getConfig from "./config";
  * @return {RouteInterface[]}
  */
 export const EXTENSION_ROUTES = (): RouteInterface[]  => {
-    const routes: RouteInterface[]  = getConfig?.routes;
+    const routes: RouteInterface[]  = getConfig()?.routes;
 
     routes.forEach(route => {
         const routePath = route.components;
