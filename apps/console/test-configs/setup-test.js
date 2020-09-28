@@ -19,7 +19,7 @@ require("../jest.config");
 require("@testing-library/jest-dom/extend-expect");
 require("babel-polyfill");
 
-var configObject = require("./mocks/mock.deployment.config.json");
+var configObject = require("./__mocks__/mock.deployment.config.json");
 
 /**
  * Mock worker class
