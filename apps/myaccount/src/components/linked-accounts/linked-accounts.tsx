@@ -108,27 +108,12 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 dispatch(getProfileLinkedAccounts());
             })
             .catch((error) => {
-                if (error.response && error.response.data && error.response.data.detail) {
-                    onAlertFired({
-                        description: t(
-                            "userPortal:components.linkedAccounts.notifications.addAssociation.error.description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "userPortal:components.linkedAccounts.notifications.addAssociation.error.message"
-                        )
-                    });
-
-                    return;
-                }
-
                 onAlertFired({
-                    description: t(
+                    description: error?.response?.data?.description ?? t(
                         "userPortal:components.linkedAccounts.notifications.addAssociation.genericError.description"
-                    ),
+                    ) ,
                     level: AlertLevels.ERROR,
-                    message: t(
+                    message: error?.response?.data?.message ?? t(
                         "userPortal:components.linkedAccounts.notifications.addAssociation.genericError.message"
                     )
                 });
@@ -169,7 +154,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             dispatch(handleAccountSwitching(account));
             refreshPage();
         } catch (error) {
-        
+
             if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({
                     description: t(
@@ -194,7 +179,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
                 )
             });
-        }  
+        }
     };
 
     /**
