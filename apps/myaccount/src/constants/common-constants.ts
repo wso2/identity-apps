@@ -52,4 +52,28 @@ export class CommonConstants {
      * @default
      */
     public static readonly SECURITY: string = "security-";
+
+    /**
+     * The name of the account activity section.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ACCOUNT_ACTIVITY: string = "account_activity";
+
+    /**
+     * The name of the account security section.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly ACCOUNT_SECURITY: string = "account_security";
+
+    /**
+     * The name of the consents control section.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CONSENTS_CONTROL: string = "consents_control";
 }
