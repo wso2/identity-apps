@@ -56,6 +56,17 @@ export class URLUtils {
     }
 
     /**
+     * Checks if the passed in url starts with HTTP/HTTPS.
+     *
+     * @param {string} url - URL to evaluate.
+     *
+     * @return {boolean} True if the url is a https/http url.
+     */
+    public static isHttpsOrHttpUrl(url: string): boolean {
+        return !!url.trim().match(PatternConstants.HTTPS_OR_HTTP_REGEX_PATTERN);
+    }
+
+    /**
      * Checks if the passed in url is a valid data URL.
      *
      * @param {string} url - URL to evaluate.

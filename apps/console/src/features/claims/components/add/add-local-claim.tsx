@@ -209,6 +209,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             open={ open }
             onClose={ onClose }
             data-testid={ testId }
+            closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.claims.local.wizard.header") }

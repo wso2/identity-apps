@@ -27,7 +27,7 @@ import {
     Storage,
     TOKEN_ENDPOINT,
     UserInfo
-} from "@wso2is/authentication";
+} from "@asgardio/oidc-js";
 import { TokenConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";

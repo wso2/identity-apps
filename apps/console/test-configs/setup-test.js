@@ -15,10 +15,15 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
+require("../jest.config");
 require("@testing-library/jest-dom/extend-expect");
 require("babel-polyfill");
 
+var configObject = require("./__mocks__/mock.deployment.config.json");
+
+/**
+ * Mock worker class
+ */
 class Worker {
     constructor(stringUrl) {
         this.url = stringUrl;
@@ -27,6 +32,44 @@ class Worker {
 
     postMessage(msg) {
         this.onmessage(msg);
+    }
+}
+
+/**
+ * Suggested fix for i18next warnings
+ * See also {@link https://github.com/i18next/react-i18next/issues/876}
+ */
+jest.mock("react-i18next", () => ({
+    useTranslation: () => ({
+      t: (key) => ({
+        message: key
+      })
+    })
+}));
+
+/**
+ * Suggested fix for jsdom issue
+ * See also {@link https://github.com/jsdom/jsdom/issues/3002}
+ */
+document.createRange = () => {
+    const range = new Range();
+
+    range.getBoundingClientRect = jest.fn();
+
+    range.getClientRects = jest.fn(() => ({
+        item: () => null,
+        length: 0,
+    }));
+
+    return range;
+};
+
+/**
+ * Mock configurations
+ */
+window.AppUtils = {
+    getConfig: function () {
+        return configObject;
     }
 }
 

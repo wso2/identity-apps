@@ -25,11 +25,6 @@ import { AdminView, DeveloperView } from "../../../views";
 import { AppConstants } from "../constants";
 
 /**
- * Load extension routes if available.
- */
-const extensions = EXTENSION_ROUTES();
-
-/**
  * Get Developer View Routes.
  *
  * @remarks
@@ -50,7 +45,7 @@ const extensions = EXTENSION_ROUTES();
 export const getDeveloperViewRoutes = (): RouteInterface[] => {
 
     return [
-        ...extensions,
+        ...EXTENSION_ROUTES(),
         {
             category: "devPortal:components.sidePanel.categories.application",
             children: [

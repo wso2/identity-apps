@@ -436,7 +436,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 return authenticator.authenticatorId === template.federatedAuthenticators.defaultAuthenticatorId ?
                     {
                         ...authenticator,
-                        properties: getUpdatedElementsByKey(defaultAuthenticatorPropertiesFromMetadata, 
+                        properties: getUpdatedElementsByKey(defaultAuthenticatorPropertiesFromMetadata,
                             authenticator.properties, "key")
                         // properties: _.merge(defaultAuthenticatorPropertiesFromMetadata, authenticator.properties)
                     } : authenticator;
@@ -616,7 +616,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 className="wizard identity-provider-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
-                closeOnDimmerClick
+                closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
             >

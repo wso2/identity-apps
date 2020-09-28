@@ -362,6 +362,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                                 ? `${ testId }-group-confirmation-modal`
                                 : `${ testId }-role-confirmation-modal`
                         }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
                             { t("adminPortal:components.roles.edit.basics.confirmation.header") }

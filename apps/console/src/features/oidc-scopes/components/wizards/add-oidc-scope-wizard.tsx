@@ -257,7 +257,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             size="small"
             onClose={ closeWizard }
             data-testid={ testId }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">

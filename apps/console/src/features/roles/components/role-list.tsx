@@ -350,6 +350,7 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                         handleRoleDelete(currentDeletedRole);
                         setShowDeleteConfirmationModal(false);
                     } }
+                    closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
                         { t("adminPortal:components.roles.list.confirmations.deleteItem.header") }

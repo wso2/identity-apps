@@ -282,6 +282,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     });
                 } }
                 data-testid={ `${ testId }-delete-confirmation-modal` }
+                closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header
                     data-testid={ `${ testId }-delete-confirmation-modal-header` }
@@ -594,7 +595,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                                 "genericError.message")
                     }));
             });
-            
+
             return;
         }
 

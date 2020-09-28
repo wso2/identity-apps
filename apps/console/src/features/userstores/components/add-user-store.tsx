@@ -286,6 +286,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             size="small"
             className="wizard application-create-wizard"
             data-testid={ testId }
+            closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.userstores.wizard.header",

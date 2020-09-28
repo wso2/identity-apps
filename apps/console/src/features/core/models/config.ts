@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ResponseModeTypes, Storage } from "@wso2is/authentication";
+import { ResponseModeTypes, Storage } from "@asgardio/oidc-js";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,

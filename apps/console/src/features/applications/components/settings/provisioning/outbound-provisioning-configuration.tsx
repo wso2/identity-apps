@@ -293,6 +293,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             (): void => handleProvisioningIDPDelete(deletingIdp)
                         }
                         data-testid={ `${ testId }-connector-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-header` }

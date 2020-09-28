@@ -240,6 +240,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             size="small"
             className="wizard application-create-wizard"
             data-testid={ `${ testId }-modal` }
+            closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.certificates.keystore.wizard.header")}

@@ -193,6 +193,7 @@ const UserEditPage = (): ReactElement => {
                         name={ resolveUserDisplayName(user) }
                         emails={ resolveUserEmails(user?.emails) }
                         onClose={ () => setShowEditAvatarModal(false) }
+                        closeOnDimmerClick={ false }
                         onCancel={ () => setShowEditAvatarModal(false) }
                         onSubmit={ handleAvatarEditModalSubmit }
                         imageUrl={ profileInfo?.profileUrl }

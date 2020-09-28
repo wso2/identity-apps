@@ -156,6 +156,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                     });
             } }
             data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
@@ -340,7 +341,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                             .find(attribute => attribute.name === "type").value === "password";
                                         const toggle = property.attributes
                                             .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                         return (
                                             isPassword
                                                 ? (
@@ -463,7 +464,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                     .find(attribute => attribute.name === "type").value === "password";
                                                 const toggle = property.attributes
                                                     .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                                 return (
                                                     isPassword
                                                         ? (

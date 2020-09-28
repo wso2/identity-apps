@@ -94,6 +94,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteDialect(dialect.id) }
             data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
@@ -128,7 +129,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                         || t("adminPortal:components.claims.dialects.notifications." +
                             "fetchADialect.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: error?.message 
+                    message: error?.message
                         || t("adminPortal:components.claims.dialects.notifications." +
                             "fetchADialect.genericError.message")
                 }
@@ -166,7 +167,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
                         || t("adminPortal:components.claims.dialects.notifications." +
-                            "fetchExternalClaims.genericError.message") 
+                            "fetchExternalClaims.genericError.message")
                 }
             ));
         }).finally(() => {
@@ -180,7 +181,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     /**
      * This generates the first letter of a dialect
-     * @param {string} name 
+     * @param {string} name
      * @return {string} The first letter of a dialect
      */
     const generateDialectLetter = (name: string): string => {
@@ -190,7 +191,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
 
     /**
      * This deletes a dialect
-     * @param {string} dialectID 
+     * @param {string} dialectID
      */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID).then(() => {
@@ -264,7 +265,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-            
+
             <Divider hidden />
 
             <Grid columns={ 1 }>

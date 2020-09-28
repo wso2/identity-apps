@@ -109,6 +109,16 @@ export class ServerConfigurationsConstants {
 	 */
 	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
 
+    /**
+     * UUID of the user on boarding connector.
+     */
+    public static readonly USER_ONBOARDING_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
+
+    /**
+     * User onboarding API Keyword constants.
+     */
+    public static readonly EMAIL_VERIFICATION_ENABLED: string = "EmailVerification.Enable";
+
 	/**
 	 * Self registration API Keyword constants.
 	 */

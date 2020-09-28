@@ -22,7 +22,7 @@ import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import { Button, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
@@ -34,6 +34,11 @@ import {
     UIConstants,
     store
 } from "../../core";
+import {
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants,
+    getConnectorCategory
+} from "../../server-configurations";
 import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";
@@ -64,6 +69,9 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
+    const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
+
+    const init = useRef(true);
 
     const username = useSelector((state: AppState) => state.auth.username);
     const tenantName = store.getState().config.deployment.tenant;
@@ -80,6 +88,14 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 setUserListRequestLoading(false);
             });
     };
+
+    useEffect(() => {
+        if (init.current) {
+            init.current = false;
+        } else {
+            setShowWizard(true);
+        }
+    }, [emailVerificationEnabled]);
 
     useEffect(() => {
         SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
@@ -315,6 +331,37 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             });
     };
 
+    /**
+     * Handles the click event of the create new user button.
+     */
+    const handleAddNewUserWizardClick = (): void => {
+        getConnectorCategory(ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID)
+            .then((response) => {
+                const connectors: GovernanceConnectorInterface[]  = response?.connectors;
+                const userOnboardingConnector = connectors.find(
+                    (connector: GovernanceConnectorInterface) => connector.id
+                        === ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID
+                );
+
+                const emailVerification = userOnboardingConnector.properties.find(
+                    property => property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
+
+                setEmailVerificationEnabled(emailVerification.value === "true");
+            }).catch((error) => {
+                handleAlerts({
+                    description: error?.response?.data?.description ?? t(
+                        "adminPortal:components.governanceConnectors.notifications." +
+                        "getConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message ?? t(
+                        "adminPortal:components.governanceConnectors.notifications." +
+                        "getConnector.genericError.message"
+                    )
+                });
+            });
+    }
+
     return (
         <PageLayout
             action={
@@ -322,7 +369,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 && (
                     <PrimaryButton
                         data-testid="user-mgt-user-list-add-user-button"
-                        onClick={ () => setShowWizard(true) }
+                        onClick={ handleAddNewUserWizardClick  }
                     >
                         <Icon name="add"/>
                         { t("adminPortal:components.users.buttons.addNewUserBtn") }
@@ -472,6 +519,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                         listItemLimit={ listItemLimit }
                         updateList={ () => setListUpdated(true) }
                         rolesList={ rolesList }
+                        emailVerificationEnabled={ emailVerificationEnabled }
                     />
                     )
                 }

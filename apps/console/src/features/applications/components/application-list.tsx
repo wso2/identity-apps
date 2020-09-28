@@ -427,6 +427,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete(deletingApplication.id) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }

@@ -346,6 +346,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleOIDCScopeDelete(deletingScope.name) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }

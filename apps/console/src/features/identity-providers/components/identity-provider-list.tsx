@@ -286,7 +286,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         if (!showListItemActions) {
             return;
         }
-        
+
         return [
             {
                 hidden: (): boolean => false,
@@ -356,6 +356,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             (): void => handleIdentityProviderDelete(deletingIDP.id)
                         }
                         data-testid={ `${ testId }-delete-confirmation` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
                             { t("devPortal:components.idp.confirmations.deleteIDP.header") }

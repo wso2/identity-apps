@@ -214,9 +214,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This check if the input claim is mapped to attribute from every userstore.
-     * 
+     *
      * @param {Claim} claim The claim to be checked.
-     * 
+     *
      * @returns {string[]} The array of userstore names without a mapped attribute.
      */
     const checkUserStoreMapping = (claim: Claim): string[] => {
@@ -237,9 +237,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This checks if the list data is a local claim.
-     * 
+     *
      * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined Type to be checked.
-     * 
+     *
      * @return {boolean} `true` if the data is a local claim.
      */
     const isLocalClaim = (
@@ -252,9 +252,9 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This checks if the list data is a dialect.
-     * 
+     *
      * @param {Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]} toBeDetermined
-     * 
+     *
      * @return {boolean} `true` if the data is a dialect.
      */
     const isDialect = (
@@ -291,7 +291,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This deletes a local claim
-     * @param {string} id 
+     * @param {string} id
      */
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(() => {
@@ -319,8 +319,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This deletes an external claim
-     * @param {string} dialectID 
-     * @param {string} claimID 
+     * @param {string} dialectID
+     * @param {string} claimID
      */
     const deleteExternalClaim = (dialectID: string, claimID: string) => {
         deleteAnExternalClaim(dialectID, claimID).then(() => {
@@ -352,7 +352,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     /**
      * This deletes a dialect
-     * @param {string} dialectID 
+     * @param {string} dialectID
      */
     const deleteDialect = (dialectID: string) => {
         deleteADialect(dialectID).then(() => {
@@ -434,6 +434,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         : listItem.delete(deleteItem.id)
                 } }
                 data-testid={ `${ testId }-delete-confirmation-modal` }
+                closeOnDimmerClick={ false }
             >
                 <ConfirmationModal.Header
                     data-testid={ `${ testId }-delete-confirmation-modal-header` }
@@ -526,7 +527,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 : t("adminPortal:components.claims.list.placeholders.emptyList.title.external")
                     }
                     subtitle={ [
-                        
+
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -624,7 +625,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 }
             ]
         }
-        
+
         if (isDialect(list)) {
             return [
                 {
@@ -791,7 +792,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         if (!showListItemActions) {
             return;
         }
-        
+
         if (isLocalClaim(list)) {
             return [
                 {
@@ -864,7 +865,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 }
             ]
         }
-        
+
         return [
             {
                 hidden: (claim: AddExternalClaim): boolean => !isEqual(editExternalClaim, claim),
