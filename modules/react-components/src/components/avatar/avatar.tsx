@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { FormValidation } from "@wso2is/validation";
+import { ImageUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Image, ImageProps, Placeholder, SemanticSIZES } from "semantic-ui-react";
@@ -212,15 +212,9 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
             if (React.isValidElement(image)) {
                 setIsImageValidUrl(false);
             } else {
-                FormValidation.imageUrl(image as string).then((response) => {
-                    if (response) {
-                        setIsImageValidUrl(true);
-                    } else {
-                        setIsImageValidUrl(false);
-                    }
-                }).catch(() => {
-                    setIsImageValidUrl(false);
-                })
+                ImageUtils.isValidImageURL(image as string, (isValid: boolean) => {
+                    setIsImageValidUrl(isValid);
+                });
             }
         }
     }, [ image ]);
