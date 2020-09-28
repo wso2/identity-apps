@@ -19,12 +19,18 @@
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector }from "react-redux";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
+import { CommonConstants } from "../../constants";
 import { AlertInterface, AlertLevels } from "../../models";
+import { AppState } from "../../store";
+import { setOpenAction } from "../../store/actions";
 import { endUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
+
+
 /**
  * Constant to store the change password from identifier.
  * @type {string}
@@ -45,21 +51,22 @@ interface ChangePasswordProps {
  * @return {JSX.Element}
  */
 export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: ChangePasswordProps): JSX.Element => {
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [errors, setErrors] = useState({
+    const [ currentPassword, setCurrentPassword ] = useState("");
+    const [ newPassword, setNewPassword ] = useState("");
+    const [ errors, setErrors ] = useState({
         confirmPassword: "",
         currentPassword: "",
         newPassword: ""
     });
-    const [editingForm, setEditingForm] = useState({
-        [CHANGE_PASSWORD_FORM_IDENTIFIER]: false
-    });
-    const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
-    const [reset, resetForm] = useTrigger();
+    const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
+
+    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+
+    const [ reset, resetForm ] = useTrigger();
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     /**
      * Handles the `onSubmit` event of forms.
@@ -68,18 +75,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      */
     const handleSubmit = (): void => {
         setShowConfirmationModal(true);
-    };
-
-    /**
-     * Handles the onClick event of the cancel button.
-     *
-     * @param formName - Name of the form
-     */
-    const hideFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [formName]: false
-        });
     };
 
     /**
@@ -94,7 +89,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // reset the form.
                     resetForm();
                     // hide the change password form
-                    hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
+                    dispatch(setOpenAction(null));
 
                     onAlertFired({
                         description: t(
@@ -141,7 +136,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // reset the form.
                     resetForm();
                     // hide the change password form
-                    hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
+                    dispatch(setOpenAction(null));
 
                     onAlertFired({
                         description: t(
@@ -159,7 +154,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // reset the form.
                     resetForm();
                     // hide the change password form
-                    hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
+                    dispatch(setOpenAction(null));
 
                     // Generic error message
                     onAlertFired({
@@ -187,17 +182,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         setShowConfirmationModal(false);
     };
 
-    /**
-     * Handles the onClick event of the edit button.
-     *
-     * @param formName - Name of the form
-     */
-    const showFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [formName]: true
-        });
-    };
 
     const confirmationModal = (
         <Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
@@ -219,109 +203,112 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         </Modal>
     );
 
-    const showChangePasswordView = editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] ? (
-        <EditSection>
-            <Forms
-                onSubmit={ (value) => {
-                    setCurrentPassword(value.get("currentPassword").toString());
-                    setNewPassword(value.get("newPassword").toString());
-                    handleSubmit();
-                } }
-                resetState={ reset }
-            >
-                <Field
-                    autoFocus={ true }
-                    hidePassword={ t("common:hidePassword") }
-                    label={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".currentPassword.label"
-                    ) }
-                    name="currentPassword"
-                    placeholder={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
-                        "currentPassword.placeholder"
-                    ) }
-                    required={ true }
-                    requiredErrorMessage={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm." +
-                        "inputs.currentPassword.validations.empty"
-                    ) }
-                    showPassword={ t("common:showPassword") }
-                    type="password"
-                    width={ 9 }
-                />
-                <Field
-                    hidePassword={ t("common:hidePassword") }
-                    label={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
-                    ) }
-                    name="newPassword"
-                    placeholder={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
-                        "newPassword.placeholder"
-                    ) }
-                    required={ true }
-                    requiredErrorMessage={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm." +
-                        "inputs.newPassword.validations.empty"
-                    ) }
-                    showPassword={ t("common:showPassword") }
-                    type="password"
-                    width={ 9 }
-                />
-                <Field
-                    hidePassword={ t("common:hidePassword") }
-                    label={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".confirmPassword.label"
-                    ) }
-                    name="confirmPassword"
-                    placeholder={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
-                        "confirmPassword.placeholder"
-                    ) }
-                    required={ true }
-                    requiredErrorMessage={ t(
-                        "userPortal:components.changePassword.forms.passwordResetForm." +
-                        "inputs.confirmPassword.validations.empty"
-                    ) }
-                    showPassword={ t("common:showPassword") }
-                    type="password"
-                    validation={ (value: string, validation: Validation, formValues) => {
-                        if (formValues.get("newPassword") !== value) {
-                            validation.isValid = false;
-                            validation.errorMessages.push(
-                                t(
-                                    "userPortal:components.changePassword.forms.passwordResetForm.inputs" +
-                                    ".confirmPassword.validations.mismatch"
-                                )
-                            );
-                        }
+    const showChangePasswordView = openAction === CommonConstants.SECURITY+CHANGE_PASSWORD_FORM_IDENTIFIER
+        ? (
+            <EditSection>
+                <Forms
+                    onSubmit={ (value) => {
+                        setCurrentPassword(value.get("currentPassword").toString());
+                        setNewPassword(value.get("newPassword").toString());
+                        handleSubmit();
                     } }
-                    width={ 9 }
-                />
-                <Field
-                    hidden={ true }
-                    type="divider"
-                />
-                <Form.Group>
+                    resetState={ reset }
+                >
                     <Field
-                        size="small"
-                        type="submit"
-                        value={ t("common:submit").toString() }
+                        autoFocus={ true }
+                        hidePassword={ t("common:hidePassword") }
+                        label={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm.inputs"
+                            + ".currentPassword.label"
+                        ) }
+                        name="currentPassword"
+                        placeholder={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
+                            "currentPassword.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm." +
+                            "inputs.currentPassword.validations.empty"
+                        ) }
+                        showPassword={ t("common:showPassword") }
+                        type="password"
+                        width={ 9 }
                     />
                     <Field
-                        className="link-button"
-                        onClick={ () => {
-                            hideFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER);
+                        hidePassword={ t("common:hidePassword") }
+                        label={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
+                        ) }
+                        name="newPassword"
+                        placeholder={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
+                            "newPassword.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm." +
+                            "inputs.newPassword.validations.empty"
+                        ) }
+                        showPassword={ t("common:showPassword") }
+                        type="password"
+                        width={ 9 }
+                    />
+                    <Field
+                        hidePassword={ t("common:hidePassword") }
+                        label={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm.inputs"
+                            + ".confirmPassword.label"
+                        ) }
+                        name="confirmPassword"
+                        placeholder={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
+                            "confirmPassword.placeholder"
+                        ) }
+                        required={ true }
+                        requiredErrorMessage={ t(
+                            "userPortal:components.changePassword.forms.passwordResetForm." +
+                            "inputs.confirmPassword.validations.empty"
+                        ) }
+                        showPassword={ t("common:showPassword") }
+                        type="password"
+                        validation={ (value: string, validation: Validation, formValues) => {
+                            if (formValues.get("newPassword") !== value) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(
+                                    t(
+                                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" +
+                                        ".confirmPassword.validations.mismatch"
+                                    )
+                                );
+                            }
                         } }
-                        size="small"
-                        type="button"
-                        value={ t("common:cancel").toString() }
+                        width={ 9 }
                     />
-                </Form.Group>
+                    <Field
+                        hidden={ true }
+                        type="divider"
+                    />
+                    <Form.Group>
+                        <Field
+                            size="small"
+                            type="submit"
+                            value={ t("common:submit").toString() }
+                        />
+                        <Field
+                            className="link-button"
+                            onClick={ () => {
+                                dispatch(setOpenAction(null));
+                            } }
+                            size="small"
+                            type="button"
+                            value={ t("common:cancel").toString() }
+                        />
+                    </Form.Group>
 
-            </Forms>
-        </EditSection>
-    ) : null;
+                </Forms>
+            </EditSection>
+        ) : null;
 
     return (
         <SettingsSection
@@ -332,10 +319,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={ () => showFormEditView(CHANGE_PASSWORD_FORM_IDENTIFIER) }
+            onPrimaryActionClick={
+                () => dispatch(setOpenAction(CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER))
+            }
             primaryAction={ t("userPortal:sections.changePassword.actionTitles.change") }
             primaryActionIcon="key"
-            showActionBar={ !editingForm[CHANGE_PASSWORD_FORM_IDENTIFIER] }
+            showActionBar={ openAction !== CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER }
         >
             { showChangePasswordView }
             { confirmationModal }

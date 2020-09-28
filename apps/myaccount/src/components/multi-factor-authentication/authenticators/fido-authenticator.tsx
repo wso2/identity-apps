@@ -26,6 +26,19 @@ import { MFAIcons } from "../../../configs";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";
 import { EditSection, ModalComponent, ThemeIcon } from "../../shared";
+import { useSelector, useDispatch } from "react-redux";
+import { AppState } from "../../../store";
+import { setOpenAction } from "../../../store/actions";
+import { CommonConstants } from "../../../constants";
+
+/**
+ * FIDO key.
+ *
+ * @constant
+ * @default
+ * @type {string}
+ */
+const FIDO = "fido-";
 
 /**
  * Prop types for the associated accounts component.
@@ -50,6 +63,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
+
+    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const dispatch = useDispatch();
 
     /**
      * This function fires a notification on failure.
@@ -199,6 +215,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
         tempEditFido.set(id, false);
         setEditFido(tempEditFido);
+        dispatch(setOpenAction(null));
     };
 
     const removeDevice = (id: string) => {
@@ -270,6 +287,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
         tempEditFido.set(id, true);
         setEditFido(tempEditFido);
+        dispatch(setOpenAction(CommonConstants.SECURITY + FIDO + id));
     };
 
     /**
@@ -395,7 +413,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         >
                             {
                                 deviceList.map((device, index) => (
-                                    editFIDO && editFIDO.get(device.credential.credentialId)
+                                    editFIDO?.get(device.credential.credentialId)
+                                        && openAction?.startsWith(CommonConstants.SECURITY+FIDO)
                                         ? (
                                             <EditSection key={ device.credential.credentialId }>
                                                 <Grid>

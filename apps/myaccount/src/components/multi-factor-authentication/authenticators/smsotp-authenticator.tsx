@@ -25,9 +25,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
+import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, BasicProfileInterface } from "../../../models";
-import { getProfileInformation } from "../../../store/actions";
+import { AppState } from "../../../store";
+import { getProfileInformation, setOpenAction } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
+
+
+/**
+ * SMS key.
+ *
+ * @constant
+ * @default
+ * @type {string}
+ */
+const SMS = "sms";
 
 /**
  * Prop types for the SMS OTP component.
@@ -43,13 +55,13 @@ interface SMSOTPProps {
  */
 export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
     const [mobile, setMobile] = useState("");
-    const [isEdit, setIsEdit] = useState(false);
     const { t } = useTranslation();
     const { onAlertFired } = props;
     const dispatch = useDispatch();
     const profileInfo: BasicProfileInterface = useSelector(
         (state: any) => state.authenticationInformation.profileInfo
     );
+    const openAction: string = useSelector((state: AppState) => state.global.openAction);
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -104,7 +116,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 });
 
                 dispatch(getProfileInformation());
-                setIsEdit(false);
+                dispatch(setOpenAction(null));
             })
             .catch((error) => {
                 if (error?.response?.data && error?.response?.detail) {
@@ -135,15 +147,15 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     };
 
     const handleEdit = () => {
-        setIsEdit(true);
+        dispatch(setOpenAction(CommonConstants.SECURITY + SMS));
     };
 
     const handleCancel = () => {
-        setIsEdit(false);
+        dispatch(setOpenAction(null));
     };
 
     const showEditView = () => {
-        if (!isEdit) {
+        if (openAction !== CommonConstants.SECURITY + SMS) {
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>

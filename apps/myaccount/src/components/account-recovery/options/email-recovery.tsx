@@ -24,10 +24,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
+import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
 import { AppState } from "../../../store";
-import { getProfileInformation } from "../../../store/actions";
+import { getProfileInformation, setOpenAction } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
+
+/**
+ * Email key.
+ *
+ * @constant
+ * @default
+ * @type {string}
+ */
+const EMAIL = "email";
 
 /**
  * Prop types for the EmailRecoveryComponent component.
@@ -61,10 +71,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         }
         return emailSchemas;
     });
+    const openAction: string = useSelector((state: AppState) => state.global.openAction);
 
     const [ email, setEmail ] = useState("");
     const [ editedEmail, setEditedEmail ] = useState("");
-    const [ isEdit, setIsEdit ] = useState(false);
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
 
     let emailType: string;
@@ -119,7 +129,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                 });
 
                 dispatch(getProfileInformation());
-                setIsEdit(false);
+                dispatch(setOpenAction(null));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -180,20 +190,20 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             setEmailAddress(profileInfo);
         }
     }, [profileInfo]);
-    
+
     /**
      * This is called when the edit icon is clicked.
      *
      */
     const handleEdit = () => {
-        setIsEdit(true);
+        dispatch(setOpenAction(CommonConstants.SECURITY + EMAIL));
     };
 
     /**
      * This is called when the cancel button is pressed
      */
     const handleCancel = () => {
-        setIsEdit(false);
+        dispatch(setOpenAction(null));
     };
 
     /**
@@ -219,7 +229,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
      * elements based on if the edit icon has been clicked
      */
     const showEditView = () => {
-        if (!isEdit) {
+        if (openAction!==CommonConstants.SECURITY+EMAIL) {
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>
