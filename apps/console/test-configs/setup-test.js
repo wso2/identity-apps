@@ -37,7 +37,7 @@ class Worker {
 
 /**
  * Suggested fix for jsdom issue
- * // See also {@link https://github.com/jsdom/jsdom/issues/3002}
+ * See also {@link https://github.com/jsdom/jsdom/issues/3002}
  */
 document.createRange = () => {
     const range = new Range();
@@ -60,4 +60,5 @@ window.AppUtils = {
         return configObject;
     }
 }
+
 window.Worker = Worker;
