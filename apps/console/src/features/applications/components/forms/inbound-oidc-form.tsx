@@ -574,8 +574,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ".validations.empty")
                             }
                             validation={ (value: string) => {
-                                // eslint-disable-next-line no-debugger
-                                debugger
                                 let label: ReactElement = null;
 
                                 const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
