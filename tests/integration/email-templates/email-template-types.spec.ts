@@ -25,30 +25,27 @@ import { Header } from "@wso2is/cypress-base/page-objects";
 import { EmailTemplatesListPage } from "./page-objects";
 import { CommonUtils } from "@wso2is/cypress-base/utils";
 import { EmailTemplateTypesDomConstants } from "./constants";
+import { v4 as uuidv4 } from "uuid";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
 const SERVER_URL: string = Cypress.env("SERVER_URL");
 const PORTAL: string = Cypress.env("CONSOLE_BASE_URL");
 
-const NEW_SAMPLE_EMAIL_TEMPLATE_TYPE_NAME: string = "Test Template Type";
+const NEW_SAMPLE_EMAIL_TEMPLATE_TYPE_NAME: string = "Sample " + uuidv4();
 
 describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () => {
 
     const header: Header = new Header();
     const emailTemplatesPage: EmailTemplatesListPage = new EmailTemplatesListPage();
 
-    beforeEach(() => {
-        CookieUtils.preserveAllSessionCookies();
-    });
-
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
         cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL);
     });
 
-    after(() => {
-        // cy.logout();
+    beforeEach(() => {
+        CookieUtils.preserveAllSessionCookies();
     });
 
     context("ITC-1.1.0-[email-templates] - Email Template Types Listing Page.", () => {
