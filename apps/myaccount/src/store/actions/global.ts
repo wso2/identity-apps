@@ -22,6 +22,7 @@ import {
     GlobalActionTypes,
     HideGlobalLoaderAction,
     InitializeAlertSystemAction,
+    SetOpenAction,
     SetSupportedI18nLanguagesActionInterface,
     ShowGlobalLoaderAction,
     ToggleApplicationsPageVisibilityAction
@@ -88,4 +89,14 @@ export const setSupportedI18nLanguages = (
 ): SetSupportedI18nLanguagesActionInterface => ({
     payload: languages,
     type: GlobalActionTypes.SET_SUPPORTED_I18N_LANGUAGES
+    });
+
+/**
+ * Redux action to set an action to open.
+ *
+ * @param {string} action - The action to set to open.
+ */
+export const setOpenAction = (action: string): SetOpenAction => ({
+    payload: action,
+    type: GlobalActionTypes.SET_OPEN_ACTION
 });
