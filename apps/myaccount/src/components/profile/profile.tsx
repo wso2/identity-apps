@@ -27,10 +27,11 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
+import { CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
-import { getProfileInformation } from "../../store/actions";
+import { getProfileInformation, setOpenAction } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 
@@ -59,9 +60,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
+    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
-    const [ editingForm, setEditingForm ] = useState<string>(undefined);
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
 
@@ -219,7 +221,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         });
 
         // Hide corresponding edit view
-        setEditingForm(undefined);
+        dispatch(setOpenAction(null));
     };
 
     /**
@@ -240,7 +242,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param {Profile Schema} schema
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
-        if (editingForm === schema.name) {
+        if (openAction === CommonConstants.PERSONAL_INFO+schema.name) {
             const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
@@ -315,7 +317,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         <Field
                                             className="link-button"
                                             onClick={ () => {
-                                                setEditingForm(undefined);
+                                                dispatch(setOpenAction(null));
                                             } }
                                             size="small"
                                             type="button"
@@ -381,7 +383,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             : (
                                                 <a
                                                     className="placeholder-text"
-                                                    onClick={ () => { setEditingForm(schema.name); } }
+                                                        onClick={ () => {
+                                                            dispatch(
+                                                                setOpenAction(
+                                                                    CommonConstants.PERSONAL_INFO + schema.name
+                                                                )
+                                                            );
+                                                        } }
                                                 >
                                                     {t("userPortal:components.profile.forms.generic.inputs.placeholder",
                                                         {
@@ -416,7 +424,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         className="list-icon"
                                                         size="small"
                                                         color="grey"
-                                                        onClick={ () => setEditingForm(schema.name) }
+                                                        onClick={
+                                                            () => dispatch(
+                                                                setOpenAction(
+                                                                    CommonConstants.PERSONAL_INFO + schema.name
+                                                                )
+                                                            )
+                                                        }
                                                         name={ !isEmpty(profileInfo.get(schema.name))
                                                             ? "pencil alternate"
                                                             : null }
