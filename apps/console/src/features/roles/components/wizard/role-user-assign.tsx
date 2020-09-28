@@ -74,15 +74,15 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(0);
     const [ userListMetaContent, setUserListMetaContent ] = useState(undefined);
-    
+
     const [ isSelectAllUnAssignedUsers, setIsSelectAllUnAssignedUsers ] = useState<boolean>(false);
     const [ isSelectAllAssignedUsers, setIsSelectAllAssignedUsers ] = useState<boolean>(false);
-    
+
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<UserBasicInterface[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
-    
+
 
     useEffect(() => {
         if (isSelectAllUnAssignedUsers) {
@@ -135,7 +135,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) => 
+                        selectedUserList.sort((userObject, comparedUserObject) =>
                             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setSelectedUsers(selectedUserList);
@@ -154,7 +154,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                 }
                             });
                         });
-                        selectedUserList.sort((userObject, comparedUserObject) => 
+                        selectedUserList.sort((userObject, comparedUserObject) =>
                             userObject.name?.givenName?.localeCompare(comparedUserObject.name?.givenName)
                         );
                         setUsersList(responseUsers.filter(function(user) {
@@ -368,7 +368,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             usersList?.map((user, index)=> {
                                 return (
                                     <TransferListItem
-                                        handleItemChange={ () => 
+                                        handleItemChange={ () =>
                                             handleUnassignedItemCheckboxChange(user)
                                         }
                                         key={ index }
@@ -399,7 +399,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                             tempUserList?.map((user, index)=> {
                                 return (
                                     <TransferListItem
-                                        handleItemChange={ () => 
+                                        handleItemChange={ () =>
                                             handleAssignedItemCheckboxChange(user)
                                         }
                                         key={ index }
@@ -417,20 +417,30 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 </TransferComponent>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton
-                    data-testid={ `${ testId }-assign-user-wizard-modal-cancel-button` }
-                    onClick={ handleCloseAddNewGroupModal }
-                >
-                    { t("common:cancel") }
-                </LinkButton>
-                <PrimaryButton
-                    data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
-                    onClick={ () => { 
-                        handleAddUserSubmit()
-                    } }
-                >
-                    { t("common:save") }
-                </PrimaryButton>
+                <Grid>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <LinkButton
+                                data-testid={ `${ testId }-assign-user-wizard-modal-cancel-button` }
+                                onClick={ handleCloseAddNewGroupModal }
+                                floated="left"
+                            >
+                                { t("common:cancel") }
+                            </LinkButton>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <PrimaryButton
+                                data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
+                                onClick={ () => {
+                                    handleAddUserSubmit();
+                                } }
+                                floated="right"
+                            >
+                                { t("common:save") }
+                            </PrimaryButton>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Modal.Actions>
         </Modal>
     );
@@ -573,7 +583,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         usersList?.map((user, index)=> {
                                             return (
                                                 <TransferListItem
-                                                    handleItemChange={ () => 
+                                                    handleItemChange={ () =>
                                                         handleUnassignedItemCheckboxChange(user)
                                                     }
                                                     key={ index }
@@ -605,7 +615,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         tempUserList?.map((user, index)=> {
                                             return (
                                                 <TransferListItem
-                                                    handleItemChange={ () => 
+                                                    handleItemChange={ () =>
                                                         handleAssignedItemCheckboxChange(user)
                                                     }
                                                     key={ index }
