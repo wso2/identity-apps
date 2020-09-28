@@ -572,10 +572,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     ".validations.empty")
                             }
                             validation={ (value: string) => {
-
+                                // eslint-disable-next-line no-debugger
+                                debugger
                                 let label: ReactElement = null;
 
-                                if (URLUtils.isHttpUrl(value)) {
+                                const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
+                                const isHttpsUrl: boolean = URLUtils.isHttpsUrl(value);
+
+                                if (isHttpUrl) {
                                     label = (
                                         <Label basic color="orange" className="mt-2">
                                             { t("console:common.validations.inSecureURL.description") }
@@ -583,7 +587,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     );
                                 }
 
-                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                if (!isHttpUrl && !isHttpsUrl) {
                                     label = (
                                         <Label basic color="orange" className="mt-2">
                                             { t("console:common.validations.unrecognizedURL.description") }
