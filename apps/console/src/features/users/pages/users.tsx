@@ -21,7 +21,13 @@ import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { Button, ListLayout, PageLayout, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
+import {
+    Button,
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout,
+    PrimaryButton
+}from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +35,7 @@ import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
+    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
@@ -84,7 +91,6 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
         getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
-                console.log(response);
                 setUsersList(response);
                 setUserStoreError(false);
             }).catch((error) => {
