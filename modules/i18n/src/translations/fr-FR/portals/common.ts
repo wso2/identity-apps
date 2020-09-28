@@ -131,4 +131,3 @@ export const common: CommonNS = {
     verify: "Vérifier",
     view: "Voir"
 };
-+

@@ -512,7 +512,7 @@ export const devPortal: DevPortalNS = {
                                 "les usagers de tous les locataires..",
                             label: "Application SaaS",
                             validations: {
-                                empty-*-: "Ceci est un champ obligatoire."
+                                empty: "Ceci est un champ obligatoire."
                             }
                         },
                         skipConsentLogin: {
@@ -572,7 +572,7 @@ export const devPortal: DevPortalNS = {
                     fields: {
                         accessUrl: {
                             hint: "Les applications marquées comme découvrables sont visibles par les utilisateurs finaux.",
-                            label: URL d'accès",
+                            label: "URL d'accès",
                             placeholder: "Saisissez l'url d'accès à la page de connexion de l'application",
                             validations: {
                                 empty: "Une URL d'accès valide doit être définie pour qu'une application soit marquée comme " +
@@ -1335,7 +1335,7 @@ export const devPortal: DevPortalNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "A créé l'application avec succès",
+                        description: "Création avec succès de l'application",
                         message: "Création réussie"
                     }
                 },
@@ -1355,7 +1355,7 @@ export const devPortal: DevPortalNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "A réussi à supprimer l'application.",
+                        description: "Suppression avec succès de l'application.",
                         message: "Suppression réussie"
                     }
                 },
@@ -1369,7 +1369,7 @@ export const devPortal: DevPortalNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "A réussi à supprimer les configurations du protocole {{protocol}}.",
+                        description: "Suppression avec succés des configurations du protocole {{protocol}}.",
                         message: "Suppression réussie"
                     }
                 },
@@ -1438,7 +1438,7 @@ export const devPortal: DevPortalNS = {
                         message: "Erreur de récupération"
                     },
                     success: {
-                        description: "A récupéré avec succès les protocoles entrants personnalisés.",
+                        description: "Récupération avec succès des protocoles entrants personnalisés.",
                         message: "Récupération réussie"
                     }
                 },
@@ -1452,7 +1452,7 @@ export const devPortal: DevPortalNS = {
                         message: "Erreur de récupération"
                     },
                     success: {
-                        description: "A récupéré avec succès les protocoles entrants.",
+                        description: "Récupération avec succès des protocoles entrants.",
                         message: "Récupération réussie"
                     }
                 },
@@ -1466,7 +1466,7 @@ export const devPortal: DevPortalNS = {
                         message: "Erreur de récupération"
                     },
                     success: {
-                        description: "A récupéré avec succès les configurations IDP pour l'application OIDC.",
+                        description: "Récupération avec succès des configurations IDP pour l'application OIDC.",
                         message: "Récupération réussie"
                     }
                 },
@@ -1480,7 +1480,7 @@ export const devPortal: DevPortalNS = {
                         message: "Erreur de récupération"
                     },
                     success: {
-                        description: "A récupéré avec succès les métadonnées du protocole.",
+                        description: "Récupération avec succès des métadonnées du protocole.",
                         message: "Récupération réussie"
                     }
                 },
@@ -1494,7 +1494,7 @@ export const devPortal: DevPortalNS = {
                         message: "Erreur de récupération"
                     },
                     success: {
-                        description: "A récupéré avec succès les configurations IDP pour l'application SAML.",
+                        description: "Récupération avec succès des configurations IDP pour l'application SAML.",
                         message: "Récupération réussie"
                     }
                 },
@@ -1508,7 +1508,7 @@ export const devPortal: DevPortalNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "A récupéré avec succès les données du modèle d'application..",
+                        description: "Récupération avec succès des données du modèle d'application..",
                         message: "Récupération réussie"
                     }
                 },
@@ -1536,7 +1536,7 @@ export const devPortal: DevPortalNS = {
                         message: "Erreur de récupération"
                     },
                     success: {
-                        description: "A récupéré avec succès les configurations des protocoles entrants.",
+                        description: "Récupération avec succès des configurations des protocoles entrants.",
                         message: "Récupération réussie"
                     }
                 },
@@ -1550,7 +1550,7 @@ export const devPortal: DevPortalNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "A réussi à régénérer l'application",
+                        description: "Regénération avec succés de l'application",
                         message: "Regénération réussie"
                     }
                 },
@@ -1564,7 +1564,7 @@ export const devPortal: DevPortalNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "A réussi à révoquer l'application",
+                        description: "Révocation avec succés de l'application",
                         message: "Révocation réussie"
                     }
                 },
@@ -1606,7 +1606,7 @@ export const devPortal: DevPortalNS = {
                         message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "A mis à jour avec succès le flux d'authentification de l'application",
+                        description: "Mise à jour avec succès du flux d'authentification de l'application",
                         message: "Mise à jour réussie"
                     }
                 },
@@ -2488,41 +2488,41 @@ export const devPortal: DevPortalNS = {
                 },
                 noAttributes: {
                     subtitles: {
-                        0: "There are no attributes selected at the moment."
+                        0: "Il n'y a pas d'attributs sélectionnés pour le moment."
                     },
-                    title: "No attributes added"
+                    title: "Aucun attribut ajouté"
                 }
             },
             templates: {
                 manualSetup: {
-                    heading: "Manual Setup",
-                    subHeading: "Create an identity provider with custom configurations."
+                    heading: "Configuration manuelle",
+                    subHeading: "Créer un fournisseur d'identité avec des configurations personnalisées."
                 },
                 quickSetup: {
-                    heading: "Quick Setup",
-                    subHeading: "Predefined set of templates to speed up your identity provider creation."
+                    heading: "Installation rapide",
+                    subHeading: "Ensemble prédéfini de modèles pour accélérer la création de votre fournisseur d'identité."
                 }
             },
             wizards: {
                 addAuthenticator: {
-                    header: "Fill the basic information about the authenticator.",
+                    header: "Remplissez les informations de base sur l'authentificateur.",
                     steps: {
                         authenticatorConfiguration: {
-                            title: "Authenticator Configuration"
+                            title: "Configuration de l'authentificateur"
                         },
                         authenticatorSelection: {
                             manualSetup: {
-                                subTitle: "Add a new authenticator with custom configurations.",
-                                title: "Manual Setup"
+                                subTitle: "Ajouter un nouvel authentificateur avec des configurations personnalisées.",
+                                title: "Configuration manuelle"
                             },
                             quickSetup: {
-                                subTitle: "Predefined authenticator templates to speed up the process.",
-                                title: "Quick Setup"
+                                subTitle: "Modèles d'authentificateurs prédéfinis pour accélérer le processus.",
+                                title: "Configuration rapide"
                             },
-                            title: "Authenticator Selection"
+                            title: "Sélection de l'authentificateur"
                         },
                         summary: {
-                            title: "Summary"
+                            title: "Résumé"
                         }
                     }
                 },
@@ -2547,61 +2547,61 @@ export const devPortal: DevPortalNS = {
                     header: "Fill the basic information about the provisioning connector.",
                     steps: {
                         connectorConfiguration: {
-                            title: "Connector Details"
+                            title: "Détails du connecteur"
                         },
                         connectorSelection: {
                             defaultSetup: {
-                                subTitle: "Select the type of the new outbound provisioning connector",
-                                title: "Connector Types"
+                                subTitle: "Sélectionnez le type du nouveau connecteur d'approvisionnement sortant",
+                                title: "Types de connecteurs"
                             },
-                            title: "Connector selection"
+                            title: "Sélection du connecteur"
                         },
                         summary: {
-                            title: "Summary"
+                            title: "Résumé"
                         }
                     }
                 },
                 buttons: {
-                    finish: "Finish",
-                    next: "Next",
-                    previous: "Previous"
+                    finish: "Terminer",
+                    next: "Suivant",
+                    previous: "Précédent"
                 }
             }
         },
         oidcScopes: {
             buttons: {
-                addScope: "New OIDC Scope"
+                addScope: "Nouveau scope OIDC"
             },
             confirmationModals: {
                 deleteClaim: {
-                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                    content: "If you delete this claim, you will not be able to get it back." +
-                        "Please proceed with caution.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the OIDC claim."
+                    assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                    content: "Si vous supprimez ce claims, vous ne pourrez pas le récupérer. " +
+                        "Veuillez procéder avec prudence.",
+                    header: "Etes-vous sûr ?",
+                    message: "Cette action est irréversible et supprimera définitivement la claim OIDC."
                 },
                 deleteScope: {
-                    assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                    content: "If you delete this scope, you will not be able to get it back." +
-                        "Please proceed with caution.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the OIDC scope."
+                    assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                    content: "Si vous supprimez ce scope, vous ne pourrez pas le récupérer.." +
+                        "Veuillez procéder avec prudence.",
+                    header: "Etes-vous sûr ?",
+                    message: "Cette action est irréversible et supprimera définitivement le scope OIDC."
                 }
             },
             editScope: {
                 claimList: {
-                    addClaim:  "New Attribute",
+                    addClaim:  "Nouvel attribut",
                     emptyPlaceholder: {
-                        action: "Add Attribute",
+                        action: "Ajouter un attribut",
                         subtitles: {
-                            0: "There are no attributes added for this OIDC scope",
-                            1: "Please add the required attributes to view them here."
+                            0: "Il n'y a pas d'attributs ajoutés pour ce scope OIDC",
+                            1: "Veuillez ajouter les attributs requis pour les visualiser ici."
                         },
-                        title: "No OIDC attributes"
+                        title: "Pas d'attributs OIDC"
                     },
-                    popupDelete: "Delete attribute",
-                    searchClaims: "search attributes",
-                    subTitle: "Add or remove attributes of an OIDC scope",
+                    popupDelete: "Supprimer l'attribut",
+                    searchClaims: "Recherche d'attributs",
+                    subTitle: "Ajouter ou supprimer des attributs d'un scope OIDC",
                     title: "{{ name }}"
                 }
             },
@@ -2610,20 +2610,20 @@ export const devPortal: DevPortalNS = {
                     inputs: {
                         description: {
                             label: "Description",
-                            placeholder: "Enter a description for the scope"
+                            placeholder: "Entrez une description pour le scope"
                         },
                         displayName: {
-                            label: "Display name",
-                            placeholder: "Enter the display name",
+                            label: "Nom d'affichage",
+                            placeholder: "Entrez le nom d'affichage",
                             validations: {
-                                empty: "Display name is a required field"
+                                empty: "Le nom d'affichage est un champ obligatoire"
                             }
                         },
                         scopeName: {
-                            label: "Scope name",
-                            placeholder: "Enter the scope name",
+                            label: "Nom du scope",
+                            placeholder: "Entrez le nom du scope",
                             validations: {
-                                empty: "Scope name is a required field"
+                                empty: "Le nom du scope est un champ obligatoire"
                             }
                         }
                     }
@@ -2632,187 +2632,187 @@ export const devPortal: DevPortalNS = {
             list: {
                 columns: {
                     actions: "Actions",
-                    name: "Name"
+                    name: "Nom"
                 },
                 empty: {
-                    action: "Add OIDC Scope",
+                    action: "Ajouter le scope OIDC",
                     subtitles: {
-                        0: "There no OIDC Scopes in the system.",
-                        1: "Please add new OIDC scopes to view them here."
+                        0: "Il n'y a pas de scopes OIDC dans le système.",
+                        1: "Veuillez ajouter de nouveaux scopes OIDC pour les voir ici."
                     },
-                    title: "No OIDC Scopes"
+                    title: "Pas de scope OIDC"
                 }
             },
             notifications: {
                 addOIDCClaim: {
                     error: {
                         description: "{{description}}",
-                        message: "Creation error"
+                        message: "Erreur de création"
                     },
                     genericError: {
-                        description: "An error occurred while adding the OIDC attribute.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de l'ajout de l'attribut OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully added the new OIDC attribute",
-                        message: "Creation successful"
+                        description: "Création réussie du nouvel attribut OIDC",
+                        message: "Création réussie"
                     }
                 },
                 addOIDCScope: {
                     error: {
                         description: "{{description}}",
-                        message: "Creation error"
+                        message: "Erreur de création"
                     },
                     genericError: {
-                        description: "An error occurred while creating the OIDC scope.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la création du scope OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully the new OIDC scope",
-                        message: "Creation successful"
+                        description: "Réussir le nouveau scope OIDC",
+                        message: "Création réussie"
                     }
                 },
                 deleteOIDCScope: {
                     error: {
                         description: "{{description}}",
-                        message: "Deletion error"
+                        message: "Erreur de suppression"
                     },
                     genericError: {
-                        description: "An error occurred while deleting the OIDC scope.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la suppression du scope OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully deleted the OIDC scope.",
-                        message: "Deletion successful"
+                        description: "Suppression avec succès du scope OIDC.",
+                        message: "Suppression réussie"
                     }
                 },
                 deleteOIDClaim: {
                     error: {
                         description: "{{description}}",
-                        message: "Deletion error"
+                        message: "Erreur de suppression"
                     },
                     genericError: {
-                        description: "An error occurred while deleting the OIDC attribute.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la suppression de l'attribut OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully deleted the OIDC attribute.",
-                        message: "Deletion successful"
+                        description: "Suppression avec succès de l'attribut OIDC.",
+                        message: "Suppression réussie"
                     }
                 },
                 fetchOIDCScope: {
                     error: {
                         description: "{{description}}",
-                        message: "Retrieval error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "An error occurred while fetching the OIDC scope details.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des détails du scope OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully fetched the OIDC scope details.",
-                        message: "Retrieval successful"
+                        description: "Obtention réussie des détails du scope OIDC.",
+                        message: "Récupération réussie"
                     }
                 },
                 fetchOIDCScopes: {
                     error: {
                         description: "{{description}}",
-                        message: "Retrieval error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "An error occurred while fetching the OIDC scopes.",
-                        message: "Something went wrong"
+                        description: "Une erreur est survenue lors de la récupération des scopes OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully fetched the OIDC scope list.",
-                        message: "Retrieval successful"
+                        description: "Récupération réussie de la liste des scopes OIDC.",
+                        message: "Récupération réussie"
                     }
                 },
                 fetchOIDClaims: {
                     error: {
                         description: "{{description}}",
-                        message: "Retrieval error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "An error occurred while fetching the OIDC attributes.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des attributs OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully fetched the OIDC scope list.",
-                        message: "Retrieval successful"
+                        description: "écupération réussie de la liste des scopes OIDC.",
+                        message: "Récupération réussie"
                     }
                 },
                 updateOIDCScope: {
                     error: {
                         description: "{{description}}",
-                        message: "Update error"
+                        message: "Erreur de mise à jour"
                     },
                     genericError: {
-                        description: "An error occurred while updating the OIDC scope.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la mise à jour du scope OIDC.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully updated the OIDC scope.",
-                        message: "Update successful"
+                        description: "Mise à jour avec succès du scope OIDC.",
+                        message: "Mise à jour réussie"
                     }
                 }
             },
             placeholders:{
                 emptyList: {
-                    action: "New OIDC Scope",
+                    action: "Nouveau scope OIDC",
                     subtitles: {
-                        0: "Currently there are no OIDC scopes.",
-                        1: "You can add a new OIDC scope easily by following the",
-                        2: "steps in the creation wizard."
+                        0: "Actuellement, il n'y a pas de scope OIDC.",
+                        1: "Vous pouvez ajouter un nouveau scope OIDC facilement en suivant les",
+                        2: "étapes de l'assistant de création."
                     },
-                    title: "Add a new OIDC Scope"
+                    title: "Ajouter un nouveau scope OIDC"
                 }
             },
             wizards: {
                 addScopeWizard: {
                     buttons: {
-                        next: "Next",
-                        previous: "Previous"
+                        next: "Suivant",
+                        previous: "Précédent"
                     },
                     claimList: {
-                        searchPlaceholder: "search attributes",
+                        searchPlaceholder: "Recherche d'attributs",
                         table: {
                             emptyPlaceholders: {
-                                assigned: "All the available attributes are assigned for this OIDC scope.",
-                                unAssigned: "There are no attributes assigned for this OIDC scope."
+                                assigned: "Tous les attributs disponibles sont assignés pour ce scope OIDC.",
+                                unAssigned: "Aucun attribut n'est assigné pour ce scope OIDC."
                             },
-                            header: "Attributes"
+                            header: "Attributs"
                         }
                     },
                     steps: {
-                        basicDetails: "Basic Details",
-                        claims: "Add Attributes"
+                        basicDetails: "Détails de base",
+                        claims: "Ajouter des attributs"
                     },
-                    subTitle: "Create a new OIDC scope with required attributes",
-                    title: "Create OIDC Scope"
+                    subTitle: "Créer un nouveau scope OIDC avec les attributs requis",
+                    title: "Créer le scope OIDC"
                 }
             }
         },
         overview: {
             banner: {
-                heading: "WSO2 Identity Server for Developers",
-                subHeading: "Utilize SDKs & other developer tools to build a customized experience",
-                welcome: "Welcome, {{username}}"
+                heading: "WSO2 Identity Server pour les développeurs",
+                subHeading: "Utiliser les SDK et autres outils de développement pour construire une expérience personnalisée",
+                welcome: "Bienvenue, {{username}}"
             },
             quickLinks: {
                 cards: {
                     applications: {
                         heading: "Applications",
-                        subHeading: "Create applications using predefined templates and manage configurations."
+                        subHeading: "Créer des applications à l'aide de modèles prédéfinis et gérer leurs configurations."
                     },
                     idps: {
-                        heading: "Identity Providers",
-                        subHeading: "Create and manage identity providers based on templates and configure " +
-                            "authentication."
+                        heading: "Fournisseurs d'identité",
+                        subHeading: "Créer et gérer des fournisseurs d'identités sur la base de modèles " +
+                            "et configurer l'authentification."
                     },
                     remoteFetch: {
-                        heading: "Remote Fetch",
-                        subHeading: "Configure a remote repository to work seamlessly with WSO2 Identity Server."
+                        heading: "Récupérer à distance",
+                        subHeading: "Configurer un référentiel distant pour qu'il fonctionne de manière transparente avec WSO2 Identity Server."
                     }
                 }
             }
@@ -3028,52 +3028,52 @@ export const devPortal: DevPortalNS = {
         remoteConfig: {
             createConfigForm: {
                 configName: {
-                    label: "Configuration Name",
-                    placeholder: "Name for the repository configuration",
-                    requiredMessage: "Configuration Name is required."
+                    label: "Nom de la configuration",
+                    placeholder: "Nom pour la configuration du dépôt",
+                    requiredMessage: "Le nom de la configuration est requis."
                 },
                 enableConfig: {
-                    label: "Enable Configuration"
+                    label: "Activer la configuration"
                 },
                 gitAccessToken: {
-                    label: "Personal Access Token",
-                    placeholder: "Access token for the github account."
+                    label: "Jeton d'accès personnel",
+                    placeholder: "Jeton d'accès pour le compte github."
                 },
                 gitBranch: {
-                    label: "Git Branch",
-                    placeholder: "github branch location",
-                    requiredMessage: "Git Branch is required."
+                    label: "Branche Git",
+                    placeholder: "emplacement de la branche github",
+                    requiredMessage: "La branche Git est requise."
                 },
                 gitDirectory: {
-                    label: "Git Directory",
-                    placeholder: "github directory location",
-                    requiredMessage: "Git directory is required."
+                    label: "Répertoire Git",
+                    placeholder: "emplacement du répertoire github",
+                    requiredMessage: "Le répertoire Git est requis."
                 },
                 gitUrl: {
-                    label: "Git Repository URI",
-                    placeholder: "Link for github repository URL.",
-                    requiredMessage: "Git Repository URL is required."
+                    label: "URI du dépôt Git",
+                    placeholder: "Lien du dépôt github.",
+                    requiredMessage: "L'URL du dépôt Git est obligatoire."
                 },
                 gitUserName: {
-                    label: "Git User Name",
-                    placeholder: "Username of the github account."
+                    label: "Nom d'utilisateur Git",
+                    placeholder: "Nom d'utilisateur du compte github."
                 }
             },
             list: {
                 columns: {
                     actions: "Actions",
-                    failedDeployments: "Failed Deployments",
-                    lastDeployed: "Last Deployed",
-                    name: "Name",
-                    successfulDeployments: "Successful Deployments"
+                    failedDeployments: "Les Déploiements ont échoué",
+                    lastDeployed: "Dernier déploiement",
+                    name: "Nom",
+                    successfulDeployments: "Déploiements réussis"
                 },
                 confirmations: {
                     deleteConfig: {
-                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
-                        content: "If you delete this configuration, you will not be able to get it back." +
-                            "Please proceed with caution.",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the configuration."
+                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        content: "Si vous supprimez cette configuration, vous ne pourrez pas la récupérer." +
+                            "Veuillez procéder avec prudence.",
+                        header: "Etes-vous sûr ?",
+                        message: "Cette action est irréversible et supprimera définitivement la configuration."
                     }
                 }
             },
@@ -3081,302 +3081,302 @@ export const devPortal: DevPortalNS = {
                 createConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Creation Error"
+                        message: "Erreur de création"
                     },
                     genericError: {
-                        description: "Failed to create the configuration",
-                        message: "Something went wrong"
+                        description: "Echec de la création de la configuration",
+                        message: "Quelque chose a mal tourné"
                     },
                     success: {
-                        description: "Successfully created the confuguration.",
-                        message: "Creation successful"
+                        description: "Création avec succès de la configuration.",
+                        message: "Création réussie"
                     }
                 },
                 deleteConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Deletion Error"
+                        message: "Erreur de suppression"
                     },
                     genericError: {
-                        description: "Failed to delete the configuration",
-                        message: "Something went wrong"
+                        description: "Echec de la suppression de la configuration",
+                        message: "Quelque chose a mal tourné"
                     },
                     success: {
-                        description: "Successfully deleted the configuration.",
-                        message: "Deletion successful"
+                        description: "Suppression avec succès de la configuration.",
+                        message: "Suppression réussie"
                     }
                 },
                 editConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Edit Error"
+                        message: "Erreur d'édition"
                     },
                     genericError: {
-                        description: "Failed to edit the configuration",
-                        message: "Something went wrong"
+                        description: "Échec de la modification de la configuration",
+                        message: "Quelque chose a mal tourné"
                     },
                     success: {
-                        description: "Successfully edited the configuration.",
-                        message: "Edit successful"
+                        description: "Edition réussie de la configuration.",
+                        message: "Édition réussie"
                     }
                 },
                 getConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Creation Error"
+                        message: "Erreur de création"
                     },
                     genericError: {
-                        description: "Failed to retrieve the configuration",
-                        message: "Something went wrong"
+                        description: "Impossible de récupérer la configuration",
+                        message: "Quelque chose a mal tourné"
                     },
                     success: {
-                        description: "Successfully created the confuguration.",
-                        message: "Creation successful"
+                        description: "Création avec succès de la configuration.",
+                        message: "Création réussie"
                     }
                 },
                 triggerConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Trigger Error"
+                        message: "Erreur de déclenchement"
                     },
                     genericError: {
-                        description: "Failed to trigger the configuration",
-                        message: "Something went wrong"
+                        description: "Echec du déclenchement de la configuration",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully triggered the configuration.",
-                        message: "Trigger successful"
+                        description: "Déclenchement réussi de la configuration.",
+                        message: "Déclenchement réussi"
                     }
                 }
             },
             pageTitles: {
                 editPage: {
-                    backLink: "Back to configurations",
-                    description: "Edit remote repository configurations.",
-                    title: "Edit Configuration : "
+                    backLink: "Retour aux configurations",
+                    description: "Modifier les configurations des dépôts distants.",
+                    title: "Modifier la configuration : "
                 },
                 listingPage: {
-                    description: "Configure a remote repository to work seamlessly with the identity server.",
-                    title: "Remote Repository Deployment Configuration"
+                    description: "Configurer un référentiel distant pour qu'il fonctionne de manière transparente avec le serveur d'identité.",
+                    title: "Configuration du déploiement d'un référentiel distant"
                 }
             },
             placeholders: {
                 emptyDetails: {
                     subtitles: {
-                        0: "The configuration is not yet deployed.",
-                        1: "Please deploy the configuration and check back."
+                        0: "La configuration n'est pas encore déployée.",
+                        1: "Veuillez déployer la configuration et vérifier à nouveau."
                     },
-                    title: "Configuration is not deployed."
+                    title: "La configuration n'est pas déployée."
                 },
                 emptyList: {
-                    action: "New Remote Repository Config",
+                    action: "Nouvelle configuration de dépôt à distance",
                     subtitles: {
-                        0: "Currently there are no configs available.",
-                        1: "You can add a new config by ",
-                        2: "clicking on the button below."
+                        0: "Actuellement, il n'y a aucune configuration disponible.",
+                        1: "Vous pouvez ajouter une nouvelle configuration en cliquant sur ",
+                        2: "en cliquant sur le bouton ci-dessous."
                     },
-                    title: "Add new Remote Repository Config"
+                    title: "Ajouter une nouvelle configuration de dépôt à distance"
                 }
             }
         },
         sidePanel: {
-            applicationEdit: "Application Edit",
-            applicationTemplates: "Application Templates",
+            applicationEdit: "Édition des applications",
+            applicationTemplates: "Modèles d'application",
             applications: "Applications",
             categories: {
                 application: "Applications",
-                general: "General",
-                gettingStarted: "Getting Started",
-                identityProviders: "Identity Providers"
+                general: "Général",
+                gettingStarted: " Pour commencer",
+                identityProviders: "Fournisseurs d'identité"
             },
-            customize: "Customize",
-            identityProviderEdit: "Identity Providers Edit",
-            identityProviderTemplates: "Identity Provider Templates",
-            identityProviders: "Identity Providers",
-            oidcScopes: "OIDC Scopes",
-            oidcScopesEdit: "OIDC Scopes Edit",
-            overview: "Overview",
-            privacy: "Privacy",
-            remoteRepo: "Remote Repo Config",
-            remoteRepoEdit: "Remote Repo Config Edit"
+            customize: "Personnaliser",
+            identityProviderEdit: "Edition des fournisseurs d'identité",
+            identityProviderTemplates: "Modèles de fournisseurs d'identités",
+            identityProviders: "Fournisseurs d'identité",
+            oidcScopes: "Scopes OIDC",
+            oidcScopesEdit: "Édition des scopes OIDC",
+            overview: "Vue d'ensemble",
+            privacy: "Vie privée",
+            remoteRepo: "Configuration de dépôts distants",
+            remoteRepoEdit: "Édition des configurations des dépôts distants"
         },
         templates: {
             emptyPlaceholder: {
                 action: null,
-                subtitles: "Please add templates to display here.",
-                title: "No templates to display."
+                subtitles: "Veuillez ajouter des modèles à afficher ici.",
+                title: "Pas de modèles à afficher."
             }
         },
         transferList: {
             list: {
                 emptyPlaceholders: {
-                    default: "There are no items in this list at the moment.",
+                    default: "Il n'y a aucun élément dans cette liste pour le moment.",
                     users: {
                         roles: {
-                            selected: "There are no {{type}} assigned to this user.",
-                            unselected: "There are no {{type}} available to assign to this user."
+                            selected: "Aucun {{type}} n'est attribué à cet utilisateur.",
+                            unselected: "Aucun {{type}} n'est disponible pour être assigné à cet utilisateur."
                         }
                     }
                 },
                 headers: {
-                    0: "Domain",
-                    1: "Name"
+                    0: "Domaine",
+                    1: "Nom"
                 }
             },
-            searchPlaceholder: "Search {{type}}"
+            searchPlaceholder: "Rechercher {{type}}"
         }
     },
     notifications: {
         endSession: {
             error: {
                 description: "{{description}}",
-                message: "Termination error"
+                message: "Erreur de clôture"
             },
             genericError: {
-                description: "Couldn't terminate the current session.",
-                message: "Something went wrong"
+                description: "Impossible de mettre fin à la session en cours.",
+                message: "Quelque chose s'est mal passé"
             },
             success: {
-                description: "Successfully terminated the current session.",
-                message: "Termination successful"
+                description: "Clôture avec succès de la session en cours.",
+                message: "Clôture réussie"
             }
         },
         getProfileInfo: {
             error: {
                 description: "{{description}}",
-                message: "Retrieval error"
+                message: "Erreur de récupération"
             },
             genericError: {
-                description: "Couldn't retrieve user profile details.",
-                message: "Something went wrong"
+                description: "Impossible de récupérer les détails du profil de l'utilisateur.",
+                message: "Quelque chose s'est mal passé"
             },
             success: {
-                description: "Successfully retrieved user profile details.",
-                message: "Retrieval successful"
+                description: "Récupération réussie des détails du profil de l'utilisateur.",
+                message: "Récupération réussie"
             }
         },
         getProfileSchema: {
             error: {
                 description: "{{description}}",
-                message: "Retrieval error"
+                message: "Erreur de récupération"
             },
             genericError: {
-                description: "Couldn't retrieve user profile schemas.",
-                message: "Something went wrong"
+                description: "Impossible de récupérer les schémas des profils.",
+                message: "Quelque chose s'est mal passé"
             },
             success: {
-                description: "Successfully retrieved user profile schemas.",
-                message: "Retrieval successful"
+                description: "Récupération avec succès des schémas de profils d'utilisateurs.",
+                message: "Récupération réussie"
             }
         }
     },
     pages: {
         applicationTemplate: {
-            backButton: "Go back to applications",
-            subTitle: "Please choose one of the following application types.",
-            title: "Select Application Type"
+            backButton: "Retour aux applications",
+            subTitle: "Veuillez choisir l'un des types d'application suivant.",
+            title: "Choisissez le type d'application"
         },
         applications: {
-            subTitle: "Create and manage applications based on templates and configure authentication.",
+            subTitle: "Créer et gérer des applications basées sur des modèles et configurer l'authentification.",
             title: "Applications"
         },
         applicationsEdit: {
-            backButton: "Go back to applications",
+            backButton: "Retour aux applications",
             subTitle: null,
             title: null
         },
         idp: {
-            subTitle: "Create and manage identity providers based on templates and configure authentication.",
-            title: "Identity Providers"
+            subTitle: "Créer et gérer des fournisseurs d'identités sur la base de modèles et configurer l'authentification",
+            title: "Fournisseurs d'identités"
         },
         idpTemplate: {
-            backButton: "Go back to Identity Providers",
-            subTitle: "Please choose one of the following identity provider types.",
+            backButton: "Retourner aux fournisseurs d'identité",
+            subTitle: "Veuillez choisir l'un des types de fournisseurs d'identité suivants.",
             supportServices: {
-                authenticationDisplayName: "Authentication",
-                provisioningDisplayName: "Provisioning"
+                authenticationDisplayName: "Authentification",
+                provisioningDisplayName: "Approvisionnement"
             },
-            title: "Select Identity Provider Type"
+            title: "Sélectionner le type de fournisseur d'identité"
         },
         oidcScopes: {
-            subTitle: "Create and manage OIDC scopes and the attributes bound to the scopes.",
-            title: "OIDC Scopes"
+            subTitle: "Créer et gérer les scopes OIDC et les attributs liés aux scopes.",
+            title: "Scopes OIDC"
         },
         oidcScopesEdit: {
-            backButton: "Go back to scopes",
-            subTitle: "Add or remove OIDC attributes of the scope",
-            title: "Edit scope: {{ name }}"
+            backButton: "Revenir aux scopes",
+            subTitle: "Ajouter ou supprimer des attributs OIDC du scope",
+            title: "Modifier le scope : {{ name }}"
         },
         overview: {
-            subTitle: "Configure and  manage applications, identity providers, users and roles, attribute dialects, " +
+            subTitle: "Configurer et gérer les applications, les fournisseurs d'identité, les utilisateurs et les rôles, les dialectes d'attributs, " +
                 "etc.",
-            title: "Welcome, {{firstName}}"
+            title: "Bienvenue, {{firstName}}"
         }
     },
     placeholders: {
         404: {
-            action: "Back to home",
+            action: "Retour à la page d'accueil",
             subtitles: {
-                0: "We couldn't find the page you are looking for.",
-                1: "Please check the URL or click on the button below to be redirected back to the home page."
+                0: "Nous n'avons pas trouvé la page que vous cherchez.",
+                1: "Veuillez vérifier l'URL ou cliquez sur le bouton ci-dessous pour être redirigé vers la page d'accueil."
             },
-            title: "Page not found"
+            title: "Page non trouvée"
         },
         accessDenied: {
-            action: "Continue logout",
+            action: "Continuer la déconnexion",
             subtitles: {
-                0: "It seems like you don't have permission to use this portal.",
-                1: "Please sign in with a different account."
+                0: "Il semble que vous n'ayez pas la permission d'utiliser ce portail.",
+                1: "Veuillez vous connecter avec un autre compte."
             },
-            title: "You are not authorized"
+            title: "Vous n'êtes pas autorisé"
         },
         consentDenied: {
-            action: "Continue logout",
+            action: "Continuer la déconnexion",
             subtitles: {
-                0: "It seems like you have not given consent for this application.",
-                1: "Please give consent to use the application."
+                0: "Il semble que vous n'ayez pas donné votre accord pour cette application.",
+                1: "Veuillez donner votre accord pour l'utilisation de l'application."
             },
-            title: "You have denied consent"
+            title: "Vous avez refusé le consentement"
         },
         emptySearchResult: {
-            action: "Clear search query",
+            action: "Effacer la requête de recherche",
             subtitles: {
-                0: "We couldn't find any results for \"{{query}}\"",
-                1: "Please try a different search term."
+                0: "Nous n'avons pas trouvé de résultats pour \"{{query}}\"",
+                1: "Veuillez essayer un autre terme de recherche."
             },
-            title: "No results found"
+            title: "Aucun résultat trouvé"
         },
         genericError: {
-            action: "Refresh the page",
+            action: "Rafraîchir la page",
             subtitles: {
-                0: "Something went wrong while displaying this page.",
-                1: "See the browser console for technical details."
+                0: "Quelque chose s'est mal passé lors de l'affichage de cette page.",
+                1: "Voir la console du navigateur pour les détails techniques."
             },
-            title: "Something went wrong"
+            title: "Quelque chose s'est mal passé"
         },
         loginError: {
-            action: "Continue logout",
+            action: "Continuer la déconnexion",
             subtitles: {
-                0: "It seems like you don't have permission to use this portal.",
-                1: "Please sign in with a different account."
+                0: "Il semble que vous n'ayez pas la permission d'utiliser ce portail.",
+                1: "Veuillez vous connecter avec un autre compte."
             },
-            title: "You are not authorized"
+            title: "Vous n'êtes pas autorisé"
         },
         unauthorized: {
-            action: "Continue logout",
+            action: "Continuer la déconnexion",
             subtitles: {
-                0: "It seems like you don't have permission to use this portal.",
-                1: "Please sign in with a different account."
+                0: "Il semble que vous n'ayez pas la permission d'utiliser ce portail.",
+                1: "Veuillez vous connecter avec un autre compte."
             },
-            title: "You are not authorized"
+            title: "Vous n'êtes pas autorisé"
         },
         underConstruction: {
-            action: "Back to home",
+            action: "Retour à la page d'accueil",
             subtitles: {
-                0: "We're doing some work on this page.",
-                1: "Please bare with us and come back later. Thank you for your patience."
+                0: "Nous travaillons sur cette page.",
+                1: "Excusez nous et revenez plus tard. Merci de votre patience."
             },
-            title: "Page under construction"
+            title: "Page en construction"
         }
     },
     technologies: {
