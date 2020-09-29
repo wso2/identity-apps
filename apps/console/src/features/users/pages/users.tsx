@@ -27,7 +27,7 @@ import {
     ListLayout,
     PageLayout,
     PrimaryButton
-}from "@wso2is/react-components";
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
