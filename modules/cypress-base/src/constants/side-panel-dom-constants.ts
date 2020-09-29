@@ -14,14 +14,20 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-declare namespace Cypress {
-    interface Chainable {
-        /**
-         * Custom command to used to validate if an element is present or not.
-         */
-        checkIfElementExists(element: Element | any, waitTime?: number): Promise<any>;
-    }
+/**
+ * Class containing Side Panel DOM constants.
+ */
+export class SidePanelDomConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+    private constructor() { }
+
+    public static readonly EMAIL_TEMPLATES_PARENT_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
 }

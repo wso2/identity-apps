@@ -31,6 +31,7 @@ const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
 const SERVER_URL: string = Cypress.env("SERVER_URL");
 const PORTAL: string = Cypress.env("CONSOLE_BASE_URL");
+const TENANT_DOMAIN: string = Cypress.env("TENANT_DOMAIN");
 
 describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () => {
 
@@ -40,7 +41,7 @@ describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () =
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
-        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL);
+        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL, TENANT_DOMAIN);
     });
 
     beforeEach(() => {
