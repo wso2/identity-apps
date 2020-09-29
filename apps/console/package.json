@@ -27,6 +27,8 @@
         "test": "../../node_modules/.bin/jest --passWithNoTests"
     },
     "dependencies": {
+        "@testing-library/dom": "^7.24.3",
+        "@testing-library/user-event": "^12.1.6",
         "@types/jest": "^26.0.14",
         "@wso2is/authentication": "^1.0.429",
         "@wso2is/core": "^1.0.429",
@@ -37,6 +39,8 @@
         "@wso2is/validation": "^1.0.429",
         "country-language": "^0.1.7",
         "jest": "^26.4.2",
+        "jest-environment-jsdom": "^26.3.0",
+        "jest-environment-jsdom-global": "^2.0.4",
         "redux-mock-store": "^1.5.4",
         "ts-jest": "^26.4.0"
     },
