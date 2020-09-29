@@ -111,7 +111,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                 onAlertFired({
                     description: error?.response?.data?.description ?? t(
                         "userPortal:components.linkedAccounts.notifications.addAssociation.genericError.description"
-                    ) ,
+                    ),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message ?? t(
                         "userPortal:components.linkedAccounts.notifications.addAssociation.genericError.message"
