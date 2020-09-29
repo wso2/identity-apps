@@ -37,6 +37,8 @@
         "@wso2is/validation": "^1.0.426",
         "country-language": "^0.1.7",
         "jest": "^26.4.2",
+        "jest-environment-jsdom": "^26.3.0",
+        "jest-environment-jsdom-global": "^2.0.4",
         "redux-mock-store": "^1.5.4",
         "ts-jest": "^26.4.0"
     },
