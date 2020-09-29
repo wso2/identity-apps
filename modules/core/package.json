@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/core",
-    "version": "1.0.428",
+    "version": "1.0.429",
     "description": "Commonly used configs, schemas, utilities and low level services for WSO2 Identity Server frontend apps",
     "keywords": [
         "WSO2",
@@ -30,7 +30,7 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@types/jest": "^26.0.14",
-        "@wso2is/authentication": "^1.0.428",
+        "@wso2is/authentication": "^1.0.429",
         "jest": "^26.4.2",
         "ts-jest": "^26.4.0"
     },
