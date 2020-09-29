@@ -170,14 +170,14 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                     const country: string = CountryLanguage.getCountry(countryCode).name;
 
                     return (
-                        <>
+                        <div data-testid={ `${ testId }-item-heading` }>
                             <Flag
                                 className="email-template-flag "
                                 name={ countryCode.toLowerCase() as FlagNameValues }
                                 data-testid={ `${ testId }-flag-image` }
                             />
                             { country ? language + " (" + country + ")" : language }
-                        </>
+                        </div>
                     );
                 },
                 title: t("adminPortal:components.emailTemplates.list.name")
@@ -205,6 +205,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
 
         return [
             {
+                "data-testid": `${ testId }-item-view-button`,
                 icon: (): SemanticICONS => "eye",
                 onClick: (e: SyntheticEvent, template: EmailTemplate) => {
                     setCurrentViewTemplate(template.id);
@@ -214,6 +215,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 renderer: "semantic-icon"
             },
             {
+                "data-testid": `${ testId }-item-edit-button`,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, template: EmailTemplate) =>
                     handleEditTemplate(templateTypeId, template.id),
@@ -221,6 +223,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 renderer: "semantic-icon"
             },
             {
+                "data-testid": `${ testId }-item-delete-button`,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, template: EmailTemplate) => {
                     setCurrentDeletingTemplate(template);

@@ -150,7 +150,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                             size="mini"
                             data-testid={ `${ testId }-item-image` }
                         />
-                        <Header.Content>
+                        <Header.Content data-testid={ `${ testId }-item-heading` }>
                             { templateType.displayName }
                         </Header.Content>
                     </Header>
@@ -180,6 +180,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
 
         return [
             {
+                "data-testid": `${ testId }-item-edit-button`,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, templateType: EmailTemplateType): void =>
                     handleEditTemplate(templateType.id),
@@ -187,6 +188,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 renderer: "semantic-icon"
             },
             {
+                "data-testid": `${ testId }-item-delete-button`,
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, templateType: EmailTemplateType): void => {
                     setCurrentDeletingTemplate(templateType);

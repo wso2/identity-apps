@@ -269,7 +269,7 @@ export interface DynamicTableColumnInterface {
 /**
  * Table Actions Interface.
  */
-export interface TableActionsInterface<T = {}> {
+export interface TableActionsInterface<T = {}> extends TestableComponentInterface {
     /**
      * Component render node.
      */
@@ -465,7 +465,8 @@ export const DataTable = <T extends object = {}>(
             onClick: actionOnClick,
             popupText: actionPopupText,
             renderer: actionRenderer,
-            subActions
+            subActions,
+            ...rest
         } = action;
 
         if (actionHidden && actionHidden(item)) {
@@ -497,6 +498,7 @@ export const DataTable = <T extends object = {}>(
                                         e.stopPropagation();
                                         actionOnClick(e, item);
                                     } }
+                                    { ...rest }
                                 />
                             ) }
                             position="top center"
@@ -526,6 +528,7 @@ export const DataTable = <T extends object = {}>(
                                 e.stopPropagation();
                                 actionOnClick(e, item);
                             } }
+                            { ...rest }
                         />
                     ) }
                     position="top center"
