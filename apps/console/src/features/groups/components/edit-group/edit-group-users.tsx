@@ -482,31 +482,31 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                     </Grid.Row>
                                 </EmphasizedSegment>
                             ) : (
-                                    <EmphasizedSegment>
-                                        <EmptyPlaceholder
-                                            title={ t("adminPortal:components.roles.edit.users.list." +
-                                                "emptyPlaceholder.title") }
-                                            subtitle={ [
-                                                t("adminPortal:components.roles.edit.users.list." +
-                                                    "emptyPlaceholder.subtitles", { type: "group" })
-                                            ] }
-                                            action={
-                                                !isReadOnly && (
-                                                    <PrimaryButton
-                                                        data-testid={ `${ testId }-users-list-empty-assign-users-
-                                                    button` }
-                                                        onClick={ handleOpenAddNewGroupModal }
-                                                    >
-                                                        <Icon name="plus" />
-                                                        { t("adminPortal:components.roles.edit.users.list." +
-                                                            "emptyPlaceholder.action") }
-                                                    </PrimaryButton>
-                                                )
-                                            }
-                                            image={ EmptyPlaceholderIllustrations.emptyList }
-                                            imageSize="tiny"
-                                        />
-                                    </EmphasizedSegment>
+                                <EmphasizedSegment>
+                                    <EmptyPlaceholder
+                                        title={ t("adminPortal:components.roles.edit.users.list." +
+                                            "emptyPlaceholder.title") }
+                                        subtitle={ [
+                                            t("adminPortal:components.roles.edit.users.list." +
+                                                "emptyPlaceholder.subtitles", { type: "group" })
+                                        ] }
+                                        action={
+                                            !isReadOnly && (
+                                                <PrimaryButton
+                                                    data-testid={ `${ testId }-users-list-empty-assign-users-
+                                                button` }
+                                                    onClick={ handleOpenAddNewGroupModal }
+                                                >
+                                                    <Icon name="plus" />
+                                                    { t("adminPortal:components.roles.edit.users.list." +
+                                                        "emptyPlaceholder.action") }
+                                                </PrimaryButton>
+                                            )
+                                        }
+                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        imageSize="tiny"
+                                    />
+                                </EmphasizedSegment>
                                 )
                         }
                     </Grid.Column>
