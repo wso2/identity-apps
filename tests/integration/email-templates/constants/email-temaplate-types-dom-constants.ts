@@ -18,7 +18,7 @@
  */
 
 /**
- * Class containing Email Templates Listing Page DOM constants.
+ * Class containing Email Template Types Page DOM constants.
  */
 export class EmailTemplateTypesDomConstants {
 
@@ -30,8 +30,6 @@ export class EmailTemplateTypesDomConstants {
      */
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
-
-    public static readonly SIDE_PANEL_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
 
     // Table
     public static readonly TABLE_DATA_ATTR: string = "email-template-types-list";

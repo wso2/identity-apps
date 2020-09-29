@@ -22,7 +22,7 @@
 
 import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
 import { Header } from "@wso2is/cypress-base/page-objects";
-import { EmailTemplatesListPage } from "./page-objects";
+import { EmailTemplatesListPage, EmailTemplateTypesListPage } from "./page-objects";
 import { CommonUtils } from "@wso2is/cypress-base/utils";
 import { EmailTemplateTypesDomConstants } from "./constants";
 import { v4 as uuidv4 } from "uuid";
@@ -32,12 +32,11 @@ const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
 const SERVER_URL: string = Cypress.env("SERVER_URL");
 const PORTAL: string = Cypress.env("CONSOLE_BASE_URL");
 
-const NEW_SAMPLE_EMAIL_TEMPLATE_TYPE_NAME: string = "Sample " + uuidv4();
-
 describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () => {
 
     const header: Header = new Header();
-    const emailTemplatesPage: EmailTemplatesListPage = new EmailTemplatesListPage();
+    const emailTemplateTypesListPage: EmailTemplateTypesListPage = new EmailTemplateTypesListPage();
+    const emailTemplatesListPage: EmailTemplatesListPage = new EmailTemplatesListPage();
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
@@ -48,34 +47,38 @@ describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () =
         CookieUtils.preserveAllSessionCookies();
     });
 
+    after(() => {
+        cy.logout();
+    });
+
     context("ITC-1.1.0-[email-templates] - Email Template Types Listing Page.", () => {
 
         it("ITC-1.1.1-[email-templates]-User can visit email templates page from the side panel", () => {
             header.clickOnManagePortalSwitch();
-            emailTemplatesPage.clickOnSidePanelItem();
+            emailTemplateTypesListPage.clickOnSidePanelItem();
         });
 
-        it("ITC-1.1.2-[email-templates]-Properly renders the elements of the listing page", () => {
+        it("ITC-1.1.2-[email-templates]- Properly renders the elements of the listing page", () => {
 
             // Check if page header exists and check if all the necessary elements are rendering.
-            emailTemplatesPage.getEmailTemplatesPageLayoutHeader().should("be.visible");
-            emailTemplatesPage.getEmailTemplatesPageLayoutHeaderTitle().should("be.visible");
-            emailTemplatesPage.getEmailTemplatesPageLayoutHeaderSubTitle().should("be.visible");
+            emailTemplateTypesListPage.getPageLayoutHeader().should("be.visible");
+            emailTemplateTypesListPage.getPageLayoutHeaderTitle().should("be.visible");
+            emailTemplateTypesListPage.getPageLayoutHeaderSubTitle().should("be.visible");
 
             // Check if page header has an action.
-            emailTemplatesPage.getEmailTemplatesPageLayoutHeaderAction().should("be.visible");
-            emailTemplatesPage.getEmailTemplatesPageLayoutHeader()
+            emailTemplateTypesListPage.getPageLayoutHeaderAction().should("be.visible");
+            emailTemplateTypesListPage.getPageLayoutHeader()
                 .find("button")
                 .should("exist");
 
             // Check if the email templates page exists.
-            emailTemplatesPage.getEmailTemplatesTable().should("be.visible");
+            emailTemplateTypesListPage.getTable().should("be.visible");
         });
 
         it("ITC-1.1.3-[email-templates]-There exists at-least one email template on the list", () => {
 
             // Check if at-least one row is present. Assumes that the email templates are always present in a new pack.
-            emailTemplatesPage.getEmailTemplatesTable()
+            emailTemplateTypesListPage.getTable()
                 .find(CommonUtils.resolveDataTestId(EmailTemplateTypesDomConstants.TABLE_ROW_DATA_ATTR))
                 .should("exist");
         });
@@ -83,7 +86,7 @@ describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () =
         it("ITC-1.1.4-[email-templates]-Table rows renders properly", () => {
 
             // Check if the table row heading & image is displayed properly.
-            emailTemplatesPage.getEmailTemplatesTableBody()
+            emailTemplateTypesListPage.getTableBody()
                 .children()
                 .each((row) => {
                     // Check if image exist.
@@ -115,24 +118,37 @@ describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () =
 
     context("ITC-1.2.0-[email-templates] - Add an Email Template Type.", () => {
 
+        const templateTypeName: string = "Sample " + uuidv4();
+
         it("ITC-1.2.1-[email-templates] - Add wizard is visible", () => {
 
-            emailTemplatesPage.clickOnNewTemplateTypeButton();
+            emailTemplateTypesListPage.clickOnNewTemplateTypeButton();
 
             cy.wait(2000);
 
-            emailTemplatesPage.getAddTemplateTypeWizard().should("be.visible");
+            emailTemplateTypesListPage.getAddTemplateTypeWizard().should("be.visible");
         });
 
-        it("ITC-1.2.1-[email-templates] - Can add a new template type using the wizard.", () => {
+        it("ITC-1.2.2-[email-templates] - Can add a new template type using the wizard.", () => {
 
-            emailTemplatesPage.getTemplateTypeNameInputInWizard().should("exist");
+            emailTemplateTypesListPage.getTemplateTypeNameInputInWizard().should("exist");
 
-            emailTemplatesPage.getTemplateTypeNameInputInWizard()
+            emailTemplateTypesListPage.getTemplateTypeNameInputInWizard()
                 .find("input")
-                .type(NEW_SAMPLE_EMAIL_TEMPLATE_TYPE_NAME);
+                .type(templateTypeName);
 
-            emailTemplatesPage.getTemplateTypeCreateButtonInWizard().click();
+            emailTemplateTypesListPage.getTemplateTypeCreateButtonInWizard().click();
+        });
+
+        it("ITC-1.2.3-[email-templates] - Properly navigates to the  newly created type's listing page", () => {
+
+            emailTemplatesListPage.getPageLayoutHeaderTitle().should("contain", templateTypeName);
+        });
+
+        it("ITC-1.2.4-[email-templates] - Shows the new list placeholder.", () => {
+
+            emailTemplatesListPage.getNewTablePlaceholder().should("be.visible");
+            emailTemplatesListPage.getNewTablePlaceholderAction().should("be.visible");
         });
     });
 });
