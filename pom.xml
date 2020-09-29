@@ -252,11 +252,6 @@
                 <version>${javax.jsp-api.version}</version>
             </dependency>
             <dependency>
-                <groupId>javax.servlet</groupId>
-                <artifactId>jstl</artifactId>
-                <version>${javax.servelet.jstl.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.wso2.orbit.commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons-codec.wso2.version}</version>
@@ -650,7 +645,6 @@
         <commons-lang.wso2.version>2.6.0.wso2v1</commons-lang.wso2.version>
         <servlet-api.version>2.5</servlet-api.version>
         <javax.jsp-api.version>2.0</javax.jsp-api.version>
-        <javax.servelet.jstl.version>1.2</javax.servelet.jstl.version>
         <jersey-version>1.19.1</jersey-version>
         <com.fasterxml.jackson.version>2.10.5</com.fasterxml.jackson.version>
         <com.fasterxml.jackson.annotation.version>2.10.5</com.fasterxml.jackson.annotation.version>
