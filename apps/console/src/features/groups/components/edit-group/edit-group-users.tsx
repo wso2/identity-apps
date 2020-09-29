@@ -494,7 +494,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                             !isReadOnly && (
                                                 <PrimaryButton
                                                     data-testid={ `${ testId }-users-list-empty-assign-users-
-                                                button` }
+                                                    button` }
                                                     onClick={ handleOpenAddNewGroupModal }
                                                 >
                                                     <Icon name="plus" />
@@ -507,7 +507,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         imageSize="tiny"
                                     />
                                 </EmphasizedSegment>
-                                )
+                            )
                         }
                     </Grid.Column>
                 </Grid.Row>
