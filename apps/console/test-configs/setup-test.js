@@ -39,7 +39,7 @@ class Worker {
  * Suggested fix for i18next warnings
  * See also {@link https://github.com/i18next/react-i18next/issues/876}
  */
-jest.mock('react-i18next', () => ({
+jest.mock("react-i18next", () => ({
     useTranslation: () => ({
       t: (key) => ({
         message: key
