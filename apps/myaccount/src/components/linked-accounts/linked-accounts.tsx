@@ -113,9 +113,9 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                         "userPortal:components.linkedAccounts.notifications.addAssociation.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message ?? t(
-                        "userPortal:components.linkedAccounts.notifications.addAssociation.genericError.message"
-                    )
+                    message: error?.response?.data?.message
+                        ? t("userPortal:components.linkedAccounts.notifications.addAssociation.error.message")
+                        : t("userPortal:components.linkedAccounts.notifications.addAssociation.genericError.message")
                 });
             });
     };
