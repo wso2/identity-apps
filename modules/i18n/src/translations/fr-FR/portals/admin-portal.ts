@@ -24,189 +24,187 @@ export const adminPortal: AdminPortalNS = {
             form: {
                 inputs: {
                     filterAttribute: {
-                        label: "Filter attribute",
-                        placeholder: "E.g. Name, Description etc.",
+                        label: "Attribut à filtrer",
+                        placeholder: "Ex. Nom, Description, etc.",
                         validations: {
-                            empty: "Filter attribute is a required field."
+                            empty: "L'attribut est obligatoire."
                         }
                     },
                     filterCondition: {
-                        label: "Filter condition",
-                        placeholder: "E.g. Starts with etc.",
+                        label: "Condition",
+                        placeholder: "Ex. Commence par, etc.",
                         validations: {
-                            empty: "Filter condition is a required field."
+                            empty: "La condition de filtrage est obligatoire."
                         }
                     },
                     filterValue: {
-                        label: "Filter value",
-                        placeholder: "E.g. admin, wso2 etc.",
+                        label: "Valeur à rechercher",
+                        placeholder: "Ex. admin, wso2, etc.",
                         validations: {
-                            empty: "Filter value is a required field."
+                            empty: "La valeur est obligatoire."
                         }
                     }
                 }
             },
             hints: {
                 querySearch: {
-                    actionKeys: "Shift + Enter",
-                    label: "To search as a query"
+                    actionKeys: "Maj + Entrée",
+                    label: "Chercher en tant que requête"
                 }
             },
             options: {
-                header: "Advanced search"
+                header: "Recherche avancée"
             },
-            placeholder: "Search by {{attribute}}",
+            placeholder: "Recherche par {{attribute}}",
             popups: {
-                clear: "clear search",
-                dropdown: "Show options"
+                clear: "Effacer la recherche",
+                dropdown: "Afficher les options"
             },
-            resultsIndicator: "Showing results for the query \"{{query}}\""
+            resultsIndicator: "Afficher des résultats pour la requête \"{{query}}\""
         },
         certificates: {
             keystore: {
                 advancedSearch: {
-                    error: "Filter query format incorrect",
+                    error: "Le format de la requête est incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. alias etc."
+                                placeholder: "Ex. alias, etc."
                             },
                             filterCondition: {
-                                placeholder: "E.g. Starts with etc."
+                                placeholder: "Ex. Commence par, etc."
                             },
                             filterValue: {
-                                placeholder: "E.g. wso2carbon etc."
+                                placeholder: "Ex. wso2carbon, etc."
                             }
                         }
                     },
-                    placeholder: "Search by alias"
+                    placeholder: "Recherche par alias"
                 },
                 attributes: {
                     alias: "Alias"
                 },
-                certificateModalHeader: "View Certificate",
+                certificateModalHeader: "Voir le Certificat",
                 confirmation: {
-                    content: "This action is irreversible and will permanently delete the certificate.",
-                    header: "Are you sure?",
-                    hint: "Please type <1>{{id}}</1> to confirm.",
-                    message: "This action is irreversible and will permanently delete the certificate.",
-                    primaryAction: "Confirm",
-                    tenantContent: "This will delete the tenant certificate permanently."
-                        + "Once deleted, unless you import a new tenant certificate,"
-                        + "you won't be able to access the portal applications."
-                        + "To continue deleting, enter the alias of the certificate and click delete."
+                    content: "Cette action est irréversible et supprimera définitivement le certificat.",
+                    header: "Êtes-vous sûr ?",
+                    hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
+                    message: "Cette action est irréversible et supprimera définitivement le certificat.",
+                    primaryAction: "Confirmer",
+                    tenantContent: "Ceci supprimera définitivement le certificat du locataire."
+                        + "Une fois supprimé, vous ne pourrez plus accéder aux applications du portail, "
+                        + "à moins d'en importer un nouveau certificat. "
+                        + "Pour confirmer la suppression, veuillez saisir l'alias du certificat et cliquez sur 'Supprimer'."
                 },
-                errorCertificate: "An error occurred while decoding the certificate."
-                    + " Please ensure the certificate is valid.",
-                errorEmpty: "Either add a certificate file or paste the content of a PEM-encoded certificate.",
+                errorCertificate: "Une erreur s'est produite lors de l'ouverture du certificat"
+                    + " Veuillez vous assurer que le certificat est valide.",
+                errorEmpty: "Ajoutez un fichier de certificat ou collez le contenu d'un certificat au format PEM.",
                 forms: {
                     alias: {
                         label: "Alias",
-                        placeholder: "Enter an alias",
-                        requiredErrorMessage: "Alias is required"
+                        placeholder: "Saisir un alias",
+                        requiredErrorMessage: "L'alias est obligatoire"
                     }
                 },
                 list: {
                     columns: {
                         actions: "Actions",
-                        name: "Name"
+                        name: "Nom"
                     }
                 },
                 notifications: {
                     addCertificate:{
                         genericError: {
-                            description: "An error occurred while importing the certificate.",
-                            message: "Something went wrong!"
+                            description: "Une erreur s'est produite lors de l'import du certificat.",
+                            message: "Quelque chose s'est mal passé !"
                         },
                         success: {
-                            description: "The certificate has been imported successfully.",
-                            message: "Certificate import success"
+                            description: "Le certificat a été importé avec succès.",
+                            message: "Import de certificat réussi"
                         }
                     },
                     deleteCertificate: {
                         genericError: {
-                            description: "There was an error while deleting the certificate",
-                            message: "Something went wrong!"
+                            description: "Une erreur s'est produite lors de la suppression du certificat",
+                            message: "Quelque chose s'est mal passé !"
                         },
                         success: {
-                            description: "The certificate has been successfully deleted.",
-                            message: "Certificate deleted successfully"
+                            description: "Le certificat a été supprimé avec succès.",
+                            message: "Suppression du certificat réussi"
                         }
                     },
                     download: {
                         success: {
-                            description: "The certificate has started downloading.",
-                            message: "Certificate download started"
+                            description: "Le téléchargement du certificat a commencé.",
+                            message: "Début du téléchargement"
                         }
                     },
                     getAlias: {
                         genericError: {
-                            description: "An error occurred while fetching the certificate.",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération du certificat.",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     getCertificate: {
                         genericError: {
-                            description: "There was an error while fetching "
-                                + "the certificate",
-                            message: "Something went wrong!"
+                            description: "Une erreur s'est produite lors la recherche du certificat",
+                            message: "Quelque chose s'est mal passé !"
                         }
                     },
                     getCertificates: {
                         genericError: {
-                            description: "An error occurred while fetching certificates",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération des certificats",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     getPublicCertificate: {
                         genericError: {
-                            description: "There was an error while fetching the tenant certificate.",
-                            message: "Something went wrong!"
+                            description: "Une erreur s'est produite lors de la récupération du certificat du locataire",
+                            message: "Quelque chose s'est mal passé !"
                         }
                     }
                 },
                 pageLayout: {
-                    description: "Create and manage certificates in the keystore",
-                    primaryAction: "Import Certificate",
-                    title: "Certificates"
+                    description: "Créer et gérer des certificats dans le magasin de clés",
+                    primaryAction: "Importer un certificat",
+                    title: "Certificats"
                 },
                 placeholders: {
                     emptyList: {
-                        action: "Import Certificate",
-                        subtitle: "There are currently no certificates available."
-                            + "You can import a new certificate by clicking on"
-                            + "the button below.",
-                        title: "Import Certificate"
+                        action: "Importer un certificat",
+                        subtitle: "Il n'y a actuellement aucun certificat dans le magasin de clés."
+                            + "Vous pouvez en importer en cliquant sur le bouton ci-dessous.",
+                        title: "Importer un certificat"
                     },
                     emptySearch: {
-                        action: "Clear search query",
-                        subtitle: "We couldn't find any results for {{searchQuery}},"
-                            + "Please try a different search term.",
-                        title: "No results found"
+                        action: "Effacer la recherche",
+                        subtitle: "La recherche \"{{searchQuery}}\" n'a renvoyé aucun résultat."
+                            + "Veuillez essayer d'autres paramètres.",
+                        title: "Aucun résultat"
                     }
                 },
                 summary: {
-                    issuerDN: "Issuer DN",
-                    sn: "Serial Number:",
-                    subjectDN: "Subject DN",
-                    validFrom: "Not valid before",
-                    validTill: "Not valid after",
+                    issuerDN: "Nom de l'émetteur",
+                    sn: "Numéro de série :",
+                    subjectDN: "Nom du sujet",
+                    validFrom: "Non valable avant",
+                    validTill: "Non valable après",
                     version: "Version"
                 },
                 wizard: {
                     dropZone: {
-                        action: "Upload Certificate",
-                        description: "Drag and drop a certificate file here"
+                        action: "Charger un certificat",
+                        description: "Glissez et déposez un fichier de certificat ici"
                     },
-                    header: "Import Certificate",
+                    header: "Importer un certificat",
                     panes: {
-                        paste: "Paste",
-                        upload: "Upload"
+                        paste: "Coller",
+                        upload: "Charger"
                     },
-                    pastePlaceholder: "Paste the content of a PEM certificate",
+                    pastePlaceholder: "Coller le contenu du certificat au format PEM",
                     steps: {
-                        summary: "Summary",
-                        upload: "Upload certificate"
+                        summary: "Résumé",
+                        upload: "Charger un certificat"
                     }
                 }
             },
@@ -215,527 +213,526 @@ export const adminPortal: AdminPortalNS = {
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. alias, certificate etc."
+                                placeholder: "Ex. alias, etc."
                             },
                             filterCondition: {
-                                placeholder: "E.g. Starts with etc."
+                                placeholder: "Ex. Commence par, etc."
                             },
                             filterValue: {
-                                placeholder: "E.g. wso2carbon etc."
+                                placeholder: "Ex. wso2carbon, etc."
                             }
                         }
                     },
-                    placeholder: "Search by group name"
+                    placeholder: "Recherche par nom de groupe"
                 }
             }
         },
         claims: {
             dialects: {
                 advancedSearch: {
-                    error: "Filter query format incorrect",
+                    error: "Le format de la requête est incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. Dialect URI etc."
+                                placeholder: "Ex. URI du dialecte, etc."
                             },
                             filterCondition: {
-                                placeholder: "E.g. Starts with etc."
+                                placeholder: "Ex. Commence par, etc."
                             },
                             filterValue: {
-                                placeholder: "E.g. http://wso2.org/oidc/claim"
+                                placeholder: "Ex. http://wso2.org/oidc/claim"
                             }
                         }
                     },
-                    placeholder: "Search by Dialect URI"
+                    placeholder: "Recherche par URI de dialecte"
                 },
                 attributes: {
-                    dialectURI: "Dialect URI"
+                    dialectURI: "URI de dialecte"
                 },
                 confirmations: {
-                    action: "Confirm",
-                    content: "If you delete this external dialect, all the associated external attributes will "
-                        + "also be deleted.Please proceed with caution.",
-                    header: "Are you sure?",
-                    hint: "Please type <1>{{confirm}}</1> to confirm.",
-                    message: "This action is irreversible and will permanently delete the selected external dialect."
+                    action: "Confirmer",
+                    content: "Si vous supprimez ce dialecte externe, tous les attributs externes associés seront "
+                        + "également supprimés, veuillez procéder avec prudence.",
+                    header: "Êtes-vous sûr ?",
+                    hint: "Veuillez saisir <1>{{ name }}</1> pour confirmer.",
+                    message: "Cette action est irréversible et supprimera définitivement le dialecte externe sélectionné."
                 },
                 dangerZone: {
-                    actionTitle: "Delete External Dialect",
-                    header: "Delete External Dialect",
-                    subheader: "Once you delete an external dialect, there is no going back. " + "Please be certain."
+                    actionTitle: "Supprimer le dialecte externe",
+                    header: "Supprimer le dialecte externe",
+                    subheader: "Une fois le dialecte externe supprimé, il est impossible de revenir en arrière. Soyez certain de vous."
                 },
                 forms: {
                     dialectURI: {
-                        label: "Dialect URI",
-                        placeholder: "Enter a dialect URI",
-                        requiredErrorMessage: "Enter a dialect URI"
+                        label: "URI de dialecte",
+                        placeholder: "Saisir une URI de dialecte",
+                        requiredErrorMessage: "L'URI de dialecte est obligatoire"
                     },
-                    submit: "Update"
+                    submit: "Mettre à jour"
                 },
-                localDialect: "Local Dialect",
+                localDialect: "Dialecte local",
                 notifications: {
                     addDialect: {
                         error: {
-                            description: "An error occurred while adding the external dialect",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de l'ajout du dialecte externe",
+                            message: "Quelque chose s'est mal passé"
                         },
                         genericError: {
-                            description: "The external dialect has been added but not all external "
-                                + "attributes were added successfully",
-                            message: "External attributes couldn't be added"
+                            description: "Le dialecte externe a été ajouté avec succès, mais ce n'est pas le cas pour "
+                                + "tous les attributs externes",
+                            message: "Des attributs externes n'ont pas pu être ajoutés"
                         },
                         success: {
-                            description: "The external dialect has been added successfully",
-                            message: "External Dialect added successfully"
+                            description: "Le dialecte externe a été ajouté avec succès",
+                            message: "Dialecte externe ajouté avec succès"
                         }
                     },
                     deleteDialect: {
                         genericError: {
-                            description: "There was an error while deleting the dialect",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la suppression du dialecte",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The dialect has been deleted successfully!",
-                            message: "Dialect deleted successfully"
+                            description: "Le dialecte a été supprimé avec succès !",
+                            message: "Dialecte supprimé avec succès"
                         }
                     },
                     fetchADialect: {
                         genericError: {
-                            description: "There was an error while fetching the external dialect",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la recherche du dialecte externe",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     fetchDialects: {
                         error: {
                             description: "{{description}}",
-                            message: "Retrieval error"
+                            message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Couldn't retrieve claim dialects.",
-                            message: "Something went wrong"
+                            description: "Impossible de récupéré les dialectes de claims.",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Successfully retrieved claim dialects.",
-                            message: "Retrieval successful"
+                            description: "Les dialectes des claim ont été récupérés avec succès.",
+                            message: "Récupération réussie"
                         }
                     },
                     fetchExternalClaims: {
                         genericError: {
-                            description: "There was an error while fetching the external attributes",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la recherche des attributs externes",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     updateDialect: {
                         genericError: {
-                            description: "An error occurred while updating the dialect",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la mise à jour du dialecte",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The dialect has been successfully updated.",
-                            message: "Dialect update successful"
+                            description: "Le dialecte a été mis à jour avec succès",
+                            message: "La mise à jour du dialecte a été effectuée avec succès"
                         }
                     }
                 },
                 pageLayout: {
                     edit: {
-                        back: "Go back to attribute dialects",
-                        description: "Edit external dialect and its attributes",
-                        updateDialectURI: "Update Dialect URI",
-                        updateExternalAttributes: "Update External Attributes"
+                        back: "Retournez aux attributs des dialectes",
+                        description: "Modifier le dialecte externe et ses attributs",
+                        updateDialectURI: "Mettre à jour l'URI du dialecte",
+                        updateExternalAttributes: "Mettre à jour les attributs externes"
                     },
                     list: {
-                        description: "Create and manage attribute dialects",
-                        primaryAction: "New External Dialect",
-                        title: "Attribute Dialects",
-                        view: "View local claims"
+                        description: "Créer et gérer les dialectes d'attributs",
+                        primaryAction: "Nouveau dialecte externe",
+                        title: "Dialectes des attributs",
+                        view: "Voir les claims locaux"
                     }
                 },
                 wizard: {
-                    header: "Add External Dialect",
+                    header: "Ajouter un dialecte externe",
                     steps: {
-                        dialectURI: "Dialect URI",
-                        externalAttribute: "External attributes",
-                        summary: "Summary"
+                        dialectURI: "URI de dialecte",
+                        externalAttribute: "Attributs externes",
+                        summary: "Résumé"
                     },
                     summary: {
-                        externalAttribute: "External Attribute URI",
-                        mappedAttribute: "Mapped Local Attribute URI",
-                        notFound: "No external attribute was added."
+                        externalAttribute: "URI de l'attribut externe",
+                        mappedAttribute: "URI de l'attribut local associée",
+                        notFound: "Aucun attribut externe n'a été ajouté."
                     }
                 }
             },
             external: {
                 advancedSearch: {
-                    error: "Filter query format incorrect",
+                    error: "Format du filtre de requête incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. Attribute URI etc."
+                                placeholder: "Ex. URI d'attribut, etc."
                             },
                             filterCondition: {
-                                placeholder: "E.g. Starts with etc."
+                                placeholder: "Ex. Commence par, etc."
                             },
                             filterValue: {
-                                placeholder: "E.g. http://axschema.org/namePerson/last"
+                                placeholder: "Ex. http://axschema.org/namePerson/last"
                             }
                         }
                     },
-                    placeholder: "Search by Attribute URI"
+                    placeholder: "Recherche par URI d'attribut"
                 },
                 attributes: {
-                    attributeURI: "Attribute URI",
-                    mappedClaim: "Mapped Local Attribute URI"
+                    attributeURI: "URI d'attribut",
+                    mappedClaim: "URI de l'attribut local associée"
                 },
                 forms: {
                     attributeURI: {
-                        label: "Attribute URI",
-                        placeholder: "Enter an attribute URI",
-                        requiredErrorMessage: "Attribute URI is required"
+                        label: "URI d'attribut",
+                        placeholder: "Saisir  une URI d'attribut",
+                        requiredErrorMessage: "Une URI d'attribut est requis."
                     },
                     localAttribute: {
-                        label: "Local attribute URI to map to",
-                        placeholder: "Select a Local Attribute",
-                        requiredErrorMessage: "Select a local attribute to map to"
+                        label: " URI de l'attribut local à associer à",
+                        placeholder: "Sélectionnez un attribut local",
+                        requiredErrorMessage: "Sélectionnez un attribut local  à associer à"
                     },
-                    submit: "Add External Attribute"
+                    submit: "Ajouter un attribut externe"
                 },
                 notifications: {
                     addExternalAttribute: {
                         genericError: {
-                            description: "An error occurred while adding the external attribute.",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de l'ajout de l'attribut externe.",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The external attribute has been added to the dialect successfully!",
-                            message: "External attribute added successfully"
+                            description: "L'attribut externe a été ajouté au dialecte avec succès !",
+                            message: "L'attribut externe a été ajouté avec succès"
                         }
                     },
                     deleteExternalClaim: {
                         genericError: {
-                            description: "There was an error while deleting the external attribute",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la suppression de l'attribut externe",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The external attribute has been deleted successfully!",
-                            message: "External attribute deleted successfully"
+                            description: "L'attribut externe a été supprimé avec succès !",
+                            message: "L'attribut externe a été effacé avec succès"
                         }
                     },
                     fetchExternalClaims: {
                         error: {
                             description: "{{description}}",
-                            message: "Retrieval error"
+                            message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Couldn't retrieve external claims.",
-                            message: "Something went wrong"
+                            description: "Impossible de récupérer les claims externes.",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Successfully retrieved external claims.",
-                            message: "Retrieval successful"
+                            description: "Récupérer avec succès des claims externes.",
+                            message: "Récupération réussie"
                         }
                     },
                     getExternalAttribute: {
                         genericError: {
-                            description: "There was an error while fetching the external attribute",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération de l'attribut externe",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     updateExternalAttribute: {
                         genericError: {
-                            description: "There was an error while updating the" + " external attribute",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération de l'attribut externe",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The external attribute has been updated successfully!",
-                            message: "External attribute updated successfully"
+                            description: "L'attribut externe a été mis à jour avec succès !",
+                            message: "L'attribut externe a été mis à jour avec succès"
                         }
                     }
                 },
                 pageLayout: {
                     edit: {
-                        header: "Add External Attribute",
-                        primaryAction: "New External Attribute"
+                        header: "Ajouter un attribut externe",
+                        primaryAction: "Nouvel attribut externe"
                     }
                 },
                 placeholders: {
                     empty: {
-                        subtitle: "Currently, there are no external attributes available for "
-                            + "this dialect.",
-                        title: "No External Attributes"
+                        subtitle: "Actuellement, il n'y a pas d'attributs externes disponibles pour "
+                            + "ce dialecte.",
+                        title: "Pas d'attributs externes"
                     }
                 }
             },
             list: {
                 columns: {
                     actions: "Actions",
-                    claimURI: "Claim URI",
-                    dialectURI: "Dialect URI",
-                    name: "Name"
+                    claimURI: "URI du claim",
+                    dialectURI: "URI du dialecte",
+                    name: "Nom"
                 },
                 confirmation: {
-                    action: "Confirm",
-                    content: "{{message}} Please proceed with caution.",
+                    action: "Confirmer",
+                    content: "{{message}} Veuillez procéder avec prudence.",
                     dialect: {
-                        message: "If you delete this external dialect, all the"
-                            + " associated external attributes will also be deleted.",
-                        name: "external dialect"
+                        message: "Si vous supprimez ce dialecte externe, tous les"
+                            + " attributs externes associés seront également supprimés.",
+                        name: "dialecte externe"
                     },
                     external: {
-                        message: "This will permanently delete the external attribute.",
-                        name: "external attribute"
+                        message: "Ceci supprimera définitivement l'attribut externe.",
+                        name: "attribut externe"
                     },
-                    header: "Are you sure?",
-                    hint: "Please type <1>{{assertion}}</1> to confirm.",
+                    header: "Êtes-vous sûr ?",
+                    hint: "Veuillez saisir <1>{{assertion}}</1> pour confirmer.",
                     local: {
-                        message: "If you delete this local attribute, the user data belonging "
-                            + "to this attribute will also be deleted.",
-                        name: "local attribute"
+                        message: "Si vous supprimez cet attribut local, les données de l'utilisateur appartenant "
+                            + "à cet attribut seront également supprimés.",
+                        name: "attribut local"
                     },
-                    message: "This action is irreversible and will permanently delete the selected {{name}}."
+                    message: "Cette action est irréversible et supprimera définitivement le {{name}} sélectionné."
                 },
                 placeholders: {
                     emptyList: {
                         action: {
-                            dialect: "New External Attribute",
-                            external: "New External Attribute",
-                            local: "New Local Attribute"
+                            dialect: "Nouveau dialecte externe",
+                            external: "Nouvel attribut externe",
+                            local: "Nouvel attribut local"
                         },
-                        subtitle: "There are currently no results available."
-                            + "You can add a new item easily by following the" + "steps in the creation wizard.",
+                        subtitle: "Il n'y a actuellement aucun résultat disponible."
+                            + "Vous pouvez ajouter un nouvel élément facilement en suivant les étapes de l'assistant de création.",
                         title: {
-                            dialect: "Add an External Dialect",
-                            external: "Add an External Attribute",
-                            local: "Add a Local Attribute"
+                            dialect: "Ajouter un dialecte externe",
+                            external: "Ajouter un attribut externe",
+                            local: "Ajouter un attribut local"
                         }
                     },
                     emptySearch: {
-                        action: "Clear search query",
-                        subtitle: "We couldn't find any results for {{searchQuery}}."
-                            + "Please try a different search term.",
-                        title: "No results found"
+                        action: "Effacer la requête de recherche",
+                        subtitle: "Nous n'avons trouvé aucun résultat pour {{searchQuery}}."
+                            + "Veuillez essayer un autre terme de recherche.",
+                        title: "Aucun résultat trouvé"
                     }
                 },
-                warning: "This attribute has not been mapped to an attribute" +
-                    " in the following userstores:"
+                warning: "Cet attribut n'a pas été associé à un attribut" +
+                    " dans les annuaires suivants :"
             },
             local: {
                 additionalProperties: {
-                    hint: "Use when writing an extension using current attributes",
-                    key: "Name",
-                    keyRequiredErrorMessage: "Enter a name",
-                    value: "Value",
-                    valueRequiredErrorMessage: "Enter a value"
+                    hint: "A utiliser lors de l'écriture d'une extension utilisant les attributs courants",
+                    key: "Nom",
+                    keyRequiredErrorMessage: "Saisir un nom",
+                    value: "Valeur",
+                    valueRequiredErrorMessage: "Saisir une valeur"
                 },
                 advancedSearch: {
-                    error: "Filter query format incorrect",
+                    error: "Format de requête de filtre incorrect",
                     form: {
                         inputs: {
                             filterAttribute: {
-                                placeholder: "E.g. name, attribute URI etc."
+                                placeholder: "Ex. nom, attribut URI, etc."
                             },
                             filterCondition: {
-                                placeholder: "E.g. Starts with etc."
+                                placeholder: "Ex. commence par etc."
                             },
                             filterValue: {
-                                placeholder: "E.g. address, gender etc."
+                                placeholder: "Ex. l'adresse, le sexe, etc."
                             }
                         }
                     },
-                    placeholder: "Search by name"
+                    placeholder: "Recherche par nom"
                 },
                 attributes: {
-                    attributeURI: "Attribute URI"
+                    attributeURI: "URI d'attribut"
                 },
                 confirmation: {
-                    content: "If you delete this local attribute, the user data belonging to this attribute "
-                        + "will also be deleted. Please proceed with caution.",
-                    header: "Are you sure?",
-                    hint: "Please type <1>{{name}}</1> to confirm.",
-                    message: "This action is irreversible and will permanently delete the selected local attribute.",
-                    primaryAction: "Confirm"
+                    content: "Si vous supprimez cet attribut local, les données utilisateur appartenant à cet attribut "
+                        + "seront également supprimés. Veuillez procéder avec prudence.",
+                    header: "Êtes-vous sûr ?",
+                    hint: "Veuillez saisir <1>{{nom}}</1> pour confirmer.",
+                    message: "Cette action est irréversible et supprimera définitivement l'attribut local sélectionné.",
+                    primaryAction: "Confirmer"
                 },
                 dangerZone: {
-                    actionTitle: "Delete Local Attribute",
-                    header: "Delete Local Attribute",
-                    subheader: "Once you delete a local attribute, there is no going back. "
-                        + "Please be certain."
+                    actionTitle: "Supprimer l'attribut local",
+                    header: "Supprimer l'attribut local",
+                    subheader: "Une fois que vous avez supprimé un attribut local, il est impossible de revenir en arrière. "
+                        + "Soyez certains de vous."
                 },
                 forms: {
                     attribute: {
-                        placeholder: "Enter an attribute to map to",
-                        requiredErrorMessage: "Attribute name is a required field"
+                        placeholder: "Entrez un attribut à associer à",
+                        requiredErrorMessage: "Le nom de l'attribut est un champ obligatoire"
                     },
-                    attributeHint: "A unique ID for the attribute."
-                        + " The ID will be appended to the dialect URI to create a attribute URI",
+                    attributeHint: "Un identifiant unique pour l'attribut."
+                        + " L'ID sera ajouté à l'URI du dialecte pour créer un URI d'attribut",
                     attributeID: {
-                        label: "Attribute ID",
-                        placeholder: "Enter an attribute ID",
-                        requiredErrorMessage: "Attribute ID is required"
+                        label: "ID d'attribut",
+                        placeholder: "Saisir un ID d'attribut",
+                        requiredErrorMessage: "Un ID d'attribut est requis."
                     },
                     description: {
                         label: "Description",
-                        placeholder: "Enter a description",
-                        requiredErrorMessage: "Description is required"
+                        placeholder: "Saisir une description",
+                        requiredErrorMessage: "Description est requis"
                     },
                     displayOrder: {
-                        label: "Display Order",
-                        placeholder: "Enter the display order"
+                        label: "Ordre d'affichage",
+                        placeholder: "Saisir l'ordre d'affichage"
                     },
-                    displayOrderHint: "This determines the position at which this attribute is "
-                        + "displayed in the user profile and the user registration page",
+                    displayOrderHint: "Ceci détermine la position à laquelle cet attribut est affiché "
+                        + "dans le profil de l'utilisateur et la page d'enregistrement de l'utilisateur",
                     name: {
-                        label: "Name",
-                        placeholder: "Enter a name for the attribute",
-                        requiredErrorMessage: "Name is required"
+                        label: "Nom",
+                        placeholder: "Saisir un nom pour l'attribut",
+                        requiredErrorMessage: "Un nom est requis"
                     },
-                    nameHint: "Name of the attribute that will be shown on the user profile "
-                        + "and user registration page",
+                    nameHint: "Nom de l'attribut qui figurera sur le profil de l'utilisateur "
+                        + "et la page d'enregistrement de l'utilisateur",
                     readOnly: {
-                        label: "Make this attribute read-only"
+                        label: "Mettre cet attribut en lecture seule"
                     },
                     regEx: {
-                        label: "Regular expression",
-                        placeholder: "Enter a regular expression"
+                        label: "Expression régulière",
+                        placeholder: "Entrez une expression régulière"
                     },
-                    regExHint: "This regular expression is used to validate the value this attribute can take",
+                    regExHint: "Cette expression régulière est utilisée pour valider le format que cet attribut peut prendre",
                     required: {
-                        label: "Make this attribute required during user registration"
+                        label: "Rendre cet attribut obligatoire lors de l'inscription de l'utilisateur"
                     },
                     supportedByDefault: {
-                        label: "Show this attribute on user profile and user registration page"
+                        label: "Afficher cet attribut sur le profil de l'utilisateur et la page d'enregistrement de l'utilisateur"
                     }
                 },
                 mappedAttributes: {
-                    hint: "Enter the attribute from each userstore that you want to map to this attribute."
+                    hint: "Saisissez l'attribut de chaque magasin d'utilisateurs que vous voulez associer à cet attribut."
                 },
                 notifications: {
                     addLocalClaim: {
                         genericError: {
-                            description: "There was an error while adding the local attribute",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de l'ajout de l'attribut local",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The local attribute has been added successfully!",
-                            message: "Local attribute added successfully"
+                            description: "L'attribut local a été ajouté avec succès !",
+                            message: "L'attribut local a été ajouté avec succès"
                         }
                     },
                     deleteClaim: {
                         genericError: {
-                            description: "There was an error while deleting the local attribute",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la suppression de l'attribut local",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The local claim has been deleted successfully!",
-                            message: "Local attribute deleted successfully"
+                            description: "Le claim local a été supprimé avec succès!",
+                            message: "Le claim local a été supprimé avec succès"
                         }
                     },
                     fetchLocalClaims: {
                         error: {
                             description: "{{description}}",
-                            message: "Retrieval error"
+                            message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "Couldn't retrieve local claims.",
-                            message: "Something went wrong"
+                            description: "Impossible de récupérer les claims locaux.",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Successfully retrieved local claims.",
-                            message: "Retrieval successful"
+                            description: "Récupération réussie des claims locaux.",
+                            message: "Récupération réussie"
                         }
                     },
                     getAClaim: {
                         genericError: {
-                            description: "There was an error while fetching the local attribute",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération de l'attribut local",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     getClaims: {
                         genericError: {
-                            description: "There was an error while fetching the local attributes",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération des attributs locaux",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     getLocalDialect: {
                         genericError: {
-                            description: "There was an error while fetching the local dialect",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération du dialecte local",
+                            message: "Quelque chose s'est mal passé"
                         }
                     },
                     updateClaim: {
                         genericError: {
-                            description: "There was an error while updating the" + " local attribute",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la mise à jour de l'attribut local",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "This local attribute has been "
-                                + "updated successfully!",
-                            message: "Local attribute updated successfully"
+                            description: "Cet attribut local a été mis à jour avec succès !",
+                            message: "Attribut local mis à jour avec succès"
                         }
                     }
                 },
                 pageLayout: {
                     edit: {
-                        back: "Go back to Local Attributes",
-                        description: "Edit local attribute",
+                        back: "Revernir aux attributs locaux",
+                        description: "Modifier l'attribut local",
                         tabs: {
-                            additionalProperties: "Additional Properties",
-                            general: "General",
-                            mappedAttributes: "Mapped Attributes"
+                            additionalProperties: "Propriétés supplémentaires",
+                            general: "Général",
+                            mappedAttributes: "Attributs associés"
                         }
                     },
                     local: {
-                        action: "New Local Attribute",
-                        back: "Go back to attribute dialects",
-                        description: "Create and manage local attributes",
-                        title: "Local Attributes"
+                        action: "Nouvel attribut local",
+                        back: "Revenir aux dialectes d'attributs",
+                        description: "Créer et gérer les attributs locaux",
+                        title: "Attributs locaux"
                     }
                 },
                 wizard: {
-                    header: "Add Local Attribute",
+                    header: "Ajouter un attribut local",
                     steps: {
-                        general: "General",
-                        mapAttributes: "Map Attributes",
-                        summary: "Summary"
+                        general: "Général",
+                        mapAttributes: "Attributs associés",
+                        summary: "Résumé"
                     },
                     summary: {
-                        attribute: "Attribute",
-                        attributeURI: "Attribute URI",
-                        displayOrder: "Display Order",
-                        readOnly: "This attribute is read-only",
-                        regEx: "Regular Expression",
-                        required: "This attribute is required during user registration",
-                        supportedByDefault: "This attribute is shown on user profile and user registration page",
-                        userstore: "Userstore"
+                        attribute: "Attribut",
+                        attributeURI: "URI d'attribut",
+                        displayOrder: "Ordre d'affichage",
+                        readOnly: "Cet attribut est en lecture seule",
+                        regEx: "Expression régulière",
+                        required: "Cet attribut est requis lors de l'inscription de l'utilisateur",
+                        supportedByDefault: "Cet attribut est affiché sur le profil de l'utilisateur et sur la page d'enregistrement de l'utilisateur",
+                        userstore: "Annuaire"
                     }
                 }
             }
         },
         emailLocale: {
             buttons: {
-                addLocaleTemplate: "Add Locale Template",
-                saveChanges: "Save Changes"
+                addLocaleTemplate: "Ajouter une langue",
+                saveChanges: "Sauvegarder les modifications"
             },
             forms: {
                 addLocale: {
                     fields: {
                         bodyEditor: {
-                            label: "Body"
+                            label: "Corps"
                         },
                         locale: {
-                            label: "Locale",
-                            placeholder: "Select Locale",
+                            label: "Langue",
+                            placeholder: "Sélectionnez une langue",
                             validations: {
-                                empty: "Select locale"
+                                empty: "La langue est obligatoire"
                             }
                         },
                         signatureEditor: {
-                            label: "Mail signature"
+                            label: "Signature du courrier"
                         },
                         subject: {
-                            label: "Subject",
-                            placeholder: "Enter your email subject",
+                            label: "Objet",
+                            placeholder: "Saisissez l'objet de votre e-mail",
                             validations: {
-                                empty: "Email Subject is required"
+                                empty: "L'objet de l'e-mail est obligatoire"
                             }
                         }
                     }
@@ -744,30 +741,31 @@ export const adminPortal: AdminPortalNS = {
         },
         emailTemplateTypes: {
             buttons: {
-                createTemplateType: "Create Template Type",
-                deleteTemplate: "Delete Template",
-                editTemplate: "Edit Template",
-                newType: "New Template Type"
+                createTemplateType: "Créer un type de modèle",
+                deleteTemplate: "Supprimer le modèle",
+                editTemplate: "Modifier le modèle",
+                newType: "Nouveau type de modèle"
             },
             confirmations: {
                 deleteTemplateType: {
-                    assertionHint: "Please type <1>{{ id }}</1> to confirm.",
-                    content: "If you delete this email template type, all associated work flows will no longer " +
-                        "have a valid email template to work with and this will delete all the locale templates " +
-                        "associated with this template type. Please proceed cautiously.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the selected email template " +
-                        "type."
+                    assertionHint: "Veuillez saisir <1>{{ id }}</1> pour confirmer.",
+                    content: "En supprimant ce type de modèle d'e-mail, vous supprimez également tous " +
+                        " les modèles d'e-mails qui lui sont associés. De plus, les notifications associés " +
+                        " à ce type de modèle n'auront plus de modèles de mails associés. " +
+                        " Veuillez procéder avec prudence.",
+                    header: "Êtes-vous sûr ?",
+                    message: "Cette action est irréversible et supprimera définitivement le type de modèle " +
+                        "d'e-mail sélectionné."
                 }
             },
             forms: {
                 addTemplateType: {
                     fields: {
                         type: {
-                            label: "Template Type Name",
-                            placeholder: "Enter a template type name",
+                            label: "Nom du type de modèle",
+                            placeholder: "Saisir un nom de type de modèle",
                             validations: {
-                                empty: "Template type name is required to proceed."
+                                empty: "Le nom du type de modèle est nécessaire pour poursuivre."
                             }
                         }
                     }
@@ -775,229 +773,229 @@ export const adminPortal: AdminPortalNS = {
             },
             list: {
                 actions: "Actions",
-                name: "Name"
+                name: "Nom"
             },
             notifications: {
                 createTemplateType: {
                     error: {
                         description: "{{description}}",
-                        message: "Error creating email template type."
+                        message: "Erreur de création de type de modèle d'e-mail."
                     },
                     genericError: {
-                        description: "Couldn't create email template type.",
-                        message: "Something went wrong"
+                        description: "Impossible de créer le type de modèle d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully created the email template type.",
-                        message: "Creating email template type is successful"
+                        description: "Le type de modèle de mail a été créé avec succès.",
+                        message: "Création du type de modèle d'e-mail réussie"
                     }
                 },
                 deleteTemplateType: {
                     error: {
                         description: "{{description}}",
-                        message: "Error deleting email template type."
+                        message: "Erreur de suppression du type de modèle d'e-mail."
                     },
                     genericError: {
-                        description: "Couldn't delete email template type.",
-                        message: "Something went wrong"
+                        description: "Impossible de supprimer le type de modèle d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully deleted the email template type.",
-                        message: "Email template type delete successful"
+                        description: "Le type de modèle d'e-mail a été supprimé avec succès.",
+                        message: "Type de modèle d'e-mail supprimé avec succès"
                     }
                 },
                 getTemplateTypes: {
                     error: {
                         description: "{{description}}",
-                        message: "Retrieval error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "Couldn't retrieve the email template types.",
-                        message: "Something went wrong"
+                        description: "La récupération des types de modèles de mail a échoué.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the email template types.",
-                        message: "Retrieval successful"
+                        description: "Les types de modèles de mails ont été récupérés avec succès.",
+                        message: "Récupération réussie"
                     }
                 },
                 updateTemplateType: {
                     error: {
                         description: "{{description}}",
-                        message: "Error updating email template type."
+                        message: "Erreur de mise à jour du type de modèle d'e-mail."
                     },
                     genericError: {
-                        description: "Couldn't update email template type.",
-                        message: "Something went wrong"
+                        description: "Impossible de mettre à jour le type de modèle d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully updated the email template type.",
-                        message: "Email template type update successful"
+                        description: "Le type de modèle d'e-mail a été mis à jour avec succès.",
+                        message: "Mise à jour réussie du type de modèle d'e-mail"
                     }
                 }
             },
             placeholders: {
                 emptyList: {
-                    action: "New Template Type",
+                    action: "Nouveau type de modèle",
                     subtitles: {
-                        0: "Currently there are no templates types available.",
-                        1: "You can add a new template type by ",
-                        2: "clicking on the button below."
+                        0: "Il n'y a actuellement aucun type de modèle disponible.",
+                        1: "Vous pouvez en ajouter en ",
+                        2: "cliquant sur le bouton ci-dessous."
                     },
-                    title: "Add new Template Type"
+                    title: "Ajouter un nouveau type de modèle"
                 }
             },
             wizards: {
                 addTemplateType: {
-                    heading: "Create Email Template Type",
+                    heading: "Créer un type de modèle d'e-mail",
                     steps: {
                         templateType: {
-                            heading: "Template Type"
+                            heading: "Type de modèle"
                         }
                     },
-                    subHeading: "Create a new template type to associate with email requirements."
+                    subHeading: "Créer un nouveau type de modèle pour répondre à des besoins en matière d'e-mail."
                 }
             }
         },
         emailTemplates: {
             buttons: {
-                deleteTemplate: "Delete Template",
-                editTemplate: "Edit Template",
-                newTemplate: "New Template",
-                viewTemplate: "View Template"
+                deleteTemplate: "Supprimer le modèle",
+                editTemplate: "Modifier le modèle",
+                newTemplate: "Nouveau modèle",
+                viewTemplate: "Voir le modèle"
             },
             confirmations: {
                 deleteTemplate: {
-                    assertionHint: "Please type <1>{{ id }}</1> to confirm.",
-                    content: "If you delete this email template, all associated work flows will no longer " +
-                        "have a valid email template to work with. Please proceed cautiously.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the selected email template."
+                    assertionHint: "Veuillez saisir <1>{{ id }}</1> pour confirmer.",
+                    content: "En supprimant ce modèle d'e-mail, tous les processus associés ne disposeront " +
+                        "plus de modèle valide pour fonctionner. Veuillez procéder avec prudence.",
+                    header: "Êtes-vous sûr ?",
+                    message: "Cette action est irréversible et supprimera définitivement le modèle d'e-mail sélectionné."
                 }
             },
             editor: {
                 tabs: {
                     code: {
-                        tabName: "HTML Code"
+                        tabName: "Code HTML"
                     },
                     preview: {
-                        tabName: "Preview"
+                        tabName: "Prévisualisation"
                     }
                 }
             },
             list: {
                 actions: "Actions",
-                name: "Name"
+                name: "Nom"
             },
             notifications: {
                 createTemplate: {
                     error: {
                         description: "{{description}}",
-                        message: "Error creating email template."
+                        message: "Erreur de création d'un modèle d'e-mail."
                     },
                     genericError: {
-                        description: "Couldn't create email template.",
-                        message: "Something went wrong"
+                        description: "Impossible de créer un modèle d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully created the email template.",
-                        message: "Creating email template is successful"
+                        description: "Le modèle d'e-mail a été créé avec succès.",
+                        message: "Création du modèle d'e-mail réussie"
                     }
                 },
                 deleteTemplate: {
                     error: {
                         description: "{{description}}",
-                        message: "Error deleting email template."
+                        message: "Erreur de suppression d'un modèle d'e-mail."
                     },
                     genericError: {
-                        description: "Couldn't delete email template.",
-                        message: "Something went wrong"
+                        description: "Impossible de supprimer un modèle d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully deleted the email template .",
-                        message: "Email template delete successful"
+                        description: "Le modèle d'e-mail a été supprimé avec succès.",
+                        message: "Modèle d'e-mail supprimé avec succès"
                     }
                 },
                 getTemplateDetails: {
                     error: {
                         description: "{{description}}",
-                        message: "Retrieval error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "Couldn't retrieve the email template details.",
-                        message: "Something went wrong"
+                        description: "Impossible de récupérer les détails du modèle d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the email template details.",
-                        message: "Retrieval successful"
+                        description: "Le modèle de mail a été récupéré avec succès.",
+                        message: "Récupération réussie"
                     }
                 },
                 getTemplates: {
                     error: {
                         description: "{{description}}",
-                        message: "Retrieval error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "Couldn't retrieve the email templates.",
-                        message: "Something went wrong"
+                        description: "Impossible de récupérer les modèles d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the email templates.",
-                        message: "Retrieval successful"
+                        description: "Les modèles d'e-mail ont été récupérés avec succès.",
+                        message: "Récupération réussie"
                     }
                 },
                 iframeUnsupported: {
                     genericError: {
-                        description: "Your browser does not support iframes.",
-                        message: "Unsupported"
+                        description: "Votre navigateur ne supporte pas les iframes.",
+                        message: "Non pris en charge"
                     }
                 },
                 updateTemplate: {
                     error: {
                         description: "{{description}}",
-                        message: "Error updating email template."
+                        message: "Erreur de mise à jour du modèle d'e-mail."
                     },
                     genericError: {
-                        description: "Couldn't update email template.",
-                        message: "Something went wrong"
+                        description: "Impossible de mettre à jour le modèle d'e-mail.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully updated the email template.",
-                        message: "Email template update successful"
+                        description: "Le modèle d'e-mail a été mis à jour avec succès.",
+                        message: "Mise à jour du modèle d'e-mail réussie"
                     }
                 }
             },
             placeholders: {
                 emptyList: {
-                    action: "New Template",
+                    action: "Nouveau modèle",
                     subtitles: {
-                        0: "Currently there are no templates available for the selected",
-                        1: "email template type. You can add a new template by ",
-                        2: "clicking on the button below."
+                        0: "Il n'y a actuellement aucun modèle d'e-mail disponible pour ",
+                        1: "le type séléctionné. Vous pouvez en ajouter en ",
+                        2: "cliquant sur le bouton ci-dessous."
                     },
-                    title: "Add Template"
+                    title: "Ajouter un modèle"
                 }
             },
             viewTemplate: {
-                heading: "Email Template Preview"
+                heading: "Aperçu du modèle d'e-mail"
             }
         },
         footer: {
             copyright: "WSO2 Identity Server © {{year}}"
         },
         governanceConnectors: {
-            categories: "Categories",
-            connectorSubHeading: "Configure {{ name }} settings.",
-            disabled: "Disabled",
-            enabled: "Enabled",
+            categories: "Catégories",
+            connectorSubHeading: "Configurer les paramètre {{ name }}.",
+            disabled: "Désactivé",
+            enabled: "Activé",
             notifications: {
                 getConnector: {
                     error: {
                         description: "{{ description }}",
-                        message: "Retrieval Error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "An error occurred while retrieving governance connector.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération du connecteur.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
                         description: "",
@@ -1007,11 +1005,11 @@ export const adminPortal: AdminPortalNS = {
                 getConnectorCategories: {
                     error: {
                         description: "{{ description }}",
-                        message: "Retrieval Error"
+                        message: "Erreur de récupération"
                     },
                     genericError: {
-                        description: "An error occurred while retrieving governance connector categories.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des catégories de connecteurs.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
                         description: "",
@@ -1021,19 +1019,19 @@ export const adminPortal: AdminPortalNS = {
                 updateConnector: {
                     error: {
                         description: "{{ description }}",
-                        message: "Update Error"
+                        message: "Erreur de mise à jour"
                     },
                     genericError: {
-                        description: "An error occurred while updating governance connector.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la mise à jour du connecteur.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "{{ name }} Connector updated successfully.",
-                        message: "Update Successful."
+                        description: "Le connecteur {{ name }} a été mis à jour avec succès.",
+                        message: "Mise à jour réussie."
                     }
                 }
             },
-            pageSubHeading: "Configure and manage {{ name }}."
+            pageSubHeading: "Configurer et gérer {{ name }}."
 
         },
         groups: {
@@ -1041,25 +1039,25 @@ export const adminPortal: AdminPortalNS = {
                 form: {
                     inputs: {
                         filterAttribute: {
-                            placeholder: "E.g. group name."
+                            placeholder: "Ex. Nom de groupe."
                         },
                         filterCondition: {
-                            placeholder: "E.g. Starts with etc."
+                            placeholder: "Ex. Commence par, etc."
                         },
                         filterValue: {
-                            placeholder: "Enter value to search"
+                            placeholder: "Valeur à rechercher"
                         }
                     }
                 },
-                placeholder: "Search by group name"
+                placeholder: "Rechercher par nom de groupe"
             },
             edit: {
                 basics: {
                     fields: {
                         groupName: {
-                            name: "Group Name",
-                            placeholder: "Enter your group name",
-                            required: "Group name is required"
+                            name: "Nom de groupe",
+                            placeholder: "Saisir le  nom du groupe",
+                            required: "Le nom du groupe est obligatoire"
                         }
                     }
                 }
@@ -1067,82 +1065,82 @@ export const adminPortal: AdminPortalNS = {
             list: {
                 columns: {
                     actions: "Actions",
-                    lastModified: "Last Modified",
-                    name: "Name"
+                    lastModified: "Dernière modification",
+                    name: "Nom"
                 },
-                storeOptions: "Select User Store"
+                storeOptions: "Sélectionner un annuaire"
             },
             notifications: {
                 createGroup: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while creating the group."
+                        message: "Une erreur est survenue lors de la création du groupe."
                     },
                     genericError: {
-                        description: "Couldn't create the group.",
-                        message: "Something went wrong"
+                        description: "Impossible de créer le groupe.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The group was created successfully.",
-                        message: "Group created successfully."
+                        description: "Le groupe a été créé avec succès.",
+                        message: "Groupe créé avec succès."
                     }
                 },
                 createPermission: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while adding permission to group."
+                        message: "Une erreur s'est produite lors de l'ajout d'une permission au groupe."
                     },
                     genericError: {
-                        description: "Couldn't add permissions to group.",
-                        message: "Something went wrong"
+                        description: "Impossible d'ajouter des permissions au groupe.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Permissions were successfully added to the group.",
-                        message: "Group created successfully."
+                        description: "Les permissions ont été ajoutées avec succès au groupe.",
+                        message: "Groupe créé avec succès."
                     }
                 },
                 deleteGroup: {
                     error: {
                         description: "{{description}}",
-                        message: "Error deleting the selected group."
+                        message: "Erreur de suppression du groupe sélectionné."
                     },
                     genericError: {
-                        description: "Couldn't remove the selected group.",
-                        message: "Something went wrong"
+                        description: "Impossible de supprimer le groupe sélectionné.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The selected group was deleted successfully.",
-                        message: "Group deleted successfully"
+                        description: "Le groupe sélectionné a été supprimé avec succès.",
+                        message: "Groupe supprimé avec succès"
                     }
                 },
                 updateGroup: {
                     error: {
                         description: "{{description}}",
-                        message: "Error updating the selected group."
+                        message: "Erreur de mise à jour du groupe sélectionné."
                     },
                     genericError: {
-                        description: "Couldn't update the selected group.",
-                        message: "Something went wrong"
+                        description: "Impossible de mettre à jour le groupe sélectionné.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The selected group was updated successfully.",
-                        message: "Group updated successfully"
+                        description: "Le groupe sélectionné a été mis à jour avec succès.",
+                        message: "Groupe mis à jour avec succès"
                     }
                 }
             }
         },
         header: {
             links: {
-                devPortalNav: "Developer Portal",
-                userPortalNav: "My Account"
+                devPortalNav: "Portail développeurs",
+                userPortalNav: "Mon compte"
             }
         },
         helpPanel: {
             notifications: {
                 pin: {
                     success: {
-                        description: "Help panel will always appear {{state}} unless you change explicitly.",
-                        message: "Help panel {{state}}"
+                        description: "Le panneau d'aide apparaîtra toujours {{state}} sauf si vous le modifiez explicitement.",
+                        message: "Panneau d'aide {{state}}"
                     }
                 }
             }
@@ -1151,58 +1149,58 @@ export const adminPortal: AdminPortalNS = {
             widgets: {
                 insights: {
                     groups: {
-                        heading: "Groups",
-                        subHeading: "Overview of Groups"
+                        heading: "Groupes",
+                        subHeading: "Aperçu des groupes"
                     },
                     users: {
-                        heading: "Users",
-                        subHeading: "Overview of Users"
+                        heading: "Utilisateurs",
+                        subHeading: "Aperçu des utilisateurs"
                     }
                 },
                 overview: {
                     cards: {
                         groups: {
-                            heading: "Groups"
+                            heading: "Groupes"
                         },
                         users: {
-                            heading: "Users"
+                            heading: "Utilisateurs"
                         },
                         userstores: {
-                            heading: "Userstores"
+                            heading: "Annuaires"
                         }
                     },
-                    heading: "Overview",
-                    subHeading: "Basic set of stats to understand the status of the instance."
+                    heading: "Vue d'ensemble",
+                    subHeading: "Ensemble de statistiques de base pour comprendre le statut de l'instance."
                 },
                 quickLinks: {
                     cards: {
                         certificates: {
-                            heading: "Certificates",
-                            subHeading: "Manage certificates in the keystore."
+                            heading: "Certificats",
+                            subHeading: "Gérer les certificats dans le magasin de clés."
                         },
                         dialects: {
-                            heading: "Attribute Dialects",
-                            subHeading: "Manage attribute dialects."
+                            heading: "Dialectes d'attributs",
+                            subHeading: "Gérer les dialectes d'attributs."
                         },
                         emailTemplates: {
-                            heading: "Email Templates",
-                            subHeading: "Manage email templates."
+                            heading: "Modèles d'e-mail",
+                            subHeading: "Gérer les modèles d'e-mail."
                         },
                         generalConfigs: {
-                            heading: "General Configurations",
-                            subHeading: "Manage configurations, policies, etc."
+                            heading: "Configurations générales",
+                            subHeading: "Gérer les configurations, les politiques, etc."
                         },
                         groups: {
-                            heading: "Groups",
-                            subHeading: "Manage user groups and permissions."
+                            heading: "Groupes",
+                            subHeading: "Gérer les groupes d'utilisateurs et les permissions."
                         },
                         roles: {
-                            heading: "Roles",
-                            subHeading: "Manage user roles and permissions."
+                            heading: "Rôles",
+                            subHeading: "Gérer les rôles et les permissions des utilisateurs."
                         }
                     },
-                    heading: "Quick Links",
-                    subHeading: "Links to quickly navigate to features."
+                    heading: "Accès rapides",
+                    subHeading: "Liens permettant de naviguer rapidement vers les fonctionnalités."
                 }
             }
         },
@@ -1417,241 +1415,241 @@ export const adminPortal: AdminPortalNS = {
         roles: {
             addRoleWizard: {
                 buttons: {
-                    finish: "Finish",
-                    next: "Next",
-                    previous: "Previous"
+                    finish: "Terminer",
+                    next: "Suivant",
+                    previous: "Précédent"
                 },
                 forms: {
                     roleBasicDetails: {
                         domain: {
                             label: {
-                                group: "Userstore",
-                                role: "Role Type"
+                                group: "Annuaire",
+                                role: "Type de rôle"
                             },
-                            placeholder: "Domain",
+                            placeholder: "Domaine",
                             validation: {
                                 empty: {
-                                    group: "Select user store",
-                                    role: "Select Role Type"
+                                    group: "Sélectionner un annuaire",
+                                    role: "Sélectionner un type de rôle"
                                 }
                             }
                         },
                         roleName: {
-                            label: "{{type}} Name",
-                            placeholder: "Enter {{type}} Name",
+                            label: "Nome de {{type}}",
+                            placeholder: "Saisir un nom de {{type}}",
                             validations: {
-                                duplicate: "A {{type}} already exists with the given {{type}} name.",
-                                empty: "{{type}} Name is required to proceed.",
-                                invalid: "Please enter a valid {{type}} name."
+                                duplicate: "Un {{type}} avec ce nom existe déjà.",
+                                empty: "Le nom de {{type}} est obligatoire",
+                                invalid: "Veuillez saisir un nom de {{type}} valide."
                             }
                         }
                     }
                 },
-                heading: "Create {{type}}",
+                heading: "Créer un {{type}}",
                 permissions: {
                     buttons: {
-                        collapseAll: "Collapse All",
-                        expandAll: "Expand All",
-                        update: "Update"
+                        collapseAll: "Tout réduire",
+                        expandAll: "Tout étendre",
+                        update: "Mettre à jour"
                     }
                 },
-                subHeading: "Create a new {{type}} in the system with specific permissions",
+                subHeading: "Créer un nouveau {{type}} dans le système avec des permissions spécifiques",
                 summary: {
                     labels: {
                         domain: {
-                            group: "Userstore",
-                            role: "Role Type"
+                            group: "Annuaire",
+                            role: "Type de rôle"
                         },
                         permissions: "Permission(s)",
-                        roleName: "{{type}} Name",
-                        users: "Assigned User(s)"
+                        roleName: "Nom de {{type}}",
+                        users: "Assigné aux utilisateurs"
                     }
                 },
                 users: {
                     assignUserModal: {
-                        heading: "Update {{type}} Users",
+                        heading: "Mettre à jour le {{type}} d'utilisateurs",
                         list: {
-                            listHeader: "Name",
-                            searchPlaceholder: "Search users"
+                            listHeader: "Nom",
+                            searchPlaceholder: "Rechercher des utilisateurs"
                         },
-                        subHeading: "Add new users or remove existing users assigned to the {{type}}."
+                        subHeading: "Ajouter de nouveaux utilisateurs ou supprimer les utilisateurs existants affectés a {{type}}."
                     }
                 },
                 wizardSteps: {
-                    0: "Basic Details",
-                    1: "Permission Selection",
-                    2: "Assign Users",
-                    3: "Summary",
-                    4: "Groups & Users",
-                    5: "Assign Roles"
+                    0: "Informations de base",
+                    1: "Sélection de permissions",
+                    2: "Affectation des utilisateurs",
+                    3: "Résumé",
+                    4: "Groupes et utilisateurs",
+                    5: "Attribuer des rôles"
                 }
             },
             advancedSearch: {
                 form: {
                     inputs: {
                         filterAttribute: {
-                            placeholder: "E.g. role name."
+                            placeholder: "Ex. nom d'un rôle."
                         },
                         filterCondition: {
-                            placeholder: "E.g. Starts with etc."
+                            placeholder: "Ex. Commence par, etc."
                         },
                         filterValue: {
-                            placeholder: "Enter value to search"
+                            placeholder: "Saisir une valeur à rechercher"
                         }
                     }
                 },
-                placeholder: "Search by role name"
+                placeholder: "Rechercher par nom de rôle"
             },
             edit: {
                 basics: {
                     buttons: {
-                        update: "Update"
+                        update: "Mettre à jour"
                     },
                     confirmation: {
-                        assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
-                        content: "If you delete this {{type}}, the permissions attached to it will be deleted and " +
-                            "the users attached to it will no longer be able to perform intended actions which were " +
-                            "previously allowed. Please proceed with caution",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the selected {{type}}"
+                        assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                        content: "Si vous supprimez ce {{type}}, les permissions qui lui sont attachées seront supprimées et " +
+                            "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
+                            "précédemment autorisées. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr ?",
+                        message: "Cette action est irréversible et supprimera définitivement le {{type}} sélectionné"
                     },
                     dangerZone: {
-                        actionTitle: "Delete {{type}}",
-                        header: "Delete {{type}}",
-                        subheader: "Once you delete the {{type}}, there is no going back. Please be certain."
+                        actionTitle: "Supprimer {{type}}",
+                        header: "Supprimer {{type}}",
+                        subheader: "Une fois que vous avez supprimé le {{type}}, il n'y a plus de retour en arrière. Veuillez en être certain."
                     },
                     fields: {
                         roleName: {
-                            name: "Role Name",
-                            placeholder: "Enter your role name",
-                            required: "Role name is required"
+                            name: "Nom du rôle",
+                            placeholder: "Saisissez votre nom de rôle",
+                            required: "Le nom du rôle est requis"
 
                         }
                     }
                 },
                 menuItems: {
-                    basic: "Basics",
-                    groups: "Groups",
+                    basic: "Fondamentaux",
+                    groups: "Groupes",
                     permissions: "Permissions",
-                    roles: "Roles",
-                    users: "Users"
+                    roles: "Rôles",
+                    users: "Utilisateurs"
                 },
                 users: {
                     list: {
                         emptyPlaceholder: {
-                            action: "Assign User",
-                            subtitles: "There are no Users assigned to the {{type}} at the moment.",
-                            title: "No Users Assigned"
+                            action: "Affecter un utilisateur",
+                            subtitles: "Aucun utilisateur n'est assigné à ce rôle pour le moment.",
+                            title: "Aucun utilisateur assigné"
                         },
-                        header: "Users"
+                        header: "Utilisateurs"
                     }
                 }
             },
             list: {
                 buttons: {
-                    addButton: "New {{type}}",
-                    filterDropdown: "Filter By"
+                    addButton: "Nouveau {{type}}",
+                    filterDropdown: "Filtrer par"
                 },
                 columns: {
                     actions: "Actions",
-                    lastModified: "Last Modified",
-                    name: "Name"
+                    lastModified: "Dernière modification",
+                    name: "Nom"
                 },
                 confirmations: {
                     deleteItem: {
-                        assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
-                        content: "If you delete this {{type}}, the permissions attached to it will be deleted and " +
-                            "the users attached to it will no longer be able to perform intended actions which were " +
-                            "previously allowed. Please proceed with caution.",
-                        header: "Are you sure?",
-                        message: "This action is irreversible and will permanently delete the selected {{type}}"
+                        assertionHint: "Veuillez taper <1>{{ roleName }}</1> pour confirmer.",
+                        content: "Si vous supprimez ce {{type}}, les permissions qui y sont attachées seront supprimées et " +
+                            "les utilisateurs qui y sont rattachés ne pourront plus effectuer les actions prévues qui étaient " +
+                            "précédemment autorisées. Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr ?",
+                        message: "Cette action est irréversible et supprimera définitivement le {{type}} sélectionné"
                     }
                 },
                 emptyPlaceholders: {
                     emptyRoleList: {
-                        action: "New {{type}}",
+                        action: "Nouveau {{type}}",
                         subtitles: {
-                            0: "There are currently no {{type}} available.",
-                            1: "You can add a new {{type}} easily by following the",
-                            2: "steps in the {{type}} creation wizard."
+                            0: "Il n'y a actuellement aucun {{type}} disponible.",
+                            1: "Vous pouvez en ajouter facilement en suivant les",
+                            2: "étapes de l'assistant de création de {{type}}."
                         },
-                        title: "Add a new {{type}}"
+                        title: "Ajouter un nouveau {{type}}"
                     },
                     search: {
-                        action: "Clear search query",
+                        action: "Effacer la recherche",
                         subtitles: {
-                            0: "We couldn't find any results for {{searchQuery}}",
-                            1: "Please try a different search term."
+                            0: "La recherche pour '{{searchQuery}}' n'a renvoyé aucun résultat",
+                            1: "Veuillez essayer un autre terme."
                         },
-                        title: "No results found"
+                        title: "Aucun résultat"
                     }
                 },
                 popups: {
-                    delete: "Delete {{type}}",
-                    edit: "Edit {{type}}"
+                    delete: "Supprimer le {{type}}",
+                    edit: "Modifier le {{type}}"
                 }
             },
             notifications: {
                 createPermission: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while adding permission to role."
+                        message: "Une erreur s'est produite lors de l'ajout de la permission au rôle."
                     },
                     genericError: {
-                        description: "Couldn't add permissions to role.",
-                        message: "Something went wrong"
+                        description: "Impossible d'ajouter des permissions au rôle.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Permissions were successfully added to the role.",
-                        message: "Role created successfully."
+                        description: "Les permissions ont été ajoutées avec succès au rôle.",
+                        message: "Rôle créé avec succès."
                     }
                 },
                 createRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error occurred while creating the role."
+                        message: "Une erreur s'est produite lors de la création du rôle."
                     },
                     genericError: {
-                        description: "Couldn't create the role.",
-                        message: "Something went wrong"
+                        description: "Impossible de créer le rôle.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The role was created successfully.",
-                        message: "Role created successfully."
+                        description: "Le rôle a été créé avec succès.",
+                        message: "Rôle créé avec succès"
                     }
                 },
                 deleteRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error deleting the selected role."
+                        message: "Erreur de suppression du rôle sélectionné."
                     },
                     genericError: {
-                        description: "Couldn't remove the selected role.",
-                        message: "Something went wrong"
+                        description: "Impossible de supprimer le rôle sélectionné.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The selected role was deleted successfully.",
-                        message: "Role deleted successfully"
+                        description: "Le rôle sélectionné a été supprimé avec succès.",
+                        message: "Rôle supprimé avec succès"
                     }
                 },
                 fetchRoles: {
                     genericError: {
-                        description: "An error occurred while retrieving roles.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des rôles.",
+                        message: "Quelque chose s'est mal passé"
                     }
                 },
                 updateRole: {
                     error: {
                         description: "{{description}}",
-                        message: "Error updating the selected role."
+                        message: "Erreur de mise à jour du rôle sélectionné."
                     },
                     genericError: {
-                        description: "Couldn't update the selected role.",
-                        message: "Something went wrong"
+                        description: "Impossible de mettre à jour le rôle sélectionné.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The selected role was updated successfully.",
-                        message: "Role updated successfully"
+                        description: "Le rôle sélectionné a été mis à jour avec succès.",
+                        message: "Rôle mis à jour avec succès"
                     }
                 }
             }
@@ -1659,34 +1657,34 @@ export const adminPortal: AdminPortalNS = {
         serverConfigs: {
             realmConfiguration: {
                 actionTitles: {
-                    config: "More"
+                    config: "Plus"
                 },
                 confirmation: {
                     heading: "Confirmation",
-                    message: "Do you wish to save the configurations related to realm?"
+                    message: "Souhaitez-vous sauvegarder les configurations liées au domaine d'identité ?"
                 },
-                description: "Configure the basic configurations related to realm.",
+                description: "Configurer les paramètres généraux relatifs au domaine d'identité.",
                 form: {
                     homeRealmIdentifiers: {
-                        hint: "Enter home realm identifier. Multiple identifiers are allowed.",
-                        label: "Home realm identifiers",
+                        hint: "Entrez l'identifiant du domaine d'identité. Plusieurs identifiants sont autorisés.",
+                        label: "Identifiants du domaine d'identité",
                         placeholder: "localhost"
                     },
                     idleSessionTimeoutPeriod: {
-                        hint: "Enter the idle session timeout in minutes",
-                        label: "Idle Session Time Out"
+                        hint: "Saisir le délai d'inactivité de la session en minutes",
+                        label: "Temps d'inactivité maximum"
                     },
                     rememberMePeriod: {
-                        hint: "Enter the remember me period in minutes",
-                        label: "Remember Me Period"
+                        hint: "Saisir la durée de mémorisation en minutes",
+                        label: "Durée de mémorisation"
                     }
                 },
-                heading: "Realm configurations",
+                heading: "Configurations du domaine d'identité",
                 notifications: {
                     emptyHomeRealmIdentifiers: {
                         error: {
-                            description: "You must declare at least one home realm identifier.",
-                            message: "Data validation error"
+                            description: "Vous devez déclarer au moins un identifiant de domaine d'identité local.",
+                            message: "Erreur de validation des données"
                         },
                         genericError: {
                             description: "",
@@ -1700,11 +1698,11 @@ export const adminPortal: AdminPortalNS = {
                     getConfigurations: {
                         error: {
                             description: "{{ description }}",
-                            message: "Retrieval Error"
+                            message: "Erreur de récupération"
                         },
                         genericError: {
-                            description: "An error occurred while retrieving the realm configurations.",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération des configuration du domaine d'identité.",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
                             description: "",
@@ -1714,103 +1712,104 @@ export const adminPortal: AdminPortalNS = {
                     updateConfigurations: {
                         error: {
                             description: "{{ description }}",
-                            message: "Update Error"
+                            message: "Erreur de mise à jour"
                         },
                         genericError: {
-                            description: "An error occurred while updating the realm configurations.",
-                            message: "Update Error"
+                            description: "Une erreur s'est produite lors de la mise à jour des configuration du domaine d'identité.",
+                            message: "Erreur de mise à jour"
                         },
                         success: {
-                            description: "Successfully updated the realm configurations.",
-                            message: "Update Successful"
+                            description: "Mise à jour avec succès du domaine d'identité.",
+                            message: "Mise à jour réussie"
                         }
                     }
                 }
             }
         },
         sidePanel: {
-            addEmailTemplate: "Add Email Template",
-            addEmailTemplateLocale: "Add Email Template Locale",
-            attributeDialects: "Attribute Dialects",
+            addEmailTemplate: "Ajouter un modèle d'e-mail",
+            addEmailTemplateLocale: "Ajouter une langue de modèle d'e-mail",
+            attributeDialects: "Dialectes d'attributs",
             categories: {
-                attributes: "Attributes",
-                certificates: "Certificates",
+                attributes: "Attributs",
+                certificates: "Certificats",
                 configurations: "Configurations",
-                general: "General",
-                users: "Users",
-                userstores: "Userstores"
+                general: "Général",
+                users: "Utilisateurs",
+                userstores: "Annuaires"
             },
-            certificates: "Certificates",
+            certificates: "Certificats",
             configurations: "Configurations",
-            editEmailTemplate: "Email Templates",
-            editExternalDialect: "Edit External Dialect",
-            editGroups: "Edit Group",
-            editLocalClaims: "Edit Local Claims",
-            editRoles: "Edit Role",
-            editUsers: "Edit User",
-            editUserstore: "Edit Userstore",
+            editEmailTemplate: "Modèles d'e-mail",
+            editExternalDialect: "Modifier le dialecte externe",
+            editGroups: "Modifier le groupe",
+            editLocalClaims: "Modifier les attributs locaux",
+            editRoles: "Modifier le rôle",
+            editUsers: "Modifier l'utilisateur",
+            editUserstore: "Modifier l'annuaire",
             emailTemplateTypes: "",
-            emailTemplates: "Email Templates",
-            generalConfigurations: "General",
-            groups: "Groups",
-            localDialect: "Local Dialect",
-            overview: "Overview",
-            privacy: "Privacy",
-            roles: "Roles",
-            users: "Users",
-            userstoreTemplates: "Userstore Templates",
-            userstores: "Userstores"
+            emailTemplates: "Modèles d'e-mail",
+            generalConfigurations: "Général",
+            groups: "Groupes",
+            localDialect: "Dialecte local",
+            overview: "Vue d'ensemble",
+            privacy: "Confidentialité",
+            roles: "Rôles",
+            users: "Utilisateurs",
+            userstoreTemplates: "Modèles d'annuaires",
+            userstores: "Annuaires"
         },
         transferList: {
             list: {
                 emptyPlaceholders: {
-                    default: "There are no items in this list at the moment.",
+                    default: "Il n'y a aucun élément dans cette liste pour le moment.",
                     groups: {
-                        selected: "There are no {{type}} assigned to this group.",
-                        unselected: "There are no {{type}} available to assign to this group."
+                        selected: "Aucun {{type}} n'est attribué à ce groupe.",
+                        unselected: "Aucun {{type}} disponible ne peut être assigné à ce groupe."
                     },
                     roles: {
-                        selected: "There are no {{type}} assigned with this role.",
-                        unselected: "There are no {{type}} available to assign with this role."
+                        selected: "Aucun {{type}} n'est assigné à ce rôle.",
+                        unselected: "Aucun {{type}} disponible ne peut être assigné à ce rôle."
                     },
                     users: {
                         roles: {
-                            selected: "There are no {{type}} assigned to this user.",
-                            unselected: "There are no {{type}} available to assign to this user."
+                            selected: "Aucun {{type}} n'est attribué à cet utilisateur.",
+                            unselected: "Aucun {{type}} disponible ne peut être attribué à cet utilisateur."
                         }
                     }
                 },
                 headers: {
-                    0: "Domain",
-                    1: "Name"
+                    0: "Domaine",
+                    1: "Nom"
                 }
             },
-            searchPlaceholder: "Search {{type}}"
+            searchPlaceholder: "Rechercher un {{type}}"
         },
         user: {
             deleteUser: {
                 confirmationModal: {
-                    assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
-                    content: "If you delete this user, the user will not be able to login to the developer portal or " +
-                        "any other application the user was subscribed before. Please proceed with caution.",
-                    header: "Are you sure?",
-                    message: "This action is irreversible and will permanently delete the user."
+                    assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
+                    content: "En supprimant cet utilisateur, il ne sera plus en mesure de " +
+                        "se connecter au portail ou à toute autre application à laquelle il " +
+                        "est actuellement habilité. Êtes-vous ABSOLUMENT certain de vouloir continuer ?",
+                    header: "Êtes-vous sûr ?",
+                    message: "Cette action est irréversible et supprimera définitivement le compte utilisateur."
                 }
             },
             editUser: {
                 dangerZoneGroup: {
                     dangerZone: {
-                        actionTitle: "Delete User",
-                        header: "Delete user",
-                        subheader: "Once you delete a user, there is no going back. Please be certain."
+                        actionTitle: "Supprimer l'utilisateur",
+                        header: "Supprimer l'utilisateur",
+                        subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
                     },
-                    header: "Danger Zone"
+                    header: "Zone sensible"
                 },
                 menu: {
                     menuItems: {
-                        0: "Profile",
-                        1: "Groups",
-                        2: "Roles"
+                        0: "Profil",
+                        1: "Groupes",
+                        2: "Rôles"
                     }
                 }
             },
@@ -1818,146 +1817,146 @@ export const adminPortal: AdminPortalNS = {
                 addUserForm: {
                     buttons: {
                         radioButton: {
-                            label: "Select the method to set the user password",
+                            label: "Sélectionner la méthode d'initialisation du mot de passe",
                             options: {
-                                askPassword: "Invite user to set password",
-                                createPassword: "Set user password"
+                                askPassword: "Inviter l'utilisateur à définir un mot de passe",
+                                createPassword: "Définir le mot de passe de l'utilisateur"
 
                             }
                         }
                     },
                     inputs: {
                         confirmPassword: {
-                            label: "Confirm Password",
-                            placeholder: "Enter the new password",
+                            label: "Confirmation",
+                            placeholder: "Veuillez confirmer le mot de passe",
                             validations: {
-                                empty: "Confirm password is a required field",
-                                mismatch: "The password confirmation doesn't match"
+                                empty: "La confirmation est obligatoire",
+                                mismatch: "Les mots de passe saisis ne correspondent pas"
                             }
                         },
                         domain: {
-                            label: "Userstore",
-                            placeholder: "Select user store",
+                            label: "Annuaire",
+                            placeholder: "Veuillez sélectionner un annuaire",
                             validations: {
-                                empty: "User store name cannot be empty."
+                                empty: "L'annuaire est obligatoire."
                             }
                         },
                         email: {
-                            label: "Email Address",
-                            placeholder: "Enter the email address",
+                            label: "Adresse e-mail",
+                            placeholder: "Veuillez saisir une adresse e-mail",
                             validations: {
-                                empty: "Email address cannot be empty",
-                                invalid: "Please enter a valid email address"
+                                empty: "L'adresse e-mail est obligatoire",
+                                invalid: "L'adresse e-mail est invalide"
                             }
                         },
                         firstName: {
-                            label: "First Name",
-                            placeholder: "Enter your first name",
+                            label: "Prénom",
+                            placeholder: "Veuillez saisir un prénom",
                             validations: {
-                                empty: "First name is a required field"
+                                empty: "Le prénom est obligatoire"
                             }
                         },
                         lastName: {
-                            label: "Last Name",
-                            placeholder: "Enter your last name",
+                            label: "Nom de famille",
+                            placeholder: "Veuillez saisir un nom de famille",
                             validations: {
-                                empty: "Last name is a required field"
+                                empty: "Le nom de famille est obligatoire"
                             }
                         },
                         newPassword: {
-                            label: "New Password",
-                            placeholder: "Enter the new password",
+                            label: "Nouveau mot de passe",
+                            placeholder: "Veuillez saisir un mot de passe",
                             validations: {
-                                empty: "New password is a required field",
-                                regExViolation: "Please enter a valid password"
+                                empty: "Le mot de passe est obligatoire",
+                                regExViolation: "Le mot de passe saisi est invalide"
                             }
                         },
                         username: {
-                            label: "Username",
-                            placeholder: "Enter the username",
+                            label: "Nom d'utilisateur",
+                            placeholder: "Veuillez saisir un nom d'utilisateur",
                             validations: {
-                                empty: "Username is a required field",
-                                invalid: "A user already exists with this username.",
-                                regExViolation: "Please enter a valid username"
+                                empty: "Le nom d'utilisateur est obligatoire",
+                                invalid: "Ce nom d'utilisateur n'est pas disponible.",
+                                regExViolation: "Ce nom d'utilisateur est invalide"
                             }
                         }
                     },
                     validations: {
                         genericError: {
-                            description: "Something went wrong. Please try again",
-                            message: "Change password error"
+                            description: "Quelque chose s'est mal passé. Veuillez réessayer",
+                            message: "Erreur de mise à jour du mot de passe"
                         },
                         invalidCurrentPassword: {
-                            description: "The current password you entered appears to be invalid. Please try again",
-                            message: "Change password error"
+                            description: "Le mot de passe actuel semble erroné. Veuillez réessayer.",
+                            message: "Erreur de mise à jour du mot de passe"
                         },
                         submitError: {
                             description: "{{description}}",
-                            message: "Change password error"
+                            message: "Erreur de mise à jour du mot de passe"
                         },
                         submitSuccess: {
-                            description: "The password has been changed successfully",
-                            message: "Password reset successful"
+                            description: "Le mot de passe à été mis à jour avec succès",
+                            message: "Mise à jour du mot de passe réussi"
                         }
                     }
                 }
             },
             modals: {
                 addUserWarnModal: {
-                    heading: "Warning",
-                    message: "Please note that this created user will not be assigned with a role. If you wish to " +
-                        "assign roles to this user please click on the button below."
+                    heading: "Attention",
+                    message: "Veuillez noter qu'aucun rôle ne sera attribué au nouvel utilisateur. Si vous souhaitez " +
+                        "lui en attribuer, veuillez cliquer sur le bouton ci-dessous.",
                 },
                 addUserWizard: {
                     buttons: {
-                        next: "Next",
-                        previous: "Previous"
+                        next: "Suivant",
+                        previous: "Précédent"
                     },
                     steps: {
-                        basicDetails: "Basic Details",
-                        groups: "User Groups",
-                        roles: "User Roles",
-                        summary: "Summary"
+                        basicDetails: "Informations générales",
+                        groups: "Groupes",
+                        roles: "Rôles",
+                        summary: "Résumé"
                     },
-                    subTitle: "Follow the steps to create the new user",
-                    title: "Create User",
+                    subTitle: "Assistant de création d'un nouvel utilisateur",
+                    title: "Ajouter un utilisateur",
                     wizardSummary: {
-                        domain: "Userstore",
-                        groups: "Group(s)",
-                        name: "Name",
+                        domain: "Annuaire",
+                        groups: "Groupe(s)",
+                        name: "Nom",
                         passwordOption: {
-                            label: "Password option",
+                            label: "Initialisation du mot de passe",
                             message: {
-                                0: "An email will be sent to {{email}} with the link to set the password.",
-                                1: "The password was set by the administrator."
+                                0: "Une invitation sera envoyé à l'adresse {{email}} avec un lien d'initialisation.",
+                                1: "Vous avez initialisé le mot de passe."
                             }
                         },
-                        roles: "Role(s)",
-                        username: "Username"
+                        roles: "Rôle(s)",
+                        username: "Nom d'utilisateur"
                     }
                 }
             },
             profile: {
                 fields: {
                     /* eslint-disable @typescript-eslint/camelcase */
-                    addresses_home: "Home Address",
-                    addresses_work: "Work Address",
+                    addresses_home: "Adresse personnelle",
+                    addresses_work: "Adresse professionnelle",
                     emails: "Email",
-                    emails_home: "Home Email",
-                    emails_other: "Other Email",
-                    emails_work: "Work Email",
+                    emails_home: "E-mail personnel",
+                    emails_other: "Autre adresse e-mail",
+                    emails_work: "E-mail professionnel",
                     generic: {
-                        default: "Add {{fieldName}}"
+                        default: "Ajouter l'attribut {{fieldName}}"
                     },
-                    name_familyName: "Last Name",
-                    name_givenName: "First Name",
-                    phoneNumbers: "Phone Number",
-                    phoneNumbers_home: "Home Phone Number",
-                    phoneNumbers_mobile: "Mobile Number",
-                    phoneNumbers_other: "Other Phone Number",
-                    phoneNumbers_work: "Work Phone Number",
+                    name_familyName: "Nom de famille",
+                    name_givenName: "Prénom",
+                    phoneNumbers: "Numéros de téléphone",
+                    phoneNumbers_home: "Numéro de téléphone personnel",
+                    phoneNumbers_mobile: "Numéro de téléphone portable",
+                    phoneNumbers_other: "Autre numéro de téléphone",
+                    phoneNumbers_work: "Numéro de téléphone au professionnel",
                     profileUrl: "URL",
-                    userName: "Username"
+                    userName: "Nom d'utilisateur"
                     /* eslint-enable @typescript-eslint/camelcase */
                 },
                 forms: {
@@ -1965,33 +1964,33 @@ export const adminPortal: AdminPortalNS = {
                         inputs: {
                             email: {
                                 label: "Email",
-                                note: "NOTE: This will change the email address in your profile",
-                                placeholder: "Enter your email address",
+                                note: "NOTE: Cela modifiera l'adresse e-mail dans votre profil utilisateur",
+                                placeholder: "Veuillez saisir votre adresse e-mail",
                                 validations: {
-                                    empty: "Email address is a required field",
-                                    invalidFormat: "The email address is not of the correct format"
+                                    empty: "L'adresse e-mail est obligatoire",
+                                    invalidFormat: "Le format de l'adresse e-mail saisie est invalide"
                                 }
                             }
                         }
                     },
                     generic: {
                         inputs: {
-                            placeholder: "Enter your {{fieldName}}",
+                            placeholder: "Entrez votre {{fieldName}}",
                             validations: {
-                                empty: "{{fieldName}} is a required field",
-                                invalidFormat: "The {{fieldName}} is not of the correct format"
+                                empty: "L'attribut {{fieldName}} est obligatoire",
+                                invalidFormat: "Le format de l'attribut {{fieldName}} saisi est invalide"
                             }
                         }
                     },
                     mobileChangeForm: {
                         inputs: {
                             mobile: {
-                                label: "Mobile number",
-                                note: "NOTE: This will change the mobile number in your profile",
-                                placeholder: "Enter your mobile number",
+                                label: "Numéro de téléphone portable",
+                                note: "NOTE: Le numéro de téléphone portable associé de votre profil utilisateur sera modifié",
+                                placeholder: "Veuillez saisir votre numéro de portable",
                                 validations: {
-                                    empty: "Mobile number is a required field",
-                                    invalidFormat: "The mobile number is not of the right format"
+                                    empty: "Le numéro de portable est un champ obligatoire",
+                                    invalidFormat: "Le format du numéro de téléphone portable saisi est invalide"
                                 }
                             }
                         }
@@ -1999,17 +1998,17 @@ export const adminPortal: AdminPortalNS = {
                     nameChangeForm: {
                         inputs: {
                             firstName: {
-                                label: "First name",
-                                placeholder: "Enter the first name",
+                                label: "Prénom",
+                                placeholder: "Veuillez saisir votre prénom",
                                 validations: {
-                                    empty: "First name is a required field"
+                                    empty: "Le prénom est obligatoire"
                                 }
                             },
                             lastName: {
-                                label: "Last name",
-                                placeholder: "Enter the last name",
+                                label: "Nom de famille",
+                                placeholder: "Veuillez saisir votre nom de famille",
                                 validations: {
-                                    empty: "Last name is a required field"
+                                    empty: "Le nom de famille est obligatoire"
                                 }
                             }
                         }
@@ -2017,10 +2016,10 @@ export const adminPortal: AdminPortalNS = {
                     organizationChangeForm: {
                         inputs: {
                             organization: {
-                                label: "Organization",
-                                placeholder: "Enter your organization",
+                                label: "Organisation",
+                                placeholder: "Veuillez saisir votre organisation",
                                 validations: {
-                                    empty: "Organization is a required field"
+                                    empty: "L'organisation est obligatoire"
                                 }
                             }
                         }
@@ -2030,187 +2029,187 @@ export const adminPortal: AdminPortalNS = {
                     getProfileInfo: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while retrieving the profile details"
+                            message: "Une erreur s'est produite lors de la récupération des détails de votre profil"
                         },
                         genericError: {
-                            description: "Error occurred while retrieving the profile details",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la récupération des détails de votre profil",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The required user profile details are retrieved successfully",
-                            message: "Successfully retrieved user profile"
+                            description: "Les attributs obligatoires du profil utilisateur ont été récupérés avec succès",
+                            message: "Profil utilisateur récupéré avec succès"
                         }
                     },
                     updateProfileInfo: {
                         error: {
                             description: "{{description}}",
-                            message: "Error occurred while updating the profile details"
+                            message: "Une erreur s'est produite lors de la mise à jour des informations du profil"
                         },
                         genericError: {
-                            description: "Error occurred while updating the profile details",
-                            message: "Something went wrong"
+                            description: "Une erreur s'est produite lors de la mise à jour des informations du profil",
+                            message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "The required user profile details were successfully updated",
-                            message: "User profile updated successfully"
+                            description: "Les attributs obligatoires du profil utilisateur ont été mis à jour avec succès",
+                            message: "Profil utilisateur mis à jour avec succès"
                         }
                     }
                 },
                 placeholders: {
                     SCIMDisabled: {
-                        heading: "This feature is not available for your account"
+                        heading: "Cette fonctionnalité n'est pas disponible pour votre compte"
                     }
                 }
             },
             updateUser: {
                 groups: {
                     addGroupsModal: {
-                        heading: "Update User Groups",
-                        subHeading: "Add new groups or remove existing groups assigned to the user."
+                        heading: "Mise à jour des groupes d'utilisateurs",
+                        subHeading: "Ajouter de nouveaux groupes ou supprimer des groupes existants attribués à l'utilisateur."
                     },
                     editGroups: {
                         groupList: {
                             emptyListPlaceholder: {
                                 subTitle: {
-                                    0: "There are no groups assigned to the user at the moment.",
-                                    1: "This might restrict user from performing certain",
-                                    2: "tasks like accessing certain applications."
+                                    0: "Aucun groupe n'est attribué à l'utilisateur pour le moment.",
+                                    1: "Cela pourrait empêcher l'utilisateur d'effectuer certaines",
+                                    2: "tâches comme l'accès à certaines applications."
                                 },
-                                title: "No Groups Assigned"
+                                title: "Pas de groupes assignés"
                             },
                             headers: {
-                                0: "Domain",
-                                1: "Name"
+                                0: "Domaine",
+                                1: "Nom"
                             }
                         },
-                        heading: "Assigned Groups",
+                        heading: "Groupes assignés",
                         popups: {
-                            viewPermissions: "View Permissions"
+                            viewPermissions: "Voir les permissions"
                         },
-                        searchPlaceholder: "Search groups",
-                        subHeading: "Add or remove the groups user is assigned with and note that this will affect " +
-                            "performing certain tasks."
+                        searchPlaceholder: "Rechercher des groupes",
+                        subHeading: "Ajouter ou supprimer le groupe auquel l'utilisateur est affecté. Notez que " +
+                            "cela affectera également l'exécution de certaines tâches."
                     },
                     notifications: {
                         addUserGroups: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error occurred while updating user groups"
+                                message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
                             },
                             genericError: {
-                                description: "An error occurred while updating user groups",
-                                message: "Something went wrong"
+                                description: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur",
+                                message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "Assigning new groups for the user successful",
-                                message: "Update user groups successful"
+                                description: "Assignation de nouveaux groupes à l'utilisateur réussie",
+                                message: "Mise à jour des groupes de l'utilisateur réussie"
                             }
                         },
                         fetchUserGroups: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error occurred while fetching the groups list"
+                                message: "Une erreur s'est produite lors de la récupération de la liste des groupes"
                             },
                             genericError: {
-                                description: "Error occurred while fetching the groups list",
-                                message: "Something went wrong"
+                                description: "Une erreur s'est produite lors de la récupération de la liste des groupes",
+                                message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "The groups list was successfully retrieved",
-                                message: "User groups list retrieved successfully"
+                                description: "La liste des groupes a été récupérée avec succès",
+                                message: "Liste des groupes de l'utilisateur récupérée avec succès"
                             }
                         },
                         removeUserGroups: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error occurred while updating the groups of the user"
+                                message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
                             },
                             genericError: {
-                                description: "An error occurred while updating user groups",
-                                message: "Something went wrong"
+                                description: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur",
+                                message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "Removing assigned groups for the user successful",
-                                message: "Update user groups successful"
+                                description: "Suppression des groupes assignés pour l'utilisateur réussi",
+                                message: "Mise à jour des groupes de l'utilisateur réussie"
                             }
                         }
                     }
                 },
                 roles: {
                     addRolesModal: {
-                        heading: "Update User Roles",
-                        subHeading: "Add new roles or remove existing roles assigned to the user."
+                        heading: "Mettre à jour les rôles des utilisateurs",
+                        subHeading: "Ajouter de nouveaux rôles ou supprimer les rôles existants attribués à l'utilisateur."
                     },
                     editRoles: {
-                        heading: "Assigned Roles",
+                        heading: "Rôles assignés",
                         popups: {
-                            viewPermissions: "View Permissions"
+                            viewPermissions: "Voir les permissions"
                         },
                         roleList: {
                             emptyListPlaceholder: {
                                 subTitle: {
-                                    0: "There are no roles assigned to the user at the moment.",
-                                    1: "This might restrict user from performing certain",
-                                    2: "tasks like accessing certain applications."
+                                    0: "Aucun rôle n'est attribué à l'utilisateur pour le moment.",
+                                    1: "Cela pourrait empêcher l'utilisateur d'effectuer certaines",
+                                    2: "tâches comme l'accès à certaines applications."
                                 },
-                                title: "No Roles Assigned"
+                                title: "Aucun rôle assigné"
                             },
                             headers: {
-                                0: "Domain",
-                                1: "Name"
+                                0: "Domaine",
+                                1: "Nom"
                             }
                         },
-                        searchPlaceholder: "Search Roles",
-                        subHeading: "Add or remove the roles user is assigned with and note that this will affect " +
-                            "performing certain tasks."
+                        searchPlaceholder: "Rechercher des rôles",
+                        subHeading: "Ajouter ou supprimer le rôle auquel l'utilisateur est affecté. Notez que " +
+                                    "cela affectera également l'exécution de certaines tâches."
                     },
                     notifications: {
                         addUserRoles: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error occurred while updating user roles"
+                                message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
                             },
                             genericError: {
-                                description: "An error occurred while updating user roles",
-                                message: "Something went wrong"
+                                description: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur",
+                                message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "Assigning new roles for the user successful",
-                                message: "Update user roles successful"
+                                description: "L'attribution de nouveaux rôles à l'utilisateur est un succès",
+                                message: "Mise à jour des rôles de l'utilisateur réussie"
                             }
                         },
                         fetchUserRoles: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error occurred while fetching the roles list"
+                                message: "Une erreur s'est produite lors de la récupération de la liste des rôles"
                             },
                             genericError: {
-                                description: "Error occurred while fetching the roles list",
-                                message: "Something went wrong"
+                                description: "Une erreur s'est produite lors de la récupération de la liste des rôles",
+                                message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "The roles list was successfully retrieved",
-                                message: "User roles list retrieved successfully"
+                                description: "La liste des rôles a été récupérée avec succès",
+                                message: "Liste des rôles de l'utilisateur récupérée avec succès"
                             }
                         },
                         removeUserRoles: {
                             error: {
                                 description: "{{description}}",
-                                message: "Error occurred while updating the roles of the user"
+                                message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
                             },
                             genericError: {
-                                description: "An error occurred while updating user roles",
-                                message: "Something went wrong"
+                                description: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur",
+                                message: "Quelque chose s'est mal passé"
                             },
                             success: {
-                                description: "Removing assigned roles for the user successful",
-                                message: "Update user roles successful"
+                                description: "Suppression des rôles attribués à l'utilisateur réussie",
+                                message: "Mise à jour des rôles de l'utilisateur réussie"
                             }
                         }
                     },
                     viewPermissionModal: {
-                        backButton: "Back to list",
-                        heading: "Permissions for {{role}}"
+                        backButton: "Retour à la liste",
+                        heading: "Permissions pour {{role}}"
                     }
                 }
             }
@@ -2220,260 +2219,260 @@ export const adminPortal: AdminPortalNS = {
                 form: {
                     dropdown: {
                         filterAttributeOptions: {
-                            email: "Email",
-                            username: "Username"
+                            email: "E-mail",
+                            username: "Nom d'utilisateur"
                         }
                     },
                     inputs: {
                         filterAttribute: {
-                            placeholder: "E.g. Username, Email etc."
+                            placeholder: "Ex. Nom d'utisateur, E-mail, etc."
                         },
                         filterCondition: {
-                            placeholder: "E.g. Starts with etc."
+                            placeholder: "Ex. Commence par, etc."
                         },
                         filterValue: {
-                            placeholder: "Enter value to search"
+                            placeholder: "Valeur à rechercher"
                         }
                     }
                 },
-                placeholder: "Search by Username"
+                placeholder: "Rechercher par nom d'utilisateur"
             },
             all: {
-                heading: "Users",
-                subHeading: "Add and manage user accounts, assign roles to the users and maintain user identities."
+                heading: "Utilisateurs",
+                subHeading: "Gérer et ajouter des comptes utilisateurs, assigner les rôles et maintenir les identités des utilisateurs."
             },
             buttons: {
-                addNewUserBtn: "New User",
-                assignUserRoleBtn: "Assign roles",
-                metaColumnBtn: "Columns"
+                addNewUserBtn: "Nouvel Utilisateur",
+                assignUserRoleBtn: "Assigner un rôle",
+                metaColumnBtn: "Champs"
             },
             list: {
                 columns: {
                     actions: "Actions",
-                    name: "Name"
+                    name: "Nom"
                 }
             },
             notifications: {
                 addUser: {
                     error: {
                         description: "{{description}}",
-                        message: "Error adding the new user"
+                        message: "Erreur d'ajout de l'utilisateur"
                     },
                     genericError: {
-                        description: "Couldn't add the new user",
-                        message: "Something went wrong"
+                        description: "Impossible d'ajouter l'utilisateur",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The new user was added successfully.",
-                        message: "User added successfully"
+                        description: "L'utilisateur a été ajouté avec succès.",
+                        message: "Ajout d'utilisateur réussi"
                     }
                 },
                 deleteUser: {
                     error: {
                         description: "{{description}}",
-                        message: "Error deleting the user"
+                        message: "Erreur de suppression de l'utilisateur"
                     },
                     genericError: {
-                        description: "Couldn't delete the user",
-                        message: "Something went wrong"
+                        description: "Impossible de supprimer l'utilisateur",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The user was deleted successfully.",
-                        message: "User deleted successfully"
+                        description: "L'utilisateur a été supprimé avec succès.",
+                        message: "Suppression d'utilisateur réussie"
                     }
                 },
                 fetchUsers: {
                     error: {
                         description: "{{description}}",
-                        message: "Error retrieving users"
+                        message: "Erreur de récupération des utilisateurs"
                     },
                     genericError: {
-                        description: "Couldn't retrieve users",
-                        message: "Something went wrong"
+                        description: "Impossible de récupérer les utilisateurs.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "Successfully retrieved the users.",
-                        message: "Users retrieval successful"
+                        description: "Les utilisateurs ont été récupérés avec succès.",
+                        message: "Récupération des utilisateurs réussie"
                     }
                 }
             },
             placeholders: {
                 emptyList: {
-                    action: "Refresh list",
+                    action: "Rafraîchir la liste",
                     subtitles: {
-                        0: "The users list returned empty.",
-                        1: "Something went wrong while fetching the user list"
+                        0: "La liste des utilisateurs est vide.",
+                        1: "Une erreur s'est produite lors de la récupération de la liste des utilisateurs"
                     },
-                    title: "No Users Found"
+                    title: "Aucun utilisateur trouvé"
                 }
             },
             usersList: {
                 list: {
                     emptyResultPlaceholder: {
-                        addButton: "New User",
+                        addButton: "Nouvel utilisateur",
                         subTitle: {
-                            0: "There are currently no users available.",
-                            1: "You can add a new user easily by following the",
-                            2: "steps in the user creation wizard."
+                            0: "Il n'y a actuellement aucun utilisateur disponible.",
+                            1: "Ajoutez facilement un nouvel utilisateur en",
+                            2: "utilisant l'assistant."
                         },
-                        title: "Add a new User"
+                        title: "Ajouter un utilisateur"
                     },
                     iconPopups: {
-                        delete: "Delete",
-                        edit: "Edit"
+                        delete: "Supprimer",
+                        edit: "Modifier"
                     }
                 },
                 metaOptions: {
                     columns: {
-                        emails: "Email",
-                        id: "User id",
-                        lastModified: "Last modified",
-                        name: "Name",
-                        userName: "Username"
+                        emails: "E-mail",
+                        id: "Identifiant interne",
+                        lastModified: "Dernière modification",
+                        name: "Nom",
+                        userName: "Nom d'utilisateur"
                     },
-                    heading: "Show Columns"
+                    heading: "Afficher les champs"
                 },
                 search: {
                     emptyResultPlaceholder: {
-                        clearButton: "Clear search query",
+                        clearButton: "Réinitialiser la recherche",
                         subTitle: {
-                            0: "We couldn't find any results for {{query}}",
-                            1: "Please try a different search term."
+                            0: "La recheche \"{{query}}\" n'a renvoyé aucun résultat.",
+                            1: "Veuillez essayer avec d'autres paramètres."
                         },
-                        title: "No results found"
+                        title: "Aucun résultat"
                     }
                 }
             },
             userstores: {
                 userstoreOptions: {
-                    all: "All userstores",
-                    primary: "Primary"
+                    all: "Tous les annuaires",
+                    primary: "Principal"
                 }
             }
         },
         userstores: {
             advancedSearch: {
-                error: "Filter query format incorrect",
+                error: "Le format du filtre est incorrect",
                 form: {
                     inputs: {
                         filterAttribute: {
-                            placeholder: "E.g. Name, Description etc."
+                            placeholder: "Ex. Nom, Description, etc."
                         },
                         filterCondition: {
-                            placeholder: "E.g. Starts with etc."
+                            placeholder: "Ex. Commence par, etc."
                         },
                         filterValue: {
-                            placeholder: "E.g. PRIMARY, SECONDARY etc."
+                            placeholder: "Ex. PRIMARY, SECONDARY, etc."
                         }
                     }
                 },
-                placeholder: "Search by userstore name"
+                placeholder: "Rechercher par nom d'annuaire"
             },
             confirmation: {
-                confirm: "Confirm",
-                content: "If you delete this userstore, the user data in this userstore will also be deleted. "
-                    + "Please proceed with caution.",
-                header: "Are you sure?",
-                hint: "Please type <1>{{name}}</1> to confirm.",
-                message: "This action is irreversible and will permanently delete the"
-                    + " selected userstore and the data in it."
+                confirm: "Confirmer",
+                content: "En supprimant cet annuaire, vous supprimerez également toute sa " +
+                    + " configuration. Veuillez procéder avec prudence.",
+                header: "Êtes-vous sûr ?",
+                hint: "Veuillez saisir <1>{{name}}</1> pour confirmer.",
+                message: "Cette action est irréversible et supprimera définitivement "
+                    + " l'annuaire sélectionné ainsi que ses configurations."
             },
             dangerZone: {
-                actionTitle: "Delete Userstore",
-                header: "Delete Userstore",
-                subheader: "Once you delete a userstore, there is no going back. "
-                    + "Please be certain."
+                actionTitle: "Supprimer l'annuaire",
+                header: "Supprimer l'annuaire",
+                subheader: "Une fois supprimé, il est impossible de restaurer la conexion à annuaire. "
+                    + "Êtes-vous certain ?"
             },
             forms: {
                 connection: {
-                    connectionErrorMessage: "Please ensure the provided connection "
-                        + "URL, name, password and driver name are correct",
-                    testButton: "Test Connection"
+                    connectionErrorMessage: "Veuillez vérifier les informations de connexion "
+                        + "que vous avez saisis : URL, utilisateur, mot de passe, pilote",
+                    testButton: "Tester la connexion"
                 },
                 custom: {
-                    placeholder: "Enter a {{name}}",
-                    requiredErrorMessage: "{{name}} is required"
+                    placeholder: "Veuillez saisir le paramètre {{name}}",
+                    requiredErrorMessage: "{{name}} est obligatoire"
                 },
                 general: {
                     description: {
                         label: "Description",
-                        placeholder: "Enter a description"
+                        placeholder: "Veuillez saisir une description"
                     },
                     name: {
-                        label: "Name",
-                        placeholder: "Enter a name",
-                        requiredErrorMessage: "Name is a required field"
+                        label: "Nom",
+                        placeholder: "Veuillez saisir un nom",
+                        requiredErrorMessage: "Le nom de l'annuaire est obligatoire"
                     },
                     type: {
                         label: "Type",
-                        requiredErrorMessage: "Select a Type"
+                        requiredErrorMessage: "Veuillez sélectionner un type d'annuaire"
                     }
                 }
             },
             notifications: {
                 addUserstore: {
                     genericError: {
-                        description: "There was an error while creating the userstore",
-                        message: "Something went wrong!"
+                        description: "Une erreur s'est produite lors de la création de l'annuaire",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The userstore has been added successfully!",
-                        message: "Userstore added successfully!"
+                        description: "L'annuaire a été ajouté avec succès !",
+                        message: "Annuaire ajouté avec succès !"
                     }
                 },
                 delay: {
-                    description: "It may take a while for the userstore list to be updated. "
-                        + "Refresh in a few seconds to get the updated userstore list.",
-                    message: "Updating Userstore list takes time"
+                description: "La mise à jour de la liste des annuaires peut prendre un peu de temps. "
+                        + "Veuillez rafraîchir dans quelques instants pour afficher la liste des annuaires mis à jour.",
+                    message: "Mise à jour différée de la liste des annuaires"
                 },
                 deleteUserstore: {
                     genericError: {
-                        description: "There was an error while deleting the userstore",
-                        message: "Something went wrong!"
+                        description: "Une erreur s'est produite lors de la suppression de l'annuaire",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The userstore has been deleted successfully!",
-                        message: "Userstore deleted successfully!"
+                        description: "L'annuaire a été supprimé avec succès !",
+                        message: "Annuaire supprimé avec succès !"
                     }
                 },
                 fetchUserstoreMetadata: {
                     genericError: {
-                        description: "An error occurred while fetching the type meta data.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des méta-données de l'annuaire.",
+                        message: "Quelque chose s'est mal passé"
                     }
                 },
                 fetchUserstoreTemplates: {
                     genericError: {
-                        description: "An error occurred while fetching the userstore type details.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des détails de types d'annuaires.",
+                        message: "Quelque chose s'est mal passé"
                     }
                 },
                 fetchUserstoreTypes: {
                     genericError: {
-                        description: "An error occurred while fetching the userstore types.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération des types d'annuaires.",
+                        message: "Quelque chose s'est mal passé"
                     }
                 },
                 fetchUserstores: {
                     genericError: {
-                        description: "An error occurred while fetching userstores",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la récupération de la liste des annuaires.",
+                        message: "Quelque chose s'est mal passé"
                     }
                 },
                 testConnection: {
                     genericError: {
-                        description: "An error occurred while testing the " + "connection to the userstore",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors du test de connexion à l'annuaire.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
-                        description: "The connection is healthy",
-                        message: "Connection successful!"
+                        description: "Connexion à l'annuaire établie",
+                        message: "Connexion réussie !"
                     }
                 },
                 updateUserstore: {
                     genericError: {
-                        description: "An error occurred while updating the userstore.",
-                        message: "Something went wrong"
+                        description: "Une erreur s'est produite lors de la mise à jour de l'annuaire.",
+                        message: "Quelque chose s'est mal passé"
                     },
                     success: {
                         description: "This userstore has been updated successfully!",
@@ -2483,59 +2482,58 @@ export const adminPortal: AdminPortalNS = {
             },
             pageLayout: {
                 edit: {
-                    back: "Go back to userstores",
-                    description: "Edit userstore",
+                    back: "Revenir aux annuaires",
+                    description: "Modifier l'annuaire",
                     tabs: {
-                        connection: "Connection",
-                        general: "General",
-                        group: "Group",
-                        user: "User"
+                        connection: "Connexion",
+                        general: "Général",
+                        group: "Groupes",
+                        user: "Utilisateurs"
                     }
                 },
                 list: {
-                    description: "Create and manage userstores",
-                    primaryAction: "New Userstore",
-                    title: "Userstores"
+                    description: "Créer et gérer les annuaires",
+                    primaryAction: "Nouvel annuaire",
+                    title: "Annuaires"
                 },
                 templates: {
-                    back: "Go back to userstores",
-                    description: "Please choose one of the following userstore types.",
-                    templateHeading: "Quick Setup",
-                    templateSubHeading: "Predefined set of templates to speed up your userstore creation.",
-                    title: "Select Userstore Type"
+                    back: "Revenir aux annuaires",
+                    description: "Veuillez sélectionner un type d'annuaire parmi les possibilités suivantes.",
+                    templateHeading: "Démarrage rapide",
+                    templateSubHeading: "Modèles d'annuaires prédéfinis pour en faciliter l'initialisation.",
+                    title: "Sélectionnez un type d'annuaire"
                 }
             },
             placeholders: {
                 emptyList: {
-                    action: "New Userstore",
-                    subtitles: "There are currently no userstores available."
-                        + "You can add a new userstore easily by following the "
-                        + "steps in the userstore creation wizard.",
-                    title: "Add a new Userstore"
+                    action: "Nouvel annuaire",
+                    subtitles: "Aucune annuaire n'est actuellement configuré. " +
+                    "Vous pouvez en ajouter à l'aide de l'assistant de création." ,
+                    title: "Ajouter un annuaire"
                 },
                 emptySearch: {
-                    action: "Clear search query",
-                    subtitles: "We couldn't find any results for {{searchQuery}}. "
-                        + "Please try a different search term.",
-                    title: "No results found"
+                    action: "Réinitialiser la recherche",
+                    subtitles: "La recheche \"{{query}}\" n'a renvoyé aucun résultat. "
+                        + "Veuillez essayer avec d'autres paramètres.",
+                    title: "Aucun résultat"
                 }
             },
             sqlEditor: {
-                create: "Create",
-                darkMode: "Dark Mode",
-                delete: "Delete",
-                read: "Read",
-                reset: "Reset",
-                title: "SQL Query Types",
-                update: "Update"
+                create: "Ajout",
+                darkMode: "Mode sombre",
+                delete: "Suppression",
+                read: "Lecture",
+                reset: "Réinitialiser",
+                title: "Types de requêtes SQL",
+                update: "Mise à jour"
             },
             wizard: {
-                header: "Add {{type}} Userstore",
+                header: "Ajouter un annuaire {{type}}",
                 steps: {
-                    general: "General",
-                    group: "Group",
-                    summary: "Summary",
-                    user: "User"
+                    general: "Général",
+                    group: "Groupes",
+                    summary: "Résumé",
+                    user: "Utilisateurs"
                 }
             }
         }
@@ -2544,177 +2542,177 @@ export const adminPortal: AdminPortalNS = {
         endSession: {
             error: {
                 description: "{{description}}",
-                message: "Termination error"
+                message: "Erreur de fermeture de sessions"
             },
             genericError: {
-                description: "Couldn't terminate the current session.",
-                message: "Something went wrong"
+                description: "Une erreur s'est produite lors de la fermeture de la session active.",
+                message: "Quelque chose s'est mal passé"
             },
             success: {
-                description: "Successfully terminated the current session.",
+                description: "La session active a été fermée avec succès.",
                 message: "Termination successful"
             }
         },
         getProfileInfo: {
             error: {
                 description: "{{description}}",
-                message: "Retrieval error"
+                message: "Erreur de récupération"
             },
             genericError: {
-                description: "Couldn't retrieve user profile details.",
-                message: "Something went wrong"
+                description: "Une erreur s'est produite lors de la récupération des détails du profil utilisateur.",
+                message: "Quelque chose s'est mal passé"
             },
             success: {
-                description: "Successfully retrieved user profile details.",
-                message: "Retrieval successful"
+                description: "Détails du profil utilisateur récupéré avec succès.",
+                message: "Récupération réussie"
             }
         },
         getProfileSchema: {
             error: {
                 description: "{{description}}",
-                message: "Retrieval error"
+                message: "Erreur de récupération"
             },
             genericError: {
-                description: "Couldn't retrieve user profile schemas.",
-                message: "Something went wrong"
+                description: "Une erreur s'est produite lors de la récupération du profil utilisateur",
+                message: "Quelque chose s'est mal passé"
             },
             success: {
-                description: "Successfully retrieved user profile schemas.",
-                message: "Retrieval successful"
+                description: "Profil utilisateur récupérés avec succès.",
+                message: "Récupération réussie"
             }
         }
     },
     pages: {
         addEmailTemplate: {
-            backButton: "Go back to {{name}} template",
+            backButton: "Revenir au modèle {{name}}",
             subTitle: null,
-            title: "Add New Template"
+            title: "Ajouter un modèle"
         },
         editTemplate: {
-            backButton: "Go back to {{name}} template",
+            backButton: "Revenir au modèle {{name}}",
             subTitle: null,
             title: "{{template}}"
         },
         emailLocaleAdd: {
-            backButton: "Go back to {{name}} template",
+            backButton: "Revenir au modèle {{name}}",
             subTitle: null,
-            title: "Edit template - {{name}}"
+            title: "Modifier le modèle - {{name}}"
         },
         emailLocaleAddWithDisplayName: {
-            backButton: "Go back to {{name}} template",
+            backButton: "Revenir au modèle {{name}}",
             subTitle: null,
-            title: "Add new template for {{displayName}}"
+            title: "Ajouter un modèle pour {{displayName}}"
         },
         emailTemplateTypes: {
-            subTitle: "Create and manage templates types.",
-            title: "Email Templates Types"
+            subTitle: "Créer ou gérer les types de modèles d'e-mails",
+            title: "Types de modèles d'e-mails"
         },
         emailTemplates: {
-            backButton: "Go back to email templates types",
+            backButton: "Revenir aux types de modèles d'e-mails",
             subTitle: null,
-            title: "Email Templates"
+            title: "Modèles d'e-mails"
         },
         emailTemplatesWithDisplayName: {
-            backButton: "Go back to applications",
+            backButton: "Revenir aux applications",
             subTitle: null,
-            title: "Templates - {{displayName}}"
+            title: "Modèle d'e-mail - {{displayName}}"
         },
         groups: {
-            subTitle: "Create and manage user groups, assign permissions for groups.",
-            title: "Groups"
+            subTitle: "Créer et gérer des groupes d'utilisateurs, attribuer des permissions aux groupes",
+            title: "Groupes"
         },
         overview: {
-            subTitle: "Configure and  manage users, roles, attribute dialects, server configurations etc." +
-                "etc.",
-            title: "Welcome, {{firstName}}"
+            subTitle: "Configurer et gérer les utilisateurs, les rôles, les claims " +
+                "et dialectes, les configurations du serveur, etc.",
+            title: "Bienvenue, {{firstName}}"
         },
         roles: {
-            subTitle: "Create and manage roles, assign permissions for roles.",
-            title: "Roles"
+            subTitle: "Créer et gérer les rôles, attribuer des permissions.",
+            title: "Rôles"
         },
         rolesEdit: {
-            backButton: "Go back to {{type}}",
+            backButton: "Revenir aux {{type}}",
             subTitle: null,
-            title: "Edit Role"
+            title: "Modifier le rôle"
         },
         serverConfigurations: {
-            subTitle: "Manage general configurations of the server.",
-            title: "General Configurations"
+            subTitle: "Gérer la configuration générale du serveur.",
+            title: "Configurations générales"
         },
         users: {
-            subTitle: "Create and manage users, user access, and user profiles.",
-            title: "Users"
+            subTitle: "Créer et gérer les utilisateurs, les accès utilisateurs et le profils utilisateurs.",
+            title: "Utilisateurs"
         },
         usersEdit: {
-            backButton: "Go back to users",
+            backButton: "Revenir aux utilisateurs",
             subTitle: "{{name}}",
             title: "{{email}}"
         }
     },
     placeholders: {
         404: {
-            action: "Back to home",
+            action: "Revenir à la page d'accueil",
             subtitles: {
-                0: "We couldn't find the page you are looking for.",
-                1: "Please check the URL or click on the button below to be redirected back to the home page."
+                0: "La page que vous essayez de consulter n'existe pas.",
+                1: "Veuillez vérifier l'URL ou cliquez sur le bouton ci-dessous pour être redirigé vers la page d'accueil."
             },
-            title: "Page not found"
+            title: "Page introuvable"
         },
         accessDenied: {
-            action: "Continue logout",
+            action: "Se déconnecter",
             subtitles: {
-                0: "It seems like you don't have permission to use this portal.",
-                1: "Please sign in with a different account."
+                0: "Il semblerait que vous ne soyez pas autorisé à accéder à cette page.",
+                1: "Veuillez vous connecter en utilisant un autre compte."
             },
-            title: "You are not authorized"
+            title: "Accès non autorisé"
         },
         consentDenied: {
-            action: "Continue logout",
+            action: "Se déconnecter",
             subtitles: {
-                0: "It seems like you have not given consent for this application.",
-                1: "Please give consent to use the application."
+                0: "Il semblerait que vous n'ayez pas donné votre consentement à cette application",
+                1: "Veuillez accorder votre consentement afin  d'utiliser l'application."
             },
-            title: "You have denied consent"
+            title: "Vous avez refusé le consentement"
         },
         emptySearchResult: {
-            action: "Clear search query",
+            action: "Réinitialiser la recherche",
             subtitles: {
-                0: "We couldn't find any results for \"{{query}}\"",
-                1: "Please try a different search term."
+                0: "La recheche \"{{query}}\" n'a renvoyé aucun résultat.",
+                1: "Veuillez essayer avec d'autres paramètres."
             },
-            title: "No results found"
+            title: "Aucun résultat"
         },
         genericError: {
-            action: "Refresh the page",
+            action: "Rafraîchir la page",
             subtitles: {
-                0: "Something went wrong while displaying this page.",
-                1: "See the browser console for technical details."
+                0: "Quelque chose s'est mal passé lors de l'affichage de cette page.",
+                1: "Voir la console du navigateur pour les détails techniques."
             },
-            title: "Something went wrong"
+            title: "Quelque chose s'est mal passé"
         },
         loginError: {
-            action: "Continue logout",
+            action: "Se déconnecter",
             subtitles: {
-                0: "It seems like you don't have permission to use this portal.",
-                1: "Please sign in with a different account."
+                0: "Il semblerait que l'accès à ce portail ne vous soit pas autorisé.",
+                1: "Veuillez vous connecter en utilisant un autre compte."
             },
-            title: "You are not authorized"
+            title: "Accès interdit"
         },
         unauthorized: {
-            action: "Continue logout",
+            action: "Se déconnecter",
             subtitles: {
-                0: "It seems like you don't have permission to use this portal.",
-                1: "Please sign in with a different account."
+                0: "Il semblerait que l'accès à ce portail ne vous soit pas autorisé.",
+                1: "Veuillez vous connecter en utilisant un autre compte."
             },
-            title: "You are not authorized"
+            title: "Accès interdit"
         },
         underConstruction: {
-            action: "Back to home",
+            action: "Revenir à la page d'accueil",
             subtitles: {
-                0: "We're doing some work on this page.",
-                1: "Please bare with us and come back later. Thank you for your patience."
+                0: "Des travaux sont en cours sur cette page.",
+                1: "Nous vous invitons à revenir plus tard. Merci pour votre compréhension."
             },
-            title: "Page under construction"
+            title: "Page en construction"
         }
     }
 };
