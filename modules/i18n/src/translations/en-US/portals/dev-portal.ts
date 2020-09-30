@@ -1904,16 +1904,17 @@ export const devPortal: DevPortalNS = {
                     description: {
                         hint: "A meaningful description about the identity provider.",
                         label: "Description",
-                        placeholder: "This is a sample IDP."
+                        placeholder: "Enter a description of the identity provider."
                     },
                     image: {
                         hint: "A URL to query the image of the identity provider.",
                         label: "Identity Provider Image URL",
-                        placeholder: "https://example.com/image01"
+                        placeholder: "E.g. https://example.com/image.png"
                     },
                     name: {
                         hint: "Enter a unique name for this identity provider.",
                         label: "Identity Provider Name",
+                        placeholder: "Enter a name for the identity provider.",
                         validations: {
                             duplicate: "An identity provider already exists with this name",
                             empty: "Identity Provider name is required"
