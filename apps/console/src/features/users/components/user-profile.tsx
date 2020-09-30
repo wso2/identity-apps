@@ -395,6 +395,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         secondaryAction={ t("common:cancel") }
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleUserDelete(deletingUser.id) }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
                             { t("adminPortal:components.user.deleteUser.confirmationModal.header") }

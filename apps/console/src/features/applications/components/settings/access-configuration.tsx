@@ -560,6 +560,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     }
                                 }
                                 data-testid={ `${ testId }-protocol-delete-confirmation-modal` }
+                                closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header
                                     data-testid={ `${ testId }-protocol-delete-confirmation-modal-header` }

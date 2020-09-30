@@ -611,7 +611,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">

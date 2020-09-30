@@ -42,7 +42,7 @@ import { UserManagementUtils } from "../utils";
 const UserEditPage = (): ReactElement => {
 
     const { t } = useTranslation();
-    
+
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -83,7 +83,7 @@ const UserEditPage = (): ReactElement => {
 
     const handleUserUpdate = (id: string) => {
         getUser(id);
-        
+
         if (UserManagementUtils.isAuthenticatedUser(profileInfo, user)) {
             dispatch(getProfileInformation());
         }
@@ -138,7 +138,7 @@ const UserEditPage = (): ReactElement => {
                             "adminPortal:components.user.profile.notifications.updateProfileInfo.error.message"
                         )
                     }));
-                    
+
                     return;
                 }
 
@@ -193,6 +193,7 @@ const UserEditPage = (): ReactElement => {
                         name={ resolveUserDisplayName(user) }
                         emails={ resolveUserEmails(user?.emails) }
                         onClose={ () => setShowEditAvatarModal(false) }
+                        closeOnDimmerClick={ false }
                         onCancel={ () => setShowEditAvatarModal(false) }
                         onSubmit={ handleAvatarEditModalSubmit }
                         heading={ t("console:common.modals.editAvatarModal.heading") }

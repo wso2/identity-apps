@@ -398,6 +398,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         handleGroupDelete(currentDeletedGroup);
                         setShowDeleteConfirmationModal(false);
                     } }
+                    closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
                         { t("adminPortal:components.roles.list.confirmations.deleteItem.header") }

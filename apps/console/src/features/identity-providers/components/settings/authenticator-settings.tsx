@@ -564,6 +564,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                     (): void => handleAuthenticatorDelete(deletingAuthenticator.authenticatorId)
                                 }
                                 data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                                closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>

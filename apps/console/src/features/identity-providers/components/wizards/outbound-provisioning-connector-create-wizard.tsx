@@ -365,7 +365,7 @@ export const OutboundProvisioningConnectorCreateWizard:
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
             data-testid={ `${ testId }-modal` }
         >

@@ -413,6 +413,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => deleteUser(deletingUser.id) }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
                             { t("adminPortal:components.user.deleteUser.confirmationModal.header") }

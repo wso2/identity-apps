@@ -250,13 +250,13 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListPropsInterface> = (
                 data-testid={ testId }
             />
             {
-                showConfigDeleteConfirmation && 
+                showConfigDeleteConfirmation &&
                     <ConfirmationModal
                         onClose={ (): void => setShowDeleteConfirmationModal(false) }
                         type="warning"
                         open={ showConfigDeleteConfirmation }
                         assertion={ currentDeleteConfig.name }
-                        assertionHint={ 
+                        assertionHint={
                             (
                                 <p>
                                     <Trans
@@ -273,10 +273,11 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListPropsInterface> = (
                         primaryAction="Confirm"
                         secondaryAction="Cancel"
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                        onPrimaryActionClick={ (): void => { 
+                        onPrimaryActionClick={ (): void => {
                             handleConfigDelete(currentDeleteConfig);
                             setShowDeleteConfirmationModal(false);
                         } }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header>
                             { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.header") }
@@ -290,7 +291,7 @@ export const RemoteRepoList: FunctionComponent<RemoteRepoListPropsInterface> = (
                     </ConfirmationModal>
             }
             {
-                showConfigDetailsModal && ( <RemoteRepoDetails 
+                showConfigDetailsModal && ( <RemoteRepoDetails
                         onCloseHandler={ () => setShowConfigDetailsModal(false) }
                         repoObject={ currentDetailsConfig }
                 /> )

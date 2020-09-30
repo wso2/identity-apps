@@ -382,7 +382,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             className="wizard minimal-application-create-wizard"
             dimmer="blurring"
             onClose={ handleWizardClose }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
             data-testid={ `${ testId }-modal` }
         >
