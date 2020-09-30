@@ -30,7 +30,6 @@ import { setOpenAction } from "../../store/actions";
 import { endUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 
-
 /**
  * Constant to store the change password from identifier.
  * @type {string}
