@@ -46,6 +46,7 @@ interface AddUserWizardPropsInterface extends TestableComponentInterface {
     listItemLimit: number;
     updateList: () => void;
     rolesList: any;
+    emailVerificationEnabled: boolean;
 }
 
 /**
@@ -79,6 +80,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const {
         closeWizard,
         currentStep,
+        emailVerificationEnabled,
         [ "data-testid" ]: testId
     } = props;
 
@@ -381,7 +383,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         givenName: userInfo.firstName
                     },
                     password,
-                    profileUrl: userInfo.profileUrl, 
+                    profileUrl: userInfo.profileUrl,
                     userName
                 }
             )
@@ -528,6 +530,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 <AddUser
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
+                    emailVerificationEnabled={ emailVerificationEnabled }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                 />
             ),
@@ -684,5 +687,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
  * Default props for the add user wizard.
  */
 AddUserWizard.defaultProps = {
-    currentStep: 0
+    currentStep: 0,
+    emailVerificationEnabled: false
 };
