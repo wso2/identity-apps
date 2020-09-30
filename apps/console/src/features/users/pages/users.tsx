@@ -39,8 +39,7 @@ import {
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
-    store,
-    EmptyPlaceholderIllustrations
+    store
 } from "../../core";
 import {
     GovernanceConnectorInterface,
