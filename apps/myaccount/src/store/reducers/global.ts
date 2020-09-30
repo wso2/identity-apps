@@ -28,7 +28,7 @@ const initialState: GlobalInterface = {
     alertSystem: null,
     isApplicationsPageVisible: undefined,
     isGlobalLoaderVisible: false,
-    openAction: null,
+    activeForm: null,
     supportedI18nLanguages: null
 };
 
@@ -74,7 +74,7 @@ export const globalReducer = (state: GlobalInterface = initialState, action: Glo
         case GlobalActionTypes.SET_OPEN_ACTION:
             return {
                 ...state,
-                openAction: action.payload
+                activeForm: action.payload
             };
         default:
             return state;

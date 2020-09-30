@@ -26,5 +26,5 @@ export interface GlobalInterface {
     isApplicationsPageVisible: boolean;
     isGlobalLoaderVisible: boolean;
     supportedI18nLanguages: SupportedLanguagesMeta;
-    openAction: string;
+    activeForm: string;
 }

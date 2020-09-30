@@ -31,7 +31,7 @@ import { CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
-import { getProfileInformation, setOpenAction } from "../../store/actions";
+import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 
@@ -60,7 +60,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
-    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
@@ -221,7 +221,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         });
 
         // Hide corresponding edit view
-        dispatch(setOpenAction(null));
+        dispatch(setActiveForm(null));
     };
 
     /**
@@ -242,7 +242,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param {Profile Schema} schema
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
-        if (openAction === CommonConstants.PERSONAL_INFO+schema.name) {
+        if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
             const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
@@ -317,7 +317,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         <Field
                                             className="link-button"
                                             onClick={ () => {
-                                                dispatch(setOpenAction(null));
+                                                dispatch(setActiveForm(null));
                                             } }
                                             size="small"
                                             type="button"
@@ -385,7 +385,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     className="placeholder-text"
                                                         onClick={ () => {
                                                             dispatch(
-                                                                setOpenAction(
+                                                                setActiveForm(
                                                                     CommonConstants.PERSONAL_INFO + schema.name
                                                                 )
                                                             );
@@ -426,7 +426,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         color="grey"
                                                         onClick={
                                                             () => dispatch(
-                                                                setOpenAction(
+                                                                setActiveForm(
                                                                     CommonConstants.PERSONAL_INFO + schema.name
                                                                 )
                                                             )

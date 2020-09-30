@@ -28,7 +28,7 @@ import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";
 import { AppState } from "../../../store";
-import { setOpenAction } from "../../../store/actions";
+import { setActiveForm } from "../../../store/actions";
 import { EditSection, ModalComponent, ThemeIcon } from "../../shared";
 
 
@@ -65,7 +65,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
 
-    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const dispatch = useDispatch();
 
     /**
@@ -216,7 +216,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
         tempEditFido.set(id, false);
         setEditFido(tempEditFido);
-        dispatch(setOpenAction(null));
+        dispatch(setActiveForm(null));
     };
 
     const removeDevice = (id: string) => {
@@ -288,7 +288,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
         tempEditFido.set(id, true);
         setEditFido(tempEditFido);
-        dispatch(setOpenAction(CommonConstants.SECURITY + FIDO + id));
+        dispatch(setActiveForm(CommonConstants.SECURITY + FIDO + id));
     };
 
     /**
@@ -415,7 +415,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                             {
                                 deviceList.map((device, index) => (
                                     editFIDO?.get(device.credential.credentialId)
-                                        && openAction?.startsWith(CommonConstants.SECURITY+FIDO)
+                                        && activeForm?.startsWith(CommonConstants.SECURITY+FIDO)
                                         ? (
                                             <EditSection key={ device.credential.credentialId }>
                                                 <Grid>

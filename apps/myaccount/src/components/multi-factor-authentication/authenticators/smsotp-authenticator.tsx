@@ -28,7 +28,7 @@ import { MFAIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, BasicProfileInterface } from "../../../models";
 import { AppState } from "../../../store";
-import { getProfileInformation, setOpenAction } from "../../../store/actions";
+import { getProfileInformation, setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 
 
@@ -61,7 +61,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const profileInfo: BasicProfileInterface = useSelector(
         (state: any) => state.authenticationInformation.profileInfo
     );
-    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -116,7 +116,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 });
 
                 dispatch(getProfileInformation());
-                dispatch(setOpenAction(null));
+                dispatch(setActiveForm(null));
             })
             .catch((error) => {
                 if (error?.response?.data && error?.response?.detail) {
@@ -147,15 +147,15 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     };
 
     const handleEdit = () => {
-        dispatch(setOpenAction(CommonConstants.SECURITY + SMS));
+        dispatch(setActiveForm(CommonConstants.SECURITY + SMS));
     };
 
     const handleCancel = () => {
-        dispatch(setOpenAction(null));
+        dispatch(setActiveForm(null));
     };
 
     const showEditView = () => {
-        if (openAction !== CommonConstants.SECURITY + SMS) {
+        if (activeForm !== CommonConstants.SECURITY + SMS) {
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>

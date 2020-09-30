@@ -34,7 +34,7 @@ import {
     createEmptyChallenge
 } from "../../../models";
 import { AppState } from "../../../store";
-import { setOpenAction } from "../../../store/actions";
+import { setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 
 /**
@@ -68,7 +68,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const [isInit, setIsInit] = useState(false);
     const { onAlertFired } = props;
 
-    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
 
     const { t } = useTranslation();
@@ -148,7 +148,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      */
     const handleEdit = (question: string | number) => {
         setIsEdit(question);
-        dispatch(setOpenAction(CommonConstants.SECURITY + QUESTION + question));
+        dispatch(setActiveForm(CommonConstants.SECURITY + QUESTION + question));
     };
 
     /**
@@ -231,7 +231,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         });
 
                     setIsEdit(-1);
-                    dispatch(setOpenAction(null));
+                    dispatch(setActiveForm(null));
                     onAlertFired({
                         description: t(
                             "userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
@@ -256,7 +256,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         });
 
                     setIsEdit(-1);
-                    dispatch(setOpenAction(null));
+                    dispatch(setActiveForm(null));
                     onAlertFired({
                         description: t(
                             "userPortal:components.accountRecovery.questionRecovery.notifications" +
@@ -310,7 +310,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         challenges.questions.forEach((questionSet: QuestionSetsInterface, index: number) => {
             if (isEdit === 0
                 || isEdit === questionSet.questionSetId
-                && openAction === CommonConstants.SECURITY + QUESTION + questionSet.questionSetId) {
+                && activeForm === CommonConstants.SECURITY + QUESTION + questionSet.questionSetId) {
                 formFields.push(
                     <Grid.Row columns={ 2 } key={ index }>
                         <Grid.Column width={ 4 }>
@@ -401,7 +401,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
     const listItems = () => {
         if (challenges.questions && challenges.questions.length > 0
-            && (isEdit === -1 || !openAction?.startsWith(CommonConstants.SECURITY + QUESTION))) {
+            && (isEdit === -1 || !activeForm?.startsWith(CommonConstants.SECURITY + QUESTION))) {
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>
@@ -490,7 +490,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     </Grid.Row>
                 </Grid>
             );
-        } else if (isEdit !== -1 && openAction?.startsWith(CommonConstants.SECURITY + QUESTION)) {
+        } else if (isEdit !== -1 && activeForm?.startsWith(CommonConstants.SECURITY + QUESTION)) {
             if (challenges.questions && challenges.questions.length > 0) {
                 const formFields = generateFormFields();
                 return (

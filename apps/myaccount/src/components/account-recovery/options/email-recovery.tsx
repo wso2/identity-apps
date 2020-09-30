@@ -27,7 +27,7 @@ import { AccountRecoveryIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema } from "../../../models";
 import { AppState } from "../../../store";
-import { getProfileInformation, setOpenAction } from "../../../store/actions";
+import { getProfileInformation, setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 
 /**
@@ -71,7 +71,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
         }
         return emailSchemas;
     });
-    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
     const [ email, setEmail ] = useState("");
     const [ editedEmail, setEditedEmail ] = useState("");
@@ -129,7 +129,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                 });
 
                 dispatch(getProfileInformation());
-                dispatch(setOpenAction(null));
+                dispatch(setActiveForm(null));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -196,14 +196,14 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
      *
      */
     const handleEdit = () => {
-        dispatch(setOpenAction(CommonConstants.SECURITY + EMAIL));
+        dispatch(setActiveForm(CommonConstants.SECURITY + EMAIL));
     };
 
     /**
      * This is called when the cancel button is pressed
      */
     const handleCancel = () => {
-        dispatch(setOpenAction(null));
+        dispatch(setActiveForm(null));
     };
 
     /**
@@ -229,7 +229,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
      * elements based on if the edit icon has been clicked
      */
     const showEditView = () => {
-        if (openAction!==CommonConstants.SECURITY+EMAIL) {
+        if (activeForm!==CommonConstants.SECURITY+EMAIL) {
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>

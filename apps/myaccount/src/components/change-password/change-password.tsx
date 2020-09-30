@@ -26,7 +26,7 @@ import { SettingsSectionIcons } from "../../configs";
 import { CommonConstants } from "../../constants";
 import { AlertInterface, AlertLevels } from "../../models";
 import { AppState } from "../../store";
-import { setOpenAction } from "../../store/actions";
+import { setActiveForm } from "../../store/actions";
 import { endUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 
@@ -60,7 +60,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
 
-    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
     const [ reset, resetForm ] = useTrigger();
 
@@ -88,7 +88,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // reset the form.
                     resetForm();
                     // hide the change password form
-                    dispatch(setOpenAction(null));
+                    dispatch(setActiveForm(null));
 
                     onAlertFired({
                         description: t(
@@ -135,7 +135,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // reset the form.
                     resetForm();
                     // hide the change password form
-                    dispatch(setOpenAction(null));
+                    dispatch(setActiveForm(null));
 
                     onAlertFired({
                         description: t(
@@ -153,7 +153,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // reset the form.
                     resetForm();
                     // hide the change password form
-                    dispatch(setOpenAction(null));
+                    dispatch(setActiveForm(null));
 
                     // Generic error message
                     onAlertFired({
@@ -202,7 +202,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         </Modal>
     );
 
-    const showChangePasswordView = openAction === CommonConstants.SECURITY+CHANGE_PASSWORD_FORM_IDENTIFIER
+    const showChangePasswordView = activeForm === CommonConstants.SECURITY+CHANGE_PASSWORD_FORM_IDENTIFIER
         ? (
             <EditSection>
                 <Forms
@@ -297,7 +297,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         <Field
                             className="link-button"
                             onClick={ () => {
-                                dispatch(setOpenAction(null));
+                                dispatch(setActiveForm(null));
                             } }
                             size="small"
                             type="button"
@@ -319,11 +319,11 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={
-                () => dispatch(setOpenAction(CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER))
+                () => dispatch(setActiveForm(CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER))
             }
             primaryAction={ t("userPortal:sections.changePassword.actionTitles.change") }
             primaryActionIcon="key"
-            showActionBar={ openAction !== CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER }
+            showActionBar={ activeForm !== CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER }
         >
             { showChangePasswordView }
             { confirmationModal }

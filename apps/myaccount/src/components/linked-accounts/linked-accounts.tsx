@@ -35,7 +35,7 @@ import {
     LinkedAccountInterface
 } from "../../models";
 import { AppState } from "../../store";
-import { getProfileLinkedAccounts, handleAccountSwitching, setOpenAction } from "../../store/actions";
+import { getProfileLinkedAccounts, handleAccountSwitching, setActiveForm } from "../../store/actions";
 import { refreshPage } from "../../utils";
 import { SettingsSection } from "../shared";
 
@@ -56,7 +56,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     const { onAlertFired } = props;
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
-    const openAction: string = useSelector((state: AppState) => state.global.openAction);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -99,7 +99,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     )
                 });
 
-                dispatch(setOpenAction(null));
+                dispatch(setActiveForm(null));
 
                 // Re-fetch the linked accounts list.
                 dispatch(getProfileLinkedAccounts());
@@ -227,18 +227,18 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={
-                () => dispatch(setOpenAction(
+                () => dispatch(setActiveForm(
                     CommonConstants.PERSONAL_INFO + UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER))
             }
             primaryAction={ t("userPortal:sections.linkedAccounts.actionTitles.add") }
             primaryActionIcon="add"
             showActionBar={
-                openAction !== CommonConstants.PERSONAL_INFO + UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER }
+                activeForm !== CommonConstants.PERSONAL_INFO + UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER }
         >
             {
-                openAction === CommonConstants.PERSONAL_INFO+UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER
+                activeForm === CommonConstants.PERSONAL_INFO+UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER
                     ? <LinkedAccountsEdit onFormEditViewHide={ () => {
-                        dispatch(setOpenAction(null));
+                        dispatch(setActiveForm(null));
                     } } onFormSubmit={ handleSubmit }/>
                     : (
                         <LinkedAccountsList

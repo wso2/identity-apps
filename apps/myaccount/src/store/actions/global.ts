@@ -96,7 +96,7 @@ export const setSupportedI18nLanguages = (
  *
  * @param {string} action - The action to set to open.
  */
-export const setOpenAction = (action: string): SetOpenAction => ({
+export const setActiveForm = (action: string): SetOpenAction => ({
     payload: action,
     type: GlobalActionTypes.SET_OPEN_ACTION
 });
