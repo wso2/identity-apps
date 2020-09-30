@@ -28,7 +28,8 @@ export enum GlobalActionTypes {
     TOGGLE_APPLICATIONS_PAGE_VISIBILITY = "TOGGLE_APPLICATIONS_PAGE_VISIBILITY",
     INITIALIZE_ALERT_SYSTEM = "INITIALIZE_ALERT_SYSTEM",
     ADD_ALERT = "ADD_ALERT",
-    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES"
+    SET_SUPPORTED_I18N_LANGUAGES = "SET_SUPPORTED_I18N_LANGUAGES",
+    SET_OPEN_ACTION = "SET_OPEN_ACTION"
 }
 
 /**
@@ -86,6 +87,14 @@ export interface SetSupportedI18nLanguagesActionInterface extends GlobalBaseActi
 }
 
 /**
+ * Set open action.
+ */
+export interface SetOpenAction extends GlobalBaseAction {
+    payload: string;
+    type: GlobalActionTypes.SET_OPEN_ACTION;
+}
+
+/**
  * Export action interfaces.
  */
 export type GlobalActions = ShowGlobalLoaderAction
@@ -93,4 +102,5 @@ export type GlobalActions = ShowGlobalLoaderAction
     | ToggleApplicationsPageVisibilityAction
     | InitializeAlertSystemAction
     | AddAlertAction
-    | SetSupportedI18nLanguagesActionInterface;
+    | SetSupportedI18nLanguagesActionInterface
+    | SetOpenAction;

@@ -17,7 +17,7 @@
  */
 
 import _ from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { LinkedAccountsEdit } from "./linked-accounts-edit";
@@ -27,6 +27,7 @@ import {
     removeLinkedAccount
 } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
+import { CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import {
     AlertInterface,
@@ -34,7 +35,7 @@ import {
     LinkedAccountInterface
 } from "../../models";
 import { AppState } from "../../store";
-import { getProfileLinkedAccounts, handleAccountSwitching } from "../../store/actions";
+import { getProfileLinkedAccounts, handleAccountSwitching, setActiveForm } from "../../store/actions";
 import { refreshPage } from "../../utils";
 import { SettingsSection } from "../shared";
 
@@ -52,11 +53,11 @@ interface LinkedAccountsProps {
  * @return {JSX.Element}
  */
 export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
-    const [ editingForm, setEditingForm ] = useState({
-        [ UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER ]: false
-    });
+
     const { onAlertFired } = props;
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -72,7 +73,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * @param {Map<string, string | string[]>} values - Form values.
      * @param formName - Name of the form
      */
-    const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
+    const handleSubmit = (values: Map<string, string | string[]>): void => {
         const username = values.get("username");
         const password = values.get("password");
         const data = {
@@ -98,11 +99,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     )
                 });
 
-                // Hide form
-                setEditingForm({
-                    ...editingForm,
-                    [ formName ]: false
-                });
+                dispatch(setActiveForm(null));
 
                 // Re-fetch the linked accounts list.
                 dispatch(getProfileLinkedAccounts());
@@ -136,30 +133,6 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     };
 
     /**
-     * The following method handles the onClick event of the edit button.
-     *
-     * @param formName - Name of the form
-     */
-    const showFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [ formName ]: true
-        });
-    };
-
-    /**
-     * The following method handles the onClick event of the cancel button.
-     *
-     * @param formName - Name of the form
-     */
-    const hideFormEditView = (formName: string): void => {
-        setEditingForm({
-            ...editingForm,
-            [ formName ]: false
-        });
-    };
-
-    /**
      * Handles the account switch click event.
      *
      * @param {LinkedAccountInterface} account - Target account.
@@ -169,7 +142,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             dispatch(handleAccountSwitching(account));
             refreshPage();
         } catch (error) {
-        
+
             if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({
                     description: t(
@@ -194,7 +167,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     "userPortal:components.linkedAccounts.notifications.switchAccount.genericError.message"
                 )
             });
-        }  
+        }
     };
 
     /**
@@ -253,14 +226,20 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
-            onPrimaryActionClick={ () => showFormEditView(UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER) }
+            onPrimaryActionClick={
+                () => dispatch(setActiveForm(
+                    CommonConstants.PERSONAL_INFO + UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER))
+            }
             primaryAction={ t("userPortal:sections.linkedAccounts.actionTitles.add") }
             primaryActionIcon="add"
-            showActionBar={ !editingForm[ UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER ] }
+            showActionBar={
+                activeForm !== CommonConstants.PERSONAL_INFO + UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER }
         >
             {
-                editingForm[ UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER ]
-                    ? <LinkedAccountsEdit onFormEditViewHide={ hideFormEditView } onFormSubmit={ handleSubmit }/>
+                activeForm === CommonConstants.PERSONAL_INFO+UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER
+                    ? <LinkedAccountsEdit onFormEditViewHide={ () => {
+                        dispatch(setActiveForm(null));
+                    } } onFormSubmit={ handleSubmit }/>
                     : (
                         <LinkedAccountsList
                             linkedAccounts={ linkedAccounts }

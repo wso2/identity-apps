@@ -21,7 +21,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { fetchUserSessions } from "../../../api";
-import { AppConstants } from "../../../constants";
+import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { AlertLevels, UserSessions, emptyUserSessions } from "../../../models";
 import { addAlert } from "../../../store/actions";
@@ -94,7 +94,7 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
                 );
             });
     };
-    
+
     useEffect(() => {
         getUserSessions();
     }, []);
@@ -103,7 +103,7 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
      * Navigates to the Security page.
      */
     const navigate = () => {
-        history.push(AppConstants.getPaths().get("SECURITY"));
+        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_ACTIVITY);
     };
 
     return (

@@ -17,9 +17,14 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import React, { ReactElement } from "react";
+import React, {
+    ReactElement,
+    useEffect,
+    useRef
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { RouteProps } from "react-router";
 import { Grid } from "semantic-ui-react";
 import {
     AccountRecoveryComponent,
@@ -28,7 +33,7 @@ import {
     MultiFactorAuthentication,
     UserSessionsComponent
 } from "../components";
-import { AppConstants } from "../constants";
+import { AppConstants, CommonConstants } from "../constants";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -39,12 +44,42 @@ import { addAlert } from "../store/actions";
  *
  * @return {React.ReactElement}
  */
-const AccountSecurityPage = (): ReactElement => {
+const AccountSecurityPage = (props: RouteProps): ReactElement => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const accessConfig: FeatureConfigInterface = useSelector((state: AppState) => state?.config?.ui?.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
+
+    const consentControl = useRef<HTMLDivElement>(null);
+    const accountSecurity = useRef<HTMLDivElement>(null);
+    const accountActivity = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        setTimeout(() => {
+            switch (props.location.hash) {
+            case `#${ CommonConstants.CONSENTS_CONTROL }`:
+                consentControl.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+                break;
+            case `#${ CommonConstants.ACCOUNT_ACTIVITY }`:
+                accountActivity.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+                break;
+            case `#${ CommonConstants.ACCOUNT_SECURITY }`:
+                accountSecurity.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+                break;
+        }
+        }, 100)
+
+    }, [ props.location ]);
 
     /**
      * Dispatches the alert object to the redux store.
@@ -81,10 +116,12 @@ const AccountSecurityPage = (): ReactElement => {
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                <AccountRecoveryComponent
-                                    featureConfig={ accessConfig }
-                                    onAlertFired={ handleAlerts }
-                                />
+                                <div ref={ accountSecurity }>
+                                    <AccountRecoveryComponent
+                                        featureConfig={ accessConfig }
+                                        onAlertFired={ handleAlerts }
+                                    />
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }
@@ -111,7 +148,9 @@ const AccountSecurityPage = (): ReactElement => {
                     ) ? (
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                <UserSessionsComponent onAlertFired={ handleAlerts } />
+                                <div ref={ accountActivity }>
+                                    <UserSessionsComponent onAlertFired={ handleAlerts } />
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }
@@ -121,9 +160,12 @@ const AccountSecurityPage = (): ReactElement => {
                         accessConfig?.security,
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_CONSENTS")
                     ) ? (
+
                         <Grid.Row>
                             <Grid.Column width={ 16 }>
-                                <Consents onAlertFired={ handleAlerts } />
+                                <div ref={ consentControl }>
+                                    <Consents onAlertFired={ handleAlerts } />
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
                     ) : null }
