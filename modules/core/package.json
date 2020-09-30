@@ -30,7 +30,6 @@
     "license": "Apache-2.0",
     "dependencies": {
         "@types/jest": "^26.0.14",
-        "@wso2is/authentication": "^1.0.433",
         "jest": "^26.4.2",
         "ts-jest": "^26.4.0"
     },

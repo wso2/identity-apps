@@ -18,7 +18,7 @@
 
 import {
     IdentityClient
-} from "@wso2is/authentication";
+} from "@asgardio/oidc-js";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";

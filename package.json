@@ -28,7 +28,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "joi": "^17.2.0",
+        "@asgardio/oidc-js": "^0.1.6",
         "@storybook/addon-actions": "^5.3.3",
         "@storybook/addon-centered": "^5.3.6",
         "@storybook/addon-docs": "^5.3.3",
@@ -64,6 +64,7 @@
         "i18next": "^17.0.11",
         "i18next-browser-languagedetector": "^3.0.3",
         "i18next-xhr-backend": "^3.2.2",
+        "joi": "^17.2.0",
         "js-beautify": "^1.10.3",
         "js-yaml": "3.13.1",
         "jshint": "^2.11.0",
