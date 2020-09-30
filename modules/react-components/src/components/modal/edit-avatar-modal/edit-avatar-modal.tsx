@@ -90,6 +90,10 @@ export interface EditAvatarModalPropsInterface extends ModalProps, TestableCompo
      * i18n translations for modal content.
      */
     translations?: EditAvatarModalContentI18nInterface;
+    /**
+     * Existing profile image url.
+     */
+    imageUrl?: string;
 }
 
 const GRAVATAR_IMAGE_MIN_SIZE = 80;
@@ -168,6 +172,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         className,
         emails,
         heading,
+        imageUrl,
         name,
         onCancel,
         onSubmit,
@@ -204,7 +209,6 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
      * Triggered on component mount.
      */
     useEffect(() => {
-        setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
         setSelectedGravatarSize(GRAVATAR_IMAGE_MIN_SIZE);
     }, []);
 
@@ -269,6 +273,15 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         setGravatarURLs(urls);
     }, [ selectedGravatarEmail, isGravatarQualified ]);
 
+    useEffect(() => {
+        if (imageUrl) {
+            setHostedURL(imageUrl);
+            setSelectedAvatarType(AvatarTypes.URL);
+        } else {
+            setSelectedAvatarType(AvatarTypes.SYSTEM_GENERATED);
+        }
+    }, [ imageUrl ]);
+
     /**
      * Handles selected gravatar email change.
      *
@@ -282,7 +295,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
         // Once the email selection is changed, switch the selected type to `Gravatar`.
         setSelectedAvatarType(AvatarTypes.GRAVATAR);
-        
+
         // Set the default option.
         if (gravatarURLs) {
             setOutputURL(gravatarURLs.get("Gravatar") ?? gravatarURLs.get("Retro"));
@@ -444,7 +457,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
 
             return;
         }
-        
+
         if (avatarType !== AvatarTypes.URL) {
             setHostedURLError(null);
 
@@ -521,6 +534,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
         <Modal
             data-testid={ testId }
             className={ classes }
+            closeOnDimmerClick={ false }
             { ...rest }
         >
             <Modal.Header>{ heading }</Modal.Header>
@@ -618,7 +632,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         </div>
                                     </Grid.Column>
                                 </Grid.Row>
-                            ) 
+                            )
                         }
                         <Grid.Row className="pb-0">
                             <Grid.Column width={ 16 }>
@@ -648,6 +662,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                                         onChange={ handleHostedURLFieldOnChange }
                                         error={ hostedURLError }
                                         loading={ isHostedURLValidationRequestLoading }
+                                        value={ hostedURL }
                                     />
                                     {
                                         hostedURL && isHostedURLValid && (
@@ -676,6 +691,7 @@ export const EditAvatarModal: FunctionComponent<EditAvatarModalPropsInterface> =
                         || isHostedURLValidationRequestLoading
                         || !outputURL
                         || (selectedAvatarType === AvatarTypes.URL && !isHostedURLValid)
+                        || (selectedAvatarType === AvatarTypes.URL && hostedURL === imageUrl)
                     }
                     onClick={ handleModalSubmit }
                 >

@@ -111,7 +111,13 @@ export const Alert: FunctionComponent<AlertProps> = (
 
     return (
         <div className="alert-wrapper">
-            <NotificationSystem ref={ alertRef } />
+            <NotificationSystem ref={ alertRef } style={ {
+                NotificationItem: {
+                    DefaultStyle: {
+                        cursor: "unset"
+                    }
+                }
+            } }/>
         </div>
     );
 };

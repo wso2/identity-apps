@@ -335,7 +335,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             );
         }
 
-        if (usersList.totalResults === 0 && usersList.Resources) {
+        if (usersList.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     data-testid={ `${ testId }-empty-placeholder` }

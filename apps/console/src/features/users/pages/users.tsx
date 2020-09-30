@@ -21,7 +21,13 @@ import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { Button, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    Button,
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout,
+    PrimaryButton
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,6 +35,7 @@ import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
+    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
@@ -69,6 +76,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
+    const [ userStoreError, setUserStoreError ] = useState(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
 
     const init = useRef(true);
@@ -83,6 +91,23 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
         getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
                 setUsersList(response);
+                setUserStoreError(false);
+            }).catch((error) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.message")
+                }));
+                setUserStoreError(true);
+                setUsersList({
+                    Resources: [],
+                    itemsPerPage: 10,
+                    links: [],
+                    startIndex: 1,
+                    totalResults: 0
+                });
             })
             .finally(() => {
                 setUserListRequestLoading(false);
@@ -453,63 +478,76 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                                 selection
                                 options={ userStoreOptions && userStoreOptions }
                                 onChange={ handleDomainChange }
-                                defaultValue="primary"
+                                defaultValue="all"
                             />
                         </>
                     )
                 }
                 showPagination={ true }
-                showTopActionPanel={ isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0) }
+                showTopActionPanel={ isUserListRequestLoading
+                    || !(!searchQuery
+                        && !userStoreError
+                        && userStoreOptions.length < 3
+                        && usersList?.totalResults <= 0) }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
             >
-                <UsersList
-                    advancedSearch={ (
-                        <AdvancedSearchWithBasicFilters
-                            onFilter={ handleUserFilter }
-                            filterAttributeOptions={ [
-                                {
-                                    key: 0,
-                                    text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
-                                        "filterAttributeOptions.username"),
-                                    value: "userName"
-                                },
-                                {
-                                    key: 1,
-                                    text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
-                                        "filterAttributeOptions.email"),
-                                    value: "emails"
+                { userStoreError
+                    ? <EmptyPlaceholder
+                        subtitle={ [ t("adminPortal:components.users.placeholders.userstoreError.subtitles.0"),
+                            t("adminPortal:components.users.placeholders.userstoreError.subtitles.1")     ] }
+                        title={ t("adminPortal:components.users.placeholders.userstoreError.title") }
+                        image={ EmptyPlaceholderIllustrations.genericError }
+                        imageSize="tiny"
+                    />
+                    : <UsersList
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleUserFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                            "filterAttributeOptions.username"),
+                                        value: "userName"
+                                    },
+                                    {
+                                        key: 1,
+                                        text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                            "filterAttributeOptions.email"),
+                                        value: "emails"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterAttribute" +
+                                        ".placeholder")
                                 }
-                            ] }
-                            filterAttributePlaceholder={
-                                t("adminPortal:components.users.advancedSearch.form.inputs.filterAttribute" +
-                                    ".placeholder")
-                            }
-                            filterConditionsPlaceholder={
-                                t("adminPortal:components.users.advancedSearch.form.inputs.filterCondition" +
-                                    ".placeholder")
-                            }
-                            filterValuePlaceholder={
-                                t("adminPortal:components.users.advancedSearch.form.inputs.filterValue" +
-                                    ".placeholder")
-                            }
-                            placeholder={ t("adminPortal:components.users.advancedSearch.placeholder") }
-                            defaultSearchAttribute="userName"
-                            defaultSearchOperator="co"
-                            triggerClearQuery={ triggerClearQuery }
-                        />
-                    ) }
-                    usersList={ usersList }
-                    handleUserDelete={ handleUserDelete }
-                    userMetaListContent={ userListMetaContent }
-                    isLoading={ isUserListRequestLoading }
-                    onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    data-testid="user-mgt-user-list"
-                    readOnlyUserStores={ readOnlyUserStoresList }
-                    featureConfig={ featureConfig }
-                />
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterCondition" +
+                                        ".placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder")
+                                }
+                                placeholder={ t("adminPortal:components.users.advancedSearch.placeholder") }
+                                defaultSearchAttribute="userName"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                            />
+                        ) }
+                        usersList={ usersList }
+                        handleUserDelete={ handleUserDelete }
+                        userMetaListContent={ userListMetaContent }
+                        isLoading={ isUserListRequestLoading }
+                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        data-testid="user-mgt-user-list"
+                        readOnlyUserStores={ readOnlyUserStoresList }
+                        featureConfig={ featureConfig }
+                    />
+                }
                 {
                     showWizard && (
                     <AddUserWizard

@@ -17,11 +17,14 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store"
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { generate } from "generate-password";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import {
     Grid,
     Message
@@ -76,6 +79,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     /**
      * The following useEffect is triggered when a random password is generated.
@@ -139,6 +143,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         getUsersList(null, null, "userName eq " + username, null, userStore)
             .then((response) => {
                 setIsUsernameValid(response?.totalResults === 0);
+            }).catch((error) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.message")
+                }))
             });
         setIsUsernamePatternValid(validateInputAgainstRegEx(username, usernameRegEx));
     };

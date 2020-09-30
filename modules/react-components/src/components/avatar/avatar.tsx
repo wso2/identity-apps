@@ -17,8 +17,9 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { ImageUtils } from "@wso2is/core/utils";
 import classNames from "classnames";
-import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent } from "react";
+import React, { FunctionComponent, PropsWithChildren, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { Image, ImageProps, Placeholder, SemanticSIZES } from "semantic-ui-react";
 import { ReactComponent as CameraIcon } from "../../assets/images/icons/camera-icon.svg";
 import { GenericIcon, GenericIconProps } from "../icon";
@@ -172,6 +173,8 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         ...rest
     } = props;
 
+    const [ isImageValidUrl, setIsImageValidUrl ] = useState<boolean>(false);
+
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
     const wrapperClasses = classNames(`${ AVATAR_MODULE_CSS_CLASS }-wrapper`,
@@ -200,6 +203,21 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
             "with-background-image": withBackgroundImage
         }
     );
+
+    /**
+     * Check if `image` is a valid image URL.
+     */
+    useEffect(() => {
+        if (image) {
+            if (React.isValidElement(image)) {
+                setIsImageValidUrl(false);
+            } else {
+                ImageUtils.isValidImageURL(image as string, (isValid: boolean) => {
+                    setIsImageValidUrl(isValid);
+                });
+            }
+        }
+    }, [ image ]);
 
     // If loading, show the placeholder.
     if (isLoading) {
@@ -298,7 +316,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         )
     }
 
-    if (image) {
+    if (image && isImageValidUrl) {
         return (
             <div className={ wrapperClasses }>
                 <div className={ containerClasses }>

@@ -196,6 +196,7 @@ const UserEditPage = (): ReactElement => {
                         closeOnDimmerClick={ false }
                         onCancel={ () => setShowEditAvatarModal(false) }
                         onSubmit={ handleAvatarEditModalSubmit }
+                        imageUrl={ profileInfo?.profileUrl }
                         heading={ t("console:common.modals.editAvatarModal.heading") }
                         submitButtonText={ t("console:common.modals.editAvatarModal.primaryButton") }
                         cancelButtonText={ t("console:common.modals.editAvatarModal.secondaryButton") }

@@ -176,7 +176,13 @@ export const Alert: FunctionComponent<AlertPropsInterface> = (
 
     return (
         <div className={ `alert-wrapper ${ classes }` } data-testid={ testId }>
-            <NotificationSystem ref={ alertRef } />
+            <NotificationSystem ref={ alertRef } style={ {
+                NotificationItem: {
+                    DefaultStyle: {
+                        cursor: "unset"
+                    }
+                }
+            } }/>
         </div>
     );
 };

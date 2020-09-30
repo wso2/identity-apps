@@ -1398,6 +1398,7 @@ export interface AdminPortalNS {
             };
             placeholders: {
                 emptyList: Placeholder;
+                userstoreError: Placeholder;
             };
             usersList: {
                 list: {
