@@ -113,7 +113,10 @@ module.exports = (env) => {
                             /@wso2is(\\|\/)react-components/,
                             /@wso2is(\\|\/)theme/,
                             /@wso2is(\\|\/)validation/ ],
-                        test: /node_modules(\\|\/)(core-js)/
+                        test: [
+                            /\.(spec|test).(ts|js)x?$/,
+                            /node_modules(\\|\/)(core-js)/
+                        ]
                     },
 					test: /\.(ts|js)x?$/,
                     use: [
