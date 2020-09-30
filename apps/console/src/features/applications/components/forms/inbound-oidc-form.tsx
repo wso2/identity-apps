@@ -577,7 +577,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 let label: ReactElement = null;
 
                                 const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
-                                const isHttpsUrl: boolean = URLUtils.isHttpsUrl(value);
 
                                 if (isHttpUrl) {
                                     label = (
