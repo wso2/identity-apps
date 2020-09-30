@@ -5,5 +5,5 @@
         "modules/!(http)",
         "tests"
     ],
-    "version": "1.0.430"
+    "version": "1.0.431"
 }
