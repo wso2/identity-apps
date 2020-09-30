@@ -19,7 +19,7 @@
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector }from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
 import { updatePassword } from "../../api";
 import { SettingsSectionIcons } from "../../configs";
