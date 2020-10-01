@@ -91,7 +91,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                     <ResourceTab.Pane
                                         className="render-view"
                                         attached={ false }
-                                        data-testid={ `${ testId }-render-view` }
+                                        data-testid="preview-tab-pane"
                                     >
                                         <iframe id="iframe" srcDoc={ content }>
                                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
@@ -105,7 +105,10 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                             {
                                 menuItem: t("adminPortal:components.emailTemplates.editor.tabs.code.tabName"),
                                 render: () => (
-                                    <ResourceTab.Pane attached={ false }>
+                                    <ResourceTab.Pane
+                                        attached={ false }
+                                        data-testid="html-code-tab-pane"
+                                    >
                                         <CodeEditor
                                             lint
                                             language="htmlmixed"
