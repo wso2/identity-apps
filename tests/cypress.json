@@ -14,5 +14,7 @@
     "supportFile": "support/index.ts",
     "testFiles": "**/*.spec.*",
     "video": false,
-    "videosFolder": "output/videos"
+    "videosFolder": "output/videos",
+    "viewportWidth": 1920,
+    "viewportHeight": 1080
 }
