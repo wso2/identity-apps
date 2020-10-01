@@ -19,7 +19,7 @@
 
 /// <reference types="cypress" />
 
-import { EmailTemplateTypesDomConstants } from "../constants";
+import { EmailTemplatesListPageConstants } from "../constants";
 
 /**
  * Class containing Email Templates Page objects.
@@ -33,88 +33,152 @@ export class EmailTemplatesListPage {
     constructor() { }
 
     /**
-     * Click on the email templates side panel item.
-     */
-    public clickOnSidePanelItem(): void {
-        cy.dataTestId(EmailTemplateTypesDomConstants.SIDE_PANEL_ITEM_DATA_ATTR).click();
-    };
-
-    /**
-     * Get the data attribute of the email templates table.
+     * Get the email templates table element.
      * @return {Cypress.Chainable<Element>}
      */
-    public getEmailTemplatesTable(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.TABLE_DATA_ATTR);
+    public getTable(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_DATA_ATTR);
     };
 
     /**
-     * Get the data attribute of the email templates table body.
+     * Get the email templates table body element.
      * @return {Cypress.Chainable<Element>}
      */
-    public getEmailTemplatesTableBody(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.TABLE_BODY_DATA_ATTR);
+    public getTableBody(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_BODY_DATA_ATTR);
     };
 
     /**
-     * Get the data attribute of the email templates page layout header.
+     * Get the email templates table first element.
      * @return {Cypress.Chainable<Element>}
      */
-    public getEmailTemplatesPageLayoutHeader(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
+    public getTableFirstElement(): Cypress.Chainable<Element> {
+        return this.getTable()
+            .within(() => {
+                cy.dataTestId("data-table-row")
+                    .eq(0);
+            });
     };
 
     /**
-     * Get the data attribute of the email templates page layout header title.
+     * Click on the email templates table first element's edit button.
+     */
+    public clickOnTableFirstElementEditButton(): void {
+        this.getTableFirstElement()
+            .within(() => {
+                this.getTableItemEditButton().trigger("mouseover").click();
+            });
+    };
+
+    /**
+     * Click on the email templates table first element's view button.
+     */
+    public clickOnTableFirstElementViewButton(): void {
+        this.getTableFirstElement()
+            .within(() => {
+                this.getTableItemViewButton().trigger("mouseover").click();
+            });
+    };
+
+    /**
+     * Get the the email templates table item heading.
      * @return {Cypress.Chainable<Element>}
      */
-    public getEmailTemplatesPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
+    public getTableItemHeading(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_ROW_HEADING_DATA_ATTR);
     };
 
     /**
-     * Get the data attribute of the email templates page layout header sub title.
+     * Get the the email templates table item edit button.
      * @return {Cypress.Chainable<Element>}
      */
-    public getEmailTemplatesPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
+    public getTableItemEditButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR);
     };
 
     /**
-     * Get the data attribute of the email templates page layout header action.
+     * Get the the email templates table item view button.
      * @return {Cypress.Chainable<Element>}
      */
-    public getEmailTemplatesPageLayoutHeaderAction(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_ACTION);
+    public getTableItemViewButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.TABLE_ROW_VIEW_BUTTON_DATA_ATTR);
     };
 
     /**
-     * Click on the New template type button.
-     */
-    public clickOnNewTemplateTypeButton(): void {
-        this.getEmailTemplatesPageLayoutHeaderAction().click();
-    };
-
-    /**
-     * Get the data attribute of the add new templates type wizard.
+     * Get the email templates page layout header element.
      * @return {Cypress.Chainable<Element>}
      */
-    public getAddTemplateTypeWizard(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.ADD_WIZARD_DATA_ATTR);
+    public getPageLayoutHeader(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
     };
 
     /**
-     * Get the data attribute of the new templates type name input in the wizard.
+     * Get the email templates page layout header title element.
      * @return {Cypress.Chainable<Element>}
      */
-    public getTemplateTypeNameInputInWizard(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.TEMPLATE_TYPE_NAME_INPUT_DATA_ATTR);
+    public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
     };
 
     /**
-     * Get the data attribute of the new template type wizard's create button.
+     * Get the email templates page layout header action element.
      * @return {Cypress.Chainable<Element>}
      */
-    public getTemplateTypeCreateButtonInWizard(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.CREATE_TEMPLATE_TYPE_BUTTON_DATA_ATTR);
+    public getPageLayoutHeaderAction(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
+    };
+
+    /**
+     * Get the email templates list new placeholder element.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getNewTablePlaceholder(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.NEW_LIST_PLACEHOLDER);
+    };
+
+    /**
+     * Get the email templates list new placeholder action element.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getNewTablePlaceholderAction(): Cypress.Chainable<JQuery<HTMLButtonElement>> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER)
+            .find("button");
+    };
+
+    /**
+     * Get the email templates view modal.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplateViewModal(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.TEMPLATE_VIEW_MODAL_DATA_ATTR);
+    };
+
+    /**
+     * Get the email templates view modal cancel button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getEmailTemplateViewModalCancelButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(EmailTemplatesListPageConstants.TEMPLATE_VIEW_MODAL_CANCEL_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Click on the email templates view modal cancel button.
+     */
+    public clickOnEmailTemplateViewModalCancelButton(): void {
+        this.getEmailTemplateViewModalCancelButton().click();
+    };
+
+    /**
+     * Click on the new template button on the empty placeholder.
+     */
+    public clickOnNewTablePlaceholderAction(): void {
+        this.getNewTablePlaceholderAction().click();
+    };
+
+    /**
+     * Click on the new template button.
+     */
+    public clickOnNewTemplateButton(): void {
+        this.getPageLayoutHeaderAction().click();
     };
 }

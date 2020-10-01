@@ -24,7 +24,7 @@ import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
 import { Header } from "@wso2is/cypress-base/page-objects";
 import { EmailTemplatesListPage, EmailTemplateTypesListPage } from "./page-objects";
 import { CommonUtils } from "@wso2is/cypress-base/utils";
-import { EmailTemplateTypesDomConstants } from "./constants";
+import { EmailTemplateTypesListPageConstants } from "./constants";
 import { v4 as uuidv4 } from "uuid";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
@@ -80,7 +80,7 @@ describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () =
 
             // Check if at-least one row is present. Assumes that the email templates are always present in a new pack.
             emailTemplateTypesListPage.getTable()
-                .find(CommonUtils.resolveDataTestId(EmailTemplateTypesDomConstants.TABLE_ROW_DATA_ATTR))
+                .find(CommonUtils.resolveDataTestId(EmailTemplateTypesListPageConstants.TABLE_ROW_DATA_ATTR))
                 .should("exist");
         });
 
@@ -93,25 +93,25 @@ describe("ITC-1.0.0-[email-templates] - Email Template Types Integration.", () =
                     // Check if image exist.
                     cy.wrap(row)
                         .find(CommonUtils.resolveDataTestId(
-                            EmailTemplateTypesDomConstants.TABLE_ROW_IMAGE_DATA_ATTR))
+                            EmailTemplateTypesListPageConstants.TABLE_ROW_IMAGE_DATA_ATTR))
                         .should("exist");
 
                     // Check if heading exist.
                     cy.wrap(row)
                         .find(CommonUtils.resolveDataTestId(
-                            EmailTemplateTypesDomConstants.TABLE_ROW_HEADING_DATA_ATTR))
+                            EmailTemplateTypesListPageConstants.TABLE_ROW_HEADING_DATA_ATTR))
                         .should("exist");
 
                     // Check if edit button exist.
                     cy.wrap(row)
                         .find(CommonUtils.resolveDataTestId(
-                            EmailTemplateTypesDomConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR))
+                            EmailTemplateTypesListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR))
                         .should("exist");
 
                     // Check if delete button exist.
                     cy.wrap(row)
                         .find(CommonUtils.resolveDataTestId(
-                            EmailTemplateTypesDomConstants.TABLE_ROW_DELETE_BUTTON_DATA_ATTR))
+                            EmailTemplateTypesListPageConstants.TABLE_ROW_DELETE_BUTTON_DATA_ATTR))
                         .should("exist");
                 });
         });

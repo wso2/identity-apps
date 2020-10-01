@@ -19,7 +19,7 @@
 
 /// <reference types="cypress" />
 
-import { EmailTemplateTypesDomConstants } from "../constants";
+import { EmailTemplateTypesListPageConstants } from "../constants";
 import { SidePanelDomConstants } from "@wso2is/cypress-base/constants";
 
 /**
@@ -45,7 +45,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getTable(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.TABLE_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.TABLE_DATA_ATTR);
     };
 
     /**
@@ -53,7 +53,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getTableBody(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.TABLE_BODY_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.TABLE_BODY_DATA_ATTR);
     };
 
     /**
@@ -61,7 +61,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
     };
 
     /**
@@ -69,7 +69,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
     };
 
     /**
@@ -77,7 +77,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
     };
 
     /**
@@ -85,7 +85,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getPageLayoutHeaderAction(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.PAGE_LAYOUT_HEADER_ACTION);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
     };
 
     /**
@@ -100,7 +100,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getAddTemplateTypeWizard(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.ADD_WIZARD_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.ADD_WIZARD_DATA_ATTR);
     };
 
     /**
@@ -108,7 +108,7 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getTemplateTypeNameInputInWizard(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.TEMPLATE_TYPE_NAME_INPUT_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.TEMPLATE_TYPE_NAME_INPUT_DATA_ATTR);
     };
 
     /**
@@ -116,6 +116,6 @@ export class EmailTemplateTypesListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getTemplateTypeCreateButtonInWizard(): Cypress.Chainable<Element> {
-        return cy.dataTestId(EmailTemplateTypesDomConstants.CREATE_TEMPLATE_TYPE_BUTTON_DATA_ATTR);
+        return cy.dataTestId(EmailTemplateTypesListPageConstants.CREATE_TEMPLATE_TYPE_BUTTON_DATA_ATTR);
     };
 }

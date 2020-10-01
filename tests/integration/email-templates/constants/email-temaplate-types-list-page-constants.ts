@@ -18,9 +18,9 @@
  */
 
 /**
- * Class containing Email Template Types Page DOM constants.
+ * Class containing Email Template Types constants.
  */
-export class EmailTemplateTypesDomConstants {
+export class EmailTemplateTypesListPageConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -43,9 +43,9 @@ export class EmailTemplateTypesDomConstants {
     // Page Layout.
     public static readonly PAGE_LAYOUT_HEADER_DATA_ATTR: string = "email-template-types-page-layout-page-header";
     public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "email-template-types-page-layout-page-" +
-        "header-header";
+        "header-title";
     public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "email-template-types-page-layout-" +
-        "page-header-sub-header";
+        "page-header-sub-title";
     public static readonly PAGE_LAYOUT_HEADER_ACTION: string = "email-template-types-list-layout-add-button";
 
     // Wizard.
