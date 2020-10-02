@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/cypress-base",
-    "version": "1.0.437",
+    "version": "1.0.438",
     "description": "Commonly used commands, configs, utilities for cypress integration tests for WSO2 Identity Apps",
     "author": "WSO2",
     "license": "Apache-2.0",
