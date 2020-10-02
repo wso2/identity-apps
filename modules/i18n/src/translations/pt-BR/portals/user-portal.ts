@@ -1038,6 +1038,16 @@ export const userPortal: UserPortalNS = {
                 emailConfirmation: {
                     content: "Please confirm the email address update in order to add the new email to your profile.",
                     header: "Confirmation pending!"
+                },
+                mobileConfirmation: {
+                    content: {
+                        addMobileNumber: "Clique aqui para confirmar a atualização do número do celular.",
+                        updateMobileNumber: "Clique aqui para confirmar a atualização do número do celular. " +
+                            "Até a verificação bem-sucedida do número de celular pendente, o número de celular " +
+                            "verificado anteriormente {{mobileNumber}}} será usado.",
+                    },
+                    header: "Confirmação pendente!",
+                    unverified: "(não verificado)"
                 }
             },
             notifications: {
@@ -1182,6 +1192,32 @@ export const userPortal: UserPortalNS = {
                     success: {
                         description: "Encerrada com êxito a sessão do IDP",
                         message: "Sessão finalizada com sucesso"
+                    }
+                }
+            }
+        },
+        verifyMobilePopup: {
+            done: "Sucesso! O número do seu celular foi verificado com sucesso.",
+            verifySmsOtp: {
+                generate: "Reenviar um novo código de verificação",
+                heading: "Digite o código de verificação enviado para o seu número de celular",
+                error: "Falha na verificação. Por favor, tente novamente.",
+                label: "Código de verificação",
+                placeholder: "Digite seu código de verificação",
+                requiredError: "Insira o código de verificação",
+            },
+            notifications: {
+                resendSuccess: {
+                    message: "O pedido de reenvio do código foi enviado com sucesso"
+                },
+                resendError: {
+                    error: {
+                        description: "{{error}}",
+                        message: "Algo deu errado"
+                    },
+                    genericError: {
+                        description: "Ocorreu um erro ao tentar obter um novo código de verificação",
+                        message: "Algo deu errado"
                     }
                 }
             }

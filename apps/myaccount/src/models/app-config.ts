@@ -82,6 +82,8 @@ export interface ServiceResourceEndpointsInterface {
     profileSchemas: string;
     receipts: string;
     sessions: string;
+    smsOtpResend: string;
+    smsOtpValidate: string;
     token: string;
     totp: string;
     totpSecret: string;

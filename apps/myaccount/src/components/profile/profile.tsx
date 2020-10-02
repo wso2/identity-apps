@@ -34,6 +34,8 @@ import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
+import { SMSOTPPopup } from "../shared/sms-otp-popup";
+import { SCIM2_ENT_USER_SCHEMA } from "../../constants";
 
 /**
  * Prop types for the basic details component.
@@ -65,7 +67,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
+    const [ isMobilePending, setMobilePending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
+    const [ showSMSOTPSubmitWizard, setShowSMSOTPSubmitWizard ] = useState<boolean>(false);
 
     /**
      * Set the if the email verification is pending.
@@ -75,6 +79,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             setEmailPending(true);
         }
     }, [ profileDetails?.profileInfo?.pendingEmails ]);
+
+    /**
+     * Set if the mobile verification is pending.
+     */
+    useEffect(() => {
+        if (profileDetails?.profileInfo?.pendingMobileNumber &&
+            profileDetails?.profileInfo?.pendingMobileNumber !== "") {
+            setMobilePending(true);
+        } else {
+            setMobilePending(false);
+        }}, [profileDetails?.profileInfo?.pendingMobileNumber]);
 
     /**
      * dispatch getProfileInformation action if the profileDetails object is empty
@@ -134,6 +149,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 } else {
                     if (schemaNames[0] === "name") {
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]][schemaNames[1]]);
+                    } else if (schemaNames[0] === "phoneNumbers" && schemaNames[1] === "mobile" &&
+                        profileDetails?.profileInfo?.pendingMobileNumber) {
+                        tempProfileInfo.set(schema.name, profileDetails.profileInfo.pendingMobileNumber);
+                        const subValue = profileDetails.profileInfo[schemaNames[0]]
+                            && profileDetails.profileInfo[schemaNames[0]]
+                                .find((subAttribute) => subAttribute.type === schemaNames[1]);
+                        tempProfileInfo.set("verifiedMobileNumber", subValue ? subValue.value : "");
                     } else {
                         const subValue = profileDetails.profileInfo[schemaNames[0]]
                             && profileDetails.profileInfo[schemaNames[0]]
@@ -149,6 +171,21 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             setProfileInfo(tempProfileInfo);
         }
     }, [profileSchema, profileDetails.profileInfo]);
+
+    /**
+     * This checks whether a valid value for 'pendingMobileNumber' claim is available in the response.
+     * If it exists that implies mobile number verification is enabled and there is a verification pending.
+     *
+     * @returns {boolean} True/False
+     */
+    const isMobileVerificationPending = (userData): boolean => {
+        const PENDING_MOBILE_CLAIM = "pendingMobileNumber";
+        if (userData && userData[SCIM2_ENT_USER_SCHEMA] && userData[SCIM2_ENT_USER_SCHEMA][PENDING_MOBILE_CLAIM]) {
+            setMobilePending(true);
+            return true;
+        }
+        return false;
+    };
 
     /**
      * The following method handles the `onSubmit` event of forms.
@@ -207,6 +244,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
                 // Re-fetch the profile information
                 dispatch(getProfileInformation(true));
+                // Prompt to submit SMS OTP verification code
+                if (checkSchemaType(formName, "mobile") && isMobileVerificationPending(response?.data)) {
+                    setShowSMSOTPSubmitWizard(true);
+                }
             }
         }).catch(error => {
             onAlertFired({
@@ -378,7 +419,48 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                             </p>
                                                         </>
                                                     )
-                                                    : profileInfo.get(schema.name)
+                                                    : (
+                                                        (checkSchemaType(schema.name, "mobile") && isMobilePending)
+                                                            ? (
+                                                                <>
+                                                                    <p>
+                                                                        {
+                                                                            profileInfo.get(schema.name)
+                                                                        }
+                                                                        { t("userPortal:components.profile" +
+                                                                            ".messages.mobileConfirmation.unverified") }
+                                                                        <Popup
+                                                                            size="tiny"
+                                                                            trigger={
+                                                                                <Icon
+                                                                                    name="info circle"
+                                                                                    color="yellow"
+                                                                                    link={ true }
+                                                                                    style={ { marginLeft: "0.1em" } }
+                                                                                    onClick={
+                                                                                        () => {
+                                                                                            setShowSMSOTPSubmitWizard(true);
+                                                                                        }
+                                                                                    }
+                                                                                />
+                                                                            }
+                                                                            content={
+                                                                                profileInfo.get("verifiedMobileNumber") && profileInfo.get("verifiedMobileNumber") !== ""
+                                                                                ? t("userPortal:components.profile.messages.mobileConfirmation.content.updateMobileNumber",
+                                                                                    { mobileNumber: profileInfo.get("verifiedMobileNumber") }) :
+                                                                                    t("userPortal:components.profile.messages.mobileConfirmation.content.addMobileNumber")
+                                                                            }
+                                                                            header={
+                                                                                t("userPortal:components.profile.messages." +
+                                                                                    "mobileConfirmation.header")
+                                                                            }
+                                                                            inverted
+                                                                        />
+                                                                    </p>
+                                                                </>
+                                                            )
+                                                            : profileInfo.get(schema.name)
+                                                    )
                                             )
                                             : (
                                                 <a
@@ -449,6 +531,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         </Grid.Column>
                     </Grid.Row>
                 </Grid >
+                    </>
             );
         }
     };
@@ -526,7 +609,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         onClose={ () => setShowEditAvatarModal(false) }
                         onCancel={ () => setShowEditAvatarModal(false) }
                         onSubmit={ handleAvatarEditModalSubmit }
-                        imageUrl={ profileDetails?.profileInfo?.profileUrl }
                         heading={ t("userPortal:modals.editAvatarModal.heading") }
                         submitButtonText={ t("userPortal:modals.editAvatarModal.primaryButton") }
                         cancelButtonText={ t("userPortal:modals.editAvatarModal.secondaryButton") }

@@ -91,6 +91,8 @@ export class Config {
             receipts: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/sessions`,
+            smsOtpResend: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me/resend-code`,
+            smsOtpValidate: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me/validate-code`,
             token: `${this.getDeploymentConfig().serverHost}/oauth2/token`,
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,

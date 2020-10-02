@@ -638,6 +638,14 @@ export interface UserPortalNS {
                     content: string;
                     header: string;
                 };
+                mobileConfirmation: {
+                    content: {
+                        addMobileNumber: string;
+                        updateMobileNumber: string;
+                    };
+                    header: string;
+                    unverified: string,
+                };
             };
             notifications: {
                 getProfileCompletion: Notification;
@@ -680,6 +688,26 @@ export interface UserPortalNS {
                 fetchSessions: Notification;
                 terminateAllUserSessions: Notification;
                 terminateUserSession: Notification;
+            };
+        };
+        verifyMobilePopup: {
+            verifySmsOtp: {
+                heading: string;
+                generate: string;
+                label: string;
+                placeholder: string;
+                error: string;
+                requiredError: string;
+            };
+            done: string;
+            notifications: {
+                resendSuccess: {
+                    message: string;
+                };
+                resendError: {
+                    genericError: NotificationItem;
+                    error: NotificationItem;
+                };
             };
         };
     };

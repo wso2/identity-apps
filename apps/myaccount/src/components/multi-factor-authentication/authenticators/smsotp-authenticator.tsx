@@ -22,7 +22,7 @@ import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Icon, List } from "semantic-ui-react";
+import { Form, Grid, Icon, List, Popup } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
@@ -30,6 +30,8 @@ import { AlertInterface, AlertLevels, BasicProfileInterface } from "../../../mod
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
+import { SMSOTPPopup } from "../../shared/sms-otp-popup";
+import { SCIM2_ENT_USER_SCHEMA } from "../../../constants";
 
 
 /**
@@ -62,6 +64,9 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         (state: any) => state.authenticationInformation.profileInfo
     );
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const [ showSMSOTPSubmitWizard, setShowSMSOTPSubmitWizard ] = useState<boolean>(false);
+    const [ isMobilePending, setMobilePending ] = useState<boolean>(false);
+    const [ verifiedMobile, setVerifiedMobileNumber ] = useState<string>("");
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -74,6 +79,12 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         response.phoneNumbers.map((mobileNo) => {
             mobileNumber = mobileNo.value;
         });
+        setMobilePending(false);
+        if (response.pendingMobileNumber && response.pendingMobileNumber !== "") {
+            setVerifiedMobileNumber(mobileNumber);
+            mobileNumber = response.pendingMobileNumber;
+            setMobilePending(true);
+        }
         setMobile(mobileNumber);
     };
 
@@ -104,7 +115,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         };
 
         updateProfileInfo(data)
-            .then(() => {
+            .then((response) => {
                 onAlertFired({
                     description: t(
                         "userPortal:components.mfa.smsOtp.notifications.updateMobile.success.description"
@@ -117,6 +128,10 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
                 dispatch(getProfileInformation());
                 dispatch(setActiveForm(null));
+                if (response?.data && isMobileVerificationPending(response.data)) {
+                    setMobilePending(true);
+                    setShowSMSOTPSubmitWizard(true);
+                }
             })
             .catch((error) => {
                 if (error?.response?.data && error?.response?.detail) {
@@ -146,6 +161,21 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             });
     };
 
+    /**
+     * This checks whether a valid value for 'pendingPhoneNumber' claim is available in the profile.
+     * If it exists that implies mobile number verification is enabled.
+     *
+     * @returns {boolean} True/False
+     */
+    const isMobileVerificationPending = (userData): boolean => {
+        const PENDING_MOBILE_CLAIM = "pendingMobileNumber";
+        if (userData && userData[SCIM2_ENT_USER_SCHEMA] && userData[SCIM2_ENT_USER_SCHEMA][PENDING_MOBILE_CLAIM]) {
+            setMobilePending(true);
+            return true;
+        }
+        return false;
+    };
+
     const handleEdit = () => {
         dispatch(setActiveForm(CommonConstants.SECURITY + SMS));
     };
@@ -157,6 +187,18 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
     const showEditView = () => {
         if (activeForm !== CommonConstants.SECURITY + SMS) {
             return (
+                <>
+                    {
+                        showSMSOTPSubmitWizard
+                            ? (
+                                < SMSOTPPopup
+                                    onAlertFired={ onAlertFired }
+                                    closeWizard={ () => setShowSMSOTPSubmitWizard(false) }
+                                    wizardOpen={ true }
+                                />
+                            )
+                            : null
+                    }
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
@@ -175,6 +217,36 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                                 <List.Header>{ t("userPortal:components.mfa.smsOtp.heading") }</List.Header>
                                 <List.Description>
                                     { t("userPortal:components.mfa.smsOtp.descriptions.hint") }
+                                    { isMobilePending ? (
+                                        <Popup
+                                            size="tiny"
+                                            trigger={
+                                                <Icon
+                                                    name="info circle"
+                                                    color="yellow"
+                                                    style={ { marginLeft: "0.1em" } }
+                                                    link={ true }
+                                                    onClick={
+                                                        () => {
+                                                            setShowSMSOTPSubmitWizard(true);
+                                                        }
+                                                    }
+                                                />
+                                            }
+                                            content={
+                                                verifiedMobile && verifiedMobile !== ""
+                                                    ? t("userPortal:components.profile.messages.mobileConfirmation.content.updateMobileNumber",
+                                                    { mobileNumber: verifiedMobile }) :
+                                                    t("userPortal:components.profile.messages.mobileConfirmation.content.addMobileNumber")
+                                            }
+                                            header={
+                                                t("userPortal:components.profile.messages." +
+                                                    "mobileConfirmation.header")
+                                            }
+                                            inverted
+                                        />
+                                        ) : null
+                                    }
                                 </List.Description>
                             </List.Content>
                         </Grid.Column>
@@ -192,6 +264,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
+                    </>
             );
         }
         return (

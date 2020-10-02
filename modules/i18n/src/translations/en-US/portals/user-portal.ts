@@ -1056,6 +1056,16 @@ export const userPortal: UserPortalNS = {
                 emailConfirmation: {
                     content: "Please confirm the email address update in order to add the new email to your profile.",
                     header: "Confirmation pending!"
+                },
+                mobileConfirmation: {
+                    content: {
+                        addMobileNumber: "Please click here to confirm the mobile number update.",
+                        updateMobileNumber: "Please click here to confirm the mobile number update. Until successful " +
+                            "verification of the pending mobile number, the previously verified mobile number : " +
+                            "{{mobileNumber}} will be used.",
+                    },
+                    header: "Confirmation pending!",
+                    unverified: "(unverified)"
                 }
             },
             notifications: {
@@ -1201,6 +1211,32 @@ export const userPortal: UserPortalNS = {
                     success: {
                         description: "Successfully terminated the IDP session",
                         message: "Session terminate success"
+                    }
+                }
+            }
+        },
+        verifyMobilePopup: {
+            done: "Success! Your mobile number is successfully verified.",
+            verifySmsOtp: {
+                generate: "Resend a new verification code",
+                heading: "Enter the verification code sent to your mobile number",
+                error: "Verification failed. Please try again.",
+                label: "Verification Code",
+                placeholder: "Enter your verification code",
+                requiredError: "Enter the verification code",
+            },
+            notifications: {
+                resendSuccess: {
+                    message: "Resend code request is sent successfully"
+                },
+                resendError: {
+                    error: {
+                        description: "{{error}}",
+                        message: "Something went wrong"
+                    },
+                    genericError: {
+                        description: "An error occurred while trying to get a new verification code",
+                        message: "Something went wrong"
                     }
                 }
             }
