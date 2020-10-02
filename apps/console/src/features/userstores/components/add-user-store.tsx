@@ -31,6 +31,7 @@ import { AddUserstoreWizardStepIcons } from "../configs";
 import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
 import {
     CategorizedProperties,
+    TypeProperty,
     UserStorePostData,
     UserStoreProperty,
     UserstoreType
@@ -186,7 +187,29 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             };
         });
 
-        return [ ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
+        const allProperties: UserStoreProperty[] = type.properties.Advanced.map((property: TypeProperty) => {
+            return {
+                name: property.name,
+                value: property.defaultValue
+            }
+        });
+
+        allProperties.push(
+            ...type.properties.Mandatory.map((property: TypeProperty) => {
+                return {
+                    name: property.name,
+                    value: property.defaultValue
+                };
+            }),
+            ...type.properties.Optional.map((property: TypeProperty) => {
+                return {
+                    name: property.name,
+                    value: property.defaultValue
+                };
+            })
+        );
+
+        return [ ...allProperties, ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
     };
 
     /**
