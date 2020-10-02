@@ -285,7 +285,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             lastName: values.get("lastName").toString(),
             newPassword: values.get("newPassword") && values.get("newPassword") !== undefined  ?
                 values.get("newPassword").toString() : "",
-            passwordOption: values.get("passwordOption").toString(),
+            passwordOption: values.get("passwordOption")?.toString(),
             userName: values.get("userName").toString()
         };
     };
