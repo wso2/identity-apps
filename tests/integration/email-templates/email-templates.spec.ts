@@ -105,6 +105,7 @@ describe("ITC-3.0.0 - [email-templates] - Email Templates Integration.", () => {
         });
 
         it("ITC-3.1.5 - [email-templates] - Can add a new email template.", () => {
+
             emailTemplatesAddPage.openLocaleDropdown();
             emailTemplatesAddPage.selectLocaleFromDropdown(sampleLocaleCode);
 
@@ -132,6 +133,7 @@ describe("ITC-3.0.0 - [email-templates] - Email Templates Integration.", () => {
         });
 
         it("ITC-3.1.6 - [email-templates] - Can edit the newly created template.", () => {
+
             emailTemplatesListPage.clickOnTableFirstElementEditButton();
 
             cy.url().should("contain", sampleLocaleCode);
@@ -141,10 +143,12 @@ describe("ITC-3.0.0 - [email-templates] - Email Templates Integration.", () => {
         });
 
         it("ITC-3.1.7 - [email-templates] - Go back to template listing.", () => {
+
             emailTemplatesEditPage.clickOnPageLayoutHeaderBackButton();
         });
 
         it("ITC-3.1.8 - [email-templates] - Can view the newly created template.", () => {
+
             emailTemplatesListPage.clickOnTableFirstElementViewButton();
             
             cy.wait(3000);

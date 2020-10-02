@@ -46,6 +46,7 @@ describe("ITC-1.0.0 - [email-templates] - Email Templates Smoke Test.", () => {
     context("ITC-1.1.0 - [email-templates] - Create navigate to Email Template Types views.", () => {
 
         it("ITC-1.1.1 - [email-templates] - Can navigate to email template types listing page.", () => {
+
             cy.navigateToEmailTemplateTypes(true, true);
         });
     });
