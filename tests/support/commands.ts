@@ -18,86 +18,26 @@
 
 /// <reference types="cypress" />
 
-import { LoginPage } from "@wso2is/cypress-base/page-objects";
-
-// Environment Variables.
-const TENANT_DOMAIN: string = Cypress.env("TENANT_DOMAIN");
-const BASE_URL: string = Cypress.env("BASE_URL");
-const AUTH_ENDPOINT_URL: string = Cypress.env("AUTH_ENDPOINT_URL");
-const LOGOUT_URL_QUERY: string = Cypress.env("LOGOUT_URL_QUERY");
-
 /**
- * Custom command to log users to portals.
- * @example cy.login("admin", "admin", "https://localhost:9443/", "console/")
- * 
- * @param {string} username - User's Username.
- * @param {string} password - User's Password.
- * @param {string} serverURL - Identity Server URL.
- * @param {string} portal - Relative path of the portal to login.
- * @param {string} tenantDomain - Optional tenant domain. If not provided, will be taken from env.
+ * Custom command to used to validate if an element is present or not.
+ *
+ * @param {Element | any} element - Element to check.
+ * @param {number} waitTime - Configure wait time.
  * @returns {Cypress.CanReturnChainable}
  */
-Cypress.Commands.add("login", (username: string,
-                               password: string,
-                               serverURL: string,
-                               portal: string,
-                               tenantDomain: string = TENANT_DOMAIN,
-                               waitTime: number = 5000): Cypress.CanReturnChainable => {
-
-    cy.window()
-        .then((win: Cypress.AUTWindow) => {
-            win.onbeforeunload = null;
-        });
-
-    // Visit the portal. ex: `https://localhost:9443/carbon.super/console`
-    cy.visit(serverURL + tenantDomain + portal, {
-        onBeforeLoad: (win) => {
-            win.sessionStorage.clear();
-        }
-    });
-
-    const loginPage = new LoginPage();
-
-    loginPage.getLoginUsernameInputField().type(username);
-    loginPage.getLoginPasswordInputField().type(password, { log: false });
-    loginPage.getLoginFormSubmitButton().click();
-
-    cy.wait(waitTime);
-});
-
-/**
- * Custom command to log users out from portals.
- * @example cy.logout()
- */
-Cypress.Commands.add("logout", (waitTime: number = 3000): Cypress.CanReturnChainable => {
-
-    const loginPage = new LoginPage();
-
-    loginPage.clickOnLogoutButton();
-
-    // Test fails due to this. Check if this is needed.
-    // cy.url().should("include", BASE_URL + TENANT_DOMAIN + AUTH_ENDPOINT_URL + LOGOUT_URL_QUERY);
-
-    cy.wait(waitTime);
-});
-
-/**
- * This method is used to validate if element is present or not.
- * element is expect as an input.
- */
-Cypress.Commands.add("checkIfEleExists", (ele) => {
-
-    return new Promise((resolve, reject) => {
-        cy.get("body").find(ele).its("length").then(res => {
-            if (res > 0) {
-                // do task to perform
-                cy.get(ele).select("100").wait(2000);
-                resolve();
-            } else {
-                reject();
+Cypress.Commands.add("checkIfElementExists", (element: Element | any,
+                                              waitTime: number = 3000): Cypress.Chainable<boolean> => {
+    return cy.get("body")
+        .find(element)
+        .its("length")
+        .then((response) => {
+            if (response > 0) {
+                cy.get(element).select("100").wait(waitTime);
+                return true;
             }
+
+            return false;
         });
-    });
 });
 
 /**

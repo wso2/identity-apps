@@ -17,10 +17,12 @@
  *
  */
 
+/// <reference types="cypress" />
+
 /**
- * Class containing Email Templates Listing Page DOM constants.
+ * Class containing common utils.
  */
-export class EmailTemplatesListPageDomConstants {
+export class CommonUtils {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -28,8 +30,16 @@ export class EmailTemplatesListPageDomConstants {
      *
      * @hideconstructor
      */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private constructor() { }
+    private constructor() {}
 
-    public static readonly EMAIL_TEMPLATES_SIDE_PANEL_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
+    /**
+     * Resolves the data test id when a raw attribute value is passed in.
+     * @example CommonUtils.resolveDataTestId("sample-id") -> [data-testid="sample-id"]
+     *
+     * @param {string} value - Attribute value.
+     * @returns {string}
+     */
+    public static resolveDataTestId(value: string): string {
+        return `[data-testid=${ value }]`;
+    }
 }

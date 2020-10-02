@@ -17,4 +17,7 @@
  *
  */
 
+export * from "./email-template-types-list-page";
+export * from "./email-templates-add-page";
+export * from "./email-templates-edit-page";
 export * from "./email-templates-list-page";

@@ -164,7 +164,11 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
             } }
             titleTextAlign="left"
             bottomMargin={ false }
-            data-testid={ `${ testId }-page-layout` }
+            data-testid={
+                formMode === EmailTemplateFormModes.EDIT
+                    ? `${ testId }-edit-page-layout`
+                    : `${ testId }-add-page-layout`
+            }
         >
             <AddEmailTemplateForm
                 mode={ formMode }
@@ -180,7 +184,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
  * Default props for the component.
  */
 EmailTemplateEditPage.defaultProps = {
-    "data-testid": "email-locale-add"
+    "data-testid": "email-template"
 };
 
 /**

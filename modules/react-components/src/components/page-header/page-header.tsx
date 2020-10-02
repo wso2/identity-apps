@@ -185,13 +185,13 @@ export const PageHeader: React.FunctionComponent<PageHeaderPropsInterface> = (
                             className="page-header ellipsis"
                             as={ titleAs }
                             textAlign={ titleTextAlign }
-                            data-testid={ `${ testId }-header` }
+                            data-testid={ `${ testId }-title` }
                         >
                             { title && title }
                             { description && (
                                 <Header.Subheader
                                     className="sub-header ellipsis"
-                                    data-testid={ `${ testId }-sub-header` }
+                                    data-testid={ `${ testId }-sub-title` }
                                 >
                                     { description }
                                 </Header.Subheader>

@@ -14,10 +14,12 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-export class EmailTemplatesTestCaseConstants {
+/**
+ * Class containing Side Panel DOM constants.
+ */
+export class SidePanelDomConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -27,7 +29,5 @@ export class EmailTemplatesTestCaseConstants {
      */
     private constructor() { }
 
-    public static readonly DATA_TEST_IDS = {
-        SIDE_PANEL_ITEM: "side-panel-items-email-templates"
-    }
+    public static readonly EMAIL_TEMPLATES_PARENT_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
 }

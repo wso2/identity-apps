@@ -17,16 +17,23 @@
  *
  */
 
-import { CommonUtils } from "../utils";
-
 /// <reference types="cypress" />
 
-/**
- * Custom command to select DOM element by data-testid attribute.
- *
- * @param {string} value - Attribute value.
- * @returns {Cypress.CanReturnChainable}
- */
-Cypress.Commands.add("dataTestId", (value: string): Cypress.CanReturnChainable => {
-    return cy.get(CommonUtils.resolveDataTestId(value));
-});
+declare namespace Cypress {
+    interface Chainable {
+        /**
+         * Custom command to used to validate if an element is present or not.
+         */
+        checkIfElementExists(element: Element | any, waitTime?: number): Promise<any>;
+
+        /**
+         * Custom command to navigate to the email template types page.
+         */
+        navigateToEmailTemplateTypes(switchPortalTab?: boolean, assertIfRenders?: boolean): Cypress.CanReturnChainable;
+
+        /**
+         * Custom command to check if the email template types page renders properly.
+         */
+        checkIfEmailTemplateTypeListingRenders(): Cypress.CanReturnChainable;
+    }
+}

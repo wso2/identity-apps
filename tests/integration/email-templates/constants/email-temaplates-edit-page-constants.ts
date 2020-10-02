@@ -17,16 +17,10 @@
  *
  */
 
-/// <reference types="cypress" />
-
-import { ServerConstants } from "../constants";
-
 /**
- * Class containing cookie related utils.
+ * Class containing Email Templates Edit Page constants.
  */
-export class CookieUtils {
-
-    public static debug: boolean = true;
+export class EmailTemplatesEditPageConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -34,23 +28,16 @@ export class CookieUtils {
      *
      * @hideconstructor
      */
-    private constructor() {
-        Cypress.Cookies.debug(CookieUtils.debug);
-    }
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    private constructor() { }
 
-    /**
-     * Preserves all session related cookies.
-     */
-    public static preserveAllSessionCookies(): void {
-        for (const cookie of ServerConstants.SESSION_COOKIES) {
-            Cypress.Cookies.preserveOnce(cookie);
-        }
-    }
+    // Page Layout.
+    public static readonly PAGE_LAYOUT_HEADER_DATA_ATTR: string = "email-template-edit-page-layout-page-header";
+    public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "email-template-edit-page-layout-page-" +
+        "header-title";
+    public static readonly PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR: string = "div[class=\"back-button\"]";
 
-    /**
-     * Removes all the cookies.
-     */
-    public static clearAllCookies(): void {
-        cy.clearCookies();
-    }
+    // Form elements.
+    public static readonly SUBJECT_INPUT_DATA_ATTR: string = "email-template-form-subject-input";
+    public static readonly FORM_SUBMIT_BUTTON: string = "email-template-form-submit-button";
 }

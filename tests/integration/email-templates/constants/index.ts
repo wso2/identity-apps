@@ -17,4 +17,7 @@
  *
  */
 
-export * from "./email-temaplates-list-page-dom-constants";
+export * from "./email-temaplate-types-list-page-constants";
+export * from "./email-temaplates-add-page-constants";
+export * from "./email-temaplates-edit-page-constants";
+export * from "./email-temaplates-list-page-constants";

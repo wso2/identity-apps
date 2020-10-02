@@ -17,17 +17,5 @@
  *
  */
 
-declare namespace Cypress {
-    interface Chainable {
-        /**
-         * Custom command to log users to portals.
-         */
-        login(username: string, password: string, serverURL: string, portal: string,
-              tenantDomain?: string, waitTime?: number): Cypress.CanReturnChainable;
-
-        /**
-         * Custom command to log users out from portals.
-         */
-        logout(waitTime?: number): Chainable<Element>;
-    }
-}
+export * from "./constants";
+export * from "./page-objects";

@@ -18,37 +18,36 @@
  */
 
 /// <reference types="cypress" />
-/// <reference types="../../support" />
+/// <reference types="../../types" />
 
 import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
-import { Header } from "@wso2is/cypress-base/page-objects";
-import { EmailTemplatesListPage } from "./page-objects";
 
-const USERNAME = Cypress.env("TENANT_USERNAME");
-const PASSWORD = Cypress.env("TENANT_PASSWORD");
-const SERVER_URL = Cypress.env("SERVER_URL");
-const PORTAL = Cypress.env("CONSOLE_BASE_URL");
+const USERNAME: string = Cypress.env("TENANT_USERNAME");
+const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
+const SERVER_URL: string = Cypress.env("SERVER_URL");
+const PORTAL: string = Cypress.env("CONSOLE_BASE_URL");
+const TENANT_DOMAIN: string = Cypress.env("TENANT_DOMAIN");
 
-describe("ITC-001-[email-templates]-User can visit the email templates page.", () => {
-
-    beforeEach(() => {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL);
-        CookieUtils.preserveAllSessionCookies();
-    });
+describe("ITC-1.0.0 - [email-templates] - Email Templates Smoke Test.", () => {
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
+        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL, TENANT_DOMAIN);
     });
-    
+
+    beforeEach(() => {
+        CookieUtils.preserveAllSessionCookies();
+    });
+
     after(() => {
         cy.logout();
     });
 
-    it("CDS_1.1 - User Navigates to manage portal and go to email templates page from the side panel", () => {
-        const header: Header = new Header();
-        const emailTemplatesPage: EmailTemplatesListPage = new EmailTemplatesListPage();
+    context("ITC-1.1.0 - [email-templates] - Create navigate to Email Template Types views.", () => {
 
-        header.clickOnManagePortalSwitch();
-        emailTemplatesPage.clickOnSidePanelItem();
+        it("ITC-1.1.1 - [email-templates] - Can navigate to email template types listing page.", () => {
+
+            cy.navigateToEmailTemplateTypes(true, true);
+        });
     });
 });

@@ -17,16 +17,4 @@
  *
  */
 
-import { CommonUtils } from "../utils";
-
-/// <reference types="cypress" />
-
-/**
- * Custom command to select DOM element by data-testid attribute.
- *
- * @param {string} value - Attribute value.
- * @returns {Cypress.CanReturnChainable}
- */
-Cypress.Commands.add("dataTestId", (value: string): Cypress.CanReturnChainable => {
-    return cy.get(CommonUtils.resolveDataTestId(value));
-});
+export * from "./email-template-types-commands";

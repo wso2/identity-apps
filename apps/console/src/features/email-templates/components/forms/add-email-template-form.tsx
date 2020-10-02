@@ -241,6 +241,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                         required={ true }
                                         children={ localeList ? localeList.map(list => {
                                             return {
+                                                "data-testid": list.value as string,
                                                 key: list.key as string,
                                                 text: list.text as string,
                                                 value: list.value as string

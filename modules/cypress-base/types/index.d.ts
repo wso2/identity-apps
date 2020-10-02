@@ -26,5 +26,16 @@ declare namespace Cypress {
          * @example cy.dataTestId("admin-portal-switch")
          */
         dataTestId(value: string): Chainable<Element>;
+
+        /**
+         * Custom command to log users to portals.
+         */
+        login(username: string, password: string, serverURL: string, portal: string,
+              tenantDomain?: string, waitTime?: number): Cypress.CanReturnChainable;
+
+        /**
+         * Custom command to log users out from portals.
+         */
+        logout(waitTime?: number): Chainable<Element>;
     }
 }
