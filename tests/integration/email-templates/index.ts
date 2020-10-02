@@ -17,11 +17,5 @@
  *
  */
 
-declare namespace Cypress {
-    interface Chainable {
-        /**
-         * Custom command to used to validate if an element is present or not.
-         */
-        checkIfElementExists(element: Element | any, waitTime?: number): Promise<any>;
-    }
-}
+export * from "./constants";
+export * from "./page-objects";
