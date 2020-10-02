@@ -376,6 +376,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 { defaultValue: schema.displayName }
             );
             return (
+                <>
+                    {
+                        showSMSOTPSubmitWizard && checkSchemaType(schema.name, "mobile")
+                            ? (
+                                < SMSOTPPopup
+                                    onAlertFired={ onAlertFired }
+                                    closeWizard={ () => setShowSMSOTPSubmitWizard(false) }
+                                    wizardOpen={ true }
+                                />
+                            )
+                            : null
+                    }
                 <Grid padded={ true }>
                     <Grid.Row columns={ 3 }>
                         < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
