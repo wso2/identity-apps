@@ -3,7 +3,7 @@
 End-user apps in WSO2 Identity Server
 
 |  Branch | Build Status |
-| :------------ |:------------- 
+| :------------ |:-------------
 | master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) |
 
 ## Setup build environment
@@ -16,11 +16,11 @@ End-user apps in WSO2 Identity Server
 #### Build
 
 1. Download or clone the project source code from [https://github.com/wso2/identity-apps](https://github.com/wso2/identity-apps)
-2. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located). 
+2. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located).
 
 If you are building [product-is](https://github.com/wso2/product-is), the built identity apps dependencies will install to your local `.m2` repository during the build above.
 
-3. Then you just need to build [WSO2 Identiy Server](https://github.com/wso2/product-is) after. _(Follow the guide there)_
+3. Then you just need to build [WSO2 Identity Server](https://github.com/wso2/product-is) after. _(Follow the guide there)_
 
 #### Run
 
@@ -35,7 +35,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 ```
     [cors]
     allowed_origins = [
-       "https://localhost:9000", 
+       "https://localhost:9000",
        "https://localhost:9001"
     ]
     supported_methods = [
