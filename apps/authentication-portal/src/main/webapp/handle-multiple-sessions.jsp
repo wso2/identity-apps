@@ -36,7 +36,7 @@
 <%
     String promptId = request.getParameter("promptId");
     String authAPIURL = application.getInitParameter(Constants.AUTHENTICATION_REST_ENDPOINT_URL);
-    
+
     if (StringUtils.isBlank(authAPIURL)) {
         authAPIURL = IdentityUtil.getServerURL("/api/identity/auth/v1.1/", true, true);
     }
@@ -45,7 +45,7 @@
     }
     authAPIURL += "context/" + request.getParameter("promptId");
     String contextProperties = AuthContextAPIClient.getContextProperties(authAPIURL);
-    
+
     Gson gson = new Gson();
     Map data = gson.fromJson(contextProperties, Map.class);
 %>
@@ -60,7 +60,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -74,7 +74,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
@@ -82,11 +82,11 @@
                     <c:set var="data" value="<%=data%>" scope="request"/>
                     <c:set var="promptId" value="<%=URLEncoder.encode(promptId, StandardCharsets.UTF_8.name())%>"
                             scope="request"/>
-              
+
                     <h3 class="ui header">
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "multiple.active.sessions.found")%>
                     </h3>
-                
+
                     <form class="segment-form" name="sessionsForm" action="<%=commonauthURL%>" method="POST"
                             onsubmit="return validateForm(this.submitted)">
 
@@ -128,21 +128,21 @@
                             <br>
                             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.unwanted.sessions.message.2")%>.
                         </h4>
-                        
+
                         <input type="hidden" name="promptResp" value="true">
                         <input type="hidden" name="promptId" value="<e:forHtmlAttribute value="${requestScope.promptId}"/>">
-                        
+
                         <div class="align-right buttons">
                             <input name="terminateActiveSessionsAction" type="submit"
                                     onclick="this.form.submitted='terminateActiveSessionsAction';"
                                     class="ui large button"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "terminate.selected.active.sessions.and.proceed")%>">
-                    
+
                             <input name="denyLimitActiveSessionsAction" type="submit"
                                     onclick="this.form.submitted='denyLimitActiveSessionsAction';"
                                     class="ui large button"
                                     value="<%=AuthenticationEndpointUtil.i18n(resourceBundle, "deny.login")%>">
-                    
+
                             <input name="refreshActiveSessionsAction" type="submit"
                                     onclick="this.form.submitted='refreshActiveSessionsAction';"
                                     class="ui large primary button"
@@ -150,7 +150,7 @@
 
                             <input id="ActiveSessionsLimitAction" type="hidden" name="ActiveSessionsLimitAction"/>
                         </div>
-                    </form>             
+                    </form>
                 </div>
             </div>
         </div>
@@ -179,7 +179,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -189,7 +189,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script>

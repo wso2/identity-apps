@@ -38,7 +38,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 
     <link href="css/longwait-loader.css" rel="stylesheet">
@@ -54,7 +54,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div id="loader-wrapper">
@@ -73,7 +73,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -83,7 +83,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">
@@ -91,17 +91,17 @@
         var sessionDataKey = '<%=Encode.forJavaScriptBlock(sessionDataKey)%>';
         var refreshInterval = '<%=AdaptiveAuthUtil.getRefreshInterval()%>';
         var timeout = '<%=AdaptiveAuthUtil.getRequestTimeout()%>';
-    
+
         $(document).ready(function () {
             var intervalListener = window.setInterval(function () {
                 checkLongWaitStatus();
             }, refreshInterval);
-    
+
             var timeoutListenerListener = window.setTimeout(function () {
                 window.clearInterval(intervalListener);
                 window.location.replace("retry.do");
             }, timeout);
-    
+
             function checkLongWaitStatus() {
                 $.ajax("/longwaitstatus", {
                     async: false,
@@ -119,21 +119,21 @@
                     }
                 });
             }
-    
+
             function handleStatusResponse(res) {
                 if (res.status === 'COMPLETED') {
                     continueAuthentication();
                 }
             }
-    
+
             function continueAuthentication() {
                 //Redirect to common auth
                 window.clearInterval(intervalListener);
                 document.getElementById("toCommonAuth").submit();
             }
         });
-    
+
     </script>
-    
+
 </body>
 </html>

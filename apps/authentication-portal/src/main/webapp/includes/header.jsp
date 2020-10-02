@@ -16,7 +16,7 @@
   ~ under the License.
   --%>
 
-<!-- localize.jsp MUST already be included in the calling script -->
+<%@ include file="localize.jsp" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.AuthenticationEndpointUtil" %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">

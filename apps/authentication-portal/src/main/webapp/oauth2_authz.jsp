@@ -51,7 +51,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout authentication-portal-layout">
@@ -65,7 +65,7 @@
             %>
                 <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
             <% } %>
 
             <div class="ui segment">
@@ -73,15 +73,15 @@
                       name="oauth2_authz">
                     <h4><%=Encode.forHtml(request.getParameter("application"))%>
                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "request.access.profile")%>:</h4>
-        
-                    <div class="field"> 
+
+                    <div class="field">
                         <%
                             if (displayScopes && StringUtils.isNotBlank(scopeString)) {
                                 // Remove "openid" from the scope list to display.
                                 List<String> openIdScopes = Stream.of(scopeString.split(" "))
                                         .filter(x -> !StringUtils.equalsIgnoreCase(x, "openid"))
                                         .collect(Collectors.toList());
-    
+
                                 if (CollectionUtils.isNotEmpty(openIdScopes)) {
                         %>
                         <div class="ui segment" style="text-align: left;">
@@ -92,12 +92,12 @@
                                         String scopesAsString = String.join(" ", openIdScopes);
                                         Set<Scope> scopes = new OAuth2ScopeService().getScopes(null, null,
                                                 true, scopesAsString);
-        
+
                                         for (Scope scope : scopes) {
                                             String displayName = scope.getDisplayName();
                                             String description = scope.getDescription();
                                             openIdScopes.remove(scope.getName());
-            
+
                                             if (displayName != null) {
                                 %>
                                 <div class="item">
@@ -119,7 +119,7 @@
                                     } catch (IdentityOAuth2ScopeException e) {
                                         // Ignore the error
                                     }
-        
+
                                     // Unregistered scopes if exist, get the consent with provided scope name.
                                     if (CollectionUtils.isNotEmpty(openIdScopes)) {
                                         for (String scope : openIdScopes) {
@@ -143,9 +143,9 @@
                                 }
                             }
                         %>
-            
+
                         <div class="ui divider hidden"></div>
-            
+
                         <div style="text-align: left;">
                             <div class="ui form">
                                 <div class="grouped fields">
@@ -165,13 +165,13 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                     </div>
                     <div class="align-right buttons">
                         <input type="hidden" name="<%=Constants.SESSION_DATA_KEY_CONSENT%>"
                             value="<%=Encode.forHtmlAttribute(request.getParameter(Constants.SESSION_DATA_KEY_CONSENT))%>"/>
                         <input type="hidden" name="consent" id="consent" value="deny"/>
-            
+
                         <input class="ui large button link-button" type="reset"
                                onclick="deny(); return false;"
                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"/>
@@ -205,7 +205,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -215,14 +215,14 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">
 
         function approved() {
             var scopeApproval = $("input[name='scope-approval']");
-    
+
             // If scope approval radio button is rendered then we need to validate that it's checked
             if (scopeApproval.length > 0) {
                 if (scopeApproval.is(":checked")) {
@@ -233,19 +233,19 @@
                     return;
                 }
             }
-    
+
             document.getElementById("profile").submit();
         }
 
         function hideModal(elem) {
             $(elem).closest('.modal').modal('hide');
         }
-        
+
         function deny() {
             document.getElementById('consent').value = "deny";
             document.getElementById("profile").submit();
         }
-    
+
     </script>
 
 </body>

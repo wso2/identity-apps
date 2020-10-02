@@ -61,7 +61,7 @@
             %>
             <jsp:include page="extensions/header.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+            <jsp:include page="includes/header.jsp"/>
             <% } %>
 
             <script src="js/scripts.js"></script>
@@ -105,7 +105,7 @@
                     %>
                     <jsp:include page="extensions/product-title.jsp"/>
                     <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
+                    <jsp:include page="includes/product-title.jsp"/>
                     <% } %>
 
                     <div class="ui segment">
@@ -119,7 +119,7 @@
                                 <div class="ui divider hidden"></div>
                         <% } %>
 
-                        <input id="username" type="hidden" 
+                        <input id="username" type="hidden"
                                value='<%=Encode.forHtmlAttribute(request.getParameter("username"))%>'>
 
                         <div class="segment-form">
@@ -128,11 +128,11 @@
                                 <div class="field">
                                     <input type="text" name="token" class="form-control" placeholder="Verification Code">
                                 </div>
-                                <input id="sessionDataKey" type="hidden" name="sessionDataKey" 
+                                <input id="sessionDataKey" type="hidden" name="sessionDataKey"
                                        value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>' />
                                 <div class="ui divider hidden"></div>
                                 <div class="align-right buttons">
-                                    <a class="ui button link-button" id="genToken" href="#" 
+                                    <a class="ui button link-button" id="genToken" href="#"
                                        onclick="return requestTOTPToken();">
                                        Get a Verification Code
                                     </a>
@@ -145,7 +145,7 @@
                                 String multiOptionURI = request.getParameter("multiOptionURI");
                                 if (multiOptionURI != null) {
                             %>
-                                <a class="ui button link-button" id="goBackLink" 
+                                <a class="ui button link-button" id="goBackLink"
                                 href='<%=Encode.forHtmlAttribute(multiOptionURI)%>'>
                                     Choose a different authentication option
                                 </a>
@@ -154,7 +154,7 @@
                             %>
                     </div>
                 </div>
-            </main> 
+            </main>
 
             <!-- product-footer -->
             <%
@@ -163,7 +163,7 @@
             %>
             <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-footer.jsp"/>
+            <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
 
             <!-- footer -->
@@ -173,7 +173,7 @@
             %>
             <jsp:include page="extensions/footer.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+            <jsp:include page="includes/footer.jsp"/>
             <% } %>
         </body>
     </html>

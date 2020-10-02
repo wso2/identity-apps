@@ -16,6 +16,7 @@
   ~ under the License.
 --%>
 
+<%@ include file="localize.jsp" %>
 <!-- page content -->
 <div class="ui grid">
     <div class="two column row"></div>
