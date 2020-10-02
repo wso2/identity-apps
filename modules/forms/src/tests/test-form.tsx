@@ -99,6 +99,7 @@ const getForm = (testFields: FormTestFields[], isGroup?: boolean): JSX.Element =
             required: true,
             requiredErrorMessage: constants.PASSWORD_REQUIRED_MESSAGE,
             showPassword: constants.SHOW_PASSWORD,
+            generatePassword: constants.GENERATE_PASSWORD,
             type: "password" as const,
             validation: (value: string, validation: Validation) => {
                 if (value !== constants.PASSWORD_VALID_MESSAGE) {

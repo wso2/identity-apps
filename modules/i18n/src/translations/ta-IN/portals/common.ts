@@ -115,6 +115,7 @@ export const common: CommonNS = {
     showLess: "சுருக்கிக் காண்",
     showMore: "மேலுங் காண்",
     showPassword: "கடவுச்சொல்லை காண்",
+    generatePassword: "Generate password",
     startsWith: "தொடங்குவது",
     step: "படி",
     submit: "சமர்ப்பி",

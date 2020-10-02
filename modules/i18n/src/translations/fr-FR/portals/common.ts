@@ -115,6 +115,7 @@ export const common: CommonNS = {
     showLess: "Afficher moins",
     showMore: "Afficher plus",
     showPassword: "Afficher le mot de passe",
+    generatePassword: "Générer un mot de passe",
     startsWith: "Commence par",
     step: "Étape",
     submit: "Valider",

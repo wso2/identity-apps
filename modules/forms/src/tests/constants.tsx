@@ -60,6 +60,7 @@ const constants = {
     RADIO_VALUE: "value1",
     RESET_VALUE: "reset",
     SHOW_PASSWORD: "Show Password",
+    GENERATE_PASSWORD: "Generate Password",
     SUBMIT: "Submit",
     TEXT_BOX_LABEL: "Text box label",
     TEXT_BOX_NAME: "textBox",
