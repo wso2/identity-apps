@@ -18,6 +18,7 @@
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPConstants" %>
 <%@ page import="java.io.File" %>
@@ -26,6 +27,7 @@
 <%@ page import="java.net.URLDecoder" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="static java.util.Base64.getDecoder" %>
+<%@ include file="includes/localize.jsp" %>
 
 <%
     request.getSession().invalidate();
@@ -35,7 +37,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String errorMessage = "Authentication Failed! Please Retry";
+    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
     String authenticationFailed = "false";
     String errorInfo = null;
 
@@ -46,22 +48,22 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = "Authentication Failed! Please Retry";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.UNABLE_SEND_CODE_VALUE)) {
-                errorMessage = "Unable to send code to your phone number";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.send");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.ERROR_CODE_MISMATCH)) {
-                errorMessage = "The code entered is incorrect. Authentication Failed!";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.code");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.ERROR_SMSOTP_DISABLE_MSG)) {
-                errorMessage = "Enable the SMS OTP in your Profile. Cannot proceed further without SMS OTP authentication.";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.smsotp.disabled");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.TOKEN_EXPIRED_VALUE)) {
-                errorMessage = "The code entered is expired. Authentication Failed!";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.token.expired");
             } else if (errorMessage.equalsIgnoreCase(SMSOTPConstants.SEND_OTP_DIRECTLY_DISABLE_MSG)) {
-                errorMessage = "User not found in the directory. Cannot proceed further without SMS OTP authentication.";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.not.found");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
-                errorMessage = "User account is locked. Please retry later.";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.locked");
                 String unlockTime = request.getParameter("unlockTime");
                 if (unlockTime != null) {
-                  errorMessage = String.format("User account is locked. Please retry after %s minutes.", unlockTime);
+                  errorMessage = String.format(IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.locked.temporarly"), unlockTime);
                 }
             } else if (SMSOTPUtils.useInternalErrorCodes()) {
                 String httpCode = URLDecoder.decode(errorMessage, SMSOTPConstants.CHAR_SET_UTF_8);
@@ -107,7 +109,7 @@
 
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2>Failed Authentication with SMSOTP</h2>
+                    <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.failed.with.smsotp")%></h2>
                     <%
                         if ("true".equals(authenticationFailed)) {
                     %>

@@ -17,10 +17,12 @@
   --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="includes/localize.jsp" %>
 
 <%
     request.getSession().invalidate();
@@ -30,7 +32,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String errorMessage = "Authentication Failed! Please Retry";
+    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
     String authenticationFailed = "false";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -40,7 +42,7 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
                 if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = "Authentication Failed! Please Retry";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
             }
         }
     }
@@ -78,7 +80,7 @@
 
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2>Enter Your Mobile Phone Number</h2>
+                    <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.phone.number")%></h2>
                     <div class="ui divider hidden"></div>
                     <%
                         if ("true".equals(authenticationFailed)) {
@@ -95,7 +97,7 @@
                                     String authFailureMsg = request.getParameter("authFailureMsg");
                                     if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
                             %>
-                                        <div class="ui negative message">Authentication Failed! Please Retry</div>
+                                        <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%></div>
                                         <div class="ui divider hidden"></div>
                             <% } }  %>
                             <div class="field">
@@ -107,7 +109,7 @@
                                     value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
 
                             <div class="align-right buttons">
-                                <input type="button" name="update" id="update" value="Update"
+                                <input type="button" name="update" id="update" value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "update")%>"
                                         class="ui primary button"/>
                             </div>
                         </form>
