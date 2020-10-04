@@ -232,7 +232,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         && applicationTemplates.find((template) => template.id === app.templateId);
 
                     return (
-                        <Header as="h6" image>
+                        <Header as="h6" image data-testid={ `${ testId }-item-heading` }>
                             {
                                 app.image
                                     ? (
@@ -253,7 +253,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             }
                             <Header.Content>
                                 { app.name }
-                                <Header.Subheader>
+                                <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
                                     {
                                         template && (
                                             <Label
@@ -296,6 +296,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
         return [
             {
+                "data-testid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => "pencil alternate",
@@ -305,6 +306,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 renderer: "semantic-icon"
             },
             {
+                "data-testid": `${ testId }-item-delete-button`,
                 hidden: (app: ApplicationListItemInterface) => {
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
