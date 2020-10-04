@@ -27,6 +27,16 @@ declare namespace Cypress {
         checkIfElementExists(element: Element | any, waitTime?: number): Promise<any>;
 
         /**
+         * Custom command to navigate to the applications list page.
+         */
+        navigateToApplicationsList(switchPortalTab?: boolean, assertIfRenders?: boolean): Cypress.CanReturnChainable;
+
+        /**
+         * Custom command to check if the applications listing page renders properly.
+         */
+        checkIfApplicationsListingRenders(): Cypress.CanReturnChainable;
+
+        /**
          * Custom command to navigate to the email template types page.
          */
         navigateToEmailTemplateTypes(switchPortalTab?: boolean, assertIfRenders?: boolean): Cypress.CanReturnChainable;
