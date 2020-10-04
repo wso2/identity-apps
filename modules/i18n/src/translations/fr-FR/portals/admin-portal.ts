@@ -2304,6 +2304,13 @@ export const adminPortal: AdminPortalNS = {
                         1: "Une erreur s'est produite lors de la récupération de la liste des utilisateurs"
                     },
                     title: "Aucun utilisateur trouvé"
+                },
+                userstoreError: {
+                    subtitles: {
+                        0: "Une erreur s'est produite lors de la tentative de récupération des utilisateurs dans l'annuaire'",
+                        1: "Veuillez vous assurer que les informations de connexion à l'annuaire sont exactes."
+                    },
+                    title: "Impossible d'aller chercher les utilisateurs dans l'annuaire"
                 }
             },
             usersList: {
