@@ -17,5 +17,6 @@
  *
  */
 
+export * from "./application-edit-page-constants";
 export * from "./application-templates-page-constants";
 export * from "./applications-list-page-constants";

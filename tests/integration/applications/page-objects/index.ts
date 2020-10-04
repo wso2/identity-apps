@@ -17,5 +17,6 @@
  *
  */
 
+export * from "./application-edit-page";
 export * from "./application-templates-page";
 export * from "./applications-list-page";

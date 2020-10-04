@@ -119,10 +119,10 @@ describe("ITC-1.0.0 - [applications] - Applications Smoke Test.", () => {
             applicationTemplatesPage.getQuickstartGrid().should("be.visible");
             applicationTemplatesPage.getQuickstartGrid()
                 .within(() => {
-                    applicationTemplatesPage.getQuickstartTemplate("WEB_APP").should("be.visible");
-                    applicationTemplatesPage.getQuickstartTemplate("SPA").should("be.visible");
-                    applicationTemplatesPage.getQuickstartTemplate("DESKTOP_APP").should("be.visible");
-                    applicationTemplatesPage.getQuickstartTemplate("MOBILE_APP").should("be.visible");
+                    applicationTemplatesPage.getQuickStartTemplate("WEB_APP").should("be.visible");
+                    applicationTemplatesPage.getQuickStartTemplate("SPA").should("be.visible");
+                    applicationTemplatesPage.getQuickStartTemplate("DESKTOP_APP").should("be.visible");
+                    applicationTemplatesPage.getQuickStartTemplate("MOBILE_APP").should("be.visible");
                 });
 
             applicationTemplatesPage.getVendorGrid().should("be.visible");

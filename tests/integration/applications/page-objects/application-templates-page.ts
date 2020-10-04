@@ -20,7 +20,6 @@
 /// <reference types="cypress" />
 
 import { ApplicationTemplatesPageConstants } from "../constants";
-import { Err } from "joi";
 
 /**
  * Class containing Applications Templates Page objects.
@@ -101,7 +100,7 @@ export class ApplicationTemplatesPage {
      * Get quick-start application template.
      * @return {Cypress.Chainable<Element>}
      */
-    public getQuickstartTemplate(type: "WEB_APP" | "SPA" | "DESKTOP_APP" | "MOBILE_APP"): Cypress.Chainable<Element> {
+    public getQuickStartTemplate(type: "WEB_APP" | "SPA" | "DESKTOP_APP" | "MOBILE_APP"): Cypress.Chainable<Element> {
         if (type === "WEB_APP") {
             return cy.dataTestId(ApplicationTemplatesPageConstants.WEB_APP_TEMPLATE_CARD_DATA_ATTR); 
         } else if (type === "SPA") {
@@ -131,5 +130,72 @@ export class ApplicationTemplatesPage {
         }
 
         throw Error("Invalid Vendor Template type - " + type);
+    };
+
+    /**
+     * Get the minimal creation wizard.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getMinimalCreationWizard(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_DATA_ATTR);
+    };
+
+    /**
+     * Get the minimal creation wizard application name input.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getMinimalCreationWizardAppNameInput(): Cypress.Chainable<JQuery<Element>> {
+        return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_APP_NAME_INPUT_DATA_ATTR)
+            .find("input");
+    };
+
+    /**
+     * Get the minimal creation wizard OIDC card.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getMinimalCreationWizardOIDCCard(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_OIDC_CARD_DATA_ATTR);
+    };
+
+    /**
+     * Get the minimal creation wizard SAML card.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getMinimalCreationWizardSAMLCard(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_SAML_CARD_DATA_ATTR);
+    };
+
+    /**
+     * Get the minimal creation wizard Redirect URL Input.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getMinimalCreationWizardRedirectURLInput(): Cypress.Chainable<JQuery<Element>> {
+        return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_REDIRECT_URL_INPUT_DATA_ATTR)
+            .find("input");
+    };
+
+    /**
+     * Get the minimal creation wizard redirect URL add button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getMinimalCreationWizardRedirectURLAddButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(
+            ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_REDIRECT_URL_ADD_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the minimal creation wizard form submit button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getMinimalCreationWizardSubmitButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationTemplatesPageConstants.MINIMAL_CREATION_WIZARD_SUBMIT_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Click on the minimal creation wizard form submit button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public clickOnMinimalCreationWizardSubmitButton(): void {
+        this.getMinimalCreationWizardSubmitButton().click();
     };
 }

@@ -58,4 +58,19 @@ export class ApplicationTemplatesPageConstants {
     public static readonly SLACK_APP_TEMPLATE_CARD_DATA_ATTR: string = "z345e11e-fc78-484b-9bec-015d2475u341r";
     public static readonly WORKDAY_APP_TEMPLATE_CARD_DATA_ATTR: string = "r565e11e-fc78-484b-9bec-015d24753456";
     public static readonly ZOOM_APP_TEMPLATE_CARD_DATA_ATTR: string = "t565e11e-fc78-484b-9bec-015d2472008";
+    
+    // Minimal Wizard
+    public static readonly MINIMAL_CREATION_WIZARD_DATA_ATTR: string = "minimal-application-create-wizard-modal";
+    public static readonly MINIMAL_CREATION_WIZARD_APP_NAME_INPUT_DATA_ATTR: string = "minimal-application-create-" +
+        "wizard-application-name-input";
+    public static readonly MINIMAL_CREATION_WIZARD_OIDC_CARD_DATA_ATTR: string = "minimal-application-create-wizard-" +
+        "b9c5e11e-fc78-484b-9bec-015d247561b8-card";
+    public static readonly MINIMAL_CREATION_WIZARD_SAML_CARD_DATA_ATTR: string = "minimal-application-create-wizard-" +
+        "776a73da-fd8e-490b-84ff-93009f8ede85-card";
+    public static readonly MINIMAL_CREATION_WIZARD_REDIRECT_URL_INPUT_DATA_ATTR: string = "minimal-application-" +
+        "create-wizard-oauth-protocol-settings-form-callback-url-input";
+    public static readonly MINIMAL_CREATION_WIZARD_REDIRECT_URL_ADD_BUTTON_DATA_ATTR: string = "minimal-application-" +
+        "create-wizard-oauth-protocol-settings-form-callback-url-input-add-button";
+    public static readonly MINIMAL_CREATION_WIZARD_SUBMIT_BUTTON_DATA_ATTR: string = "minimal-application-" +
+        "create-wizard-next-button";
 }
