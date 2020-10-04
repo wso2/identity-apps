@@ -160,4 +160,11 @@ export class ApplicationsListPage {
         return cy.dataTestId(ApplicationsListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER)
             .find("button");
     };
+
+    /**
+     * Click on the new application button.
+     */
+    public clickOnNewApplicationButton(): void {
+        this.getPageLayoutHeaderAction().click();
+    };
 }

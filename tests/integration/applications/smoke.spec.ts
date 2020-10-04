@@ -20,7 +20,9 @@
 /// <reference types="cypress" />
 /// <reference types="../../types" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
+import { CommonUtils, CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
+import { ApplicationsListPageConstants, ApplicationTemplatesPageConstants } from "./constants";
+import { ApplicationsListPage, ApplicationTemplatesPage } from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
@@ -29,6 +31,9 @@ const PORTAL: string = Cypress.env("CONSOLE_BASE_URL");
 const TENANT_DOMAIN: string = Cypress.env("TENANT_DOMAIN");
 
 describe("ITC-1.0.0 - [applications] - Applications Smoke Test.", () => {
+
+    const applicationsListPage: ApplicationsListPage = new ApplicationsListPage();
+    const applicationTemplatesPage: ApplicationTemplatesPage = new ApplicationTemplatesPage();
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
@@ -43,11 +48,91 @@ describe("ITC-1.0.0 - [applications] - Applications Smoke Test.", () => {
         cy.logout();
     });
 
-    context("ITC-1.1.0 - [applications] - Navigate to applications page.", () => {
+    context("ITC-1.1.0 - [applications] - Applications Listing Page.", () => {
 
-        it("ITC-1.1.1 - [applications] - Can navigate to applications page listing page.", () => {
+        it("ITC-1.1.1 - [applications] - User can visit applications listing page from the side panel", () => {
+            cy.navigateToApplicationsList(true, false);
+        });
 
-            cy.navigateToApplicationsList(false, true);
+        it("ITC-1.1.2 - [applications] - Properly renders the elements of the listing page.", () => {
+            cy.checkIfApplicationsListingRenders();
+        });
+
+        it("ITC-1.1.3 - [applications] - There exists at-least one application on the list.", () => {
+
+            // Check if at-least one row is present.
+            // Assumes that at-least one application is always present in a new pack.
+            applicationsListPage.getTable()
+                .find(CommonUtils.resolveDataTestId(ApplicationsListPageConstants.TABLE_ROW_DATA_ATTR))
+                .should("exist");
+        });
+
+        it("ITC-1.1.4 - [applications] - Table rows renders properly.", () => {
+
+            // Check if the table row heading & image is displayed properly.
+            applicationsListPage.getTableBody()
+                .children()
+                .each((row) => {
+                    // Check if image exist.
+                    cy.wrap(row)
+                        .find(CommonUtils.resolveDataTestId(
+                            ApplicationsListPageConstants.TABLE_ROW_IMAGE_DATA_ATTR))
+                        .should("exist");
+
+                    // Check if heading exist.
+                    cy.wrap(row)
+                        .find(CommonUtils.resolveDataTestId(
+                            ApplicationsListPageConstants.TABLE_ROW_HEADING_DATA_ATTR))
+                        .should("exist");
+
+                    // Check if edit button exist.
+                    cy.wrap(row)
+                        .find(CommonUtils.resolveDataTestId(
+                            ApplicationsListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR))
+                        .should("exist");
+                });
+        });
+    });
+
+    context("ITC-1.2.0 - [applications] - Application Templates Page.", () => {
+
+        it("ITC-1.2.1 - [applications] - Navigates to the template selection page properly.", () => {
+
+            applicationsListPage.clickOnNewApplicationButton();
+
+            cy.wait(2000);
+
+            // Check if page header exists and check if all the necessary elements are rendering.
+            cy.url().should("include", ApplicationTemplatesPageConstants.PAGE_URL_MATCHER);
+        });
+
+        it("ITC-1.2.2 - [applications] - Displays the template selection page elements properly.", () => {
+
+            applicationTemplatesPage.getPageLayoutHeader().should("be.visible");
+            applicationTemplatesPage.getPageBackButton().should("be.visible");
+            applicationTemplatesPage.getPageLayoutHeaderTitle().should("be.visible");
+            applicationTemplatesPage.getPageLayoutHeaderSubTitle().should("be.visible");
+            
+            applicationTemplatesPage.getSearchInput().should("be.visible");
+            applicationTemplatesPage.getSortDropdown().should("be.visible");
+            
+            applicationTemplatesPage.getQuickstartGrid().should("be.visible");
+            applicationTemplatesPage.getQuickstartGrid()
+                .within(() => {
+                    applicationTemplatesPage.getQuickstartTemplate("WEB_APP").should("be.visible");
+                    applicationTemplatesPage.getQuickstartTemplate("SPA").should("be.visible");
+                    applicationTemplatesPage.getQuickstartTemplate("DESKTOP_APP").should("be.visible");
+                    applicationTemplatesPage.getQuickstartTemplate("MOBILE_APP").should("be.visible");
+                });
+
+            applicationTemplatesPage.getVendorGrid().should("be.visible");
+            applicationTemplatesPage.getVendorGrid()
+                .within(() => {
+                    applicationTemplatesPage.getVendorTemplate("BOX").should("be.visible");
+                    applicationTemplatesPage.getVendorTemplate("SLACK").should("be.visible");
+                    applicationTemplatesPage.getVendorTemplate("ZOOM").should("be.visible");
+                    applicationTemplatesPage.getVendorTemplate("WORKDAY").should("be.visible");
+                })
         });
     });
 });
