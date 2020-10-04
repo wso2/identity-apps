@@ -377,6 +377,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             contentTopMargin={ true }
             description={ t("devPortal:pages.applicationTemplate.subTitle") }
             backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: t("devPortal:pages.applicationTemplate.backButton")
             } }
@@ -389,7 +390,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 <Grid.Row>
                     <Grid.Column>
                         <Input
-                            data-testid="scope-mgt-claim-list-search-input"
+                            data-testid={ `${ testId }-search` }
                             icon={ <Icon name="search"/> }
                             onChange={ handleTemplateSearch }
                             placeholder="Search application type"
@@ -398,6 +399,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                             style={ { width: "270px" } }
                         />
                         <Dropdown
+                            data-testid={ `${ testId }-sort` }
                             className="floated right"
                             placeholder="Select type"
                             selection
