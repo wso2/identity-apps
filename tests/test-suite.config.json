@@ -1,0 +1,18 @@
+{
+    "suites": [
+        {
+            "name": "applications",
+            "skip": true,
+            "path": "./integration/applications/**",
+            "smokeOnly": false,
+            "smokeTestPath": "./integration/applications/smoke.spec.ts"
+        },
+        {
+            "name": "email-templates",
+            "skip": true,
+            "path": "./integration/email-templates/**",
+            "smokeOnly": false,
+            "smokeTestPath": "./integration/email-templates/smoke.spec.ts"
+        }
+    ]
+}
