@@ -450,7 +450,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     return (
         application && !isInboundProtocolsRequestLoading
-            ? <ResourceTab panes={ resolveTabPanes() } defaultActiveIndex={ defaultActiveIndex } />
+            ? (
+                <ResourceTab
+                    data-testid={ `${ testId }-resource-tabs` }
+                    panes={ resolveTabPanes() }
+                    defaultActiveIndex={ defaultActiveIndex }
+                />
+            )
             : <ContentLoader/>
     );
 };

@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Checkbox, Input, Label, Popup, Table } from "semantic-ui-react";
 import { ExtendedClaimMappingInterface } from "./attribute-settings";
 
-interface AttributeListItemPropInterface {
+interface AttributeListItemPropInterface extends TestableComponentInterface {
     displayName: string;
     mappedURI: string;
     claimURI: string;
@@ -61,7 +62,8 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         initialMandatory,
         initialRequested,
         claimMappingOn,
-        claimMappingError
+        claimMappingError,
+        [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
@@ -123,7 +125,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
     return (
         localDialect ?
             (
-                <Table.Row>
+                <Table.Row data-testid={ testId }>
                     <Table.Cell>
                         { displayName }
                     </Table.Cell>
@@ -202,7 +204,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                 </Table.Row>
             ) :
             (
-                <Table.Row>
+                <Table.Row data-testid={ testId }>
                     <Table.Cell>
                         { displayName }
                     </Table.Cell>
