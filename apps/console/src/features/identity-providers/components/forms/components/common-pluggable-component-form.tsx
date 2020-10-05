@@ -16,9 +16,10 @@
  * under the License.
  */
 
-import { FormValue, Forms } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
 import {
     CommonPluggableComponentFormPropsInterface,
@@ -46,7 +47,9 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         enableSubmitButton,
         [ "data-testid" ]: testId
     } = props;
-    
+
+    const { t } = useTranslation();
+
     // Used for field elements which needs to listen for any onChange events in the form.
     const [dynamicValues, setDynamicValues] = useState<CommonPluggableComponentInterface>(undefined);
 
@@ -75,12 +78,24 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         values?.forEach((value, key) => {
             const propertyMetadata = getPropertyMetadata(key, metadata?.properties);
 
-            if (key !== undefined && !_.isEmpty(value)) {
+            if (key !== undefined && !_.isEmpty(value) && key !== "customProperties") {
                 properties.push({
                     key: key,
                     value: interpretValueByType(value, key, propertyMetadata?.type)
                 });
             }
+
+            const customProperties = values.get("customProperties")?.toString()?.split(",")
+                ?.map((customProperty: string) => {
+                    const keyValuePair = customProperty.split("=");
+                    return {
+                        key: keyValuePair[ 0 ],
+                        value: keyValuePair[ 1 ]
+                    }
+                });
+
+            customProperties?.length>0 && properties.push(...customProperties);
+
         });
 
         if (initialValues?.properties) {
@@ -176,6 +191,23 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         return bucket.sort((a, b) => Number(a.key) - Number(b.key));
     };
 
+    /**
+     * This returns all the custom properties.
+     *
+     * @return {CommonPluggableComponentPropertyInterface} Custom Properties - Returns all the custom properties.
+     */
+    const getCustomProperties = (): string => {
+        const values: string[] = [];
+        initialValues.properties.forEach(
+            (property: CommonPluggableComponentPropertyInterface) => {
+            if (!metadata?.properties?.find(meta => meta.key === property.key)) {
+                values.push(property.key+"="+property.value);
+            }
+        });
+
+        return values.join(", ");
+    }
+
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
         setDynamicValues({
             ...dynamicValues,
@@ -216,6 +248,20 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         >
             <Grid>
                 { dynamicValues && getSortedPropertyFields(metadata?.properties, false, false) }
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                        <Field
+                            name={ "customProperties" }
+                            label={ t("devPortal:components.idp.forms.common.customProperties") }
+                            required={ false }
+                            requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
+                            type="queryParams"
+                            value={ getCustomProperties() }
+                            key={ "customProperties" }
+                            data-testid={ `${ testId }-${ "customProperties" }` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
                 { enableSubmitButton && getSubmitButton("Update") }
             </Grid>
         </Forms>
