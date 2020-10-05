@@ -18,11 +18,12 @@
 
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { IdentityClient, Storage } from "@wso2is/authentication";
+import { IdentityClient } from "@wso2is/authentication";
 import { store } from "../../core";
 import { 
     InterfaceConfigDetails,
     InterfaceEditDetails,
+    InterfaceRemoteConfigDetails,
     InterfaceRemoteRepoConfigDetails, 
     InterfaceRemoteRepoListResponse } from "../models";
 
@@ -52,7 +53,7 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
         });
 }
 
-export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
+export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse<InterfaceRemoteConfigDetails>> => {
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -62,8 +63,8 @@ export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };
-    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
-        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+    return httpClient<InterfaceRemoteConfigDetails>(requestConfig)
+        .then((response: AxiosResponse<InterfaceRemoteConfigDetails>) => {
             return Promise.resolve(response);
         })
         .catch((error) => {

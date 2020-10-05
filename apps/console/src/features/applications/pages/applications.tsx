@@ -21,6 +21,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import _ from "lodash";
 import React, {
     FunctionComponent,
@@ -32,7 +33,18 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { 
+    Button, 
+    Divider, 
+    DropdownItemProps, 
+    DropdownProps, 
+    Icon, 
+    Item, 
+    List, 
+    Message, 
+    PaginationProps,
+    Segment
+} from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -41,6 +53,14 @@ import {
     UIConstants,
     history
 } from "../../core";
+import { 
+    InterfaceRemoteConfigDetails, 
+    InterfaceRemoteRepoConfig, 
+    InterfaceRemoteRepoListResponse, 
+    getRemoteRepoConfig, 
+    getRemoteRepoConfigList, 
+    triggerConfigDeployment 
+} from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
 import { ApplicationListInterface } from "../models";
@@ -104,6 +124,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ remoteConfig, setRemoteConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
+    const [ remoteConfigDetails, setRemoteConfigDetails ] = useState<InterfaceRemoteConfigDetails>(undefined)
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -111,6 +133,10 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     useEffect(() => {
         getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
+
+    useEffect(() => {
+        getRemoteConfigList();
+    }, [ remoteConfig != undefined ]);
 
     /**
      * Retrieves the list of applications.
@@ -148,6 +174,36 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 setApplicationListRequestLoading(false);
             });
     };
+    
+    /**
+     * Util method to get remote configuration list 
+     */
+    const getRemoteConfigList = () => {
+        getRemoteRepoConfigList().then((remoteRepoList: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+            if (remoteRepoList.status == 200 && remoteRepoList.data.count > 0 ) {
+                setRemoteConfig(remoteRepoList.data.remotefetchConfigurations[0]);
+                getRemoteRepoConfig(remoteRepoList.data.remotefetchConfigurations[0].id).then((
+                    response: AxiosResponse<InterfaceRemoteConfigDetails>
+                ) => {
+                    setRemoteConfigDetails(response.data);
+                    console.log(response)
+                }).catch(() => {
+                    dispatch(addAlert({
+                        description: "Error while retrieving remote configuration details",
+                        level: AlertLevels.ERROR,
+                        message: "There was an error while fetching the remote configuration details."
+                    }));
+                })
+                console.log(remoteRepoList)
+            }
+        }).catch(() => {
+            dispatch(addAlert({
+                description: "Error while retrieving remote configuration details",
+                level: AlertLevels.ERROR,
+                message: "There was an error while fetching the remote configuration details."
+            }));
+        })
+    }
 
     /**
      * Sets the list sorting strategy.
@@ -232,6 +288,74 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ t("devPortal:pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
+            {
+                remoteConfig &&
+                <>
+                    <Segment>
+                        <Item.Group>
+                            <Item>
+                                <Item.Content>
+                                    <Item.Header>Remote Fetch - {remoteConfig.name}</Item.Header>
+                                    <Item.Meta>
+                                        <span>{ remoteConfigDetails?.status?.lastSynchronizedTime }</span>
+                                    </Item.Meta>
+                                    <Divider hidden />
+                                    <Item.Description>
+                                        { remoteConfigDetails?.status.count === 0 &&
+                                            <Message
+                                                icon='info circle'
+                                                header='Configuration is not yet deployed.'
+                                                content={ `The configuration ${remoteConfig.name} is not yest deployed. 
+                                                Use the trigger button to depoloy the configuration.` 
+                                                }
+                                            />
+                                        }
+                                        <List divided relaxed>
+                                            {
+                                                remoteConfigDetails?.status?.remoteFetchRevisionStatuses?.map((status, key) => {
+                                                    return (
+                                                        <List.Item key={ key }>
+                                                            <List.Icon 
+                                                                name={ 
+                                                                    status.deployedStatus === "FAIL" ? 
+                                                                        'times circle outline' : 'check circle outline' 
+                                                                } 
+                                                                size='large' 
+                                                                color={ 
+                                                                    status.deployedStatus === "FAIL" ? 
+                                                                        'orange' : 'green' 
+                                                                }
+                                                                verticalAlign='middle' 
+                                                            />
+                                                            <List.Content>
+                                                                <List.Header as='a'>{ status.itemName }</List.Header>
+                                                                <List.Description>{ status.deployedTime }</List.Description>
+                                                            </List.Content>
+                                                        </List.Item>
+                                                    )
+                                                })
+                                            }
+                                        </List>
+                                    </Item.Description>
+                                    <Item.Extra>
+                                        <Divider hidden />
+                                        <Button 
+                                            floated="right" 
+                                            basic
+                                            onClick={ () => {
+                                                triggerConfigDeployment(remoteConfigDetails.id);
+                                                getRemoteConfigList();
+                                            } }
+                                        >Trigger Configuration</Button>
+                                    </Item.Extra>
+                                </Item.Content>
+                            </Item>
+                        </Item.Group>
+                    </Segment>
+                    <Divider hidden />
+                </>
+            }
+            
             <ListLayout
                 advancedSearch={
                     <AdvancedSearchWithBasicFilters
