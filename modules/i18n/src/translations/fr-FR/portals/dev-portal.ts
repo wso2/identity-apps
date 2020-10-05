@@ -461,7 +461,7 @@ export const devPortal: DevPortalNS = {
                                     }
                                 },
                                 subjectIncludeTenantDomain: {
-                                    hint: "Cette option ajoutera le domaine du locataire à l'identifiant local du sujet",
+                                    hint: "Cette option ajoutera le domaine d'identité à l'identifiant du sujet",
                                     label: "Inclure le domaine du locataire",
                                     validations: {
                                         empty: "Ceci est un champ obligatoire."
@@ -469,14 +469,14 @@ export const devPortal: DevPortalNS = {
                                 },
                                 subjectIncludeUserDomain: {
                                     hint: "Cette option ajoutera le domaine de l'annuaire dans lequel l'utilisateur réside " +
-                                        "dans l'identifiant local du sujet",
+                                        "dans l'identifiant du sujet",
                                     label: "Inclure le domaine de l'utilisateur",
                                     validations: {
                                         empty: "Ceci est un champ obligatoire."
                                     }
                                 },
                                 subjectUseMappedLocalSubject: {
-                                    hint: "Cette option utilisera l'identifiant du sujet local pour revendiquer " +
+                                    hint: "Cette option utilisera l'identifiant local associé comme sujet pour revendiquer " +
                                         "l'identité",
                                     label: "Utiliser un sujet local associé",
                                     validations: {
@@ -491,7 +491,7 @@ export const devPortal: DevPortalNS = {
                 advancedConfig: {
                     fields: {
                         enableAuthorization: {
-                            hint: "DDécide si les politiques d'autorisation doivent être engagées pendant les flux " +
+                            hint: "Décide si les politiques d'autorisation doivent être engagées pendant les flux " +
                                 "d'authentification.",
                             label: "Activer les autorisations",
                             validations: {
@@ -1002,7 +1002,7 @@ export const devPortal: DevPortalNS = {
                                     }
                                 },
                                 returnToURLs: {
-                                    label: "Retour aux URLs",
+                                    label: "URLs de retour",
                                     placeholder: "Saisir une URL",
                                     validations: {
                                         invalid: "Veuillez ajouter une URL valide"
@@ -1020,7 +1020,7 @@ export const devPortal: DevPortalNS = {
                                     }
                                 }
                             },
-                            heading: "Profil de la requête d'assertion"
+                            heading: "Requête d'assertion / Requête de profil"
                         },
                         requestValidation: {
                             fields: {
