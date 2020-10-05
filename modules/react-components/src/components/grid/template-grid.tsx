@@ -424,7 +424,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         id={ template.id }
                                         onClick={ onTemplateSelect }
                                         imageSize={ templateIconSize }
-                                        data-testid={ `${ testId }-template-card` }
+                                        data-testid={ template.id }
                                     />
                                 ))
                                 : emptyPlaceholder && emptyPlaceholder

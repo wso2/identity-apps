@@ -17,11 +17,6 @@
  *
  */
 
-// Import reusable commands.
-import "@wso2is/cypress-base/commands";
-
-// Import internal commands.
-import "./applications";
-import "./email-templates";
-import "./commands";
-import "./register";
+export * from "./application-edit-page";
+export * from "./application-templates-page";
+export * from "./applications-list-page";

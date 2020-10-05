@@ -30,4 +30,5 @@ export class SidePanelDomConstants {
     private constructor() { }
 
     public static readonly EMAIL_TEMPLATES_PARENT_ITEM_DATA_ATTR: string = "side-panel-items-email-templates";
+    public static readonly APPLICATIONS_PARENT_ITEM_DATA_ATTR: string = "side-panel-items-applications";
 }

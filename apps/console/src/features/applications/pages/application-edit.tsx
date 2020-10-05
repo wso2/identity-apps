@@ -773,6 +773,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         )
                 }
                 backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.applicationsEdit.backButton")
                 } }
