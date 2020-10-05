@@ -120,6 +120,14 @@ npm run test:integration
 npm run test:integration:interactive
 ```
 
+#### Only Smoke Tests
+
+```bash
+npm run test:integration:smoke
+```
+
+For more information regarding the test module, checkout the [README](./tests/README.md) in the `tests` module.
+
 ## Reporting Issues
 
 We encourage you to report issues, improvements and feature requests regarding the project through [GitHub Issue Tracker](https://github.com/wso2/identity-apps/issues).
