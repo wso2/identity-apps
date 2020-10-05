@@ -96,7 +96,25 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
         getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
-                setUsersList(response);
+                const data = { ...response };
+
+                data.Resources = data.Resources.map((resource) => {
+                    let email: string = null;
+                    if (resource.emails instanceof Array) {
+                        const emailElement = resource.emails[ 0 ];
+                        if (typeof emailElement === "string") {
+                            email = emailElement;
+                        } else {
+                            email = emailElement.value;
+                        }
+                    }
+
+                    resource.emails = [email];
+
+                    return resource;
+                });
+
+                setUsersList(data);
                 setUserStoreError(false);
             }).catch((error) => {
                 dispatch(addAlert({
