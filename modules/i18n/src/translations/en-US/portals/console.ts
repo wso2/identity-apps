@@ -26,66 +26,66 @@ export const console: ConsoleNS = {
                     gravatar: {
                         errors: {
                             noAssociation: {
-                                content: "Il semble que l'e-mail sélectionné ne soit pas enregistré sur Gravatar. " +
-                                    "Ouvrez un compte Gravatar en vous rendant sur le site officiel de Gravatar ou utilisez " +
-                                    "l'un des choix suivants.",
-                                header: "Aucune image Gravatar correspondante trouvée !"
+                                content: "It seems like the selected email is not registered on Gravatar. " +
+                                    "Sign up for a Gravatar account by visiting Gravatar official website or use " +
+                                    "one of the following.",
+                                header: "No matching Gravatar image found!"
                             }
                         },
-                        heading: "Gravatar basé sur "
+                        heading: "Gravatar based on "
                     },
                     hostedAvatar: {
-                        heading: "Image hébergée",
+                        heading: "Hosted Image",
                         input: {
                             errors: {
                                 http: {
-                                    content: "L'URL sélectionnée pointe vers une image non sécurisée servie par HTTP. " +
-                                        "Veuillez procéder avec prudence.",
-                                    header: "Contenu non sécurisé !"
+                                    content: "The selected URL points to an insecure image served over HTTP. " +
+                                        "Please proceed with caution.",
+                                    header: "Insecure Content!"
                                 },
                                 invalid: {
-                                    content: "Veuillez entrer une URL d'image valide"
+                                    content: "Please enter a valid image URL"
                                 }
                             },
-                            hint: "Entrez une URL d'image valide qui est hébergée sur un site tiers.",
-                            placeholder: "Entrez l'URL de l'image.",
+                            hint: "Enter a valid image URL which is hosted on a third party location.",
+                            placeholder: "Enter URL for the image.",
                             warnings: {
                                 dataURL: {
-                                    content: "L'utilisation d'URL avec un grand nombre de caractères peut entraîner des problèmes " +
-                                        "de taille en base de données. Procédez avec prudence.",
-                                    header: "Vérifiez l'URL des données saisies !"
+                                    content: "Using Data URLs with large character count might result in database " +
+                                        "issues. Proceed with caution.",
+                                    header: "Double check the entered Data URL!"
                                 }
                             }
                         }
                     },
                     systemGenAvatars: {
-                        heading: "Avatar généré par le système",
+                        heading: "System generated avatar",
                         types: {
-                            initials: "Initiales"
+                            initials: "Initials"
                         }
                     }
                 },
                 description: null,
-                heading: "Mise à jour de la photo de profil",
-                primaryButton: "Sauvegarder",
-                secondaryButton: "Annuler"
+                heading: "Update profile picture",
+                primaryButton: "Save",
+                secondaryButton: "Cancel"
             },
             sessionTimeoutModal: {
-                description: "Vous serez déconnecté de la session en cours pour cause d'inactivité." +
-                    "Veuillez choisir 'Rester connecté' si vous souhaitez poursuivre la session.",
-                heading: "Vous serez déconnecté(e) dans <1>{{ time }}</1>.",
-                primaryButton: "Rester connecté",
-                secondaryButton: "Déconnexion"
+                description: "You will be logged out of the current session due to inactivity." +
+                    "Please choose Stay logged in if you would like to continue the session.",
+                heading: "You will be logged out in <1>{{ time }}</1>.",
+                primaryButton: "Stay logged in",
+                secondaryButton: "Logout"
             }
         },
         validations: {
             inSecureURL: {
-                description: "L'URL saisie est une URL non-SSL. Veuillez procéder avec prudence.",
-                heading: "URL non-SSL"
+                description: "The entered URL a non-SSL URL. Please proceed with caution.",
+                heading: "Insecure URL"
             },
             unrecognizedURL: {
-                description: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez procéder avec prudence.",
-                heading: "URL non reconnue"
+                description: "The entered URL neither HTTP nor HTTPS. Please proceed with caution.",
+                heading: "Unrecognized URL"
             }
         }
     }
