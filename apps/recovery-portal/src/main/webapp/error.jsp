@@ -20,6 +20,8 @@
 <%@ page isErrorPage="true" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -87,6 +89,14 @@
 
     <script>
         function goBack() {
+            // If the self sign up code is invalid, navigate the users to the server home.
+            <% if (errorCode.equalsIgnoreCase(IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode())) {%>
+                var redirect = "<%=IdentityUtil.getServerURL("", true, true)%>";
+                window.location.href = redirect;
+    
+                return;
+            <%}%>
+    
             window.history.back();
         }
     </script>
