@@ -805,6 +805,7 @@ export interface DevPortalNS {
                     requiredErrorMessage: string;
                     invalidURLErrorMessage: string;
                     invalidQueryParamErrorMessage: string;
+                    customProperties: string;
                 };
                 generalDetails: {
                     name: FormAttributes;
