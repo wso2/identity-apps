@@ -49,6 +49,19 @@ export class ApplicationEditPageConstants {
     // Tabs
     public static readonly RESOURCE_TABS_DATA_ATTR: string = "application-edit-resource-tabs";
     public static readonly RESOURCE_TABS_MENU_DATA_ATTR: string = "div[class=\"ui pointing secondary menu\"";
+    
+    // Access Configuration
+    public static readonly PROTOCOL_ACCORDION_DATA_ATTR: string = "application-edit-access-settings-protocol-accordion";
+    public static readonly ADD_PROTOCOL_BUTTON_DATA_ATTR: string = "application-edit-access-settings-new-protocol-" +
+        "button";
+    public static readonly ADD_PROTOCOL_WIZARD_DATA_ATTR: string = "application-edit-access-settings-protocol-add-" +
+        "wizard-modal";
+    public static readonly ADD_PROTOCOL_WIZARD_CANCEL_BUTTON_DATA_ATTR: string = "application-edit-access-settings-" +
+        "protocol-add-wizard-cancel-button";
+    public static readonly OIDC_PROTOCOL_ACCORDION_ITEM_DATA_ATTR: string = "application-edit-access-settings-" +
+        "protocol-accordion-oidc-title";
+    public static readonly OIDC_PROTOCOL_ACCORDION_ITEM_CHEVRON_DATA_ATTR: string = "application-edit-access-" +
+        "settings-protocol-accordion-oidc-title-chevron";
 
     // General Settings Form
     public static readonly APP_NAME_INPUT_DATA_ATTR: string = "application-edit-general-settings-" +

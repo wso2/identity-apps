@@ -40,7 +40,7 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
     const appName: string = "App - " + uuidv4();
     const redirectURL: string = "https://localhost:9000/sample-app/login";
     const accessURL: string = "https://localhost:9000/sample-app";
-    const appImage: string = "https://i.pinimg.com/originals/1e/a8/90/1ea890593919e1784cc00f394abe561e.jpg";
+    const appImage: string = "https://seeklogo.com/images/O/openid-logo-8AD782234D-seeklogo.com.png";
     const jwksURL: string = "https://localhost:9443/oauth2/jwks";
 
     before(() => {
@@ -101,11 +101,13 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
         });
     });
 
-    context("ITC-2.3.0 - [applications] - Edit Application General Settings.", () => {
+    context("ITC-2.3.0 - [applications] - Application General Settings.", () => {
+        
+        before(() => {
+            applicationEditPage.selectTab("GENERAL");
+        });
 
         it("ITC-2.3.1 - [applications] - Can edit basic settings.", () => {
-            applicationEditPage.selectTab("GENERAL");
-
             applicationEditPage.getAppNameInput().clear().type("Edited " + appName);
             applicationEditPage.getAppDescriptionInput().type("Edited Description");
             applicationEditPage.getAppImageInput().type(appImage);
@@ -139,7 +141,41 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
         });
     });
 
+    context("ITC-2.4.0 - [applications] - Application Access Settings.", () => {
+
+        before(() => {
+            applicationEditPage.selectTab("ACCESS");
+        });
+
+        it("ITC-2.3.1 - [applications] - Content renders properly.", () => {
+            applicationEditPage.getProtocolAccordion().should("be.visible");
+            applicationEditPage.getProtocolAddButton().should("be.visible");
+
+            applicationEditPage.getProtocolAddButton().click();
+            cy.wait(1000);
+            applicationEditPage.getProtocolAddWizard().should("be.visible");
+            applicationEditPage.getProtocolAddWizardCancelButton().click();
+            
+            // Since we created an OIDC webapp in the previous test case, OIDC access config should be visible.
+            applicationEditPage.getProtocolAccordionOIDCItem().should("be.visible");
+            
+            // Can open an close accordion item by clicking on it.
+            applicationEditPage.getProtocolAccordionOIDCItem().click();
+            cy.wait(1000);
+            applicationEditPage.getProtocolAccordionOIDCItem().click();
+
+            // Can open an close accordion item by clicking on the chevron.
+            applicationEditPage.getProtocolAccordionOIDCItemChevron().click();
+            cy.wait(1000);
+            applicationEditPage.getProtocolAccordionOIDCItemChevron().click();
+        });
+    });
+
     context("ITC-2.4.0 - [applications] - Delete Application using Danger Zone.", () => {
+
+        before(() => {
+            applicationEditPage.selectTab("GENERAL");
+        });
 
         it("ITC-2.4.1 - [applications] - Delete button is disabled when the assertion input is empty.", () => {
             applicationEditPage.getDangerZoneDeleteButton().click();

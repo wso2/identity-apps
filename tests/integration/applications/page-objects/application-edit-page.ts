@@ -273,4 +273,52 @@ export class ApplicationEditPage {
     public clickOnGeneralSettingsFormSubmitButton(): void {
         this.getGeneralSettingsFormSubmitButton().click();
     };
+
+    /**
+     * Get the protocol accordion.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getProtocolAccordion(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.PROTOCOL_ACCORDION_DATA_ATTR);
+    };
+
+    /**
+     * Get the add protocol button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getProtocolAddButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.ADD_PROTOCOL_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the add protocol wizard.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getProtocolAddWizard(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.ADD_PROTOCOL_WIZARD_DATA_ATTR);
+    };
+
+    /**
+     * Get the add protocol wizard cancel button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getProtocolAddWizardCancelButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.ADD_PROTOCOL_WIZARD_CANCEL_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the OIDC section on protocol accordion.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getProtocolAccordionOIDCItem(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.OIDC_PROTOCOL_ACCORDION_ITEM_DATA_ATTR);
+    };
+
+    /**
+     * Get the chevron icon of OIDC section on protocol accordion.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getProtocolAccordionOIDCItemChevron(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.OIDC_PROTOCOL_ACCORDION_ITEM_CHEVRON_DATA_ATTR);
+    };
 }
