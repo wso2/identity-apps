@@ -19,7 +19,12 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PageLayout, PrimaryButton, EmptyPlaceholder } from "@wso2is/react-components";
+import {
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout,
+    PrimaryButton
+} from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,12 +33,12 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
+    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
     UserStoreProperty,
-    getAUserStore,
-    EmptyPlaceholderIllustrations
+    getAUserStore
 } from "../../core";
 import { UserStorePostData } from "../../userstores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
