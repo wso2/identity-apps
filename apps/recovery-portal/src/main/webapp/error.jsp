@@ -90,12 +90,12 @@
     <script>
         function goBack() {
             // If the self sign up code is invalid, navigate the users to the server home.
-            <% if (errorCode.equalsIgnoreCase(IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode())) {%>
+            if ("<%=errorCode%>" === "<%=IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()%>") {
                 var redirect = "<%=IdentityUtil.getServerURL("", true, true)%>";
                 window.location.href = redirect;
     
                 return;
-            <%}%>
+            }
     
             window.history.back();
         }
