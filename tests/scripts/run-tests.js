@@ -30,6 +30,7 @@ const TEST_SUITE_CONFIG_PATH = `./${TEST_SUITE_CONFIG_FILE_NAME}`;
 
 const INTERACTIVE_MODE_ARG = "--interactive";
 const HEADLESS_MODE_ARG = "--headless";
+const SMOKE_ONLY_MODE_ARG = "--smoke";
 
 const cliArgs = process.argv.slice(2);
 
@@ -46,6 +47,14 @@ const constructTestCommand = () => {
 
     for (const suite of parsedTestSuiteConfig.suites) {
         if (suite.skip) {
+            continue;
+        }
+
+        if (cliArgs.includes(HEADLESS_MODE_ARG) && cliArgs.includes(SMOKE_ONLY_MODE_ARG)) {
+            if (suite.smokeTestPath) {
+                specs.push(suite.smokeTestPath);
+            }
+            
             continue;
         }
 
@@ -81,6 +90,12 @@ const resolveCypressCommand = () => {
 
     if (cliArgs.includes(INTERACTIVE_MODE_ARG)) {
         log.info("Cypress is running in interactive mode.");
+        
+        if (cliArgs.includes(SMOKE_ONLY_MODE_ARG)) {
+            log.info("Smoke only mode is only supported when the tests are running in headless mode. " +
+                "Hence, Ignoring......");
+        }
+
         return "npm run cypress open";
     }
 
