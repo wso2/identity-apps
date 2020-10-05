@@ -57,6 +57,54 @@ export class ApplicationEditPage {
     };
 
     /**
+     * Get the application edit tabs.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getTabs(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.RESOURCE_TABS_DATA_ATTR);
+    };
+
+    /**
+     * Get a specif tab.
+     *
+     * @param tab - Tab to be selected.
+     * @return {Cypress.Chainable<JQuery<HTMLElement>>}
+     */
+    public getTab(tab: "GENERAL" | "ACCESS" | "ATTRIBUTES" | "SIGN_ON" | "PROVISIONING" |
+        "ADVANCED"): Cypress.Chainable<JQuery<HTMLElement>> {
+
+        return cy.get(ApplicationEditPageConstants.RESOURCE_TABS_MENU_DATA_ATTR)
+            .within(() => {
+                if (tab === "GENERAL") {
+                    return cy.get("a").eq(0);
+                } else if (tab === "ACCESS") {
+                    return cy.get("a").eq(1);
+                } else if (tab === "ATTRIBUTES") {
+                    return cy.get("a").eq(2);
+                } else if (tab === "SIGN_ON") {
+                    return cy.get("a").eq(3);
+                } else if (tab === "PROVISIONING") {
+                    return cy.get("a").eq(4);
+                } else if (tab === "ADVANCED") {
+                    return cy.get("a").eq(5);
+                }
+                
+                throw new Error("Invalid tab selection - " + tab);
+            });
+    };
+
+    /**
+     * Select a tab from the resource tabs.
+     *
+     * @param tab - Tab to be selected.
+     */
+    public selectTab(tab: "GENERAL" | "ACCESS" | "ATTRIBUTES" | "SIGN_ON" | "PROVISIONING" | "ADVANCED"): void {
+
+        this.getTab(tab).click();
+    };
+    
+
+    /**
      * Get the application edit page back button.
      * @return {Cypress.Chainable<Element>}
      */
@@ -105,6 +153,110 @@ export class ApplicationEditPage {
     public getAppAccessURLInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(ApplicationEditPageConstants.APP_ACCESS_URL_INPUT_DATA_ATTR)
             .find("input");
+    };
+
+    /**
+     * Get the application JWKS cert endpoint input.
+     * @return {Cypress.Chainable<JQuery<Element>>}
+     */
+    public getAppCertJWKSURLInput(): Cypress.Chainable<JQuery<Element>> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_CERT_JWKS_URL_INPUT_DATA_ATTR)
+            .find("input");
+    };
+
+    /**
+     * Get the JWKS application certificate radio button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getJWKSCertRadio(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_CERT_RADIO_GROUP_DATA_ATTR)
+            .within(() => {
+                cy.get("input[value=\"JWKS\"]");
+            });
+    };
+
+    /**
+     * Get the custom application certificate radio button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getCustomCertRadio(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_CERT_RADIO_GROUP_DATA_ATTR)
+            .within(() => {
+                cy.get("input[value=\"PEM\"]");
+            });
+    };
+
+    /**
+     * Get the application PEM certificate input.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getPEMCertInput(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_PEM_CERT_INPUT_DATA_ATTR);
+    };
+
+    /**
+     * Get the application PEM certificate preview button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getPEMCertPreviewButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_PEM_CERT_PREVIEW_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the application PEM certificate preview modal.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getPEMCertPreviewModal(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_PEM_CERT_PREVIEW_MODAL_DATA_ATTR);
+    };
+
+    /**
+     * Get the application PEM certificate preview modal dimmer.
+     * @return {Cypress.Chainable<JQuery<Element>>}
+     */
+    public getPEMCertPreviewModalDimmer(): Cypress.Chainable<JQuery<Element>> {
+        return cy.get(ApplicationEditPageConstants.APP_PEM_CERT_PREVIEW_MODAL_DIMMER_DATA_ATTR);
+    };
+
+    /**
+     * Get the application delete action in the danger zone.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getDangerZoneDeleteButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.DANGER_ZONE_DELETE_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the application delete assertion.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getDeleteAssertion(): Cypress.Chainable<Element | any> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_ASSERTION_DATA_ATTR);
+    };
+
+    /**
+     * Get the application delete assertion input.
+     * @return {Cypress.Chainable<JQuery<Element>>}
+     */
+    public getDeleteAssertionInput(): Cypress.Chainable<JQuery<Element>> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_ASSERTION_INPUT_DATA_ATTR)
+            .find("input");
+    };
+
+    /**
+     * Get the application delete confirm button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getDeleteConfirmButton(): Cypress.Chainable<Element | any> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_CONFIRM_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the application delete confirm modal close button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getDeleteConfirmModalCloseButton(): Cypress.Chainable<Element | any> {
+        return cy.dataTestId(ApplicationEditPageConstants.APP_DELETE_CONFIRM_MODAL_CLOSE_BUTTON_DATA_ATTR);
     };
 
     /**
