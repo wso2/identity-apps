@@ -18,7 +18,13 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import {
+    Field,
+    FormValue,
+    Forms,
+    Validation,
+    useTrigger
+} from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, SelectionCard } from "@wso2is/react-components";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
@@ -29,6 +35,7 @@ import { Grid } from "semantic-ui-react";
 import { GenericMinimalWizardFormHelp } from "./help";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
+import { ApplicationListInterface, getApplicationList } from "../..";
 import {
     AppConstants,
     CORSOriginsListInterface,
@@ -322,6 +329,42 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 ) }
                                 type="text"
                                 data-testid={ `${ testId }-application-name-input` }
+                                validation={ async (value: FormValue, validation: Validation) => {
+                                    let response: ApplicationListInterface = null;
+                                    try {
+                                        response = await getApplicationList(null, null, null);
+                                    } catch (error) {
+                                        if (error.response && error.response.data && error.response.data.description) {
+                                            dispatch(addAlert({
+                                                description: error.response.data.description,
+                                                level: AlertLevels.ERROR,
+                                                message: t("devPortal:components.applications." +
+                                                    "notifications.fetchApplications.error.message")
+                                            }));
+
+                                            return;
+                                        }
+
+                                        dispatch(addAlert({
+                                            description: t("devPortal:components.applications.notifications." +
+                                                "fetchApplications.genericError.description"),
+                                            level: AlertLevels.ERROR,
+                                            message: t("devPortal:components.applications.notifications." +
+                                                "fetchApplications.genericError.message")
+                                        }));
+                                    }
+
+                                    if (response?.applications.find(
+                                        (application) =>
+                                            application.name === value.toString()
+                                    )) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("devPortal:components.applications.forms.generalDetails.fields.name" +
+                                                ".validations.duplicate" )
+                                        );
+                                    }
+                                } }
                             />
                         </Grid.Column>
                     </Grid.Row>
