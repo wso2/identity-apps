@@ -39,6 +39,7 @@ import {
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
+    getAUserStore,
     store
 } from "../../core";
 import {
@@ -46,6 +47,11 @@ import {
     ServerConfigurationsConstants,
     getConnectorCategory
 } from "../../server-configurations";
+import {
+    UserStoreListItem,
+    UserStorePostData,
+    UserStoreProperty
+} from "../../userstores";
 import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";
@@ -90,7 +96,25 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
         getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
-                setUsersList(response);
+                const data = { ...response };
+
+                data.Resources = data.Resources.map((resource) => {
+                    let email: string = null;
+                    if (resource.emails instanceof Array) {
+                        const emailElement = resource.emails[ 0 ];
+                        if (typeof emailElement === "string") {
+                            email = emailElement;
+                        } else {
+                            email = emailElement.value;
+                        }
+                    }
+
+                    resource.emails = [email];
+
+                    return resource;
+                });
+
+                setUsersList(data);
                 setUserStoreError(false);
             }).catch((error) => {
                 dispatch(addAlert({
@@ -158,17 +182,17 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-                {
-                    key: -2,
-                    text: t("adminPortal:components.users.userstores.userstoreOptions.all"),
-                    value: "all"
-                },
-                {
-                    key: -1,
-                    text: t("adminPortal:components.users.userstores.userstoreOptions.primary"),
-                    value: "primary"
-                }
-            ];
+            {
+                key: -2,
+                text: t("adminPortal:components.users.userstores.userstoreOptions.all"),
+                value: "all"
+            },
+            {
+                key: -1,
+                text: t("adminPortal:components.users.userstores.userstoreOptions.primary"),
+                value: "primary"
+            }
+        ];
 
         let storeOption = {
             key: null,
@@ -181,14 +205,22 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
                 }
-                response.data.map((store, index) => {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
-                    }
+                response.data.map((store: UserStoreListItem, index) => {
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled").value === "true";
+
+                        if (!isDisabled) {
+                            storeOption = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+                            storeOptions.push(storeOption);
+                        }
+                    });
+
+                }
                 );
                 setUserStoresList(storeOptions);
             });

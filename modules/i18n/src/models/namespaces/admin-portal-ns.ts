@@ -589,6 +589,10 @@ export interface AdminPortalNS {
                 updateGroup: Notification;
                 createGroup: Notification;
                 createPermission: Notification;
+                fetchGroups: Notification;
+            };
+            placeholders: {
+                groupsError: Placeholder;
             };
         };
         header: {

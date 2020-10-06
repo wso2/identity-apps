@@ -1896,6 +1896,7 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 common: {
+                    customProperties: "Custom Properties",
                     invalidQueryParamErrorMessage: "These are not valid query parameters",
                     invalidURLErrorMessage: "This is not a valid URL",
                     requiredErrorMessage: "This is required"

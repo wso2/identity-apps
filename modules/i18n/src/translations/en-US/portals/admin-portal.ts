@@ -1115,6 +1115,12 @@ export const adminPortal: AdminPortalNS = {
                         message: "Group deleted successfully"
                     }
                 },
+                fetchGroups: {
+                    genericError: {
+                        description: "An error occurred while fetching groups.",
+                        message: "Something went wrong"
+                    }
+                },
                 updateGroup: {
                     error: {
                         description: "{{description}}",
@@ -1128,6 +1134,15 @@ export const adminPortal: AdminPortalNS = {
                         description: "The selected group was updated successfully.",
                         message: "Group updated successfully"
                     }
+                }
+            },
+            placeholders: {
+                groupsError: {
+                    subtitles: [
+                        "An error occurred while trying to fetch groups from the userstore.",
+                        "Please make sure that teh connection details of the userstore are accurate."
+                    ],
+                    title:"Couldn't fetch groups from the userstore"
                 }
             }
         },

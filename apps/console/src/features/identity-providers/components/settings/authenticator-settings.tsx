@@ -512,12 +512,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                     icon: {
                                                         icon: authenticator.id && (getFederatedAuthenticators().find(
                                                             (fedAuth) =>
-                                                            (fedAuth.authenticatorId === authenticator.id))).icon
+                                                            (fedAuth.authenticatorId === authenticator.id)))?.icon
                                                     },
                                                     id: authenticator?.id,
                                                     title: authenticator.id && (getFederatedAuthenticators().find(
                                                         (fedAuth) =>
-                                                        (fedAuth.authenticatorId === authenticator.id))).displayName
+                                                        (fedAuth.authenticatorId === authenticator.id)))?.displayName
                                                 }
                                             ]
                                         }
