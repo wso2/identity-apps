@@ -392,12 +392,12 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
      * Handles the click event of the create new user button.
      */
     const handleAddNewUserWizardClick = (): void => {
-        getConnectorCategory(ServerConfigurationsConstants.IDENTITY_GOVERNANCE_ACCOUNT_MANAGEMENT_POLICIES_ID)
+        getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
             .then((response) => {
                 const connectors: GovernanceConnectorInterface[]  = response?.connectors;
                 const userOnboardingConnector = connectors.find(
                     (connector: GovernanceConnectorInterface) => connector.id
-                        === ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID
+                        === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
                 );
 
                 const emailVerification = userOnboardingConnector.properties.find(
