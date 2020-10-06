@@ -89,8 +89,13 @@
 
     <script>
         function goBack() {
-            // If the self sign up code is invalid, navigate the users to the server home.
-            if ("<%=errorCode%>" === "<%=IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()%>") {
+    
+            var errorCodeFromParams = "<%=errorCode%>";
+            var invalidConfirmationErrorCode = "<%=IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()%>";
+
+            // Check if the error is related to the confirmation code being invalid.
+            // If so, navigate the users to the server home.
+            if (errorCodeFromParams === invalidConfirmationErrorCode) {
                 var redirect = "<%=IdentityUtil.getServerURL("", true, true)%>";
                 window.location.href = redirect;
     
