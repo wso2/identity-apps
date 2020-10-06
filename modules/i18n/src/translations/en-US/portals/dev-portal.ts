@@ -598,6 +598,8 @@ export const devPortal: DevPortalNS = {
                             label: "Name",
                             placeholder: "Enter a name for the application.",
                             validations: {
+                                duplicate: "There is already an application with this name. " +
+                                    "Please enter a different name",
                                 empty: "This is a required field."
                             }
                         }
