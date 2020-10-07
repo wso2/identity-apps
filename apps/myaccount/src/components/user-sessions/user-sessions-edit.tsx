@@ -219,7 +219,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                                                 { app.appName }
                                                                             </Table.Cell>
                                                                             <Table.Cell>
-                                                                                { app.subject }
+                                                                                { app.subject.split("@")[ 0 ] }
                                                                             </Table.Cell>
                                                                         </Table.Row>
                                                                     )
