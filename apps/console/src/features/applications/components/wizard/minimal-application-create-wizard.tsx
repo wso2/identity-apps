@@ -332,7 +332,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                 validation={ async (value: FormValue, validation: Validation) => {
                                     let response: ApplicationListInterface = null;
                                     try {
-                                        response = await getApplicationList(null, null, null);
+                                        response = await getApplicationList(null, null, "name eq " + value.toString());
                                     } catch (error) {
                                         if (error.response && error.response.data && error.response.data.description) {
                                             dispatch(addAlert({
@@ -354,10 +354,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                         }));
                                     }
 
-                                    if (response?.applications.find(
-                                        (application) =>
-                                            application.name === value.toString()
-                                    )) {
+                                    if (response?.applications?.length > 0) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
                                             t("devPortal:components.applications.forms.generalDetails.fields.name" +
