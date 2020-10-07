@@ -399,7 +399,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimConfigurations && initializationFinished
             ?
             <>
-                <Grid.Row>
+                <Grid.Row data-testid={ testId }>
                     <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
                         <Heading as="h4">
                             { t("devPortal:components.applications.edit.sections.attributes.selection.heading") }

@@ -171,13 +171,29 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
         });
     });
 
-    context("ITC-2.4.0 - [applications] - Delete Application using Danger Zone.", () => {
+    context("ITC-2.5.0 - [applications] - Application Attributes Configurations.", () => {
+
+        before(() => {
+            applicationEditPage.selectTab("ATTRIBUTES");
+        });
+
+        it("ITC-2.5.1 - [applications] - Content renders properly.", () => {
+            applicationEditPage.getAttributeSelectionList().should("be.visible");
+            applicationEditPage.getSubjectAttributeDropdown().should("be.visible");
+            applicationEditPage.getIncludeUserstoreCheckbox().should("be.visible");
+            applicationEditPage.getIncludeTenantDomainCheckbox().should("be.visible");
+            applicationEditPage.getUseMappedLocalSubjectCheckbox().should("be.visible");
+            applicationEditPage.getRoleAttributeDropdown().should("be.visible");
+        });
+    });
+
+    context("ITC-2.6.0 - [applications] - Delete Application using Danger Zone.", () => {
 
         before(() => {
             applicationEditPage.selectTab("GENERAL");
         });
 
-        it("ITC-2.4.1 - [applications] - Delete button is disabled when the assertion input is empty.", () => {
+        it("ITC-2.6.1 - [applications] - Delete button is disabled when the assertion input is empty.", () => {
             applicationEditPage.getDangerZoneDeleteButton().click();
             applicationEditPage.getDeleteConfirmButton().should("be.disabled");
 
@@ -186,7 +202,7 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
             applicationEditPage.getDeleteConfirmModalCloseButton().click();
         });
 
-        it("ITC-2.4.2 - [applications] - Delete button is disabled when a wrong assertion is entered.", () => {
+        it("ITC-2.6.2 - [applications] - Delete button is disabled when a wrong assertion is entered.", () => {
             applicationEditPage.getDangerZoneDeleteButton().click();
             applicationEditPage.getDeleteAssertionInput().type("Wrong Assertion");
             applicationEditPage.getDeleteConfirmButton().should("be.disabled");
@@ -196,7 +212,7 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
             applicationEditPage.getDeleteConfirmModalCloseButton().click();
         });
 
-        it("ITC-2.4.3 - [applications] - Can delete the application using the correct assertion is entered.", () => {
+        it("ITC-2.6.3 - [applications] - Can delete the application using the correct assertion is entered.", () => {
             applicationEditPage.getDangerZoneDeleteButton().click();
             applicationEditPage.getDeleteAssertion()
                 .then((element) => {

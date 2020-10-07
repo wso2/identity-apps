@@ -321,4 +321,52 @@ export class ApplicationEditPage {
     public getProtocolAccordionOIDCItemChevron(): Cypress.Chainable<Element> {
         return cy.dataTestId(ApplicationEditPageConstants.OIDC_PROTOCOL_ACCORDION_ITEM_CHEVRON_DATA_ATTR);
     };
+
+    /**
+     * Get the attribute selection list.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAttributeSelectionList(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.ATTRIBUTE_SELECTION_LIST_DATA_ATTR);
+    };
+
+    /**
+     * Get the subject attribute dropdown.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getSubjectAttributeDropdown(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.SUBJECT_ATTRIBUTE_DROPDOWN_DATA_ATTR);
+    };
+
+    /**
+     * Get the include userstore checkbox.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getIncludeUserstoreCheckbox(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.INCLUDE_USERSTORE_CHECKBOX_DATA_ATTR);
+    };
+
+    /**
+     * Get the include tenant domain checkbox.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getIncludeTenantDomainCheckbox(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.INCLUDE_TENANT_DOMAIN_CHECKBOX_DATA_ATTR);
+    };
+
+    /**
+     * Get the use mapped local subject checkbox.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getUseMappedLocalSubjectCheckbox(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.USED_MAPPED_LOCAL_SUBJECT_CHECKBOX_DATA_ATTR);
+    };
+
+    /**
+     * Get the role attribute dropdown
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getRoleAttributeDropdown(): Cypress.Chainable<Element> {
+        return cy.dataTestId(ApplicationEditPageConstants.ROLE_ATTRIBUTE_DROPDOWN_DATA_ATTR);
+    };
 }

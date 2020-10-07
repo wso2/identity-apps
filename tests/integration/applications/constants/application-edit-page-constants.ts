@@ -62,6 +62,20 @@ export class ApplicationEditPageConstants {
         "protocol-accordion-oidc-title";
     public static readonly OIDC_PROTOCOL_ACCORDION_ITEM_CHEVRON_DATA_ATTR: string = "application-edit-access-" +
         "settings-protocol-accordion-oidc-title-chevron";
+    
+    //Attribute selection
+    public static readonly ATTRIBUTE_SELECTION_LIST_DATA_ATTR: string = "application-edit-attribute-settings-" +
+        "attribute-selection";
+    public static readonly SUBJECT_ATTRIBUTE_DROPDOWN_DATA_ATTR: string = "application-edit-attribute-settings-" +
+        "advanced-attribute-settings-form-subject-attribute-dropdown";
+    public static readonly INCLUDE_USERSTORE_CHECKBOX_DATA_ATTR: string = "application-edit-attribute-settings-" +
+        "advanced-attribute-settings-form-subject-iInclude-user-domain-checkbox";
+    public static readonly INCLUDE_TENANT_DOMAIN_CHECKBOX_DATA_ATTR: string = "application-edit-attribute-settings-" +
+        "advanced-attribute-settings-form-subject-include-tenant-domain-checkbox";
+    public static readonly USED_MAPPED_LOCAL_SUBJECT_CHECKBOX_DATA_ATTR: string = "application-edit-attribute-" +
+        "settings-advanced-attribute-settings-form-subject-use-mapped-local-subject-checkbox";
+    public static readonly ROLE_ATTRIBUTE_DROPDOWN_DATA_ATTR: string = "application-edit-attribute-settings-" +
+        "advanced-attribute-settings-form-role-attribute-dropdown";
 
     // General Settings Form
     public static readonly APP_NAME_INPUT_DATA_ATTR: string = "application-edit-general-settings-" +
