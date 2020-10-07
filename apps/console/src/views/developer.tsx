@@ -16,9 +16,11 @@
  * under the License.
  */
 
-import { ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
+import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
+import { initializeAlertSystem } from "@wso2is/core/store";
 import { RouteUtils } from "@wso2is/core/utils";
 import {
+    Alert,
     ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
     SidePanel,
@@ -36,6 +38,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
+import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
@@ -44,7 +47,7 @@ import { Footer, Header, ProtectedRoute } from "../features/core/components";
 import { SidePanelMiscIcons, getDeveloperViewRoutes } from "../features/core/configs";
 import { UIConstants } from "../features/core/constants";
 import { history } from "../features/core/helpers";
-import { FeatureConfigInterface } from "../features/core/models";
+import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
 import { AppState } from "../features/core/store";
 import { AppUtils } from "../features/core/utils";
 
@@ -78,8 +81,11 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
     const dispatch = useDispatch();
 
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
+    const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
@@ -232,8 +238,27 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         return resolvedRoutes;
     };
 
+    /**
+     * Handles alert system initialize.
+     *
+     * @param system - Alert system object.
+     */
+    const handleAlertSystemInitialize = (system) => {
+        dispatch(initializeAlertSystem(system));
+    };
+
     return (
         <DashboardLayoutSkeleton
+            alert={ (
+                <Alert
+                    dismissInterval={ UIConstants.ALERT_DISMISS_INTERVAL }
+                    alertsPosition="br"
+                    alertSystem={ alertSystem }
+                    alert={ alert }
+                    onAlertSystemInitialize={ handleAlertSystemInitialize }
+                    withIcon={ true }
+                />
+            ) }
             topLoadingBar={ (
                 <TopLoadingBar
                     height={ UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT }
