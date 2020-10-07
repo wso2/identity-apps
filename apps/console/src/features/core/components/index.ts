@@ -25,4 +25,3 @@ export * from "./protected-route";
 export * from "./upload-certificate";
 export * from "./groups";
 export * from "./roles";
-export * from "./alert-wrapper";
