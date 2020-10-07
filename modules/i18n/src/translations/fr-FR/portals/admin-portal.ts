@@ -1113,6 +1113,12 @@ export const adminPortal: AdminPortalNS = {
                         message: "Groupe supprimé avec succès"
                     }
                 },
+                fetchGroups: {
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la récupération des groupes.",
+                        message: "Quelque chose s'est mal passé"
+                    }
+                },
                 updateGroup: {
                     error: {
                         description: "{{description}}",
@@ -1126,6 +1132,16 @@ export const adminPortal: AdminPortalNS = {
                         description: "Le groupe sélectionné a été mis à jour avec succès.",
                         message: "Groupe mis à jour avec succès"
                     }
+                }
+            },
+            placeholders: {
+                groupsError: {
+                    subtitles: [
+                        "Une erreur s'est produite lors de la tentative de récupération des groupes depuis le " +
+                        "magasin de l'utilisateur.",
+                        "Veuillez vous assurer que les détails de connexion de l'utilisateur sont exacts."
+                    ],
+                    title:"Impossible de récupérer les groupes depuis le magasin d'utilisateur"
                 }
             }
         },

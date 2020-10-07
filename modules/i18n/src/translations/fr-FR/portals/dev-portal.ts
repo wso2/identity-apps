@@ -1896,6 +1896,7 @@ export const devPortal: DevPortalNS = {
                     }
                 },
                 common: {
+                    customProperties: "Propriétés personnalisées",
                     invalidQueryParamErrorMessage: "Ce ne sont pas des paramètres de requête valables",
                     invalidURLErrorMessage: "Ceci n'est pas une URL valide",
                     requiredErrorMessage: "Ceci est requis"
