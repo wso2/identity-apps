@@ -16,8 +16,13 @@
  * under the License.
  */
 
-export * from "./en-US";
-export * from "./fr-FR";
-export * from "./pt-BR";
-export * from "./si-LK";
-export * from "./ta-IN";
+import * as portals from "./portals";
+import { LocaleBundle } from "../../models";
+import { meta } from "./meta";
+
+export const FR_FR: LocaleBundle = {
+    meta,
+    resources: {
+        portals
+    }
+};

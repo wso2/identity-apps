@@ -16,8 +16,8 @@
  * under the License.
  */
 
-export * from "./en-US";
-export * from "./fr-FR";
-export * from "./pt-BR";
-export * from "./si-LK";
-export * from "./ta-IN";
+export * from "./admin-portal";
+export * from "./dev-portal";
+export * from "./common";
+export * from "./console";
+export * from "./user-portal";

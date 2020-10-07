@@ -16,13 +16,13 @@
   ~ under the License.
 --%>
 
-<!-- localize.jsp MUST already be included in the calling script -->
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ include file="localize.jsp" %>
 
 <!-- footer -->
 <footer class="footer" style="text-align: center">
     <div class="container-fluid">
-        <p>WSO2 Identity Server | &copy;
+        <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%> | &copy;
             <script>document.write(new Date().getFullYear());</script>
         </p>
     </div>

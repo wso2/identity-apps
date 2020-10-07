@@ -331,7 +331,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 className="generate-password-button"
                                 onClick={ generateRandomPassword }
                                 type="button"
-                                value="Generate Password"
+                                value={ t("common:generatePassword") }
                                 icon="random"
                             />
                         </Grid.Column>

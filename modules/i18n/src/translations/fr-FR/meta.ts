@@ -16,8 +16,18 @@
  * under the License.
  */
 
-export * from "./en-US";
-export * from "./fr-FR";
-export * from "./pt-BR";
-export * from "./si-LK";
-export * from "./ta-IN";
+import { I18nModuleConstants } from "../../constants";
+import { LocaleMeta } from "../../models";
+
+export const meta: LocaleMeta = {
+    code: "fr-FR",
+    flag: "fr",
+    name: "Français (France)",
+    namespaces: [
+        I18nModuleConstants.ADMIN_PORTAL_NAMESPACE,
+        I18nModuleConstants.COMMON_NAMESPACE,
+        I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
+        I18nModuleConstants.DEV_PORTAL_NAMESPACE,
+        I18nModuleConstants.USER_PORTAL_NAMESPACE
+    ]
+};

@@ -17,12 +17,13 @@
   --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ include file="includes/localize.jsp" %>
 <%
     request.getSession().invalidate();
     String queryString = request.getQueryString();
@@ -31,7 +32,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String errorMessage = "Authentication Failed! Please Retry";
+    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
     String authenticationFailed = "false";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -41,20 +42,20 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = "Authentication Failed! Please Retry";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
             } else if (errorMessage.equalsIgnoreCase("unable.send.code")) {
-                errorMessage = "Unable to send code to your email address";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.send.email");
             } else if (errorMessage.equalsIgnoreCase("code.mismatch")) {
-                errorMessage = "The code entered is incorrect. Authentication Failed!";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.code.incorrect");
             } else if (errorMessage.equalsIgnoreCase("emailotp.disable")) {
-                errorMessage = "Enable the Email OTP in your Profile. Cannot proceed further without Email OTP authentication.";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.emailOTP.disabled");
             } else if (errorMessage.equalsIgnoreCase("directly.send.otp.disable")) {
-                errorMessage = "User not found in the directory. Cannot proceed further without Email OTP authentication.";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.not.found");
             } else if (errorMessage.equalsIgnoreCase("user.account.locked")) {
-                errorMessage = "User account is locked. Please retry later.";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.account.locked");
                 String unlockTime = request.getParameter("unlockTime");
                 if (unlockTime != null) {
-                    errorMessage = String.format("User account is locked. Please retry after %s minutes.", unlockTime);
+                    errorMessage = String.format(IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.user.account.temporarly.locked"), unlockTime);
                 }
             }
         }
@@ -94,7 +95,7 @@
 
           <div class="ui segment">
             <!-- page content -->
-            <h2>Failed Authentication with EmailOTP</h2>
+            <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.emailOTP.title")%></h2>
             <div class="ui divider hidden"></div>
               <%
                 if ("true".equals(authenticationFailed)) {

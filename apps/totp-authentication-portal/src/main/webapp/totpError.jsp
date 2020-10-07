@@ -21,12 +21,13 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
+<%@ include file="includes/localize.jsp" %>
 
-<fmt:bundle basename="org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources">
     <%
         request.getSession().invalidate();
         String queryString = request.getQueryString();
@@ -35,7 +36,7 @@
             idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
         }
 
-        String errorMessage = "Authentication Failed!";
+        String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.fail");
         String authenticationFailed = "false";
 
         if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -45,7 +46,7 @@
                 errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
                  if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                    errorMessage = "Authentication Failed!";
+                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.fail");
                 }
             }
         }
@@ -87,14 +88,14 @@
 
                     <div class="ui segment">
                         <!-- page content -->
-                        <h2>Authentication Failed!</h2>
+                        <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.fail")%></h2>
                         <div class="segment-form">
                             <form class="ui large form">
                                 <div class="field">
                                 </div>
                                 <div class="ui negative message" id="failed-msg">
-                                        Enable the TOTP in your Profile. Cannot proceed further without TOTP authentication.
-                                </div>
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.totp.not.enabled")%>
+                                </div>                        
                             </form>
                         </div>
                     </div>
@@ -122,4 +123,3 @@
             <% } %>
         </body>
     </html>
-</fmt:bundle>
