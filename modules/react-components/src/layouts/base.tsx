@@ -36,11 +36,15 @@ export interface BaseLayoutInterface {
      * Top loading bar.
      */
     topLoadingBar?: ReactNode;
+    /**
+     * Alerting component.
+     */
+    alert?: ReactNode;
 }
 
 /**
  * Base layout.
- * This layout contains top loader and can be used by any other
+ * This layout contains the alert & top loader and can be used by any other
  * layout to inherit them.
  *
  * @param {React.PropsWithChildren<BaseLayoutInterface>} props - Props injected to the component.
@@ -52,6 +56,7 @@ export const BaseLayout: FunctionComponent<PropsWithChildren<BaseLayoutInterface
 ): ReactElement => {
 
     const {
+        alert,
         children,
         className,
         fluid,
@@ -68,6 +73,7 @@ export const BaseLayout: FunctionComponent<PropsWithChildren<BaseLayoutInterface
         <Container className={ classes } fluid={ fluid }>
             { topLoadingBar }
             { children }
+            { alert }
         </Container>
     );
 };

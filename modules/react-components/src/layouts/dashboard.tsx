@@ -67,6 +67,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
 ): ReactElement => {
 
     const {
+        alert,
         children,
         className,
         footer,
@@ -88,6 +89,7 @@ export const DashboardLayout: FunctionComponent<PropsWithChildren<DashboardLayou
 
     return (
         <BaseLayout
+            alert={ alert }
             topLoadingBar={ topLoadingBar }
         >
             <Responsive
