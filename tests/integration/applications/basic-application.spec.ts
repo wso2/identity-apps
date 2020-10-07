@@ -147,7 +147,7 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
             applicationEditPage.selectTab("ACCESS");
         });
 
-        it("ITC-2.3.1 - [applications] - Content renders properly.", () => {
+        it("ITC-2.4.1 - [applications] - Content renders properly.", () => {
             applicationEditPage.getProtocolAccordion().should("be.visible");
             applicationEditPage.getProtocolAddButton().should("be.visible");
 
