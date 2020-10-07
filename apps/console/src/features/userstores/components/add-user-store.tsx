@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -87,6 +87,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
     const { t } = useTranslation();
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     useEffect(() => {
         type && setProperties(reOrganizeProperties(type.properties));
     }, [ type ]);
@@ -119,13 +121,13 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch(error => {
-            dispatch(addAlert({
+            setAlert({
                 description: error?.description ?? t("adminPortal:components.userstores.notifications.addUserstore" +
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t("adminPortal:components.userstores.notifications.addUserstore" +
                     ".genericError.message")
-            }));
+            });
         });
     };
 

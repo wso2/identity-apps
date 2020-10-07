@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -76,6 +76,8 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
     const { t } = useTranslation();
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     /**
      * Submit handler that sends the API request to add the local claim.
      */
@@ -106,14 +108,14 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 update();
             });
         }).catch(error => {
-            dispatch(addAlert({
+            setAlert({
                 description: error?.description
                     || t("adminPortal:components.claims.dialects.notifications." +
                         "addDialect.error.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message
                     || t("adminPortal:components.claims.dialects.notifications.addDialect.error.message")
-            }));
+            });
         })
     };
 
@@ -231,6 +233,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

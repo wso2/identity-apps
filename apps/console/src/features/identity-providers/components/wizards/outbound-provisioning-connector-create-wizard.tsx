@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -105,6 +105,8 @@ export const OutboundProvisioningConnectorCreateWizard:
     const [ defaultConnector, setDefaultConnector ] =
         useState<OutboundProvisioningConnectorListItemInterface>(undefined);
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     /**
      * At the initial load, select the first item from the connector list so that the
      * metadata could be loaded.
@@ -176,24 +178,24 @@ export const OutboundProvisioningConnectorCreateWizard:
         })
             .catch(error => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications." +
                             "getOutboundProvisioningConnectorsList.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
                         "genericError.message")
-                }));
+                });
             });
     }, []);
 
@@ -390,6 +392,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions data-testid={ `${ testId }-modal-actions` }>

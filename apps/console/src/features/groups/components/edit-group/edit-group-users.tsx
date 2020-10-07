@@ -28,7 +28,8 @@ import {
     TransferComponent,
     TransferList,
     TransferListItem,
-    UserAvatar
+    UserAvatar,
+    useWizardAlert
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -73,6 +74,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<UserBasicInterface[]>([]);
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     useEffect(() => {
         if (isSelectAllUnAssignedUsers) {
@@ -280,11 +283,11 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 }));
                 onGroupUpdate(group.id);
             }).catch(() => {
-                dispatch(addAlert({
+                setAlert({
                     description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
                     level: AlertLevels.ERROR,
                     message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
-                }));
+                });
             });
     };
 
@@ -309,6 +312,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
+                { alert && alertComponent }
                 <TransferComponent
                     data-testid={ `${ testId }-user-list-transfer` }
                     searchPlaceholder={ t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list." +

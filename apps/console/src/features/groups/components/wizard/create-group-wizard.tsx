@@ -20,7 +20,7 @@ import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -100,6 +100,8 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const [ initialRoleList, setInitialRoleList ] = useState<RolesInterface[]>([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState<RolesInterface[]>([]);
     const [ isEnded, setEnded ] = useState<boolean>(false);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -229,40 +231,34 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                         updateRole(roleId, roleData)
                             .catch(error => {
                                 if (!error.response || error.response.status === 401) {
-                                    dispatch(
-                                        addAlert({
-                                            description: t("adminPortal:components.groups.notifications." +
-                                                "createPermission." +
-                                                "error.description"),
-                                            level: AlertLevels.ERROR,
-                                            message: t("adminPortal:components.groups.notifications.createPermission." +
-                                                "error.message")
-                                        })
-                                    );
+                                    setAlert({
+                                        description: t("adminPortal:components.groups.notifications." +
+                                            "createPermission." +
+                                            "error.description"),
+                                        level: AlertLevels.ERROR,
+                                        message: t("adminPortal:components.groups.notifications.createPermission." +
+                                            "error.message")
+                                    });
                                 } else if (error.response && error.response.data.detail) {
-                                    dispatch(
-                                        addAlert({
-                                            description: t("adminPortal:components.groups.notifications." +
-                                                "createPermission." +
-                                                "error.description",
-                                                { description: error.response.data.detail }),
-                                            level: AlertLevels.ERROR,
-                                            message: t("adminPortal:components.groups.notifications.createPermission." +
-                                                "error.message")
-                                        })
-                                    );
+                                    setAlert({
+                                        description: t("adminPortal:components.groups.notifications." +
+                                            "createPermission." +
+                                            "error.description",
+                                            { description: error.response.data.detail }),
+                                        level: AlertLevels.ERROR,
+                                        message: t("adminPortal:components.groups.notifications.createPermission." +
+                                            "error.message")
+                                    });
                                 } else {
-                                    dispatch(
-                                        addAlert({
-                                            description: t("adminPortal:components.groups.notifications." +
-                                                "createPermission." +
-                                                "genericError.description"),
-                                            level: AlertLevels.ERROR,
-                                            message: t("adminPortal:components.groups.notifications.createPermission." +
-                                                "genericError." +
-                                                "message")
-                                        })
-                                    );
+                                    setAlert({
+                                        description: t("adminPortal:components.groups.notifications." +
+                                            "createPermission." +
+                                            "genericError.description"),
+                                        level: AlertLevels.ERROR,
+                                        message: t("adminPortal:components.groups.notifications.createPermission." +
+                                            "genericError." +
+                                            "message")
+                                    });
                                 }
                             });
                     }
@@ -487,6 +483,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { WIZARD_STEPS[ currentStep ].content }
             </Modal.Content>
             <Modal.Actions>

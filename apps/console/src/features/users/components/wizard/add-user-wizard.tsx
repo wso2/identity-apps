@@ -20,7 +20,7 @@ import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -109,6 +109,8 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ viewRolePermissions, setViewRolePermissions ] = useState<boolean>(false);
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -272,7 +274,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 updateRoleDetails(roleId, roleData)
                     .catch((error) => {
                         if (!error.response || error.response.status === 401) {
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description"
                                 ),
@@ -280,10 +282,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else if (error.response && error.response.data && error.response.data.detail) {
 
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description",
                                     { description: error.response.data.detail }
@@ -292,10 +294,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else {
                             // Generic error message
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.description"
                                 ),
@@ -303,7 +305,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.message"
                                 )
-                            }));
+                            });
                         }
                     });
             }
@@ -318,7 +320,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 updateGroupDetails(groupId, groupData)
                     .catch((error) => {
                         if (!error.response || error.response.status === 401) {
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description"
                                 ),
@@ -326,10 +328,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else if (error.response && error.response.data && error.response.data.detail) {
 
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description",
                                     { description: error.response.data.detail }
@@ -338,10 +340,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else {
                             // Generic error message
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.description"
                                 ),
@@ -349,7 +351,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.message"
                                 )
-                            }));
+                            });
                         }
                     });
             }
@@ -632,6 +634,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

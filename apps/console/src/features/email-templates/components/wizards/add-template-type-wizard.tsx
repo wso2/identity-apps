@@ -19,7 +19,7 @@
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, useWizardAlert } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -60,6 +60,8 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
     const [ currentStep, setCurrentWizardStep ] = useState<number>(0);
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     const handleFormSubmit = (values: any): void => {
         createTemplateType(values.templateType);
     };
@@ -89,16 +91,17 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                     }));
                 }
 
-                history.push(AppConstants.getPaths().get("EMAIL_TEMPLATES").replace(":templateTypeId", response.data?.id));
+                history.push(
+                    AppConstants.getPaths().get("EMAIL_TEMPLATES").replace(":templateTypeId", response.data?.id));
                 onCloseHandler();
             })
             .catch(error => {
-                dispatch(addAlert<AlertInterface>({
+                setAlert({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
                     message: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
                         ".genericError.message")
-                }));
+                });
             })
     };
 
@@ -120,6 +123,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                 </Heading>
             </Modal.Header>
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { WIZARD_STEPS[ currentStep ].content }
             </Modal.Content>
             <Modal.Actions>
