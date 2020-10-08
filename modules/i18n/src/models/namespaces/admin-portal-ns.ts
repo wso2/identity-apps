@@ -469,6 +469,23 @@ export interface AdminPortalNS {
             };
         };
         emailTemplateTypes: {
+            advancedSearch: {
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: string;
+                        };
+                        filterCondition: {
+                            placeholder: string;
+                        };
+                        filterValue: {
+                            placeholder: string;
+                        };
+                    };
+                };
+                placeholder: string;
+                error: string;
+            };
             buttons: {
                 createTemplateType: string;
                 deleteTemplate: string;
@@ -496,6 +513,7 @@ export interface AdminPortalNS {
                 createTemplateType: Notification;
             };
             placeholders: {
+                emptySearch: Placeholder;
                 emptyList: Placeholder;
             };
             wizards: {
@@ -869,7 +887,7 @@ export interface AdminPortalNS {
                             group: string;
                         };
                         permissions: string;
-                        roleName:  string;
+                        roleName: string;
                         users: string;
                     };
                 };

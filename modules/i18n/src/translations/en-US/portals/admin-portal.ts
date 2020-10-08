@@ -743,6 +743,23 @@ export const adminPortal: AdminPortalNS = {
             }
         },
         emailTemplateTypes: {
+            advancedSearch: {
+                error: "Filter query format incorrect",
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "E.g. Name etc."
+                        },
+                        filterCondition: {
+                            placeholder: "E.g. Starts with etc."
+                        },
+                        filterValue: {
+                            placeholder: "E.g. TOTP, passwordResetSuccess etc."
+                        }
+                    }
+                },
+                placeholder: "Search by email template type"
+            },
             buttons: {
                 createTemplateType: "Create Template Type",
                 deleteTemplate: "Delete Template",
@@ -844,6 +861,12 @@ export const adminPortal: AdminPortalNS = {
                         2: "clicking on the button below."
                     },
                     title: "Add new Template Type"
+                },
+                emptySearch: {
+                    action: "Clear search query",
+                    subtitles: "We couldn't find any results for {{searchQuery}}. "
+                        + "Please try a different search term.",
+                    title: "No results found"
                 }
             },
             wizards: {
