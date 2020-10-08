@@ -31,10 +31,11 @@
             request.getRequestDispatcher("username-recovery.jsp").forward(request, response);
         }
     } else {
-        if (enableMultiTenancy) {
+        /*if (enableMultiTenancy) {
             request.getRequestDispatcher("password-recovery-username-request.jsp").forward(request, response);
         } else {
             request.getRequestDispatcher("password-recovery.jsp").forward(request, response);
-        }
+        }*/
+        request.getRequestDispatcher("password-recovery-with-claims.jsp").forward(request, response);
     }
 %>
