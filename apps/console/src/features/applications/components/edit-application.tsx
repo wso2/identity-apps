@@ -157,10 +157,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return;
         }
 
-        setTabPaneExtensions(ComponentExtensionPlaceholder({ 
-            component: "application", 
-            subComponent: "edit", 
-            type: "tab" 
+        setTabPaneExtensions(ComponentExtensionPlaceholder({
+            component: "application",
+            subComponent: "edit",
+            type: "tab"
         })) ;
     }, [tabPaneExtensions]);
 
@@ -217,7 +217,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         let protocolConfigs: any = {};
         const selectedProtocolList: string[] = [];
 
-        application.inboundProtocols.map((protocol) => {
+        application.inboundProtocols.forEach((protocol) => {
+
+            if (protocol.type === "openid") {
+                return;
+            }
 
             const protocolName = mapProtocolTypeToName(protocol.type);
 
