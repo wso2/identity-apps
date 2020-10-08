@@ -24,12 +24,9 @@
         "start": "run-script-os",
         "start:win32": "..\\..\\node_modules\\.bin\\webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
         "start:default": "../../node_modules/.bin/webpack-dev-server --env.NODE_ENV=development --inline --hot --open",
-        "test": "../../node_modules/.bin/jest --passWithNoTests"
+        "test": "jest --passWithNoTests"
     },
     "dependencies": {
-        "@testing-library/dom": "^7.24.3",
-        "@testing-library/user-event": "^12.1.6",
-        "@types/jest": "^26.0.14",
         "@wso2is/core": "^1.0.445",
         "@wso2is/forms": "^1.0.445",
         "@wso2is/i18n": "^1.0.445",
@@ -37,15 +34,18 @@
         "@wso2is/theme": "^1.0.445",
         "@wso2is/validation": "^1.0.445",
         "country-language": "^0.1.7",
+        "redux-mock-store": "^1.5.4"
+    },
+    "devDependencies": {
+        "@testing-library/dom": "^7.24.3",
+        "@testing-library/user-event": "^12.1.6",
+        "@types/jest": "^26.0.14",
+        "eslint-plugin-node": "^11.0.0",
         "jest": "^26.4.2",
         "jest-environment-jsdom": "^26.3.0",
         "jest-environment-jsdom-global": "^2.0.4",
-        "redux-mock-store": "^1.5.4",
+        "run-script-os": "^1.0.7",
         "ts-jest": "^26.4.0"
-    },
-    "devDependencies": {
-        "eslint-plugin-node": "^11.0.0",
-        "run-script-os": "^1.0.7"
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
