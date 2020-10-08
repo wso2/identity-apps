@@ -22,6 +22,7 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    LinkButton,
     PrimaryButton,
     TableActionsInterface,
     TableColumnInterface
@@ -29,7 +30,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, UIConstants, history } from "../../../core";
+import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../../core";
 import { EmailTemplateIllustrations } from "../../configs";
 import { EmailTemplateType } from "../../models";
 
@@ -66,6 +67,14 @@ interface EmailTemplateListPropsInterface extends LoadableComponentInterface, Te
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * Search query
+     */
+    searchQuery?: boolean;
+    /**
+     * Callback for the search query clear action.
+     */
+    onSearchQueryClear?: () => void;
 }
 
 /**
@@ -86,7 +95,9 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
         templateTypeList: templateList,
         onDelete,
         onEmptyListPlaceholderActionClick,
+        onSearchQueryClear,
         selection,
+        searchQuery,
         showListItemActions,
         [ "data-testid" ]: testId
     } = props;
@@ -106,6 +117,26 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
      * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
+        if (searchQuery) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ onSearchQueryClear }>
+                            { t("adminPortal:components.emailTemplateTypes.placeholders.emptySearch.action") }
+                        </LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ t("adminPortal:components.emailTemplateTypes.placeholders.emptySearch.title") }
+                    subtitle={ [
+                        t("adminPortal:components.emailTemplateTypes.placeholders.emptySearch.action", {
+                            searchQuery: searchQuery
+                        })
+                    ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
+                />
+            );
+        }
         if (templateList?.length === 0) {
             return (
                 <EmptyPlaceholder
