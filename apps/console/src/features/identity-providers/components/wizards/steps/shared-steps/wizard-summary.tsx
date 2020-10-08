@@ -95,7 +95,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 } key={ eachProp?.key }
                               data-testid={ `${ testId }-${ eachProp?.key }` }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div className="label">{ propertyMetadata?.displayName }</div>
+                            <div className="label">{ propertyMetadata?.displayName ?? eachProp?.key }</div>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                             <div className="value url" data-testid={ `${ testId }-${ eachProp?.key }` }>

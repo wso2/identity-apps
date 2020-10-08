@@ -85,18 +85,18 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 });
             }
 
-            const customProperties = values.get("customProperties")?.toString()?.split(",")
-                ?.map((customProperty: string) => {
-                    const keyValuePair = customProperty.split("=");
-                    return {
-                        key: keyValuePair[ 0 ],
-                        value: keyValuePair[ 1 ]
-                    }
-                });
-
-            customProperties?.length>0 && properties.push(...customProperties);
-
         });
+
+        const customProperties = values.get("customProperties")?.toString()?.split(",")
+            ?.map((customProperty: string) => {
+                const keyValuePair = customProperty.split("=");
+                return {
+                    key: keyValuePair[ 0 ],
+                    value: keyValuePair[ 1 ]
+                };
+            });
+
+        customProperties?.length > 0 && properties.push(...customProperties);
 
         if (initialValues?.properties) {
             return {
@@ -198,7 +198,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const getCustomProperties = (): string => {
         const values: string[] = [];
-        initialValues.properties.forEach(
+        initialValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
             if (!metadata?.properties?.find(meta => meta.key === property.key)) {
                 values.push(property.key+"="+property.value);

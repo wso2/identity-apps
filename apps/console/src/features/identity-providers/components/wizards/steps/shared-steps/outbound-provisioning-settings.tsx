@@ -81,7 +81,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
             ? (
                 <OutboundProvisioningConnectorFormFactory
                     metadata={ metadata }
-                    initialValues={ defaultConnector }
+                    initialValues={ initialValues }
                     onSubmit={ handleSubmit }
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ false }
