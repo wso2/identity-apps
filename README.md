@@ -84,6 +84,13 @@ regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logo
 ```
 
 7. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+
+   > **_Note:-_** 
+   >  
+   > To build a single package/app, you can use this command: `npx lerna bootstrap --scope <package-name> && npx lerna run --scope <package-name> build`.   
+   >
+   > E.g. `npx lerna bootstrap --scope @wso2is/myaccount && npx lerna run --scope @wso2is/myaccount build`
+
 8. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
 9. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
 
