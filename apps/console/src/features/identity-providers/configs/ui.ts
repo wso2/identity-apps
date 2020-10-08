@@ -121,6 +121,7 @@ export const ConnectorIcons = {
 };
 
 export const IdPIcons = {
+    default: AuthenticationCapabilityIcon,
     emailOTP: EmailOTPIcon,
     expert: ExpertModeIdPIcon,
     facebook: FacebookIdPIcon,
