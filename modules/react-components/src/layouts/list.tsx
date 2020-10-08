@@ -100,6 +100,12 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      * Total size of the list.
      */
     totalListSize?: number;
+    /**
+     * Callback for items per page change.
+     * @param {React.SyntheticEvent<HTMLElement>} event - Click event.
+     * @param {DropdownProps} data - Data.
+     */
+    onItemsPerPageDropdownChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
 }
 
 /**
@@ -120,6 +126,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         className,
         leftActionPanel,
         listItemLimit,
+        onItemsPerPageDropdownChange,
         onPageChange,
         onSortStrategyChange,
         onSortOrderChange,
@@ -228,6 +235,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 totalListSize={ totalListSize }
                                 totalPages={ totalPages }
                                 onPageChange={ onPageChange }
+                                onItemsPerPageDropdownChange={ onItemsPerPageDropdownChange }
                             />
                         )
                         : null
