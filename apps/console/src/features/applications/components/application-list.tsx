@@ -352,7 +352,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             );
         }
 
-        if (list?.totalResults === 0) {
+        if (list?.totalResults === 0
+            || (list?.applications?.find(app => app.name === "wso2carbon-local-sp") && list?.totalResults === 1)) {
             return (
                 <EmptyPlaceholder
                     action={ onEmptyListPlaceholderActionClick && (
