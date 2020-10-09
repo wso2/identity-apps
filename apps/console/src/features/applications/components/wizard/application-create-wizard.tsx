@@ -60,6 +60,7 @@ import {
 } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import {
+    CUSTOM_APPLICATION_TEMPLATE_ID,
     OAuthProtocolTemplate,
     OAuthProtocolTemplateItem,
     PassiveStsProtocolTemplate,
@@ -466,7 +467,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     />
                 );
             case WizardStepsFormTypes.GENERAL_SETTINGS:
-                if (selectedTemplate.id === "custom-application") {
+                if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
                     return (
                         <GeneralSettingsWizardForm
                             triggerSubmit={ submitGeneralSettings }
@@ -609,7 +610,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      */
     useEffect(() => {
         if (selectedTemplate) {
-            if (selectedTemplate.id === "custom-application") {
+            if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
                 const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
                 setWizardSteps(NEW_STEPS.splice(1, 1));
             } else {

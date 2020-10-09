@@ -16,16 +16,22 @@
  * under the License.
  */
 
-import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
+import { ApplicationTemplateCategories, ApplicationTemplateInterface } from "../../models";
 
-export const CustomApplicationTemplate: ApplicationTemplateListItemInterface = {
+export const CUSTOM_APPLICATION_TEMPLATE_ID: string = "custom-application";
+
+export const CustomApplicationTemplate: ApplicationTemplateInterface = {
+    application: undefined,
     authenticationProtocol: "",
-    category: ApplicationTemplateCategories.DEFAULT_CUSTOM,
+    category: ApplicationTemplateCategories.MANUAL,
     description: "Manually configure the inbound authentication protocol, authentication flow, etc.",
     displayOrder: 0,
     id: "custom-application",
     image: "customApp",
     name: "Custom Application",
     self: "",
+    subTemplates: [],
+    subTemplatesSectionTitle: "",
+    templateGroup: "",
     types: []
 };
