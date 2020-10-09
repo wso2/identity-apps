@@ -68,7 +68,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     } = props;
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ passwordOption, setPasswordOption ] = useState(initialValues && initialValues.passwordOption);
+    const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
     const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
     const [ isUsernamePatternValid, setIsUsernamePatternValid ] = useState<boolean>(true);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
@@ -551,7 +551,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 default="createPw"
                                 listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
                                 children={ passwordOptions }
-                                value={ initialValues && initialValues.passwordOption }
+                            value={ initialValues?.passwordOption ?? "createPw" }
                             />
                         </Grid.Column>
                     </Grid.Row>

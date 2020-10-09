@@ -618,6 +618,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.user.modals.addUserWizard.title") }
+                {
+                    wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                    ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                    : ""
+                }
                 <Heading as="h6">{ t("adminPortal:components.user.modals.addUserWizard.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">

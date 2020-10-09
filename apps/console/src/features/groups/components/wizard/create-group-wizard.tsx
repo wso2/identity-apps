@@ -463,6 +463,11 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 {
                     t("adminPortal:components.roles.addRoleWizard.heading", { type: "Group" })
                 }
+                {
+                    wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.groupName
+                        ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.groupName
+                        :""
+                }
                 <Heading as="h6">
                     {
                         t("adminPortal:components.roles.addRoleWizard.subHeading", { type: "group" })
