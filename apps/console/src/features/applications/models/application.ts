@@ -292,7 +292,7 @@ export enum ApplicationTemplateCategories {
      */
     DEFAULT = "DEFAULT",
     /**
-     * FOr default templates groups.
+     * For default templates groups.
      * ex: web-application, mobile, desktop etc.
      * @type {string}
      */
@@ -307,7 +307,7 @@ export enum ApplicationTemplateCategories {
      * Templates added manually which are not available in the API.
      * @type {string}
      */
-    DEFAULT_CUSTOM = "DEFAULT_CUSTOM"
+    MANUAL = "MANUAL"
 }
 
 /**

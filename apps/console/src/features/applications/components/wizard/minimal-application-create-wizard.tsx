@@ -35,7 +35,12 @@ import { Grid } from "semantic-ui-react";
 import { GenericMinimalWizardFormHelp } from "./help";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
-import { ApplicationListInterface, getApplicationList } from "../..";
+import {
+    ApplicationListInterface,
+    CUSTOM_APPLICATION_TEMPLATE_ID,
+    CustomApplicationTemplate,
+    getApplicationList
+} from "../..";
 import {
     AppConstants,
     CORSOriginsListInterface,
@@ -71,6 +76,10 @@ interface MinimalApplicationCreateWizardPropsInterface extends TestableComponent
      * Callback to update the application details.
      */
     onUpdate?: (id: string) => void;
+    /**
+     * Flag to show/hide help panel.
+     */
+    showHelpPanel?: boolean;
 }
 
 /**
@@ -86,6 +95,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         title,
         closeWizard,
         template,
+        showHelpPanel,
         subTemplates,
         subTemplatesSectionTitle,
         subTitle,
@@ -109,6 +119,11 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
 
     useEffect(() => {
+        // Stop fetching CORS origins if the selected template is `Expert Mode`.
+        if (!selectedTemplate || selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+            return;
+        }
+
         const allowedCORSOrigins = [];
         getCORSOrigins()
             .then((response: CORSOriginsListInterface[]) => {
@@ -118,13 +133,19 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             });
 
         setAllowedOrigins(allowedCORSOrigins);
-    }, []);
+    }, [ selectedTemplate ]);
 
     /**
      * On sub-template change set the selected template to the first,
      * and load template details.
      */
     useEffect(() => {
+        // Stop fetching template details if the selected template is `Expert Mode`.
+        if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+            setTemplateSettings(CustomApplicationTemplate);
+            return;
+        }
+
         if (isEmpty(subTemplates) || !Array.isArray(subTemplates) || subTemplates.length < 1) {
             loadTemplateDetails(template.id);
             return;
@@ -139,7 +160,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      * main form, it triggers the submit of the protocol form.
      */
     useEffect(() => {
-        if (!protocolFormValues) {
+        if (!protocolFormValues && !generalFormValues) {
             return;
         }
 
@@ -217,7 +238,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     })
                 );
             });
-    }, [ protocolFormValues ]);
+    }, [ protocolFormValues, generalFormValues ]);
 
     /**
      * Close the wizard.
@@ -455,17 +476,22 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     </Grid>
                 </ModalWithSidePanel.Actions>
             </ModalWithSidePanel.MainPanel>
-            <ModalWithSidePanel.SidePanel>
-                <ModalWithSidePanel.Header className="wizard-header muted">
-                    { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help.heading") }
-                    <Heading as="h6">
-                        { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help.subHeading") }
-                    </Heading>
-                </ModalWithSidePanel.Header>
-                <ModalWithSidePanel.Content>
-                    <GenericMinimalWizardFormHelp template={ selectedTemplate } parentTemplate={ template } />
-                </ModalWithSidePanel.Content>
-            </ModalWithSidePanel.SidePanel>
+            {
+                showHelpPanel && (
+                    <ModalWithSidePanel.SidePanel>
+                        <ModalWithSidePanel.Header className="wizard-header muted">
+                            { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help.heading") }
+                            <Heading as="h6">
+                                { t("devPortal:components.applications.wizards.minimalAppCreationWizard.help" +
+                                    ".subHeading") }
+                            </Heading>
+                        </ModalWithSidePanel.Header>
+                        <ModalWithSidePanel.Content>
+                            <GenericMinimalWizardFormHelp template={ selectedTemplate } parentTemplate={ template } />
+                        </ModalWithSidePanel.Content>
+                    </ModalWithSidePanel.SidePanel> 
+                )
+            }
         </ModalWithSidePanel>
     );
 };
@@ -474,5 +500,6 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
  * Default props for the application creation wizard.
  */
 MinimalAppCreateWizard.defaultProps = {
-    "data-testid": "minimal-application-create-wizard"
+    "data-testid": "minimal-application-create-wizard",
+    showHelpPanel: true
 };
