@@ -399,7 +399,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         claimConfigurations && initializationFinished
             ?
             <>
-                <Grid.Row>
+                <Grid.Row data-testid={ testId }>
                     <Grid.Column computer={ (selectedDialect.localDialect) ? 10 : 8 }>
                         <Heading as="h4">
                             { t("devPortal:components.applications.edit.sections.attributes.selection.heading") }
@@ -409,7 +409,11 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                 <Segment.Group fluid>
                                     <Segment className="user-role-edit-header-segment clearing attributes">
                                         <Grid.Row>
-                                            <Table basic="very" compact>
+                                            <Table
+                                                data-testid={ `${ testId }-action-bar` }
+                                                basic="very"
+                                                compact
+                                            >
                                                 <Table.Body>
                                                     <Table.Row>
                                                         <Table.Cell>
@@ -423,6 +427,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 }
                                                                 floated="left"
                                                                 size="small"
+                                                                data-testid={ `${ testId }-search` }
                                                             />
                                                         </Table.Cell>
                                                         { selectedDialect.localDialect &&
@@ -437,6 +442,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             ".edit.sections.attributes.selection" +
                                                                             ".mappingTable.actions.enable")
                                                                     }
+                                                                    data-testid={ `${ testId }-cliam-mapping-toggle` }
                                                                 />
                                                             </Table.Cell>
                                                         )
@@ -447,6 +453,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                 icon="pencil"
                                                                 floated="right"
                                                                 onClick={ handleOpenSelectionModal }
+                                                                data-testid={ `${ testId }-update-button` }
                                                             />
                                                         </Table.Cell>
                                                     </Table.Row>
@@ -454,11 +461,16 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                             </Table>
                                         </Grid.Row>
                                         <Grid.Row>
-                                            { selectedDialect.localDialect ? (
-                                                    <Table singleLine compact>
+                                            { selectedDialect.localDialect
+                                                ? (
+                                                    <Table
+                                                        singleLine
+                                                        compact
+                                                        data-testid={ `${ testId }-list` }
+                                                    >
                                                         <Table.Header>
-                                                            { claimMappingOn ?
-                                                                (
+                                                            { claimMappingOn
+                                                                ? (
                                                                     <Table.Row>
                                                                         <Table.HeaderCell>
                                                                             <strong>
@@ -505,7 +517,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             </strong>
                                                                         </Table.HeaderCell>
                                                                     </Table.Row>
-                                                                ) :
+                                                                )
+                                                                :
                                                                 (
                                                                     <Table.Row>
                                                                         <Table.HeaderCell>
@@ -577,54 +590,64 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             selectRequested={ updateRequested }
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
+                                                                            data-testid={ claim.claimURI }
                                                                         />
                                                                     )
 
                                                                 })
                                                             }
                                                         </Table.Body>
-                                                    </Table>) :
-                                                (<Table singleLine compact>
-                                                    <Table.Header>
-                                                        <Table.Row>
-                                                            <Table.HeaderCell>
-                                                                <strong>
-                                                                    {
-                                                                        t("devPortal:components.applications" +
-                                                                            ".edit.sections.attributes.selection" +
-                                                                            ".mappingTable.columns.attribute")
-                                                                    }
-                                                                </strong>
-                                                            </Table.HeaderCell>
-                                                            <Table.HeaderCell>
-                                                                <strong>
-                                                                    {
-                                                                        t("devPortal:components.applications" +
-                                                                            ".edit.sections.attributes.selection" +
-                                                                            ".mappingTable.columns.mandatory")
-                                                                    }
-                                                                </strong>
-                                                            </Table.HeaderCell>
-                                                        </Table.Row>
-                                                    </Table.Header>
-                                                    <Table.Body>
-                                                        {
-                                                            filterSelectedExternalClaims?.map((claim) => {
-                                                                return (
-                                                                    <AttributeListItem
-                                                                        key={ claim.id }
-                                                                        claimURI={ claim.claimURI }
-                                                                        displayName={ claim.claimURI }
-                                                                        mappedURI={ claim.mappedLocalClaimURI }
-                                                                        localDialect={ false }
-                                                                        initialMandatory={ claim.mandatory }
-                                                                        selectMandatory={ updateMandatory }
-                                                                    />
-                                                                )
-                                                            })
-                                                        }
-                                                    </Table.Body>
-                                                </Table>)
+                                                    </Table>
+                                                )
+                                                :
+                                                (
+                                                    <Table
+                                                        singleLine
+                                                        compact
+                                                        data-testid={ `${ testId }-list` }
+                                                    >
+                                                        <Table.Header>
+                                                            <Table.Row>
+                                                                <Table.HeaderCell>
+                                                                    <strong>
+                                                                        {
+                                                                            t("devPortal:components.applications" +
+                                                                                ".edit.sections.attributes.selection" +
+                                                                                ".mappingTable.columns.attribute")
+                                                                        }
+                                                                    </strong>
+                                                                </Table.HeaderCell>
+                                                                <Table.HeaderCell>
+                                                                    <strong>
+                                                                        {
+                                                                            t("devPortal:components.applications" +
+                                                                                ".edit.sections.attributes.selection" +
+                                                                                ".mappingTable.columns.mandatory")
+                                                                        }
+                                                                    </strong>
+                                                                </Table.HeaderCell>
+                                                            </Table.Row>
+                                                        </Table.Header>
+                                                        <Table.Body>
+                                                            {
+                                                                filterSelectedExternalClaims?.map((claim) => {
+                                                                    return (
+                                                                        <AttributeListItem
+                                                                            key={ claim.id }
+                                                                            claimURI={ claim.claimURI }
+                                                                            displayName={ claim.claimURI }
+                                                                            mappedURI={ claim.mappedLocalClaimURI }
+                                                                            localDialect={ false }
+                                                                            initialMandatory={ claim.mandatory }
+                                                                            selectMandatory={ updateMandatory }
+                                                                            data-testid={ claim.claimURI }
+                                                                        />
+                                                                    )
+                                                                })
+                                                            }
+                                                        </Table.Body>
+                                                    </Table>
+                                                )
                                             }
                                         </Grid.Row>
                                     </Segment>
@@ -651,6 +674,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                         }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         imageSize="tiny"
+                                        data-testid={ `${ testId }-empty-placeholder` }
                                     />
                                 </Segment>
                             )

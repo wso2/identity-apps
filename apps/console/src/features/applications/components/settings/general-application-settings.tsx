@@ -289,7 +289,11 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                     }
                                     tOptions={ { name: name } }
                                 >
-                                    Please type <strong>{ name }</strong> to confirm.
+                                    Please type 
+                                    <strong data-testid="application-name-assertion">
+                                        { name }
+                                    </strong>
+                                    to confirm.
                                 </Trans>
                             </p>
                         ) }

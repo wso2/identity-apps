@@ -31,6 +31,9 @@ export class ApplicationsListPageConstants {
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
+    // URL Matcher
+    public static readonly PAGE_URL_MATCHER: string = "/applications";
+
     // Table
     public static readonly TABLE_DATA_ATTR: string = "applications-list";
     public static readonly TABLE_BODY_DATA_ATTR: string = "data-table-body";
