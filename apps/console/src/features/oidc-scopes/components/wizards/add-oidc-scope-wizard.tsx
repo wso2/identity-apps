@@ -20,7 +20,7 @@ import { getAllExternalClaims } from "@wso2is/core/api";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -90,6 +90,8 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
     const [ filterSelectedClaims, setFilterSelectedClaims ] = useState<ExternalClaim[]>([]);
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
 
+    const [alert, setAlert, alertComponent]=useWizardAlert();
+
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
      * value change , and resets the partially completed step value.
@@ -120,22 +122,22 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims.error" +
                             ".message")
-                    }));
+                    });
 
                     return;
                 }
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims.genericError" +
                         ".message")
-                }));
+                });
             })
             .finally(() => {
                 setIsClaimRequestLoading(false);
@@ -282,6 +284,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

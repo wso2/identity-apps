@@ -156,7 +156,7 @@ export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<Co
 };
 
 /**
- * Attaches with sub components to teh `ModalWithSidePanel` component.
+ * Attaches with sub components to the `ModalWithSidePanel` component.
  */
 ModalWithSidePanel.MainPanel = ModalWithSidePanelMainPanel;
 ModalWithSidePanel.SidePanel = ModalWithSidePanelSidePanel;

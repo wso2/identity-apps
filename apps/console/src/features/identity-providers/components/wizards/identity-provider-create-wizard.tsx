@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -137,7 +137,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
     const [submitAuthenticator, setSubmitAuthenticator] = useTrigger();
     const [submitOutboundProvisioningSettings, setSubmitOutboundProvisioningSettings] = useTrigger();
-    const [finishSubmit, setFinishSubmit] = useTrigger();
+    const [ finishSubmit, setFinishSubmit ] = useTrigger();
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     /**
      * Creates a new identity provider.
@@ -168,21 +170,21 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.idp.notifications.addIDP.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications.addIDP.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.idp.notifications.addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.idp.notifications.addIDP.genericError.message")
-                }));
+                });
             });
     };
 
@@ -637,6 +639,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     </Steps.Group>
                 </Modal.Content>
                 <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
+                    { alert && alertComponent }
                     { resolveStepContent(currentWizardStep) }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-modal-actions` }>

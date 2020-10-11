@@ -18,3 +18,4 @@
  */
 
 export * from "./alert";
+export * from "./wizard-alert";

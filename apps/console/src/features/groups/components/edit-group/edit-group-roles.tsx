@@ -31,7 +31,8 @@ import {
     PrimaryButton,
     TransferComponent,
     TransferList,
-    TransferListItem
+    TransferListItem,
+    useWizardAlert
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -106,6 +107,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     const [ isSelected, setSelection ] = useState(false);
 
     const [ assignedRoles, setAssignedRoles ] = useState([]);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -311,18 +314,18 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.groups.notifications.updateGroup.error.message"
                             )
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "adminPortal:components.components.groups.notifications.updateGroup.genericError." +
                             "description"
@@ -331,7 +334,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                         message: t(
                             "components.groups.notifications.updateGroup.genericError.message"
                         )
-                    }));
+                    });
                 });
         } else {
             roleIds.map((id) => {
@@ -366,18 +369,18 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.groups.notifications.updateGroup.error.message"
                             )
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "adminPortal:components.groups.notifications.updateGroup.genericError.description"
                         ),
@@ -385,7 +388,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                         message: t(
                             "components.groups.notifications.updateGroup.genericError.message"
                         )
-                    }));
+                    });
                 });
         }
     };
@@ -568,6 +571,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                     ? (
                         <>
                             <Modal.Content>
+                                { alert && alertComponent }
                                 <RolePermissions
                                     data-testid="user-mgt-update-roles-modal-unselected-role-permissions"
                                     handleNavigateBack={ handleViewRolePermission }
@@ -578,6 +582,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                         </>
                     ) : (
                         <Modal.Content image>
+                            { alert && alertComponent }
                             <TransferComponent
                                 searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
                                     { type: "Roles" }) }

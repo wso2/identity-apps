@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import has from "lodash/has";
@@ -163,6 +163,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const [selectedSAMLMetaFile, setSelectedSAMLMetaFile] = useState<boolean>(false);
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     /**
      *  Retrieve Application template data.
      *
@@ -184,22 +186,22 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 })
                 .catch((error) => {
                     if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t("devPortal:components.applications.notifications.fetchTemplate.error" +
                                 ".message")
-                        }));
+                        });
 
                         return;
                     }
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.applications.notifications.fetchTemplate" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.fetchTemplate.genericError" +
                             ".message")
-                    }));
+                    });
                 })
         }
     };
@@ -248,21 +250,21 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.addApplication.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.applications.notifications.addApplication.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.applications.notifications.addApplication.genericError.message")
-                }));
+                });
             });
     };
 
@@ -286,21 +288,21 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.updateProtocol.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.applications.notifications.updateProtocol.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.applications.notifications.updateProtocol.error.message")
-                }));
+                });
             });
     };
 
@@ -653,23 +655,23 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 })
                 .catch((error) => {
                     if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t("devPortal:components.applications.notifications.fetchProtocolMeta.error" +
                                 ".message")
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
                             ".genericError.message")
-                    }));
+                    });
                 });
         }
     }, [selectedCustomInboundProtocol]);
@@ -759,7 +761,10 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             )) }
                         </Steps.Group>
                     </Modal.Content>
-                    <Modal.Content className="content-container" scrolling>{ resolveStepContent() }</Modal.Content>
+                    <Modal.Content className="content-container" scrolling>
+                        { alert && alertComponent }
+                        { resolveStepContent() }
+                    </Modal.Content>
                     <Modal.Actions>
                         <Grid>
                             <Grid.Row column={ 1 }>

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Form } from "semantic-ui-react";
 import { Field, GroupFields, InnerField, InnerGroupFields } from "./components";
 import { isCheckBoxField, isDropdownField, isInputField, isRadioField, isTextField, isToggleField } from "./helpers";
@@ -50,15 +50,24 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
         // This specifies if a field's value is valid or not
         const [ validFields, setValidFields ] = useState(new Map<string, Validation>());
+        const validFieldsRef = useRef(new Map<string, Validation>());
 
         // This specifies if a field has been touched or not
         const [ touchedFields, setTouchedFields ] = useState(new Map<string, boolean>());
 
         // This specifies if the required fields are  filled or not
         const [ requiredFields, setRequiredFields ] = useState(new Map<string, boolean>());
+        const requiredFieldsRef = useRef(new Map<string, boolean>());
 
         // This specifies if the `Submit` method has been called or not
         const [ isSubmitting, setIsSubmitting ] = useState(false);
+
+        // This specifies if the submit has been clicked or not.
+        const [ startSubmission, setStartSubmission ] = useState(false);
+
+        //This specifies if a form field is currently validating or not.
+        const [ isValidating, setIsValidating ] = useState(false);
+        const isValidatingRef = useRef(false);
 
         // This holds all the form field components
         const formFields: FormField[] = [];
@@ -162,7 +171,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          * @param requiredFieldsParam
          * @param validFieldsParam
          */
-        const validate = (
+        const validate = async (
             name: string,
             requiredFieldsParam: Map<string, boolean>,
             validFieldsParam: Map<string, Validation>
@@ -198,7 +207,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 && inputField.validation
                 && !(form.get(name) === null || form.get(name) === "")
             ) {
-                inputField.validation(form.get(name) as string, validation, new Map(form));
+                await inputField.validation(form.get(name) as string, validation, new Map(form));
             }
 
             validFieldsParam.set(name, {
@@ -208,15 +217,23 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         };
 
         /**
-         * Handler for the onBlur event
-         * @param event
-         * @param name
+         * Handler for the onBlur event.
+         *
+         * @param {KeyBoardEvent} event - Event object.
+         * @param {string} name - The name of the field.
          */
-        const handleBlur = (event: React.KeyboardEvent, name: string) => {
-            const tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
-            const tempValidFields: Map<string, Validation> = new Map(validFields);
+        const handleBlur = async (event: React.KeyboardEvent, name: string) => {
+            const tempRequiredFields: Map<string, boolean> = new Map(requiredFieldsRef.current);
+            const tempValidFields: Map<string, Validation> = new Map(validFieldsRef.current);
 
-            validate(name, tempRequiredFields, tempValidFields);
+            setIsValidating(true);
+            isValidatingRef.current = true;
+            await validate(name, tempRequiredFields, tempValidFields);
+
+            validFieldsRef.current = tempValidFields;
+            requiredFieldsRef.current = tempRequiredFields;
+            setIsValidating(false);
+            isValidatingRef.current = false;
 
             setValidFields(tempValidFields);
             setRequiredFields(tempRequiredFields);
@@ -228,8 +245,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          */
         const init = (isReset: boolean) => {
             const tempForm: Map<string, FormValue> = new Map(form);
-            const tempRequiredFields: Map<string, boolean> = new Map(requiredFields);
-            const tempValidFields: Map<string, Validation> = new Map(validFields);
+            const tempRequiredFields: Map<string, boolean> = new Map(requiredFieldsRef.current);
+            const tempValidFields: Map<string, Validation> = new Map(validFieldsRef.current);
             const tempTouchedFields: Map<string, boolean> = new Map(touchedFields);
             const formFieldNames = new Set<string>();
 
@@ -255,7 +272,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                  *                                              -> Then:
                  *                                                  Assign false
                  *                                              -> Else:
-                 *                                                  Assign an empty string value to the 
+                 *                                                  Assign an empty string value to the
                  *                                                  corresponding FormValue key
                  */
                 if (isInputField(inputField)) {
@@ -312,7 +329,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
              * This removes all the redundant elements from the passed Map object and returns the stripped Map object
              * @param iterable a Map object which should have redundant elements removed
              * @param neededFields a Set object containing the names of the needed fields
-             * 
+             *
              * @returns {Map} stripped Map object
              */
             const removeRedundant = (iterable: Map<string, any>, neededFields: Set<string>): Map<string, any> => {
@@ -342,6 +359,9 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 setTouchedFields(leanTouchedFields);
             }
             setForm(leanForm);
+            validFieldsRef.current = leanValidFields;
+            requiredFieldsRef.current = leanRequiredFields;
+
             setValidFields(leanValidFields);
             setRequiredFields(leanRequiredFields);
         };
@@ -387,7 +407,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          */
         const checkRequiredFieldsFilled = (): boolean => {
             let requiredFilled = true;
-            requiredFields.forEach((requiredFieldParam) => {
+            requiredFieldsRef.current.forEach((requiredFieldParam) => {
                 if (!requiredFieldParam) {
                     requiredFilled = false;
                 }
@@ -400,24 +420,37 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
          */
         const checkValidated = (): boolean => {
             let isValidated = true;
-            validFields.forEach((validField) => {
+            validFieldsRef.current.forEach((validField) => {
                 if (!validField.isValid) {
                     isValidated = false;
                 }
             });
+
             return isValidated;
         };
+
+        useEffect(() => {
+            if (startSubmission && !isValidatingRef.current) {
+                if (checkRequiredFieldsFilled() && checkValidated()) {
+                    setStartSubmission(false);
+                    setIsSubmitting(false);
+                    onSubmit(form);
+                } else {
+                    setIsSubmitting(true);
+                    setStartSubmission(false);
+                }
+            } else {
+                if (startSubmission) {
+                    setIsSubmitting(true);
+                }
+            }
+        }, [ startSubmission, isValidating ]);
 
         /**
          * This validates the form and calls the `onSubmit` prop function
          */
         const submit = () => {
-            if (checkRequiredFieldsFilled() && checkValidated()) {
-                setIsSubmitting(false);
-                onSubmit(form);
-            } else {
-                setIsSubmitting(true);
-            }
+            setStartSubmission(true);
         };
 
         /**

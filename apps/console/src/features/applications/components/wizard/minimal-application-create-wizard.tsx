@@ -25,7 +25,7 @@ import {
     Validation,
     useTrigger
 } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, SelectionCard } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, SelectionCard, useWizardAlert } from "@wso2is/react-components";
 import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -115,8 +115,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
-
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
+
+    const [ alert, setAlert, notification ] = useWizardAlert();
 
     useEffect(() => {
         // Stop fetching CORS origins if the selected template is `Expert Mode`.
@@ -209,34 +210,30 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(
-                        addAlert({
-                            description: error.response.data.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "devPortal:components.applications.notifications." +
-                                "addApplication.error.message"
-                            )
-                        })
-                    );
+                    setAlert({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "devPortal:components.applications.notifications." +
+                            "addApplication.error.message"
+                        )
+                    });
 
                     return;
                 }
 
-                dispatch(
-                    addAlert({
-                        description: t(
-                            "devPortal:components.applications.notifications." +
-                            "addApplication.genericError" +
-                            ".description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "devPortal:components.applications.notifications." +
-                            "addApplication.genericError.message"
-                        )
-                    })
-                );
+                setAlert({
+                    description: t(
+                        "devPortal:components.applications.notifications." +
+                        "addApplication.genericError" +
+                        ".description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "devPortal:components.applications.notifications." +
+                        "addApplication.genericError.message"
+                    )
+                });
             });
     }, [ protocolFormValues, generalFormValues ]);
 
@@ -333,6 +330,13 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                 submitState={ submit }
             >
                 <Grid>
+                    { alert && (
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
+                                { notification }
+                            </Grid.Column>
+                        </Grid.Row>
+                    )}
                     <Grid.Row columns={ 1 }>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                             <Field

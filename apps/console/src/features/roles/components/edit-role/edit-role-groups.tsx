@@ -31,7 +31,8 @@ import {
     PrimaryButton,
     TransferComponent,
     TransferList,
-    TransferListItem
+    TransferListItem,
+    useWizardAlert
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -91,6 +92,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     const [ isSelectUnassignedRolesAllRolesChecked, setIsSelectUnassignedAllRolesChecked ] = useState(false);
     const [ isSelectAssignedAllRolesChecked, setIsSelectAssignedAllRolesChecked ] = useState(false);
     const [ assignedGroups, setAssignedGroups ] = useState<RolesMemberInterface[]>([]);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     useEffect(() => {
         if (!(role)) {
@@ -322,14 +325,14 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            failOnErrors: 1,
             Operations: [],
+            failOnErrors: 1,
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            failOnErrors: 1,
             Operations: [],
+            failOnErrors: 1,
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
@@ -402,19 +405,19 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                                 "error.message"
                             )
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                             "genericError.description"
@@ -424,7 +427,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             "adminPortal:components.user.updateUser.groups.notifications.removeUserGroups." +
                             "genericError.message"
                         )
-                    }));
+                    });
                 });
         } else {
             groupIds.map((id) => {
@@ -463,19 +466,19 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                                 "error.message"
                             )
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                             "genericError.description"
@@ -485,7 +488,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             "adminPortal:components.user.updateUser.groups.notifications.addUserGroups." +
                             "genericError.message"
                         )
-                    }));
+                    });
                 });
         }
     };
@@ -503,7 +506,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     { t("adminPortal:components.user.updateUser.groups.addGroupsModal.subHeading") }
                 </Heading>
             </Modal.Header>
-                <Modal.Content image>
+            <Modal.Content image>
+                { alert && alertComponent }
                     <TransferComponent
                         searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
                             { type: "Groups" }) }
