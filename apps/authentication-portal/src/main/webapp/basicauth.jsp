@@ -32,6 +32,7 @@
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.isRecoveryEPAvailable" %>
 <%@ page import="static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL" %>
 <%@ page import="org.apache.commons.codec.binary.Base64" %>
+<%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 <%@ page import="java.nio.charset.Charset" %>
 <%@ page import="org.wso2.carbon.base.ServerConfiguration" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.EndpointConfigManager" %>
@@ -276,19 +277,20 @@
         <div class="field">
             <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password")%>
             <% if (!isIdentifierFirstLogin(inputType)) { %>
-                <a id="usernameRecoverLink"
-                    tabindex="5"
-                    href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters)%>"
-                    data-testid="login-page-username-recovery-button"
-                >
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
-                </a>
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
+            <a
+                id="usernameRecoverLink"
+                tabindex="5"
+                href="<%=StringEscapeUtils.	escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters))%>"
+                data-testid="login-page-username-recovery-button"
+            >
+                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
+            </a>
+            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username.password.or")%>
             <% } %>
             <a
                 id="passwordRecoverLink"
                 tabindex="6"
-                href="<%=getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters)%>"
+                href="<%=StringEscapeUtils.	escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters))%>"
                 data-testid="login-page-password-recovery-button"
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
@@ -344,14 +346,14 @@
             <% if (isSelfSignUpEPAvailable && !isIdentifierFirstLogin(inputType)) { %>
             <button
                 type="button"
-                onclick="window.location.href='<%=getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, urlParameters)%>';"
+                onclick="window.location.href='<%=StringEscapeUtils.escapeHtml4(getRegistrationUrl(identityMgtEndpointContext, urlEncodedURL, urlParameters))%>';"
                 class="ui large button link-button"
                 id="registerLink"
                 tabindex="8"
                 role="button"
                 data-testid="login-page-create-account-button"
             >
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "create.account")%>
+                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "create.account"))%>
             </button>
             <% } %>
         </div>
@@ -363,7 +365,7 @@
                 role="button"
                 data-testid="login-page-continue-login-button"
             >
-                    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "continue")%>
+                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "continue"))%>
             </button>
         </div>
     </div>
@@ -377,7 +379,7 @@
                 href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>"
                 data-testid="login-page-resend-confirmation-email-link"
             >
-                <%=AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail")%>
+                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
             </a>
         </div>
     </div>
