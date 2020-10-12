@@ -867,7 +867,7 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         issuer: {
-                            hint: "This specifies the issuer. This is the &quot;saml:Issuer&quot; element that " +
+                            hint: "This specifies the issuer. This is the 'saml:Issuer' element that " +
                                 "contains the unique identifier of the Application. This is also the issuer value" +
                                 "specified in the SAML Authentication Request issued by the Application.",
                             label: "Issuer",
