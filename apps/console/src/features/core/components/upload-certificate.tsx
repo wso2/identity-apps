@@ -307,6 +307,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         try {
             const certificateForge = forge.pki
                 .certificateFromPem(pemValue);
+
             setForgeCertificate(certificateForge);
 
             return {
@@ -330,23 +331,23 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
         const extension = file.name.split(".").pop();
         if (extension === "cer") {
             return convertFromCerToPem(file);
-        } else if (extension==="crt"){
+        } else {
             return file.arrayBuffer().then((value: ArrayBuffer) => {
                 const byteString = forge.util.createBuffer(value);
+                try {
+                    const asn1 = forge.asn1.fromDer(byteString);
+                    const certificate = forge.pki.certificateFromAsn1(asn1);
+                    setForgeCertificate(certificate);
 
-                return convertFromPem(byteString?.data).value;
+                    return stripPem(forge.pki.certificateToPem(certificate));
+                } catch {
+                    return convertFromPem(byteString?.data)?.value;
+                }
+
             }).catch((error) => {
-                throw Error(error);
-            })
-        }else if (extension === "pem") {
-            return file.text().then((value: string) => {
-                return convertFromPem(value).value;
-            }).catch((error) => {
-                throw Error(error);
+                return Promise.reject(error);
             })
         }
-
-        return Promise.reject();
     };
 
     /**
