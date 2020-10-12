@@ -260,10 +260,34 @@ export const initializeAuthentication = () =>(dispatch)=> {
         ? Storage.SessionStorage
         : Storage.WebWorker;
 
+    /**
+     * By specifying the base URL, we are restricting the endpoints to which the requests could be sent.
+     * So, an attacker can't obtain the token by sending a request to their endpoint. This is mandatory
+     * when the storage is set to Web Worker.
+     *
+     * @return {string[]}
+     */
+    const resolveBaseUrls = (): string[] => {
+
+        let baseUrls = window["AppUtils"].getConfig().idpConfigs?.baseUrls;
+        const serverOrigin = window["AppUtils"].getConfig().serverOrigin;
+
+        if (baseUrls) {
+            // If the server origin is not specified in the overridden config, append it.
+            if (!baseUrls.includes(serverOrigin)) {
+                baseUrls = [ ...baseUrls, serverOrigin ];
+            }
+
+            return baseUrls;
+        }
+
+        return [ serverOrigin ];
+    };
+
     const initialize = (response?: any): void => {
         auth.initialize({
             authorizationCode: response?.data?.authCode,
-            baseUrls: [window["AppUtils"].getConfig().serverOrigin],
+            baseUrls: resolveBaseUrls(),
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             enablePKCE: window["AppUtils"].getConfig().idpConfigs?.enablePKCE
