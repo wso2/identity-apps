@@ -135,6 +135,45 @@ npm run test:integration:smoke
 
 For more information regarding the test module, checkout the [README](./tests/README.md) in the `tests` module.
 
+## Deployment
+
+#### Deploying the apps on an external server
+
+It is possible to deploy the Console and My Account applications on an external server. To do so, the following steps has to be followed in order to build the applications.
+
+##### Method 1 - Using Maven
+
+Follow the steps in listed [here](#build) in-order to build the project with maven.
+
+Once the build is complete, execute the following commands in-order to build the Console & My Account applications for external deployment.
+
+**Console**
+
+```bash
+npx lerna run build:external --scope @wso2is/console
+```
+
+Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/console/build`.
+
+**My Account**
+
+```bash
+npx lerna run build:external --scope @wso2is/myaccount
+```
+
+Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/myaccount/build`.
+
+##### Method 2 - Using npm
+
+You can simply use npm to build the Console and My Account applications for external deployment by just executing the following script.
+
+```bash
+# From project root
+npm run build:external
+```
+
+The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
+
 ## Reporting Issues
 
 We encourage you to report issues, improvements and feature requests regarding the project through [GitHub Issue Tracker](https://github.com/wso2/identity-apps/issues).
