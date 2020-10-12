@@ -28,6 +28,7 @@ import {
     TOKEN_ENDPOINT,
     UserInfo
 } from "@asgardio/oidc-js";
+import { getProfileSchemas } from "@wso2is/core/api";
 import { TokenConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
@@ -40,10 +41,9 @@ import { setProfileInfoLoader, setProfileSchemaLoader } from "./loaders";
 import { AuthAction, authenticateActionTypes } from "./types";
 import {
     getProfileInfo,
-    getProfileSchemas,
     getUserReadOnlyStatus,
     switchAccount
-}from "../../api";
+} from "../../api";
 import { Config } from "../../configs";
 import {
     AlertLevels,

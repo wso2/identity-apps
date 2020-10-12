@@ -17,13 +17,14 @@
  */
 
 import { IdentityClient } from "@asgardio/oidc-js";
+import { ProfileConstants } from "@wso2is/core/constants"
 import { CommonUtils } from "@wso2is/core/utils";
 import axios from "axios";
 import _ from "lodash";
 import { Config } from "../configs";
-import { AppConstants, SCIM2_ENT_USER_SCHEMA } from "../constants";
+import { AppConstants } from "../constants";
 import { history } from "../helpers";
-import { BasicProfileInterface, HttpMethods, ProfileSchema, ReadOnlyUserStatus } from "../models";
+import { BasicProfileInterface, HttpMethods, ReadOnlyUserStatus } from "../models";
 import { store } from "../store";
 import { toggleSCIMEnabled } from "../store/actions";
 
@@ -143,8 +144,8 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
                 organisation: response.data[orgKey]?.organization ? response.data[orgKey].organization : "",
-                pendingEmails: response.data[SCIM2_ENT_USER_SCHEMA]
-                    ? response.data[SCIM2_ENT_USER_SCHEMA].pendingEmails
+                pendingEmails: response.data[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                    ? response.data[ProfileConstants.SCIM2_ENT_USER_SCHEMA].pendingEmails
                     : [],
                 phoneNumbers: response.data.phoneNumbers || [],
                 profileUrl: response.data.profileUrl || "",
@@ -206,33 +207,5 @@ export const updateProfileInfo = (info: object): Promise<any> => {
         })
         .catch((error) => {
             return Promise.reject(error?.response?.data);
-        });
-};
-
-/**
- * Retrieve the profile schemas of the user claims of the currently authenticated user.
- *
- * @return {Promise<any>} a promise containing the response.
- */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getProfileSchemas = (): Promise<any> => {
-    const requestConfig = {
-        headers: {
-            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
-            "Content-Type": "application/json"
-        },
-        method: HttpMethods.GET,
-        url: store.getState().config.endpoints.profileSchemas
-    };
-
-    return httpClient(requestConfig)
-        .then((response) => {
-            if (response.status !== 200) {
-                return Promise.reject(new Error("Failed get user schemas"));
-            }
-            return Promise.resolve(response.data[0].attributes as ProfileSchema[]);
-        })
-        .catch((error) => {
-            return Promise.reject(error);
         });
 };
