@@ -141,7 +141,7 @@ For more information regarding the test module, checkout the [README](./tests/RE
 
 It is possible to deploy the Console and My Account applications on an external server. To do so, the following steps has to be followed in order to build the applications.
 
-##### Method 1 - Using Maven
+##### Method 1 - Build using Maven
 
 Follow the steps in listed [here](#build) in-order to build the project with maven.
 
@@ -163,7 +163,7 @@ npx lerna run build:external --scope @wso2is/myaccount
 
 Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/myaccount/build`.
 
-##### Method 2 - Using npm
+##### Method 2 - Build using npm
 
 You can simply use npm to build the Console and My Account applications for external deployment by just executing the following script.
 
