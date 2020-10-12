@@ -40,6 +40,12 @@ module.exports = (env) => {
     const isProduction = env.NODE_ENV === "production";
     const isDevelopment = env.NODE_ENV === "development";
 
+    // Flag to determine if the app is intended to be deployed on an external server.
+    // If true, references & usage of internal JAVA classes and resources inside the index.jsp
+    // will be removed. Since these resources are only available inside IS runtime, when hosted
+    // externally, the server (tomcat etc.) will throw errors when trying to resolve them.
+    const isDeployedOnExternalServer = env.IS_DEPLOYED_ON_EXTERNAL_SERVER;
+
     // Checks if analyzing mode enabled.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
 
@@ -279,19 +285,33 @@ module.exports = (env) => {
                     excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
-                    importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
-                    importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
-                    importUtil: "<%@ page import=\"" +
-                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                    importSuperTenantConstant: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
+                        : "",
+                    importTenantPrefix: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
+                        : "",
+                    importUtil: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"" +
+                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
+                        : "",
                     publicPath: publicPath,
-                    serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                    serverUrl: !isDeployedOnExternalServer
+                        ? "<%=getServerURL(\"\", true, true)%>"
+                        : "",
                     sessionState: "<%=request.getParameter(\"session_state\")%>",
-                    superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
+                    superTenantConstant: !isDeployedOnExternalServer
+                        ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
+                        : "",
                     template: path.join(__dirname, "src", "index.jsp"),
-                    tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
-                    tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
+                    tenantDelimiter: !isDeployedOnExternalServer
+                        ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
+                        : "",
+                    tenantPrefix: !isDeployedOnExternalServer
+                        ? "<%=TENANT_AWARE_URL_PREFIX%>"
+                        : "",
                     title: titleText
                 })
                 : new HtmlWebpackPlugin({
