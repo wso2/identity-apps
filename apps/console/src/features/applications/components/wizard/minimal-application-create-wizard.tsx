@@ -161,7 +161,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      * main form, it triggers the submit of the protocol form.
      */
     useEffect(() => {
-        if (!protocolFormValues && !generalFormValues) {
+        if (!protocolFormValues || !generalFormValues) {
             return;
         }
 
@@ -493,7 +493,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                         <ModalWithSidePanel.Content>
                             <GenericMinimalWizardFormHelp template={ selectedTemplate } parentTemplate={ template } />
                         </ModalWithSidePanel.Content>
-                    </ModalWithSidePanel.SidePanel> 
+                    </ModalWithSidePanel.SidePanel>
                 )
             }
         </ModalWithSidePanel>
