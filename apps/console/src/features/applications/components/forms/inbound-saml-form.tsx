@@ -22,7 +22,7 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import {
@@ -102,6 +102,36 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
     const [isAttributeProfileEnabled, setIsAttributeProfileEnabled] = useState(false);
     const [isRequestSignatureValidationEnabled, setIsRequestSignatureValidationEnabled] = useState(false);
     const [isAssertionEncryptionEnabled, setAssertionEncryptionEnabled] = useState(false);
+
+    const issuer = useRef<HTMLElement>();
+    const applicationQualifier = useRef<HTMLElement>();
+    const consumerURL = useRef<HTMLDivElement>();
+    const defaultAssertionConsumerUrl = useRef<HTMLElement>();
+    const idpEntityIdAlias = useRef<HTMLElement>();
+    const requestSignatureValidation = useRef<HTMLElement>();
+    const signatureValidationCertAlias = useRef<HTMLElement>();
+    const digestAlgorithm = useRef<HTMLElement>();
+    const signingAlgorithm = useRef<HTMLElement>();
+    const responseSigning = useRef<HTMLElement>();
+    const bindings = useRef<HTMLElement>();
+    const signatureValidationForArtifactBinding = useRef<HTMLElement>();
+    const idPInitiatedSSO = useRef<HTMLElement>();
+    const nameIdFormat = useRef<HTMLElement>();
+    const audience = useRef<HTMLDivElement>();
+    const recipient = useRef<HTMLDivElement>();
+    const assertionEncryption = useRef<HTMLElement>();
+    const assertionEncryptionAlgorithm = useRef<HTMLElement>();
+    const keyEncryptionAlgorithm = useRef<HTMLElement>();
+    const attributeProfile = useRef<HTMLElement>();
+    const includeAttributesInResponse = useRef<HTMLElement>();
+    const attributeConsumingServiceIndex = useRef<HTMLElement>();
+    const singleLogoutProfile = useRef<HTMLElement>();
+    const logoutMethod = useRef<HTMLElement>();
+    const singleLogoutResponseUrl = useRef<HTMLElement>();
+    const singleLogoutRequestUrl = useRef<HTMLElement>();
+    const idpInitiatedSingleLogout = useRef<HTMLElement>();
+    const returnToURL = useRef<HTMLDivElement>();
+    const assertionQueryProfile = useRef<HTMLElement>();
 
     const createDefaultAssertionConsumerUrl = () => {
         const allowedOptions = [];
@@ -184,15 +214,135 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
         }, [initialValues]
     );
 
+    /**
+     * Scrolls to the first field that throws an error.
+     *
+     * @param {string} field The name of the field.
+     */
+    const scrollToInValidField = (field: string): void => {
+        const options: ScrollIntoViewOptions = {
+            behavior: "smooth",
+            block: "center"
+        };
+
+        switch (field) {
+            case "issuer":
+                issuer.current.scrollIntoView(options);
+                break;
+            case "applicationQualifier":
+                applicationQualifier.current.scrollIntoView(options);
+                break;
+            case "consumerURL":
+                consumerURL.current.scrollIntoView(options);
+                break;
+            case "defaultAssertionConsumerUrl":
+                defaultAssertionConsumerUrl.current.scrollIntoView(options);
+                break;
+            case "idpEntityIdAlias":
+                idpEntityIdAlias.current.scrollIntoView(options);
+                break;
+            case "requestSignatureValidation":
+                requestSignatureValidation.current.scrollIntoView(options);
+                break;
+            case "signatureValidationCertAlias":
+                signatureValidationCertAlias.current.scrollIntoView(options);
+                break;
+            case "digestAlgorithm":
+                digestAlgorithm.current.scrollIntoView(options);
+                break;
+            case "signingAlgorithm":
+                signingAlgorithm.current.scrollIntoView(options);
+                break;
+            case "responseSigning":
+                responseSigning.current.scrollIntoView(options);
+                break;
+            case "bindings":
+                bindings.current.scrollIntoView(options);
+                break;
+            case "signatureValidationForArtifactBinding":
+                signatureValidationForArtifactBinding.current.scrollIntoView(options);
+                break;
+            case "idPInitiatedSSO":
+                idPInitiatedSSO.current.scrollIntoView(options);
+                break;
+            case "nameIdFormat":
+                nameIdFormat.current.scrollIntoView(options);
+                break;
+            case "audience":
+                audience.current.scrollIntoView(options);
+                break;
+            case "recipient":
+                recipient.current.scrollIntoView(options);
+                break;
+            case "assertionEncryption":
+                assertionEncryption.current.scrollIntoView(options);
+                break;
+            case "assertionEncryptionAlgorithm":
+                assertionEncryptionAlgorithm.current.scrollIntoView(options);
+                break;
+            case "keyEncryptionAlgorithm":
+                keyEncryptionAlgorithm.current.scrollIntoView(options);
+                break;
+            case "attributeProfile":
+                attributeProfile.current.scrollIntoView(options);
+                break;
+            case "includeAttributesInResponse":
+                includeAttributesInResponse.current.scrollIntoView(options);
+                break;
+            case "attributeConsumingServiceIndex":
+                attributeConsumingServiceIndex.current.scrollIntoView(options);
+                break;
+            case "singleLogoutProfile":
+                singleLogoutProfile.current.scrollIntoView(options);
+                break;
+            case "logoutMethod":
+                logoutMethod.current.scrollIntoView(options);
+                break;
+            case "singleLogoutResponseUrl":
+                singleLogoutResponseUrl.current.scrollIntoView(options);
+                break;
+            case "singleLogoutRequestUrl":
+                singleLogoutRequestUrl.current.scrollIntoView(options);
+                break;
+            case "idpInitiatedSingleLogout":
+                idpInitiatedSingleLogout.current.scrollIntoView(options);
+                break;
+            case "returnToURL":
+                returnToURL.current.scrollIntoView(options);
+                break;
+            case "assertionQueryProfile":
+                assertionQueryProfile.current.scrollIntoView(options);
+                break;
+        }
+    }
+
     return (
         metadata ?
             (
                 <Forms
                     onSubmit={ (values) => {
+                        // eslint-disable-next-line no-debugger
+                        debugger;
                         if (isEmpty(assertionConsumerUrls)) {
                             setAssertionConsumerUrlError(true);
+                            scrollToInValidField("consumerURL");
                         } else {
                             onSubmit(updateConfiguration(values));
+                        }
+                    } }
+                    onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
+                        // eslint-disable-next-line no-debugger
+                        debugger;
+                        const iterator = requiredFields.entries();
+                        let result = iterator.next();
+
+                        while (!result.done) {
+                            if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
+                                scrollToInValidField(result.value[ 0 ]);
+                                break;
+                            } else {
+                                result = iterator.next();
+                            }
                         }
                     } }
                 >
@@ -232,6 +382,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                                 value={ initialValues?.issuer }
                                                 readOnly={ readOnly }
                                                 data-testid={ `${ testId }-issuer-input` }
+                                                ref={ issuer }
                                             />
                                         )
                                 }
@@ -243,6 +394,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ applicationQualifier }
                                     name="applicationQualifier"
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
@@ -268,6 +420,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
+                        <div ref={ consumerURL }></div>
                         <URLInput
                             urlState={ assertionConsumerUrls }
                             setURLState={ setAssertionConsumerUrls }
@@ -323,6 +476,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ defaultAssertionConsumerUrl }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.fields" +
                                             ".defaultAssertionURL.label")
@@ -351,6 +505,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ idpEntityIdAlias }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.fields" +
                                             ".idpEntityIdAlias.label")
@@ -390,6 +545,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ requestSignatureValidation }
                                     name="requestSignatureValidation"
                                     label=""
                                     required={ false }
@@ -429,6 +585,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ signatureValidationCertAlias }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".requestValidation.fields.signatureValidationCertAlias.label")
@@ -468,6 +625,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Divider hidden/>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                     <Field
+                                        ref={ digestAlgorithm }
                                         label={
                                             t("devPortal:components.applications.forms.inboundSAML.sections" +
                                                 ".responseSigning.fields.digestAlgorithm.label")
@@ -491,6 +649,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ signingAlgorithm }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".responseSigning.fields.signingAlgorithm.label")
@@ -513,6 +672,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ responseSigning }
                                     name="responseSigning"
                                     label=""
                                     required={ false }
@@ -549,6 +709,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ bindings }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".ssoProfile.fields.bindings.label")
@@ -579,6 +740,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Field
+                                    ref={ signatureValidationForArtifactBinding }
                                     name="signatureValidationForArtifactBinding"
                                     label=""
                                     required={ false }
@@ -607,6 +769,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ idPInitiatedSSO }
                                     name="idPInitiatedSSO"
                                     label=""
                                     required={ false }
@@ -639,6 +802,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ nameIdFormat }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.nameIdFormat.label")
@@ -665,6 +829,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
+                        <div ref={ audience }></div>
                         <URLInput
                             urlState={ audiences }
                             setURLState={ setAudiences }
@@ -718,6 +883,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             showPredictions={ false }
                             customLabel={ audiencesErrorLabel }
                         />
+                        <div ref={ recipient }></div>
                         <URLInput
                             urlState={ recipients }
                             setURLState={ setRecipients }
@@ -779,6 +945,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ assertionEncryption }
                                     name="assertionEncryption"
                                     label=""
                                     required={ false }
@@ -813,6 +980,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ assertionEncryptionAlgorithm }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.assertionEncryptionAlgorithm.label")
@@ -839,6 +1007,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ keyEncryptionAlgorithm }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.keyEncryptionAlgorithm.label")
@@ -874,6 +1043,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ attributeProfile }
                                     name="attributeProfile"
                                     label=""
                                     required={ false }
@@ -909,6 +1079,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ includeAttributesInResponse }
                                     name="includeAttributesInResponse"
                                     label=""
                                     required={ false }
@@ -938,6 +1109,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ attributeConsumingServiceIndex }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".attributeProfile.fields.serviceIndex.label")
@@ -978,6 +1150,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ singleLogoutProfile }
                                     name="singleLogoutProfile"
                                     label=""
                                     required={ false }
@@ -1012,6 +1185,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ logoutMethod }
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.logoutMethod.label")
@@ -1052,6 +1226,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ singleLogoutResponseUrl }
                                     name="singleLogoutResponseUrl"
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
@@ -1086,6 +1261,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ singleLogoutRequestUrl }
                                     name="singleLogoutRequestUrl"
                                     label={
                                         t("devPortal:components.applications.forms.inboundSAML.sections" +
@@ -1125,6 +1301,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ idpInitiatedSingleLogout }
                                     name="idpInitiatedSingleLogout"
                                     label=""
                                     required={ false }
@@ -1161,6 +1338,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
+                        <div ref={ returnToURL }></div>
                         <URLInput
                             urlState={ returnToURLS }
                             setURLState={ setReturnToURLS }
@@ -1228,6 +1406,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
+                                    ref={ assertionQueryProfile }
                                     name="assertionQueryProfile"
                                     label=""
                                     required={ false }
