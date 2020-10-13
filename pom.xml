@@ -60,6 +60,7 @@
         <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.feature</module>
+        <module>tests/test-utils/org.wso2.identity.apps.test.utils</module>
     </modules>
 
     <repositories>
@@ -523,6 +524,16 @@
                 <version>${project.version}</version>
                 <type>zip</type>
             </dependency>
+            <dependency>
+                <groupId>com.googlecode.json-simple</groupId>
+                <artifactId>json-simple</artifactId>
+                <version>${json.simple.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>1.2</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -662,5 +673,6 @@
         <json.wso2.version>3.0.0.wso2v1</json.wso2.version>
         <taglibs-standard-impl.version>1.2.5</taglibs-standard-impl.version>
         <apache.tomcat-catalina.version>9.0.11</apache.tomcat-catalina.version>
+        <json.simple.version>1.1.1</json.simple.version>
     </properties>
 </project>
