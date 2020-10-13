@@ -16,7 +16,7 @@
  * under the License
  */
 
-import { ProfileConstants } from "@wso2is/core/constants"
+import { ProfileConstants } from "@wso2is/core/constants";
 import {
     AlertInterface,
     AlertLevels,
@@ -34,6 +34,7 @@ import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
 import { AppConstants, AppState, history } from "../../core";
 import { deleteUser, updateUserInfo } from "../api";
+import { UserManagementConstants } from "../constants";
 
 /**
  * Prop types for the basic details component.
@@ -221,12 +222,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 }
                             }
                         } else {
-                            opValue = schemaNames[0] === "emails"
+                            opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
                                 ? { emails: [values.get(schema.name)] }
                                 : { [schemaNames[0]]: values.get(schemaNames[0]) };
                         }
                     } else {
-                        if (schemaNames[0] === "name") {
+                        if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("NAME")) {
                             const name = values.get(schema.name) && (
                                 opValue = {
                                     name: { [schemaNames[1]]: values.get(schema.name) }

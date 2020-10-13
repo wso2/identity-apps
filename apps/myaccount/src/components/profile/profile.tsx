@@ -17,7 +17,7 @@
  */
 
 import { updateProfileImageURL } from "@wso2is/core/api";
-import { ProfileConstants } from "@wso2is/core/constants"
+import { ProfileConstants } from "@wso2is/core/constants";
 import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, UserAvatar } from "@wso2is/react-components";
