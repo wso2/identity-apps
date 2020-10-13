@@ -103,7 +103,7 @@ export const setScimSchemas = (schemas: ProfileSchema[]): AuthAction => ({
 
 /**
  * Dispatches an action of type `SET_INITIALIZED`
- * @param schemas
+ * @param flag
  */
 export const setInitialized = (flag: boolean): AuthAction => ({
     payload: flag,

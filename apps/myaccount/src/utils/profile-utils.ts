@@ -88,7 +88,7 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
         const value = profileInfo[key];
 
         // Skip `associations`, `responseStatus` & `roles`.
-        if (key === "associations" || key === "responseStatus") {
+        if (key === "associations" || key === "responseStatus" || value == undefined || key === "roles") {
             continue;
         }
 
