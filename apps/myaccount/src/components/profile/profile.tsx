@@ -17,6 +17,7 @@
  */
 
 import { updateProfileImageURL } from "@wso2is/core/api";
+import { ProfileConstants } from "@wso2is/core/constants";
 import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, UserAvatar } from "@wso2is/react-components";
@@ -129,6 +130,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                     schema.name, profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] as string);
                         }
                     } else {
+                        if (schema.extended) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                            );
+                            return;
+                        }
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
                 } else {
@@ -155,8 +163,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      *
      * @param values
      * @param formName
+     * @param isExtended
      */
-    const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
+    const handleSubmit = (values: Map<string, string | string[]>, formName: string, isExtended: boolean): void => {
         const data = {
             Operations: [
                 {
@@ -172,9 +181,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         const schemaNames = formName.split(".");
 
         if (schemaNames.length === 1) {
-            value = schemaNames[0] === "emails"
-                ? { emails: [values.get(formName)] }
-                : { [schemaNames[0]]: values.get(formName) };
+            if (isExtended) {
+                value = {
+                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [schemaNames[0]]: values.get(formName)
+                    }
+                }
+            } else {
+                value = schemaNames[0] === "emails"
+                    ? { emails: [values.get(formName)] }
+                    : { [schemaNames[0]]: values.get(formName) };
+            }
         } else {
             if (schemaNames[0] === "name") {
                 value = {
@@ -255,7 +272,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             <Grid.Column width={ 12 }>
                                 <Forms
                                     onSubmit={ (values) => {
-                                        handleSubmit(values, schema.name);
+                                        handleSubmit(values, schema.name, schema.extended);
                                     } }
                                 >
                                     <Field

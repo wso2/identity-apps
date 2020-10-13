@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { IdentityClient, SignInResponse } from "@asgardio/oidc-js";
+import { IdentityClient } from "@asgardio/oidc-js";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ProfileConstants } from "../constants";
@@ -228,6 +228,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
         method: HttpMethods.GET,
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).profileSchemas
     };
+    const schemaAttributes: ProfileSchemaInterface[] = [];
 
     return httpClient(requestConfig)
         .then((response) => {
@@ -241,7 +242,20 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                     response.config);
             }
 
-            return Promise.resolve(response.data[0].attributes as ProfileSchemaInterface[]);
+            // Retrieve the attributes from all the available resources, and if the
+            // attribute belongs to an schema extension the boolean extended will be
+            // appended to the attribute object.
+            response.data.map((schema) => {
+                schema.attributes.map((attribute) => {
+                    if (schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA) {
+                        schemaAttributes.push({ ...attribute, extended: true });
+                        return;
+                    }
+                    schemaAttributes.push(attribute);
+                });
+            });
+
+            return Promise.resolve(schemaAttributes as ProfileSchemaInterface[]);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
