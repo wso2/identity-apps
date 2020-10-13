@@ -18,7 +18,7 @@
 
 /// <reference types="cypress" />
 
-import { Header } from "@wso2is/cypress-base/page-objects";
+import { Header } from "@wso2/identity-cypress-test-base/page-objects";
 import { ApplicationsListPage } from "../../integration/applications";
 
 /**

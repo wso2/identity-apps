@@ -20,7 +20,7 @@
 /// <reference types="cypress" />
 
 import { ApplicationsListPageConstants } from "../constants";
-import { SidePanelDomConstants } from "@wso2is/cypress-base/constants";
+import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/constants";
 
 /**
  * Class containing Applications List Page objects.
