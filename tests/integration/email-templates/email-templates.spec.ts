@@ -20,8 +20,8 @@
 /// <reference types="cypress" />
 /// <reference types="../../types" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
-import { Header } from "@wso2is/cypress-base/page-objects";
+import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/utils";
+import { Header } from "@wso2/identity-cypress-test-base/page-objects";
 import {
     EmailTemplatesAddPage,
     EmailTemplatesListPage,

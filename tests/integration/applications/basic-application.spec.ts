@@ -20,7 +20,7 @@
 /// <reference types="cypress" />
 /// <reference types="../../types" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2is/cypress-base/utils";
+import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/utils";
 import { ApplicationEditPageConstants, ApplicationsListPageConstants } from "./constants";
 import { ApplicationEditPage, ApplicationsListPage, ApplicationTemplatesPage } from "./page-objects";
 import { v4 as uuidv4 } from "uuid";
