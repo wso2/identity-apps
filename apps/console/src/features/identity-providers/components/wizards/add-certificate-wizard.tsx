@@ -177,7 +177,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                 />
             ),
             icon: AddIDPCertificateWizardStepIcons.general,
-            title: t("devPortal:components.certificates.keystore.wizard.steps.upload")
+            title: t("adminPortal:components.certificates.keystore.wizard.steps.upload")
         }
     ];
 
