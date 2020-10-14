@@ -280,7 +280,7 @@
             <a
                 id="usernameRecoverLink"
                 tabindex="5"
-                href="<%=StringEscapeUtils.	escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters))%>"
+                href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, true, urlParameters))%>"
                 data-testid="login-page-username-recovery-button"
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.username")%>
@@ -290,7 +290,7 @@
             <a
                 id="passwordRecoverLink"
                 tabindex="6"
-                href="<%=StringEscapeUtils.	escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters))%>"
+                href="<%=StringEscapeUtils.escapeHtml4(getRecoverAccountUrl(identityMgtEndpointContext, urlEncodedURL, false, urlParameters))%>"
                 data-testid="login-page-password-recovery-button"
             >
                 <%=AuthenticationEndpointUtil.i18n(resourceBundle, "forgot.password")%>
