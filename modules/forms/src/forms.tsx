@@ -434,7 +434,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 if (checkRequiredFieldsFilled() && checkValidated()) {
                     setStartSubmission(false);
                     setIsSubmitting(false);
-                    onSubmit(form);
+                    onSubmit && onSubmit(form);
                 } else {
                     setIsSubmitting(true);
                     setStartSubmission(false);
