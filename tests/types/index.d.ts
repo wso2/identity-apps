@@ -45,5 +45,14 @@ declare namespace Cypress {
          * Custom command to check if the email template types page renders properly.
          */
         checkIfEmailTemplateTypeListingRenders(): Cypress.CanReturnChainable;
+        /**
+         * Custom command to navigate to the identity providers list page.
+         */
+        navigateToIDPList(switchPortalTab?: boolean): Cypress.CanReturnChainable;
+
+        /**
+         * Custom command to check if the identity providers listing page renders properly.
+         */
+        checkIfIDPListingRenders(isNew?: boolean): Cypress.CanReturnChainable;
     }
 }
