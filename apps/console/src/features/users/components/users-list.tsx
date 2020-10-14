@@ -172,7 +172,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         : user.userName;
 
                     const resolvedDescription = user.emails
-                        ? user.emails[ 0 ].toString()
+                        ? user.emails[ 0 ]?.toString()
                         : user.userName;
 
                     return (
