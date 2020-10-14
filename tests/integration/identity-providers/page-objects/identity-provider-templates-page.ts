@@ -134,6 +134,14 @@ export class IdentityProviderTemplatesPage {
     };
 
     /**
+     * Get the creation wizard IDP image input.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getCreationWizardIDPImageInput(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_IDP_IMAGE_DATA_ATTR);
+    };
+
+    /**
      * Get the creation wizard form next button.
      * @return {Cypress.Chainable<Element>}
      */

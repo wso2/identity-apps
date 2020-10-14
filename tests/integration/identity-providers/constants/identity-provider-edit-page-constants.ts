@@ -40,6 +40,8 @@ export class IdentityProviderEditPageConstants {
     public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "idp-edit-page-page-layout-page-header-" +
         "sub-title";
     public static readonly PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR: string = "idp-edit-page-page-back-button";
+    public static readonly PAGE_LAYOUT_HEADER_IMAGE_WRAPPER_DATA_ATTR: string = "idp-edit-page-page-layout-page-" +
+        "header-image";
 
     // Tabs
     public static readonly RESOURCE_TABS_DATA_ATTR: string = "idp-edit-page-resource-tabs";
@@ -55,6 +57,7 @@ export class IdentityProviderEditPageConstants {
     public static readonly IDP_CERT_RADIO_GROUP_DATA_ATTR: string = "idp-edit-advance-settings-certificate-type-" +
         "radio-group";
     public static readonly IDP_CERT_JWKS_URL_INPUT_DATA_ATTR: string = "add-idp-jwks-endpoint-form-certificate-jwks";
+    public static readonly IDP_CERT_UPDATE_BUTTON_DATA_ATTR: string = "add-idp-jwks-endpoint-form-save-button";
     // Danger Zone
     public static readonly DANGER_ZONE_DELETE_BUTTON_DATA_ATTR: string = "idp-edit-page-general-settings-" +
         "delete-idp-danger-zone-delete-button";

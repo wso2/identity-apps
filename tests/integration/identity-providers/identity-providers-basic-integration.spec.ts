@@ -38,6 +38,12 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
     const identityProviderTemplatesPage: IdentityProviderTemplatesPage = new IdentityProviderTemplatesPage();
     const identityProviderEditPage: IdentityProviderEditPage = new IdentityProviderEditPage();
 
+    let idpName: string = "Expert IDP - " + uuidv4();
+    let idpDescription: string = "Automation IDP created with Cypress.";
+    let idpImage: string = "https://seeklogo.com/images/G/google-2015-logo-65BBD07B01-seeklogo.com.png";
+
+    const JWKS_ENDPOINT: string = "https://localhost:9443/oauth2/jwks";
+
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
         cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL, TENANT_DOMAIN);
@@ -82,9 +88,6 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
 
     context("ITC-2.2.0 - [identity-providers] - Create an IDP using the wizard.", () => {
 
-        const IDP_NAME: string = "Expert IDP - " + uuidv4();
-        const IDP_DESCRIPTION: string = "Automation IDP created with Cypress.";
-
         it("ITC-2.2.1 - [identity-providers] - Register the IDP.", () => {
 
             identityProvidersListPage.clickOnNewIDPButton();
@@ -95,8 +98,9 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
 
             identityProviderTemplatesPage.getCreationWizard().should("be.visible");
 
-            identityProviderTemplatesPage.getCreationWizardIDPNameInput().type(IDP_NAME);
-            identityProviderTemplatesPage.getCreationWizardIDPDescriptionInput().type(IDP_DESCRIPTION);
+            identityProviderTemplatesPage.getCreationWizardIDPNameInput().type(idpName);
+            identityProviderTemplatesPage.getCreationWizardIDPDescriptionInput().type(idpDescription);
+            identityProviderTemplatesPage.getCreationWizardIDPImageInput().type(idpImage);
             identityProviderTemplatesPage.clickOnCreationWizardNextButton();
 
             cy.wait(1000);
@@ -119,13 +123,50 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
             identityProviderEditPage.getTabs().should("be.visible");
         });
 
-        it("ITC-2.3.2 - [identity-providers] - Can navigate to all the tabs.", () => {
+        it("ITC-2.3.2 - [identity-providers] - Displays info about the newly created IDP.", () => {
+            identityProviderEditPage.getPageLayoutHeaderTitle().should("contain", idpName);
+            identityProviderEditPage.getPageLayoutHeaderSubTitle().should("contain", idpDescription);
+            identityProviderEditPage.getPageLayoutImage().should("have.attr", "src", idpImage);
+        });
+
+        it("ITC-2.3.3 - [identity-providers] - Can navigate to all the tabs.", () => {
             identityProviderEditPage.selectTab("GENERAL");
             identityProviderEditPage.selectTab("ATTRIBUTES");
             identityProviderEditPage.selectTab("AUTHENTICATION");
             identityProviderEditPage.selectTab("OUTBOUND_PROVISIONING");
             identityProviderEditPage.selectTab("JIT_PROVISIONING");
             identityProviderEditPage.selectTab("ADVANCED");
+        });
+    });
+
+    context("ITC-2.4.0 - [identity-providers] - IDP General Settings.", () => {
+
+        before(() => {
+            identityProviderEditPage.selectTab("GENERAL");
+        });
+
+        it("ITC-2.4.1 - [identity-providers] - Can edit basic settings.", () => {
+            
+            idpName = "Edited " + idpName;
+            idpDescription = "Edited " + idpDescription;
+            idpImage = "https://seeklogo.com/images/G/google-play-logo-C0F8C12322-seeklogo.com.png";
+
+            identityProviderEditPage.getIDPNameInput().clear().type(idpName);
+            identityProviderEditPage.getIDPDescriptionInput().clear().type(idpDescription);
+            identityProviderEditPage.getIDPImageInput().clear().type(idpImage);
+            identityProviderEditPage.clickOnGeneralSettingsFormSubmitButton();
+            
+            cy.wait(3000);
+            
+            identityProviderEditPage.getPageLayoutHeaderTitle().should("contain", idpName);
+            identityProviderEditPage.getPageLayoutHeaderSubTitle().should("contain", idpDescription);
+            identityProviderEditPage.getPageLayoutImage().should("have.attr", "src", idpImage);
+        });
+
+        it("ITC-2.4.2 - [identity-providers] - Can add a JWKS endpoint.", () => {
+            identityProviderEditPage.getJWKSCertRadio().click({ force: true });
+            identityProviderEditPage.getIDPCertJWKSURLInput().type(JWKS_ENDPOINT);
+            identityProviderEditPage.clickOnCertificateUpdateButton();
         });
     });
 

@@ -51,6 +51,15 @@ export class IdentityProviderEditPage {
     };
 
     /**
+     * Get the IDP edit page layout header image element.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getPageLayoutImage(): Cypress.Chainable<JQuery<Element>> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.PAGE_LAYOUT_HEADER_IMAGE_WRAPPER_DATA_ATTR)
+            .find("img");
+    };
+
+    /**
      * Get the IDP edit tabs.
      * @return {Cypress.Chainable<Element>}
      */
@@ -218,5 +227,20 @@ export class IdentityProviderEditPage {
      */
     public clickOnGeneralSettingsFormSubmitButton(): void {
         this.getGeneralSettingsFormSubmitButton().click();
+    };
+
+    /**
+     * Get the IDP certificate update button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getCertificateUpdateButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.IDP_CERT_UPDATE_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Click on get the IDP certificate update button.
+     */
+    public clickOnCertificateUpdateButton(): void {
+        this.getCertificateUpdateButton().click();
     };
 }
