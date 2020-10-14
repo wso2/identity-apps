@@ -98,7 +98,7 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                                 data-testid={ `${ testId }-role-name-value` }
                                 className="value url"
                             >
-                                { summary.BasicDetails.roleName }
+                                { summary.BasicDetails.groupName }
                             </div>
                         </Grid.Column>
                     </Grid.Row>

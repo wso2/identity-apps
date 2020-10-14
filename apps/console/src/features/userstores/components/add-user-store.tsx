@@ -319,6 +319,11 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                         type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                     })
                 }
+                {
+                    generalDetailsData && generalDetailsData.get("name")
+                        ? " - " + generalDetailsData.get("name")
+                        : ""
+                }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group

@@ -251,7 +251,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                             validation={ (value: string, validation: Validation) => {
                                 if (isValidGroupName === false) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(t("adminPortal:components.roles.addGroupWizard." +
+                                    validation.errorMessages.push(t("adminPortal:components.roles.addRoleWizard." +
                                         "forms.roleBasicDetails.roleName.validations.duplicate",
                                         { type: "Group" }));
                                 }

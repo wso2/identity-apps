@@ -215,6 +215,11 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.claims.local.wizard.header") }
+                {
+                    basicDetailsData && basicDetailsData.get("name")
+                        ? " - " + basicDetailsData.get("name")
+                        : ""
+                }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group

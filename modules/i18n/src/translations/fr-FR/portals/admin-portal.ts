@@ -740,6 +740,23 @@ export const adminPortal: AdminPortalNS = {
             }
         },
         emailTemplateTypes: {
+            advancedSearch: {
+                error: "Format de requête de filtre incorrect",
+                form: {
+                    inputs: {
+                        filterAttribute: {
+                            placeholder: "Par exemple. Nom etc."
+                        },
+                        filterCondition: {
+                            placeholder: "Par exemple. Commence par etc."
+                        },
+                        filterValue: {
+                            placeholder: "Par exemple. TOTP, passwordResetSuccess, etc."
+                        }
+                    }
+                },
+                placeholder: "Rechercher par type de modèle d'e-mail"
+            },
             buttons: {
                 createTemplateType: "Créer un type de modèle",
                 deleteTemplate: "Supprimer le modèle",
@@ -842,6 +859,12 @@ export const adminPortal: AdminPortalNS = {
                         2: "cliquant sur le bouton ci-dessous."
                     },
                     title: "Ajouter un nouveau type de modèle"
+                },
+                emptySearch: {
+                    action: "Effacer la requête de recherche",
+                    subtitles: "Nous n'avons trouvé aucun résultat pour {{searchQuery}}."
+                        + "Veuillez essayer un autre terme de recherche.",
+                    title: "Aucun résultat trouvé"
                 }
             },
             wizards: {

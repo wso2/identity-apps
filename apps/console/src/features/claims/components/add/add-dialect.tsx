@@ -217,6 +217,11 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.claims.dialects.wizard.header") }
+                {
+                    dialectDetailsData && dialectDetailsData.get("dialectURI")
+                        ? " - " + dialectDetailsData.get("dialectURI")
+                        : ""
+                }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group

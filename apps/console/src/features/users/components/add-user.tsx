@@ -22,7 +22,7 @@ import { addAlert } from "@wso2is/core/store"
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { generate } from "generate-password";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import {
@@ -37,6 +37,11 @@ import {
 } from "../../userstores";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
+
+/**
+ * import pass strength bat dynamically.
+ */
+const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
 
 /**
  * Proptypes for the add user component.
@@ -63,7 +68,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     } = props;
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ passwordOption, setPasswordOption ] = useState(initialValues && initialValues.passwordOption);
+    const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
     const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
     const [ isUsernamePatternValid, setIsUsernamePatternValid ] = useState<boolean>(true);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
@@ -77,6 +82,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
+    const [ password, setPassword ] = useState<string>("");
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -216,6 +222,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
+        setPassword(password);
+
         setPasswordRegEx(password)
             .finally(() => {
                 setPasswordRegExLoading(false);
@@ -321,10 +329,13 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (!isPasswordPatternValid) {
                                         validation.isValid = false;
                                         validation.errorMessages.push( t("adminPortal:components.user.forms." +
-                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
+                                            "addUserFor1m.inputs.newPassword.validations.regExViolation") );
                                     }
                                 } }
                             />
+                            <Suspense fallback={ null } >
+                                <PasswordMeter password={ password } />
+                            </Suspense>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
@@ -540,7 +551,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 default="createPw"
                                 listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
                                 children={ passwordOptions }
-                                value={ initialValues && initialValues.passwordOption }
+                            value={ initialValues?.passwordOption ?? "createPw" }
                             />
                         </Grid.Column>
                     </Grid.Row>

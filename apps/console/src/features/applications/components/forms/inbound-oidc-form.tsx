@@ -22,7 +22,7 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
 import {
@@ -96,6 +96,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     ] = useState<boolean>(false);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     const [ allowedOriginsErrorLabel, setAllowedOriginsErrorLabel ] = useState<ReactElement>(null);
+
+    const clientSecret = useRef<HTMLElement>();
+    const grant = useRef<HTMLElement>();
+    const url = useRef<HTMLDivElement>();
+    const allowedOrigin = useRef<HTMLDivElement>();
+    const supportPublicClients = useRef<HTMLElement>();
+    const pkce = useRef<HTMLElement>();
+    const bindingType = useRef<HTMLElement>();
+    const type = useRef<HTMLElement>();
+    const validateTokenBinding = useRef<HTMLElement>();
+    const revokeAccessToken = useRef<HTMLElement>();
+    const userAccessTokenExpiryInSeconds = useRef<HTMLElement>();
+    const refreshToken = useRef<HTMLElement>();
+    const expiryInSeconds = useRef<HTMLElement>();
+    const audience = useRef<HTMLElement>();
+    const encryption = useRef<HTMLElement>();
+    const algorithm = useRef<HTMLElement>();
+    const method = useRef<HTMLElement>();
+    const idExpiryInSeconds = useRef<HTMLElement>();
+    const backChannelLogoutUrl = useRef<HTMLElement>();
+    const frontChannelLogoutUrl = useRef<HTMLElement>();
+    const enableRequestObjectSignatureValidation = useRef<HTMLElement>();
+    const scopeValidator = useRef<HTMLElement>();
 
     /**
      * Sets if a valid token binding type is selected.
@@ -309,6 +332,87 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     };
 
     /**
+     * Scrolls to the first field that throws an error.
+     *
+     * @param {string} field The name of the field.
+     */
+    const scrollToInValidField = (field: string): void => {
+        const options: ScrollIntoViewOptions = {
+            behavior: "smooth",
+            block: "center"
+        };
+
+        switch (field) {
+            case "clientSecret":
+                clientSecret.current.scrollIntoView(options);
+                break;
+            case "grant":
+                grant.current.scrollIntoView(options);
+                break;
+            case "url":
+                url.current.scrollIntoView(options);
+                break;
+            case "allowedOrigin":
+                allowedOrigin.current.scrollIntoView(options);
+                break;
+            case "supportPublicClients":
+                supportPublicClients.current.scrollIntoView(options);
+                break;
+            case "pkce":
+                pkce.current.scrollIntoView(options);
+                break;
+            case "bindingType":
+                bindingType.current.scrollIntoView(options);
+                break;
+            case "type":
+                type.current.scrollIntoView(options);
+                break;
+            case "validateTokenBinding":
+                validateTokenBinding.current.scrollIntoView(options);
+                break;
+            case "revokeAccessToken":
+                revokeAccessToken.current.scrollIntoView(options);
+                break;
+            case "userAccessTokenExpiryInSeconds":
+                userAccessTokenExpiryInSeconds.current.scrollIntoView(options);
+                break;
+            case "refreshToken":
+                refreshToken.current.scrollIntoView(options);
+                break;
+            case "expiryInSeconds":
+                expiryInSeconds.current.scrollIntoView(options);
+                break;
+            case "audience":
+                audience.current.scrollIntoView(options);
+                break;
+            case "encryption":
+                encryption.current.scrollIntoView(options);
+                break;
+            case "algorithm":
+                algorithm.current.scrollIntoView(options);
+                break;
+            case "method":
+                method.current.scrollIntoView(options);
+                break;
+            case "idExpiryInSeconds":
+                idExpiryInSeconds.current.scrollIntoView(options);
+                break;
+            case "backChannelLogoutUrl":
+                backChannelLogoutUrl.current.scrollIntoView(options);
+                break;
+            case "frontChannelLogoutUrl":
+                frontChannelLogoutUrl.current.scrollIntoView(options);
+                break;
+            case "enableRequestObjectSignatureValidation":
+                enableRequestObjectSignatureValidation.current.scrollIntoView(options);
+                break;
+            case "scopeValidator":
+                scopeValidator.current.scrollIntoView(options);
+                break;
+        }
+    }
+
+    /**
      * submitURL function.
      */
     let submitUrl: (callback: (url?: string) => void) => void;
@@ -326,17 +430,32 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         submitUrl((url: string) => {
                             if (isEmpty(callBackUrls) && isEmpty(url)) {
                                 setShowURLError(true);
+                                scrollToInValidField("url");
                             } else {
                                 submitOrigin((origin) => {
                                     // TODO: Remove the empty check when the backend is fixed.
                                     if (isEmpty(allowedOrigins) && isEmpty(origin)) {
                                         setShowOriginError(true);
+                                        scrollToInValidField("allowedOrigin");
                                     } else {
                                         onSubmit(updateConfiguration(values, url, origin));
                                     }
                                 });
                             }
                         });
+                    } }
+                    onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
+                        const iterator = requiredFields.entries();
+                        let result = iterator.next();
+
+                        while (!result.done) {
+                            if (!result.value[ 1 ] || !validFields.get(result.value[ 0 ]).isValid) {
+                                scrollToInValidField(result.value[ 0 ]);
+                                break;
+                            } else {
+                                result = iterator.next();
+                            }
+                        }
                     } }
                 >
                     <Grid>
@@ -364,6 +483,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Field
                                             name="clientSecret"
+                                            ref={ clientSecret }
                                             label={
                                                 t("devPortal:components.applications.forms.inboundOIDC.fields" +
                                                     ".clientSecret.label")
@@ -535,6 +655,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ grant }
                                     name="grant"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.fields.grant.label")
@@ -553,6 +674,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Hint>This will determine how the application communicates with the token service</Hint>
                             </Grid.Column>
                         </Grid.Row>
+                        <div ref={ url }></div>
                         <URLInput
                             isAllowEnabled={ false }
                             tenantDomain={ tenantDomain }
@@ -615,6 +737,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         />
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <div ref={ allowedOrigin }></div>
                                 <URLInput
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
@@ -678,6 +801,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ supportPublicClients }
                                     name="supportPublicClients"
                                     label=""
                                     required={ false }
@@ -724,6 +848,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                                 <Divider hidden />
                                 <Field
+                                    ref={ pkce }
                                     name="PKCE"
                                     label=""
                                     required={ false }
@@ -768,6 +893,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Hint>
                                 <Divider hidden />
                                 <Field
+                                    ref={ type }
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.type.label")
@@ -788,6 +914,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
+                                    ref={ bindingType }
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                             ".accessToken.fields.bindingType.label")
@@ -814,6 +941,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                             <Field
+                                                ref={ validateTokenBinding }
                                                 name="ValidateTokenBinding"
                                                 label=""
                                                 required={ false }
@@ -843,6 +971,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                             <Field
+                                                ref={ revokeAccessToken }
                                                 name="RevokeAccessToken"
                                                 label=""
                                                 required={ false }
@@ -875,6 +1004,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
+                                    ref={ userAccessTokenExpiryInSeconds }
                                     name="userAccessTokenExpiryInSeconds"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
@@ -936,6 +1066,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden />
                                 <Field
+                                    ref={ refreshToken }
                                     name="RefreshToken"
                                     label=""
                                     required={ false }
@@ -968,6 +1099,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
+                                    ref={ expiryInSeconds }
                                     name="expiryInSeconds"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
@@ -1009,6 +1141,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden />
                                 <Field
+                                    ref={ audience }
                                     name="audience"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
@@ -1037,6 +1170,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ encryption }
                                     name="encryption"
                                     label=""
                                     required={ false }
@@ -1073,6 +1207,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ algorithm }
                                     name="algorithm"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
@@ -1106,6 +1241,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ method }
                                     name="method"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
@@ -1140,6 +1276,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
                                 <Field
+                                    ref={ idExpiryInSeconds }
                                     name="idExpiryInSeconds"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
@@ -1180,6 +1317,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Heading as="h5">Logout URLs</Heading>
                                 <Divider hidden />
                                 <Field
+                                    ref={ backChannelLogoutUrl }
                                     name="backChannelLogoutUrl"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
@@ -1213,6 +1351,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ frontChannelLogoutUrl }
                                     name="frontChannelLogoutUrl"
                                     label={
                                         t("devPortal:components.applications.forms.inboundOIDC.sections" +
@@ -1246,6 +1385,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
+                                    ref={ enableRequestObjectSignatureValidation }
                                     name="enableRequestObjectSignatureValidation"
                                     label=""
                                     required={ false }
@@ -1281,6 +1421,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Heading>
                                 <Divider hidden />
                                 <Field
+                                    ref={ scopeValidator }
                                     name="scopeValidator"
                                     label=""
                                     required={ false }

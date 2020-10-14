@@ -18,13 +18,14 @@
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { useTrigger } from "@wso2is/forms";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
-import { UIConstants } from "../../core";
+import { AdvancedSearchWithBasicFilters, UIConstants, filterList, sortList } from "../../core";
 import { deleteEmailTemplateType, getEmailTemplateTypes } from "../api";
 import { AddEmailTemplateTypeWizard, EmailTemplateTypeList } from "../components";
 import { EmailTemplateType } from "../models";
@@ -53,17 +54,38 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
 
     const { t } = useTranslation();
 
+    /**
+     * Sets the attributes by which the list can be sorted.
+     */
+    const SORT_BY = [
+        {
+            key: 0,
+            text: t("common:name"),
+            value: "displayName"
+        }
+    ];
+
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ listOffset, setListOffset ] = useState<number>(0);
     const [ showNewTypeWizard, setShowNewTypeWizard ] = useState<boolean>(false);
 
     const [ emailTemplateTypes, setEmailTemplateTypes ] = useState<EmailTemplateType[]>([]);
-    const [ paginatedEmailTemplateTypes, setPaginatedEmailTemplateTypes ] = useState<EmailTemplateType[]>([]);
     const [ isTemplateTypesFetchRequestLoading, setIsTemplateTypesFetchRequestLoading ] = useState<boolean>(false);
+    const [ searchQuery, setSearchQuery ] = useState("");
+    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
+    const [ filteredEmailTemplateTypes, setFilteredEmailTemplateTypes ] = useState<EmailTemplateType[]>([]);
+    const [ sortBy, setSortBy ] = useState(SORT_BY[ 0 ]);
+    const [ sortOrder, setSortOrder ] = useState(true);
+
+    const [ resetPagination, setResetPagination ] = useTrigger();
 
     useEffect(() => {
-        getTemplateTypes(listItemLimit, listOffset)
-    }, [ listOffset, listItemLimit ]);
+        getTemplateTypes()
+    }, []);
+
+    useEffect(() => {
+        setFilteredEmailTemplateTypes((sortList(filteredEmailTemplateTypes, sortBy.value, sortOrder)));
+    }, [ sortBy, sortOrder ]);
 
     /**
      * Fetch the list of template types.
@@ -71,14 +93,14 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      * @param {number} limit - Pagination limit.
      * @param {number} offset - Pagination offset.
      */
-    const getTemplateTypes = (limit: number, offset: number): void => {
+    const getTemplateTypes = (): void => {
         setIsTemplateTypesFetchRequestLoading(true);
 
         getEmailTemplateTypes()
             .then((response: AxiosResponse<EmailTemplateType[]>) => {
                 if (response.status === 200) {
                     setEmailTemplateTypes(response.data);
-                    paginate(response.data, offset, limit);
+                    setFilteredEmailTemplateTypes(response.data);
 
                     return;
                 }
@@ -125,7 +147,6 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
         const offsetValue = (data.activePage as number - 1) * listItemLimit;
         setListOffset(offsetValue);
-        paginate(emailTemplateTypes, offsetValue, listItemLimit);
     };
 
     /**
@@ -136,7 +157,6 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      */
     const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
         setListItemLimit(data.value as number);
-        paginate(emailTemplateTypes, listOffset, data.value as number);
     };
 
     /**
@@ -146,8 +166,52 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
      * @param {number} offset - Pagination offset value.
      * @param {number} limit - Pagination item limit.
      */
-    const paginate = (list: EmailTemplateType[], offset: number, limit: number): void => {
-        setPaginatedEmailTemplateTypes(list.slice(offset, limit + offset));
+    const paginate = (list: EmailTemplateType[], offset: number, limit: number): EmailTemplateType[] => {
+        return list.slice(offset, limit + offset);
+    };
+
+    const handleSearch = (query: string): void => {
+        try {
+            // TODO: Implement using API once the API is ready
+            setFilteredEmailTemplateTypes(filterList(emailTemplateTypes, query, "displayName", true));
+            setSearchQuery(query);
+            setListOffset(0);
+            setResetPagination();
+        } catch (error) {
+            dispatch(addAlert({
+                description: error.message,
+                level: AlertLevels.ERROR,
+                message: t("adminPortal:components.userstores.advancedSearch.error")
+            }));
+        }
+    }
+
+    /**
+     * Handles the `onSearchQueryClear` callback action.
+     */
+    const handleSearchQueryClear = (): void => {
+        setTriggerClearQuery(!triggerClearQuery);
+        setSearchQuery("");
+        setFilteredEmailTemplateTypes(emailTemplateTypes);
+    };
+
+    /**
+     * Handle sort strategy change.
+     *
+     * @param {React.SyntheticEvent<HTMLElement>} event.
+     * @param {DropdownProps} data.
+     */
+    const handleSortStrategyChange = (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps): void => {
+        setSortBy(SORT_BY.filter(option => option.value === data.value)[ 0 ]);
+    };
+
+    /**
+     * Handles sort order change.
+     *
+     * @param {boolean} isAscending.
+     */
+    const handleSortOrderChange = (isAscending: boolean) => {
+        setSortOrder(isAscending);
     };
 
     /**
@@ -167,7 +231,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                             ".deleteTemplateType.success.message")
                     }));
 
-                    getTemplateTypes(listItemLimit, listOffset);
+                    getTemplateTypes();
 
                     return;
                 }
@@ -221,28 +285,68 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
+                advancedSearch={
+                    <AdvancedSearchWithBasicFilters
+                        onFilter={ handleSearch }
+                        filterAttributeOptions={ [
+                            {
+                                key: 0,
+                                text: t("common:name"),
+                                value: "displayName"
+                            }
+                        ] }
+                        filterAttributePlaceholder={
+                            t("adminPortal:components.emailTemplateTypes.advancedSearch.form.inputs" +
+                                ".filterAttribute.placeholder")
+                        }
+                        filterConditionsPlaceholder={
+                            t("adminPortal:components.emailTemplateTypes.advancedSearch.form.inputs" +
+                                ".filterCondition.placeholder")
+                        }
+                        filterValuePlaceholder={
+                            t("adminPortal:components.emailTemplateTypes.advancedSearch.form.inputs" +
+                                ".filterValue.placeholder")
+                        }
+                        placeholder={
+                            t("adminPortal:components.emailTemplateTypes.advancedSearch.placeholder")
+                        }
+                        defaultSearchAttribute="displayName"
+                        defaultSearchOperator="co"
+                        triggerClearQuery={ triggerClearQuery }
+                        data-testid={ `${ testId }-advanced-search` }
+                    />
+                }
                 currentListSize={ listItemLimit }
                 listItemLimit={ listItemLimit }
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 showPagination={ true }
-                totalPages={ Math.ceil(emailTemplateTypes?.length / listItemLimit) }
-                totalListSize={ emailTemplateTypes?.length }
-                showTopActionPanel={ false }
+                resetPagination={ resetPagination }
+                totalPages={ Math.ceil(filteredEmailTemplateTypes?.length / listItemLimit) }
+                totalListSize={ filteredEmailTemplateTypes?.length }
+                showTopActionPanel={ isTemplateTypesFetchRequestLoading
+                    || !(!searchQuery && filteredEmailTemplateTypes?.length <= 0) }
                 data-testid={ `${ testId }-list-layout` }
+                onSearchQueryClear={ handleSearchQueryClear }
+                onSortStrategyChange={ handleSortStrategyChange }
+                onSortOrderChange={ handleSortOrderChange }
+                sortOptions={ SORT_BY }
+                sortStrategy={ sortBy }
             >
                 <EmailTemplateTypeList
                     isLoading={ isTemplateTypesFetchRequestLoading }
                     onDelete={ deleteTemplateType }
                     onEmptyListPlaceholderActionClick={ () => setShowNewTypeWizard(true) }
-                    templateTypeList={ paginatedEmailTemplateTypes }
+                    templateTypeList={ paginate(filteredEmailTemplateTypes, listOffset, listItemLimit) }
                     data-testid={ `${ testId }-list` }
+                    searchQuery={ !!searchQuery }
+                    onSearchQueryClear={ handleSearchQueryClear }
                 />
                 {
                     showNewTypeWizard && (
                         <AddEmailTemplateTypeWizard
                             onCloseHandler={ () => {
-                                getTemplateTypes(listItemLimit, listOffset);
+                                getTemplateTypes();
                                 setShowNewTypeWizard(false);
                             } }
                             data-testid={ `${ testId }-add-wizard` }

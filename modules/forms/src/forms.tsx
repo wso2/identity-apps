@@ -32,6 +32,7 @@ interface FormPropsInterface {
     resetState?: boolean;
     submitState?: boolean;
     ref?: React.Ref<any>;
+    onSubmitError?: (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => void;
 }
 
 /**
@@ -40,7 +41,7 @@ interface FormPropsInterface {
 export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInterface>> =
     React.forwardRef((props: React.PropsWithChildren<FormPropsInterface>, ref): JSX.Element => {
 
-        const { onSubmit, resetState, submitState, onChange, children } = props;
+        const { onSubmit, resetState, submitState, onChange, onSubmitError, children } = props;
 
         // This holds the values of the form fields
         const [ form, setForm ] = useState(new Map<string, FormValue>());
@@ -436,6 +437,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     setIsSubmitting(false);
                     onSubmit(form);
                 } else {
+                	onSubmitError && onSubmitError(requiredFields, validFields);
                     setIsSubmitting(true);
                     setStartSubmission(false);
                 }

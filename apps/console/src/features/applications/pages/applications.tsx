@@ -43,6 +43,7 @@ import {
 } from "../../core";
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
+import { ApplicationManagementConstants } from "../constants";
 import { ApplicationListInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -127,7 +128,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             .then((response) => {
                 let isLocalSPFound = false;
                 for (const app of response.applications){
-                    if (app.name === "wso2carbon-local-sp") {
+                    if (app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP) {
                         isLocalSPFound = true;
                         break;
                     }

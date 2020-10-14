@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
-import React, { FunctionComponent, useState } from "react";
+import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
+import React, { FunctionComponent, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Container, Divider, Form, Modal } from "semantic-ui-react";
@@ -29,6 +29,11 @@ import { AppState } from "../../store";
 import { setActiveForm } from "../../store/actions";
 import { endUserSession } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
+
+/**
+ * Import password strength meter dynamically.
+ */
+const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
 
 /**
  * Constant to store the change password from identifier.
@@ -57,7 +62,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         currentPassword: "",
         newPassword: ""
     });
-
+    const [ password, setPassword ] = useState<string>("");
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
@@ -252,7 +257,15 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         showPassword={ t("common:showPassword") }
                         type="password"
                         width={ 9 }
+                        listen={ (values: Map<string, FormValue>) => {
+                            setPassword(values.get("newPassword").toString());
+                        } }
                     />
+                    <Form.Field width={ 9 } >
+                        <Suspense fallback={ null }>
+                            <PasswordMeter password={ password } />
+                        </Suspense>
+                    </Form.Field>
                     <Field
                         hidePassword={ t("common:hidePassword") }
                         label={ t(

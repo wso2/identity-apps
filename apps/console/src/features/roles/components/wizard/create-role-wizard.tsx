@@ -387,6 +387,11 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.roles.addRoleWizard.heading", { type: "Role" }) }
+                {
+                    wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.roleName
+                        ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.roleName
+                        : ""
+                }
                 <Heading as="h6">
                     {
                         t("adminPortal:components.roles.addRoleWizard.subHeading", { type: "role" })
