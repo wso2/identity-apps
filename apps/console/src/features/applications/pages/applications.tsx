@@ -127,7 +127,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             .then((response) => {
                 let isLocalSPFound = false;
                 for (const app of response.applications){
-                    if (app.name === "wso2carbon-local-sp") {
+                    if (app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP) {
                         isLocalSPFound = true;
                         break;
                     }

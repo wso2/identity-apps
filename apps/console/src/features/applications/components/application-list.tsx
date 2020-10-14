@@ -353,7 +353,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         }
 
         if (list?.totalResults === 0
-            || (list?.applications?.find(app => app.name === "wso2carbon-local-sp") && list?.totalResults === 1)) {
+            || (list?.applications?.find(app => app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP)
+                && list?.totalResults === 1)) {
             return (
                 <EmptyPlaceholder
                     action={ onEmptyListPlaceholderActionClick && (
@@ -392,7 +393,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 columns={ resolveTableColumns() }
                 data={
                     list?.applications?.filter((app: ApplicationListItemInterface) =>
-                        app.name !== "wso2carbon-local-sp")
+                        app.name !== ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP)
                 }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
                     handleApplicationEdit(app?.id);
