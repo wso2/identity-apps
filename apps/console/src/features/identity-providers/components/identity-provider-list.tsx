@@ -192,7 +192,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             { searchQuery: searchQuery }),
                         t("devPortal:components.idp.placeHolders.emptyIDPSearchResults.subtitles.1")
                     ] }
-                    data-testid={ `${ testId }-empty-search-results-placeholder` }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -216,7 +216,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.1"),
                         t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.2")
                     ] }
-                    data-testid={ `${ testId }-empty-idp-list-placeholder` }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -237,7 +237,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 id: "name",
                 key: "name",
                 render: (idp: IdentityProviderInterface): ReactNode => (
-                    <Header as="h6" image>
+                    <Header as="h6" image data-testid={ `${ testId }-item-heading` }>
                         {
                             idp.image
                                 ? (
@@ -258,7 +258,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         }
                         <Header.Content>
                             { idp.name }
-                            <Header.Subheader>
+                            <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
                                 { idp.description }
                             </Header.Subheader>
                         </Header.Content>
@@ -289,6 +289,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 
         return [
             {
+                "data-testid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => false,
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, idp: IdentityProviderInterface): void =>
@@ -297,6 +298,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 renderer: "semantic-icon"
             },
             {
+                "data-testid": `${ testId }-item-delete-button`,
                 hidden: (idp: IdentityProviderInterface): boolean =>
                     IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(idp.name),
                 icon: (): SemanticICONS => "trash alternate",
@@ -329,7 +331,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 selectable={ selection }
                 showHeader={ false }
                 transparent={ !isLoading && (showPlaceholders() !== null) }
-                data-testid={ `${ testId }-resource-list` }
+                data-testid={ testId }
             />
             {
                 deletingIDP && (
@@ -355,16 +357,20 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         onPrimaryActionClick={
                             (): void => handleIdentityProviderDelete(deletingIDP.id)
                         }
-                        data-testid={ `${ testId }-delete-confirmation` }
+                        data-testid={ `${ testId }-delete-confirmation-modal` }
                         closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header>
+                        <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                             { t("devPortal:components.idp.confirmations.deleteIDP.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                        >
                             { t("devPortal:components.idp.confirmations.deleteIDP.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
                             { t("devPortal:components.idp.confirmations.deleteIDP.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>

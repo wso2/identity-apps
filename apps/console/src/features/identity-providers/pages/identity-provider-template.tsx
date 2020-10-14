@@ -461,11 +461,13 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 contentTopMargin={ true }
                 description={ t("devPortal:pages.idpTemplate.subTitle") }
                 backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.idpTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
+                data-testid={ `${ testId }-page-layout` }
                 showBottomDivider
             >
                 {
@@ -503,6 +505,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                         />
                                     ) }
                                     tagsSectionTitle={ t("common:services") }
+                                    data-testid={ `${ testId }-quick-start-template-grid` }
                                 />
                             </div>
                         )
@@ -536,6 +539,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                             />
                         ) }
                         tagsSectionTitle={ t("common:services") }
+                        data-testid={ `${ testId }-manual-setup-template-grid` }
                     />
                 </div>
                 { showWizard && (
