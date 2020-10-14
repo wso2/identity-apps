@@ -17,5 +17,6 @@
  *
  */
 
+export * from "./identity-provider-edit-page-constants";
 export * from "./identity-provider-templates-page-constants";
 export * from "./identity-providers-list-page-constants";

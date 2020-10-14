@@ -62,6 +62,8 @@ export class IdentityProviderTemplatesPageConstants {
         "settings-idp-image";
     public static readonly CREATION_WIZARD_NEXT_BUTTON_DATA_ATTR: string = "idp-edit-idp-create-wizard-modal-next" +
         "-button";
+    public static readonly CREATION_WIZARD_FINISH_BUTTON_DATA_ATTR: string = "idp-edit-idp-create-wizard-modal-" +
+        "finish-button";
     public static readonly CREATION_WIZARD_CANCEL_BUTTON_DATA_ATTR: string = "idp-edit-idp-create-wizard-modal-" +
         "cancel-button";
 }

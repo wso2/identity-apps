@@ -24,4 +24,5 @@ import "@wso2/identity-cypress-test-base/commands";
 import "./applications";
 import "./email-templates";
 import "./commands";
+import "./identity-providers";
 import "./register";

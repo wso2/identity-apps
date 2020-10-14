@@ -17,5 +17,6 @@
  *
  */
 
+export * from "./identity-provider-edit-page";
 export * from "./identity-provider-templates-page";
 export * from "./identity-providers-list-page";

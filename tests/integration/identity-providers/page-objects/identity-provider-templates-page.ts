@@ -126,6 +126,14 @@ export class IdentityProviderTemplatesPage {
     };
 
     /**
+     * Get the creation wizard IDP description input.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getCreationWizardIDPDescriptionInput(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_IDP_DESCRIPTION_DATA_ATTR);
+    };
+
+    /**
      * Get the creation wizard form next button.
      * @return {Cypress.Chainable<Element>}
      */
@@ -139,5 +147,21 @@ export class IdentityProviderTemplatesPage {
      */
     public clickOnCreationWizardNextButton(): void {
         this.getCreationWizardNextButton().click();
+    };
+
+    /**
+     * Get the creation wizard form finish button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getCreationWizardFinishButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderTemplatesPageConstants.CREATION_WIZARD_FINISH_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Click on the creation wizard form finish button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public clickOnCreationWizardFinishButton(): void {
+        this.getCreationWizardFinishButton().click();
     };
 }

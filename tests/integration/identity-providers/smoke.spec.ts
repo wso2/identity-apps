@@ -67,32 +67,6 @@ describe("ITC-1.0.0 - [identity-providers] - Identity Providers Smoke Test.", ()
                     identityProvidersListPage.getNewTablePlaceholderAction().should("be.visible");
                 });
         });
-
-        it.skip("ITC-1.1.4 - [identity-providers] - Table rows renders properly.", () => {
-
-            // Check if the table row heading & image is displayed properly.
-            identityProvidersListPage.getTableBody()
-                .children()
-                .each((row) => {
-                    // Check if image exist.
-                    cy.wrap(row)
-                        .find(CommonUtils.resolveDataTestId(
-                            IdentityProvidersListPageConstants.TABLE_ROW_IMAGE_DATA_ATTR))
-                        .should("exist");
-
-                    // Check if heading exist.
-                    cy.wrap(row)
-                        .find(CommonUtils.resolveDataTestId(
-                            IdentityProvidersListPageConstants.TABLE_ROW_HEADING_DATA_ATTR))
-                        .should("exist");
-
-                    // Check if edit button exist.
-                    cy.wrap(row)
-                        .find(CommonUtils.resolveDataTestId(
-                            IdentityProvidersListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR))
-                        .should("exist");
-                });
-        });
     });
 
     context("ITC-1.2.0 - [identity-providers] - IDP Templates Page.", () => {
