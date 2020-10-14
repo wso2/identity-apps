@@ -109,6 +109,26 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
         });
     });
 
+    context("ITC-2.3.0 - [identity-providers] - IDP edit page works as expected.", () => {
+
+        it("ITC-2.3.1 - [identity-providers] - Correctly renders the required elements of the edit page.", () => {
+            identityProviderEditPage.getPageLayoutHeader().should("be.visible");
+            identityProviderEditPage.getPageLayoutHeaderTitle().should("be.visible");
+            identityProviderEditPage.getPageLayoutHeaderSubTitle().should("be.visible");
+            identityProviderEditPage.getPageBackButton().should("be.visible");
+            identityProviderEditPage.getTabs().should("be.visible");
+        });
+
+        it("ITC-2.3.2 - [identity-providers] - Can navigate to all the tabs.", () => {
+            identityProviderEditPage.selectTab("GENERAL");
+            identityProviderEditPage.selectTab("ATTRIBUTES");
+            identityProviderEditPage.selectTab("AUTHENTICATION");
+            identityProviderEditPage.selectTab("OUTBOUND_PROVISIONING");
+            identityProviderEditPage.selectTab("JIT_PROVISIONING");
+            identityProviderEditPage.selectTab("ADVANCED");
+        });
+    });
+
     context("ITC-2.6.0 - [identity-providers] - Delete IDP using Danger Zone.", () => {
 
         before(() => {

@@ -39,10 +39,10 @@ export class IdentityProviderEditPageConstants {
     public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "idp-edit-page-page-layout-page-header-title";
     public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "idp-edit-page-page-layout-page-header-" +
         "sub-title";
-    public static readonly PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR: string = "idp-edit-page-back-button";
+    public static readonly PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR: string = "idp-edit-page-page-back-button";
 
     // Tabs
-    public static readonly RESOURCE_TABS_DATA_ATTR: string = "idp-edit-resource-tabs";
+    public static readonly RESOURCE_TABS_DATA_ATTR: string = "idp-edit-page-resource-tabs";
     public static readonly RESOURCE_TABS_MENU_DATA_ATTR: string = "div[class=\"ui pointing secondary menu\"";
 
     // General Settings Form
