@@ -68,4 +68,31 @@ export class IdentityProviderEditPageConstants {
         "idp-confirmation-confirm-button";
     public static readonly IDP_DELETE_CONFIRM_MODAL_CLOSE_BUTTON_DATA_ATTR: string = "idp-edit-page-general-settings" +
         "-delete-idp-confirmation-cancel-button";
+
+    //Attribute selection
+    public static readonly CLAIM_ATTR_SELECT_WIZARD_DATA_ATTR: string = "idp-edit-page-attribute-settings-" +
+        "claim-attribute-selection-wizard-modal-header";
+    public static readonly CLAIM_ATTR_SELECT_WIZARD_UNSELECTED_LIST_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-wizard-modal-content-unselected-groups";
+    public static readonly CLAIM_ATTR_SELECT_WIZARD_SELECTED_LIST_DATA_ATTR: string = "idp-edit-page-attribute-" +
+        "settings-claim-attribute-selection-wizard-modal-content-selected-groups";
+    public static readonly CLAIM_ATTR_SELECT_WIZARD_LIST_ADD_BUTTON_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-wizard-modal-content-unselected-groups-add-button";
+    public static readonly CLAIM_ATTR_SELECT_WIZARD_LIST_REMOVE_BUTTON_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-wizard-modal-content-unselected-groups-remove-button";
+    public static readonly CLAIM_ATTR_SELECT_WIZARD_LIST_SAVE_BUTTON_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-wizard-modal-save-button";
+    public static readonly CLAIM_ATTR_SELECT_WIZARD_LIST_CANCEL_BUTTON_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-wizard-modal-cancel-button";
+
+    public static readonly CLAIM_ATTR_SELECT_LIST_DATA_ATTR: string = "idp-edit-page-attribute-settings-claim-" +
+        "attribute-selection";
+    public static readonly CLAIM_ATTR_SELECT_LIST_EMPTY_PLACEHOLDER_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-empty-placeholder";
+    public static readonly CLAIM_ATTR_SELECT_LIST_EMPTY_PLACEHOLDER_ACTION_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-empty-placeholder-action-container";
+    public static readonly CLAIM_ATTR_SELECT_LIST_EDIT_BUTTON_DATA_ATTR: string = "idp-edit-page-" +
+        "attribute-settings-claim-attribute-selection-edit-button";
+    public static readonly SUBJECT_ATTRIBUTE_DROPDOWN_DATA_ATTR: string = "application-edit-attribute-settings-" +
+        "advanced-attribute-settings-form-subject-attribute-dropdown";
 }

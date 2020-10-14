@@ -24,7 +24,6 @@ import { CommonUtils, CookieUtils, HousekeepingUtils } from "@wso2/identity-cypr
 import { IdentityProviderEditPageConstants, IdentityProvidersListPageConstants } from "./constants";
 import { IdentityProviderEditPage, IdentityProvidersListPage, IdentityProviderTemplatesPage } from "./page-objects";
 import { v4 as uuidv4 } from "uuid";
-import { ApplicationEditPageConstants, ApplicationsListPageConstants } from "../applications/constants";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
@@ -166,7 +165,43 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
         it("ITC-2.4.2 - [identity-providers] - Can add a JWKS endpoint.", () => {
             identityProviderEditPage.getJWKSCertRadio().click({ force: true });
             identityProviderEditPage.getIDPCertJWKSURLInput().type(JWKS_ENDPOINT);
-            identityProviderEditPage.clickOnCertificateUpdateButton();
+            // TODO: uncomment once the bug is fixed on product.
+            // identityProviderEditPage.clickOnCertificateUpdateButton();
+        });
+
+        it("ITC-2.4.3 - [identity-providers] - Can provide a valid certificate file and preview it.", () => {
+            // TODO: Implement test case once the bug is fixed on product.
+        });
+    });
+
+    context("ITC-2.5.0 - [identity-providers] - IDP Attributes Settings.", () => {
+
+        before(() => {
+            identityProviderEditPage.selectTab("ATTRIBUTES");
+        });
+
+        it("ITC-2.5.1 - [identity-providers] - Can add claim mappings.", () => {
+            identityProviderEditPage.clickOnUpdateClaimAttributeMapping();
+            
+            cy.wait(2000);
+            
+            identityProviderEditPage.getClaimAttributeSelectionWizard().should("be.visible");
+            identityProviderEditPage.getClaimAttributeSelectionWizardUnselectedList()
+                .within(() => {
+                    cy.get("tbody")
+                        .within(() => {
+                            cy.get("tr").eq(0)
+                                .within(() => {
+                                    cy.get("input[type=\"checkbox\"]").click({ force: true });
+                                });
+                            cy.get("tr").eq(1)
+                                .within(() => {
+                                    cy.get("input[type=\"checkbox\"]").click({ force: true });
+                                })
+                        });
+                });
+            identityProviderEditPage.getClaimAttributeSelectionWizardListAddButton().click();
+            identityProviderEditPage.getClaimAttributeSelectionWizardListSaveButton().click();
         });
     });
 

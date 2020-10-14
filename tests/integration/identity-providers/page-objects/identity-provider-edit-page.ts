@@ -20,6 +20,7 @@
 /// <reference types="cypress" />
 
 import { IdentityProviderEditPageConstants } from "../constants";
+import { CommonUtils } from "@wso2/identity-cypress-test-base/utils";
 
 /**
  * Class containing Identity Provider Edit Page objects.
@@ -242,5 +243,111 @@ export class IdentityProviderEditPage {
      */
     public clickOnCertificateUpdateButton(): void {
         this.getCertificateUpdateButton().click();
+    };
+
+    /**
+     * Get the claim attribute selection list.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionList(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection list edit button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionListEditButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_EDIT_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection list empty placeholder.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionListEmptyPlaceholder(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_EMPTY_PLACEHOLDER_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection list empty placeholder action.
+     * @return {Cypress.Chainable<JQuery<Element>>}
+     */
+    public getClaimAttributeSelectionListEmptyPlaceholderAction(): Cypress.Chainable<JQuery<Element>> {
+        return cy.dataTestId(
+            IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_EMPTY_PLACEHOLDER_ACTION_DATA_ATTR)
+            .find("button");
+    };
+
+    /**
+     * Clicks on claim attribute mapping update button.
+     */
+    public clickOnUpdateClaimAttributeMapping(): void {
+        cy.get("body")
+            .then(($body) => {
+                if ($body.find(CommonUtils.resolveDataTestId(
+                    IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_LIST_EMPTY_PLACEHOLDER_ACTION_DATA_ATTR))) {
+
+                    this.getClaimAttributeSelectionListEmptyPlaceholderAction().click();
+                } else {
+                    this.getClaimAttributeSelectionListEditButton().click();
+                }
+            })
+    };
+
+    /**
+     * Get the claim attribute selection wizard.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionWizard(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection wizard unselected list.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionWizardUnselectedList(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_UNSELECTED_LIST_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection wizard list add button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionWizardListAddButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_ADD_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection wizard list remove button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionWizardListRemoveButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_REMOVE_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection wizard list save button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionWizardListSaveButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_SAVE_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the claim attribute selection wizard list cancel button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getClaimAttributeSelectionWizardListCancelButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.CLAIM_ATTR_SELECT_WIZARD_LIST_SAVE_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the subject attribute dropdown.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getSubjectAttributeDropdown(): Cypress.Chainable<Element> {
+        return cy.dataTestId(IdentityProviderEditPageConstants.SUBJECT_ATTRIBUTE_DROPDOWN_DATA_ATTR);
     };
 }
