@@ -33,6 +33,7 @@ import {
     getOutboundProvisioningConnectorMetadata
 } from "../../api";
 import { IdentityProviderWizardStepIcons } from "../../configs";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     AuthenticatorPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -160,8 +161,12 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 if (!_.isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
-                    history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id",
-                        createdIdpID));
+
+                    history.push({
+                        pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
+                        search: IdentityProviderManagementConstants.NEW_IDP__URL_SEARCH_PARAM
+                    });
+
                     return;
                 }
 
