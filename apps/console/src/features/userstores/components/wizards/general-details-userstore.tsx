@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Grid, Header, Icon } from "semantic-ui-react";
 import { getUserStores, testConnection } from "../../api";
-import { JDBC } from "../../constants";
+import { DISABLED, JDBC } from "../../constants";
 import { TestConnection, TypeProperty, UserStoreListItem, UserstoreType } from "../../models";
 
 /**
@@ -82,6 +82,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
     const [ connectionSuccessful, setConnectionSuccessful ] = useState(false);
     const [ formValue, setFormValue ] = useState<Map<string, FormValue>>(null);
     const [ isTesting, setIsTesting ] = useState(false);
+    const [ enabled, setEnabled ] = useState<boolean>(undefined);
 
     const { t } = useTranslation();
 
@@ -207,7 +208,19 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                         {
                             basicProperties?.map(
                                 (selectedTypeDetail: TypeProperty, index: number) => {
-                                    const name = selectedTypeDetail.description.split("#")[ 0 ];
+                                    const isDisabledField = selectedTypeDetail.description.split("#")[ 0 ] === DISABLED;
+                                    const name = isDisabledField
+                                        ? enabled !== undefined
+                                            ? enabled ? "Enabled" : "Disabled"
+                                            : values?.get(selectedTypeDetail?.name)
+                                                ? values?.get(selectedTypeDetail?.name) === "false"
+                                                    ? "Enabled"
+                                                    : "Disabled"
+                                                : selectedTypeDetail.defaultValue === "false"
+                                                    ? "Enabled"
+                                                    : "Disabled"
+                                        : selectedTypeDetail.description.split("#")[ 0 ];
+
                                     const isPassword = selectedTypeDetail.attributes
                                         .find(attribute => attribute.name === "type").value === "password";
                                     const toggle = selectedTypeDetail.attributes
@@ -268,12 +281,28 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                                                 })
                                                         }
                                                         value={
-                                                            values?.get(selectedTypeDetail?.name)?.toString()
-                                                            ?? selectedTypeDetail.defaultValue
+                                                            isDisabledField
+                                                                ?
+                                                                values?.get(selectedTypeDetail?.name)
+                                                                    ? values
+                                                                        ?.get(selectedTypeDetail?.name)
+                                                                        ?.toString() === "false"
+                                                                        ? "true"
+                                                                        : "false"
+                                                                    : selectedTypeDetail.defaultValue === "false"
+                                                                        ? "true"
+                                                                        : "false"
+                                                                : values?.get(selectedTypeDetail?.name)?.toString()
+                                                                ?? selectedTypeDetail.defaultValue
                                                         }
                                                         toggle
                                                         data-testid={ `${ testId }-form-basic-properties-toggle-${
                                                             selectedTypeDetail.name }` }
+                                                        listen={ (values: Map<string, FormValue>) => {
+                                                            const value = values
+                                                                .get(selectedTypeDetail.name).toString();
+                                                            setEnabled(value !== "false");
+                                                        } }
                                                     />
                                                 ) :
                                                 (
