@@ -941,6 +941,11 @@ export interface AdminPortalNS {
                         };
                     };
                 };
+                groups: {
+                    emptyPlaceholder: Placeholder;
+                    heading: string;
+                    subHeading: string;
+                };
                 menuItems: {
                     basic: string;
                     permissions: string;

@@ -1547,9 +1547,9 @@ export const adminPortal: AdminPortalNS = {
                     },
                     confirmation: {
                         assertionHint: "Please type <1>{{ roleName }}</1> to confirm.",
-                        content: "If you delete this {{type}}, the permissions attached to it will be deleted and " +
-                            "the users attached to it will no longer be able to perform intended actions which were " +
-                            "previously allowed. Please proceed with caution",
+                        content: "If you delete this {{type}}, the permissions attached to it will be deleted and "
+                            + "the users attached to it will no longer be able to perform intended actions which were "
+                            + "previously allowed. Please proceed with caution",
                         header: "Are you sure?",
                         message: "This action is irreversible and will permanently delete the selected {{type}}"
                     },
@@ -1563,9 +1563,18 @@ export const adminPortal: AdminPortalNS = {
                             name: "Role Name",
                             placeholder: "Enter your role name",
                             required: "Role name is required"
-
                         }
                     }
+                },
+                groups: {
+                    emptyPlaceholder: {
+                        action: "Assign Group",
+                        subtitles: "There are no groups assigned to this role at the moment.",
+                        title: "No Groups Assigned"
+                    },
+                    heading: "Assigned Groups",
+                    subHeading: "Add or remove the groups assigned to this role. Note that this "
+                        + "will affect performing certain tasks."
                 },
                 menuItems: {
                     basic: "Basics",

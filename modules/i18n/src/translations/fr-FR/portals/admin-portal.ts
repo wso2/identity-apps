@@ -1566,6 +1566,16 @@ export const adminPortal: AdminPortalNS = {
                         }
                     }
                 },
+                groups: {
+                    emptyPlaceholder: {
+                        action: "Attribuer un groupe",
+                        subtitles: "Aucun groupe n'est affecté à ce rôle pour le moment.",
+                        title: "No Groups Assigned"
+                    },
+                    heading: "Groupes attribués",
+                    subHeading: "Ajoutez ou supprimez les groupes affectés au rôle. Notez que ceci"
+                        + "affectera l'exécution de certaines tâches."
+                },
                 menuItems: {
                     basic: "Fondamentaux",
                     groups: "Groupes",
