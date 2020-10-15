@@ -70,7 +70,7 @@ interface EmailTemplateListPropsInterface extends LoadableComponentInterface, Te
     /**
      * Search query
      */
-    searchQuery?: boolean;
+    searchQuery?: string;
     /**
      * Callback for the search query clear action.
      */
@@ -122,16 +122,15 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("adminPortal:components.emailTemplateTypes.placeholders.emptySearch.action") }
+                            { t("devPortal:placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.emailTemplateTypes.placeholders.emptySearch.title") }
+                    title={ t("devPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("adminPortal:components.emailTemplateTypes.placeholders.emptySearch.action", {
-                            searchQuery: searchQuery
-                        })
+                        t("devPortal:placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />

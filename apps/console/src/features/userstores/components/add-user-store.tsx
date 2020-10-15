@@ -340,6 +340,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

@@ -131,7 +131,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
 
     /**
      * Delete a userstore.
-     * 
+     *
      * @param {string} id userstore id.
      * @param {string} name userstore name.
      */
@@ -243,17 +243,15 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("adminPortal:components.userstores.placeholders.emptySearch.action") }
+                            { t("devPortal:placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.userstores.placeholders.emptySearch.title") }
+                    title={ t("devPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("adminPortal:components.userstores.placeholders.emptySearch.subtitles",
-                            {
-                                searchQuery: searchQuery
-                            })
+                        t("devPortal:placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
