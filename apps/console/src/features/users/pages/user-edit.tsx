@@ -161,7 +161,7 @@ const UserEditPage = (): ReactElement => {
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
             title={ resolveUserDisplayName(user, null, "Administrator") }
-            description={ t("" + user.emails && user.emails !== undefined ? user.emails[0].toString() :
+            description={ t("" + user.emails && user.emails !== undefined ? user.emails[0]?.toString() :
                 user.userName) }
             image={ (
                 <UserAvatar
