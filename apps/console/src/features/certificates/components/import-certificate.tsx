@@ -262,11 +262,13 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     )) }
                 </Steps.Group>
             </Modal.Content >
+            <Modal.Content>
+                { alert && alertComponent }
+            </Modal.Content>
             <Modal.Content
                 className={ `content-container ${currentWizardStep === 1 ? "certificate-content summary" : ""}` }
                 scrolling
             >
-                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

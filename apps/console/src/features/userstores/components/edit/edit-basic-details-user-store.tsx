@@ -310,7 +310,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                     data-testid={ `${ testId }-form-name-input` }
                                 />
                                 <Field
-                                    label={ t("adminPortal:components.userstores.forms.general.type.label") }
+                                    label={ t("adminPortal:components.userstores.forms.general.description.label") }
                                     name="type"
                                     type="text"
                                     disabled

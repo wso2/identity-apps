@@ -310,7 +310,8 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                         action={ (
                                             <PrimaryButton
                                                 onClick={ () => setShowWizard(true) }
-                                                data-testid={ `${testId}-emptyPlaceholder-add-certificate-button` }
+                                                data-testid={ `${ testId }-emptyPlaceholder-add-certificate-button` }
+                                                type="button"
                                             >
                                                 <Icon name="add"/>
                                                 { t("devPortal:components.idp.buttons.addCertificate") }
