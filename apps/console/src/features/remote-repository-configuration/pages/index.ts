@@ -17,4 +17,3 @@
  */
 
  export * from "./remote-repository-config";
- export * from "./remote-repository-config-edit";
