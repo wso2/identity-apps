@@ -234,7 +234,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
         >
             <TransferComponent
                 searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
-                    { type: "Groups" }) }
+                    { type: "groups" }) }
                 addItems={ addGroups }
                 removeItems={ removeGroups }
                 handleUnelectedListSearch={ handleUnselectedListSearch }
@@ -251,7 +251,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                     isHeaderCheckboxChecked={ isSelectUnassignedGroupsAllRolesChecked }
                     emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
-                    "emptyPlaceholders.roles.unselected", { type: "users" }) }
+                    "emptyPlaceholders.roles.unselected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups-select-all-checkbox"
                 >
                     {
@@ -283,7 +283,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                     handleHeaderCheckboxChange={ selectAllAssignedList }
                     isHeaderCheckboxChecked={ isSelectAssignedAllGroupsChecked }
                     emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
-                    "emptyPlaceholders.groups.selected", { type: "users" }) }
+                    "emptyPlaceholders.roles.selected", { type: "groups" }) }
                     data-testid="user-mgt-add-user-wizard-modal-selected-groups-select-all-checkbox"
                 >
                     {
