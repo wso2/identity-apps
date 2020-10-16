@@ -24,21 +24,17 @@ import org.apache.commons.logging.LogFactory;
 import java.io.IOException;
 import java.nio.file.Path;
 
+/**
+ * Util class for cypress test suite
+ */
 public class CypressTestUtils {
 
     private static final Log LOG = LogFactory.getLog(CypressTestUtils.class);
+
     private static final TestResultsStrategy DEFAULT_TEST_RESULTS_STRATEGY = new MochawesomeResultsStrategy();
-    private static final CypressTestUtils INSTANCE = new CypressTestUtils();
 
     private TestResultsStrategy testResultsStrategy = DEFAULT_TEST_RESULTS_STRATEGY;
 
-    /**
-     * Set the {@link TestResultsStrategy} object that should be used for gathering information
-     * on the Cypress tests results.
-     *
-     * @param strategy the {@link TestResultsStrategy} instance
-     * @return the current instance
-     */
     private CypressTestUtils withTestResultsStrategy(TestResultsStrategy strategy) {
 
         if (strategy == null) {
@@ -56,7 +52,7 @@ public class CypressTestUtils {
      * @param path the relative path
      * @return the current instance
      */
-    public CypressTestUtils withMochawesomeReportsAt(Path path) {
+     CypressTestUtils withMochawesomeReportsAt(Path path) {
 
         return withTestResultsStrategy(new MochawesomeResultsStrategy(path));
     }
@@ -67,7 +63,7 @@ public class CypressTestUtils {
      * @return the Cypress test results
      * @throws IOException  When there was a problem parsing the Cypress test reports
      */
-    public CypressTestResults getTestResults() throws IOException {
+    CypressTestResults getTestResults() throws IOException {
 
         CypressTestResults results = testResultsStrategy.gatherTestResults();
         LOG.info(results);

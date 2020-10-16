@@ -24,7 +24,9 @@ package org.wso2.identity.apps.test.container;
 public final class CypressTestConstants {
 
     public static final String CYPRESS_ENV_CONFIG_FILE = "cypress.env.json";
+
     public static final String TEST_SUITE_RUNNER_FILE = "test-suite-runner.sh";
+
     public static final String MOCHA_RESULTS_DIR = "output/results";
 
     private CypressTestConstants() {
@@ -37,25 +39,37 @@ public final class CypressTestConstants {
     public static class EnvironmentConfigElements {
 
         public static final String SERVER_URL = "SERVER_URL";
+
         public static final String CONSOLE_BASE_URL = "CONSOLE_BASE_URL";
+
         public static final String AUTH_ENDPOINT_URL = "AUTH_ENDPOINT_URL";
 
         public static final String USER_PORTAL = "USER_PORTAL";
+
         public static final String DEV_PORTAL = "DEV_PORTAL";
+
         public static final String ADMIN_PORTAL = "ADMIN_PORTAL";
 
         public static final String TENANT_DOMAIN = "TENANT_DOMAIN";
+
         public static final String SUPER_TENANT_DOMAIN = "SUPER_TENANT_DOMAIN";
 
         public static final String SCIM2_ENDPOINT = "SCIM2_ENDPOINT";
+
         public static final String USER_ENDPOINT = "USER_ENDPOINT";
+
         public static final String BULK_ENDPOINT = "BULK_ENDPOINT";
+
         public static final String SEARCH_ENDPOINT = "SEARCH_ENDPOINT";
+
         public static final String APPLICATION_ENDPOINT = "APPLICATION_ENDPOINT";
 
         public static final String SUPER_TENANT_USERNAME = "SUPER_TENANT_USERNAME";
+
         public static final String SUPER_TENANT_PASSWORD = "SUPER_TENANT_PASSWORD";
+
         public static final String TENANT_USERNAME = "TENANT_USERNAME";
+
         public static final String TENANT_PASSWORD = "TENANT_PASSWORD";
 
         public static final String LOGOUT_URL_QUERY = "LOGOUT_URL_QUERY";

@@ -22,21 +22,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
 
+/**
+ * Cypress test suite class
+ */
 public class CypressTestSuite {
+
     private List<CypressTest> tests = new ArrayList<>();
+
     private String title;
 
-    public CypressTestSuite(String title) {
+    CypressTestSuite(String title) {
 
         this.title = title;
     }
 
-    public String getTitle() {
+    String getTitle() {
 
         return title;
     }
 
-    public List<CypressTest> getTests() {
+    List<CypressTest> getTests() {
 
         return tests;
     }
@@ -55,22 +60,24 @@ public class CypressTestSuite {
                 .toString();
     }
 
-    public static class CypressTest {
+    static class CypressTest {
+
         private String description;
+
         private boolean success;
 
-        public CypressTest(String description, boolean success) {
+        CypressTest(String description, boolean success) {
 
             this.description = description;
             this.success = success;
         }
 
-        public String getDescription() {
+        String getDescription() {
 
             return description;
         }
 
-        public boolean isSuccess() {
+        boolean isSuccess() {
 
             return success;
         }
