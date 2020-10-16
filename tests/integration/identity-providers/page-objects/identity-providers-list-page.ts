@@ -143,8 +143,7 @@ export class IdentityProvidersListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getPageLayoutHeaderAction(options?: object): Cypress.Chainable<Element> {
-        return cy.dataTestId(IdentityProvidersListPageConstants.PAGE_LAYOUT_HEADER_ACTION,
-            options ? { ...options } : null);
+        return cy.dataTestId(IdentityProvidersListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
     };
 
     /**
@@ -162,8 +161,7 @@ export class IdentityProvidersListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getNewTablePlaceholderAction(options?: object): Cypress.Chainable<JQuery<HTMLButtonElement>> {
-        return cy.dataTestId(IdentityProvidersListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER,
-            options ? { ...options } : null)
+        return cy.dataTestId(IdentityProvidersListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER)
             .find("button");
     };
 
