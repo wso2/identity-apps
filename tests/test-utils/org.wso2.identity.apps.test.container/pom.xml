@@ -28,11 +28,10 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <artifactId>org.wso2.identity.apps.test.utils</artifactId>
+    <artifactId>org.wso2.identity.apps.test.container</artifactId>
     <packaging>jar</packaging>
-    <name>WSO2 Identity Server Apps - Test Utils Component</name>
-    <url>http://wso2.org</url>
-    <description>Integration Test Utils for Identity Apps</description>
+    <name>WSO2 Identity Server Apps - Test Container Component</name>
+    <description>Cypress Integration Test Container for Identity Apps</description>
 
     <dependencies>
         <dependency>
@@ -58,17 +57,28 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-core-asl</artifactId>
-            <version>1.9.13</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>1.9.13</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
