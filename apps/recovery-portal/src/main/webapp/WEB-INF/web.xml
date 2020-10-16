@@ -117,7 +117,7 @@
 
     <servlet>
         <servlet-name>recoverpassword.do</servlet-name>
-        <jsp-file>/password-recovery-with-claims.jsp</jsp-file>
+        <jsp-file>/password-recovery.jsp</jsp-file>
     </servlet>
 
     <servlet>
@@ -137,11 +137,6 @@
     </servlet>
 
     <servlet>
-        <servlet-name>confirmpasswordrecovery.do</servlet-name>
-        <jsp-file>/password-recovery-with-claims-confirm.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
         <servlet-name>completepasswordreset.do</servlet-name>
         <jsp-file>/password-reset-complete.jsp</jsp-file>
     </servlet>
@@ -149,16 +144,6 @@
     <servlet>
         <servlet-name>passwordreset.do</servlet-name>
         <jsp-file>/password-reset.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>postrecoverypasswordreset.do</servlet-name>
-        <jsp-file>/post-recovery-password-reset.jsp</jsp-file>
-    </servlet>
-
-    <servlet>
-        <servlet-name>postrecoverypasswordresetcomplete.do</servlet-name>
-        <jsp-file>/post-recovery-password-reset-complete.jsp</jsp-file>
     </servlet>
 
     <servlet>
@@ -240,21 +225,6 @@
     <servlet-mapping>
         <servlet-name>passwordreset.do</servlet-name>
         <url-pattern>/passwordreset.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>confirmpasswordrecovery.do</servlet-name>
-        <url-pattern>/confirmpasswordrecovery.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>postrecoverypasswordreset.do</servlet-name>
-        <url-pattern>/postrecoverypasswordreset.do</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>postrecoverypasswordresetcomplete.do</servlet-name>
-        <url-pattern>/postrecoverypasswordresetcomplete.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

@@ -47,10 +47,6 @@
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryWithClaimsNotify"));
     boolean isResendPasswordRecovery = Boolean.parseBoolean(request.getParameter("isResendPasswordRecovery"));
 
-    // TODO : check if request.setAttribute("sessionDataKey", sessionDataKey); needed
-    // TODO : if(StringUtils.isNotBlank(request.getParameter("tenantDomain"))){
-    //tenantDomain = request.getParameter("tenantDomain").trim();
-    //}
     // Common parameters for password recovery with email and self registration with email
     String username = request.getParameter("username");
     String sessionDataKey = request.getParameter("sessionDataKey");
@@ -113,7 +109,7 @@
         }
 
     } else if (isPasswordRecoveryWithClaimsNotify) {
-        // Let user to recover password by preferred channel
+        // Let user recover password by preferred channel.
         String recoveryCode = request.getParameter("recoveryCode");
         String resendCode = "";
         String notificationChannel = "";
@@ -122,6 +118,7 @@
         if (recoveryOption.equals("SECURITY_QUESTIONS")) {
             username = IdentityManagementEndpointUtil.getFullQualifiedUsername(username, tenantDomain, null);
             request.setAttribute("callback", callback);
+            request.setAttribute("sessionDataKey", sessionDataKey);
             request.setAttribute("username", username);
             session.setAttribute("username", username);
             IdentityManagementEndpointUtil.addReCaptchaHeaders(request, passwordRecoveryApiV1.
@@ -135,6 +132,12 @@
             callbackProperty.setKey("callback");
             callbackProperty.setValue(URLEncoder.encode(callback, "UTF-8"));
             properties.add(callbackProperty);
+
+            Property sessionDataKeyProperty = new Property();
+            sessionDataKeyProperty.setKey("sessionDataKey");
+            sessionDataKeyProperty.setValue(sessionDataKey);
+            properties.add(sessionDataKeyProperty);
+
             RecoveryRequest recoveryRequest = new RecoveryRequest();
             recoveryRequest.setProperties(properties);
             recoveryRequest.setChannelId(recoveryOption);
@@ -147,13 +150,15 @@
                 notificationChannel = recoveryResponse.getNotificationChannel();
                 request.getSession().setAttribute("resendCode", resendCode);
                 request.setAttribute("callback", callback);
+                request.setAttribute("sessionDataKey", sessionDataKey);
                 request.setAttribute("tenantDomain", tenantDomain);
                 if (notificationChannel.equals("EMAIL")) {
                     request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                             response);
                     return;
                 } else if (notificationChannel.equals("SMS")) {
-                    request.setAttribute("callback", callback);
+                    username = IdentityManagementEndpointUtil.getFullQualifiedUsername(username, tenantDomain, null);
+                    request.setAttribute("username", username);
                     request.getRequestDispatcher("password-recovery-with-claims-sms.jsp").forward(request,
                             response);
                     return;
@@ -182,6 +187,11 @@
         callbackProperty.setValue(URLEncoder.encode(callback, "UTF-8"));
         properties.add(callbackProperty);
 
+        Property sessionDataKeyProperty = new Property();
+        sessionDataKeyProperty.setKey("sessionDataKey");
+        sessionDataKeyProperty.setValue(sessionDataKey);
+        properties.add(sessionDataKeyProperty);
+
         resendConfirmationRequest.setResendCode(resendCode);
         resendConfirmationRequest.setProperties(properties);
         PasswordRecoveryApiV1 passwordRecoveryApiV1 = new PasswordRecoveryApiV1();
@@ -193,11 +203,13 @@
             notificationChannel = resendConfirmationCodeResponse.getNotificationChannel();
             request.setAttribute("tenantDomain", tenantDomain);
             request.setAttribute("callback", callback);
+            request.setAttribute("sessionDataKey", sessionDataKey);
             request.getSession().setAttribute("resendCode", resendCode);
             if (notificationChannel.equals("EMAIL")) {
                 request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                         response);
             } else if (notificationChannel.equals("SMS")) {
+                request.setAttribute("username", username);
                 request.getRequestDispatcher("password-recovery-with-claims-sms.jsp").forward(request,
                         response);
             } else {
@@ -236,7 +248,9 @@
         } catch (ApiException e) {
             request.setAttribute("tenantDomain", tenantDomain);
             request.setAttribute("callback", callback);
+            request.setAttribute("sessionDataKey", sessionDataKey);
             if (e.getCode() == 406) {
+                request.setAttribute("username", username);
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Invalid.code.message"));
@@ -247,11 +261,14 @@
             request.getRequestDispatcher("error.jsp").forward(request, response);
             return;
         }
+        request.setAttribute("sessionDataKey", sessionDataKey);
         request.setAttribute("callback", callback);
+        request.setAttribute("username", username);
         request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
         if (StringUtils.isNotBlank(resetCode)) {
             request.getSession().setAttribute("confirmationKey", resetCode);
-            request.getRequestDispatcher("postrecoverypasswordreset.do").forward(request, response);
+            session.setAttribute("username", username);
+            request.getRequestDispatcher("password-reset.jsp").forward(request, response);
         } else {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg",

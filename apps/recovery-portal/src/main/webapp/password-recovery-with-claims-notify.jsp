@@ -34,12 +34,16 @@
 
 <%
     String resendCode = (String) request.getSession().getAttribute("resendCode");
-    String tenantDomain = IdentityManagementEndpointUtil.getStringValue(request.getParameter("tenantDomain"));
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
+    String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
+    if (StringUtils.isBlank(tenantDomain)) {
+        tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+    }
+    boolean disableResend = Boolean.parseBoolean(request.getParameter("disableResend"));
 %>
 
 <!doctype html>
@@ -51,7 +55,7 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body>
@@ -69,61 +73,72 @@
     </div>
     <div class="actions">
         <%
-            if (StringUtils.isNotBlank(resendCode)) {
+            if (StringUtils.isNotBlank(resendCode) && !disableResend) {
         %>
         <form method="post" action="verify.do" id="resendConfirmationForm">
             <input type="hidden" name="isResendPasswordRecovery" value="true"/>
             <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
             <input type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
-            <div>
-                <button id="recoverySubmit" class="ui primary button cancel" data-dismiss="modal">
-                    Resend Confirmation Code
+            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
+            <div class="align-right buttons">
+                <button id="recoverySubmit" class="ui button link-button" data-dismiss="modal">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Resend.confirmation")%>
+                </button>
+                <button type="button" class="ui primary button cancel" data-dismiss="modal">
+                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
                 </button>
             </div>
         </form>
         <%
             }
+            else {
         %>
-        <br>
         <button type="button" class="ui primary button cancel" data-dismiss="modal">
             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
         </button>
+        <%
+            }
+        %>
     </div>
 </div>
 
-<!-- footer -->
-<%
-    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-    if (footerFile.exists()) {
-%>
-<jsp:include page="extensions/footer.jsp"/>
-<% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-<% } %>
+    <!-- footer -->
+    <%
+        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+        if (footerFile.exists()) {
+    %>
+    <jsp:include page="extensions/footer.jsp"/>
+    <% } else { %>
+    <jsp:include page="includes/footer.jsp"/>
+    <% } %>
 
-<script type="application/javascript">
-    $(document).ready(function () {
-        $(".notify").modal({
-            blurring: true,
-            closable: false,
-            onHide: function () {
-                <%
-                try {
-                    if (callback != null) {
-                %>
-                location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
-                <%
+    <script type="application/javascript">
+        function goBack() {
+            window.history.back();
+        }
+
+        $(document).ready(function () {
+            $(".notify").modal({
+                blurring: true,
+                closable: false,
+                onHide: function () {
+                    <%
+                    try {
+                        if (callback != null) {
+                    %>
+                        location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
+                    <%
+                    }
+                    } catch (URISyntaxException e) {
+                        request.setAttribute("error", true);
+                        request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
+                        request.getRequestDispatcher("error.jsp").forward(request, response);
+                        return;
+                    }
+                    %>
                 }
-                } catch (URISyntaxException e) {
-                    request.setAttribute("error", true);
-                    request.setAttribute("errorMsg", "Invalid callback URL found in the request.");
-                    request.getRequestDispatcher("error.jsp").forward(request, response);
-                    return;
-                }
-                %>
-            }
-        }).modal("show");
-    });
-</script>
+            }).modal("show");
+        });
+    </script>
 </body>
 </html>

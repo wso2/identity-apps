@@ -34,12 +34,15 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="java.net.URISyntaxException" %>
 <%@ page import="java.io.File" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
-    String tenantDomain = IdentityManagementEndpointUtil.getStringValue(request.getParameter("tenantDomain"));
     String username = IdentityManagementEndpointUtil.getStringValue(request.getParameter("username"));
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
+    String sessionDataKey = IdentityManagementEndpointUtil.getStringValue(request.getParameter("sessionDataKey"));
+
     String recaptchaResponse = request.getParameter("g-recaptcha-response");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
@@ -99,7 +102,7 @@
         if (accountRecoveryTypes == null) {
             request.setAttribute("tenantDomain", tenantDomain);
             request.setAttribute("callback", callback);
-            request.setAttribute("isInvalidRequest", callback);
+            request.setAttribute("disableResend", true);
             request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                         response);
             return;
@@ -155,14 +158,14 @@
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                     "No.valid.user.found"));
-            request.getRequestDispatcher("recoverpassword.do").forward(request, response);
+            request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
             return;
         }
         if (e.getCode() == 409) {
             request.setAttribute("error", true);
             request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                     "Insufficient.info.to.find.user"));
-            request.getRequestDispatcher("recoverpassword.do").forward(request, response);
+            request.getRequestDispatcher("recoveraccountrouter.do").forward(request, response);
             return;
         }
         IdentityManagementEndpointUtil.addErrorInformation(request, e);
@@ -188,7 +191,7 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout recovery-layout">
@@ -201,7 +204,7 @@
         %>
         <jsp:include page="extensions/product-title.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/product-title.jsp"/>
+        <jsp:include page="includes/product-title.jsp"/>
         <% } %>
         <div class="ui segment">
             <!-- page content -->
@@ -224,7 +227,8 @@
                                 <% } else { %>
                                 <input type="radio" name="recoveryOption" value="<%=emailId%>"/>
                                 <% } %>
-                                <label> Send recovery link to <%=emailValue%></label>
+                                <label><%=IdentityManagementEndpointUtil.i18n
+                                        (recoveryResourceBundle,"Send.recovery.link.to")%> <%=emailValue%></label>
                             </div>
                         </div>
                     <%
@@ -238,7 +242,8 @@
                                 <% } else { %>
                                 <input type="radio" name="recoveryOption" value="<%=smsId%>"/>
                                 <% } %>
-                                <label>Send recovery code to <%=smsValue%></label>
+                                <label><%=IdentityManagementEndpointUtil.i18n
+                                        (recoveryResourceBundle,"Send.recovery.code.to")%> <%=smsValue%></label>
                             </div>
                         </div>
                     <%
@@ -256,6 +261,14 @@
 
                     <input type="hidden" name="username" value="<%=username%>"/>
                     <input type="hidden" name="g-recaptcha-response" value="<%=recaptchaResponse%>"/>
+                    <%
+                        }
+                        if (sessionDataKey != null) {
+                    %>
+                    <div>
+                        <input type="hidden" name="sessionDataKey"
+                               value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
+                    </div>
                     <%
                         }
                     %>
@@ -285,25 +298,29 @@
 </main>
 <!-- /content/body -->
 <!-- product-footer -->
-    <%
-        File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
-        if (productFooterFile.exists()) {
-    %>
+<%
+    File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
+    if (productFooterFile.exists()) {
+%>
 <jsp:include page="extensions/product-footer.jsp"/>
-    <% } else { %>
-<jsp:directive.include file="includes/product-footer.jsp"/>
-    <% } %>
+<% } else { %>
+<jsp:include page="includes/product-footer.jsp"/>
+<% } %>
 <!-- footer -->
-    <%
-        File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
-        if (footerFile.exists()) {
-    %>
+<%
+    File footerFile = new File(getServletContext().getRealPath("extensions/footer.jsp"));
+    if (footerFile.exists()) {
+%>
 <jsp:include page="extensions/footer.jsp"/>
-    <% } else { %>
-<jsp:directive.include file="includes/footer.jsp"/>
-    <% } %>
+<% } else { %>
+<jsp:include page="includes/footer.jsp"/>
+<% } %>
 
     <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
+
         $(document).ready(function () {
             $("#recoverDetailsForm").submit(function (e) {
                 var errorMessage = $("#error-msg");

@@ -22,15 +22,18 @@
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.io.File" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
+<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
-    String tenantDomain = IdentityManagementEndpointUtil.getStringValue(request.getParameter("tenantDomain"));
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
+    String sessionDataKey = (String) request.getAttribute("sessionDataKey");
+    String username = (String) request.getAttribute("username");
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 %>
@@ -44,7 +47,7 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 </head>
 <body class="login-portal layout recovery-layout">
@@ -57,7 +60,7 @@
             %>
             <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-title.jsp"/>
+            <jsp:include page="includes/product-title.jsp"/>
             <% } %>
             <div class="ui segment">
                 <!-- page content -->
@@ -82,13 +85,18 @@
                             <input type="hidden" id="isPWRecovery" name="isPasswordRecoverySMSConfirmation" value="true">
                             <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
                             <input type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain) %>"/>
+                            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey) %>"/>
+                            <input type="hidden" name="username" value="<%=Encode.forHtmlAttribute(username) %>"/>
                         </div>
                         <div class="ui divider hidden"></div>
                         <div class="align-left ui link-text">
                             <a id="registerLink"
                                href="verify.do?tenantDomain=<%=Encode.forHtmlAttribute(tenantDomain)%>&callback=<%=Encode.
-                               forHtmlAttribute(URLEncoder.encode(callback, "UTF-8"))%>&isResendPasswordRecovery=true">
-                                Re-send Confirmation Code </a>
+                               forHtmlAttribute(URLEncoder.encode(callback, "UTF-8"))%>&sessionDataKey=<%=Encode.
+                               forHtmlAttribute(sessionDataKey)%>&username=<%=Encode.
+                               forHtmlAttribute(username)%>&isResendPasswordRecovery=true">
+                                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Resend.confirmation")%>
+                            </a>
                         </div>
                         <div class="ui divider hidden"></div>
                         <div class="align-right buttons">
@@ -114,7 +122,7 @@
     %>
     <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
     <!-- footer -->
     <%
@@ -123,8 +131,21 @@
     %>
     <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
+    <script type="text/javascript">
+        function goBack() {
+            window.history.back();
+        }
+
+        $(document).ready(function () {
+            $("#smsOtpSubmitForm").submit(function (e) {
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
+                return true;
+            });
+        });
+    </script>
 </body>
 </html>
