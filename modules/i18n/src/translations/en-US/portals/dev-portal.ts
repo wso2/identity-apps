@@ -137,6 +137,20 @@ export const devPortal: DevPortalNS = {
                 }
             },
             notifications: {
+                createConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Creation Error"
+                    },
+                    genericError: {
+                        description: "Failed to save the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully saved the confuguration.",
+                        message: "Creation successful"
+                    }
+                },
                 deleteConfig: {
                     error: {
                         description: "{{description}}",
@@ -149,20 +163,6 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "Successfully deleted the configuration.",
                         message: "Deletetion successful"
-                    }
-                },
-                triggerConfig: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Trigger Error"
-                    },
-                    genericError: {
-                        description: "Failed to trigger the configuration",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully triggered the configuration.",
-                        message: "Trigger successful"
                     }
                 },
                 editConfig: {
@@ -179,20 +179,6 @@ export const devPortal: DevPortalNS = {
                         message: "Edit successful"
                     }
                 },
-                createConfig: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Creation Error"
-                    },
-                    genericError: {
-                        description: "Failed to create the configuration",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully created the confuguration.",
-                        message: "Creation successful"
-                    }
-                },
                 getConfig: {
                     error: {
                         description: "{{description}}",
@@ -205,6 +191,20 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "Successfully created the confuguration.",
                         message: "Creation successful"
+                    }
+                },
+                triggerConfig: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Trigger Error"
+                    },
+                    genericError: {
+                        description: "Failed to trigger the configuration",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully triggered the configuration.",
+                        message: "Trigger successful"
                     }
                 }
             }
