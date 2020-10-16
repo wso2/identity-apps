@@ -61,7 +61,7 @@
         <module>features/org.wso2.identity.apps.authentication.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.recovery.portal.server.feature</module>
         <module>features/org.wso2.identity.apps.feature</module>
-        <module>tests/test-utils/org.wso2.identity.apps.test.utils</module>
+        <module>tests/test-utils/org.wso2.identity.apps.test.container</module>
     </modules>
 
     <repositories>
