@@ -41,8 +41,6 @@
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
-    boolean isPasswordRecoverySMSConfirmation =
-            Boolean.parseBoolean(request.getParameter("isPasswordRecoverySMSConfirmation"));
     boolean isPasswordRecoveryWithClaimsNotify =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryWithClaimsNotify"));
     boolean isResendPasswordRecovery = Boolean.parseBoolean(request.getParameter("isResendPasswordRecovery"));
@@ -109,7 +107,7 @@
         }
 
     } else if (isPasswordRecoveryWithClaimsNotify) {
-        // Let user recover password by preferred channel.
+        // Let user recover password by email or security questions.
         String recoveryCode = request.getParameter("recoveryCode");
         String resendCode = "";
         String notificationChannel = "";
@@ -156,12 +154,6 @@
                     request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                             response);
                     return;
-                } else if (notificationChannel.equals("SMS")) {
-                    username = IdentityManagementEndpointUtil.getFullQualifiedUsername(username, tenantDomain, null);
-                    request.setAttribute("username", username);
-                    request.getRequestDispatcher("password-recovery-with-claims-sms.jsp").forward(request,
-                            response);
-                    return;
                 } else {
                     request.setAttribute("error", true);
                     request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -176,7 +168,7 @@
             }
         }
     } else if (isResendPasswordRecovery) {
-        // Resend password recovery notification via preferred channel
+        // Resend password recovery email.
         String resendCode = (String) request.getSession().getAttribute("resendCode");
         String notificationChannel = "";
         ResendConfirmationRequest resendConfirmationRequest = new ResendConfirmationRequest();
@@ -208,10 +200,6 @@
             if (notificationChannel.equals("EMAIL")) {
                 request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                         response);
-            } else if (notificationChannel.equals("SMS")) {
-                request.setAttribute("username", username);
-                request.getRequestDispatcher("password-recovery-with-claims-sms.jsp").forward(request,
-                        response);
             } else {
                 request.setAttribute("error", true);
                 request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
@@ -221,60 +209,6 @@
         } catch (ApiException e) {
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
-        }
-    } else if (isPasswordRecoverySMSConfirmation) {
-        // Validate SMS confirmation code for password recovery
-        String confirmationCode = request.getParameter("confirmation");
-        if (StringUtils.isBlank(tenantDomain)) {
-            tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
-        }
-        String resetCode = "";
-        PasswordRecoveryApiV1 passwordRecoveryApiV1 = new PasswordRecoveryApiV1();
-        try {
-            List<Property> properties = new ArrayList<>();
-            Property tenantDomainProperty = new Property();
-            tenantDomainProperty.setKey(MultitenantConstants.TENANT_DOMAIN);
-            tenantDomainProperty.setValue(tenantDomain);
-            properties.add(tenantDomainProperty);
-
-            ConfirmRequest confirmRequest = new ConfirmRequest();
-            confirmRequest.setProperties(properties);
-            confirmRequest.setConfirmationCode(confirmationCode);
-            Map<String, String> requestHeaders = new HashedMap();
-            ResetCodeResponse resetCodeResponse = passwordRecoveryApiV1.validateConfirmationCode
-                    (confirmRequest, tenantDomain, requestHeaders);
-            resetCode = resetCodeResponse.getResetCode();
-        } catch (ApiException e) {
-            request.setAttribute("tenantDomain", tenantDomain);
-            request.setAttribute("callback", callback);
-            request.setAttribute("sessionDataKey", sessionDataKey);
-            if (e.getCode() == 406) {
-                request.setAttribute("username", username);
-                request.setAttribute("error", true);
-                request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Invalid.code.message"));
-                request.getRequestDispatcher("password-recovery-with-claims-sms.jsp").forward(request, response);
-                return;
-            }
-            IdentityManagementEndpointUtil.addErrorInformation(request, e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
-        }
-        request.setAttribute("sessionDataKey", sessionDataKey);
-        request.setAttribute("callback", callback);
-        request.setAttribute("username", username);
-        request.setAttribute(IdentityManagementEndpointConstants.TENANT_DOMAIN, tenantDomain);
-        if (StringUtils.isNotBlank(resetCode)) {
-            request.getSession().setAttribute("confirmationKey", resetCode);
-            session.setAttribute("username", username);
-            request.getRequestDispatcher("password-reset.jsp").forward(request, response);
-        } else {
-            request.setAttribute("error", true);
-            request.setAttribute("errorMsg",
-                    IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                            "Cannot.process.submitted.confirmation.code"));
-            request.getRequestDispatcher("password-recovery-with-claims-sms.jsp").forward(request, response);
             return;
         }
     } else {

@@ -316,7 +316,10 @@
             var errorMessage = $("#error-msg");
             errorMessage.hide();
 
-            document.getElementById("tenant-domain").value = "<%= tenantDomain %>";
+            var tenantDomainName = $("#tenant-domain").val();
+            if (tenantDomainName == '') {
+                document.getElementById("tenant-domain").value = "<%= tenantDomain %>";
+            }
 
             var claimFields = document.querySelectorAll(".claims");
             var filled = 0;

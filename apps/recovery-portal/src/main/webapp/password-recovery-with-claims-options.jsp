@@ -53,13 +53,9 @@
     boolean isChallengeQuestionsEnabled = false;
 
     boolean isEmailEnabled = false;
-    boolean isSMSEnabled = false;
     String recoveryCode = "";
     String emailValue = "";
     String emailId = "";
-    String smsValue = "";
-    String smsId = "";
-    String preferredChannel = "";
 
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
@@ -117,18 +113,8 @@
                 for (RecoveryChannel channel : channels) {
                     if (channel.getType().equals("EMAIL")) {
                         isEmailEnabled = true;
-                        if (channel.getPreferred()) {
-                            preferredChannel = channel.getType();
-                        }
                         emailId = channel.getId();
                         emailValue = channel.getValue();
-                    } else if (channel.getType().equals("SMS")) {
-                        isSMSEnabled = true;
-                        if (channel.getPreferred()) {
-                            preferredChannel = channel.getType();
-                        }
-                        smsId = channel.getId();
-                        smsValue = channel.getValue();
                     } else if (channel.getType().equals("EXTERNAL")) {
                         isNotificationBasedRecoveryEnabled = false;
                     }
@@ -222,28 +208,9 @@
                        <% if (isEmailEnabled) { %>
                         <div class="field">
                             <div class="ui radio checkbox">
-                                <% if (!preferredChannel.equals("SMS")) { %>
                                 <input type="radio" name="recoveryOption" value="<%=emailId%>" checked/>
-                                <% } else { %>
-                                <input type="radio" name="recoveryOption" value="<%=emailId%>"/>
-                                <% } %>
                                 <label><%=IdentityManagementEndpointUtil.i18n
                                         (recoveryResourceBundle,"Send.recovery.link.to")%> <%=emailValue%></label>
-                            </div>
-                        </div>
-                    <%
-                        }
-                        if (isSMSEnabled) {
-                    %>
-                        <div class="field">
-                            <div class="ui radio checkbox">
-                                <% if (preferredChannel.equals("SMS")) { %>
-                                <input type="radio" name="recoveryOption" value="<%=smsId%>" checked/>
-                                <% } else { %>
-                                <input type="radio" name="recoveryOption" value="<%=smsId%>"/>
-                                <% } %>
-                                <label><%=IdentityManagementEndpointUtil.i18n
-                                        (recoveryResourceBundle,"Send.recovery.code.to")%> <%=smsValue%></label>
                             </div>
                         </div>
                     <%

@@ -18,13 +18,14 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.core.util.IdentityUtil" %>
 
 <%
     boolean enableMultiTenancy = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.RecoveryOptions.ENABLE_MULTI_TENANCY));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
-    // TODO: Add a config to enable password recovery with claims.
-    boolean isMultiClaimPasswordRecoveryEnabled = true;
+    boolean isMultiClaimPasswordRecoveryEnabled = Boolean.parseBoolean(IdentityUtil.getProperty(
+            "Recovery.MultiClaimPasswordRecovery.Enable"));
 
     if (isUsernameRecovery) {
         if (enableMultiTenancy) {
