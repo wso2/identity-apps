@@ -21,13 +21,20 @@ package org.wso2.identity.apps.test.container;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Cypress test results class
+ */
 public class CypressTestResults {
+
     private int numberOfTests;
+
     private int numberOfPassingTests;
+
     private int numberOfFailingTests;
+
     private List<CypressTestSuite> suites = new ArrayList<>();
 
-    public int getNumberOfTests() {
+    int getNumberOfTests() {
 
         return numberOfTests;
     }
@@ -37,7 +44,7 @@ public class CypressTestResults {
         this.numberOfTests = numberOfTests;
     }
 
-    public int getNumberOfPassedTests() {
+    int getNumberOfPassedTests() {
 
         return numberOfPassingTests;
     }
@@ -47,7 +54,7 @@ public class CypressTestResults {
         this.numberOfPassingTests = numberOfPassedTests;
     }
 
-    public int getNumberOfFailedTests() {
+    int getNumberOfFailedTests() {
 
         return numberOfFailingTests;
     }
@@ -72,7 +79,7 @@ public class CypressTestResults {
         numberOfFailingTests += failures;
     }
 
-    public List<CypressTestSuite> getSuites() {
+    List<CypressTestSuite> getSuites() {
 
         return suites;
     }

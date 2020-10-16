@@ -41,7 +41,9 @@ public class CypressTestContainer {
     private static final CypressTestContainer INSTANCE = new CypressTestContainer();
     private static final Log LOG = LogFactory.getLog(CypressTestContainer.class);
 
-    private CypressTestContainer() { }
+    private CypressTestContainer() {
+
+    }
 
     /**
      * Get the instance
@@ -129,7 +131,7 @@ public class CypressTestContainer {
 
         if (testResults.getNumberOfFailedTests() > 0) {
             LOG.error(testResults);
-            throw new RuntimeException("There was a failure running the Cypress tests!\n\n");
+            throw new RuntimeException("There was a failure running the Cypress tests!");
         }
     }
 }

@@ -32,17 +32,21 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Mochaawsome results strategy class
+ */
 public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
+
     private final Path jsonReportsPath;
 
-    public MochawesomeResultsStrategy(Path jsonReportsPath) {
+    MochawesomeResultsStrategy(Path jsonReportsPath) {
 
         this.jsonReportsPath = jsonReportsPath;
     }
 
-    public MochawesomeResultsStrategy() {
+    MochawesomeResultsStrategy() {
 
         jsonReportsPath = FileSystems.getDefault().getPath("target", "test-classes", "test-utils",
                 "output", "results", "mochawesome");
@@ -73,30 +77,32 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
     @JsonIgnoreProperties(ignoreUnknown = true)
     private static class MochawesomeSpecRunReport {
+
         private Stats stats;
+
         private List<Result> results;
 
-        public Stats getStats() {
+        Stats getStats() {
 
             return stats;
         }
 
-        public void setStats(Stats stats) {
+        void setStats(Stats stats) {
 
             this.stats = stats;
         }
 
-        public List<Result> getResults() {
+        List<Result> getResults() {
 
             return results;
         }
 
-        public void setResults(List<Result> results) {
+        void setResults(List<Result> results) {
 
             this.results = results;
         }
 
-        public void fillInTestResults(CypressTestResults results) {
+        void fillInTestResults(CypressTestResults results) {
             results.addNumberOfTests(stats.getTests());
             results.addNumberOfPassingTests(stats.getPasses());
             results.addNumberOfFailingTests(stats.getFailures());
@@ -121,36 +127,39 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
         @JsonIgnoreProperties(ignoreUnknown = true)
         private static class Stats {
+
             private int tests;
+
             private int passes;
+
             private int failures;
 
-            public int getTests() {
+            int getTests() {
 
                 return tests;
             }
 
-            public void setTests(int tests) {
+            void setTests(int tests) {
 
                 this.tests = tests;
             }
 
-            public int getPasses() {
+            int getPasses() {
 
                 return passes;
             }
 
-            public void setPasses(int passes) {
+            void setPasses(int passes) {
 
                 this.passes = passes;
             }
 
-            public int getFailures() {
+            int getFailures() {
 
                 return failures;
             }
 
-            public void setFailures(int failures) {
+            void setFailures(int failures) {
 
                 this.failures = failures;
             }
@@ -158,14 +167,15 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
         @JsonIgnoreProperties(ignoreUnknown = true)
         private static class Result {
+
             private List<Suite> suites;
 
-            public List<Suite> getSuites() {
+            List<Suite> getSuites() {
 
                 return suites;
             }
 
-            public void setSuites(List<Suite> suites) {
+            void setSuites(List<Suite> suites) {
 
                 this.suites = suites;
             }
@@ -173,25 +183,27 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
         @JsonIgnoreProperties(ignoreUnknown = true)
         private static class Suite {
+
             private String title;
+
             private List<SuiteTest> tests;
 
-            public String getTitle() {
+            String getTitle() {
 
                 return title;
             }
 
-            public void setTitle(String title) {
+            void setTitle(String title) {
 
                 this.title = title;
             }
 
-            public List<SuiteTest> getTests() {
+            List<SuiteTest> getTests() {
 
                 return tests;
             }
 
-            public void setTests(List<SuiteTest> tests) {
+            void setTests(List<SuiteTest> tests) {
 
                 this.tests = tests;
             }
@@ -199,25 +211,27 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
         @JsonIgnoreProperties(ignoreUnknown = true)
         private static class SuiteTest {
+
             private String title;
+
             private boolean fail;
 
-            public String getTitle() {
+            String getTitle() {
 
                 return title;
             }
 
-            public void setTitle(String title) {
+            void setTitle(String title) {
 
                 this.title = title;
             }
 
-            public boolean isFail() {
+            boolean isFail() {
 
                 return fail;
             }
 
-            public void setFail(boolean fail) {
+            void setFail(boolean fail) {
 
                 this.fail = fail;
             }
