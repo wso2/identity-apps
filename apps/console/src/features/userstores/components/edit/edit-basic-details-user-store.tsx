@@ -189,12 +189,15 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
         delete data.className;
 
         const requiredData = properties?.required.map((property: TypeProperty) => {
-            return {
-                operation: "REPLACE",
-                path: `/properties/${property.name}`,
-                value: values.get(property.name).toString()
+            if (property.name !== DISABLED) {
+                return {
+                    operation: "REPLACE",
+                    path: `/properties/${ property.name }`,
+                    value: values.get(property.name).toString()
+                };
             }
-        });
+        }).filter(Boolean);
+
 
         const optionalNonSqlData = showMore
             ? properties?.optional.nonSql.map((property: TypeProperty) => {
@@ -297,7 +300,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
      */
     const handleUserstoreDisable = (event: any, data: CheckboxProps): void => {
         const name = properties?.required?.find(
-            (property: TypeProperty) => property?.name?.split[ "#" ] === DISABLED
+            (property: TypeProperty) => property?.name === DISABLED
         )?.name;
 
         const patchData = {
@@ -658,24 +661,24 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         ata-testid={ `${ testId }-danger-zone-group` }
                     >
                         <DangerZone
-                            actionTitle={ t("adminPortal:components.userstores.dangerZone.actionTitle") }
-                            header={ t("adminPortal:components.userstores.dangerZone.header") }
-                            subheader={ t("adminPortal:components.userstores.dangerZone.subheader") }
+                            actionTitle={ t("adminPortal:components.userstores.dangerZone.disable.actionTitle") }
+                            header={ t("adminPortal:components.userstores.dangerZone.disable.header") }
+                            subheader={ t("adminPortal:components.userstores.dangerZone.disable.subheader") }
                             onActionClick={ undefined }
                             data-testid={ `${ testId }-delete-danger-zone` }
                             toggle={ {
                                 checked: enabled !== undefined
                                     ? enabled
                                     : properties?.required?.find(
-                                        (property: TypeProperty) => property?.name?.split[ "#" ] === DISABLED
-                                    )?.value !== "false",
+                                        (property: TypeProperty) => property?.name === DISABLED
+                                    )?.value === "false",
                                 onChange: handleUserstoreDisable
                             } }
                         />
                         <DangerZone
-                            actionTitle={ t("adminPortal:components.userstores.dangerZone.actionTitle") }
-                            header={ t("adminPortal:components.userstores.dangerZone.header") }
-                            subheader={ t("adminPortal:components.userstores.dangerZone.subheader") }
+                            actionTitle={ t("adminPortal:components.userstores.dangerZone.delete.actionTitle") }
+                            header={ t("adminPortal:components.userstores.dangerZone.delete.header") }
+                            subheader={ t("adminPortal:components.userstores.dangerZone.delete.subheader") }
                             onActionClick={ () => setConfirmDelete(true) }
                             data-testid={ `${ testId }-delete-danger-zone` }
                         />
