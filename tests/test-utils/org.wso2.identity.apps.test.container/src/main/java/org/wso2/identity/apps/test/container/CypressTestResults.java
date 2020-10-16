@@ -1,19 +1,19 @@
 /*
- *Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- *WSO2 Inc. licenses this file to you under the Apache License,
- *Version 2.0 (the "License"); you may not use this file except
- *in compliance with the License.
- *You may obtain a copy of the License at
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *Unless required by applicable law or agreed to in writing,
- *software distributed under the License is distributed on an
- *"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *KIND, either express or implied.  See the License for the
- *specific language governing permissions and limitations
- *under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.wso2.identity.apps.test.container;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Cypress test results class
+ * Cypress test results class.
  */
 public class CypressTestResults {
 
@@ -34,57 +34,57 @@ public class CypressTestResults {
 
     private List<CypressTestSuite> suites = new ArrayList<>();
 
-    int getNumberOfTests() {
+    public int getNumberOfTests() {
 
         return numberOfTests;
     }
 
-    void setNumberOfTests(int numberOfTests) {
+    public void setNumberOfTests(int numberOfTests) {
 
         this.numberOfTests = numberOfTests;
     }
 
-    int getNumberOfPassedTests() {
+    public int getNumberOfPassedTests() {
 
         return numberOfPassingTests;
     }
 
-    void setNumberOfPassedTests(int numberOfPassedTests) {
+    public void setNumberOfPassedTests(int numberOfPassedTests) {
 
         this.numberOfPassingTests = numberOfPassedTests;
     }
 
-    int getNumberOfFailedTests() {
+    public int getNumberOfFailedTests() {
 
         return numberOfFailingTests;
     }
 
-    void setNumberOfFailedTests(int numberOfFailedTests) {
+    public void setNumberOfFailedTests(int numberOfFailedTests) {
 
         this.numberOfFailingTests = numberOfFailedTests;
     }
 
-    void addNumberOfTests(int tests) {
+    public void addNumberOfTests(int tests) {
 
         numberOfTests += tests;
     }
 
-    void addNumberOfPassingTests(int passes) {
+    public void addNumberOfPassingTests(int passes) {
 
         numberOfPassingTests += passes;
     }
 
-    void addNumberOfFailingTests(int failures) {
+    public void addNumberOfFailingTests(int failures) {
 
         numberOfFailingTests += failures;
     }
 
-    List<CypressTestSuite> getSuites() {
+    public List<CypressTestSuite> getSuites() {
 
         return suites;
     }
 
-    void addSuites(List<CypressTestSuite> suites) {
+    public void addSuites(List<CypressTestSuite> suites) {
 
         this.suites.addAll(suites);
     }
