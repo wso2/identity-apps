@@ -2433,10 +2433,18 @@ export const adminPortal: AdminPortalNS = {
                     + " selected userstore and the data in it."
             },
             dangerZone: {
-                actionTitle: "Delete Userstore",
-                header: "Delete Userstore",
-                subheader: "Once you delete a userstore, there is no going back. "
-                    + "Please be certain."
+                delete: {
+                    actionTitle: "Delete Userstore",
+                    header: "Delete Userstore",
+                    subheader: "Once you delete a userstore, there is no going back. "
+                        + "Please be certain."
+                },
+                disable: {
+                    actionTitle: "Enable Userstore",
+                    header: "Enable Userstore",
+                    subheader: "Disabling a userstore can make you lose access to the users in the userstore. " +
+                        "Proceed with caution."
+                }
             },
             forms: {
                 connection: {

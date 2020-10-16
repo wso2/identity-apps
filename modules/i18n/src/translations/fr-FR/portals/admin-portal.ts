@@ -2434,10 +2434,18 @@ export const adminPortal: AdminPortalNS = {
                     + " l'annuaire sélectionné ainsi que ses configurations."
             },
             dangerZone: {
-                actionTitle: "Supprimer l'annuaire",
-                header: "Supprimer l'annuaire",
-                subheader: "Une fois supprimé, il est impossible de restaurer la conexion à annuaire. "
-                    + "Êtes-vous certain ?"
+                delete: {
+                    actionTitle: "Supprimer l'annuaire",
+                    header: "Supprimer l'annuaire",
+                    subheader: "Une fois supprimé, il est impossible de restaurer la conexion à annuaire. "
+                        + "Êtes-vous certain ?"
+                },
+                disable: {
+                    actionTitle: "Activer Userstore",
+                    header: "Activer Userstore",
+                    subheader: "La désactivation d'un magasin d'utilisateurs peut vous faire perdre l'accès aux utilisateurs du magasin d'utilisateurs." +
+                        "Procéder avec prudence."
+                }
             },
             forms: {
                 connection: {

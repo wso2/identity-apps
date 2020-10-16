@@ -1543,7 +1543,10 @@ export interface AdminPortalNS {
                 };
                 custom: FormField;
             };
-            dangerZone: DangerZone;
+            dangerZone: {
+                delete: DangerZone;
+                disable: DangerZone;
+            };
             wizard: {
                 steps: {
                     general: string;
