@@ -20,7 +20,6 @@
 /// <reference types="cypress" />
 
 import { IdentityProvidersListPageConstants } from "../constants";
-import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/constants";
 import { CommonUtils } from "@wso2/identity-cypress-test-base/utils";
 
 /**
@@ -38,7 +37,7 @@ export class IdentityProvidersListPage {
      * Click on the applications side panel item.
      */
     public clickOnSidePanelItem(): void {
-        cy.dataTestId(SidePanelDomConstants.IDP_PARENT_ITEM_DATA_ATTR).click();
+        cy.dataTestId(IdentityProvidersListPageConstants.IDP_PARENT_ITEM_DATA_ATTR).click();
     };
 
     /**

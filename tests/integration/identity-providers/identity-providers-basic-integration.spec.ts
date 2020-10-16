@@ -165,12 +165,6 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
         it("ITC-2.4.2 - [identity-providers] - Can add a JWKS endpoint.", () => {
             identityProviderEditPage.getJWKSCertRadio().click({ force: true });
             identityProviderEditPage.getIDPCertJWKSURLInput().type(JWKS_ENDPOINT);
-            // TODO: uncomment once the bug is fixed on product.
-            // identityProviderEditPage.clickOnCertificateUpdateButton();
-        });
-
-        it("ITC-2.4.3 - [identity-providers] - Can provide a valid certificate file and preview it.", () => {
-            // TODO: Implement test case once the bug is fixed on product.
         });
     });
 
