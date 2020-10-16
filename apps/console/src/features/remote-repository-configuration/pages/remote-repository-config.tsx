@@ -19,19 +19,26 @@
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
-import { ConfirmationModal, LinkButton, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { 
+    ConfirmationModal, 
+    EmptyPlaceholder, 
+    Hint, 
+    LinkButton, 
+    PageLayout, 
+    PrimaryButton 
+} from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Form, Grid, GridColumn, GridRow, Header, Radio, Segment } from "semantic-ui-react";
+import { Checkbox, Divider, Form, Grid, GridColumn, GridRow, Header, Icon, Radio, Segment } from "semantic-ui-react";
 import { GovernanceConnectorsIllustration } from "../../../features/server-configurations";
+import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
 import { 
     createRemoteRepoConfig, 
     deleteRemoteRepoConfig, 
     getRemoteRepoConfig, 
-    getRemoteRepoConfigList, 
-    triggerConfigDeployment, 
+    getRemoteRepoConfigList,
     updateRemoteRepoConfig 
 } from "../api";
 import { 
@@ -43,6 +50,9 @@ import {
     InterfaceRemoteRepoListResponse 
 } from "../models";
 
+/**
+ * Component to handle Remote Repository Configuration.
+ */
 const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -53,6 +63,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
     const [ connectivity, setConnectivity ] = useState<string>("");
     const [ isEnabled, setIsEnabled ] = useState<boolean>(false);
     const [ isCreate, setIsCreate ] = useState<boolean>(false);
+    const [ showFetchForm, setShowFetchForm ] = useState<boolean>(false);
 
     useEffect(() => {
         getRemoteConfigList();
@@ -72,6 +83,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                     )  => {
                         if (response.status === 200) {
                             setRemoteRepoConfigDetail(response.data);
+                            setIsEnabled(response.data.isEnabled);
                         }
                     })
                 }
@@ -83,30 +95,30 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
 
     const getFormValues = (values: any): any => {
         return {
-            accessToken: values.get("accessToken").toString(),
+            accessToken: values.get("accessToken")?.toString(),
             configEnabled: isEnabled,
-            configName: values.get("configName").toString(),
+            configName: "ApplicationConfigurationRepository",
             gitBranch: values.get("gitBranch").toString(),
-            gitDirectory: values.get("gitDirectory").toString(),
+            gitDirectory: "restDemo/",
             gitUrl: values.get("gitURL").toString(),
-            pollingfreq: parseInt(values.get("pollingFreq").toString()),
-            userName: values.get("userName").toString()
+            pollingfreq: parseInt(values.get("pollingFreq")?.toString()),
+            userName: values.get("userName")?.toString()
         };
     };
 
     const handleFormSubmit = (values: InterfaceRemoteConfigForm): void => {
         const configs: InterfaceRemoteRepoConfigDetails = {
             actionListener: {
-                type: "POLLING",
                 attributes: {
                     frequency: values.pollingfreq
-                }
+                },
+                type: connectivity
             },
             configurationDeployer: {
                 attributes: {},
                 type: "SP"
             },
-            isEnabled: values.configEnabled,
+            isEnabled: true,
             remoteFetchName: values.configName,
             repositoryManager: {
                 attributes: {
@@ -126,6 +138,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         createRemoteRepoConfig(templateTypeName).then((response: AxiosResponse) => {
             if (response.status === 201) {
                 setIsCreate(true);
+                setShowFetchForm(false);
                 handleAlerts({
                     description: t(
                         "devPortal:components.remoteConfig.notifications.createConfig.success.description"
@@ -137,7 +150,15 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                 });
             }
         }).catch(() => {
-            //handle error
+            handleAlerts({
+                description: t(
+                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.message"
+                )
+            });
         })
     };
 
@@ -171,24 +192,6 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         });
     };
 
-    /**
-     * Function which will handle config trigger.
-     * @param config Config ID which needs to be triggered
-     */
-    const handleOnTrigger = (config: InterfaceRemoteRepoConfig): void => {
-        triggerConfigDeployment(config.id).then((response) => {
-            handleAlerts({
-                description: t(
-                    "devPortal:components.remoteConfig.notifications.triggerConfig.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.remoteConfig.notifications.triggerConfig.success.message"
-                )
-            });
-        });
-    }
-
     const handleOnConfigUpdate = (id: string, values: InterfaceEditDetails): void => {
         updateRemoteRepoConfig(id, values).then(() => {
             handleAlerts({
@@ -202,11 +205,225 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             });
         })
     }
+
+    const getRemoteFecthForm = () => {
+        return (
+            <Forms
+                onSubmit={ (values) => { 
+                    if (remoteRepoConfigDetail) {
+                        handleOnConfigUpdate(
+                            remoteRepoConfigDetail.id, getFormValues(values)
+                        );
+                    } else {
+                        handleFormSubmit(getFormValues(values));
+                    }
+                } }
+            >
+                <Grid padded>
+                    {
+                        remoteRepoConfigDetail && 
+                            <>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                        <label>Enable Fetch Configuration</label>
+                                        <Hint>Enable configuration to fetch applications</Hint>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 4 } tablet={ 4 } computer={ 6 }>
+                                        <Checkbox 
+                                            toggle
+                                            checked={
+                                                isEnabled
+                                            }
+                                            onChange={ ()=> {
+                                                setIsEnabled(!isEnabled);
+                                                updateRemoteRepoConfig(remoteRepoConfigDetail.id, {
+                                                    isEnabled: !isEnabled,
+                                                    remoteFetchName: remoteRepoConfigDetail.remoteFetchName
+                                                })
+                                            } }
+                                            label={
+                                                isEnabled ? "Enabled" : "Disabled"
+                                            }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Divider />
+                            </>
+                    }
+                    <GridRow columns={ 2 }>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                type="text"
+                                name="gitURL"
+                                label={ "GitHub Repository URL" }
+                                placeholder={ "Ex : https://github.com/samplerepo/sample-project" }
+                                required={ true }
+                                requiredErrorMessage={ "Github Repository URL is required." }
+                                disabled={ remoteRepoConfig ? true : false }
+                                value={ 
+                                    remoteRepoConfigDetail ? 
+                                        remoteRepoConfigDetail?.
+                                            repositoryManagerAttributes?.uri : ""
+                                }
+                            />
+                        </GridColumn>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                type="text"
+                                name="gitBranch"
+                                label={ "Github Branch" }
+                                placeholder={ "Ex : Master " }
+                                required={ true }
+                                requiredErrorMessage={ "Github Branch is required." }
+                                disabled={ remoteRepoConfig ? true : false }
+                                value={ 
+                                    remoteRepoConfigDetail ? 
+                                        remoteRepoConfigDetail.
+                                            repositoryManagerAttributes?.branch : ""
+                                }
+                            />
+                        </GridColumn>
+                    </GridRow>
+                    <GridRow columns={ 1 }>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 6 }>
+                            <Form.Field>
+                                Connectivity Mechanism
+                            </Form.Field>
+                            <Form.Field>
+                                <Radio
+                                    label='Polling'
+                                    name='radioGroup'
+                                    value='this'
+                                    checked={ connectivity === "POLLING" }
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    onChange={ () => {
+                                        setConnectivity("POLLING")
+                                    } }
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <Radio
+                                    label='Webhook'
+                                    name='radioGroup'
+                                    value='that'
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    checked={ connectivity === "WEBHOOK" }
+                                    onChange={ () => {
+                                        setConnectivity("WEBHOOK")
+                                    } }
+                                />
+                            </Form.Field>
+                        </GridColumn>
+                    </GridRow>
+                    {
+                        connectivity === "POLLING" &&
+                        <>
+                            <GridRow columns={ 2 }>
+                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        type="text"
+                                        name="userName"
+                                        label={ "Guthub Username" }
+                                        placeholder={ "Ex: John Doe" }
+                                        required={ false }
+                                        disabled={ remoteRepoConfig ? true : false }
+                                        requiredErrorMessage={ "" }
+                                        value={ 
+                                            remoteRepoConfigDetail?.
+                                                repositoryManagerAttributes?.userName 
+                                        }
+                                    />
+                                </GridColumn>
+                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        type="text"
+                                        name="accessToken"
+                                        label={ "Github Personal Access Token" }
+                                        placeholder={ "Personal Access Token" }
+                                        required={ false }
+                                        disabled={ remoteRepoConfig ? true : false }
+                                        requiredErrorMessage={ "" }
+                                        value={ 
+                                            remoteRepoConfigDetail?.
+                                                repositoryManagerAttributes?.accessToken 
+                                        }
+                                    />
+                                </GridColumn>
+                            </GridRow>
+                            <GridRow columns={ 1 }>
+                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        type="number"
+                                        name="pollingFreq"
+                                        disabled={ remoteRepoConfig ? true : false }
+                                        label={ "Polling Frequency" }
+                                        required={ true }
+                                        value="60"
+                                        requiredErrorMessage={ "" }
+                                    />
+                                </GridColumn>
+                            </GridRow>
+                        </>
+                    }
+                    {
+                        connectivity === "WEBHOOK" &&
+                        <GridRow columns={ 1 }>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="sharedKey"
+                                    label={ "GitHub Shared Key" }
+                                    required={ false }
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    requiredErrorMessage={ "" }
+                                />
+                            </GridColumn>
+                        </GridRow>
+                    }
+                </Grid>
+                <Grid padded>
+                    <Grid.Row column={ 1 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            { !remoteRepoConfig &&
+                                <PrimaryButton
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    floated="left"
+                                >
+                                    Save Configuration
+                                </PrimaryButton>
+                            }
+                            { remoteRepoConfig && 
+                                <LinkButton
+                                    floated="left"
+                                    attached
+                                    onClick={ () => {
+                                        setShowDeleteConfirmationModal(true)
+                                    } }
+                                >
+                                    Remove Configuration
+                                </LinkButton>
+                            }
+                            { showFetchForm && 
+                                <LinkButton
+                                    floated="left"
+                                    onClick={ () => {
+                                        setShowFetchForm(false)
+                                    } }
+                                >   
+                                    Cancel
+                                </LinkButton>
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Forms>
+        )
+    }
     
     return (
         <PageLayout
-            title="Remote Fetch Management"
-            description="Configure a remote repository to work seamlessly with the identity server."
+            title="Remote Configurations"
+            description="Configure github repository to work seamlessly with the identity server."
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
@@ -219,9 +436,9 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                             <Grid.Row columns={ 2 }>
                                                 <Grid.Column width={ 10 }>
                                                     <Header>
-                                                        Remote Fetch Configuration
+                                                        Application Configuration Repository
                                                         <Header.Subheader>
-                                                            Configure remote fetch repository
+                                                            Configure repository for fetching applications
                                                         </Header.Subheader>
                                                     </Header>
                                                 </Grid.Column>
@@ -231,198 +448,28 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                             </Grid.Row>
                                         </Grid>
                                         <Divider />
-                                        <Forms
-                                            onSubmit={ (values) => { 
-                                                if (remoteRepoConfigDetail) {
-                                                    handleOnConfigUpdate(
-                                                        remoteRepoConfigDetail.id, getFormValues(values)
-                                                    );
-                                                } else {
-                                                    handleFormSubmit(getFormValues(values));
+                                        { 
+                                            ( showFetchForm || remoteRepoConfigDetail ) &&
+                                                getRemoteFecthForm()
+                                        }
+                                        {
+                                            !remoteRepoConfigDetail && !showFetchForm &&
+                                            <EmptyPlaceholder
+                                                action={
+                                                    <PrimaryButton onClick={ () => { setShowFetchForm(true) } }>
+                                                        <Icon name="add"/>
+                                                        { "Configure Repository" }
+                                                    </PrimaryButton>
                                                 }
-                                            } }
-                                        >
-                                            <Grid padded>
-                                                <GridRow columns={ 2 }>
-                                                    <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                        <Field
-                                                            type="text"
-                                                            name="configName"
-                                                            label={ "Configuration Name" }
-                                                            placeholder={ "Name for the repository configuration" }
-                                                            required={ true }
-                                                            requiredErrorMessage={ "Configuration Name is required." }
-                                                            value={ 
-                                                                remoteRepoConfigDetail ? 
-                                                                    remoteRepoConfigDetail?.remoteFetchName : ""
-                                                            }
-                                                        />
-                                                    </GridColumn>
-                                                </GridRow>
-                                                <GridRow columns={ 2 }>
-                                                    <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                        <Field
-                                                            type="text"
-                                                            name="gitURL"
-                                                            label={ "Git Repository URI" }
-                                                            placeholder={ "Git repository URL" }
-                                                            required={ true }
-                                                            requiredErrorMessage={ "Git Repository URL is required." }
-                                                            value={ 
-                                                                remoteRepoConfigDetail ? 
-                                                                    remoteRepoConfigDetail?.
-                                                                        repositoryManagerAttributes?.uri : ""
-                                                            }
-                                                        />
-                                                    </GridColumn>
-                                                    <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                        <Field
-                                                            type="text"
-                                                            name="gitBranch"
-                                                            label={ "Git Branch" }
-                                                            placeholder={ "GIT Branch" }
-                                                            required={ true }
-                                                            requiredErrorMessage={ "Git Branch is required." }
-                                                            value={ 
-                                                                remoteRepoConfigDetail ? 
-                                                                    remoteRepoConfigDetail.
-                                                                        repositoryManagerAttributes?.branch : ""
-                                                            }
-                                                        />
-                                                    </GridColumn>
-                                                </GridRow>
-                                                <GridRow columns={ 1 }>
-                                                    <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                        <Field
-                                                            type="text"
-                                                            name="gitDirectory"
-                                                            label={ "Directory" }
-                                                            placeholder={ "Git Directory" }
-                                                            required={ true }
-                                                            requiredErrorMessage={ "Git directory is required." }
-                                                            value={ 
-                                                                remoteRepoConfigDetail ? 
-                                                                    remoteRepoConfigDetail?.
-                                                                        repositoryManagerAttributes?.directory : ""
-                                                            }
-                                                        />
-                                                    </GridColumn>
-                                                </GridRow>
-                                                <GridRow columns={ 1 }>
-                                                    <GridColumn mobile={ 16 } tablet={ 16 } computer={ 6 }>
-                                                        <Form.Field>
-                                                            Connectivity Mechanism
-                                                        </Form.Field>
-                                                        <Form.Field>
-                                                            <Radio
-                                                                label='Polling'
-                                                                name='radioGroup'
-                                                                value='this'
-                                                                checked={ connectivity === "POLLING" }
-                                                                onChange={ () => {
-                                                                    setConnectivity("POLLING")
-                                                                } }
-                                                            />
-                                                        </Form.Field>
-                                                        <Form.Field>
-                                                            <Radio
-                                                                label='Webhook'
-                                                                name='radioGroup'
-                                                                value='that'
-                                                                checked={ connectivity === "WEBHOOK" }
-                                                                onChange={ () => {
-                                                                    setConnectivity("WEBHOOK")
-                                                                } }
-                                                            />
-                                                        </Form.Field>
-                                                    </GridColumn>
-                                                </GridRow>
-                                                {
-                                                    connectivity === "POLLING" &&
-                                                    <>
-                                                        <GridRow columns={ 2 }>
-                                                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                                <Field
-                                                                    type="text"
-                                                                    name="userName"
-                                                                    label={ "User Name" }
-                                                                    placeholder={ "GIT Username" }
-                                                                    required={ false }
-                                                                    requiredErrorMessage={ "" }
-                                                                    value={ 
-                                                                        remoteRepoConfigDetail?.
-                                                                            repositoryManagerAttributes?.userName 
-                                                                    }
-                                                                />
-                                                            </GridColumn>
-                                                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                                <Field
-                                                                    type="text"
-                                                                    name="accessToken"
-                                                                    label={ "Personal Access Token" }
-                                                                    placeholder={ "Personal Access Token" }
-                                                                    required={ false }
-                                                                    requiredErrorMessage={ "" }
-                                                                    value={ 
-                                                                        remoteRepoConfigDetail?.
-                                                                            repositoryManagerAttributes?.accessToken 
-                                                                    }
-                                                                />
-                                                            </GridColumn>
-                                                        </GridRow>
-                                                        <GridRow columns={ 1 }>
-                                                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                                <Field
-                                                                    type="number"
-                                                                    name="pollingFreq"
-                                                                    label={ "Polling Frequency" }
-                                                                    required={ true }
-                                                                    value="60"
-                                                                    requiredErrorMessage={ "" }
-                                                                />
-                                                            </GridColumn>
-                                                        </GridRow>
-                                                    </>
-                                                }
-                                                {
-                                                    connectivity === "WEBHOOK" &&
-                                                    <GridRow columns={ 1 }>
-                                                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                                            <Field
-                                                                type="text"
-                                                                name="sharedKey"
-                                                                label={ "GitHub Shared Key" }
-                                                                required={ false }
-                                                                requiredErrorMessage={ "" }
-                                                            />
-                                                        </GridColumn>
-                                                    </GridRow>
-                                                }
-                                            </Grid>
-                                            <Grid padded>
-                                                <Grid.Row column={ 1 }>
-                                                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                                        <PrimaryButton
-                                                            floated="left"
-                                                        >
-                                                            { remoteRepoConfig ? 
-                                                                "Update Configuration" : "Create Configuration" 
-                                                            }
-                                                        </PrimaryButton>
-                                                        { remoteRepoConfig && 
-                                                            <LinkButton
-                                                                floated="left"
-                                                                onClick={ () => {
-                                                                    setShowDeleteConfirmationModal(true)
-                                                                } }
-                                                            >
-                                                                { "Remove Configuration" }
-                                                            </LinkButton>
-                                                        }
-                                                    </Grid.Column>
-                                                </Grid.Row>
-                                            </Grid>
-                                        </Forms>
+                                                title={ "Add Configuration" }
+                                                subtitle={ [
+                                                    "Currently there are no repositories configured. You can" +
+                                                    " add a new configuration." 
+                                                ] }
+                                                image={ CodeForkIcon }
+                                                imageSize="tiny"
+                                            />
+                                        }
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>
@@ -471,38 +518,6 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                 </ConfirmationModal>
             }
         </PageLayout>
-        
-        /*<PageLayout
-                title="Remote Repository Deployment Configuration"
-                description="Configure a remote repository to work seamlessly with the identity server."
-            >
-            
-                <ListLayout
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                    onPageChange={ () => { console.log() } }
-                    showPagination={ false }
-                    showTopActionPanel={ false }
-                    totalPages={ Math.ceil(remoteRepoConfig?.length / listItemLimit) }
-                    totalListSize={ remoteRepoConfig?.length }
-                >
-                    <RemoteRepoList 
-                        showCreateWizard={ setShowWizard } 
-                        handleConfigDelete={ handleOnDelete } 
-                        repoObjectList={ remoteRepoConfig }
-                        handleOnTrigger={ handleOnTrigger }
-                    />
-                </ListLayout>
-                {
-                showWizard && (
-                    <CreateRemoteRepoConfig
-                        data-testid="role-mgt-create-role-wizard"
-                        closeWizard={ () => setShowWizard(false) }
-                        updateList={ () => setListUpdated(true) }
-                    />
-                )
-            }
-        </PageLayout>*/
     )
 }
 
