@@ -15,6 +15,7 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
+cd "test-classes/test-utils" || exit
 (
   found_nonempty=''
   for file in cypress.json ; do
@@ -22,13 +23,13 @@
       found_nonempty=1
     fi
   done
-  if [[ "$found_nonempty" ]] ; then
-    echo "$file File is available"
+  if [ "$found_nonempty" ] ; then
+    echo "Running identity apps cypress integration tests..."
     cypress cache clear
     sleep 25
     npm run cy:headless
   else
-    echo "$file File is not available"
+    echo "Failed to find the $file file."
     exit 1
   fi
 )

@@ -159,3 +159,13 @@ describe("ITC-3.0.0 - [email-templates] - Email Templates Integration.", () => {
         });
     });
 });
+
+/**
+ * Return false here prevents Cypress from failing the test
+ * expect(err.message).to.include('Ignoring error for now');
+ */
+Cypress.on("uncaught:exception", (err, runnable) => {
+
+    console.log("Cypress detected uncaught exception", err);
+    return false;
+});
