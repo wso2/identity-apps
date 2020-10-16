@@ -143,6 +143,6 @@ describe("ITC-1.0.0 - [applications] - Applications Smoke Test.", () => {
  */
 Cypress.on("uncaught:exception", (err, runnable) => {
 
-    console.log("Cypress detected uncaught exception", err);
+    cy.log("Cypress detected uncaught exception", err);
     return false;
 });

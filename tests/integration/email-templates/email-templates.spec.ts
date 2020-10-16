@@ -166,6 +166,6 @@ describe("ITC-3.0.0 - [email-templates] - Email Templates Integration.", () => {
  */
 Cypress.on("uncaught:exception", (err, runnable) => {
 
-    console.log("Cypress detected uncaught exception", err);
+    cy.log("Cypress detected uncaught exception", err);
     return false;
 });

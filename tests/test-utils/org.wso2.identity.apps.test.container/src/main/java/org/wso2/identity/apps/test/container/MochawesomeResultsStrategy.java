@@ -1,19 +1,19 @@
 /*
- *Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- *WSO2 Inc. licenses this file to you under the Apache License,
- *Version 2.0 (the "License"); you may not use this file except
- *in compliance with the License.
- *You may obtain a copy of the License at
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *Unless required by applicable law or agreed to in writing,
- *software distributed under the License is distributed on an
- *"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *KIND, either express or implied.  See the License for the
- *specific language governing permissions and limitations
- *under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.wso2.identity.apps.test.container;
@@ -21,8 +21,6 @@ package org.wso2.identity.apps.test.container;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
@@ -33,7 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Mochaawsome results strategy class
+ * Mochaawsome results strategy class.
  */
 public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
@@ -41,12 +39,12 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
     private final Path jsonReportsPath;
 
-    MochawesomeResultsStrategy(Path jsonReportsPath) {
+    public MochawesomeResultsStrategy(Path jsonReportsPath) {
 
         this.jsonReportsPath = jsonReportsPath;
     }
 
-    MochawesomeResultsStrategy() {
+    public MochawesomeResultsStrategy() {
 
         jsonReportsPath = FileSystems.getDefault().getPath("target", "test-classes", "test-utils",
                 "output", "results", "mochawesome");
@@ -82,27 +80,28 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
         private List<Result> results;
 
-        Stats getStats() {
+        public Stats getStats() {
 
             return stats;
         }
 
-        void setStats(Stats stats) {
+        public void setStats(Stats stats) {
 
             this.stats = stats;
         }
 
-        List<Result> getResults() {
+        public List<Result> getResults() {
 
             return results;
         }
 
-        void setResults(List<Result> results) {
+        public void setResults(List<Result> results) {
 
             this.results = results;
         }
 
-        void fillInTestResults(CypressTestResults results) {
+        public void fillInTestResults(CypressTestResults results) {
+
             results.addNumberOfTests(stats.getTests());
             results.addNumberOfPassingTests(stats.getPasses());
             results.addNumberOfFailingTests(stats.getFailures());
@@ -134,32 +133,32 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
             private int failures;
 
-            int getTests() {
+            public int getTests() {
 
                 return tests;
             }
 
-            void setTests(int tests) {
+            public void setTests(int tests) {
 
                 this.tests = tests;
             }
 
-            int getPasses() {
+            public int getPasses() {
 
                 return passes;
             }
 
-            void setPasses(int passes) {
+            public void setPasses(int passes) {
 
                 this.passes = passes;
             }
 
-            int getFailures() {
+            public int getFailures() {
 
                 return failures;
             }
 
-            void setFailures(int failures) {
+            public void setFailures(int failures) {
 
                 this.failures = failures;
             }
@@ -170,12 +169,12 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
             private List<Suite> suites;
 
-            List<Suite> getSuites() {
+            public List<Suite> getSuites() {
 
                 return suites;
             }
 
-            void setSuites(List<Suite> suites) {
+            public void setSuites(List<Suite> suites) {
 
                 this.suites = suites;
             }
@@ -188,22 +187,22 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
             private List<SuiteTest> tests;
 
-            String getTitle() {
+            public String getTitle() {
 
                 return title;
             }
 
-            void setTitle(String title) {
+            public void setTitle(String title) {
 
                 this.title = title;
             }
 
-            List<SuiteTest> getTests() {
+            public List<SuiteTest> getTests() {
 
                 return tests;
             }
 
-            void setTests(List<SuiteTest> tests) {
+            public void setTests(List<SuiteTest> tests) {
 
                 this.tests = tests;
             }
@@ -216,22 +215,22 @@ public class MochawesomeResultsStrategy implements TestResultsStrategy {
 
             private boolean fail;
 
-            String getTitle() {
+            public String getTitle() {
 
                 return title;
             }
 
-            void setTitle(String title) {
+            public void setTitle(String title) {
 
                 this.title = title;
             }
 
-            boolean isFail() {
+            public boolean isFail() {
 
                 return fail;
             }
 
-            void setFail(boolean fail) {
+            public void setFail(boolean fail) {
 
                 this.fail = fail;
             }

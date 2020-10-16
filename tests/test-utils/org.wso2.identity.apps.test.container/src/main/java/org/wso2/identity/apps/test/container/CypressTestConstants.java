@@ -1,19 +1,19 @@
 /*
- *Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
- *WSO2 Inc. licenses this file to you under the Apache License,
- *Version 2.0 (the "License"); you may not use this file except
- *in compliance with the License.
- *You may obtain a copy of the License at
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
  *
- *http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
- *Unless required by applicable law or agreed to in writing,
- *software distributed under the License is distributed on an
- *"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- *KIND, either express or implied.  See the License for the
- *specific language governing permissions and limitations
- *under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 
 package org.wso2.identity.apps.test.container;
@@ -42,13 +42,9 @@ public final class CypressTestConstants {
 
         public static final String CONSOLE_BASE_URL = "CONSOLE_BASE_URL";
 
+        public static final String MY_ACCOUNT_BASE_URL = "MY_ACCOUNT_BASE_URL";
+
         public static final String AUTH_ENDPOINT_URL = "AUTH_ENDPOINT_URL";
-
-        public static final String USER_PORTAL = "USER_PORTAL";
-
-        public static final String DEV_PORTAL = "DEV_PORTAL";
-
-        public static final String ADMIN_PORTAL = "ADMIN_PORTAL";
 
         public static final String TENANT_DOMAIN = "TENANT_DOMAIN";
 
