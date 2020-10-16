@@ -62,6 +62,7 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
             cy.navigateToApplicationsList(true, false);
             applicationsListPage.clickOnNewApplicationButton();
             applicationTemplatesPage.getQuickStartTemplate("WEB_APP").click();
+            cy.wait(1000);
             
             applicationTemplatesPage.getMinimalCreationWizard().should("be.visible");
             applicationTemplatesPage.getMinimalCreationWizardAppNameInput().should("be.visible");
@@ -234,6 +235,6 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
  */
 Cypress.on("uncaught:exception", (err, runnable) => {
 
-    console.log("Cypress detected uncaught exception", err);
+    cy.log("Cypress detected uncaught exception", err);
     return false;
 });
