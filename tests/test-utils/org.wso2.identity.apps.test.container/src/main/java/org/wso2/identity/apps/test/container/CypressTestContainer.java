@@ -16,7 +16,7 @@
  *under the License.
  */
 
-package org.wso2.identity.apps.test.utils;
+package org.wso2.identity.apps.test.container;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -40,10 +40,6 @@ public class CypressTestContainer {
 
     private static final CypressTestContainer INSTANCE = new CypressTestContainer();
     private static final Log LOG = LogFactory.getLog(CypressTestContainer.class);
-    private static final TestResultsStrategy DEFAULT_TEST_RESULTS_STRATEGY = new MochawesomeResultsStrategy();
-
-    private static CypressTestResults results;
-    private TestResultsStrategy testResultsStrategy = DEFAULT_TEST_RESULTS_STRATEGY;
 
     private CypressTestContainer() { }
 
@@ -94,9 +90,9 @@ public class CypressTestContainer {
      * Execute the identity apps cypress test suite.
      *
      * @param scriptPath Path of the script to run the test suite.
-     * @throws IOException When up
+     * @throws IOException When character encoding is not supported.
      */
-    public void runTestSuite(Path scriptPath) throws IOException {
+    public void runTestSuite(Path scriptPath) throws IOException  {
 
         if (!Files.exists(scriptPath)) {
             throw new RuntimeException("Script `" + scriptPath.toAbsolutePath().toString() + "` does not exists!");
@@ -121,29 +117,19 @@ public class CypressTestContainer {
     }
 
     /**
-     * Waits until the Cypress tests are done and returns the results of the tests.
+     * Output the results of the tests.
      *
-     * @return the Cypress test results
-     * @throws InterruptedException When the current thread was interrupted waiting on the Cypress tests to finish
-     * @throws IOException          When there was a problem parsing the Cypress test reports
+     * @return the Cypress test results.
+     * @throws IOException
      */
-    public CypressTestResults getTestResults(Path reportsPath) throws InterruptedException, IOException {
+    public void endTestSuite(Path reportsPath) throws IOException {
 
-        Gson gson = new Gson();
+        CypressTestUtils testUtils = new CypressTestUtils().withMochawesomeReportsAt(reportsPath);
+        CypressTestResults testResults = testUtils.getTestResults();
 
-        try (Reader reader = Files.newBufferedReader(reportsPath, StandardCharsets.UTF_8)) {
-            JsonObject testResults = gson.fromJson(reader, JsonObject.class);
-
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to update read the cypress test report.");
+        if (testResults.getNumberOfFailedTests() > 0) {
+            LOG.error(testResults);
+            throw new RuntimeException("There was a failure running the Cypress tests!\n\n");
         }
-
-            results = testResultsStrategy.gatherTestResults();
-
-            if (results.getNumberOfFailedTests() > 0) {
-                LOG.warn("There was a failure running the Cypress tests!\n\n{}");
-            }
-
-            return results;
     }
 }
