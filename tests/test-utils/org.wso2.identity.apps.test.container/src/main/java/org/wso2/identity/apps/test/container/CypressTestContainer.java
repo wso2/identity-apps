@@ -111,7 +111,7 @@ public class CypressTestContainer {
         }
 
         try (BufferedReader r = new BufferedReader(
-                new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8.name()))) {
+            new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8.name()))) {
             String line;
             while ((line = r.readLine()) != null) {
                 LOG.info(line);
