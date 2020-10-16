@@ -39,6 +39,7 @@ import java.nio.file.Path;
 public class CypressTestContainer {
 
     private static final CypressTestContainer INSTANCE = new CypressTestContainer();
+
     private static final Log LOG = LogFactory.getLog(CypressTestContainer.class);
 
     private CypressTestContainer() {
