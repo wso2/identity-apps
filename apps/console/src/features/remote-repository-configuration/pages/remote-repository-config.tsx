@@ -99,7 +99,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             configEnabled: isEnabled,
             configName: "ApplicationConfigurationRepository",
             gitBranch: values.get("gitBranch").toString(),
-            gitDirectory: "restDemo/",
+            gitDirectory: values.get("gitFolder").toString(),
             gitUrl: values.get("gitURL").toString(),
             pollingfreq: parseInt(values.get("pollingFreq")?.toString()),
             userName: values.get("userName")?.toString()
@@ -274,12 +274,30 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                 label={ "Github Branch" }
                                 placeholder={ "Ex : Master " }
                                 required={ true }
-                                requiredErrorMessage={ "Github Branch is required." }
+                                requiredErrorMessage={ "Github branch is required." }
                                 disabled={ remoteRepoConfig ? true : false }
                                 value={ 
                                     remoteRepoConfigDetail ? 
                                         remoteRepoConfigDetail.
                                             repositoryManagerAttributes?.branch : ""
+                                }
+                            />
+                        </GridColumn>
+                    </GridRow>
+                    <GridRow columns={ 1 }>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                type="text"
+                                name="gitFolder"
+                                label={ "GitHub Directory" }
+                                placeholder={ "Ex : SampleConfigFolder/" }
+                                required={ true }
+                                requiredErrorMessage={ "Github configuration directory is required." }
+                                disabled={ remoteRepoConfig ? true : false }
+                                value={ 
+                                    remoteRepoConfigDetail ? 
+                                        remoteRepoConfigDetail?.
+                                            repositoryManagerAttributes?.directory : ""
                                 }
                             />
                         </GridColumn>
