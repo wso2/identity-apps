@@ -55,6 +55,21 @@ export class IdentityProviderManagementConstants {
     public static readonly DELETING_FORBIDDEN_IDPS: string[] = [];
 
     /**
+     * Key for the URL search param for IDP state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly IDP_STATE_URL_SEARCH_PARAM_KEY = "state";
+
+    /**
+     * URL Search param for newly created IDPs.
+     * @constant
+     * @type {string}
+     */
+    public static readonly NEW_IDP__URL_SEARCH_PARAM = `?${
+        IdentityProviderManagementConstants.IDP_STATE_URL_SEARCH_PARAM_KEY }=new`;
+
+    /**
      * Doc key for the IDP create page.
      * @constant
      * @type {string}

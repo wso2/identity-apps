@@ -196,6 +196,7 @@ export const EditIdentityProvider: FunctionComponent<EditIdentityProviderPropsIn
     return (
         identityProvider && (
             <ResourceTab
+                data-testid={ `${ testId }-resource-tabs` }
                 panes={ getPanes() }
             />
         )

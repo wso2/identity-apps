@@ -162,7 +162,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                                 }
                             ] }
                             value={ editingIDP?.certificate?.certificates ? "PEM" : "JWKS" }
-                            data-testid={ `${ testId }-certificate` }
+                            data-testid={ `${ testId }-certificate-type-radio-group` }
                         />
                         <Hint>
                             { t("devPortal:components.idp.forms.advancedConfigs.certificateType.hint") }

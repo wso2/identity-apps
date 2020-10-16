@@ -128,7 +128,7 @@ describe("ITC-2.0.0 - [applications] - Basic Applications Integration.", () => {
             applicationEditPage.getPEMCertPreviewModal().should("not.be.visible");
         });
 
-        it.skip("ITC-2.3.3 - [applications] - Can provide a valid certificate file and preview it.", () => {
+        it("ITC-2.3.3 - [applications] - Can provide a valid certificate file and preview it.", () => {
             applicationEditPage.getCustomCertRadio().click({ force: true });
             cy.fixture(ApplicationEditPageConstants.SAMPLE_VALID_PEM_FILE_PATH)
                 .then((value: string) => {

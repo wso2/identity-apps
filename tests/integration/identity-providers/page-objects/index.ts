@@ -17,12 +17,6 @@
  *
  */
 
-// Import reusable commands.
-import "@wso2/identity-cypress-test-base/commands";
-
-// Import internal commands.
-import "./applications";
-import "./email-templates";
-import "./commands";
-import "./identity-providers";
-import "./register";
+export * from "./identity-provider-edit-page";
+export * from "./identity-provider-templates-page";
+export * from "./identity-providers-list-page";

@@ -75,18 +75,18 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         setShowSelectionModal(true);
     };
 
-    const addSelectionModal = (() => {
-            return <AttributeSelectionWizard
+    const addSelectionModal = (): ReactElement => {
+        return (
+            <AttributeSelectionWizard
                 attributesList={ attributeList }
                 selectedAttributes={ selectedAttributesWithMapping }
                 setSelectedAttributes={ setSelectedAttributesWithMapping }
                 showAddModal={ showSelectionModal }
                 setShowAddModal={ setShowSelectionModal }
-                data-testid={ `${ testId }-attribute-selection-wizard` }
+                data-testid={ `${ testId }-wizard` }
             />
-        }
-    );
-
+        );
+    };
 
     const updateAttributeMapping = (mapping: IdentityProviderCommonClaimMappingInterface): void => {
         setSelectedAttributesWithMapping(
@@ -97,117 +97,136 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         );
     };
 
-    return (
-        (selectedAttributesWithMapping || searchFilter) &&
-        <>
-            <Grid.Row data-testid={ testId }>
-                <Grid.Column computer={ 10 }>
-                    { uiProps.enablePrecedingDivider && <Divider/> }
-                    <Heading as="h4">
-                        { uiProps.componentHeading }
-                    </Heading>
-                    <Hint>
-                        { uiProps.hint }
-                    </Hint>
-                    <Divider hidden/>
-                    {
-                        (selectedAttributesWithMapping?.length > 0) ? (
-                            <Segment.Group fluid>
-                                <Segment className="user-role-edit-header-segment clearing">
-                                    <Grid.Row>
-                                        <Table basic="very" compact>
-                                            <Table.Body>
-                                                <Table.Row>
-                                                    <Table.Cell>
-                                                        <Input
-                                                            icon={ <Icon name="search"/> }
-                                                            onChange={ handleSearch }
-                                                            placeholder={ t("devPortal:components.idp.forms." +
-                                                                "attributeSettings.attributeSelection." +
-                                                                "searchAttributes.placeHolder") }
-                                                            floated="left"
-                                                            size="small"
-                                                        />
-                                                    </Table.Cell>
-                                                    <Table.Cell textAlign="right">
-                                                        <Button
-                                                            size="medium"
-                                                            icon="pencil"
-                                                            floated="right"
-                                                            onClick={ handleOpenSelectionModal }
-                                                        />
-                                                    </Table.Cell>
-                                                </Table.Row>
-                                            </Table.Body>
-                                        </Table>
-                                    </Grid.Row>
-                                    <Grid.Row>
-                                        <Table singleLine compact>
-                                            <Table.Header>
-                                                {
-                                                    (
-                                                        <Table.Row>
-                                                            <Table.HeaderCell>
-                                                                <strong>{ uiProps.attributeColumnHeader }</strong>
-                                                            </Table.HeaderCell>
-                                                            <Table.HeaderCell>
-                                                                <strong>{ uiProps.attributeMapColumnHeader }</strong>
-                                                            </Table.HeaderCell>
-                                                        </Table.Row>
-                                                    )
+    const renderMappingTable = (): ReactElement => (
+        <Segment.Group fluid>
+            <Segment data-testid={ testId } className="user-role-edit-header-segment clearing">
+                <Grid.Row>
+                    <Table data-testid={ `${ testId }-action-bar` } basic="very" compact>
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell>
+                                    <Input
+                                        icon={ <Icon name="search"/> }
+                                        onChange={ handleSearch }
+                                        placeholder={
+                                            t("devPortal:components.idp.forms." +
+                                                "attributeSettings.attributeSelection." +
+                                                "searchAttributes.placeHolder")
+                                        }
+                                        floated="left"
+                                        size="small"
+                                        data-testid={ `${ testId }-search` }
+                                    />
+                                </Table.Cell>
+                                <Table.Cell textAlign="right">
+                                    <Button
+                                        size="medium"
+                                        icon="pencil"
+                                        floated="right"
+                                        onClick={ handleOpenSelectionModal }
+                                        data-testid={ `${ testId }-edit-button` }
+                                    />
+                                </Table.Cell>
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
+                </Grid.Row>
+                <Grid.Row>
+                    <Table data-testid={ `${ testId }-list` } singleLine compact>
+                        <Table.Header>
+                            {
+                                (
+                                    <Table.Row>
+                                        <Table.HeaderCell>
+                                            <strong>
+                                                { uiProps.attributeColumnHeader }
+                                            </strong>
+                                        </Table.HeaderCell>
+                                        <Table.HeaderCell>
+                                            <strong>
+                                                { uiProps.attributeMapColumnHeader }
+                                            </strong>
+                                        </Table.HeaderCell>
+                                    </Table.Row>
+                                )
+                            }
+                        </Table.Header>
+                        <Table.Body>
+                            {
+                                selectedAttributesWithMapping?.filter((mapping) =>
+                                    _.isEmpty(searchFilter)
+                                        ? true
+                                        : mapping?.claim?.displayName?.startsWith(searchFilter)
+                                )?.sort((a, b) => a.claim.displayName.localeCompare(b.claim.displayName)
+                                )?.map((mapping) => {
+                                        return (
+                                            <AttributeListItem
+                                                key={ mapping?.claim.id }
+                                                attribute={ mapping?.claim }
+                                                placeholder={
+                                                    uiProps.attributeMapInputPlaceholderPrefix
+                                                    + mapping?.claim.displayName
                                                 }
-                                            </Table.Header>
-                                            <Table.Body>
-                                                { selectedAttributesWithMapping?.filter(
-                                                    mapping => _.isEmpty(searchFilter) ? true :
-                                                        mapping?.claim?.displayName?.startsWith(searchFilter)
-                                                )?.sort(
-                                                    (a, b) =>
-                                                        a.claim.displayName.localeCompare(b.claim.displayName)
-                                                )?.map(
-                                                    mapping => {
-                                                        return (
-                                                            <AttributeListItem
-                                                                key={ mapping?.claim.id }
-                                                                attribute={ mapping?.claim }
-                                                                placeholder={ uiProps.attributeMapInputPlaceholderPrefix
-                                                                + mapping?.claim.displayName }
-                                                                updateMapping={ updateAttributeMapping }
-                                                                mapping={ mapping?.mappedValue }
-                                                                data-testid={ `${ testId }-attribute-list-item-${ 
-                                                                    mapping?.claim.id }` }
-                                                            />
-                                                        )
-                                                    }
-                                                ) }
-                                            </Table.Body>
-                                        </Table>
-                                    </Grid.Row>
-                                </Segment>
-                            </Segment.Group>
-                        ) : (
-                            <Segment>
-                                <EmptyPlaceholder
-                                    title={ t("devPortal:components.idp.placeHolders.noAttributes.title") }
-                                    subtitle={ [
-                                        t("devPortal:components.idp.placeHolders.noAttributes.subtitles.0")
-                                    ] }
-                                    action={
-                                        <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
-                                            { t("devPortal:components.idp.buttons.addAttribute") }
-                                        </PrimaryButton>
+                                                updateMapping={ updateAttributeMapping }
+                                                mapping={ mapping?.mappedValue }
+                                                data-testid={
+                                                    `${ testId }-attribute-list-item-${
+                                                        mapping?.claim.id }`
+                                                }
+                                            />
+                                        )
                                     }
-                                    image={ EmptyPlaceholderIllustrations.emptyList }
-                                    imageSize="tiny"
-                                    data-testid={ `${ testId }-empty-placeholder` }
-                                />
-                            </Segment>
-                        )
-                    }
-                </Grid.Column>
-            </Grid.Row>
-            { addSelectionModal() }
-        </>
+                                )
+                            }
+                        </Table.Body>
+                    </Table>
+                </Grid.Row>
+            </Segment>
+        </Segment.Group>
+    );
+
+    return (
+        (selectedAttributesWithMapping || searchFilter)
+            ? (
+                <>
+                    <Grid.Row data-testid={ `${ testId }-section` }>
+                        <Grid.Column computer={ 10 }>
+                            { uiProps.enablePrecedingDivider && <Divider/> }
+                            <Heading as="h4">
+                                { uiProps.componentHeading }
+                            </Heading>
+                            <Hint>
+                                { uiProps.hint }
+                            </Hint>
+                            <Divider hidden/>
+                            {
+                                (selectedAttributesWithMapping?.length > 0)
+                                    ? renderMappingTable()
+                                    : (
+                                        <Segment data-testid={ testId }>
+                                            <EmptyPlaceholder
+                                                title={ t("devPortal:components.idp.placeHolders.noAttributes.title") }
+                                                subtitle={ [
+                                                    t("devPortal:components.idp.placeHolders.noAttributes.subtitles.0")
+                                                ] }
+                                                action={
+                                                    <PrimaryButton onClick={ handleOpenSelectionModal } icon="plus">
+                                                        { t("devPortal:components.idp.buttons.addAttribute") }
+                                                    </PrimaryButton>
+                                                }
+                                                image={ EmptyPlaceholderIllustrations.emptyList }
+                                                imageSize="tiny"
+                                                data-testid={ `${ testId }-empty-placeholder` }
+                                            />
+                                        </Segment>
+                                    )
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                    { addSelectionModal() }
+                </>
+            )
+            : null
     );
 };
 
