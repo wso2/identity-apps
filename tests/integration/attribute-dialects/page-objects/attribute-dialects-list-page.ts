@@ -21,6 +21,7 @@
 
 import { AttributeDialectsListPageConstants } from "../constants";
 import { CommonUtils } from "@wso2/identity-cypress-test-base/utils";
+import { EmailTemplatesAddPageConstants } from "../../email-templates/constants";
 
 /**
  * Class containing Claims List Page objects.
@@ -166,9 +167,9 @@ export class AttributeDialectsListPage {
     };
 
     /**
-     * Click on the new Claims button.
+     * Click on the new Attribute Dialect button.
      */
-    public clickOnNewClaimButton(): void {
+    public clickOnNewAttributeDialectButton(): void {
         cy.get("body")
             .then(($body) => {
                 if ($body.find(CommonUtils.resolveDataTestId(
@@ -206,5 +207,78 @@ export class AttributeDialectsListPage {
      */
     public getAddDialectWizardCancelButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the add wizard dialect URI input.
+     *
+     * @return {Cypress.Chainable<JQuery<HTMLInputElement>>}
+     */
+    public getAddDialectWizardDialectURIInput(): Cypress.Chainable<JQuery<HTMLInputElement>> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_DIALECT_URI_INPUT_DATA_ATTR)
+            .find("input");
+    };
+
+    /**
+     * Get the add wizard attribute URI input.
+     *
+     * @return {Cypress.Chainable<JQuery<HTMLInputElement>>}
+     */
+    public getAddDialectWizardAttributeURIInput(): Cypress.Chainable<JQuery<HTMLInputElement>> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_ATTRIBUTE_URI_INPUT_DATA_ATTR)
+            .find("input");
+    };
+
+    /**
+     * Get the add wizard local attributes dropdown.
+     *
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAddDialectWizardLocalAttributesDropdown(): Cypress.Chainable<Element> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_DATA_ATTR);
+    };
+
+    /**
+     * Click on the add wizard local attributes dropdown.
+     */
+    public openAddDialectWizardLocalAttributesDropdown(): void {
+        this.getAddDialectWizardLocalAttributesDropdown().click();
+    };
+
+    /**
+     * Get the add wizard local attributes dropdown options.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAddDialectWizardLocalAttributesDropdownOptions(): Cypress.Chainable<Element> {
+        return this.getAddDialectWizardLocalAttributesDropdown()
+            .within(() => {
+                cy.get(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_OPTIONS_CONTAINER_DATA_ATTR);
+            })
+    };
+
+    /**
+     * Get the add wizard add external dialect button.
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAddDialectWizardAddExternalAttributeButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_ADD_EXTERNAL_ATTRIBUTE_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the Attribute Dialect add wizard next button.
+     *
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAddDialectWizardNextButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_NEXT_BUTTON_DATA_ATTR);
+    };
+
+    /**
+     * Get the Attribute Dialect add wizard finish button.
+     *
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAddDialectWizardFinishButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_FINISH_BUTTON_DATA_ATTR);
     };
 }

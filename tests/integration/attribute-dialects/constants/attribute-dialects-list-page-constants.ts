@@ -59,6 +59,16 @@ export class AttributeDialectsListPageConstants {
     
     // Add dialect wizard
     public static readonly ADD_DIALECT_WIZARD_DATA_ATTR: string = "attribute-dialects-add-wizard";
+    public static readonly ADD_DIALECT_WIZARD_DIALECT_URI_INPUT_DATA_ATTR: string = "attribute-dialects-add-" +
+        "wizard-dialect-details-form-dialect-uri-input";
+    public static readonly ADD_DIALECT_WIZARD_ATTRIBUTE_URI_INPUT_DATA_ATTR: string = "attribute-dialects-add-" +
+        "wizard-external-claims-add-external-claims-form-claim-uri-input";
+    public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_DATA_ATTR: string = "attribute-dialects-" +
+        "add-wizard-external-claims-add-external-claims-form-local-claim-dropdown";
+    public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_OPTIONS_CONTAINER_DATA_ATTR: string = "div" +
+        "[role=\"listbox\"]";
+    public static readonly ADD_DIALECT_WIZARD_ADD_EXTERNAL_ATTRIBUTE_BUTTON_DATA_ATTR: string = "attribute-dialects-" +
+        "add-wizard-external-claims-add-external-claims-form-submit-button";
     public static readonly ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
         "cancel-button";
     public static readonly ADD_DIALECT_WIZARD_NEXT_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +

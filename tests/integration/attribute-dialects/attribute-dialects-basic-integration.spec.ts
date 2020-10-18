@@ -23,6 +23,7 @@
 import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/utils";
 import { AttributeDialectsListPageConstants } from "./constants";
 import { AttributeDialectsListPage } from "./page-objects";
+import { v4 as uuidv4 } from "uuid";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
@@ -30,9 +31,12 @@ const SERVER_URL: string = Cypress.env("SERVER_URL");
 const PORTAL: string = Cypress.env("CONSOLE_BASE_URL");
 const TENANT_DOMAIN: string = Cypress.env("TENANT_DOMAIN");
 
-describe("ITC-1.0.0 - [attribute dialects] - Attribute Dialect Management Smoke Test.", () => {
+describe("ITC-2.0.0 - [attribute dialects] - Attribute Dialect Management Integration Tests.", () => {
 
     const attributeDialectsListPage: AttributeDialectsListPage = new AttributeDialectsListPage();
+
+    let dialectURI: string = "https://" + uuidv4();
+    let attributeURI: string = uuidv4();
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
@@ -47,7 +51,7 @@ describe("ITC-1.0.0 - [attribute dialects] - Attribute Dialect Management Smoke 
         cy.logout();
     });
 
-    context("ITC-1.1.0 - [attribute dialects] - Attribute Dialects Listing Page.", () => {
+    context("ITC-2.1.0 - [attribute dialects] - Attribute Dialect Listing.", () => {
 
         it("ITC-1.1.1 - [attribute dialects] - Can visit the listing page from the side panel", () => {
             cy.navigateToAttributeDialectsList(true);
@@ -58,21 +62,44 @@ describe("ITC-1.0.0 - [attribute dialects] - Attribute Dialect Management Smoke 
         });
     });
 
-    context("ITC-1.2.0 - [attribute dialects] - Properly renders the add dialect wizard.", () => {
+    context("ITC-2.2.0 - [attribute dialects] - Create an Attribute Dialect using the wizard.", () => {
 
-        it("ITC-1.2.1 - [attribute dialects] - Open the add dialect wizard.", () => {
-
+        it("ITC-2.2.1 - [attribute dialects] - Open up the add dialect wizard.", () => {
             attributeDialectsListPage.clickOnNewAttributeDialectButton();
+
+            cy.wait(2000);
         });
 
-        it("ITC-1.2.2 - [attribute dialects] - Is add dialect wizard rendering properly.", () => {
+        it("ITC-2.2.2 - [attribute dialects] - Enter dialect URI", () => {
+            attributeDialectsListPage.getAddDialectWizardDialectURIInput().type(dialectURI);
+            attributeDialectsListPage.getAddDialectWizardNextButton().click();
 
-            attributeDialectsListPage.getAddDialectWizard().should("be.visible");
+            cy.wait(2000);
         });
 
-        it("ITC-1.2.3 - [attribute dialects] - Can close the add dialect wizard properly.", () => {
+        it("ITC-2.2.3 - [attribute dialects] - Configure external attributes.", () => {
+            attributeDialectsListPage.getAddDialectWizardAttributeURIInput().type(attributeURI);
+            attributeDialectsListPage.openAddDialectWizardLocalAttributesDropdown();
+            
+            cy.wait(1000);
+            
+            attributeDialectsListPage.getAddDialectWizardLocalAttributesDropdownOptions().eq(0).click();
 
-            attributeDialectsListPage.getAddDialectWizardCancelButton().click();
+            cy.wait(1000);
+            
+            attributeDialectsListPage.getAddDialectWizardAddExternalAttributeButton().click();
+
+            cy.wait(1000);
+
+            attributeDialectsListPage.getAddDialectWizardNextButton().click();
+
+            cy.wait(2000);
+        });
+
+        it("ITC-2.2.4 - [attribute dialects] - Submit add dialect wizard.", () => {
+            attributeDialectsListPage.getAddDialectWizardFinishButton().click();
+
+            cy.wait(2000);
         });
     });
 });
