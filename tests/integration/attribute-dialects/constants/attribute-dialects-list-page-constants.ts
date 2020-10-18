@@ -37,21 +37,34 @@ export class AttributeDialectsListPageConstants {
     public static readonly CLAIMS_PARENT_ITEM_DATA_ATTR: string = "side-panel-items-attribute-dialects";
 
     // Table
-    public static readonly TABLE_DATA_ATTR: string = "claim-dialects-list";
+    public static readonly TABLE_DATA_ATTR: string = "attribute-dialects-list";
     public static readonly TABLE_BODY_DATA_ATTR: string = "data-table-body";
     public static readonly TABLE_ROW_DATA_ATTR: string = "data-table-row";
-    public static readonly TABLE_ROW_SUB_HEADING_DATA_ATTR: string = "claim-dialects-list-item-sub-heading";
-    public static readonly TABLE_ROW_EDIT_BUTTON_DATA_ATTR: string = "claim-dialects-list-item-edit-button";
-    public static readonly TABLE_ROW_DELETE_BUTTON_DATA_ATTR: string = "claim-dialects-list-item-delete-button";
-    public static readonly TABLE_ROW_IMAGE_DATA_ATTR: string = "claim-dialects-list-item-image";
-    public static readonly NEW_LIST_PLACEHOLDER: string = "claim-dialects-list-empty-placeholder";
-    public static readonly NEW_LIST_PLACEHOLDER_ACTION_CONTAINER: string = "claim-dialects-list-empty-placeholder-" +
+    public static readonly TABLE_ROW_SUB_HEADING_DATA_ATTR: string = "attribute-dialects-list-item-sub-heading";
+    public static readonly TABLE_ROW_EDIT_BUTTON_DATA_ATTR: string = "attribute-dialects-list-item-edit-button";
+    public static readonly TABLE_ROW_DELETE_BUTTON_DATA_ATTR: string = "attribute-dialects-list-item-delete-button";
+    public static readonly TABLE_ROW_IMAGE_DATA_ATTR: string = "attribute-dialects-list-item-image";
+    public static readonly NEW_LIST_PLACEHOLDER: string = "attribute-dialects-list-empty-placeholder";
+    public static readonly NEW_LIST_PLACEHOLDER_ACTION_CONTAINER: string = "attribute-dialects-list-empty-placeholder-" +
         "action-container";
 
     // Page Layout.
-    public static readonly PAGE_LAYOUT_HEADER_DATA_ATTR: string = "claim-dialects-page-layout-page-header";
-    public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "claim-dialects-page-layout-page-header-title";
-    public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "claim-dialects-page-layout-page-header-" +
+    public static readonly PAGE_LAYOUT_HEADER_DATA_ATTR: string = "attribute-dialects-page-layout-page-header";
+    public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "attribute-dialects-page-layout-page-header-title";
+    public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "attribute-dialects-page-layout-page-header-" +
         "sub-title";
-    public static readonly PAGE_LAYOUT_HEADER_ACTION: string = "claim-dialects-list-layout-add-button";
+    public static readonly PAGE_LAYOUT_HEADER_ACTION: string = "attribute-dialects-list-layout-add-button";
+
+    public static readonly LOCAL_DIALECT_CONTAINER_DATA_ATTR: string = "attribute-dialects-local-dialect-container";
+    
+    // Add dialect wizard
+    public static readonly ADD_DIALECT_WIZARD_DATA_ATTR: string = "attribute-dialects-add-wizard";
+    public static readonly ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
+        "cancel-button";
+    public static readonly ADD_DIALECT_WIZARD_NEXT_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
+        "next-button";
+    public static readonly ADD_DIALECT_WIZARD_PREVIOUS_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
+        "previous-button";
+    public static readonly ADD_DIALECT_WIZARD_FINISH_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
+        "finish-button";
 }

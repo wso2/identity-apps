@@ -58,6 +58,9 @@ Cypress.Commands.add("checkIfAttributeDialectsListingRenders", (isNew: boolean =
     attributeDialectsListPage.getPageLayoutHeaderTitle().should("be.visible");
     attributeDialectsListPage.getPageLayoutHeaderSubTitle().should("be.visible");
 
+    // Check if local dialect is listed properly.
+    attributeDialectsListPage.getLocalDialectContainer().should("be.visible");
+
     // Check if page header has an action. New tables will have the create button in the placeholder.
     if (!isNew){
         attributeDialectsListPage.getPageLayoutHeaderAction().should("be.visible");

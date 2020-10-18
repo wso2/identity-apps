@@ -47,9 +47,9 @@ describe("ITC-1.0.0 - [attribute dialects] - Attribute Dialect Management Smoke 
         cy.logout();
     });
 
-    context("ITC-1.1.0 - [attribute dialects] - Claim Listing Page.", () => {
+    context("ITC-1.1.0 - [attribute dialects] - Attribute Dialects Listing Page.", () => {
 
-        it("ITC-1.1.1 - [attribute dialects] - User can visit the IDP listing page from the side panel", () => {
+        it("ITC-1.1.1 - [attribute dialects] - Can visit the listing page from the side panel", () => {
             cy.navigateToAttributeDialectsList(true);
         });
 
@@ -58,17 +58,21 @@ describe("ITC-1.0.0 - [attribute dialects] - Attribute Dialect Management Smoke 
         });
     });
 
-    context("ITC-1.2.0 - [attribute dialects] - IDP Templates Page.", () => {
+    context("ITC-1.2.0 - [attribute dialects] - Properly renders the add dialect wizard.", () => {
 
-        it("ITC-1.2.1 - [attribute dialects] - Navigates to the template selection page properly.", () => {
+        it("ITC-1.2.1 - [attribute dialects] - Open the add dialect wizard.", () => {
 
             attributeDialectsListPage.clickOnNewClaimButton();
         });
 
-        it("ITC-1.2.1 - [attribute dialects] - Navigates to the correct template selection page URL.", () => {
+        it("ITC-1.2.2 - [attribute dialects] - Is add dialect wizard rendering properly.", () => {
 
-            // Check if page header exists and check if all the necessary elements are rendering.
-            cy.url().should("include", AttributeDialectsListPageConstants.PAGE_URL_MATCHER);
+            attributeDialectsListPage.getAddDialectWizard().should("be.visible");
+        });
+
+        it("ITC-1.2.3 - [attribute dialects] - Can close the add dialect wizard properly.", () => {
+
+            attributeDialectsListPage.getAddDialectWizardCancelButton().click();
         });
     });
 });

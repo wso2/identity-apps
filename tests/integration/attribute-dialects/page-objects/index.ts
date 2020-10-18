@@ -17,4 +17,5 @@
  *
  */
 
+export * from "./attribute-dialects-edit-page";
 export * from "./attribute-dialects-list-page";

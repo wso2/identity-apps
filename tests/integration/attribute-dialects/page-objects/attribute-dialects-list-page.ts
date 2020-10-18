@@ -180,4 +180,31 @@ export class AttributeDialectsListPage {
                 }
             });
     };
+
+    /**
+     * Get the Local Dialect container.
+     *
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getLocalDialectContainer(): Cypress.Chainable<Element> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.LOCAL_DIALECT_CONTAINER_DATA_ATTR);
+    };
+
+    /**
+     * Get the Attribute Dialect add wizard.
+     *
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAddDialectWizard(): Cypress.Chainable<Element> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_DATA_ATTR);
+    };
+
+    /**
+     * Get the Attribute Dialect add wizard cancel button.
+     *
+     * @return {Cypress.Chainable<Element>}
+     */
+    public getAddDialectWizardCancelButton(): Cypress.Chainable<Element> {
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR);
+    };
 }
