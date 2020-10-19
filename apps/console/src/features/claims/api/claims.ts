@@ -17,8 +17,11 @@
  */
 
 import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { Claim, HttpMethods } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
+import { ClaimManagementConstants } from "../constants";
 import { AddExternalClaim } from "../models";
 
 /**
@@ -31,10 +34,9 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
  * Add a local claim.
  *
  * @param {Claim} data Adds this data.
- *
- * @return {Promise<any>} response
+ * @return {Promise<AxiosResponse>} response
  */
-export const addLocalClaim = (data: Claim): Promise<any> => {
+export const addLocalClaim = (data: Claim): Promise<AxiosResponse> => {
     const requestConfig = {
         data,
         headers: {
@@ -47,14 +49,20 @@ export const addLocalClaim = (data: Claim): Promise<any> => {
     };
 
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 201) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+                throw new IdentityAppsApiException(
+                    ClaimManagementConstants.ADD_LOCAL_CLAIM_REQUEST_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
 
-            return Promise.resolve(response.data);
+            return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };
@@ -156,10 +164,10 @@ export const deleteAClaim = (id: string): Promise<any> => {
  * Add a claim dialect.
  *
  * @param {string} dialectURI Adds this dialect URI.
- *
- * @return {Promise<any>} response.
+ * @return {Promise<AxiosResponse>} response.
  */
-export const addDialect = (dialectURI: string): Promise<any> => {
+export const addDialect = (dialectURI: string): Promise<AxiosResponse> => {
+
     const requestConfig = {
         data: {
             dialectURI
@@ -172,14 +180,22 @@ export const addDialect = (dialectURI: string): Promise<any> => {
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.claims
     };
+
     return httpClient(requestConfig)
-        .then((response) => {
+        .then((response: AxiosResponse) => {
             if (response.status !== 201) {
-                return Promise.reject(`An error occurred. The server returned ${response.status}`);
+                throw new IdentityAppsApiException(
+                    ClaimManagementConstants.ADD_DIALECT_REQUEST_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
-            return Promise.resolve(response.data);
+
+            return Promise.resolve(response);
         })
-        .catch((error) => {
+        .catch((error: AxiosError) => {
             return Promise.reject(error?.response?.data);
         });
 };

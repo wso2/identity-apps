@@ -37,4 +37,40 @@ export class ClaimManagementConstants {
      * @default
      */
     public static readonly CLAIM_URI_ATTRIBUTE_KEY: string = "claimURI";
+
+    /**
+     * Key for the URL search param for Dialect state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly DIALECT_STATE_URL_SEARCH_PARAM_KEY = "state";
+
+    /**
+     * URL Search param for newly created Dialects.
+     * @constant
+     * @type {string}
+     */
+    public static readonly NEW_DIALECT_URL_SEARCH_PARAM = `?${
+        ClaimManagementConstants.DIALECT_STATE_URL_SEARCH_PARAM_KEY }=new`;
+
+    /**
+     * Key for the URL search param for Local Claim state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY = "state";
+
+    /**
+     * URL Search param for Local Claim state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly NEW_LOCAL_CLAIM_URL_SEARCH_PARAM = `?${
+        ClaimManagementConstants.LOCAL_CLAIM_STATE_URL_SEARCH_PARAM_KEY }=new`;
+
+    // API errors
+    public static readonly ADD_DIALECT_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while adding a new dialect.";
+    public static readonly ADD_LOCAL_CLAIM_REQUEST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while adding a new dialect.";
 }
