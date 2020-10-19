@@ -155,3 +155,74 @@ export const createEmptyUserBasicWizard = (): AddUserWizardStateInterface => ({
     roles: [],
     userName: ""
 });
+
+/**
+ * Interface for User Sessions response.
+ */
+export interface UserSessionsInterface {
+    /**
+     * Id of the user.
+     * @example 00000001
+     */
+    userId: string;
+    /**
+     * List of active sessions.
+     */
+    sessions: UserSessionInterface[];
+}
+
+/**
+ * Interface for a User Session.
+ */
+export interface UserSessionInterface {
+    /**
+     * List of applications in the session.
+     */
+    applications: ApplicationSessionInterface[];
+    /**
+     * User agent of the session.
+     * @example Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:15.0) Gecko/20100101 Firefox/15.0.1
+     */
+    userAgent: string;
+    /**
+     * IP address of the session.
+     * @example: 172.95.192.63
+     */
+    ip: string;
+    /**
+     * Login time of the session.
+     * @example: 1560412617
+     */
+    loginTime: string;
+    /**
+     * Last access time of the session.
+     * @example: 1560416196
+     */
+    lastAccessTime: string;
+    /**
+     * ID of the session.
+     * @example: 8d9806d1-4efc-483e-a96a-a0fa77d4328b
+     */
+    id: string;
+}
+
+/**
+ * Interface for the Application Session.
+ */
+export interface ApplicationSessionInterface {
+    /**
+     *  Username of the logged in user for the application.
+     *  @example: apiuser01
+     */
+    subject: string;
+    /**
+     * Name of the application.
+     * @example: sampleApp
+     */
+    appName: string;
+    /**
+     * ID of the application.
+     * @example: 012
+     */
+    appId: string;
+}
