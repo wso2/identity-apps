@@ -288,7 +288,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 ],
                 "Operations": [{
                     "op": "remove",
-                    "path":"users[value eq " + user.id + "]"
+                    "path": "users[value eq " + user.id + "]"
                 }]
             },
             method: "PATCH"
