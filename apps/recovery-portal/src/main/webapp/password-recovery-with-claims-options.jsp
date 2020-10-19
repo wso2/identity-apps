@@ -96,9 +96,7 @@
         List<AccountRecoveryType> accountRecoveryTypes = passwordRecoveryApiV1.
                 initiatePasswordRecovery(recoveryInitRequest, tenantDomain, requestHeaders);
         if (accountRecoveryTypes == null) {
-            request.setAttribute("tenantDomain", tenantDomain);
             request.setAttribute("callback", callback);
-            request.setAttribute("disableResend", true);
             request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                         response);
             return;

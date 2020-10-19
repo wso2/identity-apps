@@ -32,7 +32,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="java.net.URLEncoder" %>
-<%@ page import="org.wso2.carbon.base.MultitenantConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.passwordrecovery.v1.*" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
@@ -43,7 +42,6 @@
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
     boolean isPasswordRecoveryWithClaimsNotify =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryWithClaimsNotify"));
-    boolean isResendPasswordRecovery = Boolean.parseBoolean(request.getParameter("isResendPasswordRecovery"));
 
     // Common parameters for password recovery with email and self registration with email
     String username = request.getParameter("username");
@@ -109,7 +107,6 @@
     } else if (isPasswordRecoveryWithClaimsNotify) {
         // Let user recover password by email or security questions.
         String recoveryCode = request.getParameter("recoveryCode");
-        String resendCode = "";
         String notificationChannel = "";
 
         PasswordRecoveryApiV1 passwordRecoveryApiV1 = new PasswordRecoveryApiV1();
@@ -144,12 +141,8 @@
                 Map<String, String> requestHeaders = new HashedMap();
                 RecoveryResponse recoveryResponse = passwordRecoveryApiV1.recoverPassword(recoveryRequest,
                         tenantDomain, requestHeaders);
-                resendCode = recoveryResponse.getResendCode();
                 notificationChannel = recoveryResponse.getNotificationChannel();
-                request.getSession().setAttribute("resendCode", resendCode);
                 request.setAttribute("callback", callback);
-                request.setAttribute("sessionDataKey", sessionDataKey);
-                request.setAttribute("tenantDomain", tenantDomain);
                 if (notificationChannel.equals("EMAIL")) {
                     request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
                             response);
@@ -166,50 +159,6 @@
                 request.getRequestDispatcher("error.jsp").forward(request, response);
                 return;
             }
-        }
-    } else if (isResendPasswordRecovery) {
-        // Resend password recovery email.
-        String resendCode = (String) request.getSession().getAttribute("resendCode");
-        String notificationChannel = "";
-        ResendConfirmationRequest resendConfirmationRequest = new ResendConfirmationRequest();
-
-        List<Property> properties = new ArrayList<>();
-        Property callbackProperty = new Property();
-        callbackProperty.setKey("callback");
-        callbackProperty.setValue(URLEncoder.encode(callback, "UTF-8"));
-        properties.add(callbackProperty);
-
-        Property sessionDataKeyProperty = new Property();
-        sessionDataKeyProperty.setKey("sessionDataKey");
-        sessionDataKeyProperty.setValue(sessionDataKey);
-        properties.add(sessionDataKeyProperty);
-
-        resendConfirmationRequest.setResendCode(resendCode);
-        resendConfirmationRequest.setProperties(properties);
-        PasswordRecoveryApiV1 passwordRecoveryApiV1 = new PasswordRecoveryApiV1();
-        try {
-            Map<String, String> requestHeaders = new HashedMap();
-            ResendConfirmationCodeResponse resendConfirmationCodeResponse = passwordRecoveryApiV1.
-                    resendPasswordConfirmationCode(resendConfirmationRequest, tenantDomain, requestHeaders);
-            resendCode = resendConfirmationCodeResponse.getResendCode();
-            notificationChannel = resendConfirmationCodeResponse.getNotificationChannel();
-            request.setAttribute("tenantDomain", tenantDomain);
-            request.setAttribute("callback", callback);
-            request.setAttribute("sessionDataKey", sessionDataKey);
-            request.getSession().setAttribute("resendCode", resendCode);
-            if (notificationChannel.equals("EMAIL")) {
-                request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
-                        response);
-            } else {
-                request.setAttribute("error", true);
-                request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                        "Unknown.password.recovery.option"));
-                request.getRequestDispatcher("error.jsp").forward(request, response);
-            }
-        } catch (ApiException e) {
-            IdentityManagementEndpointUtil.addErrorInformation(request, e);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
-            return;
         }
     } else {
         request.setAttribute("sessionDataKey", sessionDataKey);

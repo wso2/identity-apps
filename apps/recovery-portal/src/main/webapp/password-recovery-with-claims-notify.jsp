@@ -19,31 +19,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.apache.commons.lang.StringUtils" %>
-<%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.net.URISyntaxException" %>
-<%@ page import="java.net.URLEncoder" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
-<jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
-    String resendCode = (String) request.getSession().getAttribute("resendCode");
     String callback = IdentityManagementEndpointUtil.getStringValue(request.getParameter("callback"));
-    String sessionDataKey = (String) request.getAttribute("sessionDataKey");
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
                 application.getInitParameter(IdentityManagementEndpointConstants.ConfigConstants.USER_PORTAL_URL));
     }
-    if (StringUtils.isBlank(tenantDomain)) {
-        tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
-    }
-    boolean disableResend = Boolean.parseBoolean(request.getParameter("disableResend"));
 %>
 
 <!doctype html>
@@ -59,48 +47,24 @@
     <% } %>
 </head>
 <body>
-<div class="ui tiny modal notify">
-    <div class="header">
-        <h4>
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
-        </h4>
+    <div class="ui tiny modal notify">
+        <div class="header">
+            <h4>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
+            </h4>
+        </div>
+        <div class="content">
+            <p>
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                        "Password.recovery.information.sent.to.the.email.registered.with.account")%>
+            </p>
+        </div>
+        <div class="actions">
+            <button type="button" class="ui primary button cancel" data-dismiss="modal">
+                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
+            </button>
+        </div>
     </div>
-    <div class="content">
-        <p>
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
-                    "Password.recovery.information.sent.to.the.email.registered.with.account")%>
-        </p>
-    </div>
-    <div class="actions">
-        <%
-            if (StringUtils.isNotBlank(resendCode) && !disableResend) {
-        %>
-        <form method="post" action="verify.do" id="resendConfirmationForm">
-            <input type="hidden" name="isResendPasswordRecovery" value="true"/>
-            <input type="hidden" name="callback" value="<%=Encode.forHtmlAttribute(callback) %>"/>
-            <input type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
-            <input type="hidden" name="sessionDataKey" value="<%=Encode.forHtmlAttribute(sessionDataKey)%>"/>
-            <div class="align-right buttons">
-                <button id="recoverySubmit" class="ui button link-button" data-dismiss="modal">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Resend.confirmation")%>
-                </button>
-                <button type="button" class="ui primary button cancel" data-dismiss="modal">
-                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-                </button>
-            </div>
-        </form>
-        <%
-            }
-            else {
-        %>
-        <button type="button" class="ui primary button cancel" data-dismiss="modal">
-            <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-        </button>
-        <%
-            }
-        %>
-    </div>
-</div>
 
     <!-- footer -->
     <%
@@ -113,10 +77,6 @@
     <% } %>
 
     <script type="application/javascript">
-        function goBack() {
-            window.history.back();
-        }
-
         $(document).ready(function () {
             $(".notify").modal({
                 blurring: true,
