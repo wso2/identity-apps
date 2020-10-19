@@ -38,11 +38,11 @@ import {
     Divider, 
     DropdownItemProps, 
     DropdownProps, 
-    Icon, 
-    PaginationProps,
-    Segment,
-    Grid,
+    Grid, 
     Header,
+    Icon,
+    PaginationProps,
+    Segment
 } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
@@ -62,6 +62,7 @@ import {
 } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
+import { RemoteFetchDetails } from "../components/remote-fetch-details";
 import { ApplicationListInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -124,7 +125,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ remoteConfig, setRemoteConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
-    const [ remoteConfigDetails, setRemoteConfigDetails ] = useState<InterfaceRemoteConfigDetails>(undefined)
+    const [ remoteConfigDetails, setRemoteConfigDetails ] = useState<InterfaceRemoteConfigDetails>(undefined);
+    const [ openRemoteFetchDetails, setOpenRemoteFetchDetails ] = useState<boolean>(false);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -285,102 +287,118 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ t("devPortal:pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
-
-        {
-            remoteConfig &&
-            <>
-                <Divider />
-                <Header 
-                    as="h4" 
-                    className="m-0"
-                    data-testid={ `${ testId }-header` }
-                >
-                    Remote Deployments Configured
-                </Header>
-                <Hint icon="linkify" className="mt-0 mb-3">
-                    { remoteConfigDetails?.repositoryManagerAttributes?.uri }
-                </Hint>
-                <Divider hidden/>
-                <Segment basic className="p-0">
-                    <Grid columns={ 8 }>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <Icon.Group className="mr-2" size="large">
-                                    <Icon name='fork' />
-                                    <Icon 
-                                        color="green" 
-                                        corner="bottom right" 
-                                        name='checkmark' 
-                                    />
-                                </Icon.Group>
-                                <strong>{ remoteConfigDetails?.status?.successfulDeployments }</strong> Successful
-                            </Grid.Column>
-                            <Grid.Column>
-                                <Icon.Group className="mr-2" size="large">
-                                    <Icon name='fork' />
-                                    <Icon 
-                                        color="red" 
-                                        corner="bottom right" 
-                                        name='cancel' 
-                                    />
-                                </Icon.Group>
-                                <strong>{ remoteConfigDetails?.status?.failedDeployments }</strong> Failed
-                            </Grid.Column>
-                            <Grid.Column
-                                width="6"
-                            >
-                                <Icon.Group className="mr-2" size="large">
-                                    <Icon name='calendar alternate outline' />
-                                </Icon.Group>
-                                Last Deployed on <strong>{ remoteConfigDetails?.status?.lastSynchronizedTime }</strong> 
-                            </Grid.Column>
-                            <Grid.Column 
-                                floated="right"
-                                width="6"
-                                verticalAlign="bottom"
-                                textAlign="right"
-                            >
-                                <Grid>
-                                    <Grid.Row 
-                                        className="pb-2 pt-2 pr-3" 
-                                        columns={ 1 }
-                                    >
-                                        <Grid.Column
-                                            verticalAlign="top"
-                                            className="pr-0"
+            {
+                openRemoteFetchDetails &&
+                    <RemoteFetchDetails 
+                        isOpen={ openRemoteFetchDetails }
+                        onClose={ ()=> {
+                            setOpenRemoteFetchDetails(false);
+                        } }
+                        remoteDeployment={ remoteConfigDetails }
+                    />
+            }
+            {
+                remoteConfig &&
+                <>
+                    <Divider />
+                    <Header 
+                        as="h4" 
+                        className="m-0"
+                        data-testid={ `${ testId }-header` }
+                    >
+                        Remote Deployments Configured
+                    </Header>
+                    <Hint icon="linkify" className="mt-0 mb-3">
+                        { remoteConfigDetails?.repositoryManagerAttributes?.uri }
+                    </Hint>
+                    <Divider hidden/>
+                    <Segment basic className="p-0">
+                        <Grid columns={ 8 }>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Icon.Group className="mr-2" size="large">
+                                        <Icon name='fork' />
+                                        <Icon 
+                                            color="green" 
+                                            corner="bottom right" 
+                                            name='checkmark' 
+                                        />
+                                    </Icon.Group>
+                                    <strong>{ remoteConfigDetails?.status?.successfulDeployments }</strong> Successful
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Icon.Group className="mr-2" size="large">
+                                        <Icon name='fork' />
+                                        <Icon 
+                                            color="red" 
+                                            corner="bottom right" 
+                                            name='cancel' 
+                                        />
+                                    </Icon.Group>
+                                    <strong>{ remoteConfigDetails?.status?.failedDeployments }</strong> Failed
+                                </Grid.Column>
+                                <Grid.Column
+                                    width="6"
+                                >
+                                    <Icon.Group className="mr-2" size="large">
+                                        <Icon name='calendar alternate outline' />
+                                    </Icon.Group>
+                                    Last Deployed on <strong>
+                                        { remoteConfigDetails?.status?.lastSynchronizedTime }
+                                    </strong> 
+                                </Grid.Column>
+                                <Grid.Column 
+                                    floated="right"
+                                    width="6"
+                                    verticalAlign="bottom"
+                                    textAlign="right"
+                                >
+                                    <Grid>
+                                        <Grid.Row 
+                                            className="pb-2 pt-2 pr-3" 
+                                            columns={ 1 }
                                         >
-                                            <LinkButton className="mr-5" compact>
-                                                Details
-                                            </LinkButton>
-                                            <Button 
-                                                basic 
-                                                icon 
-                                                labelPosition='left'
-                                                onClick={ ()=> {
-                                                    triggerConfigDeployment(remoteConfigDetails.id).then(() => {
-                                                        setTimeout(()=> {
-                                                            getRemoteConfigList();
-                                                        }, 3000)
-                                                    })
-                                                } }
+                                            <Grid.Column
+                                                verticalAlign="top"
+                                                className="pr-0"
                                             >
-                                                <Icon name='retweet' />
-                                                Refetch Applications
-                                            </Button>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </Grid>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </Segment>
-                <Divider />
-                <Divider hidden />
-                <Divider hidden />
-                <Divider hidden />
-            </>
-        }
-            
+                                                <LinkButton 
+                                                    className="mr-5" 
+                                                    compact
+                                                    onClick={ () => {
+                                                        setOpenRemoteFetchDetails(true);
+                                                    } }
+                                                >
+                                                    Details
+                                                </LinkButton>
+                                                <Button 
+                                                    basic 
+                                                    icon 
+                                                    labelPosition='left'
+                                                    onClick={ ()=> {
+                                                        triggerConfigDeployment(remoteConfigDetails.id).then(() => {
+                                                            setTimeout(()=> {
+                                                                getRemoteConfigList();
+                                                            }, 3000)
+                                                        })
+                                                    } }
+                                                >
+                                                    <Icon name='retweet' />
+                                                    Refetch Applications
+                                                </Button>
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    </Grid>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Segment>
+                    <Divider />
+                    <Divider hidden />
+                    <Divider hidden />
+                    <Divider hidden />
+                </>
+            }
             <ListLayout
                 advancedSearch={
                     <AdvancedSearchWithBasicFilters
