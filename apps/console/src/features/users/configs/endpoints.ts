@@ -28,6 +28,7 @@ export const getUsersResourceEndpoints = (serverHost: string): UsersResourceEndp
     return {
         bulk: `${ serverHost }/scim2/Bulk`,
         groups: `${ serverHost }/scim2/Groups`,
+        userSessions: `${ serverHost }/api/users/v1/{0}/sessions`,
         userStores: `${ serverHost }/api/server/v1/userstores`,
         users: `${ serverHost }/scim2/Users`
     }

@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { UserGroupsList } from "./user-groups-edit";
 import { UserProfile } from "./user-profile";
 import { UserRolesList } from "./user-roles-edit";
+import { UserSessions } from "./user-sessions";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState } from "../../core/store";
 import { UserManagementConstants } from "../constants";
@@ -91,7 +92,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
 
     const panes = () => ([
         {
-            menuItem: t("adminPortal:components.user.editUser.menu.menuItems.0"),
+            menuItem: t("console:manage.features.users.editUser.tab.menuItems.0"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserProfile
@@ -104,7 +105,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.user.editUser.menu.menuItems.1"),
+            menuItem: t("console:manage.features.users.editUser.tab.menuItems.1"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserGroupsList
@@ -117,7 +118,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             )
         },
         {
-            menuItem: t("adminPortal:components.user.editUser.menu.menuItems.2"),
+            menuItem: t("console:manage.features.users.editUser.tab.menuItems.2"),
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <UserRolesList
@@ -127,6 +128,14 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         handleUserUpdate={ handleUserUpdate }
                         isReadOnly={ isReadOnly }
                     />
+                </ResourceTab.Pane>
+            )
+        },
+        {
+            menuItem: t("console:manage.features.users.editUser.tab.menuItems.3"),
+            render: () => (
+                <ResourceTab.Pane controlledSegmentation attached={ false }>
+                    <UserSessions user={ user } />
                 </ResourceTab.Pane>
             )
         }

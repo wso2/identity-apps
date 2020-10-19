@@ -88,5 +88,67 @@ export const console: ConsoleNS = {
                 heading: "Unrecognized URL"
             }
         }
+    },
+    manage: {
+        features: {
+            users: {
+                editUser: {
+                    tab: {
+                        menuItems: {
+                            0: "Profile",
+                            1: "Groups",
+                            2: "Roles",
+                            3: "Sessions"
+                        }
+                    }
+                },
+                userSessions: {
+                    notifications: {
+                        getUserSessions: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Retrieval Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while retrieving user sessions.",
+                                message: "Retrieval Error"
+                            },
+                            success: {
+                                description: "Successfully retrieved user sessions.",
+                                message: "Retrieval Successful"
+                            }
+                        },
+                        terminateAllUserSessions: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Termination Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while terminating the user sessions.",
+                                message: "Termination Error"
+                            },
+                            success: {
+                                description: "Successfully terminated all the user sessions.",
+                                message: "Termination Successful"
+                            }
+                        },
+                        terminateUserSession: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Termination Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while terminating the user session.",
+                                message: "Termination Error"
+                            },
+                            success: {
+                                description: "Successfully terminated the user session.",
+                                message: "Termination Successful"
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 };

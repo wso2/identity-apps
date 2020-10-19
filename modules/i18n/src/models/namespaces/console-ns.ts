@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ModalInterface, ValidationInterface } from "../common";
+import { ModalInterface, Notification, ValidationInterface } from "../common";
 
 /**
  * Model for the Console namespace
@@ -30,6 +30,29 @@ export interface ConsoleNS {
         validations: {
             inSecureURL: ValidationInterface;
             unrecognizedURL: ValidationInterface;
+        };
+    };
+    manage: {
+        features: {
+            users: {
+                editUser: {
+                    tab: {
+                        menuItems: {
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
+                        };
+                    };
+                };
+                userSessions: {
+                    notifications: {
+                        getUserSessions: Notification;
+                        terminateAllUserSessions: Notification;
+                        terminateUserSession: Notification;
+                    };
+                };
+            };
         };
     };
 }

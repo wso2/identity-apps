@@ -25,4 +25,5 @@ export * from "./edit-user";
 export * from "./user-groups-edit";
 export * from "./user-roles-edit";
 export * from "./users-list-options";
+export * from "./user-sessions";
 export * from "./wizard";

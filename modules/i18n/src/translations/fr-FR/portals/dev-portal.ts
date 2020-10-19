@@ -396,7 +396,7 @@ export const devPortal: DevPortalNS = {
                                     getRequestPathAuthenticators: {
                                         error: {
                                             description: "{{ description }}",
-                                            message: "Retrieval Error"
+                                            message: "Erreur de récupération"
                                         },
                                         genericError: {
                                             description: "An error occurred while retrieving request path " +
