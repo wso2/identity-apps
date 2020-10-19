@@ -112,7 +112,6 @@
                     if (channel.getType().equals("EMAIL")) {
                         isEmailEnabled = true;
                         emailId = channel.getId();
-                        emailValue = channel.getValue();
                     } else if (channel.getType().equals("EXTERNAL")) {
                         isNotificationBasedRecoveryEnabled = false;
                     }
@@ -208,7 +207,7 @@
                             <div class="ui radio checkbox">
                                 <input type="radio" name="recoveryOption" value="<%=emailId%>" checked/>
                                 <label><%=IdentityManagementEndpointUtil.i18n
-                                        (recoveryResourceBundle,"Send.recovery.link.to")%> <%=emailValue%></label>
+                                        (recoveryResourceBundle,"Recover.with.mail")%></label>
                             </div>
                         </div>
                     <%
