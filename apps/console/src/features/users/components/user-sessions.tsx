@@ -26,8 +26,9 @@ import {
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import {
+    ConfirmationModal,
     ContentLoader,
-    DangerButton,
+    DangerButton, GenericIcon,
     SegmentedAccordion
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -39,7 +40,7 @@ import React, {
     SyntheticEvent, useEffect,
     useState
 } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
 import { FeatureConfigInterface } from "../../core";
@@ -89,8 +90,17 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
     const dispatch = useDispatch();
 
     const [ userSessions, setUserSessions ] = useState<UserSessionsInterface>(undefined);
+    const [ terminatingSession, setTerminatingSession ] = useState<UserSessionInterface>(undefined);
     const [ isUserSessionsFetchRequestLoading, setIsUserSessionsFetchRequestLoading ] = useState<boolean>(false);
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+    const [
+        showSessionTerminateConfirmationModal,
+        setShowSessionTerminateConfirmationModal
+    ] = useState<boolean>(false);
+    const [
+        showAllSessionsTerminateConfirmationModal,
+        setShowAllSessionsTerminateConfirmationModal
+    ] = useState<boolean>(false);
     
     useEffect(() => {
 
@@ -131,8 +141,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: "console:manage.features.users.userSessions.notifications.getUserSessions." +
-                        "genericError.description",
+                    description:  t("console:manage.features.users.userSessions.notifications.getUserSessions." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.users.userSessions.notifications.getUserSessions." +
@@ -143,6 +153,39 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
             .finally(() => {
                 setIsUserSessionsFetchRequestLoading(false);
             });
+    };
+
+    /**
+     * Resolves an icon for the device type extracted from the user agent string.
+     *
+     * @param {string} type - Device type.
+     * @return {SemanticICONS}
+     */
+    const resolveDeviceType = (type: string): SemanticICONS => {
+        const deviceType = {
+            desktop: {
+                icon: "computer",
+                values: [ "desktop" ]
+            },
+            mobile: {
+                icon: "mobile alternate",
+                values: [ "mobile" ]
+            },
+            tablet: {
+                icon: "tablet alternate",
+                values: [ "tablet" ]
+            }
+        };
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        for (const [ key, value ] of Object.entries(deviceType)) {
+            if (value.values.includes(type)) {
+                return value.icon as SemanticICONS;
+            }
+        }
+
+        // Default device icon.
+        return "computer";
     };
 
     /**
@@ -360,7 +403,10 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                 <Grid.Column width={ 16 }>
                                     <DangerButton
                                         data-testid={ `${ testId }-terminate-button` }
-                                        onClick={ () => handleSessionTerminate(session.id) }
+                                        onClick={ () => {
+                                            setTerminatingSession(session);
+                                            setShowSessionTerminateConfirmationModal(true);
+                                        } }
                                     >
                                         Terminate Session
                                     </DangerButton>
@@ -422,8 +468,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
         terminateUserSession(user.id, sessionId)
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
-                    description: "console:manage.features.users.userSessions.notifications.terminateUserSession." +
-                        "success.description",
+                    description:  t("console:manage.features.users.userSessions.notifications.terminateUserSession." +
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
                     message: t(
                         "console:manage.features.users.userSessions.notifications.terminateUserSession." +
@@ -447,8 +493,8 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 }
 
                 dispatch(addAlert<AlertInterface>({
-                    description: "console:manage.features.users.userSessions.notifications.terminateUserSession." +
-                        "genericError.description",
+                    description:  t("console:manage.features.users.userSessions.notifications.terminateUserSession." +
+                        "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t(
                         "console:manage.features.users.userSessions.notifications.terminateUserSession." +
@@ -474,7 +520,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                 <DangerButton
                                     floated="right"
                                     data-testid={ `${ testId }-terminate-all-button` }
-                                    onClick={ handleAllSessionsTerminate }
+                                    onClick={ () => setShowAllSessionsTerminateConfirmationModal(true) }
                                 >
                                     <Icon name="add"/>
                                     Terminate All
@@ -490,41 +536,181 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                             && Array.isArray(userSessions.sessions)
                                             && userSessions.sessions.length > 0)
                                             ? userSessions.sessions
-                                                .map((session: UserSessionInterface, index: number) => (
-                                                    <Fragment key={ session.id }>
-                                                        <SegmentedAccordion.Title
-                                                            id={ session.id }
-                                                            data-testid={ `${ testId }-${ session.id }-title` }
-                                                            active={ accordionActiveIndexes.includes(index) }
-                                                            index={ index }
-                                                            onClick={ handleAccordionOnClick }
-                                                            content={ (
-                                                                <>
-                                                                    { session.lastAccessTime }
-                                                                </>
-                                                            ) }
-                                                            actions={ [
-                                                                {
-                                                                    icon: "trash alternate",
-                                                                    onClick: () => null,
-                                                                    type: "icon"
-                                                                }
-                                                            ] }
-                                                            hideChevron={ false }
-                                                        />
-                                                        <SegmentedAccordion.Content
-                                                            active={ accordionActiveIndexes.includes(index) }
-                                                            data-testid={ `${ testId }-${ session.id }-content` }
-                                                        >
-                                                            { renderSessionDetails(session) }
-                                                        </SegmentedAccordion.Content>
-                                                    </Fragment>
-                                            ))
+                                                .map((session: UserSessionInterface, index: number) => {
+
+                                                    userAgentParser.uaString = session.userAgent;
+
+                                                    return (
+                                                        <Fragment key={ session.id }>
+                                                            <SegmentedAccordion.Title
+                                                                id={ session.id }
+                                                                data-testid={ `${ testId }-${ session.id }-title` }
+                                                                active={ accordionActiveIndexes.includes(index) }
+                                                                index={ index }
+                                                                onClick={ handleAccordionOnClick }
+                                                                content={ (
+                                                                    <>
+                                                                        <GenericIcon
+                                                                            transparent
+                                                                            icon={ (
+                                                                                <Icon
+                                                                                    name={
+                                                                                        resolveDeviceType(
+                                                                                            userAgentParser.device.type
+                                                                                        )
+                                                                                    }
+                                                                                    color="grey"
+                                                                                />
+                                                                            ) }
+                                                                            spaced="right"
+                                                                            floated="left"
+                                                                            size="micro"
+                                                                            data-testid={
+                                                                                `${ testId }-${ session.id }-title-icon`
+                                                                            }
+                                                                        />
+                                                                        { userAgentParser.browser.name }
+                                                                        { " on " }
+                                                                        { userAgentParser.os.name }
+                                                                    </>
+                                                                ) }
+                                                                actions={ [
+                                                                    {
+                                                                        icon: "trash alternate",
+                                                                        onClick: () => null,
+                                                                        type: "icon"
+                                                                    }
+                                                                ] }
+                                                                hideChevron={ false }
+                                                            />
+                                                            <SegmentedAccordion.Content
+                                                                active={ accordionActiveIndexes.includes(index) }
+                                                                data-testid={ `${ testId }-${ session.id }-content` }
+                                                            >
+                                                                { renderSessionDetails(session) }
+                                                            </SegmentedAccordion.Content>
+                                                        </Fragment>
+                                                    )
+                                                })
                                             : null
                                     }
                                 </SegmentedAccordion>
                             </Grid.Column>
                         </Grid.Row>
+                        {
+                            (showSessionTerminateConfirmationModal || showAllSessionsTerminateConfirmationModal) && (
+                                <ConfirmationModal
+                                    onClose={ (): void => {
+                                        if (showSessionTerminateConfirmationModal) {
+                                            setShowSessionTerminateConfirmationModal(false);
+                                            
+                                            return;
+                                        }
+
+                                        setShowAllSessionsTerminateConfirmationModal(false);
+                                    } }
+                                    type="warning"
+                                    open={
+                                        showSessionTerminateConfirmationModal
+                                        || showAllSessionsTerminateConfirmationModal
+                                    }
+                                    assertion={ user.userName }
+                                    assertionHint={ (
+                                        <p>
+                                            <Trans
+                                                i18nKey={
+                                                    showSessionTerminateConfirmationModal
+                                                        ? "console:manage.features.users.confirmations." +
+                                                        "terminateSession.assertionHint"
+                                                        : "console:manage.features.users.confirmations." +
+                                                        "terminateAllSessions.assertionHint"
+                                                }
+                                                tOptions={ { name: user.userName } }
+                                            >
+                                                Please type <strong>{ user.userName }</strong> to confirm.
+                                            </Trans>
+                                        </p>
+                                    ) }
+                                    assertionType="input"
+                                    primaryAction={ t("common:confirm") }
+                                    secondaryAction={ t("common:cancel") }
+                                    onSecondaryActionClick={ (): void => {
+                                        if (showSessionTerminateConfirmationModal) {
+                                            setShowSessionTerminateConfirmationModal(false);
+
+                                            return;
+                                        }
+
+                                        setShowAllSessionsTerminateConfirmationModal(false);
+                                    } }
+                                    onPrimaryActionClick={ (): void => {
+                                        if (showSessionTerminateConfirmationModal) {
+                                            handleSessionTerminate(terminatingSession.id);
+                                            setShowSessionTerminateConfirmationModal(false);
+
+                                            return;
+                                        }
+
+                                        handleAllSessionsTerminate();
+                                        setShowAllSessionsTerminateConfirmationModal(false);
+                                    } }
+                                    data-testid={
+                                        showSessionTerminateConfirmationModal
+                                            ? "session-terminate-confirmation-modal"
+                                            : "all-sessions-terminate-confirmation-modal"
+                                    }
+                                    closeOnDimmerClick={ false }
+                                >
+                                    <ConfirmationModal.Header
+                                        data-testid={
+                                            showSessionTerminateConfirmationModal
+                                                ? "session-terminate-confirmation-modal-header"
+                                                : "all-sessions-terminate-confirmation-modal-header"
+                                        }
+                                    >
+                                        {
+                                            showSessionTerminateConfirmationModal
+                                                ? t("console:manage.features.users.confirmations." +
+                                                "terminateSession.header")
+                                                : t("console:manage.features.users.confirmations." +
+                                                "terminateAllSessions.header")
+                                        }
+                                    </ConfirmationModal.Header>
+                                    <ConfirmationModal.Message
+                                        attached
+                                        warning
+                                        data-testid={
+                                            showSessionTerminateConfirmationModal
+                                                ? "session-terminate-confirmation-modal-message"
+                                                : "all-sessions-terminate-confirmation-modal-message"
+                                        }
+                                    >
+                                        {
+                                            showSessionTerminateConfirmationModal
+                                                ? t("console:manage.features.users.confirmations." +
+                                                "terminateSession.message")
+                                                : t("console:manage.features.users.confirmations." +
+                                                "terminateAllSessions.message")
+                                        }
+                                    </ConfirmationModal.Message>
+                                    <ConfirmationModal.Content
+                                        data-testid={
+                                            showSessionTerminateConfirmationModal
+                                                ? "session-terminate-confirmation-modal-content"
+                                                : "all-sessions-terminate-confirmation-modal-content"
+                                        }
+                                    >
+                                        {
+                                            showSessionTerminateConfirmationModal
+                                                ? t("console:manage.features.users.confirmations." +
+                                                "terminateSession.content")
+                                                : t("console:manage.features.users.confirmations." +
+                                                "terminateAllSessions.content")
+                                        }
+                                    </ConfirmationModal.Content>
+                                </ConfirmationModal>
+                            )
+                        }
                     </Grid>
                 )
                 : null

@@ -92,6 +92,25 @@ export const console: ConsoleNS = {
     manage: {
         features: {
             users: {
+                confirmations: {
+                    terminateAllSessions: {
+                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        content: "Si vous procédez à cette action, l'utilisateur sera déconnecté de toutes les " +
+                            "sessions actives. Ils perdront la progression de toutes les tâches en cours. " +
+                            "Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et mettra fin définitivement à toutes les sessions " +
+                            "actives."
+                    },
+                    terminateSession: {
+                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        content: "Si vous procédez à cette action, l'utilisateur sera déconnecté de la session " +
+                            "sélectionnée. Ils perdront la progression de toutes les tâches en cours. Veuillez " +
+                            "procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et mettra fin définitivement à la session."
+                    }
+                },
                 editUser: {
                     tab: {
                         menuItems: {

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ModalInterface, Notification, ValidationInterface } from "../common";
+import { Confirmation, ModalInterface, Notification, ValidationInterface } from "../common";
 
 /**
  * Model for the Console namespace
@@ -35,6 +35,10 @@ export interface ConsoleNS {
     manage: {
         features: {
             users: {
+                confirmations: {
+                    terminateAllSessions: Confirmation;
+                    terminateSession: Confirmation;
+                };
                 editUser: {
                     tab: {
                         menuItems: {
