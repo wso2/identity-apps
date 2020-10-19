@@ -17,14 +17,14 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { URLUtils } from "@wso2is/core/utils";
 import { Field, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
-import { FormValidation } from "@wso2is/validation";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid } from "semantic-ui-react";
+import { Grid, Label } from "semantic-ui-react";
 import { MainApplicationInterface } from "../../models";
 
 /**
@@ -60,6 +60,14 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
      * Flag to show/hide callback URL.
      */
     showCallbackURL: boolean;
+    /**
+     * CORS allowed origin list for the tenant.
+     */
+    allowedOrigins?: string[];
+    /**
+     * Tenant domain
+     */
+    tenantDomain?: string;
 }
 
 /**
@@ -74,6 +82,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 ): ReactElement => {
 
     const {
+        allowedOrigins,
         fields,
         hideFieldHints,
         initialValues,
@@ -81,6 +90,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         onSubmit,
         templateValues,
         showCallbackURL,
+        tenantDomain,
         [ "data-testid" ]: testId
     } = props;
 
@@ -91,9 +101,13 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ refreshToken, setRefreshToken ] = useState<string[]>([]);
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
     const [ showURLError, setShowURLError ] = useState(false);
-
+    const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
     // TODO enable after fixing callbackURL.
     // const [showCallbackUrl, setShowCallbackUrl] = useState(false);
+
+    // Maintain the state if the user allowed the CORS for the
+    // origin of the configured callback URL(s).
+    const [ allowCORSUrls, setAllowCORSUrls ] = useState<string[]>([]);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -207,7 +221,22 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             };
         }
 
+        if (showCallbackURL || (!fields || fields.includes("callbackURLs"))) {
+            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
+        }
+
         return config;
+    };
+
+    /**
+     * The following function handles allowing CORS for a new origin.
+     *
+     * @param {string} url - Allowed origin
+     */
+    const handleAllowOrigin = (url: string): void => {
+        const allowedURLs = [ ...allowCORSUrls ];
+        allowedURLs.push(url);
+        setAllowCORSUrls(allowedURLs);
     };
 
     /**
@@ -233,6 +262,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     <Grid>
                         { !fields || fields.includes("callbackURLs") && (
                             <URLInput
+                                labelEnabled={ true }
+                                handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                                tenantDomain={ tenantDomain }
+                                allowedOrigins={ allowedOrigins }
                                 urlState={ callBackUrls }
                                 setURLState={ setCallBackUrls }
                                 labelName={
@@ -247,7 +280,28 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         ".validations.empty")
                                 }
                                 validation={ (value: string) => {
-                                    return FormValidation.url(value);
+                                    
+                                    let label: ReactElement = null;
+
+                                    if (URLUtils.isHttpUrl(value)) {
+                                        label = (
+                                            <Label basic color="orange" className="mt-2">
+                                                { t("console:common.validations.inSecureURL.description") }
+                                            </Label>
+                                        );
+                                    }
+
+                                    if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                        label = (
+                                            <Label basic color="orange" className="mt-2">
+                                                { t("console:common.validations.unrecognizedURL.description") }
+                                            </Label>
+                                        );
+                                    }
+                                    
+                                    setCallbackURLsErrorLabel(label);
+
+                                    return true;
                                 } }
                                 computerWidth={ 10 }
                                 setShowError={ setShowURLError }
@@ -262,6 +316,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                 getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
                                     submitUrl = submitFunction;
                                 } }
+                                required={ true }
+                                showPredictions={ false }
+                                customLabel={ callbackURLsErrorLabel }
                             />
                         ) }
                         { !fields || fields.includes("publicClient") && (

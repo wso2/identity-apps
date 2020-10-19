@@ -168,9 +168,9 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
         <>
         <Heading as="h4">
             { t("devPortal:components.applications.edit.sections.provisioning.outbound.heading") }
-            <Heading subHeading as="h6">
-                { t("devPortal:components.applications.edit.sections.provisioning.outbound.subHeading") }
-            </Heading>
+        </Heading>
+        <Heading subHeading as="h6">
+            { t("devPortal:components.applications.edit.sections.provisioning.outbound.subHeading") }
         </Heading>
         <Divider hidden/>
             {
@@ -293,6 +293,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                             (): void => handleProvisioningIDPDelete(deletingIdp)
                         }
                         data-testid={ `${ testId }-connector-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-connector-delete-confirmation-modal-header` }

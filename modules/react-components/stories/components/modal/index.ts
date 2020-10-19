@@ -18,3 +18,4 @@
  */
 
 export * from "./confirmation-modal.stories";
+export * from "./edit-avatar-modal.stories";

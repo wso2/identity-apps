@@ -16,28 +16,30 @@
  * under the License.
  */
 
-import { RolesInterface } from "@wso2is/core/models";
+import { RolesInterface, SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { BasicRoleDetails } from "./edit-role-basic";
 import { RoleGroupsList } from "./edit-role-groups";
 import { RolePermissionDetails } from "./edit-role-permission";
 import { RoleUserDetails } from "./edit-role-users";
-import { history } from "../../../core";
+import { AppState, FeatureConfigInterface, history } from "../../../core";
 
 /**
  * Captures props needed for edit role component
  */
-interface EditRoleProps {
+interface EditRoleProps extends SBACInterface<FeatureConfigInterface> {
     roleId: string;
     roleObject: RolesInterface;
     onRoleUpdate: () => void;
+    readOnlyUserStores?: string[];
 }
 
 /**
  * Component which will allow editing of a selected role.
- * 
+ *
  * @param props contains role details to be edited.
  */
 export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps): ReactElement => {
@@ -49,68 +51,83 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     const { t } = useTranslation();
 
+    const isGroupAndRoleSeparationEnabled: boolean = useSelector(
+        (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
+
     const [ isGroup, setIsGroup ] = useState<boolean>(false);
 
     /**
      * Get is groups url to proceed as groups
      */
     useEffect(() => {
-        setIsGroup(history.location.pathname.includes("/groups/"));
-    }, []);
-
-    const panes = () => ([
-        {
-            menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <BasicRoleDetails
-                        data-testid="role-mgt-edit-role-basic"
-                        isGroup={ isGroup }
-                        roleObject={ roleObject }
-                        onRoleUpdate={ onRoleUpdate }
-                    />
-                </ResourceTab.Pane>
-            )
-        },{
-            menuItem: t("adminPortal:components.roles.edit.menuItems.permissions"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <RolePermissionDetails
-                        data-testid="role-mgt-edit-role-permissions"
-                        isGroup={ false }
-                        roleObject={ roleObject }
-                        onRoleUpdate={ onRoleUpdate }
-                    />
-                </ResourceTab.Pane>
-            )
-        },{
-            menuItem: t("adminPortal:components.roles.edit.menuItems.groups"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <RoleGroupsList
-                        data-testid="role-mgt-edit-role-groups"
-                        role={ roleObject }
-                        onRoleUpdate={ onRoleUpdate }
-                    />
-                </ResourceTab.Pane>
-            )
-        },
-        {
-            menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
-            render: () => (
-                <ResourceTab.Pane controlledSegmentation attached={ false }>
-                    <RoleUserDetails
-                        data-testid="role-mgt-edit-role-users"
-                        isGroup={ false }
-                        roleObject={ roleObject }
-                        onRoleUpdate={ onRoleUpdate }
-                    />
-                </ResourceTab.Pane>
-            )
+        if(!roleObject) {
+            return;
         }
-    ]);
+
+        setIsGroup(history.location.pathname.includes("/groups/"));
+
+    }, [ roleObject ]);
+
+    const resolveResourcePanes = () => {
+        const panes = [
+            {
+                menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <BasicRoleDetails
+                            data-testid="role-mgt-edit-role-basic"
+                            isGroup={ isGroup }
+                            roleObject={ roleObject }
+                            onRoleUpdate={ onRoleUpdate }
+                            isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },{
+                menuItem: t("adminPortal:components.roles.edit.menuItems.permissions"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <RolePermissionDetails
+                            data-testid="role-mgt-edit-role-permissions"
+                            isGroup={ false }
+                            roleObject={ roleObject }
+                            onRoleUpdate={ onRoleUpdate }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
+                menuItem: t("adminPortal:components.roles.edit.menuItems.groups"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <RoleGroupsList
+                            data-testid="role-mgt-edit-role-groups"
+                            role={ roleObject }
+                            onRoleUpdate={ onRoleUpdate }
+                        />
+                    </ResourceTab.Pane>
+                )
+            },
+            {
+                menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
+                render: () => (
+                    <ResourceTab.Pane controlledSegmentation attached={ false }>
+                        <RoleUserDetails
+                            data-testid="role-mgt-edit-role-users"
+                            isGroup={ false }
+                            roleObject={ roleObject }
+                            onRoleUpdate={ onRoleUpdate }
+                            isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
+                        />
+                    </ResourceTab.Pane>
+                )
+            }
+        ];
+
+        return panes;
+    };
 
     return (
-        <ResourceTab panes={ panes() } />
+        <ResourceTab panes={ resolveResourcePanes() } />
     );
 };

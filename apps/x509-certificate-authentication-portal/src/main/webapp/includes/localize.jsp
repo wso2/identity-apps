@@ -21,7 +21,7 @@
 <%@ page import="java.util.ResourceBundle" %>
 
 <%
-    String BUNDLE = "org.wso2.carbon.identity.mgt.recovery.endpoint.i18n.Resources";
+    String BUNDLE = "org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources";
     ResourceBundle recoveryResourceBundle = ResourceBundle.getBundle(BUNDLE, request.getLocale(),
             new EncodedControl(StandardCharsets.UTF_8.toString()));
 %>

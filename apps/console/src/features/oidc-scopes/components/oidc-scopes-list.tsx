@@ -28,15 +28,23 @@ import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
     ConfirmationModal,
-    ResourceList,
-    ResourceListActionInterface
+    DataTable,
+    EmptyPlaceholder,
+    PrimaryButton,
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { ListItemProps } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { ApplicationManagementConstants } from "../../applications";
-import { AppConstants, AppState, ConfigReducerStateInterface, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    EmptyPlaceholderIllustrations,
+    history
+} from "../../core";
 import { deleteOIDCScope } from "../api";
 import { OIDCScopesListInterface } from "../models";
 
@@ -48,21 +56,28 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
     TestableComponentInterface {
 
     /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
+    /**
      * Default list item limit.
      */
     defaultListItemLimit?: number;
     /**
      * Application list.
      */
-    list: OIDCScopesListInterface;
+    list: OIDCScopesListInterface[];
     /**
      * On scope delete callback.
      */
     onScopeDelete?: () => void;
     /**
      * On list item select callback.
+     *
+     * @param {React.SyntheticEvent} event - Click event.
+     * @param {OIDCScopesListInterface} scope - Selected Scope.
      */
-    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
+    onListItemClick?: (event: SyntheticEvent, scope: OIDCScopesListInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -97,6 +112,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
 ): ReactElement => {
 
     const {
+        advancedSearch,
         defaultListItemLimit,
         featureConfig,
         isLoading,
@@ -104,8 +120,6 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         onScopeDelete,
         onListItemClick,
         onEmptyListPlaceholderActionClick,
-        onSearchQueryClear,
-        searchQuery,
         selection,
         showListItemActions,
         [ "data-testid" ]: testId
@@ -114,8 +128,6 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
-
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingScope, setDeletingScope ] = useState<OIDCScopesListInterface>(undefined);
@@ -128,7 +140,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
      * @param {string} scopeName - scope name.
      */
     const handleOIDCScopesEdit = (scopeName: string): void => {
-        history.push(AppConstants.PATHS.get("OIDC_SCOPES_EDIT").replace(":id", scopeName));
+        history.push(AppConstants.getPaths().get("OIDC_SCOPES_EDIT").replace(":id", scopeName));
     };
 
     /**
@@ -173,93 +185,141 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
     };
 
     /**
-     * Resolves list item actions based on the scope.
+     * Resolves data table columns.
      *
-     * @param {OIDCScopesListInterface} scope.
-     *
-     * @return {ResourceListActionInterface[]} Resolved list actions.
+     * @return {TableColumnInterface[]}
      */
-    const resolveListActions = (scope: OIDCScopesListInterface): ResourceListActionInterface[] => {
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
+            {
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (scope: OIDCScopesListInterface): ReactNode => (
+                    <Header as="h6" image>
+                        <AnimatedAvatar
+                            name={ scope.name }
+                            size="mini"
+                            floated="left"
+                            data-testid={ `${ testId }-item-image` }
+                        />
+                        <Header.Content>
+                            { scope.displayName || scope.name }
+                            <Header.Subheader>
+                                { scope.description }
+                            </Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("devPortal:components.oidcScopes.list.columns.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("devPortal.components.oidcScopes.list.columns.actions")
+            }
+        ];
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
         if (!showListItemActions) {
             return;
         }
 
-        const actions: ResourceListActionInterface[] = [
+        const actions: TableActionsInterface[] = [
             {
-                hidden: !isFeatureEnabled(
+                hidden: (): boolean => !isFeatureEnabled(
                     featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: "pencil alternate",
-                onClick: (): void => handleOIDCScopesEdit(scope.name),
-                popupText: t("common:edit"),
-                type: "button"
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void =>
+                    handleOIDCScopesEdit(scope?.name),
+                popupText: (): string => t("common:edit"),
+                renderer: "semantic-icon"
             }
         ];
 
         actions.push({
-            hidden: !hasRequiredScopes(
+            hidden: (): boolean => !hasRequiredScopes(
                 featureConfig?.applications,
                 featureConfig?.applications?.scopes?.delete, allowedScopes),
-            icon: "trash alternate",
-            onClick: (): void => {
+            icon: (): SemanticICONS => "trash alternate",
+            onClick: (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
                 setShowDeleteConfirmationModal(true);
                 setDeletingScope(scope);
             },
-            popupText: t("common:delete"),
-            type: "button"
+            popupText: (): string => t("common:delete"),
+            renderer: "semantic-icon"
         });
 
         return actions;
     };
 
+    /**
+     * Resolve the relevant placeholder.
+     *
+     * @return {React.ReactElement}
+     */
+    const showPlaceholders = (): ReactElement => {
+        if (list instanceof Array && list?.length === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ onEmptyListPlaceholderActionClick && (
+                        <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
+                            <Icon name="add"/>
+                            { t("devPortal:components.oidcScopes.placeholders.emptyList.action") }
+                        </PrimaryButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations?.newList }
+                    imageSize="tiny"
+                    title={ t("devPortal:components.oidcScopes.placeholders.emptyList.title") }
+                    subtitle={ [
+                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.0"),
+                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.1"),
+                        t("devPortal:components.oidcScopes.placeholders.emptyList.subtitles.2")
+                    ] }
+                    data-testid={ `${ testId }-empty-placeholder` }
+                />
+            );
+        }
+
+        return null;
+    };
 
     return (
         <>
-            <ResourceList
-                className="applications-list"
+            <DataTable<OIDCScopesListInterface>
+                className="oidc-scopes-table"
+                externalSearch={ advancedSearch }
                 isLoading={ isLoading }
                 loadingStateOptions={ {
                     count: defaultListItemLimit,
                     imageType: "square"
                 } }
-                selection={ selection }
-                data-testid={ testId }
-            >
-                {
-                    list && list instanceof Array && list.length > 0
-                        ? list.map((scope, index: number) => {
-                                return (
-                                    <ResourceList.Item
-                                        key={ index }
-                                        id={ scope.name }
-                                        actions={ resolveListActions(scope) }
-                                        actionsFloated="right"
-                                        avatar={
-                                            <AnimatedAvatar
-                                                name={ scope.name }
-                                                size="mini"
-                                                floated="left"
-                                                data-testid={ `${ testId }-item-image` }
-                                            />
-                                        }
-                                        itemHeader={ scope.name }
-                                        onClick={
-                                            (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
-                                                if (!selection) {
-                                                    return;
-                                                }
-
-                                                handleOIDCScopesEdit(scope.name);
-                                                onListItemClick(event, data);
-                                            }
-                                        }
-                                        data-testid={ `${ testId }-item` }
-                                    />
-                                );
-                        })
-                        : null
+                actions={ resolveTableActions() }
+                columns={ resolveTableColumns() }
+                data={ list }
+                onRowClick={
+                    (e: SyntheticEvent, scope: OIDCScopesListInterface): void => {
+                        handleOIDCScopesEdit(scope?.name);
+                        onListItemClick(e, scope);
+                    }
                 }
-            </ResourceList>
+                placeholders={ showPlaceholders() }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
+                selectable={ selection }
+                showHeader={ false }
+                data-testid={ testId }
+            />
             {
                 deletingScope && (
                     <ConfirmationModal
@@ -286,6 +346,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleOIDCScopeDelete(deletingScope.name) }
                         data-testid={ `${ testId }-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
@@ -316,6 +377,6 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
  */
 OIDCScopeList.defaultProps = {
     "data-testid": "scope-list",
-    selection: false,
+    selection: true,
     showListItemActions: true
 };

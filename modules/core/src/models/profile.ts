@@ -182,6 +182,10 @@ export interface ProfileSchemaInterface {
      * Array of sub attributes.
      */
     subAttributes?: ProfileSchemaInterface[];
+    /**
+     * Flag to set if the attribute is extended.
+     */
+    extended?: boolean;
 }
 
 /**
@@ -208,6 +212,7 @@ export const emptyProfileInfo = (): ProfileInfoInterface => ({
  */
 export type GravatarFallbackTypes =
     "404"
+    | "default"
     | "mp"
     | "identicon"
     | "monsterid"

@@ -70,7 +70,7 @@
         %>
                 <jsp:include page="extensions/title.jsp"/>
         <% } else { %>
-                <jsp:directive.include file="includes/title.jsp"/>
+                <jsp:include page="includes/title.jsp"/>
         <% } %>
 
         <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
@@ -93,7 +93,7 @@
     %>
             <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+            <jsp:include page="includes/header.jsp"/>
     <% } %>
 
     <!-- page content -->
@@ -185,7 +185,7 @@
     %>
             <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+            <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script src="libs/jquery_3.4.1/jquery-3.4.1.js"></script>

@@ -16,8 +16,6 @@
  * under the License.
  */
 
-import { AuthenticatedUserInterface } from "../../../models";
-
 /**
  * Enum for common authenticate action types.
  *
@@ -42,7 +40,13 @@ export enum CommonAuthenticateActionTypes {
      *
      * @type {string}
      */
-    SET_SIGN_OUT = "SET_SIGN_OUT"
+    SET_SIGN_OUT = "SET_SIGN_OUT",
+    /**
+     * Redux action type to set initialized.
+     *
+     * @type {string}
+     */
+    SET_INITIALIZED = "SET_INITIALIZED"
 }
 
 /**
@@ -55,9 +59,9 @@ interface CommonAuthenticateBaseActionInterface {
 /**
  * Set sign in action interface.
  */
-export interface SetSignInActionInterface extends CommonAuthenticateBaseActionInterface {
+export interface SetSignInActionInterface<T> extends CommonAuthenticateBaseActionInterface {
     type: CommonAuthenticateActionTypes.SET_SIGN_IN;
-    payload: AuthenticatedUserInterface;
+    payload: T;
 }
 
 /**
@@ -65,6 +69,14 @@ export interface SetSignInActionInterface extends CommonAuthenticateBaseActionIn
  */
 export interface SetSignOutActionInterface extends CommonAuthenticateBaseActionInterface {
     type: CommonAuthenticateActionTypes.SET_SIGN_OUT;
+}
+
+/**
+ * Set initialized action interface.
+ */
+export interface SetInitializedActionInterface extends CommonAuthenticateBaseActionInterface {
+    type: CommonAuthenticateActionTypes.SET_INITIALIZED;
+    payload: boolean;
 }
 
 /**
@@ -77,6 +89,7 @@ export interface ResetAuthenticationActionInterface extends CommonAuthenticateBa
 /**
  * Export action interfaces.
  */
-export type CommonAuthenticateActions = ResetAuthenticationActionInterface
-    | SetSignInActionInterface
-    | SetSignOutActionInterface;
+export type CommonAuthenticateActions<T> = ResetAuthenticationActionInterface
+    | SetSignInActionInterface<T>
+    | SetSignOutActionInterface
+    | SetInitializedActionInterface;

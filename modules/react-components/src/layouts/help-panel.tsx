@@ -159,7 +159,7 @@ export const HelpPanelLayout: FunctionComponent<PropsWithChildren<HelpPanelLayou
 
         contentRef.current.style.width = "calc(100% - " + sidebarRef?.current?.clientWidth + "px)";
     }, [ helpSidebarVisibility ]);
-    
+
     useEffect(() => {
         if (visible === undefined) {
             return;
@@ -254,15 +254,12 @@ HelpPanelLayout.defaultProps = {
     bordered: "left",
     enabled: true,
     icon: "labeled",
-    onHelpPanelClose: () => null,
-    onHelpPanelOpen: () => null,
     pinButtonTooltip: "Pin",
     raised: false,
     showLabelsOnSidebarMini: false,
     showTooltipsOnActionBar: true,
     showTooltipsOnSidebarMini: true,
     sidebarMiniEnabled: true,
-    sidebarVisibility: false,
-    unPinButtonTooltip: "Unpin",
+    unpinButtonTooltip: "Unpin",
     vertical: true
 };

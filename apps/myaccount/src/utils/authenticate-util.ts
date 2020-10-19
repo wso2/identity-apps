@@ -18,10 +18,8 @@
  */
 
 import {
-    AuthenticateSessionUtil,
-    AuthenticateTokenKeys,
     IdentityClient
-} from "@wso2is/authentication";
+} from "@asgardio/oidc-js";
 import * as TokenConstants from "../constants";
 import { store } from "../store";
 import { handleSignIn } from "../store/actions";
@@ -56,6 +54,6 @@ export const hasLoginPermission = (): boolean => {
  * @return {boolean}
  */
 export const hasScope = (scope: string): boolean => {
-    const scopes = AuthenticateSessionUtil.getSessionParameter(AuthenticateTokenKeys.SCOPE).split(" ");
+    const scopes = store.getState().authenticationInformation.scope;
     return scopes.includes(scope);
 };

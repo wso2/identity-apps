@@ -20,7 +20,8 @@ import { RolesInterface } from "@wso2is/core/models";
 import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { AppConstants, history } from "../../core";
+import { useSelector } from "react-redux";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
 import { EditRole } from "../../roles";
 import { getRoleById } from "../api";
 
@@ -28,9 +29,10 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
 
     const { t } = useTranslation();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+
     const [ roleId, setRoleId ] = useState<string>(undefined);
     const [ roleObject, setRoleObject ] = useState<RolesInterface>();
-    const [ isGroup, setIsGroup ] = useState<boolean>(false);
     const [ isRoleDetailsRequestLoading, setIsRoleDetailsRequestLoading ] = useState<boolean>(false);
 
     const getRoleDetails = (roleId: string ): void => {
@@ -65,9 +67,9 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
     }, []);
 
     const handleBackButtonClick = () => {
-        history.push(AppConstants.PATHS.get("ROLES"));
+        history.push(AppConstants.getPaths().get("ROLES"));
     };
-    
+
     return (
         <PageLayout
             isLoading={ isRoleDetailsRequestLoading }
@@ -87,6 +89,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
                 roleObject={ roleObject }
                 roleId={ roleId }
                 onRoleUpdate={ onRoleUpdate }
+                featureConfig={ featureConfig }
             />
         </PageLayout>
     );

@@ -107,6 +107,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             onSecondaryActionClick={ (): void => setConfirmDelete(false) }
             onPrimaryActionClick={ (): void => deleteLocalClaim(claim.id) }
             data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header>
                 { t("adminPortal:components.claims.local.confirmation.header") }
@@ -126,7 +127,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
      */
     const deleteLocalClaim = (id: string) => {
         deleteAClaim(id).then(() => {
-            history.push(AppConstants.PATHS.get("LOCAL_CLAIMS"));
+            history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
             dispatch(addAlert(
                 {
                     description: t("adminPortal:components.claims.local.notifications.deleteClaim.success.description"),

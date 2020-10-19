@@ -21,6 +21,8 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import { updateGroupDetails } from "../../../groups/api";
+import { PatchGroupDataInterface } from "../../../groups/models";
 import { updateRoleDetails } from "../../api";
 import { PRIMARY_DOMAIN } from "../../constants";
 import { CreateRoleMemberInterface, PatchRoleDataInterface } from "../../models";
@@ -31,6 +33,7 @@ interface RoleUserDetailsProps {
     isGroup: boolean;
     onRoleUpdate: () => void;
     isReadOnly?: boolean;
+    isGroupAndRoleSeparationEnabled?: boolean;
 }
 
 export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
@@ -41,7 +44,9 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
 
     const {
         roleObject,
-        onRoleUpdate
+        onRoleUpdate,
+        isReadOnly,
+        isGroupAndRoleSeparationEnabled
     } = props;
 
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
@@ -67,45 +72,79 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     const onUserUpdate = (userList: any) => {
         const newUsers: CreateRoleMemberInterface[] = [];
 
-        for (const selectedUser of userList) {
-            newUsers.push({
-                value: selectedUser.id
-            })
-        }
+        if (isGroupAndRoleSeparationEnabled) {
+            for (const selectedUser of userList) {
+                newUsers.push({
+                    display: selectedUser.userName,
+                    value: selectedUser.id
+                })
+            }
 
-        const roleData: PatchRoleDataInterface = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ],
-            Operations: [{
-                "op": "replace",
-                "path": "users",
-                "value": newUsers
-            }]
-        };
-        
-        updateRoleDetails(roleObject.id, roleData)
-            .then(() => {
-                handleAlerts({
-                    description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.roles.notifications.updateRole.success.message")
-                });
-                onRoleUpdate();
-            }).catch(() => {
+            const groupData: PatchGroupDataInterface = {
+                Operations: [{
+                    "op": "replace",
+                    "value": {
+                        "members": newUsers
+                    }
+                }],
+                schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            };
+
+            updateGroupDetails(roleObject.id, groupData)
+                .then(() => {
+                    dispatch(addAlert({
+                        description: t("adminPortal:components.groups.notifications.updateGroup.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.groups.notifications.updateGroup.success.message")
+                    }));
+                    onRoleUpdate();
+                }).catch(() => {
+                dispatch(addAlert({
+                    description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
+                }));
+            })
+        } else {
+            for (const selectedUser of userList) {
+                newUsers.push({
+                    value: selectedUser.id
+                })
+            }
+
+            const roleData: PatchRoleDataInterface = {
+                Operations: [{
+                    "op": "replace",
+                    "path": "users",
+                    "value": newUsers
+                }],
+                schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+            };
+
+            updateRoleDetails(roleObject.id, roleData)
+                .then(() => {
+                    handleAlerts({
+                        description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.roles.notifications.updateRole.success.message")
+                    });
+                    onRoleUpdate();
+                }).catch(() => {
                 handleAlerts({
                     description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
                     level: AlertLevels.ERROR,
                     message: t("adminPortal:components.roles.notifications.updateRole.error.message")
                 });
             })
+        }
     };
 
     return (
         <AddRoleUsers
             data-testid="role-mgt-edit-role-users"
             isGroup={ false }
-            isEdit={ true } 
+            isEdit={ true }
+            isReadOnly={ isReadOnly }
             userStore={ currentUserStore }
             assignedUsers={ roleObject.users }
             onSubmit={ onUserUpdate }

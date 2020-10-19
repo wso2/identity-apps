@@ -146,7 +146,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if(!isFeatureEnabled(featureConfig.applications,
             ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT"))) {
 
-            history.push(AppConstants.PATHS.get("PAGE_NOT_FOUND"));
+            history.push(AppConstants.getPaths().get("PAGE_NOT_FOUND"));
         }
     }, [ featureConfig ]);
 
@@ -166,7 +166,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }
 
         dispatch(
-            setHelpPanelDocsContentURL(editApplicationDocs[ 
+            setHelpPanelDocsContentURL(editApplicationDocs[
                 ApplicationManagementConstants.APPLICATION_TEMPLATE_DOC_MAPPING
                     .get(applicationTemplate.id) ]?.[ApplicationManagementConstants.APPLICATION_DOCS_OVERVIEW])
         );
@@ -437,14 +437,14 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
     /**
      * Called when an application is deleted.
      */
     const handleApplicationDelete = (): void => {
-        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
     /**
@@ -507,7 +507,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             icon: {
                 icon: HelpPanelIcons.tabs.guide
             }
-        },
+        }
         // TODO : Should be removed after getting started flow is implemented.
         /*{
             content: (
@@ -740,7 +740,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
             } }
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
             onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
             visible={ helpPanelVisibilityGlobalState }
         >
@@ -773,6 +773,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         )
                 }
                 backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.applicationsEdit.backButton")
                 } }

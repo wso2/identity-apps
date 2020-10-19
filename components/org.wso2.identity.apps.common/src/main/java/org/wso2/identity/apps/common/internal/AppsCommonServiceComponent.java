@@ -26,14 +26,16 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
+import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.registry.core.service.RegistryService;
-import org.wso2.carbon.stratos.common.listeners.TenantMgtListener;
-import org.wso2.identity.apps.common.listner.AppPortalTenantMgtListener;
+import org.wso2.carbon.ui.CarbonSSOSessionManager;
+import org.wso2.identity.apps.common.util.AppPortalConstants;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.SYSTEM_PROP_SKIP_SERVER_INITIALIZATION;
 
 /***
  * OSGi service component which configure the service providers for portals.
@@ -52,8 +54,17 @@ public class AppsCommonServiceComponent {
 
         try {
             // Initialize portal applications.
-            AppPortalUtils.initiatePortals(SUPER_TENANT_DOMAIN_NAME, SUPER_TENANT_ID);
-            bundleContext.registerService(TenantMgtListener.class.getName(), new AppPortalTenantMgtListener(), null);
+            if (skipPortalInitialization()) {
+                log.debug("Portal application initialization is skipped.");
+            } else {
+                // Initialize portal applications.
+                AppPortalUtils.initiatePortals(SUPER_TENANT_DOMAIN_NAME, SUPER_TENANT_ID);
+            }
+
+            for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
+                log.info(appPortal.getName() + " URL : " + IdentityUtil
+                        .getServerURL(appPortal.getEndpoint(), true, true));
+            }
 
             log.info("Identity apps common service component activated successfully.");
         } catch (Throwable e) {
@@ -137,5 +148,25 @@ public class AppsCommonServiceComponent {
 
     protected void unsetIdentityCoreInitializedEventService(IdentityCoreInitializedEvent identityCoreInitializedEvent) {
 
+    }
+
+    @Reference(name = "carbon.sso.session.manager.service",
+               service = CarbonSSOSessionManager.class,
+               cardinality = ReferenceCardinality.MANDATORY,
+               policy = ReferencePolicy.DYNAMIC,
+               unbind = "unsetCarbonSSOSessionManager")
+    protected void setCarbonSSOSessionManager(CarbonSSOSessionManager carbonSSOSessionManager) {
+
+        // Reference CarbonSSOSessionManager service to guarantee that this component will wait until management
+        // console URL is already added to the log.
+    }
+
+    protected void unsetCarbonSSOSessionManager(CarbonSSOSessionManager carbonSSOSessionManager) {
+
+    }
+
+    private static boolean skipPortalInitialization() {
+
+        return System.getProperty(SYSTEM_PROP_SKIP_SERVER_INITIALIZATION) != null;
     }
 }

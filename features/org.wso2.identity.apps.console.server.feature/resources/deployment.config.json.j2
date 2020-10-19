@@ -14,6 +14,9 @@
         {% endif %}
     },
     "appBaseName": "{{ console.app_base_name }}",
+    {% if console.app_base_name_for_history_api is defined %}
+        "appBaseNameForHistoryAPI": "{{ console.app_base_name_for_history_api }}",
+    {% endif %}
     "clientID": "{{ console.client_id }}",
     "debug": {{ console.debug.enable }},
     "developerApp": {
@@ -38,7 +41,29 @@
         "structureFileType": "{{ console.documentation.structure_file_type }}",
         "structureFileURL": "{{ console.documentation.structure_file_url }}"
     },
+    {% if console.idp_configs is defined %}
+    "idpConfigs": {
+        {% if console.idp_configs.items() is defined %}
+        {% for key, value in console.idp_configs.items() %}
+        {% if value is string %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% elif value is iterable %}
+            "{{ key }}": [
+                {% for item in value %}
+                    "{{ item }}"{{ "," if not loop.last }}
+                {% endfor %}
+            ]{{ "," if not loop.last }}
+        {% else %}
+            "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    },
+    {% endif %}
     "i18nResourcePath": "{{ console.i18n_resource_path }}",
+    {% if console.is_sass is defined %}
+        "isSaas": "{{ console.is_sass }}",
+    {% endif %}
     "loginCallbackPath": "{{ console.login_callback_path }}",
     "logoutCallbackPath": "{{ console.logout_callback_path }}",
     "productVersion": "{{ product.version }}",
@@ -49,6 +74,17 @@
         {% if console.route_paths is defined %}
         {% for path, value in console.route_paths.items() %}
             "{{ path }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endfor %}
+        {% endif %}
+    },
+    "extensions": {
+        {% if console.extensions is defined %}
+        {% for key, value in console.extensions.items() %}
+        {% if value is number %}
+            "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% else %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endif %}
         {% endfor %}
         {% endif %}
     },
@@ -348,6 +384,7 @@
            {% endfor %}
            {% endif %}
         },
+        "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
         "productName": "{{ console.ui.product_name }}",
         "productVersionConfig": {
             {% if console.product_version.configs.items() is defined %}

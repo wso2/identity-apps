@@ -16,7 +16,16 @@
     "exclude": [
         "node_modules", 
         "test-configs",
-        "src/**/tests/*",
-        "**/*.test.ts"
+        "**/tests/*",
+        "**/__tests__/*",
+        "**/__mocks__/*",
+        "**/*.test.js",
+        "**/*.test.jsx",
+        "**/*.test.ts",
+        "**/*.test.tsx",
+        "**/*.spec.js",
+        "**/*.spec.jsx",
+        "**/*.spec.ts",
+        "**/*.spec.tsx"
     ]
 }

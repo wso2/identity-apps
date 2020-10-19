@@ -105,7 +105,7 @@ const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("OIDC_SCOPES"));
+        history.push(AppConstants.getPaths().get("OIDC_SCOPES"));
     };
 
     return (

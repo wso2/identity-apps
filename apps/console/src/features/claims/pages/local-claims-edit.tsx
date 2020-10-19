@@ -171,7 +171,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
             description={ t("adminPortal:components.claims.local.pageLayout.edit.description") }
             backButton={ {
                 onClick: () => {
-                    history.push(AppConstants.PATHS.get("LOCAL_CLAIMS"));
+                    history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
                 },
                 text: t("adminPortal:components.claims.local.pageLayout.edit.back")
             } }

@@ -185,9 +185,9 @@ export const generateBackendPaths = (language: string[],
                                      i18nBundleOptions: I18nModuleOptionsInterface): string => {
 
     const fullResourcePath = `${ StringUtils.removeSlashesFromPath(appBaseName) }/${
-        StringUtils.removeSlashesFromPath(i18nBundleOptions.resourcePath) }`;
+        StringUtils.removeSlashesFromPath(i18nBundleOptions?.resourcePath) }`;
 
-    if (i18nBundleOptions.namespaceDirectories.has(namespace[0])) {
+    if (i18nBundleOptions?.namespaceDirectories.has(namespace[0])) {
         return `/${ fullResourcePath }/${ language[0] }/${ i18nBundleOptions.namespaceDirectories.get(namespace[0]) }/${
             namespace[0] }.json`;
     }

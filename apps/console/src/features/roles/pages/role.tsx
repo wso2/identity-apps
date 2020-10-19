@@ -17,7 +17,7 @@
  */
 
 import { getRolesList, getUserStoreList } from "@wso2is/core/api";
-import { AlertInterface, AlertLevels, RolesInterface, RoleListInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, RoleListInterface, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
@@ -152,10 +152,22 @@ const RolesPage = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-            { text: "All user stores", key: -2, value: null },
-            { text: "Primary", key: -1, value: "primary" }
+            {
+                key: -2,
+                text: "All user stores",
+                value: null
+            },
+            {
+                key: -1,
+                text: "Primary",
+                value: "primary"
+            }
         ];
-        let storeOption = { text: "", key: null, value: "" };
+        let storeOption = {
+            key: null,
+            text: "",
+            value: ""
+        };
         getUserStoreList()
             .then((response) => {
                 if (storeOptions === []) {
@@ -190,11 +202,9 @@ const RolesPage = (): ReactElement => {
 
     const searchRoleListHandler = (searchQuery: string) => {
         const searchData: SearchRoleInterface = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-            ],
-            startIndex: 1,
-            filter: searchQuery
+            filter: searchQuery,
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:SearchRequest"],
+            startIndex: 1
         };
 
         setSearchQuery(searchQuery);
@@ -234,10 +244,6 @@ const RolesPage = (): ReactElement => {
             Resources: roleList?.Resources?.slice(offsetValue, itemLimit + offsetValue)
         };
         setPaginatedRoles(updatedData);
-    };
-
-    const handleDomainChange = (event: React.MouseEvent<HTMLAnchorElement>, data: DropdownProps) => {
-        setUserStore(data.value as string);
     };
 
     const handlePaginationChange = (event: React.MouseEvent<HTMLAnchorElement>, data: PaginationProps) => {
@@ -385,6 +391,35 @@ const RolesPage = (): ReactElement => {
                     totalListSize={ initialRolList?.Resources?.length }
                 >
                     <RoleList
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                data-testid="role-mgt-roles-list-advanced-search"
+                                onFilter={ handleUserFilter  }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: "Name",
+                                        value: "displayName"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterAttribute." +
+                                        "placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterCondition" +
+                                        ".placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder")
+                                }
+                                placeholder={ t("adminPortal:components.roles.advancedSearch.placeholder") }
+                                defaultSearchAttribute="displayName"
+                                defaultSearchOperator="sw"
+                                triggerClearQuery={ triggerClearQuery }
+                            />
+                        ) }
                         data-testid="role-mgt-roles-list"
                         handleRoleDelete={ handleOnDelete }
                         isGroup={ false }

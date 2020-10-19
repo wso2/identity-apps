@@ -53,6 +53,15 @@ export class AuthenticateUtils {
     }
 
     /**
+     * Get the authentication callback URL from the session storage.
+     *
+     * @return {string} Authentication Callback from session.
+     */
+    public static getAuthenticationCallbackUrl(): string {
+        return window.sessionStorage.getItem("auth_callback_url");
+    }
+
+    /**
      * Update the authentication callback URL in the session storage.
      * This is used to improve UX in automatic sign-out scenarios due to session timeouts etc.
      *

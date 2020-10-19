@@ -24,15 +24,22 @@ import { handleSignOut } from "../../store/actions";
 /**
  * This component handles the sign-out function
  */
-export const SignOut = () => {
+const SignOut = () => {
     const dispatch = useDispatch();
     const logoutInit = useSelector((state: AppState) => state.authenticationInformation.logoutInit);
-
+    const isInitialized = useSelector((state: AppState) => state.authenticationInformation.initialized);
     useEffect(() => {
         if (!logoutInit) {
-            dispatch(handleSignOut());
+            isInitialized && dispatch(handleSignOut());
         }
-    }, [logoutInit]);
+    }, [ logoutInit, isInitialized]);
 
     return null;
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default SignOut;

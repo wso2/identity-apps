@@ -19,19 +19,32 @@
 import { Field, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
 import { AccountRecoveryIcons } from "../../../configs";
+import { CommonConstants } from "../../../constants";
 import {
     AlertInterface,
     AlertLevels,
     AnswersInterface,
     ChallengesQuestionsInterface,
-    createEmptyChallenge,
     QuestionSetsInterface,
     QuestionsInterface,
+    createEmptyChallenge
 } from "../../../models";
+import { AppState } from "../../../store";
+import { setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
+
+/**
+ * Question key.
+ *
+ * @constant
+ * @type {string}
+ * @default
+ */
+const QUESTION = "question-";
 
 /**
  * Prop types for SecurityQuestionsComponent
@@ -55,7 +68,11 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     const [isInit, setIsInit] = useState(false);
     const { onAlertFired } = props;
 
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+
+
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     /**
      * Set the fetched security questions and answers to the state
@@ -131,6 +148,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
      */
     const handleEdit = (question: string | number) => {
         setIsEdit(question);
+        dispatch(setActiveForm(CommonConstants.SECURITY + QUESTION + question));
     };
 
     /**
@@ -213,14 +231,16 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         });
 
                     setIsEdit(-1);
+                    dispatch(setActiveForm(null));
                     onAlertFired({
                         description: t(
                             "userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
                             "success.description"
                         ),
                         level: AlertLevels.SUCCESS,
-                        message: t("userPortal:components.accountRecovery.questionRecovery.notifications.updateQuestions." +
-                            "success.message"),
+                        message: t("userPortal:components.accountRecovery.questionRecovery." +
+                            "notifications.updateQuestions." +
+                            "success.message")
                     });
                 })
                 .catch((error) => {
@@ -236,7 +256,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                         });
 
                     setIsEdit(-1);
-
+                    dispatch(setActiveForm(null));
                     onAlertFired({
                         description: t(
                             "userPortal:components.accountRecovery.questionRecovery.notifications" +
@@ -288,7 +308,9 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         let formFields: ReactElement[] = [];
 
         challenges.questions.forEach((questionSet: QuestionSetsInterface, index: number) => {
-            if (isEdit === 0 || isEdit === questionSet.questionSetId) {
+            if (isEdit === 0
+                || isEdit === questionSet.questionSetId
+                && activeForm === CommonConstants.SECURITY + QUESTION + questionSet.questionSetId) {
                 formFields.push(
                     <Grid.Row columns={ 2 } key={ index }>
                         <Grid.Column width={ 4 }>
@@ -307,12 +329,14 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                                     };
                                 }) }
                                 label={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "forms.securityQuestionsForm" +
                                     ".inputs.question.label"
                                 ) }
                                 name={ "question " + questionSet.questionSetId }
                                 placeholder={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms.securityQuestionsForm" +
+                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "forms.securityQuestionsForm" +
                                     ".inputs.question.placeholder"
                                 ) }
                                 required={ true }
@@ -327,7 +351,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                             />
                             <Field
                                 label={ t(
-                                    "userPortal:components.accountRecovery.questionRecovery.forms.securityQuestionsForm." +
+                                    "userPortal:components.accountRecovery.questionRecovery." +
+                                    "forms.securityQuestionsForm." +
                                     "inputs.answer.label"
                                 ) }
                                 name={ "answer " + questionSet.questionSetId }
@@ -347,9 +372,10 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 );
             }
         });
+
         formFields = formFields.concat([
             (
-                <Grid.Row key={ formFields.length } columns={ 2 }>
+                <Grid.Row key={ -1 } columns={ 2 }>
                     <Grid.Column width={ 4 } />
                     <Grid.Column width={ 12 }>
                         <Form.Group inline={ true }>
@@ -374,7 +400,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     };
 
     const listItems = () => {
-        if (challenges.questions && challenges.questions.length > 0 && isEdit === -1) {
+        if (challenges.questions && challenges.questions.length > 0
+            && (isEdit === -1 || !activeForm?.startsWith(CommonConstants.SECURITY + QUESTION))) {
             return (
                 <Grid padded={ true }>
                     <Grid.Row columns={ 2 }>
@@ -463,7 +490,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     </Grid.Row>
                 </Grid>
             );
-        } else if (isEdit !== -1) {
+        } else if (isEdit !== -1 && activeForm?.startsWith(CommonConstants.SECURITY + QUESTION)) {
             if (challenges.questions && challenges.questions.length > 0) {
                 const formFields = generateFormFields();
                 return (

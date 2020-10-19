@@ -150,6 +150,13 @@ export class ApplicationManagementConstants {
      */
     public static readonly SPA = "Single Page Application";
 
+    /**
+    * Name of the WSO2 carbon local sp.
+    * @constant
+    * @type {string}
+    */
+    public static readonly WSO2_CARBON_LOCAL_SP = "wso2carbon-local-sp";
+
     // API errors
     public static readonly AUTH_PROTOCOL_METADATA_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while retrieving the auth protocol metadata.";

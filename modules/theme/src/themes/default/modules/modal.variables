@@ -64,3 +64,16 @@
 
 @sidePanelModalActionPanelHeight: 68px;
 @sidePanelModalActionPanelBorderTop: @defaultBorderWidth solid @borderColor;
+
+/*-------------------------------
+      Edit Avatar Modal
+--------------------------------*/
+
+@editAvatarModalContentLoaderContainerHeight: 100px;
+@editAvatarModalContentLoaderContainerWidth: 100%;
+
+@editAvatarModalURLFieldContainerDisplay: flex;
+
+@editAvatarModalURLFieldDisplay: inline-block;
+@editAvatarModalURLFieldWidth: 80%;
+@editAvatarModalURLFieldMarginBottom: 0;

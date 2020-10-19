@@ -16,10 +16,12 @@
  * under the License.
  */
 
+import { StringUtils } from "@wso2is/core/utils";
+
 /**
  * Class containing app constants.
  */
-export class ApplicationConstants {
+export class AppConstants {
 
     /**
      * Private constructor to avoid object instantiation from outside
@@ -29,6 +31,87 @@ export class ApplicationConstants {
      */
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
+
+    /**
+     * Get the main view base path.
+     *
+     * @return {string}
+     */
+    public static getMainViewBasePath(): string {
+        return this.getTenantQualifiedAppBasePath();
+    }
+
+    /**
+     * Get tenant qualified app base name. ex: `t/<BASENAME>`
+     *
+     * @return {string}
+     */
+    public static getTenantQualifiedAppBasename(): string {
+        return window["AppUtils"].getConfig().appBaseWithTenant;
+    }
+
+    /**
+     * Get tenant qualified app base path. ex: `/t/<BASENAME>`
+     *
+     * @return {string}
+     */
+    public static getTenantQualifiedAppBasePath(): string {
+        return "/" + StringUtils.removeSlashesFromPath(this.getTenantQualifiedAppBasename());
+    }
+
+    /**
+     * Get app base name. ex: `<BASENAME>`
+     *
+     * @return {string}
+     */
+    public static getAppBasename(): string {
+        return window["AppUtils"].getConfig().appBase;
+    }
+
+    /**
+     * Get tenant qualified app base path. ex: `/<BASENAME>`
+     *
+     * @return {string}
+     */
+    public static getAppBasePath(): string {
+        return "/" + StringUtils.removeSlashesFromPath(this.getAppBasename());
+    }
+
+    /**
+     * Get the app home path.
+     *
+     * @return {string}
+     */
+    public static getAppHomePath(): string {
+        return window["AppUtils"].getConfig().routes.home;
+    }
+
+    /**
+     * Get the app login path.
+     *
+     * @return {string}
+     */
+    public static getAppLoginPath(): string {
+        return window[ "AppUtils" ].getConfig().routes.login;
+    }
+
+    /**
+     * Get the app login path.
+     *
+     * @return {string}
+     */
+    public static getAppLogoutPath(): string {
+        return window[ "AppUtils" ].getConfig().routes.logout;
+    }
+
+    /**
+     * Get the app Client ID.
+     *
+     * @return {string}
+     */
+    public static getClientID(): string {
+        return window["AppUtils"].getConfig().clientID;
+    }
 
     /**
      * Set of keys used to enable/disable features.
@@ -58,14 +141,28 @@ export class ApplicationConstants {
         .set("OPERATIONS", "operations");
 
     /**
-     * Application Paths.
-     * @constant
-     * @type {Map<string, string>}
+     * Get all the app paths as a map.
+     *
+     * @return {Map<string, string>}
      */
-    public static readonly PATHS: Map<string, string> = new Map<string, string>()
-        .set("404", "/404")
-        .set("PROFILE_INFO", "/personal-info")
-        .set("UNAUTHORIZED", "/unauthorized");
+    public static getPaths(): Map<string, string> {
+
+        return new Map<string, string>()
+            .set("ACCESS_DENIED_ERROR", `${ this.getMainViewBasePath() }/access-denied-error`)
+            .set("APPLICATIONS", `${ this.getMainViewBasePath() }/applications`)
+            .set("LOGIN", window[ "AppUtils" ].getConfig().routes.login)
+            .set("LOGOUT", window[ "AppUtils" ].getConfig().routes.logout)
+            .set("LOGIN_ERROR", `${ this.getMainViewBasePath() }/login-error`)
+            .set("OVERVIEW", `${ this.getMainViewBasePath() }/overview`)
+            .set("PAGE_NOT_FOUND", `${ this.getMainViewBasePath() }/404`)
+            .set("PROFILE_INFO", `${ this.getMainViewBasePath() }/personal-info`)
+            .set("PERSONAL_INFO", `${ this.getMainViewBasePath() }/personal-info`)
+            .set("SECURITY", `${ this.getMainViewBasePath() }/security`)
+            .set("OPERATIONS", `${ this.getMainViewBasePath() }/operations`)
+            .set("PRIVACY", `${ this.getMainViewBasePath() }/privacy`)
+            .set("ROOT", "/")
+            .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/unauthorized`);
+    }
 
     /**
      * Name of the app config file for the portal.
@@ -90,30 +187,6 @@ export class ApplicationConstants {
      * @default
      */
     public static readonly PRIMARY_USER_STORE_IDENTIFIER: string = "PRIMARY";
-
-    /**
-     * Path to the login error page.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly LOGIN_ERROR_PAGE_PATH: string = "/login-error";
-
-    /**
-     * Path to the 404 page.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly PAGE_NOT_FOUND_PATH: string = "/404";
-
-    /**
-     * Path to the applications page.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly APPLICATIONS_PAGE_PATH: string = "/applications";
 
     /**
      * Portal SP description.

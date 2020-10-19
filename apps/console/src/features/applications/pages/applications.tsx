@@ -63,6 +63,7 @@ import {
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
 import { RemoteFetchDetails } from "../components/remote-fetch-details";
+import { ApplicationManagementConstants } from "../constants";
 import { ApplicationListInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -114,13 +115,14 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-    
+
     const [ searchQuery, setSearchQuery ] = useState<string>("");
     const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
         APPLICATIONS_LIST_SORTING_OPTIONS[ 0 ]
     );
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
+    const [ listOffsetAddition, setListOffsetAddition ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -151,7 +153,23 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
         getApplicationList(limit, offset, filter)
             .then((response) => {
-                setAppList(response);
+                let isLocalSPFound = false;
+                for (const app of response.applications){
+                    if (app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP) {
+                        isLocalSPFound = true;
+                        break;
+                    }
+                }
+
+                if (isLocalSPFound) {
+                    getApplicationList(limit + 1, offset, filter).then((response) => {
+                        setAppList(response);
+                        setListOffsetAddition(1);
+                    })
+                } else {
+                    setAppList(response);
+                }
+
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -235,7 +253,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @param {PaginationProps} data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset((data.activePage as number - 1) * listItemLimit);
+        setListOffset((data.activePage as number - 1) * listItemLimit + listOffsetAddition);
     };
 
     /**
@@ -274,7 +292,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 && (
                     <PrimaryButton
                         onClick={ (): void => {
-                            history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"));
+                            history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"));
                         } }
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
@@ -443,12 +461,41 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 data-testid={ `${ testId }-list-layout` }
             >
                 <ApplicationList
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleApplicationFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("devPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
+                                    ".placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("devPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
+                                    ".placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("devPortal:components.applications.advancedSearch.form.inputs.filterValue" +
+                                    ".placeholder")
+                            }
+                            placeholder={ t("devPortal:components.applications.advancedSearch.placeholder") }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-list-advanced-search` }
+                        />
+                    }
                     featureConfig={ featureConfig }
                     isLoading={ isApplicationListRequestLoading }
                     list={ appList }
                     onApplicationDelete={ handleApplicationDelete }
                     onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.PATHS.get("APPLICATION_TEMPLATES"))
+                        () => history.push(AppConstants.getPaths().get("APPLICATION_TEMPLATES"))
                     }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }

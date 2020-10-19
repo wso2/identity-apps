@@ -17,11 +17,14 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store"
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { generate } from "generate-password";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import {
     Grid,
     Message
@@ -36,11 +39,17 @@ import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
 
 /**
+ * import pass strength bat dynamically.
+ */
+const PasswordMeter = React.lazy(() => import("react-password-strength-bar"));
+
+/**
  * Proptypes for the add user component.
  */
 interface AddUserProps {
     initialValues: any;
     triggerSubmit: boolean;
+    emailVerificationEnabled: boolean;
     onSubmit: (values: any) => void;
 }
 
@@ -54,11 +63,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const {
         initialValues,
         triggerSubmit,
+        emailVerificationEnabled,
         onSubmit
     } = props;
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
-    const [ passwordOption, setPasswordOption ] = useState(initialValues && initialValues.passwordOption);
+    const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
     const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
     const [ isUsernamePatternValid, setIsUsernamePatternValid ] = useState<boolean>(true);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
@@ -72,8 +82,10 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
+    const [ password, setPassword ] = useState<string>("");
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     /**
      * The following useEffect is triggered when a random password is generated.
@@ -137,6 +149,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         getUsersList(null, null, "userName eq " + username, null, userStore)
             .then((response) => {
                 setIsUsernameValid(response?.totalResults === 0);
+            }).catch((error) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.message")
+                }))
             });
         setIsUsernamePatternValid(validateInputAgainstRegEx(username, usernameRegEx));
     };
@@ -202,6 +222,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
+        setPassword(password);
+
         setPasswordRegEx(password)
             .finally(() => {
                 setPasswordRegExLoading(false);
@@ -271,7 +293,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             lastName: values.get("lastName").toString(),
             newPassword: values.get("newPassword") && values.get("newPassword") !== undefined  ?
                 values.get("newPassword").toString() : "",
-            passwordOption: values.get("passwordOption").toString(),
+            passwordOption: values.get("passwordOption")?.toString(),
             userName: values.get("userName").toString()
         };
     };
@@ -307,17 +329,20 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (!isPasswordPatternValid) {
                                         validation.isValid = false;
                                         validation.errorMessages.push( t("adminPortal:components.user.forms." +
-                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
+                                            "addUserFor1m.inputs.newPassword.validations.regExViolation") );
                                     }
                                 } }
                             />
+                            <Suspense fallback={ null } >
+                                <PasswordMeter password={ password } />
+                            </Suspense>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 className="generate-password-button"
                                 onClick={ generateRandomPassword }
                                 type="button"
-                                value="Generate Password"
+                                value={ t("common:generatePassword") }
                                 icon="random"
                             />
                         </Grid.Column>
@@ -515,20 +540,22 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         />
                     </Grid.Column>
                 </Grid.Row>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                        <Field
-                            data-testid="user-mgt-add-user-form-passwordOption-radio-button"
-                            type="radio"
-                            label={ t("adminPortal:components.user.forms.addUserForm.buttons.radioButton.label") }
-                            name="passwordOption"
-                            default="createPw"
-                            listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
-                            children={ passwordOptions }
-                            value={ initialValues && initialValues.passwordOption }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { emailVerificationEnabled &&
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                            <Field
+                                data-testid="user-mgt-add-user-form-passwordOption-radio-button"
+                                type="radio"
+                                label={ t("adminPortal:components.user.forms.addUserForm.buttons.radioButton.label") }
+                                name="passwordOption"
+                                default="createPw"
+                                listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
+                                children={ passwordOptions }
+                            value={ initialValues?.passwordOption ?? "createPw" }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                }
                 { handlePasswordOptions() }
             </Grid>
         </Forms>

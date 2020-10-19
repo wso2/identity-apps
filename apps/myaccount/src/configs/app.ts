@@ -16,10 +16,9 @@
  * under the License.
  */
 
-import { CommonDeploymentConfigInterface } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { I18nConstants } from "../constants";
-import { ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
 
 /**
  * Class to handle application config operations.
@@ -38,9 +37,9 @@ export class Config {
     /**
      * Get the deployment config.
      *
-     * @return {CommonDeploymentConfigInterface} Deployment config object.
+     * @return {DeploymentConfigInterface} Deployment config object.
      */
-    public static getDeploymentConfig(): CommonDeploymentConfigInterface {
+    public static getDeploymentConfig(): DeploymentConfigInterface {
         return {
             appBaseName: window["AppUtils"].getConfig().appBaseWithTenant,
             appBaseNameWithoutTenant: window["AppUtils"].getConfig().appBase,
@@ -50,6 +49,7 @@ export class Config {
             clientHost: window["AppUtils"].getConfig().clientOriginWithTenant,
             clientID: window["AppUtils"].getConfig().clientID,
             clientOrigin: window["AppUtils"].getConfig().clientOrigin,
+            idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -76,8 +76,9 @@ export class Config {
             fidoEnd: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn`,
             fidoStart: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/start-registration`,
-            fidoStartUsernameless: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/
-            start-usernameless-registration`,
+            fidoStartUsernameless: `${
+                this.getDeploymentConfig().serverHost
+            }/api/users/v2/me/webauthn/start-usernameless-registration`,
             isReadOnlyUser:`${
                 this.getDeploymentConfig().serverHost
             }/scim2/Me?attributes=urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.isReadOnlyUser`,

@@ -31,7 +31,8 @@ import {
     PrimaryButton,
     TransferComponent,
     TransferList,
-    TransferListItem
+    TransferListItem,
+    useWizardAlert
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -87,6 +88,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     const [ tempRoleList, setTempRoleList ] = useState([]);
     const [ initialRoleList, setInitialRoleList ] = useState([]);
     const [ initialTempRoleList, setInitialTempRoleList ] = useState([]);
+    const [ primaryRoles, setPrimaryRoles ] = useState(undefined);
 
     // The following constant holds the state of role already assigned roles.
     const [ primaryRolesList, setPrimaryRolesList ] = useState(undefined);
@@ -105,6 +107,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     const [ isSelected, setSelection ] = useState(false);
 
     const [ assignedRoles, setAssignedRoles ] = useState([]);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -146,8 +150,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         if (!(group)) {
             return;
         }
-        setAssignedRoles(group.roles);
         mapUserRoles();
+        setAssignedRoles(group.roles);
     }, []);
 
     /**
@@ -164,7 +168,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
     useEffect(() => {
         getRolesList(null)
             .then((response) => {
-                setInitialRoleList(response.data.Resources);
+                setPrimaryRoles(response.data.Resources);
             });
     }, []);
 
@@ -172,18 +176,22 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * The following function remove already assigned roles from the initial roles.
      */
     const removeExistingRoles = () => {
-        const roleListCopy = [ ...initialRoleList ];
-
+        const roleListCopy = primaryRoles ? [ ...primaryRoles ] : [];
         const addedRoles = [];
-        _.forEachRight(roleListCopy, (role) => {
-            if (primaryRolesList?.has(role.displayName)) {
-                addedRoles.push(role);
-                roleListCopy.splice(roleListCopy.indexOf(role), 1);
-            }
-        });
+
+        if (roleListCopy && primaryRolesList) {
+            const primaryRolesValues = Array.from(primaryRolesList?.values());
+
+            _.forEach(roleListCopy, (role) => {
+                if (primaryRolesValues?.includes(role.id)) {
+                    addedRoles.push(role);
+                }
+            });
+        }
         setTempRoleList(addedRoles);
         setInitialTempRoleList(addedRoles);
-        setRoleList(roleListCopy);
+        setRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
+        setInitialRoleList(roleListCopy.filter(x => !addedRoles?.includes(x)));
     };
 
     /**
@@ -221,47 +229,39 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "remove",
-                        "path": "groups",
-                        "value": [
-                            {
-                                "value": group.id
-                            }
-                        ]
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "remove",
+                    "path": "groups",
+                    "value": [{
+                        "value": group.id
+                    }]
+                }]
+            },
+            method: "PATCH"
         };
 
         let addOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "add",
-                        "path": "groups",
-                        "value": [
-                            {
-                                "value": group.id
-                            }
-                        ]
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "add",
+                    "path": "groups",
+                    "value": [{
+                        "value": group.id
+                    }]
+                }]
+            },
+            method: "PATCH"
         };
 
         const removeOperations = [];
@@ -314,18 +314,18 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.groups.notifications.updateGroup.error.message"
                             )
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "adminPortal:components.components.groups.notifications.updateGroup.genericError." +
                             "description"
@@ -334,7 +334,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                         message: t(
                             "components.groups.notifications.updateGroup.genericError.message"
                         )
-                    }));
+                    });
                 });
         } else {
             roleIds.map((id) => {
@@ -369,18 +369,18 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                     }
 
                     if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
                             message: t(
                                 "adminPortal:components.groups.notifications.updateGroup.error.message"
                             )
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t(
                             "adminPortal:components.groups.notifications.updateGroup.genericError.description"
                         ),
@@ -388,7 +388,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                         message: t(
                             "components.groups.notifications.updateGroup.genericError.message"
                         )
-                    }));
+                    });
                 });
         }
     };
@@ -528,9 +528,17 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         const role = roleName.split("/");
         if (role.length > 0) {
             if (role[0] == "Application") {
-                return { labelText: "Application", labelColor: null, name: "application-label" };
+                return {
+                    labelColor: null,
+                    labelText: "Application",
+                    name: "application-label"
+                };
             } else {
-                return { labelText: "Internal", labelColor: null, name: "internal-label" };
+                return {
+                    labelColor: null,
+                    labelText: "Internal",
+                    name: "internal-label"
+                };
             }
         }
     };
@@ -563,6 +571,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                     ? (
                         <>
                             <Modal.Content>
+                                { alert && alertComponent }
                                 <RolePermissions
                                     data-testid="user-mgt-update-roles-modal-unselected-role-permissions"
                                     handleNavigateBack={ handleViewRolePermission }
@@ -573,6 +582,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                         </>
                     ) : (
                         <Modal.Content image>
+                            { alert && alertComponent }
                             <TransferComponent
                                 searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
                                     { type: "Roles" }) }
@@ -737,9 +747,9 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         <>
             <Heading as="h4">
                 { t("adminPortal:components.user.updateUser.roles.editRoles.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>
@@ -874,8 +884,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                 <PrimaryButton
                                                     data-testid="group-mgt-group-empty-roles-list-assign-group-button"
                                                     onClick={ handleOpenAddNewGroupModal }
-                                                    icon="plus"
                                                 >
+                                                    <Icon name="plus"/>
                                                     Assign Role
                                                 </PrimaryButton>
                                             )

@@ -72,7 +72,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                     [
                         {
                             label: propertyMetadata?.displayName,
-                            value: eachProp?.key
+                            value: eachProp ? eachProp.key : propertyMetadata?.key
                         }
                     ]
                 }
@@ -104,7 +104,7 @@ export const getCheckboxFieldWithListener = (eachProp: CommonPluggableComponentP
                     [
                         {
                             label: propertyMetadata?.displayName,
-                            value: eachProp?.key
+                            value: eachProp ? eachProp.key : propertyMetadata?.key
                         }
                     ]
                 }

@@ -16,20 +16,25 @@
  * under the License
  */
 
+import { updateProfileImageURL } from "@wso2is/core/api";
+import { ProfileConstants } from "@wso2is/core/constants";
+import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { EditAvatarModal, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
+import { CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
-import { getProfileInformation } from "../../store/actions";
+import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
-import { EditSection, SettingsSection, UserAvatar } from "../shared";
+import { EditSection, SettingsSection } from "../shared";
 
 /**
  * Prop types for the basic details component.
@@ -56,11 +61,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const profileSchemaLoader: boolean = useSelector((state: AppState) => state.loaders.isProfileSchemaLoading);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
-    const [ urlSchema, setUrlSchema ] = useState<ProfileSchema>();
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
-    const [ editingForm, setEditingForm ] = useState(new Map<string, boolean>());
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
+    const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
 
     /**
      * Set the if the email verification is pending.
@@ -97,14 +103,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
         setProfileSchema(sortedSchemas);
 
-        const url = sortedSchemas.filter((schema: ProfileSchema) => {
-            return schema.name === "profileUrl";
-        });
-
-        if (sortedSchemas.length > 0) {
-            setUrlSchema(url[0]);
-        }
-
     }, [profileDetails.profileSchemas]);
 
     /**
@@ -128,9 +126,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value !== ""
                                 ? tempProfileInfo.set(schema.name,
                                 profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value as string)
-                                : tempProfileInfo.set(schema.name, profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] as string);
+                                : tempProfileInfo.set(
+                                    schema.name, profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] as string);
                         }
                     } else {
+                        if (schema.extended) {
+                            tempProfileInfo.set(
+                                schema.name,
+                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                            );
+                            return;
+                        }
                         tempProfileInfo.set(schema.name, profileDetails.profileInfo[schemaNames[0]]);
                     }
                 } else {
@@ -153,23 +159,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     }, [profileSchema, profileDetails.profileInfo]);
 
     /**
-     * The following method handles the onClick event of the cancel button.
-     *
-     * @param formName - Name of the form
-     */
-    const hideFormEditView = (formName: string): void => {
-        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
-        tempEditingForm.set(formName, false);
-        setEditingForm(tempEditingForm);
-    };
-
-    /**
      * The following method handles the `onSubmit` event of forms.
      *
      * @param values
      * @param formName
+     * @param isExtended
      */
-    const handleSubmit = (values: Map<string, string | string[]>, formName: string): void => {
+    const handleSubmit = (values: Map<string, string | string[]>, formName: string, isExtended: boolean): void => {
         const data = {
             Operations: [
                 {
@@ -185,9 +181,17 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         const schemaNames = formName.split(".");
 
         if (schemaNames.length === 1) {
-            value = schemaNames[0] === "emails"
-                ? { emails: [values.get(formName)] }
-                : { [schemaNames[0]]: values.get(formName) };
+            if (isExtended) {
+                value = {
+                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        [schemaNames[0]]: values.get(formName)
+                    }
+                }
+            } else {
+                value = schemaNames[0] === "emails"
+                    ? { emails: [values.get(formName)] }
+                    : { [schemaNames[0]]: values.get(formName) };
+            }
         } else {
             if (schemaNames[0] === "name") {
                 value = {
@@ -234,18 +238,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         });
 
         // Hide corresponding edit view
-        hideFormEditView(formName);
-    };
-
-    /**
-     * The following method handles the onClick event of the edit button.
-     *
-     * @param formName - Name of the form
-     */
-    const showFormEditView = (formName: string): void => {
-        const tempEditingForm: Map<string, boolean> = new Map<string, boolean>(editingForm);
-        tempEditingForm.set(formName, true);
-        setEditingForm(tempEditingForm);
+        dispatch(setActiveForm(null));
     };
 
     /**
@@ -266,7 +259,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * @param {Profile Schema} schema
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
-        if (editingForm && editingForm.size > 0 && editingForm.get(schema.name)) {
+        if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
             const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
@@ -279,7 +272,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             <Grid.Column width={ 12 }>
                                 <Forms
                                     onSubmit={ (values) => {
-                                        handleSubmit(values, schema.name);
+                                        handleSubmit(values, schema.name, schema.extended);
                                     } }
                                 >
                                     <Field
@@ -341,7 +334,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         <Field
                                             className="link-button"
                                             onClick={ () => {
-                                                hideFormEditView(schema.name);
+                                                dispatch(setActiveForm(null));
                                             } }
                                             size="small"
                                             type="button"
@@ -407,7 +400,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             : (
                                                 <a
                                                     className="placeholder-text"
-                                                    onClick={ () => { showFormEditView(schema.name); } }
+                                                        onClick={ () => {
+                                                            dispatch(
+                                                                setActiveForm(
+                                                                    CommonConstants.PERSONAL_INFO + schema.name
+                                                                )
+                                                            );
+                                                        } }
                                                 >
                                                     {t("userPortal:components.profile.forms.generic.inputs.placeholder",
                                                         {
@@ -442,7 +441,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                         className="list-icon"
                                                         size="small"
                                                         color="grey"
-                                                        onClick={ () => showFormEditView(schema.name) }
+                                                        onClick={
+                                                            () => dispatch(
+                                                                setActiveForm(
+                                                                    CommonConstants.PERSONAL_INFO + schema.name
+                                                                )
+                                                            )
+                                                        }
                                                         name={ !isEmpty(profileInfo.get(schema.name))
                                                             ? "pencil alternate"
                                                             : null }
@@ -465,48 +470,152 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         }
     };
 
+    /**
+     * Handles edit avatar modal submit action.
+     *
+     * @param {<HTMLButtonElement>} e - Event.
+     * @param {string} url - Selected image URL.
+     */
+    const handleAvatarEditModalSubmit = (e: MouseEvent<HTMLButtonElement>, url: string): void => {
+        updateProfileImageURL(url)
+            .then(() => {
+                onAlertFired({
+                    description: t("userPortal:components.profile.notifications.updateProfileInfo.success" +
+                        ".description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("userPortal:components.profile.notifications.updateProfileInfo.success.message")
+                });
+
+                // Re-fetch the profile information
+                dispatch(getProfileInformation(true));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.detail) {
+                    onAlertFired({
+                        description: t("userPortal:components.profile.notifications.updateProfileInfo.error" +
+                            ".description",
+                            { description: error.response.data.detail }),
+                        level: AlertLevels.ERROR,
+                        message: t("userPortal:components.profile.notifications.updateProfileInfo.error.message")
+                    });
+                }
+
+                onAlertFired({
+                    description: t("userPortal:components.profile.notifications.updateProfileInfo.genericError" +
+                        ".description"),
+                    level: AlertLevels.ERROR,
+                    message: t("userPortal:components.profile.notifications.updateProfileInfo.genericError.message")
+                });
+            })
+            .finally(() => {
+                setShowEditAvatarModal(false);
+            });
+    };
+
+    /**
+     * Renders the user avatar.
+     *
+     * @return {any}
+     */
+    const renderAvatar = () => (
+        <>
+            <UserAvatar
+                editable
+                showGravatarLabel
+                size="tiny"
+                onClick={ handleAvatarOnClick }
+                profileInfo={ profileDetails?.profileInfo as any }
+                gravatarInfoPopoverText={ (
+                    <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
+                        This image has been retrieved from
+                        <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
+                            Gravatar
+                        </a> service.
+                    </Trans>
+                ) }
+            />
+            {
+                showEditAvatarModal && (
+                    <EditAvatarModal
+                        open={ showEditAvatarModal }
+                        name={ resolveUserDisplayName(profileDetails?.profileInfo as any) }
+                        emails={ resolveUserEmails(profileDetails?.profileInfo?.emails) }
+                        onClose={ () => setShowEditAvatarModal(false) }
+                        onCancel={ () => setShowEditAvatarModal(false) }
+                        onSubmit={ handleAvatarEditModalSubmit }
+                        imageUrl={ profileDetails?.profileInfo?.profileUrl }
+                        heading={ t("userPortal:modals.editAvatarModal.heading") }
+                        submitButtonText={ t("userPortal:modals.editAvatarModal.primaryButton") }
+                        cancelButtonText={ t("userPortal:modals.editAvatarModal.secondaryButton") }
+                        translations={ {
+                            gravatar: {
+                                errors: {
+                                    noAssociation: {
+                                        content: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.content"),
+                                        header: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
+                                            ".noAssociation.header")
+                                    }
+                                },
+                                heading: t("userPortal:modals.editAvatarModal.content.gravatar.heading")
+                            },
+                            hostedAvatar: {
+                                heading: t("userPortal:modals.editAvatarModal.content.hostedAvatar.heading"),
+                                input: {
+                                    errors: {
+                                        http: {
+                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.content"),
+                                            header: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.http.header")
+                                        },
+                                        invalid: {
+                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.content"),
+                                            pointing: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.errors.invalid.pointing")
+                                        }
+                                    },
+                                    hint: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input.hint"),
+                                    placeholder: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
+                                        ".placeholder"),
+                                    warnings: {
+                                        dataURL: {
+                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.content"),
+                                            header: t("userPortal:modals.editAvatarModal.content." +
+                                                "hostedAvatar.input.warnings.dataURL.header")
+                                        }
+                                    }
+                                }
+                            },
+                            systemGenAvatars: {
+                                heading: t("userPortal:modals.editAvatarModal.content.systemGenAvatars.heading"),
+                                types: {
+                                    initials: t("userPortal:modals.editAvatarModal.content.systemGenAvatars." +
+                                        "types.initials")
+                                }
+                            }
+                        } }
+                    />
+                )
+            }
+        </>
+    );
+
+    /**
+     * Handles the onclick action of the avatar.
+     */
+    const handleAvatarOnClick = () => {
+        setShowEditAvatarModal(true);
+    };
+
     return (
         <SettingsSection
             description={ t("userPortal:sections.profile.description") }
             header={ t("userPortal:sections.profile.heading") }
-            icon={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showEdit={ true }
-                    profileUrl={ !isEmpty(urlSchema) ? profileInfo.get(urlSchema.name) : "" }
-                    urlSchema={ urlSchema }
-                    onAlertFired={ onAlertFired }
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
-                                Gravatar
-                                </a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
-            iconMini={ (
-                <UserAvatar
-                    authState={ profileDetails }
-                    size="tiny"
-                    showEdit={ true }
-                    profileUrl={ !isEmpty(urlSchema) ? profileInfo.get(urlSchema.name) : "" }
-                    urlSchema={ urlSchema }
-                    onAlertFired={ onAlertFired }
-                    showGravatarLabel
-                    gravatarInfoPopoverText={ (
-                        <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
-                            This image has been retrieved from
-                            <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
-                                Gravatar
-                                </a> service.
-                        </Trans>
-                    ) }
-                />
-            ) }
+            icon={ renderAvatar() }
+            iconMini={ renderAvatar() }
             placeholder={
                 !isSCIMEnabled
                     ? t("userPortal:components.profile.placeholders.SCIMDisabled.heading")

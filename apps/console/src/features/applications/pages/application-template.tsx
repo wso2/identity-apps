@@ -24,7 +24,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, Input } from "semantic-ui-react";
 import { AppConstants, AppState, EmptyPlaceholderIllustrations, history } from "../../core";
-import { CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
+import { CUSTOM_APPLICATION_TEMPLATE_ID, CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
 import { ApplicationTemplateIllustrations } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
@@ -65,7 +65,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     const { t } = useTranslation();
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
-        (state: AppState) => state.application.groupedTemplates);
+        (state: AppState) => state?.application?.groupedTemplates);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
@@ -145,7 +145,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      * Handles back button click.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("APPLICATIONS"));
+        history.push(AppConstants.getPaths().get("APPLICATIONS"));
     };
 
     /**
@@ -156,16 +156,20 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
 
+        if (id === CUSTOM_APPLICATION_TEMPLATE_ID) {
+            setSelectedTemplate(CustomApplicationTemplate);
+            setShowWizard(true);
+
+            return;
+        }
+
         const selected = applicationTemplates?.find((template) => template.id === id);
 
-        if (id === "custom-application") {
-            setSelectedTemplate(CustomApplicationTemplate);
-        } else {
-            if (!selected) {
-                return;
-            }
-            setSelectedTemplate(selected);
+        if (!selected) {
+            return;
         }
+
+        setSelectedTemplate(selected);
         setShowWizard(true);
     };
 
@@ -259,7 +263,11 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     <div className="templates quick-start-templates">
                         {
                             renderTemplateGrid(
-                                [ ApplicationTemplateCategories.DEFAULT, ApplicationTemplateCategories.DEFAULT_GROUP ],
+                                [
+                                    ApplicationTemplateCategories.DEFAULT,
+                                    ApplicationTemplateCategories.DEFAULT_GROUP,
+                                    ApplicationTemplateCategories.MANUAL
+                                ],
                                 {
                                     "data-testid": `${ testId }-quick-start-template-grid`,
                                     heading: "General Applications",
@@ -377,6 +385,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
             contentTopMargin={ true }
             description={ t("devPortal:pages.applicationTemplate.subTitle") }
             backButton={ {
+                "data-testid": `${ testId }-page-back-button`,
                 onClick: handleBackButtonClick,
                 text: t("devPortal:pages.applicationTemplate.backButton")
             } }
@@ -389,7 +398,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 <Grid.Row>
                     <Grid.Column>
                         <Input
-                            data-testid="scope-mgt-claim-list-search-input"
+                            data-testid={ `${ testId }-search` }
                             icon={ <Icon name="search"/> }
                             onChange={ handleTemplateSearch }
                             placeholder="Search application type"
@@ -398,6 +407,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                             style={ { width: "270px" } }
                         />
                         <Dropdown
+                            data-testid={ `${ testId }-sort` }
                             className="floated right"
                             placeholder="Select type"
                             selection
@@ -425,6 +435,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     subTitle={ selectedTemplate?.description }
                     closeWizard={ (): void => setShowWizard(false) }
                     template={ selectedTemplate }
+                    showHelpPanel={ selectedTemplate.id !== CUSTOM_APPLICATION_TEMPLATE_ID }
                     subTemplates={ selectedTemplate?.subTemplates }
                     subTemplatesSectionTitle={ selectedTemplate?.subTemplatesSectionTitle }
                     addProtocol={ false }

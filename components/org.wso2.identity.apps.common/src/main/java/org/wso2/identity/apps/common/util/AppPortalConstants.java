@@ -24,6 +24,7 @@ package org.wso2.identity.apps.common.util;
 public class AppPortalConstants {
 
     public static final String INBOUND_AUTH2_TYPE = "oauth2";
+    public static final String INBOUND_CONFIG_TYPE = "standardAPP";
 
     public static final String EMAIL_CLAIM_URI = "http://wso2.org/claims/emailaddress";
 
@@ -32,6 +33,8 @@ public class AppPortalConstants {
     public static final String TOKEN_BINDING_TYPE_COOKIE = "cookie";
 
     public static final String GRANT_TYPE_ACCOUNT_SWITCH = "account_switch";
+
+    public static final String SYSTEM_PROP_SKIP_SERVER_INITIALIZATION = "skipServerInitialization";
 
     private AppPortalConstants() {
 
@@ -42,8 +45,10 @@ public class AppPortalConstants {
      */
     public enum AppPortal {
 
-        MY_ACCOUNT("My Account", "This is the my account application.", "MY_ACCOUNT", "/myaccount/login"),
-        CONSOLE("Console", "This is the console application.", "CONSOLE", "/console/login");
+        MY_ACCOUNT("My Account", "This is the my account application.", "MY_ACCOUNT", "/myaccount/login",
+                "/myaccount/"),
+        CONSOLE("Console", "This is the console application.", "CONSOLE", "/console/login",
+                "/console/");
 
         private final String name;
 
@@ -53,12 +58,15 @@ public class AppPortalConstants {
 
         private final String path;
 
-        AppPortal(String name, String description, String consumerKey, String path) {
+        private final String endpoint;
+
+        AppPortal(String name, String description, String consumerKey, String path, String endpoint) {
 
             this.name = name;
             this.description = description;
             this.consumerKey = consumerKey;
             this.path = path;
+            this.endpoint = endpoint;
         }
 
         public String getName() {
@@ -79,6 +87,10 @@ public class AppPortalConstants {
         public String getPath() {
 
             return path;
+        }
+
+        public String getEndpoint() {
+            return endpoint;
         }
     }
 }

@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -101,8 +101,27 @@ export const OutboundProvisioningConnectorCreateWizard:
     const [ connectorList, setConnectorList ] = useState<OutboundProvisioningConnectorListItemInterface[]>([]);
     const [ connectorMetaData, setConnectorMetaData ] = useState<OutboundProvisioningConnectorMetaInterface>(undefined);
     const [ newConnector, setNewConnector ] = useState(undefined);
+    const [ isConnectorMetadataRequestLoading, setIsConnectorMetadataRequestLoading ] = useState<boolean>(false);
     const [ defaultConnector, setDefaultConnector ] =
         useState<OutboundProvisioningConnectorListItemInterface>(undefined);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
+    /**
+     * At the initial load, select the first item from the connector list so that the
+     * metadata could be loaded.
+     */
+    useEffect(() => {
+        if (!(connectorList && Array.isArray(connectorList) && connectorList.length > 0)) {
+            return;
+        }
+
+        setWizardState( {
+            [ WizardStepsFormTypes.CONNECTOR_SELECTION ]: {
+                connectorId: connectorList[0].connectorId
+            }
+        });
+    }, [ connectorList ]);
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -159,24 +178,24 @@ export const OutboundProvisioningConnectorCreateWizard:
         })
             .catch(error => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications." +
                             "getOutboundProvisioningConnectorsList.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.idp.notifications.getOutboundProvisioningConnectorsList." +
                         "genericError.message")
-                }));
+                });
             });
     }, []);
 
@@ -184,6 +203,9 @@ export const OutboundProvisioningConnectorCreateWizard:
         if (!wizardState && !connectorMetaData) {
             return;
         }
+
+        // Set the loading status.
+        setIsConnectorMetadataRequestLoading(true);
 
         const selectedId: string = wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId;
         let initialConnector: OutboundProvisioningConnectorListItemInterface =
@@ -193,6 +215,7 @@ export const OutboundProvisioningConnectorCreateWizard:
             ...initialConnector,
             isEnabled: true
         };
+
         setDefaultConnector(initialConnector);
 
         getOutboundProvisioningConnectorMetadata(selectedId)
@@ -201,6 +224,9 @@ export const OutboundProvisioningConnectorCreateWizard:
             })
             .catch(error => {
                 handleGetOutboundProvisioningConnectorMetadataError(error);
+            })
+            .finally(() => {
+                setIsConnectorMetadataRequestLoading(false);
             });
     }, [ wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId ]);
 
@@ -289,10 +315,12 @@ export const OutboundProvisioningConnectorCreateWizard:
             content: (
                 <OutboundProvisioningConnectors
                     initialSelection={
-                        wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId }
+                        wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_SELECTION ]?.connectorId
+                    }
                     triggerSubmit={ submitConnectorSelection }
-                    onSubmit={ (values): void => handleWizardFormSubmit(values,
-                        WizardStepsFormTypes.CONNECTOR_SELECTION) }
+                    onSubmit={ (values): void => {
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.CONNECTOR_SELECTION)
+                    } }
                     connectorList={ connectorList }
                     data-testid={ `${ testId }-connector-selection` }
                 />
@@ -302,9 +330,9 @@ export const OutboundProvisioningConnectorCreateWizard:
         },
         {
             content: (
-                connectorMetaData && defaultConnector &&
                 <OutboundProvisioningSettings
                     metadata={ connectorMetaData }
+                    isLoading={ isConnectorMetadataRequestLoading }
                     initialValues={ identityProvider }
                     onSubmit={ (values): void => handleWizardFormSubmit(
                         values, WizardStepsFormTypes.CONNECTOR_DETAILS) }
@@ -319,8 +347,7 @@ export const OutboundProvisioningConnectorCreateWizard:
         {
             content: (
                 <WizardSummary
-                    provisioningConnectorMetadata={
-                        wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ] }
+                    provisioningConnectorMetadata={ connectorMetaData }
                     authenticatorMetadata={ undefined }
                     triggerSubmit={ finishSubmit }
                     identityProvider={ generateWizardSummary() }
@@ -340,7 +367,7 @@ export const OutboundProvisioningConnectorCreateWizard:
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
             data-testid={ `${ testId }-modal` }
         >
@@ -365,6 +392,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions data-testid={ `${ testId }-modal-actions` }>
@@ -378,8 +406,13 @@ export const OutboundProvisioningConnectorCreateWizard:
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { currentWizardStep < STEPS.length - 1 && (
-                                <PrimaryButton floated="right" onClick={ navigateToNext }
-                                               data-testid={ `${ testId }-modal-next-button` }>
+                                <PrimaryButton
+                                    floated="right"
+                                    onClick={ navigateToNext }
+                                    loading={ isConnectorMetadataRequestLoading }
+                                    disabled={ isConnectorMetadataRequestLoading }
+                                    data-testid={ `${ testId }-modal-next-button` }
+                                >
                                     { t("devPortal:components.idp.wizards.buttons.next") }
                                     <Icon name="arrow right"/>
                                 </PrimaryButton>

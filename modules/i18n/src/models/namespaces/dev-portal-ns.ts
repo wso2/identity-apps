@@ -81,13 +81,13 @@ export interface DevPortalNS {
                 listingPage: {
                     title: string;
                     description: string;
-                },
+                };
                 editPage: {
                     title: string;
                     description: string;
                     backLink: string;
                 };
-            },
+            };
             createConfigForm: {
                 configName: {
                     label: string;
@@ -119,8 +119,8 @@ export interface DevPortalNS {
                 };
                 enableConfig: {
                     label: string;
-                }
-            }
+                };
+            };
             placeholders: {
                 emptyList: {
                     action: string;
@@ -133,24 +133,31 @@ export interface DevPortalNS {
                 };
                 emptyDetails: {
                     subtitles: {
-                        0: string,
-                        1: string
-                    },
-                    title: string
-                }
+                        0: string;
+                        1: string;
+                    };
+                    title: string;
+                };
             };
             list: {
+                columns: {
+                    name: string;
+                    lastDeployed: string;
+                    successfulDeployments: string;
+                    failedDeployments: string;
+                    actions: string;
+                };
                 confirmations: {
                     deleteConfig: Confirmation;
                 };
             };
             notifications: {
-                deleteConfig: Notification,
-                editConfig: Notification,
-                triggerConfig: Notification,
-                createConfig: Notification,
-                getConfig: Notification,
-            }
+                deleteConfig: Notification;
+                editConfig: Notification;
+                triggerConfig: Notification;
+                createConfig: Notification;
+                getConfig: Notification;
+            };
         };
         applications: {
             addWizard: {
@@ -455,6 +462,7 @@ export interface DevPortalNS {
                 };
                 inboundOIDC: {
                     fields: {
+                        allowedOrigins: FormAttributes;
                         callBackUrls: FormAttributes;
                         clientID: FormAttributes;
                         clientSecret: FormAttributes;
@@ -469,6 +477,8 @@ export interface DevPortalNS {
                                 bindingType: FormAttributes;
                                 expiry: FormAttributes;
                                 type: FormAttributes;
+                                revokeToken: FormAttributes;
+                                validateBinding: FormAttributes;
                             };
                         };
                         idToken: {
@@ -623,6 +633,10 @@ export interface DevPortalNS {
             };
             helpPanel: HelpPanelInterface;
             list: {
+                columns: {
+                    actions: string;
+                    name: string;
+                };
                 actions: {
                     add: string;
                 };
@@ -634,6 +648,7 @@ export interface DevPortalNS {
                 deleteProtocolConfig: Notification;
                 duplicateAuthenticationStep: Notification;
                 emptyAuthenticationStep: Notification;
+                fetchAllowedCORSOrigins: Notification;
                 fetchApplication: Notification;
                 fetchApplications: Notification;
                 fetchCustomInboundProtocols: Notification;
@@ -790,6 +805,7 @@ export interface DevPortalNS {
                     requiredErrorMessage: string;
                     invalidURLErrorMessage: string;
                     invalidQueryParamErrorMessage: string;
+                    customProperties: string;
                 };
                 generalDetails: {
                     name: FormAttributes;
@@ -861,6 +877,10 @@ export interface DevPortalNS {
                     heading: string;
                     subHeading: string;
                 };
+            };
+            list: {
+                actions: string;
+                name: string;
             };
             modals: {
                 addAuthenticator: {
@@ -1042,6 +1062,10 @@ export interface DevPortalNS {
                 };
             };
             list: {
+                columns: {
+                    actions: string;
+                    name: string;
+                };
                 empty: Placeholder;
             };
             wizards: {
@@ -1077,6 +1101,17 @@ export interface DevPortalNS {
                 deleteOIDCScope: Notification;
                 deleteOIDClaim: Notification;
                 updateOIDCScope: Notification;
+            };
+            placeholders: {
+                emptyList: {
+                    action: string;
+                    subtitles: {
+                        0: string;
+                        1: string;
+                        2: string;
+                    };
+                    title: string;
+                };
             };
         };
         overview: {
@@ -1295,6 +1330,27 @@ export interface DevPortalNS {
                 };
             };
         };
+        URLInput: {
+            withLabel: {
+                positive: {
+                    header: string;
+                    content: string;
+                    detailedContent: {
+                        0: string;
+                        1: string;
+                    };
+                };
+                negative: {
+                    header: string;
+                    content: string;
+                    detailedContent: {
+                        0: string;
+                        1: string;
+                    };
+                    leftAction: string;
+                };
+            };
+        };
     };
     notifications: {
         endSession: Notification;
@@ -1325,9 +1381,9 @@ export interface DevPortalNS {
                 quickStart: {
                     title: string;
                 };
-            }
-        }
-    }
+            };
+        };
+    };
     placeholders: {
         404: Placeholder;
         accessDenied: Placeholder;

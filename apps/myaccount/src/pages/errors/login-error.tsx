@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
 import { EmptyPlaceholderIllustrations } from "../../configs";
+import { AppConstants } from "../../constants";
 import { ErrorPageLayout } from "../../layouts";
 
 /**
@@ -38,7 +39,7 @@ const LoginErrorPage = (): ReactElement => {
                     <Button
                         className="link-button"
                         as={ Link }
-                        to={ window["AppUtils"].getConfig().routes.logout }
+                        to={ AppConstants.getAppLogoutPath() }
                     >
                         { t("userPortal:placeholders.loginError.action") }
                     </Button>

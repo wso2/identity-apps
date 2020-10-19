@@ -17,7 +17,7 @@
  */
 
 import { CommonHelpers, isPortalAccessGranted } from "@wso2is/core/helpers";
-import { emptyIdentityAppsSettings } from "@wso2is/core/models";
+import { RouteInterface, emptyIdentityAppsSettings } from "@wso2is/core/models";
 import {
     setDeploymentConfigs,
     setI18nConfigs,
@@ -28,25 +28,24 @@ import { LocalStorageUtils } from "@wso2is/core/utils";
 import { I18n, I18nModuleOptionsInterface } from "@wso2is/i18n";
 import { ContentLoader, SessionManagementProvider, ThemeContext } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect } from "react";
+import React, { FunctionComponent, ReactElement, Suspense, useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { I18nextProvider } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 import { initializeAuthentication } from "./features/authentication";
+import { ProtectedRoute } from "./features/core/components";
+import { Config, getBaseRoutes } from "./features/core/configs";
+import { AppConstants } from "./features/core/constants";
+import { history } from "./features/core/helpers";
 import {
-    AppConstants,
-    AppState,
-    Config,
     ConfigReducerStateInterface,
     DeploymentConfigInterface,
     FeatureConfigInterface,
-    ProtectedRoute,
     ServiceResourceEndpointsInterface,
-    UIConfigInterface,
-    baseRoutes,
-    history
-} from "./features/core";
+    UIConfigInterface
+} from "./features/core/models";
+import { AppState } from "./features/core/store";
 
 /**
  * Main App component.
@@ -64,18 +63,31 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
+    const [ baseRoutes, setBaseRoutes ] = useState<RouteInterface[]>(getBaseRoutes());
+
     /**
      * Set the deployment configs in redux state.
      */
     useEffect(() => {
-        // Replace `RuntimeConfigInterface` with the proper deployment config interface,
-        // once runtime config is refactored.
+        dispatch(initializeAuthentication());
+    }, []);
+
+    /**
+     * Set the deployment configs in redux state.
+     */
+    useEffect(() => {
         dispatch(setDeploymentConfigs<DeploymentConfigInterface>(Config.getDeploymentConfig()));
         dispatch(setServiceResourceEndpoints<ServiceResourceEndpointsInterface>(Config.getServiceResourceEndpoints()));
         dispatch(setI18nConfigs<I18nModuleOptionsInterface>(Config.getI18nConfig()));
         dispatch(setUIConfigs<UIConfigInterface>(Config.getUIConfig()));
-        dispatch(initializeAuthentication());
-    }, []);
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
+
+    /**
+     * Listen for base name changes and updated the routes.
+     */
+    useEffect(() => {
+        setBaseRoutes(getBaseRoutes());
+    }, [ AppConstants.getTenantQualifiedAppBasename() ]);
 
     /**
      * Set the application settings of the user to the local storage.
@@ -118,7 +130,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         }
 
         history.push({
-            pathname: AppConstants.PATHS.get("UNAUTHORIZED"),
+            pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
             search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
         });
     }, [ config, loginInit ]);
@@ -139,7 +151,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
      * Handles session logout.
      */
     const handleSessionLogout = (): void => {
-        history.push(config.deployment.appLogoutPath);
+        history.push(AppConstants.getAppLogoutPath());
     };
 
     return (
@@ -186,8 +198,13 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
                                                 <Switch>
                                                     <Redirect
                                                         exact={ true }
-                                                        path="/"
-                                                        to={ config.deployment.appLoginPath }
+                                                        path={ AppConstants.getAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
+                                                    />
+                                                    <Redirect
+                                                        exact={ true }
+                                                        path={ AppConstants.getTenantQualifiedAppBasePath() }
+                                                        to={ AppConstants.getAppLoginPath() }
                                                     />
                                                     {
                                                         baseRoutes.map((route, index) => {

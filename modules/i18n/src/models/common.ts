@@ -159,6 +159,15 @@ interface TransferListSearchPlaceholders {
 export interface ModalInterface {
     description: string;
     heading: string;
+    content?: object;
     primaryButton: string;
     secondaryButton: string;
+}
+
+/**
+ * Interface for Validations
+ */
+export interface ValidationInterface {
+    heading: string;
+    description: string;
 }

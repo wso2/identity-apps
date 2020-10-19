@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -132,6 +132,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
     const [ submitAuthenticator, setSubmitAuthenticator ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
     /**
      * Navigates to the next wizard step.
      */
@@ -221,23 +222,23 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
                             "error.description", { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications.addFederatedAuthenticator.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
                         "genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.idp.notifications.addFederatedAuthenticator." +
                         "genericError.message")
-                }));
+                });
             })
             .finally(() => {
                 closeWizard();
@@ -307,7 +308,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         }
     };
 
-    function loadAuthenticatorMetadata(authenticatorId: string) {
+    const loadAuthenticatorMetadata = (authenticatorId: string) => {
         getFederatedAuthenticatorMetadata(authenticatorId)
             .then((response) => {
                 setSelectedAuthenticatorMetadata(response);
@@ -315,7 +316,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
             .catch((error) => {
                 handleGetFederatedAuthenticatorMetadataAPICallError(error)
             });
-    }
+    };
 
     useEffect(() => {
         if (selectedTemplateId) {
@@ -394,7 +395,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 className="wizard identity-provider-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
-                closeOnDimmerClick
+                closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
             >
@@ -417,6 +418,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                     </Steps.Group>
                 </Modal.Content>
                 <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
+                    { alert && alertComponent }
                     { resolveStepContent(currentWizardStep) }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-modal-actions` }>

@@ -16,11 +16,11 @@
  * under the License.
  */
 
-import { getGravatarImage, getRolesList } from "@wso2is/core/api";
+import { getRolesList } from "@wso2is/core/api";
 import { AlertLevels, RolesInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -46,6 +46,7 @@ interface AddUserWizardPropsInterface extends TestableComponentInterface {
     listItemLimit: number;
     updateList: () => void;
     rolesList: any;
+    emailVerificationEnabled: boolean;
 }
 
 /**
@@ -77,9 +78,9 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
 ): ReactElement => {
 
     const {
-        updateList,
         closeWizard,
         currentStep,
+        emailVerificationEnabled,
         [ "data-testid" ]: testId
     } = props;
 
@@ -109,20 +110,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
     const [ selectedRoleId,  setSelectedRoleId ] = useState<string>();
     const [ isRoleSelected, setRoleSelection ] = useState<boolean>(false);
 
-    const [ userGravatarUrl, setUserGravatarUrl ] = useState<string>("");
-
-    useEffect(() => {
-        if (!wizardState) {
-            return;
-        }
-
-        if (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email) {
-            getGravatarImage(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email)
-                .then((response) => {
-                    setUserGravatarUrl(response);
-                });
-        }
-    }, [ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.email ]);
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     useEffect(() => {
         if (!selectedRoleId) {
@@ -286,7 +274,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 updateRoleDetails(roleId, roleData)
                     .catch((error) => {
                         if (!error.response || error.response.status === 401) {
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description"
                                 ),
@@ -294,10 +282,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else if (error.response && error.response.data && error.response.data.detail) {
 
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description",
                                     { description: error.response.data.detail }
@@ -306,10 +294,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else {
                             // Generic error message
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.description"
                                 ),
@@ -317,7 +305,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.message"
                                 )
-                            }));
+                            });
                         }
                     });
             }
@@ -332,7 +320,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 updateGroupDetails(groupId, groupData)
                     .catch((error) => {
                         if (!error.response || error.response.status === 401) {
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description"
                                 ),
@@ -340,10 +328,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else if (error.response && error.response.data && error.response.data.detail) {
 
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.error.description",
                                     { description: error.response.data.detail }
@@ -352,10 +340,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.error.message"
                                 )
-                            }));
+                            });
                         } else {
                             // Generic error message
-                            dispatch(addAlert({
+                            setAlert({
                                 description: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.description"
                                 ),
@@ -363,30 +351,28 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                                 message: t(
                                     "adminPortal:components.users.notifications.addUser.genericError.message"
                                 )
-                            }));
+                            });
                         }
                     });
             }
         }
     };
-    
+
     /**
      * This function handles adding the user.
      */
     const addUserBasic = (userInfo: AddUserWizardStateInterface) => {
         let userName = "";
-        let profileUrl = "";
-        userInfo.domain !== "primary" ? userName = userInfo.domain + "/" + userInfo.userName : userName =
-            userInfo.userName;
+
+        userInfo.domain !== "primary"
+            ? userName = userInfo.domain + "/" + userInfo.userName
+            : userName = userInfo.userName;
+
         let userDetails: UserDetailsInterface = createEmptyUserDetails();
         const password = userInfo.newPassword;
 
-        if (userGravatarUrl) {
-            profileUrl = userGravatarUrl;
-        }
-
-        userInfo.passwordOption && userInfo.passwordOption !== "askPw" ?
-            (
+        userInfo.passwordOption && userInfo.passwordOption !== "askPw"
+            ? (
                 userDetails = {
                     emails:[
                         {
@@ -399,11 +385,11 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         givenName: userInfo.firstName
                     },
                     password,
-                    profileUrl, 
+                    profileUrl: userInfo.profileUrl,
                     userName
                 }
-            ) :
-            (
+            )
+            : (
                 userDetails = {
                     emails: [
                         {
@@ -416,7 +402,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         givenName: userInfo.firstName
                     },
                     password: "password",
-                    profileUrl,
+                    profileUrl: userInfo.profileUrl,
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
                         askPassword: "true"
                     },
@@ -441,7 +427,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 }
 
                 closeWizard();
-                history.push(AppConstants.PATHS.get("USER_EDIT").replace(":id", response.data.id));
+                history.push(AppConstants.getPaths().get("USER_EDIT").replace(":id", response.data.id));
             })
             .catch((error) => {
                 // Axios throws a generic `Network Error` for 401 status.
@@ -507,18 +493,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             return;
         }
 
-        let wizardData: WizardStateInterface = { ...wizardState };
-
-        if (wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] &&
-            !(wizardState[ WizardStepsFormTypes.BASIC_DETAILS ].profileUrl) && userGravatarUrl) {
-            wizardData = {
-                ...wizardState,
-                BasicDetails: {
-                    ...wizardState.BasicDetails,
-                    profileUrl: userGravatarUrl
-                }
-            }
-        }
+        const wizardData: WizardStateInterface = { ...wizardState };
 
         let summary = {};
 
@@ -536,12 +511,28 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
         addUserBasic(user);
     };
 
+    /**
+     * Persists the profile image change done from the summary view in wizard state.
+     *
+     * @param {string} url - Profile URL.
+     */
+    const handleProfileImageChange = (url: string): void => {
+        setWizardState({
+            ...wizardState,
+            [ WizardStepsFormTypes.BASIC_DETAILS ]: {
+                ...wizardState[ WizardStepsFormTypes.BASIC_DETAILS ],
+                profileUrl: url
+            }
+        })
+    };
+
     const STEPS = [
         {
             content: (
                 <AddUser
                     triggerSubmit={ submitGeneralSettings }
                     initialValues={ wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ] }
+                    emailVerificationEnabled={ emailVerificationEnabled }
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
                 />
             ),
@@ -555,10 +546,10 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     onSubmit={ (values) => handleWizardFormSubmit(values, WizardStepsFormTypes.GROUP_LIST) }
                     initialValues={
                         {
-                            initialGroupList: initialGroupList,
                             groupList: groupList,
-                            tempGroupList: tempGroupList,
-                            initialTempGroupList: initialTempGroupList
+                            initialGroupList: initialGroupList,
+                            initialTempGroupList: initialTempGroupList,
+                            tempGroupList: tempGroupList
                         }
                     }
                     handleGroupListChange={ (groups) => handleGroupListChange(groups) }
@@ -606,6 +597,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                     triggerSubmit={ finishSubmit }
                     onSubmit={ handleWizardFormFinish }
                     summary={ generateWizardSummary() }
+                    onProfileImageChange={ handleProfileImageChange }
                 />
             ),
             icon: UserWizardStepIcons.summary,
@@ -621,11 +613,16 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
             dimmer="blurring"
             size="small"
             onClose={ closeWizard }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.user.modals.addUserWizard.title") }
+                {
+                    wizardState && wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                    ? " - " + wizardState[ WizardStepsFormTypes.BASIC_DETAILS ]?.firstName
+                    : ""
+                }
                 <Heading as="h6">{ t("adminPortal:components.user.modals.addUserWizard.subTitle") }</Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">
@@ -642,6 +639,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>
@@ -697,5 +695,6 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
  * Default props for the add user wizard.
  */
 AddUserWizard.defaultProps = {
-    currentStep: 0
+    currentStep: 0,
+    emailVerificationEnabled: false
 };

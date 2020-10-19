@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { MD5 } from "crypto-js";
 import sortBy from "lodash/sortBy";
 import moment from "moment";
 import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
@@ -24,7 +25,6 @@ import { AnnouncementBannerInterface, ProductReleaseTypes } from "../models";
  * Class containing common utility methods used across application.
  */
 export class CommonUtils {
-
     /**
      * Private constructor to avoid object instantiation from outside
      * the class.
@@ -107,5 +107,15 @@ export class CommonUtils {
         }
 
         return selected;
+    }
+
+    /**
+     * Get user image from gravatar.com.
+     *
+     * @param emailAddress email address received authenticated user.
+     * @returns {string} gravatar image path.
+     */
+    public static getGravatar(emailAddress: string): string {
+        return "https://www.gravatar.com/avatar/" + MD5(emailAddress.trim()) + "?d=404";
     }
 }

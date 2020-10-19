@@ -18,7 +18,7 @@
 
 import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, PropsWithChildren, ReactElement, useState } from "react";
-import { Divider, Modal, ModalProps } from "semantic-ui-react";
+import { Modal, ModalProps } from "semantic-ui-react";
 import { HelpPanelActionIcons } from "../configs";
 
 /**
@@ -156,7 +156,7 @@ export const ModalWithSidePanelSidePanel: FunctionComponent<PropsWithChildren<Co
 };
 
 /**
- * Attaches with sub components to teh `ModalWithSidePanel` component.
+ * Attaches with sub components to the `ModalWithSidePanel` component.
  */
 ModalWithSidePanel.MainPanel = ModalWithSidePanelMainPanel;
 ModalWithSidePanel.SidePanel = ModalWithSidePanelSidePanel;

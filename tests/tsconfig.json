@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "declaration": true,
+        "experimentalDecorators": true,
+        "lib": [
+            "es6",
+            "dom"
+        ],
+        "outDir": "dist",
+        "paths": {
+            "*": ["types/*"],
+            "@wso2/identity-cypress-test-base/commands": ["node_modules/@wso2/identity-cypress-test-base/dist/commands"],
+            "@wso2/identity-cypress-test-base/constants": ["node_modules/@wso2/identity-cypress-test-base/dist/constants"],
+            "@wso2/identity-cypress-test-base/page-objects": ["node_modules/@wso2/identity-cypress-test-base/dist/page-objects"],
+            "@wso2/identity-cypress-test-base/utils": ["node_modules/@wso2/identity-cypress-test-base/dist/utils"]
+        },
+        "target": "es5",
+        "types": [
+            "cypress",
+            "node"
+        ],
+        "sourceMap": false
+    },
+    "include": [
+        "integration",
+        "fixtures",
+        "plugins",
+        "support"
+    ],
+    "exclude": [ "node_modules", "./output" ],
+    "extends": "../configs/common.tsconfig.json"
+}

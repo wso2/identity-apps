@@ -87,7 +87,6 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
     return (
         <Dropdown
             item
-            icon={ showCaret }
             className={ className }
             upward={ upward }
             trigger={ LanguageSwitcherTrigger() }

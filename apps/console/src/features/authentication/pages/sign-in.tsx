@@ -19,12 +19,9 @@
 import { FunctionComponent, ReactElement, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
-import {
-    AppConstants,
-    AppState,
-    ConfigReducerStateInterface,
-    history
-} from "../../core";
+import { AppConstants } from "../../core/constants";
+import { history } from "../../core/helpers";
+import { AppState } from "../../core/store";
 import { handleSignIn } from "../store";
 
 /**
@@ -39,35 +36,35 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
 
     const { location } = props;
 
-    const isAuthenticated = useSelector((state: AppState) => state.auth.isAuthenticated);
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.auth.isAuthenticated);
+    const isInitialized: boolean = useSelector((state: AppState) => state.auth.initialized);
 
     const error = new URLSearchParams(location.search).get("error_description");
 
-    const getAuthenticationCallbackUrl = () => {
-        return window.sessionStorage.getItem("auth_callback_url");
-    };
-
     const loginSuccessRedirect = () => {
-        const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
-        const location =
-            !AuthenticationCallbackUrl
-            || AuthenticationCallbackUrl === config.deployment.appLoginPath
-                ? config.deployment.appHomePath
-                : AuthenticationCallbackUrl;
 
-        history.push(location);
+        // TODO: Fix the auth callback isssue here.
+        /* const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl();
+
+        const location = !AuthenticationCallbackUrl
+            || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                ? AppConstants.getAppHomePath()
+                : AuthenticationCallbackUrl;*/
+
+        history.push(AppConstants.getAppHomePath());
     };
 
     useEffect(() => {
+
         if (!isAuthenticated && !error) {
-            handleSignIn();
+            isInitialized && handleSignIn();
+
             return;
         }
 
         if (error === AppConstants.USER_DENIED_CONSENT_SERVER_ERROR) {
             history.push({
-                pathname: AppConstants.PATHS.get("UNAUTHORIZED"),
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                 search: "?error=" + AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")
             });
 
@@ -75,7 +72,7 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
         }
 
         loginSuccessRedirect();
-    }, [ isAuthenticated ]);
+    }, [ isAuthenticated, isInitialized ]);
 
     return null;
 };

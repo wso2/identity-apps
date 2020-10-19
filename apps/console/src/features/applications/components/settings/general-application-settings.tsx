@@ -289,7 +289,11 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                                     }
                                     tOptions={ { name: name } }
                                 >
-                                    Please type <strong>{ name }</strong> to confirm.
+                                    Please type 
+                                    <strong data-testid="application-name-assertion">
+                                        { name }
+                                    </strong>
+                                    to confirm.
                                 </Trans>
                             </p>
                         ) }
@@ -299,6 +303,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                         onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
                         onPrimaryActionClick={ (): void => handleApplicationDelete() }
                         data-testid={ `${ testId }-application-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-application-delete-confirmation-modal-header` }

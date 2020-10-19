@@ -24,13 +24,13 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.RetryError" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.List" %>
-<jsp:directive.include file="includes/localize.jsp"/>
+<jsp:include page="includes/localize.jsp"/>
 
 <%
     InitiateAllQuestionResponse initiateAllQuestionResponse = (InitiateAllQuestionResponse)
             session.getAttribute("initiateAllQuestionResponse");
     List<Question> challengeQuestions = initiateAllQuestionResponse.getQuestions();
-    
+
     RetryError errorResponse = (RetryError) request.getAttribute("errorResponse");
     boolean reCaptchaEnabled = false;
     if (request.getAttribute("reCaptcha") != null && "TRUE".equalsIgnoreCase((String) request.getAttribute("reCaptcha"))) {
@@ -50,14 +50,14 @@
     %>
             <jsp:include page="extensions/title.jsp"/>
     <% } else { %>
-            <jsp:directive.include file="includes/title.jsp"/>
+            <jsp:include page="includes/title.jsp"/>
     <% } %>
-    
+
     <link rel="icon" href="images/favicon.png" type="image/x-icon"/>
     <link href="libs/bootstrap_3.4.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/Roboto.css" rel="stylesheet">
     <link href="css/custom-common.css" rel="stylesheet">
-    
+
     <!--[if lt IE 9]>
     <script src="js/html5shiv.min.js"></script>
     <script src="js/respond.min.js"></script>
@@ -78,12 +78,12 @@
 %>
         <jsp:include page="extensions/header.jsp"/>
 <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
 <% } %>
 
 <!-- page content -->
 <div class="container-fluid body-wrapper">
-    
+
     <div class="row">
         <!-- content -->
         <div class="col-xs-12 col-sm-10 col-md-8 col-lg-5 col-centered wr-login">
@@ -98,7 +98,7 @@
             %>
             <div class="clearfix"></div>
             <div class="boarder-all ">
-                
+
                 <div class="padding-double">
                     <form method="post" action="processsecurityquestions.do" id="securityQuestionForm">
                         <%
@@ -143,7 +143,7 @@
             </div>
         </div>
         <!-- /content/body -->
-    
+
     </div>
 </div>
 <!-- /content/body -->
@@ -158,7 +158,7 @@
 %>
         <jsp:include page="extensions/footer.jsp"/>
 <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
 <% } %>
 
 </body>

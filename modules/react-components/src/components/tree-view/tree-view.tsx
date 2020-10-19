@@ -185,7 +185,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                         type="checkbox"
                         name={ node[keywordLabel] }
                         className="invisible"
-                        onClick={ (e) => {
+                        onChange={ (e) => {
                             handleCheckToggle(node, e);
                         } }
                         checked={ !!node.isChecked }

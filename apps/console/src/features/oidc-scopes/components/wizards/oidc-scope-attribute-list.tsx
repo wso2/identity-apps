@@ -55,7 +55,6 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
         availableClaims,
         setAvailableClaims,
         setInitialSelectedClaims,
-        onUpdateAttributes,
         triggerSubmit,
         onSubmit,
         [ "data-testid" ]: testId
@@ -212,8 +211,6 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
     const getSelectedClaims = (() => {
         const selectedClaims = [];
         const selectedClaimsValues = [...tempSelectedClaims];
-        const added = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
-
         selectedClaimsValues.map((claim) => {
             selectedClaims.push(claim.claimURI);
         });

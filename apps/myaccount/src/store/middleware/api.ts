@@ -58,11 +58,17 @@ export const apiMiddleware = ({ dispatch }) => (next) => (action): void => {
             withCredentials: true
         })
         .then((response) => {
-            dispatch({ type: onSuccess, payload: response });
+            dispatch({
+                payload: response,
+                type: onSuccess
+            });
         })
         .catch((error) => {
             log.error(error);
-            dispatch({ type: onError, payload: error });
+            dispatch({
+                payload: error,
+                type: onError
+            });
         })
         .finally(() => {
             if (dispatcher) {

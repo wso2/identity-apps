@@ -19,23 +19,23 @@
 module.exports = {
     globals: {
         APP_BASENAME: "myaccount",
-        SERVER_HOST_DEFAULT: "https://localhost:9443",
         APP_HOME_PATH: "/overview",
         APP_LOGIN_PATH: "/login",
-        CLIENT_ID_DEFAULT: "USER_PORTAL",
         CLIENT_HOST_DEFAULT: "https://localhost:9000",
-        LOGIN_CALLBACK_URL: "https://localhost:9000/myaccount/login"
-    },
-    transform: {
-        "^.+\\.tsx$": "ts-jest",
-        "^.+\\.ts$": "ts-jest",
-        "^.+\\.js$": "babel-jest",
-        "^.+\\.jsx$": "babel-jest"
+        CLIENT_ID_DEFAULT: "USER_PORTAL",
+        LOGIN_CALLBACK_URL: "https://localhost:9000/myaccount/login",
+        SERVER_HOST_DEFAULT: "https://localhost:9443"
     },
     moduleNameMapper: {
+        "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js",
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
-            "<rootDir>/test-configs/file-mock.js",
-        "\\.(css|less)$": "<rootDir>/test-configs/style-mock.js"
+            "<rootDir>/test-configs/file-mock.js"
     },
-    setupFilesAfterEnv: ["<rootDir>/test-configs/setup-test.ts"]
+    setupFilesAfterEnv: ["<rootDir>/test-configs/setup-test.ts"],
+    transform: {
+        "^.+\\.js$": "babel-jest",
+        "^.+\\.jsx$": "babel-jest",
+        "^.+\\.ts$": "ts-jest",
+        "^.+\\.tsx$": "ts-jest"
+    }
 };

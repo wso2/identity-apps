@@ -472,6 +472,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                             (): void => handleDeleteConnector(deletingConnector)
                         }
                         data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                        closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-authenticator-delete-confirmation` }>
                             { t("devPortal:components.idp.confirmations.deleteConnector.header") }

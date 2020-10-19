@@ -21,6 +21,7 @@
  */
 export interface CommonNS {
     access: string;
+    actions: string;
     active: string;
     add: string;
     addURL: string;
@@ -70,6 +71,7 @@ export interface CommonNS {
     initiator: string;
     ipAddress: string;
     lastAccessed: string;
+    lastModified: string;
     lastSeen: string;
     lastUpdatedOn: string;
     loginTime: string;
@@ -113,6 +115,7 @@ export interface CommonNS {
     showLess: string;
     showMore: string;
     showPassword: string;
+    generatePassword: string;
     startsWith: string;
     step: string;
     submit: string;

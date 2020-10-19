@@ -15,55 +15,76 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-import { useEffect } from "react";
+
+import { FunctionComponent, ReactElement, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { GlobalConfig } from "../../configs";
-import { ApplicationConstants } from "../../constants";
+import { RouteComponentProps } from "react-router";
+import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 import { AppState } from "../../store";
 import { handleSignIn } from "../../store/actions";
 
-
 /**
- * This component handles the sign-in function
+ * Virtual component used to handle Sign in action.
+ *
+ * @param props - Props injected to the component.
+ * @return {React.ReactElement}
  */
-export const SignIn = (props) => {
-    const isAuth = useSelector((state: AppState) => state.authenticationInformation.isAuth);
+const SignIn: FunctionComponent<RouteComponentProps> = (
+    props: RouteComponentProps
+): ReactElement => {
 
-    const error = new URLSearchParams(props.location.search).get("error_description");
+    const { location } = props;
 
-    const getAuthenticationCallbackUrl = () => {
-        return window.sessionStorage.getItem("auth_callback_url");
-    };
+    const isAuthenticated: boolean = useSelector((state: AppState) => state.authenticationInformation.isAuth);
+    const isInitialized: boolean = useSelector((state: AppState) => state.authenticationInformation.initialized);
+
+    const error = new URLSearchParams(location.search).get("error_description");
 
     const loginSuccessRedirect = () => {
-        const AuthenticationCallbackUrl = getAuthenticationCallbackUrl();
-        const location =
-            !AuthenticationCallbackUrl || AuthenticationCallbackUrl === GlobalConfig.appLoginPath
-                ? GlobalConfig.appHomePath
-                : AuthenticationCallbackUrl;
 
-        history.push(location);
+        // TODO: Fix the auth callback isssue here.
+        /* const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl();
+
+        const location = !AuthenticationCallbackUrl
+            || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
+                ? AppConstants.getAppHomePath()
+                : AuthenticationCallbackUrl;*/
+
+        history.push(AppConstants.getAppHomePath());
     };
 
     useEffect(() => {
-        if (!isAuth && !error) {
-            handleSignIn();
-        } else if (error === ApplicationConstants.USER_DENIED_CONSENT) {
+
+        if (!isAuthenticated && !error) {
+            isInitialized && handleSignIn();
+
+            return;
+        }
+
+        if (error === AppConstants.USER_DENIED_CONSENT) {
             // dispatch(handleSignIn());
             // TODO: Send it to an error page
         } else {
-            // TODO: Use authentication SDK to access the session
+            // TODO: Use authentication SDK to access the session.
             if (sessionStorage.getItem("request_params") &&
                 JSON.parse(sessionStorage.getItem("request_params")).clientId &&
-                JSON.parse(sessionStorage.getItem("request_params")).clientId !== GlobalConfig.clientID) {
+                JSON.parse(sessionStorage.getItem("request_params")).clientId !== AppConstants.getClientID()) {
+
                 sessionStorage.clear();
-                handleSignIn();
+                isInitialized && handleSignIn();
             } else {
                 loginSuccessRedirect();
             }
         }
-    }, [isAuth]);
+    }, [ isAuthenticated, isInitialized ]);
 
     return null;
 };
+
+/**
+ * A default export was added to support React.lazy.
+ * TODO: Change this to a named export once react starts supporting named exports for code splitting.
+ * @see {@link https://reactjs.org/docs/code-splitting.html#reactlazy}
+ */
+export default SignIn;

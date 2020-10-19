@@ -40,6 +40,12 @@ module.exports = (env) => {
     const isProduction = env.NODE_ENV === "production";
     const isDevelopment = env.NODE_ENV === "development";
 
+    // Flag to determine if the app is intended to be deployed on an external server.
+    // If true, references & usage of internal JAVA classes and resources inside the index.jsp
+    // will be removed. Since these resources are only available inside IS runtime, when hosted
+    // externally, the server (tomcat etc.) will throw errors when trying to resolve them.
+    const isDeployedOnExternalServer = env.IS_DEPLOYED_ON_EXTERNAL_SERVER;
+
     // Checks if analyzing mode enabled.
     const isAnalyzeMode = env.ENABLE_ANALYZER === "true";
 
@@ -65,13 +71,22 @@ module.exports = (env) => {
                 ? "source-map"
                 : false
             : isDevelopment && "cheap-module-source-map",
-        entry: ["./src/index.tsx"],
+        entry: {
+            init: [ "@babel/polyfill","./src/init/init.ts"],
+            main: "./src/index.tsx",
+            rpIFrame: "./src/init/rpIFrame-script.ts"
+        },
         mode: isProduction ? "production" : "development",
         module: {
             rules: [
                 {
                     test: /\.css$/,
                     use: ["style-loader", "css-loader"]
+                },
+                {
+                    exclude: /node_modules/,
+                    test: /\.css$/,
+                    use: [ "postcss-loader" ]
                 },
                 {
                     test: /\.(png|jpg|cur|gif|eot|ttf|woff|woff2)$/,
@@ -94,8 +109,22 @@ module.exports = (env) => {
                     ]
                 },
                 {
-                    exclude: /(node_modules)/,
-                    test: /\.tsx?$/,
+                    exclude: {
+                        not: [
+                            /joi/,
+                            /react-notification-system/,
+                            /less-plugin-rewrite-variable/,
+                            /@wso2is(\\|\/)authentication/,
+                            /@wso2is(\\|\/)forms/,
+                            /@wso2is(\\|\/)react-components/,
+                            /@wso2is(\\|\/)theme/,
+                            /@wso2is(\\|\/)validation/ ],
+                        test: [
+                            /\.(spec|test).(ts|js)x?$/,
+                            /node_modules(\\|\/)(core-js)/
+                        ]
+                    },
+					test: /\.(ts|js)x?$/,
                     use: [
                         { loader: "cache-loader" },
                         {
@@ -106,11 +135,7 @@ module.exports = (env) => {
                             }
                         },
                         {
-                            loader: "ts-loader",
-                            options: {
-                                happyPackMode: true,
-                                transpileOnly: true
-                            }
+                            loader: "babel-loader"
                         }
                     ]
                 },
@@ -244,6 +269,12 @@ module.exports = (env) => {
                     force: true,
                     from: "public",
                     to: "."
+                },
+                {
+                    context: path.join(__dirname, "src"),
+                    force: true,
+                    from: "auth.jsp",
+                    to: "."
                 }
             ]),
             isProduction
@@ -251,30 +282,53 @@ module.exports = (env) => {
                     authorizationCode: "<%=request.getParameter(\"code\")%>",
                     contentType: "<%@ page language=\"java\" contentType=\"text/html; charset=UTF-8\" " +
                         "pageEncoding=\"UTF-8\" %>",
+                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.jsp"),
                     hash: true,
-                    importSuperTenantConstant: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>",
-                    importTenantPrefix: "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
-                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>",
-                    importUtil: "<%@ page import=\"" +
-                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>",
+                    importSuperTenantConstant: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.SUPER_TENANT_DOMAIN_NAME\"%>"
+                        : "",
+                    importTenantPrefix: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"static org.wso2.carbon.utils.multitenancy." +
+                        "MultitenantConstants.TENANT_AWARE_URL_PREFIX\"%>"
+                        : "",
+                    importUtil: !isDeployedOnExternalServer
+                        ? "<%@ page import=\"" +
+                        "static org.wso2.carbon.identity.core.util.IdentityUtil.getServerURL\" %>"
+                        : "",
                     publicPath: publicPath,
-                    serverUrl: "<%=getServerURL(\"\", true, true)%>",
+                    serverUrl: !isDeployedOnExternalServer
+                        ? "<%=getServerURL(\"\", true, true)%>"
+                        : "",
                     sessionState: "<%=request.getParameter(\"session_state\")%>",
-                    superTenantConstant: "<%=SUPER_TENANT_DOMAIN_NAME%>",
+                    superTenantConstant: !isDeployedOnExternalServer
+                        ? "<%=SUPER_TENANT_DOMAIN_NAME%>"
+                        : "",
                     template: path.join(__dirname, "src", "index.jsp"),
-                    tenantDelimiter: "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\"",
-                    tenantPrefix: "<%=TENANT_AWARE_URL_PREFIX%>",
+                    tenantDelimiter: !isDeployedOnExternalServer
+                        ? "\"/\"+'<%=TENANT_AWARE_URL_PREFIX%>'+\"/\""
+                        : "",
+                    tenantPrefix: !isDeployedOnExternalServer
+                        ? "<%=TENANT_AWARE_URL_PREFIX%>"
+                        : "",
                     title: titleText
                 })
                 : new HtmlWebpackPlugin({
+                    excludeChunks: [ "rpIFrame" ],
                     filename: path.join(distFolder, "index.html"),
                     hash: true,
                     publicPath: publicPath,
                     template: path.join(__dirname, "src", "index.html"),
                     title: titleText
                 }),
+            new HtmlWebpackPlugin({
+                excludeChunks: [ "main", "init" ],
+                filename: path.join(distFolder, "rpIFrame.html"),
+                hash: true,
+                publicPath: publicPath,
+                template: path.join(__dirname, "src", "rpIFrame.html")
+            }),
             new webpack.DefinePlugin({
                 "process.env": {
                     NODE_ENV: JSON.stringify(env.NODE_ENV)

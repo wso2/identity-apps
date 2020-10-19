@@ -24,3 +24,12 @@
 @filterLabelBorderColor: @primaryColor;
 @filterLabelHoverTextColor: @textColor;
 @filterLabelHoverBackgroundColor: @labelHoverBackgroundColor;
+
+/*******************************
+         Circular Label
+*******************************/
+
+@microCircularLabelMinWidth: 1em;
+@microCircularLabelMinHeight: 1em;
+@microCircularLabelLeftMargin: 0.4em;
+@microCircularLabelRightMargin: 1em;

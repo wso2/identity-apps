@@ -16,9 +16,9 @@
  * under the License.
  */
 
+import { IdentityClient } from "@asgardio/oidc-js";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
-import { IdentityClient, Storage } from "@wso2is/authentication";
 import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { OIDCScopesManagementConstants } from "../constants";
@@ -36,7 +36,7 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
  * @return {Promise<T>} Promise of type T.
  * @throws {IdentityAppsApiException}
  */
-export const getOIDCScopesList = <T>(): Promise<T> => {
+export const getOIDCScopesList = <T = {}>(): Promise<T> => {
     const requestConfig = {
         headers: {
             "Accept": "application/json",

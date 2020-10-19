@@ -99,5 +99,5 @@ export const emptyUserSession = (): UserSession => ({
     ip: "",
     lastAccessTime: "",
     loginTime: "",
-    userAgent: "",
+    userAgent: ""
 });

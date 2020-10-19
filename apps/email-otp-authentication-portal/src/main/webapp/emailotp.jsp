@@ -17,12 +17,13 @@
  -->
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
+<%@ include file="includes/localize.jsp" %>
 <%
     request.getSession().invalidate();
     String queryString = request.getQueryString();
@@ -31,7 +32,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String errorMessage = "Authentication Failed! Please Retry";
+    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
     String authenticationFailed = "false";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -41,7 +42,7 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = "Authentication Failed! Please Retry";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
             }
         }
     }
@@ -55,7 +56,7 @@
         %>
         <jsp:include page="extensions/header.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
         <% } %>
 
         <!--[if lt IE 9]>
@@ -75,12 +76,12 @@
                 %>
                 <jsp:include page="extensions/product-title.jsp"/>
                 <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
 
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2>Email Verification</h2>
+                    <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "otp.verification")%></h2>
                     <div class="ui divider hidden"></div>
                     <%
                         if ("true".equals(authenticationFailed)) {
@@ -98,34 +99,34 @@
                                     String authFailureMsg = request.getParameter("authFailureMsg");
                                     if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
                             %>
-                            <div class="ui negative message">Authentication Failed! Please Retry</div>
+                            <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%></div>
                             <div class="ui divider hidden"></div>
                             <% }
                             } %>
                             <% if (request.getParameter("screenValue") != null) { %>
                             <div class="field">
-                                <label for="password">Enter the code sent to your email ID
+                                <label for="password"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code")%>
                                     (<%=Encode.forHtmlContent(request.getParameter("screenValue"))%>)
                                 </label>
                                 <input type="password" id='OTPCode' name="OTPCode" c size='30'/>
                             <% } else { %>
                             <div class="field">
-                                <label for="password">Enter the code sent to your email ID:</label>
+                                <label for="password"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code")%>:</label>
                                 <input type="password" id='OTPCode' name="OTPCode" size='30'/>
                                     <% } %>
                             </div>
                             <input type="hidden" name="sessionDataKey"
                                 value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
-                            
+
                             <div class="ui divider hidden"></div>
                             <div class="align-right buttons">
                                 <%
                                     if ("true".equals(authenticationFailed)) {
                                 %>
-                                <a class="ui button link-button" id="resend">Resend Code</a>
+                                <a class="ui button link-button" id="resend"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code")%></a>
                                 <% } %>
-                                <input type="button" name="authenticate" id="authenticate" value="Authenticate"
+                                <input type="button" name="authenticate" id="authenticate" value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "authenticate")%>"
                                     class="ui primary button" />
                             </div>
                         </form>
@@ -141,7 +142,7 @@
         %>
         <jsp:include page="extensions/product-footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
         <% } %>
 
         <!-- footer -->
@@ -151,7 +152,7 @@
         %>
         <jsp:include page="extensions/footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
         <script type="text/javascript">
@@ -160,7 +161,7 @@
                     var code = document.getElementById("OTPCode").value;
                     if (code == "") {
                         document.getElementById('alertDiv').innerHTML 
-                            = '<div id="error-msg" class="ui negative message">Please enter the code!</div>'
+                            = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.enter.code")%></div>'
                               +'<div class="ui divider hidden"></div>';
                     } else {
                         if ($('#codeForm').data("submitted") === true) {

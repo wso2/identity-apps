@@ -20,11 +20,14 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, {
     FunctionComponent,
     ReactElement,
+    ReactNode,
     useCallback,
     useEffect,
     useState
 } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { Button, Grid, Icon, Input, Label, Popup } from "semantic-ui-react";
+import { LabelWithPopup } from "../label";
 import { Hint } from "../typography";
 
 export interface URLInputPropsInterface extends TestableComponentInterface {
@@ -45,6 +48,14 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
     disabled?: boolean;
     hideComponent?: boolean;
     /**
+     * Custom label to be passed from outside.
+     */
+    customLabel?: ReactNode;
+    /**
+     * Show/Hide predictions.
+     */
+    showPredictions?: boolean;
+    /**
      * Make the form read only.
      */
     readOnly?: boolean;
@@ -52,6 +63,26 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
      * Passes the submit function as an argument.
      */
     getSubmit?: (submitFunction: (callback: (url?: string) => void) => void) => void;
+    /**
+     * CORS allowed origin list for the tenant.
+     */
+    allowedOrigins?: string[];
+    /**
+     * Tenant domain
+     */
+    tenantDomain?: string;
+    /**
+     * Callback to add the allowed origin
+     */
+    handleAddAllowedOrigin?: (url: string) => void;
+    /**
+     * Popup label availability
+     */
+    labelEnabled?: boolean;
+    /**
+     * Show or hide Allow button
+     */
+    isAllowEnabled?: boolean;
 }
 
 /**
@@ -67,7 +98,12 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     const {
         addURLTooltip,
+        customLabel,
         duplicateURLErrorMessage,
+        isAllowEnabled,
+        allowedOrigins,
+        handleAddAllowedOrigin,
+        labelEnabled,
         showError,
         setShowError,
         urlState,
@@ -81,11 +117,15 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         required,
         disabled,
         hideComponent,
+        showPredictions,
         computerWidth,
         readOnly,
         getSubmit,
+        tenantDomain,
         [ "data-testid" ]: testId
     } = props;
+
+    const { t } = useTranslation();
 
     const [ changeUrl, setChangeUrl ] = useState<string>("");
     const [ predictValue, setPredictValue ] = useState<string[]>([]);
@@ -93,6 +133,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const [ duplicateURL, setDuplicateURL ] = useState<boolean>(false);
     const [ keepFocus, setKeepFocus ] = useState<boolean>(false);
     const [ hideEntireComponent, setHideEntireComponent ] = useState<boolean>(false);
+    const [ successShowMore, setSuccessShowMore ] = useState<boolean>(false);
+    const [ warningShowMore, setWarningShowMore ] = useState<boolean>(false);
+    const [ allowOrigin, setAllowOrigin ] = useState<boolean>(false);
 
     /**
      * Add URL to the URL list.
@@ -256,7 +299,156 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         }
     }, [ hideComponent ]);
 
+    const handleAllowOrigin = (url: string): void => {
+        handleAddAllowedOrigin(url);
+        setAllowOrigin(true);
+    };
+
     const computerSize: any = (computerWidth) ? computerWidth : 8;
+
+    const resolveCORSStatusLabel = (url: string) => {
+        const splitURL = url.split("/");
+        const origin = splitURL[0] + "//" + splitURL[2];
+
+        if (allowedOrigins?.includes(origin) || allowOrigin) {
+            return (
+                <LabelWithPopup
+                    popupHeader={ t("devPortal:components.URLInput.withLabel.positive.header") }
+                    popupSubHeader={
+                        <>
+                            <Icon name="building outline"/>
+                            { tenantDomain }
+                        </>
+                    }
+                    popupContent={
+                        <>
+                            { t("devPortal:components.URLInput.withLabel.positive.content") }
+                            <a onClick={ () => setSuccessShowMore(!successShowMore) }>
+                                {
+                                    successShowMore
+                                        ? <> { t("common:showLess") }</>
+                                        : <> { t("common:showMore") }</>
+                                }
+                            </a><br/>
+                            {
+                                successShowMore && (
+                                    <>
+                                        <br/>
+                                        { t("devPortal:components.URLInput.withLabel.positive.detailedContent.0") }
+                                        <br/>
+                                        <Trans
+                                            i18nKey={
+                                                "devPortal:components.URLInput.withLabel.positive.detailedContent.1"
+                                            }
+                                            tOptions={ { tenantName: tenantDomain } }
+                                        >
+                                            Therefore enabling CORS for this origin will allow you to access
+                                            Identity Server APIs from the applications registered in the
+                                            <strong>{ tenantDomain }</strong> tenant domain.
+                                        </Trans>
+                                    </>
+                                )
+                            }
+                        </>
+                    }
+                    popupFooterLeftContent={
+                        <>
+                            <Icon name="check" color="green"/>
+                            { origin }
+                        </>
+                    }
+                    labelColor="green"
+                />
+            );
+        } else {
+            return (
+                <LabelWithPopup
+                    popupHeader={ t("devPortal:components.URLInput.withLabel.negative.header") }
+                    popupSubHeader={
+                        <>
+                            <Icon name="building outline"/>
+                            { tenantDomain }
+                        </>
+                    }
+                    popupContent={
+                        <>
+                            { t("devPortal:components.URLInput.withLabel.negative.content") }
+                            <a onClick={ () => setWarningShowMore(!warningShowMore) }>
+                                {
+                                    warningShowMore
+                                        ? <> { t("common:showLess") }</>
+                                        : <> { t("common:showMore") }</>
+                                }
+                            </a><br/>
+                            {
+                                warningShowMore && (
+                                    <>
+                                        <br/>
+                                        { t("devPortal:components.URLInput.withLabel.negative.detailedContent.0") }
+                                        <br/>
+                                        <Trans
+                                            i18nKey={
+                                                "devPortal:components.URLInput.withLabel.negative.detailedContent.1"
+                                            }
+                                            tOptions={ { tenantName: tenantDomain } }
+                                        >
+                                            Therefore enabling CORS for this origin will allow you to access
+                                            Identity Server APIs from the applications registered in the
+                                            <strong>{ tenantDomain }</strong> tenant domain.
+                                        </Trans>
+                                    </>
+                                )
+                            }
+                        </>
+                    }
+                    popupFooterRightActions={
+                        isAllowEnabled && (
+                            <Button
+                                onClick={ () => handleAllowOrigin(origin) }
+                                basic
+                                color="orange"
+                                floated="right"
+                            >
+                                { t("devPortal:components.URLInput.withLabel.negative.leftAction") }
+                            </Button>
+                        )
+                    }
+                    popupFooterLeftContent={
+                        <>
+                            <Icon name="times" color="red"/>
+                            { origin }
+                        </>
+                    }
+                    labelColor="red"
+                />
+            );
+        }
+    };
+
+    /**
+     * Resolves the error label.
+     *
+     * @return {React.ReactElement | React.ReactNode}
+     */
+    const resolveValidationLabel = (): ReactElement | ReactNode => {
+        if (!validURL) {
+            return (
+                <Label basic color="red" pointing>
+                    { validationErrorMsg }
+                </Label>
+            );
+        }
+
+        if (duplicateURL) {
+            return (
+                <Label basic color="red" pointing>
+                    { duplicateURLErrorMessage }
+                </Label>
+            );
+        }
+        
+        return customLabel;
+    };
 
     return (!hideEntireComponent &&
         <>
@@ -309,49 +501,42 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             inverted
                         />
                     </Input>
-                    {
-                        !validURL &&
-                        (
-                            <Label basic color="red" pointing>
-                                { validationErrorMsg }
-                            </Label>
-                        )
-                    }
-                    {
-                        duplicateURL &&
-                        (
-                            <Label basic color="red" pointing>
-                                { duplicateURLErrorMessage }
-                            </Label>
-                        )
-                    }
+                    { resolveValidationLabel() }
                 </Grid.Column>
             </Grid.Row>
-            <Grid.Row className={ "urlComponentInputRow" }>
-                <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
-                    {
-                        (predictValue.length > 0) &&
-                        predictValue.map((predict) => {
-                            return (
-                                <Label
-                                    key={ predict }
-                                    basic
-                                    color="grey"
-                                    onClick={ () => onPredictClick(predict) }
-                                >
-                                    { predict }
-                                </Label>
-                            );
-                        })
-                    }
-                </Grid.Column>
-            </Grid.Row>
+            {
+                showPredictions && (
+                    <Grid.Row className={ "urlComponentInputRow" }>
+                        <Grid.Column mobile={ 14 } tablet={ 14 } computer={ computerSize }>
+                            {
+                                (predictValue.length > 0) && predictValue.map((predict) => {
+                                    return (
+                                        <Label
+                                            key={ predict }
+                                            basic
+                                            color="grey"
+                                            onClick={ () => onPredictClick(predict) }
+                                        >
+                                            { predict }
+                                        </Label>
+                                    );
+                                })
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
             { urlState && urlState.split(",").map((url) => {
                 if (url !== "") {
                     return (
                         <Grid.Row key={ url } className={ "urlComponentTagRow" }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ computerSize }>
                                 <Label data-testid={ `${ testId }-${ url }` }>
+                                    {
+                                        labelEnabled && (
+                                            resolveCORSStatusLabel(url)
+                                        )
+                                    }
                                     { url }
                                     {
                                         !readOnly && (
@@ -387,5 +572,8 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 URLInput.defaultProps = {
     addURLTooltip: "Add a URL",
     "data-testid": "url-input",
-    duplicateURLErrorMessage: "This URL is already added. Please select a different one."
+    duplicateURLErrorMessage: "This URL is already added. Please select a different one.",
+    isAllowEnabled: true,
+    labelEnabled: false,
+    showPredictions: true
 };

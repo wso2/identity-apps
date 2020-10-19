@@ -23,7 +23,7 @@ import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/
 import { SettingsSectionIcons } from "../../configs";
 import {
     AlertInterface,
-    AlertLevels,
+    AlertLevels
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
 import { SettingsSection, UserAvatar } from "../shared";
@@ -67,7 +67,8 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
                         ),
                     level: AlertLevels.ERROR,
                     message:
-                        t("userPortal:components.federatedAssociations.notifications.getFederatedAssociations.error.message")
+                        t("userPortal:components.federatedAssociations.notifications." +
+                            "getFederatedAssociations.error.message")
                 });
             });
     };
@@ -110,7 +111,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
     };
 
     /**
-     * Pops up a model requesting confirmation before deleting 
+     * Pops up a model requesting confirmation before deleting
      */
     const deleteConfirmation = (): React.ReactElement => {
         return (

@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -33,6 +33,7 @@ import {
     getOutboundProvisioningConnectorMetadata
 } from "../../api";
 import { IdentityProviderWizardStepIcons } from "../../configs";
+import { IdentityProviderManagementConstants } from "../../constants";
 import {
     AuthenticatorPropertyInterface,
     CommonPluggableComponentPropertyInterface,
@@ -137,7 +138,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     const [submitGeneralSettings, setSubmitGeneralSettings] = useTrigger();
     const [submitAuthenticator, setSubmitAuthenticator] = useTrigger();
     const [submitOutboundProvisioningSettings, setSubmitOutboundProvisioningSettings] = useTrigger();
-    const [finishSubmit, setFinishSubmit] = useTrigger();
+    const [ finishSubmit, setFinishSubmit ] = useTrigger();
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     /**
      * Creates a new identity provider.
@@ -158,31 +161,35 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 if (!_.isEmpty(response.headers.location)) {
                     const location = response.headers.location;
                     const createdIdpID = location.substring(location.lastIndexOf("/") + 1);
-                    history.push(AppConstants.PATHS.get("IDP_EDIT").replace(":id",
-                        createdIdpID));
+
+                    history.push({
+                        pathname: AppConstants.getPaths().get("IDP_EDIT").replace(":id", createdIdpID),
+                        search: IdentityProviderManagementConstants.NEW_IDP__URL_SEARCH_PARAM
+                    });
+
                     return;
                 }
 
                 // Fallback to identity providers page, if the location header is not present.
-                history.push(AppConstants.PATHS.get("IDP"));
+                history.push(AppConstants.getPaths().get("IDP"));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.idp.notifications.addIDP.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications.addIDP.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.idp.notifications.addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.idp.notifications.addIDP.genericError.message")
-                }));
+                });
             });
     };
 
@@ -436,7 +443,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 return authenticator.authenticatorId === template.federatedAuthenticators.defaultAuthenticatorId ?
                     {
                         ...authenticator,
-                        properties: getUpdatedElementsByKey(defaultAuthenticatorPropertiesFromMetadata, 
+                        properties: getUpdatedElementsByKey(defaultAuthenticatorPropertiesFromMetadata,
                             authenticator.properties, "key")
                         // properties: _.merge(defaultAuthenticatorPropertiesFromMetadata, authenticator.properties)
                     } : authenticator;
@@ -616,7 +623,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 className="wizard identity-provider-create-wizard"
                 dimmer="blurring"
                 onClose={ handleWizardClose }
-                closeOnDimmerClick
+                closeOnDimmerClick={ false }
                 closeOnEscape
                 data-testid={ `${ testId }-modal` }
             >
@@ -637,6 +644,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     </Steps.Group>
                 </Modal.Content>
                 <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
+                    { alert && alertComponent }
                     { resolveStepContent(currentWizardStep) }
                 </Modal.Content>
                 <Modal.Actions data-testid={ `${ testId }-modal-actions` }>

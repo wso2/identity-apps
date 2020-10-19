@@ -1,0 +1,20 @@
+{
+    "fixturesFolder": "./fixtures",
+    "integrationFolder": "./integration",
+    "pageLoadTimeout": 300000,
+    "pluginsFile": "./plugins/index.ts",
+    "reporter": "cypress-mochawesome-reporter",
+    "reporterOptions": {
+        "reportDir": "output/results",
+        "overwrite": false,
+        "html": false,
+        "json": true
+    },
+    "screenshotsFolder": "output/screenshots",
+    "supportFile": "support/index.ts",
+    "testFiles": "**/*.spec.*",
+    "video": false,
+    "videosFolder": "output/videos",
+    "viewportWidth": 1920,
+    "viewportHeight": 1080
+}

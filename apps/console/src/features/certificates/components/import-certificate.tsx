@@ -19,7 +19,7 @@
 import { AlertLevels, Certificate, DisplayCertificate, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -78,7 +78,9 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const [ pem, setPem ] = useState("");
     const [ file, setFile ] = useState<File>(null);
     const [ certificate, setCertificate ] = useState<forge.pki.Certificate>(null);
+
     const [ firstStep, setFirstStep ] = useTrigger();
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     /**
      * Moves to the next step once the certificate display state is set.
@@ -104,7 +106,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             update();
             onClose();
         }).catch(error => {
-            dispatch(addAlert({
+            setAlert({
                 description: error?.response?.data?.description
                     || t("adminPortal:components.certificates.keystore.notifications." +
                         "addCertificate.genericError.description"),
@@ -112,7 +114,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 message: error?.response?.data?.message
                     || t("adminPortal:components.certificates.keystore.notifications." +
                         "addCertificate.genericError.message")
-            }));
+            });
         })
     };
 
@@ -240,6 +242,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
             size="small"
             className="wizard application-create-wizard"
             data-testid={ `${ testId }-modal` }
+            closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.certificates.keystore.wizard.header")}
@@ -259,6 +262,9 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     )) }
                 </Steps.Group>
             </Modal.Content >
+            <Modal.Content>
+                { alert && alertComponent }
+            </Modal.Content>
             <Modal.Content
                 className={ `content-container ${currentWizardStep === 1 ? "certificate-content summary" : ""}` }
                 scrolling

@@ -26,9 +26,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
+import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore, updateUserStore } from "../../api";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
-
 /**
  * Prop types of `EditBasicDetailsUserStore` component
  */
@@ -140,7 +140,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                             message: t("adminPortal:components.userstores.notifications." +
                                 "delay.message")
                         }));
-                        update();
+
+                        history.push(AppConstants.getPaths().get("USERSTORES"))
                     })
                     .catch(error => {
                         dispatch(addAlert({
@@ -156,6 +157,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                     });
             } }
             data-testid={ `${ testId }-delete-confirmation-modal` }
+            closeOnDimmerClick={ false }
         >
             <ConfirmationModal.Header
                 data-testid={ `${ testId }-delete-confirmation-modal-header` }
@@ -308,7 +310,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                     data-testid={ `${ testId }-form-name-input` }
                                 />
                                 <Field
-                                    label={ t("adminPortal:components.userstores.forms.general.type.label") }
+                                    label={ t("adminPortal:components.userstores.forms.general.description.label") }
                                     name="type"
                                     type="text"
                                     disabled
@@ -340,7 +342,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                             .find(attribute => attribute.name === "type").value === "password";
                                         const toggle = property.attributes
                                             .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                         return (
                                             isPassword
                                                 ? (
@@ -463,7 +465,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                                     .find(attribute => attribute.name === "type").value === "password";
                                                 const toggle = property.attributes
                                                     .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                                 return (
                                                     isPassword
                                                         ? (

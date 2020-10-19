@@ -40,6 +40,8 @@ import { Config } from "./configs";
 import { UIConstants } from "./constants";
 import { store } from "./store";
 import { setSupportedI18nLanguages } from "./store/actions";
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 // Set the runtime config in the context.
 ContextUtils.setRuntimeConfig(Config.getDeploymentConfig());

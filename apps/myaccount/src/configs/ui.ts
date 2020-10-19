@@ -149,6 +149,7 @@ export const AdvancedSearchIcons = {
 };
 
 export const EmptyPlaceholderIllustrations = {
+    accessDeniedError: ForbiddenIcon,
     emptyList: BoxIcon,
     genericError: CloseIcon,
     loginError: ForbiddenIcon,

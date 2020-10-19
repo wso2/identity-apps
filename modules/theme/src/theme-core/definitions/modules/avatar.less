@@ -1,0 +1,329 @@
+/*!
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
+
+@type    : "module";
+@element : "avatar";
+
+@import (multiple) '../../theme.less';
+.loadVariables();
+
+/*-------------------------------
+        Avatar Container
+--------------------------------*/
+
+.ui-avatar-wrapper {
+    &.inline {
+        display: @avatarWrapperDisplayInline;
+    }
+}
+
+/*-------------------------------
+        Avatar Container
+--------------------------------*/
+
+.ui-avatar-container {
+    position: @avatarContainerPosition;
+    display: @avatarContainerDisplay;
+
+    .edit-icon-container {
+        position: @editAvatarIconPosition;
+        bottom: @editAvatarIconBottom;
+        right: @editAvatarIconRight;
+
+        .theme-icon svg.icon .path {
+            fill: @editAvatarIconColor;
+        }
+    }
+
+    .custom-label {
+        position: @avatarCustomLabelPosition;
+        z-index: @avatarCustomLabelZIndex;
+        width: @avatarCustomLabelWidth;
+        height: @avatarCustomLabelHeight;
+        top: @avatarCustomLabelTop;
+        right: @avatarCustomLabelRight;
+    }
+}
+
+/*-------------------------------
+        Avatar Common
+--------------------------------*/
+
+.ui-avatar {
+    &.hoverable {
+        cursor: @avatarHoverableCursor;
+        
+        &:hover {
+            opacity: @avatarHoverableOpacity;
+        }
+    }
+
+    &.initials-color {
+        &-white {
+            .initials {
+                color: @white !important;
+            }
+        }
+
+        &-primary {
+            .initials {
+                color: @primaryColor !important;
+            }
+        }
+    }
+
+    &.with-background-image {
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+    
+    .inner-content {
+        // Stretch out non square images to fill the spaces. 
+        .inner-image {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            width: auto;
+            max-width: max-content;
+            left: 0;
+        }
+    }
+}
+
+/*-------------------------------
+        Circular Avatar
+--------------------------------*/
+
+.ui-avatar {
+    &.circular {
+        text-align: @circularAvatarTextAlign;
+        background: @circularAvatarBackground;
+
+        &.mini {
+            width: @miniWidth;
+            height: @miniWidth;
+
+            .initials {
+                font-size: 1.5em;
+                line-height: @miniWidth;
+            }
+        }
+
+        &.little {
+            width: @littleWidth;
+            height: @littleWidth;
+
+            .initials {
+                font-size: 2em;
+                line-height: @littleWidth;
+            }
+        }
+
+        &.x60 {
+            width: @x60Width;
+            height: @x60Width;
+
+            .initials {
+                font-size: 2.4em;
+                line-height: @x60Width;
+            }
+        }
+
+        &.tiny {
+            width: @tinyWidth;
+            height: @tinyWidth;
+
+            .initials {
+                font-size: 3em;
+                line-height: @tinyWidth;
+            }
+        }
+
+        &.small {
+            width: @smallWidth;
+            height: @smallWidth;
+
+            .initials {
+                font-size: 4em;
+                line-height: @smallWidth;
+            }
+        }
+
+        &.medium {
+            width: @mediumWidth;
+            height: @mediumWidth;
+
+            .initials {
+                font-size: 8em;
+                line-height: @mediumWidth;
+            }
+        }
+
+        &.large {
+            width: @largeWidth;
+            height: @largeWidth;
+
+            .initials {
+                font-size: 11em;
+                line-height: @largeWidth;
+            }
+        }
+
+        &.big {
+            width: @bigWidth;
+            height: @bigWidth;
+
+            .initials {
+                font-size: 13em;
+                line-height: @bigWidth;
+            }
+        }
+
+        &.huge {
+            width: @hugeWidth;
+            height: @hugeWidth;
+
+            .initials {
+                font-size: 16em;
+                line-height: @hugeWidth;
+            }
+        }
+
+        &.massive {
+            width: @massiveWidth;
+            height: @massiveWidth;
+
+            .initials {
+                font-size: 17em;
+                line-height: @massiveWidth;
+            }
+        }
+
+        &.spaced-right {
+            margin-right: @circularAvatarSpacingRight;
+        }
+
+        &.spaced-left {
+            margin-left: @circularAvatarSpacingLeft;
+        }
+    }
+}
+
+/*-------------------------------
+         Square Avatar
+--------------------------------*/
+
+.ui-avatar {
+    &.square {
+        text-align: center;
+
+        &.mini {
+            width: @miniWidth;
+            height: @miniWidth;
+
+            .initials {
+                font-size: 1.5em;
+                line-height: @miniWidth;
+            }
+        }
+
+        &.little {
+            width: @littleWidth;
+            height: @littleWidth;
+
+            .initials {
+                font-size: 2em;
+                line-height: @littleWidth;
+            }
+        }
+
+        &.tiny {
+            height: @tinyWidth;
+
+            .initials {
+                font-size: 3em;
+                line-height: @tinyWidth;
+            }
+        }
+
+        &.small {
+            height: @smallWidth;
+
+            .initials {
+                font-size: 4em;
+                line-height: @smallWidth;
+            }
+        }
+
+        &.medium {
+            height: @mediumWidth;
+
+            .initials {
+                font-size: 8em;
+                line-height: @mediumWidth;
+            }
+        }
+
+        &.large {
+            height: @largeWidth;
+
+            .initials {
+                font-size: 11em;
+                line-height: @largeWidth;
+            }
+        }
+
+        &.big {
+            height: @bigWidth;
+
+            .initials {
+                font-size: 13em;
+                line-height: @bigWidth;
+            }
+        }
+
+        &.huge {
+            height: @hugeWidth;
+
+            .initials {
+                font-size: 16em;
+                line-height: @hugeWidth;
+            }
+        }
+
+        &.massive {
+            height: @massiveWidth;
+
+            .initials {
+                font-size: 17em;
+                line-height: @massiveWidth;
+            }
+        }
+
+        &.spaced-right {
+            margin-right: @squareAvatarSpacingRight;
+        }
+
+        &.spaced-left {
+            margin-left: @squareAvatarSpacingLeft;
+        }
+    }
+}
+
+.loadUIOverrides();

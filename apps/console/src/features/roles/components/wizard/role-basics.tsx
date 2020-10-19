@@ -26,8 +26,6 @@ import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
 import { searchGroupList } from "../../../groups/api";
 import {
-    APPLICATION_DOMAIN,
-    INTERNAL_DOMAIN,
     PRIMARY_DOMAIN
 } from "../../constants";
 import { CreateRoleFormData, SearchRoleInterface } from "../../models";
@@ -45,7 +43,7 @@ interface RoleBasicProps extends TestableComponentInterface {
 
 /**
  * Component to capture basic details of a new role.
- * 
+ *
  * @param props Role Basic prop types
  */
 export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicProps): ReactElement => {
@@ -81,7 +79,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     /**
      * Util method to validate if the provided role name exists in the system.
-     * 
+     *
      * @param roleName - new role name user entered.
      */
     const validateRoleName = (roleName: string): void => {
@@ -172,7 +170,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     /**
      * Util method to collect form data for processing.
-     * 
+     *
      * @param values - contains values from form elements
      */
     const getFormValues = (values: any): CreateRoleFormData => {
@@ -205,7 +203,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                         "placeholder", { type: "Role" })
                             }
                             required={ true }
-                            requiredErrorMessage={ 
+                            requiredErrorMessage={
                                 t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                                         "validations.empty", { type: "Role" })
                             }

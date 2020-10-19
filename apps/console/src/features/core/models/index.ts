@@ -21,3 +21,4 @@ export * from "./help-panel";
 export * from "./reducer-state";
 export * from "./user-store";
 export * from "./users";
+export * from "./cors-configurations";

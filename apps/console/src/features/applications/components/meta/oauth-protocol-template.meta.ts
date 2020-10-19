@@ -24,10 +24,10 @@ import {
 } from "../../models";
 
 export const OAuthProtocolTemplateItem: ApplicationTemplateListItemInterface = {
-    id: DefaultProtocolTemplate.OIDC,
-    name: "OIDC",
-    image: "oidc",
     authenticationProtocol: "oidc",
+    id: DefaultProtocolTemplate.OIDC,
+    image: "oidc",
+    name: "OIDC"
 };
 
 export const OAuthProtocolTemplate: ApplicationTemplateInterface = {

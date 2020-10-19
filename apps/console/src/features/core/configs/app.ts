@@ -84,6 +84,7 @@ export class Config {
                 structureFileURL: window["AppUtils"].getConfig().documentation?.structureFileURL
                     ?? DocumentationConstants.DEFAULT_STRUCTURE_FILE_URL
             },
+            idpConfigs: window["AppUtils"].getConfig().idpConfigs,
             loginCallbackUrl: window["AppUtils"].getConfig().loginCallbackURL,
             productVersion: window["AppUtils"].getConfig().productVersion,
             serverHost: window["AppUtils"].getConfig().serverOriginWithTenant,
@@ -128,6 +129,7 @@ export class Config {
             ...getScopesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
+            CORSOrigins: `${this.getDeploymentConfig().serverHost}/api/server/v1/cors/origins`,
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
             documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
             // TODO: Remove this endpoint and use ID token to get the details
@@ -150,6 +152,7 @@ export class Config {
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
+            isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig
         };

@@ -24,8 +24,7 @@ import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffec
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { CheckboxProps, Grid, Icon } from "semantic-ui-react";
-import { AuthenticatorAccordion } from "../../../core";
-import { EmptyPlaceholderIllustrations } from "../../../core";
+import { AuthenticatorAccordion, EmptyPlaceholderIllustrations } from "../../../core";
 import {
     getFederatedAuthenticatorDetails,
     getFederatedAuthenticatorMeta,
@@ -513,12 +512,12 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                                     icon: {
                                                         icon: authenticator.id && (getFederatedAuthenticators().find(
                                                             (fedAuth) =>
-                                                            (fedAuth.authenticatorId === authenticator.id))).icon
+                                                            (fedAuth.authenticatorId === authenticator.id)))?.icon
                                                     },
                                                     id: authenticator?.id,
                                                     title: authenticator.id && (getFederatedAuthenticators().find(
                                                         (fedAuth) =>
-                                                        (fedAuth.authenticatorId === authenticator.id))).displayName
+                                                        (fedAuth.authenticatorId === authenticator.id)))?.displayName
                                                 }
                                             ]
                                         }
@@ -565,6 +564,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                     (): void => handleAuthenticatorDelete(deletingAuthenticator.authenticatorId)
                                 }
                                 data-testid={ `${ testId }-authenticator-delete-confirmation` }
+                                closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header
                                     data-testid={ `${ testId }-authenticator-delete-confirmation` }>

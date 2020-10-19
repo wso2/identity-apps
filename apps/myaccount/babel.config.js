@@ -17,17 +17,24 @@
  */
 
 module.exports = {
+    env: {
+        test: {
+            plugins: [ "@babel/plugin-transform-modules-commonjs" ]
+        }
+    },
+    plugins: [ "@babel/plugin-proposal-class-properties" ],
     presets: [
         [
             "@babel/preset-env",
             {
-                "useBuiltIns": "entry"
+                corejs: {
+                    proposals: true,
+                    version: "3.6"
+                },
+                useBuiltIns: "entry"
             }
-        ]
-    ],
-    env: {
-    test: {
-      plugins: ["@babel/plugin-transform-modules-commonjs"]
-    }
-  }
+        ],
+        "@babel/preset-typescript",
+        "@babel/react"
+    ]
 };

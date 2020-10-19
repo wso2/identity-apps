@@ -3,7 +3,7 @@
 End-user apps in WSO2 Identity Server
 
 |  Branch | Build Status |
-| :------------ |:------------- 
+| :------------ |:-------------
 | master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) |
 
 ## Setup build environment
@@ -16,11 +16,11 @@ End-user apps in WSO2 Identity Server
 #### Build
 
 1. Download or clone the project source code from [https://github.com/wso2/identity-apps](https://github.com/wso2/identity-apps)
-2. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located). 
+2. Run `mvn clean install` from the command line in the project root directory (where the root `pom.xml` is located).
 
 If you are building [product-is](https://github.com/wso2/product-is), the built identity apps dependencies will install to your local `.m2` repository during the build above.
 
-3. Then you just need to build [WSO2 Identiy Server](https://github.com/wso2/product-is) after. _(Follow the guide there)_
+3. Then you just need to build [WSO2 Identity Server](https://github.com/wso2/product-is) after. _(Follow the guide there)_
 
 #### Run
 
@@ -35,7 +35,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 ```
     [cors]
     allowed_origins = [
-       "https://localhost:9000", 
+       "https://localhost:9000",
        "https://localhost:9001"
     ]
     supported_methods = [
@@ -44,8 +44,10 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
        "HEAD",
        "OPTIONS",
        "PUT",
+       "PATCH",
        "HEAD",
-       "DELETE"
+       "DELETE",
+       "PATCH"
     ]
     exposed_headers = [ "Location" ]
 ```
@@ -82,8 +84,95 @@ regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logo
 ```
 
 7. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+
+   > **_Note:-_** 
+   >  
+   > To build a single package/app, you can use this command: `npx lerna bootstrap --scope <package-name> && npx lerna run --scope <package-name> build`.   
+   >
+   > E.g. `npx lerna bootstrap --scope @wso2is/myaccount && npx lerna run --scope @wso2is/myaccount build`
+
 8. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
 9. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
+
+## Running Unit Tests
+
+Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
+and you can run the unit test suites using the following commands.
+
+#### Run Tests for all modules
+
+```bash
+npm run test
+```
+
+#### Run Tests for individual module
+
+```bash
+npx lerna run test --scope @wso2is/forms
+```
+
+## Running Integration Tests
+
+Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
+
+#### Headless mode
+
+```bash
+npm run test:integration
+```
+
+#### Interactive mode
+
+```bash
+npm run test:integration:interactive
+```
+
+#### Only Smoke Tests
+
+```bash
+npm run test:integration:smoke
+```
+
+For more information regarding the test module, checkout the [README](./tests/README.md) in the `tests` module.
+
+## Deployment
+
+#### Deploying the apps on an external server
+
+It is possible to deploy the Console and My Account applications on an external server. To do so, the following steps has to be followed in order to build the applications.
+
+##### Method 1 - Build using Maven
+
+Follow the steps in listed [here](#build) in-order to build the project with maven.
+
+Once the build is complete, execute the following commands in-order to build the Console & My Account applications for external deployment.
+
+**Console**
+
+```bash
+npx lerna run build:external --scope @wso2is/console
+```
+
+Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/console/build`.
+
+**My Account**
+
+```bash
+npx lerna run build:external --scope @wso2is/myaccount
+```
+
+Once the build is completed, you can find the build artifacts inside the build folder i.e `apps/myaccount/build`.
+
+##### Method 2 - Build using npm
+
+You can simply use npm to build the Console and My Account applications for external deployment by just executing the following script.
+
+```bash
+# From project root
+npm run build:external
+```
+
+The respective build artifacts could be found inside the build folder. (`apps/(myaccount|console)/build`)
 
 ## Reporting Issues
 

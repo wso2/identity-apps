@@ -34,13 +34,13 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
+    AppConstants,
     AppState,
     ConfigReducerStateInterface,
     HelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
-    history,
-    setHelpPanelDocsContentURL, AppConstants
+    history, setHelpPanelDocsContentURL
 } from "../../core";
 import { getIdentityProviderDetail } from "../api";
 import { EditIdentityProvider } from "../components";
@@ -58,7 +58,7 @@ type IDPEditPagePropsInterface = TestableComponentInterface
 
 /**
  * Identity Provider Edit page.
- * 
+ *
  * @param {IDPEditPagePropsInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
@@ -171,14 +171,14 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
      * Handles the back button click event.
      */
     const handleBackButtonClick = (): void => {
-        history.push(AppConstants.PATHS.get("IDP"));
+        history.push(AppConstants.getPaths().get("IDP"));
     };
 
     /**
      * Called when an idp is deleted.
      */
     const handleIdentityProviderDelete = (): void => {
-        history.push(AppConstants.PATHS.get("IDP"));
+        history.push(AppConstants.getPaths().get("IDP"));
     };
 
     /**
@@ -239,7 +239,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             } }
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 isLoading={ isIdentityProviderRequestLoading }
@@ -265,6 +265,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                         )
                 }
                 backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.idpTemplate.backButton")
                 } }

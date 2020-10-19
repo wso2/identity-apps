@@ -16,8 +16,8 @@
   ~ under the License.
 --%>
 
-<!-- localize.jsp MUST already be included in the calling script -->
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ include file="localize.jsp" %>
 
 <!-- title -->
-<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Wso2.identity.server")%></title>
+<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%></title>

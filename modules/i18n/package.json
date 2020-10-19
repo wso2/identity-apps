@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/i18n",
-    "version": "1.0.388",
+    "version": "1.0.459",
     "description": "This module contains the configs, helpers and translations required to make an identity app available in multiple languages.",
     "keywords": [
         "WSO2",
@@ -22,12 +22,19 @@
         "clean:translations": "rimraf ./dist/src/translations && rimraf ./dist/types/translations",
         "compile": "tsc -p tsconfig.json",
         "lint": "eslint --ext .js,.ts .",
-        "test": "jest --passWithNoTests"
+        "test": "npm run jest --passWithNoTests",
+        "jest": "run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest",
+        "jest:default": "./node_modules/.bin/jest"
     },
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@wso2is/core": "^1.0.388"
+        "@types/jest": "^26.0.14",
+        "@wso2is/core": "^1.0.459",
+        "babel-jest": "^26.3.0",
+        "jest": "^26.4.2",
+        "ts-jest": "^26.4.0"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",
@@ -36,17 +43,14 @@
     "peerDependencies": {
         "@types/i18next": "*",
         "@types/i18next-xhr-backend": "*",
-        "@types/jest": "*",
         "@types/lodash": "*",
         "@types/node": "*",
         "i18next": "*",
         "i18next-browser-languagedetector": "*",
         "i18next-xhr-backend": "*",
-        "jest": "*",
         "lodash": "*",
         "react-i18next": "*",
         "rimraf": "*",
-        "ts-jest": "*",
         "typescript": "*"
     }
 }

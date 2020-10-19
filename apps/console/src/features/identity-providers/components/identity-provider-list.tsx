@@ -22,15 +22,17 @@ import {
     AnimatedAvatar,
     AppAvatar,
     ConfirmationModal,
+    DataTable,
     EmptyPlaceholder,
     LinkButton,
     PrimaryButton,
-    ResourceList
+    TableActionsInterface,
+    TableColumnInterface
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Icon, ListItemProps } from "semantic-ui-react";
+import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import {
     AppConstants,
@@ -40,12 +42,20 @@ import {
 } from "../../core";
 import { deleteIdentityProvider } from "../api";
 import { IdentityProviderManagementConstants } from "../constants";
-import { IdentityProviderListResponseInterface, StrictIdentityProviderInterface } from "../models";
+import {
+    IdentityProviderInterface,
+    IdentityProviderListResponseInterface,
+    StrictIdentityProviderInterface
+} from "../models";
 
 /**
  * Proptypes for the identity provider list component.
  */
 interface IdentityProviderListPropsInterface extends LoadableComponentInterface, TestableComponentInterface {
+    /**
+     * Advanced Search component.
+     */
+    advancedSearch?: ReactNode;
     /**
      * Default list item limit.
      */
@@ -64,8 +74,10 @@ interface IdentityProviderListPropsInterface extends LoadableComponentInterface,
     onIdentityProviderDelete?: () => void;
     /**
      * On list item select callback.
+     * @param {React.SyntheticEvent} event - Click event.
+     * @param {IdentityProviderInterface} idp - Selected IDP
      */
-    onListItemClick?: (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => void;
+    onListItemClick?: (event: SyntheticEvent, idp: IdentityProviderInterface) => void;
     /**
      * Callback for the search query clear action.
      */
@@ -95,6 +107,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
 ): ReactElement => {
 
     const {
+        advancedSearch,
         defaultListItemLimit,
         isLoading,
         list,
@@ -114,14 +127,14 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
     const [ deletingIDP, setDeletingIDP ] = useState<StrictIdentityProviderInterface>(undefined);
 
     const { t } = useTranslation();
-    
+
     /**
      * Redirects to the identity provider edit page when the edit button is clicked.
      *
      * @param {string} idpId Identity provider id.
      */
     const handleIdentityProviderEdit = (idpId: string): void => {
-        history.push(AppConstants.PATHS.get("IDP_EDIT").replace(":id", idpId));
+        history.push(AppConstants.getPaths().get("IDP_EDIT").replace(":id", idpId));
     };
 
     /**
@@ -179,7 +192,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             { searchQuery: searchQuery }),
                         t("devPortal:components.idp.placeHolders.emptyIDPSearchResults.subtitles.1")
                     ] }
-                    data-testid={ `${ testId }-empty-search-results-placeholder` }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
                 />
             );
         }
@@ -203,7 +216,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.1"),
                         t("devPortal:components.idp.placeHolders.emptyIDPList.subtitles.2")
                     ] }
-                    data-testid={ `${ testId }-empty-idp-list-placeholder` }
+                    data-testid={ `${ testId }-empty-placeholder` }
                 />
             );
         }
@@ -211,84 +224,115 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
         return null;
     };
 
-    return (
-        <ResourceList
-            className="identity-providers-list"
-            isLoading={ isLoading }
-            loadingStateOptions={ {
-                count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
-                imageType: "square"
-            } }
-            selection={ selection }
-            fill={ !showPlaceholders() }
-            celled={ false }
-            divided={ true }
-            data-testid={ `${ testId }-resource-list` }
-        >
+    /**
+     * Resolves data table columns.
+     *
+     * @return {TableColumnInterface[]}
+     */
+    const resolveTableColumns = (): TableColumnInterface[] => {
+        return [
             {
-                list?.identityProviders && list.identityProviders instanceof Array && list.identityProviders.length > 0
-                    ? list.identityProviders.map((idp, index) => {
-                        // TODO Remove this check and move the logic to backend.
-                        if ("LOCAL" !== idp.name) {
-                            return (
-                                <ResourceList.Item
-                                    key={ index }
-                                    actions={ showListItemActions && [
-                                        {
-                                            hidden: false,
-                                            icon: "pencil alternate",
-                                            onClick: (): void => handleIdentityProviderEdit(idp.id),
-                                            popupText: "edit",
-                                            type: "button"
-                                        },
-                                        {
-                                            hidden: IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS
-                                                .includes(idp.name),
-                                            icon: "trash alternate",
-                                            onClick: (): void => handleIdentityProviderDeleteAction(idp.id),
-                                            popupText: "delete",
-                                            type: "dropdown"
-                                        }
-                                    ] }
-                                    actionsFloated="right"
-                                    avatar={
-                                        idp.image
-                                            ? (
-                                                <AppAvatar
-                                                    name={ idp.name }
-                                                    image={ idp.image }
-                                                    size="mini"
-                                                    floated="left"
-                                                />
-                                            )
-                                            : (
-                                                <AnimatedAvatar
-                                                    name={ idp.name }
-                                                    size="mini"
-                                                    floated="left"
-                                                    data-testid={ `${ testId }-item-image` }
-                                                />
-                                            )
-                                    }
-                                    itemHeader={ idp.name }
-                                    itemDescription={ idp.description }
-                                    onClick={
-                                        (event: React.MouseEvent<HTMLAnchorElement>, data: ListItemProps) => {
-                                            if (!selection) {
-                                                return;
-                                            }
-
-                                            handleIdentityProviderEdit(idp.id);
-                                            onListItemClick(event, data);
-                                        }
-                                    }
-                                    data-testid={ `${ testId }-resource-list-item-${ index }` }
-                                />
-                            );
+                allowToggleVisibility: false,
+                dataIndex: "name",
+                id: "name",
+                key: "name",
+                render: (idp: IdentityProviderInterface): ReactNode => (
+                    <Header as="h6" image data-testid={ `${ testId }-item-heading` }>
+                        {
+                            idp.image
+                                ? (
+                                    <AppAvatar
+                                        name={ idp.name }
+                                        image={ idp.image }
+                                        size="mini"
+                                        data-testid={ `${ testId }-item-image` }
+                                    />
+                                )
+                                : (
+                                    <AnimatedAvatar
+                                        name={ idp.name }
+                                        size="mini"
+                                        data-testid={ `${ testId }-item-image` }
+                                    />
+                                )
                         }
-                    })
-                    : showPlaceholders()
+                        <Header.Content>
+                            { idp.name }
+                            <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
+                                { idp.description }
+                            </Header.Subheader>
+                        </Header.Content>
+                    </Header>
+                ),
+                title: t("devPortal:components.idp.list.name")
+            },
+            {
+                allowToggleVisibility: false,
+                dataIndex: "action",
+                id: "actions",
+                key: "actions",
+                textAlign: "right",
+                title: t("devPortal:components.idp.list.actions")
             }
+        ];
+    };
+
+    /**
+     * Resolves data table actions.
+     *
+     * @return {TableActionsInterface[]}
+     */
+    const resolveTableActions = (): TableActionsInterface[] => {
+        if (!showListItemActions) {
+            return;
+        }
+
+        return [
+            {
+                "data-testid": `${ testId }-item-edit-button`,
+                hidden: (): boolean => false,
+                icon: (): SemanticICONS => "pencil alternate",
+                onClick: (e: SyntheticEvent, idp: IdentityProviderInterface): void =>
+                    handleIdentityProviderEdit(idp.id),
+                popupText:(): string => t("common:edit"),
+                renderer: "semantic-icon"
+            },
+            {
+                "data-testid": `${ testId }-item-delete-button`,
+                hidden: (idp: IdentityProviderInterface): boolean =>
+                    IdentityProviderManagementConstants.DELETING_FORBIDDEN_IDPS.includes(idp.name),
+                icon: (): SemanticICONS => "trash alternate",
+                onClick: (e: SyntheticEvent, idp: IdentityProviderInterface): void =>
+                    handleIdentityProviderDeleteAction(idp.id),
+                popupText: (): string => t("common:delete"),
+                renderer: "semantic-icon"
+            }
+        ];
+    };
+
+    return (
+        <>
+            <DataTable<IdentityProviderInterface>
+                className="identity-providers-table"
+                externalSearch={ advancedSearch }
+                isLoading={ isLoading }
+                loadingStateOptions={ {
+                    count: defaultListItemLimit ?? UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT,
+                    imageType: "square"
+                } }
+                actions={ resolveTableActions()  }
+                columns={ resolveTableColumns() }
+                data={ list?.identityProviders?.filter((idp: IdentityProviderInterface) => idp.name !== "LOCAL") }
+                onRowClick={ (e: SyntheticEvent, idp: IdentityProviderInterface): void => {
+                    handleIdentityProviderEdit(idp.id);
+                    onListItemClick(e, idp);
+                } }
+                placeholders={ showPlaceholders() }
+                selectable={ selection }
+                showHeader={ false }
+                transparent={ !isLoading && (showPlaceholders() !== null) }
+                data-testid={ testId }
+            />
             {
                 deletingIDP && (
                     <ConfirmationModal
@@ -313,21 +357,26 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                         onPrimaryActionClick={
                             (): void => handleIdentityProviderDelete(deletingIDP.id)
                         }
-                        data-testid={ `${ testId }-delete-confirmation` }
+                        data-testid={ `${ testId }-delete-confirmation-modal` }
+                        closeOnDimmerClick={ false }
                     >
-                        <ConfirmationModal.Header>
+                        <ConfirmationModal.Header data-testid={ `${ testId }-delete-confirmation-modal-header` }>
                             { t("devPortal:components.idp.confirmations.deleteIDP.header") }
                         </ConfirmationModal.Header>
-                        <ConfirmationModal.Message attached warning>
+                        <ConfirmationModal.Message
+                            attached
+                            warning
+                            data-testid={ `${ testId }-delete-confirmation-modal-message` }
+                        >
                             { t("devPortal:components.idp.confirmations.deleteIDP.message") }
                         </ConfirmationModal.Message>
-                        <ConfirmationModal.Content>
+                        <ConfirmationModal.Content data-testid={ `${ testId }-delete-confirmation-modal-content` }>
                             { t("devPortal:components.idp.confirmations.deleteIDP.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )
             }
-        </ResourceList>
+        </>
     );
 };
 
@@ -336,6 +385,6 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
  */
 IdentityProviderList.defaultProps = {
     "data-testid": "idp-list",
-    selection: false,
+    selection: true,
     showListItemActions: true
 };

@@ -17,10 +17,34 @@
  */
 
 module.exports = {
-    moduleFileExtensions: [ "ts", "js", "json", "node"],
-    roots: ["<rootDir>/src"],
-    testRegex: "/__tests__/.*\\.test\\.ts$",
+    globals: {
+        "window": true
+    },
+    moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json", "node"],
+    roots: [
+        "src"
+    ],
+    testMatch: ["<rootDir>/**/?(*.)test.{ts,tsx}"],
     transform: {
-        "^.+\\.ts?$": "ts-jest"
-    }
+        "^.+\\.(ts|tsx)?$": "ts-jest",
+        "^.+\\.(js|jsx)?$": "babel-jest"
+    },
+    modulePaths: [
+        "<rootDir>"
+    ],
+    globals: {
+        "ts-jest": {
+            tsConfig: "tsconfig.json"
+        }
+    },
+    transformIgnorePatterns: [
+        "/node_modules/?(?!@wso2is)"
+    ],
+    testPathIgnorePatterns: [
+        "<rootDir>/(build|docs|node_modules)/"
+    ],
+    setupFilesAfterEnv: [
+        "<rootDir>/test-configs/setup-test.js"
+    ],
+    verbose: true
 };

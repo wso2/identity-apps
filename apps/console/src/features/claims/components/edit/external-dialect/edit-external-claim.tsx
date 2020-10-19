@@ -136,7 +136,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
     }, []);
 
     /**
-     * Remove local claims that have already been mapped. 
+     * Remove local claims that have already been mapped.
      */
     useEffect(() => {
         if (externalClaims && localClaims && (claim || addedClaim)) {
@@ -151,7 +151,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
 
     /**
      * This removes the mapped local claims from the local claims list.
-     * 
+     *
      * @param {string} claimURI The claim URI of the mapped local claim.
      * @param {Claim[]} filteredLocalClaims - Filtered claims.
      *
@@ -167,7 +167,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
 
     /**
      * Returns the local claim that is mapped to the external claim.
-     * 
+     *
      * @returns {Claim} The Local Claim mapped to the selected external claim.
      */
     const getLocalClaimMappedToSelectedExternalClaim = (): Claim => {
@@ -240,10 +240,10 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label={ t("adminPortal:components.claims.external.forms.attributeURI.label") }
+                            label={ t("adminPortal:components.claims.external.forms.localAttribute.label") }
                             required={ true }
                             requiredErrorMessage={ t("adminPortal:components.claims.external.forms." +
-                                "attributeURI.requiredErrorMessage") }
+                                "localAttribute.requiredErrorMessage") }
                             placeholder={ t("adminPortal:components.claims.external.forms.attributeURI.placeholder") }
                             search
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
@@ -255,6 +255,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                         value: claim?.claimURI
                                     }
                                 })
+                                ?? []
                             }
                             data-testid={ `${ testId }-local-claim-dropdown` }
                         />

@@ -1059,6 +1059,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error occurred"
+                    },
+                    genericError: {
+                        description: "Error occurred while assessing the profile completion",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Profile completion was assessed successfully",
+                        message: "Calculation Successful"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
@@ -1193,6 +1207,55 @@ export const userPortal: UserPortalNS = {
         }
     },
     modals: {
+        editAvatarModal: {
+            content: {
+                gravatar: {
+                    errors: {
+                        noAssociation: {
+                            content: "It seems like the selected email is not registered on Gravatar. " +
+                                "Sign up for a Gravatar account by visiting Gravatar official website or use " +
+                                "one of the following.",
+                            header: "No matching Gravatar image found!"
+                        }
+                    },
+                    heading: "Gravatar based on "
+                },
+                hostedAvatar: {
+                    heading: "Hosted Image",
+                    input: {
+                        errors: {
+                            http: {
+                                content: "The selected URL points to an insecure image served over HTTP. " +
+                                    "Please proceed with caution.",
+                                header: "Insecure Content!"
+                            },
+                            invalid: {
+                                content: "Please enter a valid image URL"
+                            }
+                        },
+                        hint: "Enter a valid image URL which is hosted on a third party location.",
+                        placeholder: "Enter URL for the image.",
+                        warnings: {
+                            dataURL: {
+                                content: "Using Data URLs with large character count might result in database " +
+                                    "issues. Proceed with caution.",
+                                header: "Double check the entered Data URL!"
+                            }
+                        }
+                    }
+                },
+                systemGenAvatars: {
+                    heading: "System generated avatar",
+                    types: {
+                        initials: "Initials"
+                    }
+                }
+            },
+            description: null,
+            heading: "Update profile picture",
+            primaryButton: "Save",
+            secondaryButton: "Cancel"
+        },
         sessionTimeoutModal: {
             description: "You will be logged out of the current session due to inactivity." +
                 "Please choose Stay logged in if you would like to continue the session.",
@@ -1235,6 +1298,14 @@ export const userPortal: UserPortalNS = {
                 1: "Please check the URL or click on the button below to be redirected back to the home page."
             },
             title: "Page not found"
+        },
+        accessDeniedError: {
+            action: "Back to home",
+            subtitles: {
+                0: "It seems like you are not allowed to access this page.",
+                1: "Please try signing in with a different account."
+            },
+            title: "Access not granted"
         },
         emptySearchResult: {
             action: "Clear search query",

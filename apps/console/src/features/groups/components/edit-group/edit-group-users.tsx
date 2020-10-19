@@ -28,7 +28,8 @@ import {
     TransferComponent,
     TransferList,
     TransferListItem,
-    UserAvatar
+    UserAvatar,
+    useWizardAlert
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -52,7 +53,6 @@ interface GroupUsersListProps extends TestableComponentInterface {
 
 export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: GroupUsersListProps): ReactElement => {
     const {
-        isGroup,
         isReadOnly,
         group,
         onGroupUpdate,
@@ -75,11 +75,13 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     useEffect(() => {
         if (isSelectAllUnAssignedUsers) {
             setCheckedUnassignedListItems(usersList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectAllUnAssignedUsers ]);
 
@@ -87,7 +89,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         if (isSelectAllAssignedUsers) {
             setCheckedAssignedListItems(tempUserList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAllAssignedUsers ]);
 
@@ -124,7 +126,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
 
                 if (group.members && group.members.length > 0) {
                     const selectedUserList: UserBasicInterface[] = [];
-                    if (responseUsers && responseUsers instanceof Array ) {
+                    if (responseUsers && responseUsers instanceof Array) {
                         responseUsers.slice().reverse().forEach(user => {
                             group.members.forEach(assignedUser => {
                                 if (user.id === assignedUser.value) {
@@ -209,7 +211,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map(user => {
                 removedUsers.splice(removedUsers.indexOf(user), 1);
-                usersList.push(user)
+                usersList.push(user);
             });
             setUsersList(usersList);
             setTempUserList(removedUsers);
@@ -259,19 +261,17 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             newUsers.push({
                 display: selectedUser.userName,
                 value: selectedUser.id
-            })
+            });
         }
 
         const groupData: PatchGroupDataInterface = {
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:PatchOp"
-            ],
-            Operations: [{
+            Operations: [ {
                 "op": "replace",
                 "value": {
                     "members": newUsers
                 }
-            }]
+            } ],
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };
 
         updateGroupDetails(group.id, groupData)
@@ -283,12 +283,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 }));
                 onGroupUpdate(group.id);
             }).catch(() => {
-            dispatch(addAlert({
-                description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
-            }));
-        })
+                setAlert({
+                    description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
+                });
+            });
     };
 
     const addNewUserModal = () => (
@@ -312,6 +312,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
+                { alert && alertComponent }
                 <TransferComponent
                     data-testid={ `${ testId }-user-list-transfer` }
                     searchPlaceholder={ t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
@@ -335,7 +336,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                             "roles.selected", { type: "users" }) }
                     >
                         {
-                            usersList?.map((user, index)=> {
+                            usersList?.map((user, index) => {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -349,7 +350,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-unselected-users` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -366,7 +367,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                             "roles.selected", { type: "users" }) }
                     >
                         {
-                            tempUserList?.map((user, index)=> {
+                            tempUserList?.map((user, index) => {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () =>
@@ -380,27 +381,37 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-selected-users` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
                 </TransferComponent>
             </Modal.Content>
             <Modal.Actions>
-                <LinkButton
-                    data-testid={ `${ testId }-assign-user-wizard-modal-cancel-button` }
-                    onClick={ handleCloseAddNewGroupModal }
-                >
-                    { t("common:cancel") }
-                </LinkButton>
-                <PrimaryButton
-                    data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
-                    onClick={ () => {
-                        handleAddUserSubmit()
-                    } }
-                >
-                    { t("common:save") }
-                </PrimaryButton>
+                <Grid>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <LinkButton
+                                data-testid={ `${ testId }-assign-user-wizard-modal-cancel-button` }
+                                onClick={ handleCloseAddNewGroupModal }
+                                floated="left"
+                            >
+                                { t("common:cancel") }
+                            </LinkButton>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            <PrimaryButton
+                                data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
+                                onClick={ () => {
+                                    handleAddUserSubmit();
+                                } }
+                                floated="right"
+                            >
+                                { t("common:save") }
+                            </PrimaryButton>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
             </Modal.Actions>
         </Modal>
     );
@@ -417,7 +428,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         <Grid.Column>
                                             <Input
                                                 data-testid={ `${ testId }-users-list-search-input` }
-                                                icon={ <Icon name="search"/> }
+                                                icon={ <Icon name="search" /> }
                                                 onChange={ handleAssignedUserListSearch }
                                                 placeholder={ t("adminPortal:components.roles.addRoleWizard." +
                                                     "users.assignUserModal.list.searchPlaceholder") }
@@ -441,7 +452,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                         <Table singleLine compact>
                                             <Table.Header>
                                                 <Table.Row>
-                                                    <Table.HeaderCell/>
+                                                    <Table.HeaderCell />
                                                     <Table.HeaderCell>
                                                         { t("adminPortal:components.roles.edit.users.list." +
                                                             "header") }
@@ -467,7 +478,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                                     { user.userName }
                                                                 </Table.Cell>
                                                             </Table.Row>
-                                                        )
+                                                        );
                                                     })
                                                 }
                                             </Table.Body>
@@ -489,8 +500,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                     data-testid={ `${ testId }-users-list-empty-assign-users-
                                                     button` }
                                                     onClick={ handleOpenAddNewGroupModal }
-                                                    icon="plus"
                                                 >
+                                                    <Icon name="plus" />
                                                     { t("adminPortal:components.roles.edit.users.list." +
                                                         "emptyPlaceholder.action") }
                                                 </PrimaryButton>
@@ -507,5 +518,5 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 { addNewUserModal() }
             </Grid>
         </>
-    )
+    );
 };

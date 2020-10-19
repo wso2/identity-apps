@@ -18,4 +18,4 @@
 
 import { createBrowserHistory } from "history";
 
-export const history = createBrowserHistory({ basename: window["AppUtils"].getConfig().appBaseWithTenant });
+export const history = createBrowserHistory({ basename: window["AppUtils"].getConfig().appBaseNameForHistoryAPI });

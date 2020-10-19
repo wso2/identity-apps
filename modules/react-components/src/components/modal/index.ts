@@ -18,4 +18,5 @@
  */
 
 export * from "./confirmation-modal";
+export * from "./edit-avatar-modal";
 export * from "./session-timeout-modal";

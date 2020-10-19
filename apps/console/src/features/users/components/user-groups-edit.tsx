@@ -45,7 +45,6 @@ import {
     Modal,
     Table
 } from "semantic-ui-react";
-import { RolePermissions } from "./wizard";
 import { EmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { getGroupList } from "../../groups/api";
 
@@ -76,7 +75,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         onAlertFired,
         user,
         handleUserUpdate,
-        isReadOnly,
+        isReadOnly
     } = props;
 
     const { t } = useTranslation();
@@ -148,7 +147,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
 
         if (user.groups && user.groups instanceof Array) {
             _.forEachRight (user.groups, (group) => {
-                const groupName = group.display.split("/");
+                const groupName = group?.display?.split("/");
 
                 if (groupName.length === 1) {
                     groupsMap.set(group.display, group.value);
@@ -321,44 +320,38 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ],
-            Operations: []
+            Operations: [],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "remove",
-                        "path": "members[display eq" + " " + user.userName + "]"
-                    }
-                ]
-            }
+                "Operations": [{
+                    "op": "remove",
+                    "path": "members[display eq" + " " + user.userName + "]"
+                }]
+            },
+            method: "PATCH"
         };
 
         let addOperation = {
-            method: "PATCH",
             data: {
-                "Operations": [
-                    {
-                        "op": "add",
-                        "value": {
-                            "members": [
-                                {
-                                    "display": user.userName,
-                                    "value": user.id
-                                }
-                            ]
-                        }
+                "Operations": [{
+                    "op": "add",
+                    "value": {
+                        "members": [{
+                            "display": user.userName,
+                            "value": user.id
+                        }]
                     }
-                ]
-            }
+                }]
+            },
+            method: "PATCH"
         };
 
         const removeOperations = [];
@@ -536,7 +529,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         >
                             {
                                 groupList?.map((role, index)=> {
-                                    const roleName = role.displayName?.split("/");
+                                    const roleName = role?.displayName?.split("/");
                                     if (roleName.length === 1) {
                                         return (
                                             <TransferListItem
@@ -577,7 +570,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                         >
                             {
                                 tempGroupList?.map((role, index)=> {
-                                    const userGroup = role.displayName.split("/");
+                                    const userGroup = role?.displayName?.split("/");
                                     if (userGroup.length === 1) {
                                         return (
                                             <TransferListItem
@@ -640,7 +633,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             const re = new RegExp(_.escapeRegExp(value), "i");
 
             assignedGroups && assignedGroups?.map((group) => {
-                const groupName = group.display.split("/");
+                const groupName = group?.display?.split("/");
                 if (groupName.length === 1) {
                     isMatch = re.test(group.display);
                     if (isMatch) {
@@ -658,9 +651,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         <>
             <Heading as="h4">
                 { t("adminPortal:components.user.updateUser.groups.editGroups.heading") }
-                <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.groups.editGroups.subHeading") }
-                </Heading>
+            </Heading>
+            <Heading subHeading ellipsis as="h6">
+                { t("adminPortal:components.user.updateUser.groups.editGroups.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>
@@ -716,11 +709,11 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             </Table.Header>
                                             <Table.Body>
                                                 {
-                                                    assignedGroups?.map((group) => {
-                                                        const userGroup = group.display.split("/");
+                                                    assignedGroups?.map((group, index: number) => {
+                                                        const userGroup = group?.display?.split("/");
                                                         if (userGroup.length === 1) {
                                                             return (
-                                                                <Table.Row>
+                                                                <Table.Row key={ index }>
                                                                     <Table.Cell>
                                                                         <Label color="olive">Primary</Label>
                                                                     </Table.Cell>
@@ -752,9 +745,9 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             !isReadOnly && (
                                                 <PrimaryButton
                                                     data-testid="user-mgt-empty-groups-list-assign-group-button"
-                                                    icon="plus"
                                                     onClick={ handleOpenAddNewGroupModal }
                                                 >
+                                                    <Icon name="plus"/>
                                                     Assign Group
                                                 </PrimaryButton>
                                             )

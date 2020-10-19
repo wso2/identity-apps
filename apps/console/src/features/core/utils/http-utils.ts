@@ -16,7 +16,6 @@
  * under the License.
  */
 
-import { OPConfigurationUtil, Storage } from "@wso2is/authentication";
 import { hideAJAXTopLoadingBar, showAJAXTopLoadingBar } from "@wso2is/core/store";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import { AppConstants } from "../constants";
@@ -71,9 +70,8 @@ export class HttpUtils {
             error.response &&
             error.response.request &&
             error.response.request.responseURL &&
-            error.response.request.responseURL === OPConfigurationUtil.getTokenEndpoint(Storage.SessionStorage)
+            error.response.request.responseURL === sessionStorage.getItem("token_endpoint")
         ) {
-
             if (error.response.status === 400) {
                 history.push(window["AppUtils"].getConfig().routes.logout);
                 return;
@@ -83,7 +81,7 @@ export class HttpUtils {
         // If the user doesn't have login permission, redirect to login error page.
         if (!AuthenticateUtils.hasLoginPermission(store.getState()?.auth?.scope)) {
             history.push({
-                pathname: AppConstants.PATHS.get("UNAUTHORIZED"),
+                pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                 search: "?error=" + AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")
             });
             return;

@@ -21,19 +21,37 @@ import { CommonHelpers } from "@wso2is/core/helpers";
 import { AlertInterface, AlertLevels } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
-import { Button, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import {
+    Button,
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout,
+    PrimaryButton
+} from "@wso2is/react-components";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, DropdownProps, Icon, PaginationProps, Popup } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
+    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     SharedUserStoreUtils,
     UIConstants,
+    getAUserStore,
     store
 } from "../../core";
+import {
+    GovernanceConnectorInterface,
+    ServerConfigurationsConstants,
+    getConnectorCategory
+} from "../../server-configurations";
+import {
+    UserStoreListItem,
+    UserStorePostData,
+    UserStoreProperty
+} from "../../userstores";
 import { deleteUser, getUsersList } from "../api";
 import { AddUserWizard, UsersList, UsersListOptionsComponent } from "../components";
 import { UserManagementConstants } from "../constants";
@@ -64,6 +82,10 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ isUserListRequestLoading, setUserListRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
+    const [ userStoreError, setUserStoreError ] = useState(false);
+    const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
+
+    const init = useRef(true);
 
     const username = useSelector((state: AppState) => state.auth.username);
     const tenantName = store.getState().config.deployment.tenant;
@@ -74,12 +96,55 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
 
         getUsersList(limit, offset, filter, attribute, domain)
             .then((response) => {
-                setUsersList(response);
+                const data = { ...response };
+
+                data.Resources = data.Resources.map((resource) => {
+                    let email: string = null;
+                    if (resource.emails instanceof Array) {
+                        const emailElement = resource.emails[ 0 ];
+                        if (typeof emailElement === "string") {
+                            email = emailElement;
+                        } else {
+                            email = emailElement.value;
+                        }
+                    }
+
+                    resource.emails = [email];
+
+                    return resource;
+                });
+
+                setUsersList(data);
+                setUserStoreError(false);
+            }).catch((error) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.message")
+                }));
+                setUserStoreError(true);
+                setUsersList({
+                    Resources: [],
+                    itemsPerPage: 10,
+                    links: [],
+                    startIndex: 1,
+                    totalResults: 0
+                });
             })
             .finally(() => {
                 setUserListRequestLoading(false);
             });
     };
+
+    useEffect(() => {
+        if (init.current) {
+            init.current = false;
+        } else {
+            setShowWizard(true);
+        }
+    }, [emailVerificationEnabled]);
 
     useEffect(() => {
         SharedUserStoreUtils.getReadOnlyUserStores().then((response) => {
@@ -117,17 +182,17 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
      */
     const getUserStores = () => {
         const storeOptions = [
-                {
-                    key: -2,
-                    text: t("adminPortal:components.users.userstores.userstoreOptions.all"),
-                    value: "all"
-                },
-                {
-                    key: -1,
-                    text: t("adminPortal:components.users.userstores.userstoreOptions.primary"),
-                    value: "primary"
-                }
-            ];
+            {
+                key: -2,
+                text: t("adminPortal:components.users.userstores.userstoreOptions.all"),
+                value: "all"
+            },
+            {
+                key: -1,
+                text: t("adminPortal:components.users.userstores.userstoreOptions.primary"),
+                value: "primary"
+            }
+        ];
 
         let storeOption = {
             key: null,
@@ -140,14 +205,22 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
                 }
-                response.data.map((store, index) => {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
-                    }
+                response.data.map((store: UserStoreListItem, index) => {
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled").value === "true";
+
+                        if (!isDisabled) {
+                            storeOption = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+                            storeOptions.push(storeOption);
+                        }
+                    });
+
+                }
                 );
                 setUserStoresList(storeOptions);
             });
@@ -315,6 +388,37 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             });
     };
 
+    /**
+     * Handles the click event of the create new user button.
+     */
+    const handleAddNewUserWizardClick = (): void => {
+        getConnectorCategory(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+            .then((response) => {
+                const connectors: GovernanceConnectorInterface[]  = response?.connectors;
+                const userOnboardingConnector = connectors.find(
+                    (connector: GovernanceConnectorInterface) => connector.id
+                        === ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID
+                );
+
+                const emailVerification = userOnboardingConnector.properties.find(
+                    property => property.name === ServerConfigurationsConstants.EMAIL_VERIFICATION_ENABLED);
+
+                setEmailVerificationEnabled(emailVerification.value === "true");
+            }).catch((error) => {
+                handleAlerts({
+                    description: error?.response?.data?.description ?? t(
+                        "adminPortal:components.governanceConnectors.notifications." +
+                        "getConnector.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message ?? t(
+                        "adminPortal:components.governanceConnectors.notifications." +
+                        "getConnector.genericError.message"
+                    )
+                });
+            });
+    }
+
     return (
         <PageLayout
             action={
@@ -322,7 +426,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 && (
                     <PrimaryButton
                         data-testid="user-mgt-user-list-add-user-button"
-                        onClick={ () => setShowWizard(true) }
+                        onClick={ handleAddNewUserWizardClick  }
                     >
                         <Icon name="add"/>
                         { t("adminPortal:components.users.buttons.addNewUserBtn") }
@@ -406,28 +510,76 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                                 selection
                                 options={ userStoreOptions && userStoreOptions }
                                 onChange={ handleDomainChange }
-                                defaultValue="primary"
+                                defaultValue="all"
                             />
                         </>
                     )
                 }
                 showPagination={ true }
-                showTopActionPanel={ isUserListRequestLoading || !(!searchQuery && usersList?.totalResults <= 0) }
+                showTopActionPanel={ isUserListRequestLoading
+                    || !(!searchQuery
+                        && !userStoreError
+                        && userStoreOptions.length < 3
+                        && usersList?.totalResults <= 0) }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
             >
-                <UsersList
-                    usersList={ usersList }
-                    handleUserDelete={ handleUserDelete }
-                    userMetaListContent={ userListMetaContent }
-                    isLoading={ isUserListRequestLoading }
-                    onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    searchQuery={ searchQuery }
-                    data-testid="user-mgt-user-list"
-                    readOnlyUserStores={ readOnlyUserStoresList }
-                    featureConfig={ featureConfig }
-                />
+                { userStoreError
+                    ? <EmptyPlaceholder
+                        subtitle={ [ t("adminPortal:components.users.placeholders.userstoreError.subtitles.0"),
+                            t("adminPortal:components.users.placeholders.userstoreError.subtitles.1")     ] }
+                        title={ t("adminPortal:components.users.placeholders.userstoreError.title") }
+                        image={ EmptyPlaceholderIllustrations.genericError }
+                        imageSize="tiny"
+                    />
+                    : <UsersList
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleUserFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                            "filterAttributeOptions.username"),
+                                        value: "userName"
+                                    },
+                                    {
+                                        key: 1,
+                                        text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                            "filterAttributeOptions.email"),
+                                        value: "emails"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterAttribute" +
+                                        ".placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterCondition" +
+                                        ".placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder")
+                                }
+                                placeholder={ t("adminPortal:components.users.advancedSearch.placeholder") }
+                                defaultSearchAttribute="userName"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                            />
+                        ) }
+                        usersList={ usersList }
+                        handleUserDelete={ handleUserDelete }
+                        userMetaListContent={ userListMetaContent }
+                        isLoading={ isUserListRequestLoading }
+                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        searchQuery={ searchQuery }
+                        data-testid="user-mgt-user-list"
+                        readOnlyUserStores={ readOnlyUserStoresList }
+                        featureConfig={ featureConfig }
+                    />
+                }
                 {
                     showWizard && (
                     <AddUserWizard
@@ -437,6 +589,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                         listItemLimit={ listItemLimit }
                         updateList={ () => setListUpdated(true) }
                         rolesList={ rolesList }
+                        emailVerificationEnabled={ emailVerificationEnabled }
                     />
                     )
                 }

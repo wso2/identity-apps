@@ -21,13 +21,14 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.TenantDataManager" %>
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ include file="includes/localize.jsp" %>
 
-<fmt:bundle basename="org.wso2.carbon.identity.application.authentication.endpoint.i18n.Resources">
     <%
         request.getSession().invalidate();
         String queryString = request.getQueryString();
@@ -36,7 +37,7 @@
             idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
         }
 
-        String errorMessage = "Authentication Failed! Please Retry";
+        String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
         String authenticationFailed = "false";
 
         if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -46,7 +47,7 @@
                 errorMessage = Encode.forHtmlAttribute(request.getParameter(Constants.AUTH_FAILURE_MSG));
 
                  if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                    errorMessage = "Authentication Failed! Please Retry";
+                    errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
                 }
             }
         }
@@ -61,7 +62,7 @@
             %>
             <jsp:include page="extensions/header.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/header.jsp"/>
+            <jsp:include page="includes/header.jsp"/>
             <% } %>
             <script src="js/gadget.js"></script>
             <script src="js/qrCodeGenerator.js"></script>
@@ -81,12 +82,12 @@
                     %>
                     <jsp:include page="extensions/product-title.jsp"/>
                     <% } else { %>
-                    <jsp:directive.include file="includes/product-title.jsp"/>
+                    <jsp:include page="includes/product-title.jsp"/>
                     <% } %>
 
                     <div class="ui segment">
                         <!-- page content -->
-                        <h2>Enable TOTP</h2>
+                        <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enable.totp")%></h2>
                         <div class="ui divider hidden"></div>
                         <%
                             if ("true".equals(authenticationFailed)) {
@@ -102,20 +103,22 @@
                                         String authFailureMsg = request.getParameter("authFailureMsg");
                                         if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
                                 %>
-                                            <div class="ui negative message">Authentication Failed! Please Retry</div>
+                                            <div class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%></div>
                                             <div class="ui divider hidden"></div>
                                 <% } }  %>
                                 <p>You have not enabled TOTP authentication. Please enable it.</p>
+
+                                <p><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.totp.not.enabled.please.enable")%></p>
                                 
                                 <input type="hidden" id="ENABLE_TOTP" name="ENABLE_TOTP" value="false"/>
                                 <input type="hidden" name='ske' id='ske' value='<%=Encode.forHtmlAttribute(request.getParameter("ske"))%>'/>
                                 <input type="hidden" name="sessionDataKey" id="sessionDataKey"
                                     value='<%=Encode.forHtmlAttribute(request.getParameter("sessionDataKey"))%>'/>
-                                    
+
                                 <div class="ui styled fluid accordion">
                                     <div class="title">
                                         <i class="dropdown icon"></i>
-                                        Show QR code to scan and enrol the user
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "show.qr.code")%>
                                     </div>
                                     <div class="content">
                                         <div class="transition hidden">
@@ -130,14 +133,14 @@
                                 </div>
 
                                 <div class="align-right buttons">
-                                    <input type="button" name="cancel" id="cancel" value="Cancel" class="ui button link-button">
-                                    <input type="button" name="continue" id="continue" value="Continue" class="ui primary button">
+                                    <input type="button" name="cancel" id="cancel" value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "cancel")%>" class="ui button link-button">
+                                    <input type="button" name="continue" id="continue" value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "continue")%>" class="ui primary button">
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>
-            </main> 
+            </main>
 
             <!-- product-footer -->
             <%
@@ -146,7 +149,7 @@
             %>
             <jsp:include page="extensions/product-footer.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-footer.jsp"/>
+            <jsp:include page="includes/product-footer.jsp"/>
             <% } %>
 
             <!-- footer -->
@@ -156,7 +159,7 @@
             %>
             <jsp:include page="extensions/footer.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/footer.jsp"/>
+            <jsp:include page="includes/footer.jsp"/>
             <% } %>
 
             <script type="text/javascript">
@@ -186,4 +189,3 @@
             </script>
         </body>
     </html>
-</fmt:bundle>

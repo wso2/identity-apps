@@ -178,7 +178,7 @@
     %>
     <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/header.jsp"/>
+    <jsp:include page="includes/header.jsp"/>
     <% } %>
 
     <%
@@ -199,7 +199,7 @@
             %>
             <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-title.jsp"/>
+            <jsp:include page="includes/product-title.jsp"/>
             <% } %>
             <div class="ui segment">
 
@@ -538,7 +538,7 @@
     %>
     <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/product-footer.jsp"/>
+    <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
 
@@ -549,7 +549,7 @@
     %>
     <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-    <jsp:directive.include file="includes/footer.jsp"/>
+    <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
 
@@ -586,7 +586,7 @@
         </div>
     </div>
 
-    <script type="text/javascript" src="libs/handlebars-v4.0.11.js"></script>
+    <script type="text/javascript" src="libs/handlebars.min-v4.7.6.js"></script>
     <script type="text/javascript" src="libs/jstree/dist/jstree.min.js"></script>
     <script type="text/javascript" src="libs/jstree/src/jstree-actions.js"></script>
     <script type="text/javascript" src="js/consent_template_1.js"></script>
@@ -610,7 +610,7 @@
                     registrationBtn.prop("disabled", true).addClass("disabled");
                 }
             });
-            
+
             $(".form-info").popup();
 
             $("#register").submit(function (e) {
@@ -637,7 +637,7 @@
 
                 var password = $("#password").val();
                 var password2 = $("#password2").val();
-                
+
                 if (password !== password2) {
                     error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                         "Passwords.did.not.match.please.try.again")%>");
@@ -645,7 +645,7 @@
                     $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
                     return false;
                 }
-                
+
                 if(!$("#termsCheckbox")[0].checked){
                         error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
                             "Confirm.Privacy.Policy")%>");

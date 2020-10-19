@@ -39,7 +39,9 @@ i.icon {
         position: absolute;
         z-index: 1;
         top: -1px;
-        left: 43px;
+        left: 21px;
+        display: inline-block !important;
+        font-size: .74em !important;
     }
 
     &.map-icon {

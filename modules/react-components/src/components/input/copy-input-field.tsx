@@ -17,7 +17,7 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Input, Popup } from "semantic-ui-react";
 
 /**
@@ -84,11 +84,14 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                                 setCopied(false);
                             } }
                             ref={ copyButton as React.RefObject<Button> }
-                            onClick={ () => {
+                            onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                e.stopPropagation();
+
                                 claimURIText.current?.select();
                                 setCopied(true);
                                 document.execCommand("copy");
                                 copyButton.current.ref.current.blur();
+
                                 if (window.getSelection) {
                                     window.getSelection().removeAllRanges();
                                 }

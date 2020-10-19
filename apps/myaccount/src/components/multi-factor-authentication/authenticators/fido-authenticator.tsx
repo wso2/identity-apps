@@ -20,12 +20,26 @@ import { Field, Forms } from "@wso2is/forms";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Form, Grid, Icon, List, ModalContent, Popup } from "semantic-ui-react";
 import { deleteDevice, getMetaData, startFidoFlow, startFidoUsernamelessFlow, updateDeviceName } from "../../../api";
 import { MFAIcons } from "../../../configs";
+import { CommonConstants } from "../../../constants";
 import { AlertInterface, AlertLevels } from "../../../models";
 import { FIDODevice } from "../../../models/fido-authenticator";
+import { AppState } from "../../../store";
+import { setActiveForm } from "../../../store/actions";
 import { EditSection, ModalComponent, ThemeIcon } from "../../shared";
+
+
+/**
+ * FIDO key.
+ *
+ * @constant
+ * @default
+ * @type {string}
+ */
+const FIDO = "fido-";
 
 /**
  * Prop types for the associated accounts component.
@@ -50,6 +64,9 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
     const { onAlertFired } = props;
+
+    const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const dispatch = useDispatch();
 
     /**
      * This function fires a notification on failure.
@@ -199,6 +216,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
         tempEditFido.set(id, false);
         setEditFido(tempEditFido);
+        dispatch(setActiveForm(null));
     };
 
     const removeDevice = (id: string) => {
@@ -270,6 +288,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         const tempEditFido: Map<string, boolean> = new Map(editFIDO);
         tempEditFido.set(id, true);
         setEditFido(tempEditFido);
+        dispatch(setActiveForm(CommonConstants.SECURITY + FIDO + id));
     };
 
     /**
@@ -395,7 +414,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                         >
                             {
                                 deviceList.map((device, index) => (
-                                    editFIDO && editFIDO.get(device.credential.credentialId)
+                                    editFIDO?.get(device.credential.credentialId)
+                                        && activeForm?.startsWith(CommonConstants.SECURITY+FIDO)
                                         ? (
                                             <EditSection key={ device.credential.credentialId }>
                                                 <Grid>

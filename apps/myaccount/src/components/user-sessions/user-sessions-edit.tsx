@@ -20,11 +20,13 @@ import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, List, Responsive, SemanticICONS, Table } from "semantic-ui-react";
-import { UserSession } from "../../models";
+import {
+    IBrowser,
+    IDevice,
+    IOS,
+    UserSession
+} from "../../models";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
-import IBrowser = IUAParser.IBrowser;
-import IDevice = IUAParser.IDevice;
-import IOS = IUAParser.IOS;
 
 /**
  * Proptypes for the user sessions edit component.
@@ -217,7 +219,7 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                                                                 { app.appName }
                                                                             </Table.Cell>
                                                                             <Table.Cell>
-                                                                                { app.subject }
+                                                                                { app.subject.split("@")[ 0 ] }
                                                                             </Table.Cell>
                                                                         </Table.Row>
                                                                     )
@@ -256,7 +258,8 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
                                 <Grid.Column width={ 16 }>
                                     <DangerZoneGroup sectionHeader={ t("common:dangerZone") }>
                                         <DangerZone
-                                            actionTitle={ t("userPortal:components.userSessions.dangerZones.terminate." +
+                                            actionTitle={ t("userPortal:components.userSessions.dangerZones." +
+                                                "terminate." +
                                                 "actionTitle") }
                                             header={ t("userPortal:components.userSessions.dangerZones.terminate." +
                                                 "header") }

@@ -26,6 +26,7 @@ import {
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, {
+    Fragment,
     FunctionComponent,
     ReactElement,
     SyntheticEvent,
@@ -138,7 +139,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                     _.sortBy(authenticators, orderBy).map((authenticator, index) => (
                         !authenticator.hidden
                             ? (
-                                <>
+                                <Fragment key={ index }>
                                     <SegmentedAccordion.Title
                                         id={ authenticator.id }
                                         data-testid={ `${ testId }-${ authenticator.id }-title` }
@@ -171,7 +172,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
                                     >
                                         { authenticator.content }
                                     </SegmentedAccordion.Content>
-                                </>
+                                </Fragment>
                             )
                             : null
                     ))

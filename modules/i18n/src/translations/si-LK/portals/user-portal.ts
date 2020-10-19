@@ -1052,6 +1052,20 @@ export const userPortal: UserPortalNS = {
                 }
             },
             notifications: {
+                getProfileCompletion: {
+                    error: {
+                        description: "{{description}}",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    genericError: {
+                        description: "පැතිකඩ සම්පුර්ණ කිරීම ගණනය කිරීමේදී දෝෂයක් ඇතිවිය",
+                        message: "දෝෂයක් ඇතිවිය"
+                    },
+                    success: {
+                        description: "පැතිකඩ සම්පුර්ණ කිරීම සාර්ථකව ගණනය කරන ලදි",
+                        message: "දෝෂයක් ඇතිවිය"
+                    }
+                },
                 getProfileInfo: {
                     error: {
                         description: "{{description}}",
@@ -1185,6 +1199,55 @@ export const userPortal: UserPortalNS = {
         }
     },
     modals: {
+        editAvatarModal: {
+            content: {
+                gravatar: {
+                    errors: {
+                        noAssociation: {
+                            content: "තෝරාගත් විද්‍යුත් තැපෑල Gravatar හි ලියාපදිංචි වී නැති බව පෙනේ. " +
+                                "Gravatar නිල වෙබ් අඩවියට පිවිසීමෙන් Gravatar ගිණුමක් සඳහා ලියාපදිංචි වන්න හෝ පහත " +
+                                "සඳහන් එකක් භාවිතා කරන්න.",
+                            header: "ගැලපෙන Gravatar රූපයක් හමු නොවීය!"
+                        }
+                    },
+                    heading: "Gravatar මත පදනම්ව "
+                },
+                hostedAvatar: {
+                    heading: "සත්කාරක රූපය",
+                    input: {
+                        errors: {
+                            http: {
+                                content: "තෝරාගත් URL මඟින් HTTP හරහා සේවය කරන අනාරක්ෂිත රූපයක් වෙත යොමු වේ. " +
+                                    "කරුණාකර ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                                header: "අනාරක්ෂිත අන්තර්ගතය!"
+                            },
+                            invalid: {
+                                content: "කරුණාකර වලංගු Image URL එකක් ඇතුළත් කරන්න"
+                            }
+                        },
+                        hint: "තෙවන පාර්ශවීය ස්ථානයක සත්කාරක වන වලංගු රූප URL එකක් ඇතුළත් කරන්න.",
+                        placeholder: "රූපය සඳහා URL ඇතුලත් කරන්න.",
+                        warnings: {
+                            dataURL: {
+                                content: "විශාල අක්ෂර සංඛ්‍යාවක් සහිත දත්ත URL භාවිතා කිරීම දත්ත සමුදායේ ගැටළු වලට " +
+                                    "හේතු විය හැක. ප්‍රවේශමෙන් ඉදිරියට යන්න.",
+                                header: "ඇතුළත් කළ දත්ත URL එක දෙවරක් පරීක්ෂා කරන්න!"
+                            }
+                        }
+                    }
+                },
+                systemGenAvatars: {
+                    heading: "පද්ධතිය ජනනය කළ අවතාරය",
+                    types: {
+                        initials: "මුලකුරු"
+                    }
+                }
+            },
+            description: null,
+            heading: "පැතිකඩ පින්තූරය යාවත්කාලීන කරන්න",
+            primaryButton: "සුරකින්න",
+            secondaryButton: "අවලංගු කරන්න"
+        },
         sessionTimeoutModal: {
             description: "අක්‍රියතාවය හේතුවෙන් ඔබ වත්මන් සැසියෙන් ඉවත් වනු ඇත. ඔබ සැසිය දිගටම කරගෙන යාමට කැමති " +
                 "නම් කරුණාකර රැඳී සිටින්න තෝරන්න.",
@@ -1231,6 +1294,14 @@ export const userPortal: UserPortalNS = {
                 1: "කරුණාකර URL එක පරීක්ෂා කරන්න හෝ නැවත මුල් පිටුවට ගමන් කිරීමට පහත බොත්තම ක්ලික් කරන්න."
             },
             title: "පිටුව හමු නොවීය"
+        },
+        accessDeniedError: {
+            action: "නැවත ආරම්භක පිටුව වෙත",
+            subtitles: {
+                0: "ඔබට මෙම පිටුවට ප්‍රවේශ වීමට අවසර නැති බව පෙනේ.",
+                1: "කරුණාකර වෙනත් ගිණුමක් සමඟ පුරනය වීමට උත්සාහ කරන්න"
+            },
+            title: "ප්‍රවේශයට අවසර නැත"
         },
         emptySearchResult: {
             action: "සෙවුම් විමසුම හිස් කරන්න",

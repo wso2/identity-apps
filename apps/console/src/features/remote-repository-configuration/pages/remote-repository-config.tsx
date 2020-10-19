@@ -41,8 +41,7 @@ import {
     getRemoteRepoConfigList,
     updateRemoteRepoConfig 
 } from "../api";
-import { 
-    InterfaceEditDetails, 
+import {
     InterfaceRemoteConfigDetails, 
     InterfaceRemoteConfigForm, 
     InterfaceRemoteRepoConfig, 
@@ -192,31 +191,11 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         });
     };
 
-    const handleOnConfigUpdate = (id: string, values: InterfaceEditDetails): void => {
-        updateRemoteRepoConfig(id, values).then(() => {
-            handleAlerts({
-                description: t(
-                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.message"
-                )
-            });
-        })
-    }
-
     const getRemoteFecthForm = () => {
         return (
             <Forms
                 onSubmit={ (values) => { 
-                    if (remoteRepoConfigDetail) {
-                        handleOnConfigUpdate(
-                            remoteRepoConfigDetail.id, getFormValues(values)
-                        );
-                    } else {
-                        handleFormSubmit(getFormValues(values));
-                    }
+                    handleFormSubmit(getFormValues(values));
                 } }
             >
                 <Grid padded>
@@ -437,7 +416,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             </Forms>
         )
     }
-    
+
     return (
         <PageLayout
             title="Remote Configurations"

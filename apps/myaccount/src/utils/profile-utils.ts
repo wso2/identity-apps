@@ -20,11 +20,11 @@
 import _ from "lodash";
 import {
     BasicProfileInterface,
-    emptyProfileCompletion,
     MultiValue,
     ProfileAttribute,
     ProfileCompletion,
-    ProfileSchema
+    ProfileSchema,
+    emptyProfileCompletion
 } from "../models";
 import { store } from "../store";
 import { setProfileCompletion } from "../store/actions";
@@ -88,7 +88,7 @@ export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: strin
         const value = profileInfo[key];
 
         // Skip `associations`, `responseStatus` & `roles`.
-        if (key === "associations" || key === "responseStatus") {
+        if (key === "associations" || key === "responseStatus" || value == undefined || key === "roles") {
             continue;
         }
 

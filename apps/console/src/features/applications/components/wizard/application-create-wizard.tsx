@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import has from "lodash/has";
@@ -60,6 +60,7 @@ import {
 } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import {
+    CUSTOM_APPLICATION_TEMPLATE_ID,
     OAuthProtocolTemplate,
     OAuthProtocolTemplateItem,
     PassiveStsProtocolTemplate,
@@ -162,6 +163,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
     const [selectedSAMLMetaFile, setSelectedSAMLMetaFile] = useState<boolean>(false);
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     /**
      *  Retrieve Application template data.
      *
@@ -183,22 +186,22 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 })
                 .catch((error) => {
                     if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t("devPortal:components.applications.notifications.fetchTemplate.error" +
                                 ".message")
-                        }));
+                        });
 
                         return;
                     }
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.applications.notifications.fetchTemplate" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.fetchTemplate.genericError" +
                             ".message")
-                    }));
+                    });
                 })
         }
     };
@@ -209,7 +212,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param {MainApplicationInterface} application - The application to be created.
      */
     const createNewApplication = (application: MainApplicationInterface): void => {
-        
+
         let submittingApplication = application;
 
         // Add template mapping.
@@ -234,7 +237,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
                     history.push({
-                        pathname: AppConstants.PATHS.get("APPLICATION_EDIT").replace(":id", createdAppID),
+                        pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", createdAppID),
                         search: `?${ ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
                             ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE }`
                     });
@@ -243,25 +246,25 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 }
 
                 // Fallback to applications page, if the location header is not present.
-                history.push(AppConstants.PATHS.get("APPLICATIONS"));
+                history.push(AppConstants.getPaths().get("APPLICATIONS"));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.addApplication.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.applications.notifications.addApplication.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.applications.notifications.addApplication.genericError.message")
-                }));
+                });
             });
     };
 
@@ -285,21 +288,21 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.updateProtocol.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.applications.notifications.updateProtocol.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.applications.notifications.updateProtocol.error.message")
-                }));
+                });
             });
     };
 
@@ -466,7 +469,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     />
                 );
             case WizardStepsFormTypes.GENERAL_SETTINGS:
-                if (selectedTemplate.id === "custom-application") {
+                if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
                     return (
                         <GeneralSettingsWizardForm
                             triggerSubmit={ submitGeneralSettings }
@@ -609,7 +612,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      */
     useEffect(() => {
         if (selectedTemplate) {
-            if (selectedTemplate.id === "custom-application") {
+            if (selectedTemplate.id === CUSTOM_APPLICATION_TEMPLATE_ID) {
                 const NEW_STEPS: WizardStepInterface[] = [ ...STEPS ];
                 setWizardSteps(NEW_STEPS.splice(1, 1));
             } else {
@@ -652,23 +655,23 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                 })
                 .catch((error) => {
                     if (error.response && error.response.data && error.response.data.description) {
-                        dispatch(addAlert({
+                        setAlert({
                             description: error.response.data.description,
                             level: AlertLevels.ERROR,
                             message: t("devPortal:components.applications.notifications.fetchProtocolMeta.error" +
                                 ".message")
-                        }));
+                        });
 
                         return;
                     }
 
-                    dispatch(addAlert({
+                    setAlert({
                         description: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.applications.notifications.fetchProtocolMeta" +
                             ".genericError.message")
-                    }));
+                    });
                 });
         }
     }, [selectedCustomInboundProtocol]);
@@ -738,7 +741,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                     className="wizard application-create-wizard"
                     dimmer="blurring"
                     onClose={ handleWizardClose }
-                    closeOnDimmerClick
+                    closeOnDimmerClick={ false }
                     closeOnEscape
                     data-testid={ `${ testId }-modal` }
                 >
@@ -758,12 +761,21 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             )) }
                         </Steps.Group>
                     </Modal.Content>
-                    <Modal.Content className="content-container" scrolling>{ resolveStepContent() }</Modal.Content>
+                    <Modal.Content className="content-container" scrolling>
+                        { alert && alertComponent }
+                        { resolveStepContent() }
+                    </Modal.Content>
                     <Modal.Actions>
                         <Grid>
                             <Grid.Row column={ 1 }>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
-                                    <LinkButton floated="left" onClick={ handleWizardClose }>Cancel</LinkButton>
+                                    <LinkButton
+                                        data-testid={ `${ testId }-cancel-button` }
+                                        floated="left"
+                                        onClick={ handleWizardClose }
+                                    >
+                                        { t("common:cancel") }
+                                    </LinkButton>
                                 </Grid.Column>
                                 <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                     { currentWizardStep < wizardSteps.length - 1 && (

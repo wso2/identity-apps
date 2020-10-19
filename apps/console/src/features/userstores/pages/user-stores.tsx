@@ -229,7 +229,7 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 && (
                     <PrimaryButton
                         onClick={ () => {
-                            history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"));
+                            history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"));
                         } }
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
@@ -297,10 +297,46 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
                 data-testid={ `${ testId }-list-layout` }
             >
                 <UserStoresList
+                    advancedSearch={
+                        <AdvancedSearchWithBasicFilters
+                            onFilter={ handleUserstoreFilter }
+                            filterAttributeOptions={ [
+                                {
+                                    key: 0,
+                                    text: t("common:name"),
+                                    value: "name"
+                                },
+                                {
+                                    key: 1,
+                                    text: t("common:description"),
+                                    value: "description"
+                                }
+                            ] }
+                            filterAttributePlaceholder={
+                                t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                                    ".filterAttribute.placeholder")
+                            }
+                            filterConditionsPlaceholder={
+                                t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                                    ".filterCondition.placeholder")
+                            }
+                            filterValuePlaceholder={
+                                t("adminPortal:components.userstores.advancedSearch.form.inputs" +
+                                    ".filterValue.placeholder")
+                            }
+                            placeholder={
+                                t("adminPortal:components.userstores.advancedSearch.placeholder")
+                            }
+                            defaultSearchAttribute="name"
+                            defaultSearchOperator="co"
+                            triggerClearQuery={ triggerClearQuery }
+                            data-testid={ `${ testId }-advanced-search` }
+                        />
+                    }
                     isLoading={ isLoading }
                     list={ paginate(filteredUserStores, listItemLimit, offset) }
                     onEmptyListPlaceholderActionClick={
-                        () => history.push(AppConstants.PATHS.get("USERSTORE_TEMPLATES"))
+                        () => history.push(AppConstants.getPaths().get("USERSTORE_TEMPLATES"))
                     }
                     onSearchQueryClear={ handleSearchQueryClear }
                     searchQuery={ searchQuery }

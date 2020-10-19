@@ -39,7 +39,7 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
         onConfigUpdate,
         handleConfigDelete
     } = props;
-    
+
     const [ showConfigDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ isEnabled, setIsEnabled ] = useState<boolean>();
 
@@ -59,8 +59,8 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
     return (
         <>
             <EmphasizedSegment>
-                <Forms 
-                    onSubmit={ (values) => { 
+                <Forms
+                    onSubmit={ (values) => {
                         onConfigUpdate(configObject.id, getFormValues(values));
                     } }
                 >
@@ -80,7 +80,7 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
                         </GridRow>
                         <GridRow columns={ 1 }>
                             <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Checkbox 
+                                <Checkbox
                                     name="configEnabled"
                                     required={ false }
                                     requiredErrorMessage=""
@@ -90,7 +90,7 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
                                         setIsEnabled(!isEnabled)
                                     } }
                                     checked={ isEnabled }
-                                    label='Is Configuration Enabled' 
+                                    label='Is Configuration Enabled'
                                 />
                             </GridColumn>
                         </GridRow>
@@ -196,15 +196,15 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
                     subheader={ "This will remove the configuration from the account." }
                     onActionClick={ () => { setShowDeleteConfirmationModal(true) } }
                 />
-            </DangerZoneGroup> 
+            </DangerZoneGroup>
             {
-                showConfigDeleteConfirmation && 
+                showConfigDeleteConfirmation &&
                 <ConfirmationModal
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
                     open={ showConfigDeleteConfirmation }
                     assertion={ configObject.remoteFetchName }
-                    assertionHint={ 
+                    assertionHint={
                         (
                             <p>
                                 <Trans
@@ -221,10 +221,11 @@ export const RemoteConfigDetail: FunctionComponent<RemoteConfigDetailProps> = (
                     primaryAction="Confirm"
                     secondaryAction="Cancel"
                     onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
-                    onPrimaryActionClick={ (): void => { 
+                    onPrimaryActionClick={ (): void => {
                         handleConfigDelete(configObject);
                         setShowDeleteConfirmationModal(false);
                     } }
+                    closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
                         { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.header") }

@@ -123,7 +123,7 @@ export const ResourceList: FunctionComponent<ResourceListPropsInterface> & Resou
                                 </Placeholder>
                             ) }
                             isLoading={ true }
-                            avatarType={ loadingStateOptions.imageType === "circular" ? "user" : "app" }
+                            shape={ loadingStateOptions.imageType }
                             size="mini"
                             floated="left"
                         />

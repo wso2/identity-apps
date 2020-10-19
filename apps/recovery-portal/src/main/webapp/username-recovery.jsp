@@ -44,7 +44,7 @@
         response.sendError(HttpServletResponse.SC_FOUND);
         return;
     }
-    
+
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
 
     if (StringUtils.isNotEmpty(tenantDomain)) {
@@ -57,11 +57,11 @@
             return;
         }
     }
-    
+
     try {
         ReCaptchaProperties reCaptchaProperties = reCaptchaApi.getReCaptcha(tenantDomain, true, "ReCaptcha",
                 "username-recovery");
-        
+
         if (reCaptchaProperties != null && reCaptchaProperties.getReCaptchaEnabled()) {
             Map<String, List<String>> headers = new HashMap<>();
             headers.put("reCaptcha", Arrays.asList(String.valueOf(true)));
@@ -75,7 +75,7 @@
         request.getRequestDispatcher("error.jsp").forward(request, response);
         return;
     }
-    
+
     boolean error = IdentityManagementEndpointUtil.getBooleanValue(request.getAttribute("error"));
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
 
@@ -134,7 +134,7 @@
     %>
         <jsp:include page="extensions/header.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
     <% } %>
 
     <%
@@ -155,7 +155,7 @@
             %>
             <jsp:include page="extensions/product-title.jsp"/>
             <% } else { %>
-            <jsp:directive.include file="includes/product-title.jsp"/>
+            <jsp:include page="includes/product-title.jsp"/>
             <% } %>
             <div class="ui segment">
                 <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Recover.username")%></h2>
@@ -220,7 +220,7 @@
                         </div>
                         <% } %>
 
-                        <% if (!isSaaSApp && (StringUtils.isNotEmpty(tenantDomain) && !error)) { %> 
+                        <% if (!isSaaSApp && (StringUtils.isNotEmpty(tenantDomain) && !error)) { %>
                         <div>
                             <input id="tenant-domain" type="hidden" name="tenantDomain" value="<%=Encode.forHtmlAttribute(tenantDomain)%>"/>
                         </div>
@@ -232,7 +232,7 @@
                             <input id="tenant-domain" type="text" name="tenantDomain" class="form-control">
                         </div>
                         <% } %>
-                        
+
                         <input type="hidden" id="isUsernameRecovery" name="isUsernameRecovery" value="true">
 
                         <% for (Claim claim : claims) {
@@ -295,7 +295,7 @@
     %>
         <jsp:include page="extensions/product-footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
     <% } %>
 
     <!-- footer -->
@@ -305,7 +305,7 @@
     %>
         <jsp:include page="extensions/footer.jsp"/>
     <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
     <% } %>
 
     <script type="text/javascript">

@@ -197,7 +197,10 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                             i18nKey="devPortal:components.idp.confirmations.deleteIDP.assertionHint"
                                             tOptions={ { name: name } }
                                         >
-                                            Please type <strong>{ name }</strong> to confirm.
+                                            Please type
+                                            <strong data-testid="idp-name-assertion">
+                                                { name }
+                                            </strong> to confirm.
                                         </Trans>
                                     </p>
                                 ) }
@@ -209,6 +212,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsInterface> = (
                                     (): void => handleIdentityProviderDelete()
                                 }
                                 data-testid={ `${ testId }-delete-idp-confirmation` }
+                                closeOnDimmerClick={ false }
                             >
                                 <ConfirmationModal.Header data-testid={ `${ testId }-delete-idp-confirmation` }>
                                     { t("devPortal:components.idp.confirmations.deleteIDP.header") }

@@ -1,3 +1,17 @@
 /*******************************
         Table Varibles
 *******************************/
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+@dataTableTransparentBackground: transparent;
+@dataTableTransparentBorder: none;
+@dataTableSelectableRowCursor: pointer;
+@dataTableColumnSelectorFloat: right;
+
+@dataTableHeaderFontWeight: 500;
+
+// Mobile Variables
+@mobileDataTableSearchMarginBottom: 10px;

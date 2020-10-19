@@ -16,15 +16,15 @@
  * under the License.
  */
 
+import { IdentityClient } from "@asgardio/oidc-js";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
-import { IdentityClient } from "@wso2is/authentication";
 import { store } from "../../core";
-import { 
+import {
     InterfaceConfigDetails,
     InterfaceEditDetails,
     InterfaceRemoteConfigDetails,
-    InterfaceRemoteRepoConfigDetails, 
+    InterfaceRemoteRepoConfigDetails,
     InterfaceRemoteRepoListResponse } from "../models";
 
 /**
@@ -44,7 +44,7 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteFetchConfig
     };
-    return httpClient<InterfaceRemoteRepoListResponse>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             return Promise.resolve(response);
         })
@@ -63,8 +63,8 @@ export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse<Interface
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };
-    return httpClient<InterfaceRemoteConfigDetails>(requestConfig)
-        .then((response: AxiosResponse<InterfaceRemoteConfigDetails>) => {
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -101,7 +101,7 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id + "/status"
     };
-    return httpClient<InterfaceConfigDetails>(requestConfig)
+    return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceConfigDetails>) => {
             return Promise.resolve(response);
         })
@@ -112,12 +112,12 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
 
 export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetails): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
+        data: configObj,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        data: configObj,
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteFetchConfig
     };
@@ -132,12 +132,12 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
 
 export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetails): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
+        data: configObj,
         headers: {
             "Accept": "application/json",
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
-        data: configObj,
         method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };

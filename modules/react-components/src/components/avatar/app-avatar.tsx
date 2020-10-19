@@ -46,42 +46,48 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
 
     const {
         image,
+        children,
         className,
         name,
         onCard,
-        [ "data-testid" ]: testId
+        [ "data-testid" ]: testId,
+        ...rest
     } = props;
 
-    const appAvatarClassNames = classNames({
-        [ "bg-image" ]: !onCard,
-        [ "default-app-icon" ]: onCard
-    }, className);
+    const appAvatarClassNames = classNames(className);
 
     if (image) {
         return (
             <Avatar
-                avatarType="app"
                 avatar
-                className="with-app-image"
+                shape="square"
                 image={ image }
                 bordered={ false }
+                initialsColor={ onCard ? "primary" : "white" }
+                withBackgroundImage={ !onCard }
                 data-testid={ testId }
-                { ...props }
-            />
+                { ...rest }
+            >
+                { children }
+            </Avatar>
         );
     }
 
     return (
         <Avatar
-            avatarType="app"
+            avatar
+            bordered
+            shape="square"
             className={ appAvatarClassNames }
             style={ onCard ? {} : { backgroundImage: `url(${ OrangeAppIconBackground })` } }
-            bordered
-            avatar
             name={ name }
+            initialsColor={ onCard ? "primary" : "white" }
+            withBackgroundImage={ !onCard }
             data-testid={ testId }
-            { ...props }
-        />
+            { ...rest }
+        >
+            { children }
+        </Avatar>
     );
 };
 

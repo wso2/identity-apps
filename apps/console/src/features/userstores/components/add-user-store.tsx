@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -31,6 +31,7 @@ import { AddUserstoreWizardStepIcons } from "../configs";
 import { USERSTORE_TYPE_DISPLAY_NAMES } from "../constants";
 import {
     CategorizedProperties,
+    TypeProperty,
     UserStorePostData,
     UserStoreProperty,
     UserstoreType
@@ -86,6 +87,8 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
     const { t } = useTranslation();
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     useEffect(() => {
         type && setProperties(reOrganizeProperties(type.properties));
     }, [ type ]);
@@ -116,15 +119,15 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
 
             onClose();
 
-            history.push(AppConstants.PATHS.get("USERSTORES"));
+            history.push(AppConstants.getPaths().get("USERSTORES"));
         }).catch(error => {
-            dispatch(addAlert({
+            setAlert({
                 description: error?.description ?? t("adminPortal:components.userstores.notifications.addUserstore" +
                     ".genericError.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t("adminPortal:components.userstores.notifications.addUserstore" +
                     ".genericError.message")
-            }));
+            });
         });
     };
 
@@ -186,7 +189,29 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             };
         });
 
-        return [ ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
+        const allProperties: UserStoreProperty[] = type.properties.Advanced.map((property: TypeProperty) => {
+            return {
+                name: property.name,
+                value: property.defaultValue
+            }
+        });
+
+        allProperties.push(
+            ...type.properties.Mandatory.map((property: TypeProperty) => {
+                return {
+                    name: property.name,
+                    value: property.defaultValue
+                };
+            }),
+            ...type.properties.Optional.map((property: TypeProperty) => {
+                return {
+                    name: property.name,
+                    value: property.defaultValue
+                };
+            })
+        );
+
+        return [ ...allProperties, ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
     };
 
     /**
@@ -286,12 +311,18 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             size="small"
             className="wizard application-create-wizard"
             data-testid={ testId }
+            closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.userstores.wizard.header",
                     {
                         type: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                     })
+                }
+                {
+                    generalDetailsData && generalDetailsData.get("name")
+                        ? " - " + generalDetailsData.get("name")
+                        : ""
                 }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>

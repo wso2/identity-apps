@@ -51,6 +51,14 @@ export class PatternConstants {
         "?(\\#[-a-z\\d_]*)?$", "i");
 
     /**
+     * HTTPS/HTTP URL pattern regex.
+     * @constant
+     * @type {RegExp}
+     * @default
+     */
+    public static readonly HTTPS_OR_HTTP_REGEX_PATTERN: RegExp = new RegExp("https?:\/\/");
+
+    /**
      * Data URL pattern regex.
      * @constant
      * @type {RegExp}

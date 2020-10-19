@@ -1,20 +1,17 @@
 {
     "name": "@wso2is/console",
-    "version": "1.0.388",
+    "version": "1.0.459",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
     "main": "index.js",
     "scripts": {
-        "build": "run-script-os",
-        "build:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production && npm run test",
-        "build:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production && npm run test",
-        "build:analyze": "run-script-os",
-        "build:analyze:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true",
-        "build:analyze:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production --env.ENABLE_ANALYZER=true",
-        "build-prod": "run-script-os",
-        "build-prod:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production",
-        "build-prod:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production",
+        "build": "npm run build:prod && npm run test",
+        "build:analyze": "npm run build:prod -- --env.ENABLE_ANALYZER=true",
+        "build:external": "npm run build:prod -- --env.IS_DEPLOYED_ON_EXTERNAL_SERVER=true",
+        "build:prod": "run-script-os",
+        "build:prod:win32": "..\\..\\node_modules\\.bin\\webpack -p --env.NODE_ENV=production",
+        "build:prod:default": "../../node_modules/.bin/webpack -p --env.NODE_ENV=production",
         "clean": "rimraf build && npm run clean:themes",
         "clean:themes": "rimraf src/themes",
         "copy:themes": "node scripts/copy-themes.js",
@@ -27,19 +24,25 @@
         "test": "jest --passWithNoTests"
     },
     "dependencies": {
-        "@wso2is/authentication": "^1.0.388",
-        "@wso2is/core": "^1.0.388",
-        "@wso2is/forms": "^1.0.388",
-        "@wso2is/http": "^1.0.388",
-        "@wso2is/i18n": "^1.0.388",
-        "@wso2is/react-components": "^1.0.388",
-        "@wso2is/theme": "^1.0.388",
-        "@wso2is/validation": "^1.0.388",
-        "country-language": "^0.1.7"
+        "@wso2is/core": "^1.0.459",
+        "@wso2is/forms": "^1.0.459",
+        "@wso2is/i18n": "^1.0.459",
+        "@wso2is/react-components": "^1.0.459",
+        "@wso2is/theme": "^1.0.459",
+        "@wso2is/validation": "^1.0.459",
+        "country-language": "^0.1.7",
+        "redux-mock-store": "^1.5.4"
     },
     "devDependencies": {
+        "@testing-library/dom": "^7.24.3",
+        "@testing-library/user-event": "^12.1.6",
+        "@types/jest": "^26.0.14",
         "eslint-plugin-node": "^11.0.0",
-        "run-script-os": "^1.0.7"
+        "jest": "^26.4.2",
+        "jest-environment-jsdom": "^26.3.0",
+        "jest-environment-jsdom-global": "^2.0.4",
+        "run-script-os": "^1.0.7",
+        "ts-jest": "^26.4.0"
     },
     "peerDependencies": {
         "@svgr/webpack": "*",
@@ -72,5 +75,8 @@
         "style-loader": "*",
         "thread-loader": "*",
         "ua-parser-js": "*"
-    }
+    },
+    "browserslist": [
+        "> 0.2%"
+    ]
 }

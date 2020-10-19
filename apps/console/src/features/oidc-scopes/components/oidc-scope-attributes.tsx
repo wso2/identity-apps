@@ -30,11 +30,8 @@ import { useTranslation } from "react-i18next";
 import { Modal } from "semantic-ui-react";
 
 interface OIDCScopeAttributesPropsInterface extends TestableComponentInterface {
-    availableClaims: ExternalClaim[];
-    setAvailableClaims: any;
     selectedClaims: ExternalClaim[];
-    setSelectedClaims: any;
-    setInitialSelectedClaims: any;
+    unselectedClaims: ExternalClaim[];
     showAddModal: boolean;
     setShowAddModal: (showModal: boolean) => void;
     createMapping?: any;
@@ -55,26 +52,69 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
 
     const {
         selectedClaims,
-        setSelectedClaims,
+        unselectedClaims,
         showAddModal,
         setShowAddModal,
-        availableClaims,
-        setAvailableClaims,
-        setInitialSelectedClaims,
         onUpdateAttributes,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ tempAvailableClaims, setTempAvailableClaims ] = useState<ExternalClaim[]>([]);
+    const [ tempUnselectedClaims, setUnselectedClaims ] = useState<ExternalClaim[]>([]);
     const [ tempSelectedClaims, setTempSelectedClaims ] = useState<ExternalClaim[]>([]);
-    const [ filterTempAvailableClaims, setFilterTempAvailableClaims ] = useState<ExternalClaim[]>([]);
+    const [ filterTempUnselectedClaims, setFilterTempUnselectedClaims ] = useState<ExternalClaim[]>([]);
     const [ filterTempSelectedClaims, setFilterTempSelectedClaims ] = useState<ExternalClaim[]>([]);
     const [ checkedUnassignedListItems, setCheckedUnassignedListItems ] = useState<ExternalClaim[]>([]);
     const [ checkedAssignedListItems, setCheckedAssignedListItems ] = useState<ExternalClaim[]>([]);
     const [ isSelectUnassignedClaimsAllClaimsChecked, setSelectUnassignedClaimsAllClaimsChecked ] = useState(false);
     const [ isSelectAssignedAllClaimsChecked, setIsSelectAssignedAllClaimsChecked ] = useState(false);
+
+    /**
+     *  Select all selected claims
+     */
+    useEffect(() => {
+        if (isSelectAssignedAllClaimsChecked) {
+            setCheckedAssignedListItems(tempSelectedClaims);
+        } else {
+            setCheckedAssignedListItems([])
+        }
+    }, [isSelectAssignedAllClaimsChecked]);
+
+    /**
+     * Select all available claims.
+     */
+    useEffect(() => {
+        if (isSelectUnassignedClaimsAllClaimsChecked) {
+            setCheckedUnassignedListItems(tempUnselectedClaims);
+        } else {
+            setCheckedUnassignedListItems([])
+        }
+    }, [isSelectUnassignedClaimsAllClaimsChecked]);
+
+    /**
+     * Set initial unselected claims
+     */
+    useEffect(() => {
+        if (unselectedClaims === undefined) {
+            return;
+        }
+
+        setUnselectedClaims(unselectedClaims);
+        setFilterTempUnselectedClaims(unselectedClaims);
+    }, [ unselectedClaims ]);
+
+    /**
+     * Set initial unselected claims
+     */
+    useEffect(() => {
+        if (selectedClaims === undefined) {
+            return;
+        }
+
+        setTempSelectedClaims(selectedClaims);
+        setFilterTempSelectedClaims(selectedClaims);
+    }, [ selectedClaims ]);
 
     const handleAttributeModal = () => {
         setShowAddModal(false);
@@ -84,10 +124,10 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
     const searchTempAvailable = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            setFilterTempAvailableClaims(tempAvailableClaims.filter((item) =>
+            setFilterTempUnselectedClaims(tempUnselectedClaims.filter((item) =>
                 item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
         } else {
-            setFilterTempAvailableClaims(tempAvailableClaims);
+            setFilterTempUnselectedClaims(tempUnselectedClaims);
         }
     };
 
@@ -113,13 +153,13 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         }
         setTempSelectedClaims(addedClaims);
         setFilterTempSelectedClaims(addedClaims);
-        setTempAvailableClaims(tempAvailableClaims.filter(x => !addedClaims?.includes(x)));
-        setFilterTempAvailableClaims(filterTempAvailableClaims.filter(x => !addedClaims?.includes(x)));
+        setUnselectedClaims(tempUnselectedClaims.filter(x => !addedClaims?.includes(x)));
+        setFilterTempUnselectedClaims(filterTempUnselectedClaims.filter(x => !addedClaims?.includes(x)));
         setSelectUnassignedClaimsAllClaimsChecked(false);
     };
 
     const removeAttributes = () => {
-        const removedRoles = [...tempAvailableClaims];
+        const removedRoles = [...tempUnselectedClaims];
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map((claim) => {
                 if (!(removedRoles?.includes(claim))) {
@@ -127,8 +167,8 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                 }
             });
         }
-        setTempAvailableClaims(removedRoles);
-        setFilterTempAvailableClaims(removedRoles);
+        setUnselectedClaims(removedRoles);
+        setFilterTempUnselectedClaims(removedRoles);
         setTempSelectedClaims(tempSelectedClaims?.filter(x => !removedRoles?.includes(x)));
         setFilterTempSelectedClaims(filterTempSelectedClaims?.filter(x => !removedRoles?.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
@@ -183,59 +223,16 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
     };
 
     /**
-     *  Select all selected claims
-     */
-    useEffect(() => {
-        if (isSelectAssignedAllClaimsChecked) {
-            setCheckedAssignedListItems(tempSelectedClaims);
-        } else {
-            setCheckedAssignedListItems([])
-        }
-    }, [isSelectAssignedAllClaimsChecked]);
-
-    /**
-     * Select all available claims.
-     */
-    useEffect(() => {
-        if (isSelectUnassignedClaimsAllClaimsChecked) {
-            setCheckedUnassignedListItems(tempAvailableClaims);
-        } else {
-            setCheckedUnassignedListItems([])
-        }
-    }, [isSelectUnassignedClaimsAllClaimsChecked]);
-
-    /**
-     *  Set initial values for modal.
-     */
-    useEffect(() => {
-        if (showAddModal) {
-            setTempAvailableClaims(availableClaims);
-            setFilterTempAvailableClaims(availableClaims);
-            setTempSelectedClaims(selectedClaims);
-            setFilterTempSelectedClaims(selectedClaims);
-        } else {
-            setTempAvailableClaims([]);
-            setFilterTempAvailableClaims([]);
-            setTempSelectedClaims([]);
-            setFilterTempSelectedClaims([]);
-        }
-    }, [showAddModal]);
-
-    /**
      *  Save the selected claims
      */
     const updateSelectedClaims = (() => {
         const selectedClaims = [];
         const selectedClaimsValues = [...tempSelectedClaims];
-        const added = selectedClaimsValues.filter((claim) => !selectedClaims?.includes(claim));
 
         selectedClaimsValues.map((claim) => {
             selectedClaims.push(claim.claimURI);
         });
 
-        setSelectedClaims(selectedClaimsValues);
-        setInitialSelectedClaims(selectedClaimsValues);
-        setAvailableClaims([...tempAvailableClaims]);
         onUpdateAttributes(selectedClaims);
         setShowAddModal(false);
     });
@@ -262,7 +259,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                     data-testid={ `${ testId }-transfer-component` }
                 >
                     <TransferList
-                        isListEmpty={ !(filterTempAvailableClaims.length > 0) }
+                        isListEmpty={ !(filterTempUnselectedClaims?.length > 0) }
                         listType="unselected"
                         listHeaders={ [
                             t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
@@ -273,7 +270,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                         data-testid={ `${ testId }-unselected-transfer-list` }
                     >
                         {
-                            filterTempAvailableClaims?.map((claim, index) => {
+                            filterTempUnselectedClaims?.map((claim, index) => {
                                 return (
                                     <TransferListItem
                                         handleItemChange={ () => handleUnassignedItemCheckboxChange(claim) }
@@ -292,7 +289,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                         }
                     </TransferList>
                     <TransferList
-                        isListEmpty={ !(filterTempSelectedClaims.length > 0) }
+                        isListEmpty={ !(filterTempSelectedClaims?.length > 0) }
                         listType="selected"
                         listHeaders={ [
                             t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
@@ -341,4 +338,3 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         </Modal>
     )
 };
-

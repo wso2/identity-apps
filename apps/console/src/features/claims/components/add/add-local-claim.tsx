@@ -19,13 +19,17 @@
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { addLocalClaim } from "../../api";
 import { AddLocalClaimWizardStepIcons } from "../../configs";
+import { ClaimManagementConstants } from "../../constants";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
 
 /**
@@ -81,36 +85,64 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     const { t } = useTranslation();
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     /**
      * Submit handler that sends the API request to add the local claim
      */
     const handleSubmit = () => {
-        addLocalClaim(data).then(() => {
-            dispatch(addAlert(
-                {
-                    description: t("adminPortal:components.claims.local.notifications.addLocalClaim.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.local.notifications.addLocalClaim.success.message")
+        addLocalClaim(data)
+            .then((response) => {
+                dispatch(addAlert(
+                    {
+                        description: t("adminPortal:components.claims.local.notifications." +
+                            "addLocalClaim.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.claims.local.notifications." +
+                            "addLocalClaim.success.message")
+                    }
+                ));
+
+                // The created resource's id is sent as a location header.
+                // If that's available, navigate to the edit page.
+                if (!isEmpty(response.headers.location)) {
+                    const location = response.headers.location;
+                    const createdClaim = location.substring(location.lastIndexOf("/") + 1);
+
+                    // Closes the modal.
+                    onClose();
+
+                    history.push({
+                        pathname: AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT")
+                            .replace(":id", createdClaim),
+                        search: ClaimManagementConstants.NEW_LOCAL_CLAIM_URL_SEARCH_PARAM
+                    });
+
+                    return;
                 }
-            ));
-            onClose();
-            update();
-        }).catch(error => {
-            dispatch(addAlert(
-                {
-                    description: error?.description
-                        || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
-                }
-            ));
-        })
+
+                // Fallback to listing, if the location header is not present.
+                // `onClose()` closes the modal and `update()` re-fetches the list.
+                // Check `LocalClaimsPage` component for the respective callback actions.
+                onClose();
+                update();
+            }).catch((error) => {
+                setAlert(
+                    {
+                        description: error?.description
+                            || t("adminPortal:components.claims.local.notifications." +
+                                "addLocalClaim.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
+                    }
+                );
+            })
     };
 
     /**
      * Handler that is called when the `Basic Details` wizard step is completed
-     * @param {Claim} dataFromForm 
+     * @param {Claim} dataFromForm
      * @param {Map<string, FormValue>} values
      */
     const onSubmitBasicDetails = (dataFromForm: Claim, values: Map<string, FormValue>) => {
@@ -122,8 +154,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 
     /**
      * Handler that is called when the `Mapped Attributes` step of the wizard is completed
-     * @param {Claim} dataFromForm 
-     * @param {KeyValue[]} values 
+     * @param {Claim} dataFromForm
+     * @param {KeyValue[]} values
      */
     const onSubmitMappedAttributes = (dataFromForm: Claim, values: Map<string, FormValue>) => {
         setCurrentWizardStep(2);
@@ -206,9 +238,15 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
             open={ open }
             onClose={ onClose }
             data-testid={ testId }
+            closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.claims.local.wizard.header") }
+                {
+                    basicDetailsData && basicDetailsData.get("name")
+                        ? " - " + basicDetailsData.get("name")
+                        : ""
+                }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group
@@ -225,6 +263,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>
@@ -274,4 +313,3 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
 AddLocalClaims.defaultProps = {
     "data-testid": "add-local-claims-wizard"
 };
-

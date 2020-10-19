@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider, Grid } from "semantic-ui-react";
 import { FederatedAssociations, LinkedAccounts, Profile, ProfileExport } from "../components";
-import { ApplicationConstants } from "../constants";
+import { AppConstants } from "../constants";
 import { InnerPageLayout } from "../layouts";
 import { AlertInterface, FeatureConfigInterface } from "../models";
 import { AppState } from "../store";
@@ -61,7 +61,7 @@ const PersonalInfoPage = (): ReactElement => {
                             ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE")
+                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE")
                             )
                             ? (
                                 <Profile onAlertFired={ handleAlerts } />
@@ -78,7 +78,7 @@ const PersonalInfoPage = (): ReactElement => {
                             ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")
+                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_LINKED_ACCOUNTS")
                             )
                             ? (
                                 <LinkedAccounts onAlertFired={ handleAlerts } />
@@ -95,7 +95,7 @@ const PersonalInfoPage = (): ReactElement => {
                             ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS")
+                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXTERNAL_LOGINS")
                             )
                             ? (
                                 <FederatedAssociations onAlertFired={ handleAlerts } />
@@ -112,7 +112,7 @@ const PersonalInfoPage = (): ReactElement => {
                             ) &&
                             isFeatureEnabled(
                                 accessConfig?.personalInfo,
-                                ApplicationConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")
+                                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_EXPORT_PROFILE")
                             )
                             ? (
                                 <ProfileExport onAlertFired={ handleAlerts } />

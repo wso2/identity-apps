@@ -19,7 +19,12 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import { AlertInterface, AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import {
+    EmptyPlaceholder,
+    ListLayout,
+    PageLayout,
+    PrimaryButton
+} from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,10 +33,14 @@ import { Dropdown, DropdownItemProps, DropdownProps, Icon, PaginationProps } fro
 import {
     AdvancedSearchWithBasicFilters,
     AppState,
+    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     SharedUserStoreUtils,
-    UIConstants
+    UIConstants,
+    UserStoreProperty,
+    getAUserStore
 } from "../../core";
+import { UserStorePostData } from "../../userstores";
 import { deleteGroupById, getGroupList, searchGroupList } from "../api";
 import { GroupList } from "../components";
 import { CreateGroupWizard } from "../components/wizard";
@@ -78,6 +87,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
     const [ isGroupsListRequestLoading, setGroupsListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
+    const [ groupsError, setGroupsError ] = useState<boolean>(false);
 
     const [ groupList, setGroupsList ] = useState<GroupsInterface[]>([]);
     const [ paginatedGroups, setPaginatedGroups ] = useState<GroupsInterface[]>([]);
@@ -128,7 +138,29 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                         setPaginatedGroups([]);
                         setIsEmptyResults(true);
                     }
+                    setGroupsError(false);
+                } else {
+                    dispatch(addAlert({
+                        description: t("adminPortal:components.groups.notifications." +
+                            "fetchGroups.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: t("adminPortal:components.groups.notifications.fetchGroups.genericError.message")
+                    }));
+                    setGroupsError(true);
+                    setGroupsList([]);
+                    setPaginatedGroups([]);
                 }
+            }).catch((error) => {
+                dispatch(addAlert({
+                    description: error?.response?.data?.description ?? error?.response?.data?.detail
+                        ?? t("adminPortal:components.groups.notifications.fetchGroups.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.response?.data?.message
+                        ?? t("adminPortal:components.groups.notifications.fetchGroups.genericError.message")
+                }));
+                setGroupsError(true);
+                setGroupsList([]);
+                setPaginatedGroups([]);
             })
             .finally(() => {
                 setGroupsListRequestLoading(false);
@@ -163,14 +195,22 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
                 }
+
                 response.data.map((store, index) => {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
-                    }
+                    getAUserStore(store.id).then((response: UserStorePostData) => {
+                        const isDisabled = response.properties.find(
+                            (property: UserStoreProperty) => property.name === "Disabled").value === "true";
+
+                        if (!isDisabled) {
+                            storeOption = {
+                                key: index,
+                                text: store.name,
+                                value: store.name
+                            };
+                            storeOptions.push(storeOption);
+                        }
+                    });
+                }
                 );
 
                 setUserStoresList(storeOptions);
@@ -369,21 +409,63 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                     />
                 }
                 showPagination={ paginatedGroups.length > 0  }
-                showTopActionPanel={ isGroupsListRequestLoading || !(!searchQuery && paginatedGroups?.length <= 0) }
+                showTopActionPanel={ isGroupsListRequestLoading
+                    || !(!searchQuery
+                        && !groupsError
+                        && userStoreOptions.length < 3
+                        && paginatedGroups?.length <= 0) }
                 totalPages={ Math.ceil(groupList?.length / listItemLimit) }
                 totalListSize={ groupList?.length }
             >
-                <GroupList
-                    data-testid="group-mgt-groups-list"
-                    handleGroupDelete={ handleOnDelete }
-                    isLoading={ isGroupsListRequestLoading }
-                    onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                    onSearchQueryClear={ handleSearchQueryClear }
-                    groupList={ paginatedGroups }
-                    searchQuery={ searchQuery }
-                    readOnlyUserStores={ readOnlyUserStoresList }
-                    featureConfig={ featureConfig }
-                />
+                { groupsError
+                    ? <EmptyPlaceholder
+                        subtitle={ [ t("adminPortal:components.groups.placeholders.groupsError.subtitles.0"),
+                            t("adminPortal:components.groups.placeholders.groupsError.subtitles.1") ] }
+                        title={ t("adminPortal:components.groups.placeholders.groupsError.title") }
+                        image={ EmptyPlaceholderIllustrations.genericError }
+                        imageSize="tiny"
+                    /> :
+                    <GroupList
+                        advancedSearch={ (
+                            <AdvancedSearchWithBasicFilters
+                                data-testid="group-mgt-groups-list-advanced-search"
+                                onFilter={ handleUserFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: "Name",
+                                        value: "displayName"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.groups.advancedSearch.form.inputs.filterAttribute" +
+                                        ".placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.groups.advancedSearch.form.inputs.filterCondition" +
+                                        ".placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.groups.advancedSearch.form.inputs.filterValue" +
+                                        ".placeholder")
+                                }
+                                placeholder={ t("adminPortal:components.groups.advancedSearch.placeholder") }
+                                defaultSearchAttribute="displayName"
+                                defaultSearchOperator="sw"
+                                triggerClearQuery={ triggerClearQuery }
+                            />
+                        ) }
+                        data-testid="group-mgt-groups-list"
+                        handleGroupDelete={ handleOnDelete }
+                        isLoading={ isGroupsListRequestLoading }
+                        onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
+                        onSearchQueryClear={ handleSearchQueryClear }
+                        groupList={ paginatedGroups }
+                        searchQuery={ searchQuery }
+                        readOnlyUserStores={ readOnlyUserStoresList }
+                        featureConfig={ featureConfig }
+                    />
+                }
             </ListLayout>
             {
                 showWizard && (

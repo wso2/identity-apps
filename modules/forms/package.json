@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/forms",
-    "version": "1.0.388",
+    "version": "1.0.459",
     "description": "Forms module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -19,7 +19,15 @@
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project .",
-        "test": "jest"
+        "test": "npm run jest --passWithNoTests",
+        "jest": "run-script-os",
+        "jest:win32": ".\\node_modules\\.bin\\jest",
+        "jest:default": "./node_modules/.bin/jest"
+    },
+    "dependencies": {
+        "@types/jest": "^26.0.14",
+        "jest": "^26.4.2",
+        "ts-jest": "^26.4.0"
     },
     "devDependencies": {
         "rimraf": "^3.0.2",

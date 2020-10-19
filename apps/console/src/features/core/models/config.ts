@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ResponseModeTypes, Storage } from "@asgardio/oidc-js";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
@@ -35,7 +36,7 @@ import { UsersResourceEndpointsInterface } from "../../users";
 import { UserstoreResourceEndpointsInterface } from "../../userstores";
 
 export type ConfigInterface = CommonConfigInterface<
-    CommonDeploymentConfigInterface,
+    DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
@@ -90,7 +91,8 @@ export interface FeatureConfigInterface {
 /**
  * Portal Deployment config interface inheriting the common configs from core module.
  */
-export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface {
+export interface DeploymentConfigInterface extends CommonDeploymentConfigInterface<ResponseModeTypes, Storage> {
+
     /**
      * Configs of the Admin app.
      */
@@ -142,6 +144,7 @@ export interface ServiceResourceEndpointsInterface extends ClaimResourceEndpoint
     IDPResourceEndpointsInterface,
     ScopesResourceEndpointsInterface {
 
+    CORSOrigins: string;
     documentationContent: string;
     documentationStructure: string;
     // TODO: Remove this endpoint and use ID token to get the details

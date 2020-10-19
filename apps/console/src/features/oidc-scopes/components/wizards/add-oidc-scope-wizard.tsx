@@ -20,7 +20,7 @@ import { getAllExternalClaims } from "@wso2is/core/api";
 import { AlertLevels, ExternalClaim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -88,9 +88,23 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
     const [ OIDCAttributes, setOIDCAttributes ] = useState<ExternalClaim[]>(undefined);
     const [ selectedAttributes, setSelectedAttributes ] = useState<ExternalClaim[]>([]);
     const [ filterSelectedClaims, setFilterSelectedClaims ] = useState<ExternalClaim[]>([]);
-    const [ selectedClaims, setSelectedClaims ] = useState<ExternalClaim[]>([]);
-    const [ showSelectionModal, setShowSelectionModal ] = useState<boolean>(false);
     const [ isClaimRequestLoading, setIsClaimRequestLoading ] = useState<boolean>(false);
+
+    const [alert, setAlert, alertComponent]=useWizardAlert();
+
+    /**
+     * Sets the current wizard step to the previous on every `partiallyCompletedStep`
+     * value change , and resets the partially completed step value.
+     */
+    useEffect(() => {
+        if (partiallyCompletedStep === undefined) {
+            return;
+        }
+
+        setCurrentWizardStep(currentWizardStep - 1);
+
+        setPartiallyCompletedStep(undefined);
+    }, [partiallyCompletedStep]);
 
     useEffect(() => {
         if (OIDCAttributes) {
@@ -108,22 +122,22 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims.error" +
                             ".message")
-                    }));
+                    });
 
                     return;
                 }
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims.genericError" +
                         ".message")
-                }));
+                });
             })
             .finally(() => {
                 setIsClaimRequestLoading(false);
@@ -245,7 +259,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             size="small"
             onClose={ closeWizard }
             data-testid={ testId }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
@@ -270,6 +284,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

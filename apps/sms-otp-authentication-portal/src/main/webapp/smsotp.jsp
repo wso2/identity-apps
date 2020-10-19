@@ -17,11 +17,13 @@
   --%>
 
 <%@ page import="org.owasp.encoder.Encode" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.application.authentication.endpoint.util.Constants" %>
 <%@ page import="org.wso2.carbon.identity.authenticator.smsotp.SMSOTPConstants" %>
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.Map" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ include file="includes/localize.jsp" %>
 
 <%
     request.getSession().invalidate();
@@ -31,7 +33,7 @@
         idpAuthenticatorMapping = (Map<String, String>) request.getAttribute(Constants.IDP_AUTHENTICATOR_MAP);
     }
 
-    String errorMessage = "Authentication Failed! Please Retry";
+    String errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
     String authenticationFailed = "false";
 
     if (Boolean.parseBoolean(request.getParameter(Constants.AUTH_FAILURE))) {
@@ -41,10 +43,10 @@
             errorMessage = request.getParameter(Constants.AUTH_FAILURE_MSG);
 
             if (errorMessage.equalsIgnoreCase("authentication.fail.message")) {
-                errorMessage = "Authentication Failed! Please Retry";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.retry");
             }
             if (errorMessage.equalsIgnoreCase(SMSOTPConstants.TOKEN_EXPIRED_VALUE)) {
-                errorMessage = "The code entered is expired. Click Resend Code to continue.";
+                errorMessage = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,"error.code.expired.resend");
             }
         }
     }
@@ -59,7 +61,7 @@
         %>
         <jsp:include page="extensions/header.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/header.jsp"/>
+        <jsp:include page="includes/header.jsp"/>
         <% } %>
         <!--[if lt IE 9]>
         <script src="js/html5shiv.min.js"></script>
@@ -77,12 +79,12 @@
                 %>
                 <jsp:include page="extensions/product-title.jsp"/>
                 <% } else { %>
-                <jsp:directive.include file="includes/product-title.jsp"/>
+                <jsp:include page="includes/product-title.jsp"/>
                 <% } %>
 
                 <div class="ui segment">
                     <!-- page content -->
-                    <h2>Authenticating with SMSOTP</h2>
+                    <h2><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "auth.with.smsotp")%></h2>
                     <div class="ui divider hidden"></div>
                     <%
                         if ("true".equals(authenticationFailed)) {
@@ -102,7 +104,7 @@
                                     if (authFailureMsg != null && "login.fail.message".equals(authFailureMsg)) {
                             %>
                                 <div class="ui visible negative message">
-                                    Authentication Failed! Please Retry
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "error.retry")%>
                                 </div>
                                 <div class="ui divider hidden"></div>
                             <% } }  %>
@@ -110,13 +112,13 @@
                             <% if (request.getParameter("screenvalue") != null) { %>
                             <div class="field">
                                 <label for="password">
-                                    Enter the code sent to your mobile phone:<%=Encode.forHtmlContent(request.getParameter("screenvalue"))%>
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code.sent")%><%=Encode.forHtmlContent(request.getParameter("screenvalue"))%>
                                 </label>
                                 <input type="password" id='OTPcode' name="OTPcode"
                                         size='30'/>
                             <% } else { %>
                             <div class="field">
-                                <label for="password">Enter the code sent to your mobile phone:</label>
+                                <label for="password"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "enter.code.sent")%></label>
                                 <input type="password" id='OTPcode' name="OTPcode"
                                 size='30'/>
                             <% } %>
@@ -130,20 +132,20 @@
                                         if ("true".equals(reSendCode)) {
                                 %>
                                     <div id="resendCodeLinkDiv" class="ui button link-button">
-                                        <a id="resend">Resend Code</a>
+                                        <a id="resend"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "resend.code")%></a>
                                     </div>
                                 <% } } %>
-                                <input 
+                                <input
                                     type="button" name="authenticate" id="authenticate"
-                                    value="Authenticate" class="ui primary button"/>
+                                    value="<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "authenticate")%>" class="ui primary button"/>
                             </div>
                             <input type='hidden' name='resendCode' id='resendCode' value='false'/>
                         </form>
                     </div>
                 </div>
             </div>
-        </main> 
-        
+        </main>
+
         <!-- product-footer -->
         <%
             File productFooterFile = new File(getServletContext().getRealPath("extensions/product-footer.jsp"));
@@ -151,7 +153,7 @@
         %>
         <jsp:include page="extensions/product-footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/product-footer.jsp"/>
+        <jsp:include page="includes/product-footer.jsp"/>
         <% } %>
 
         <!-- footer -->
@@ -161,7 +163,7 @@
         %>
         <jsp:include page="extensions/footer.jsp"/>
         <% } else { %>
-        <jsp:directive.include file="includes/footer.jsp"/>
+        <jsp:include page="includes/footer.jsp"/>
         <% } %>
 
         <script type="text/javascript">
@@ -173,7 +175,7 @@
                     var OTPcode = document.getElementById("OTPcode").value;
                     if (OTPcode == "") {
                         document.getElementById('alertDiv').innerHTML
-                            = '<div id="error-msg" class="ui negative message">Please enter the code!</div><div class="ui divider hidden"></div>';
+                            = '<div id="error-msg" class="ui negative message"><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "please.enter.code")%></div><div class="ui divider hidden"></div>';
                     } else {
                         $('#pin_form').data("submitted", true);
                         $('#pin_form').submit();

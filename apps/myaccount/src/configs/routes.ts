@@ -19,115 +19,133 @@
 import { RouteInterface } from "@wso2is/core/models";
 import { AppLayout } from "@wso2is/react-components";
 import { lazy } from "react";
-import { ApplicationConstants } from "../constants";
+import { AppConstants } from "../constants";
 import * as TokenConstants from "../constants/token-constants";
 
 /**
- * Interface to handle route types.
+ * Get app layout routes.
+ *
+ * @return {RouteInterface[]}
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export interface Route {
-    component: any;
-    icon?: string;
-    id: string;
-    name: string;
-    path: string;
-    protected: boolean;
-    scope?: string;
-    showOnSidePanel: boolean;
-}
+export const getAppRoutes = (): RouteInterface[] => {
+
+    return [
+        {
+            component: lazy(() => import("../components/authentication/sign-in")),
+            icon: null,
+            id: "authLayoutLogin",
+            name: "Login",
+            path: AppConstants.getPaths().get("LOGIN"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../components/authentication/sign-out")),
+            icon: null,
+            id: "authLayoutLogout",
+            name: "Logout",
+            path: AppConstants.getPaths().get("LOGOUT"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../pages/overview")),
+            icon: "overview",
+            id: "overview",
+            name: "common:overview",
+            path: AppConstants.getPaths().get("OVERVIEW"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/applications")),
+            icon: "apps",
+            id: "applications",
+            name: "common:applications",
+            path: AppConstants.getPaths().get("APPLICATIONS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/personal-info")),
+            icon: "personal",
+            id: "personalInfo",
+            name: "common:personalInfo",
+            path: AppConstants.getPaths().get("PERSONAL_INFO"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/account-security")),
+            icon: "security",
+            id: "security",
+            name: "common:security",
+            path: AppConstants.getPaths().get("SECURITY"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/operations")),
+            icon: "operations",
+            id: "operations",
+            name: "common:operations",
+            path: AppConstants.getPaths().get("OPERATIONS"),
+            protected: true,
+            scope: TokenConstants.HUMAN_TASK_SCOPE,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/privacy")),
+            icon: "security",
+            id: "privacy",
+            name: "common:privacy",
+            path: AppConstants.getPaths().get("PRIVACY"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../pages/errors/access-denied-error")),
+            id: "accessDeniedError",
+            name: "Access denied error",
+            path: AppConstants.getPaths().get("ACCESS_DENIED_ERROR"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../pages/errors/login-error")),
+            id: "loginError",
+            name: "Login error",
+            path: AppConstants.getPaths().get("LOGIN_ERROR"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../pages/errors/404")),
+            id: "404",
+            name: "404",
+            path: "*",
+            protected: true,
+            showOnSidePanel: false
+        }
+    ];
+};
 
 /**
- * Routes array.
+ * Get base layout routes.
+ *
+ * @return {RouteInterface[]}
  */
-const ROUTES: Route[] = [
-    {
-        component: lazy(() => import("../pages/overview")),
-        icon: "overview",
-        id: "overview",
-        name: "common:overview",
-        path: "/overview",
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        component: lazy(() => import("../pages/applications")),
-        icon: "apps",
-        id: "applications",
-        name: "common:applications",
-        path: ApplicationConstants.APPLICATIONS_PAGE_PATH,
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        component: lazy(() => import("../pages/personal-info")),
-        icon: "personal",
-        id: "personalInfo",
-        name: "common:personalInfo",
-        path: "/personal-info",
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        component: lazy(() => import("../pages/account-security")),
-        icon: "security",
-        id: "security",
-        name: "common:security",
-        path: "/security",
-        protected: true,
-        showOnSidePanel: true
-    },
-    {
-        component: lazy(() => import("../pages/operations")),
-        icon: "operations",
-        id: "operations",
-        name: "common:operations",
-        path: "/operations",
-        protected: true,
-        scope: TokenConstants.HUMAN_TASK_SCOPE,
-        showOnSidePanel: true
-    },
-    {
-        component: lazy(() => import("../pages/privacy")),
-        icon: "security",
-        id: "privacy",
-        name: "common:privacy",
-        path: "/privacy",
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: lazy(() => import("../pages/errors/login-error")),
-        id: "loginError",
-        name: "Login error",
-        path: ApplicationConstants.LOGIN_ERROR_PAGE_PATH,
-        protected: true,
-        showOnSidePanel: false
-    },
-    {
-        component: lazy(() => import("../pages/errors/404")),
-        id: "404",
-        name: "404",
-        path: "*",
-        protected: true,
-        showOnSidePanel: false
-    }
-];
+export const getBaseRoutes = (): RouteInterface[] => {
 
-/**
- * Default page layout routes array.
- */
-const BASE_ROUTES: RouteInterface[] = [
-    {
-        component: AppLayout,
-        icon: null,
-        id: "app",
-        name: "App",
-        path: "/",
-        protected: false,
-        showOnSidePanel: false
-    }
-];
-
-export const routes = ROUTES;
-export const baseRoutes = BASE_ROUTES;
+    return [
+        {
+            component: AppLayout,
+            icon: null,
+            id: "app",
+            name: "App",
+            path: AppConstants.getPaths().get("ROOT"),
+            protected: false,
+            showOnSidePanel: false
+        }
+    ];
+};

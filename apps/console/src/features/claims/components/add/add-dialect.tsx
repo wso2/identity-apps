@@ -19,13 +19,18 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
-import { LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { addDialect, addExternalClaim } from "../../api";
 import { AddDialectWizardStepIcons } from "../../configs";
+import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
 import { DialectDetails, ExternalClaims, SummaryAddDialect } from "../wizard";
 
@@ -49,9 +54,9 @@ interface AddDialectPropsInterface extends TestableComponentInterface {
 
 /**
  * A component that lets you add a dialect.
- * 
+ *
  * @param {AddDialectPropsInterface} props - Props injected to the component.
- * 
+ *
  * @return {React.ReactElement} component.
  */
 export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
@@ -76,49 +81,81 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
     const { t } = useTranslation();
 
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
+
     /**
      * Submit handler that sends the API request to add the local claim.
      */
     const handleSubmit = () => {
-        addDialect(dialectDetailsData?.get("dialectURI").toString()).then(() => {
-            const dialectID = window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
-            const externalClaimPromises = [];
-            externalClaims.forEach(claim => {
-                externalClaimPromises.push(addExternalClaim(dialectID, claim));
-            });
-            Promise.all(externalClaimPromises).then(() => {
-                dispatch(addAlert({
-                    description: t("adminPortal:components.claims.dialects.notifications.addDialect.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.dialects.notifications.addDialect.success.message")
-                }))
-            }).catch(() => {
-                dispatch(addAlert({
-                    description: t("adminPortal:components.claims.dialects.notifications." +
-                        "addDialect.genericError.description"),
-                    level: AlertLevels.WARNING,
-                    message: t("adminPortal:components.claims.dialects.notifications." +
-                        "addDialect.genericError.message")
-                }))
-            }).finally(() => {
-                onClose();
-                update();
-            });
-        }).catch(error => {
-            dispatch(addAlert({
+
+        addDialect(dialectDetailsData?.get("dialectURI").toString())
+            .then((response: AxiosResponse) => {
+
+                const dialectID = window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
+                const externalClaimPromises = [];
+
+                externalClaims.forEach(claim => {
+                    externalClaimPromises.push(addExternalClaim(dialectID, claim));
+                });
+
+                Promise.all(externalClaimPromises)
+                    .then(() => {
+                        dispatch(addAlert({
+                            description: t("adminPortal:components.claims.dialects.notifications." +
+                                "addDialect.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("adminPortal:components.claims.dialects.notifications.addDialect" +
+                                ".success.message")
+                        }))
+                    }).catch(() => {
+                        dispatch(addAlert({
+                            description: t("adminPortal:components.claims.dialects.notifications." +
+                                "addDialect.genericError.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("adminPortal:components.claims.dialects.notifications." +
+                                "addDialect.genericError.message")
+                        }))
+                    }).finally(() => {
+                        // The created resource's id is sent as a location header.
+                        // If that's available, navigate to the edit page.
+                        if (!isEmpty(response.headers.location)) {
+                            const location = response.headers.location;
+                            const createdDialect = location.substring(location.lastIndexOf("/") + 1);
+
+                            // Closes the modal.
+                            onClose();
+    
+                            history.push({
+                                pathname: AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT")
+                                    .replace(":id", createdDialect),
+                                search: ClaimManagementConstants.NEW_DIALECT_URL_SEARCH_PARAM
+                            });
+    
+                            return;
+                        }
+
+                        // Fallback to listing, if the location header is not present.
+                        // `onClose()` closes the modal and `update()` re-fetches the list.
+                        // Check `ClaimDialectsPage` component for the respective callback actions.
+                        onClose();
+                        update();
+                    });
+            }).catch((error) => {
+
+                setAlert({
                 description: error?.description
                     || t("adminPortal:components.claims.dialects.notifications." +
                         "addDialect.error.description"),
                 level: AlertLevels.ERROR,
                 message: error?.message
                     || t("adminPortal:components.claims.dialects.notifications.addDialect.error.message")
-            }));
+            });
         })
     };
 
     /**
      * Handler that is called when the `Dialect Details` wizard step is completed.
-     * 
+     *
      * @param {Map<string, FormValue>} values Form values.
      */
     const onSubmitDialectDetails = (values: Map<string, FormValue>): void => {
@@ -128,7 +165,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
 
     /**
      * Handler that is called when the `Add External CLaims` step of the wizard is completed.
-     * 
+     *
      * @param {AddExternalClaim[]} claims - Claim Values.
      */
     const onSubmitExternalClaims = (claims: AddExternalClaim[]): void => {
@@ -210,9 +247,15 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
             open={ open }
             onClose={ onClose }
             data-testid={ testId }
+            closeOnDimmerClick={ false }
         >
             <Modal.Header className="wizard-header">
                 { t("adminPortal:components.claims.dialects.wizard.header") }
+                {
+                    dialectDetailsData && dialectDetailsData.get("dialectURI")
+                        ? " - " + dialectDetailsData.get("dialectURI")
+                        : ""
+                }
             </Modal.Header>
             <Modal.Content className="steps-container" data-testid={ `${ testId }-steps` }>
                 <Steps.Group
@@ -229,6 +272,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

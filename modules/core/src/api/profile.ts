@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { IdentityClient, SignInResponse } from "@wso2is/authentication";
+import { IdentityClient } from "@asgardio/oidc-js";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import _ from "lodash";
 import { CommonServiceResourcesEndpoints } from "../configs";
 import { ProfileConstants } from "../constants";
 import { IdentityAppsApiException } from "../exceptions";
@@ -26,10 +25,8 @@ import { HTTPRequestHeaders } from "../helpers";
 import {
     AcceptHeaderValues,
     ContentTypeHeaderValues,
-    GravatarConfig,
     GravatarFallbackTypes,
     HttpMethods,
-    LinkedAccountInterface,
     ProfileInfoInterface,
     ProfileSchemaInterface
 } from "../models";
@@ -83,26 +80,27 @@ export const getGravatarImage = (email: string,
 /**
  * Retrieve the user profile details of the currently authenticated user.
  *
+ * @param {string} endpoint - Me endpoint absolute path.
+ * @param {string} clientOrigin - Tenant qualified client origin.
  * @param {() => void} onSCIMDisabled - Callback to be fired if SCIM is disabled for the user store.
- * @param {GravatarConfig} gravatarConfig - Gravatar configurations.
  * @returns {Promise<ProfileInfoInterface>} Profile information as a Promise.
  * @throws {IdentityAppsApiException}
  */
-export const getProfileInfo = (onSCIMDisabled: () => void,
-                               gravatarConfig?: GravatarConfig): Promise<ProfileInfoInterface> => {
+export const getProfileInfo = (endpoint: string,
+                               clientOrigin: string,
+                               onSCIMDisabled?: () => void): Promise<ProfileInfoInterface> => {
 
     const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
 
     const requestConfig = {
-        headers: HTTPRequestHeaders(ContextUtils.getRuntimeConfig().clientHost, AcceptHeaderValues.APP_JSON,
+        headers: HTTPRequestHeaders(clientOrigin, AcceptHeaderValues.APP_JSON,
             ContentTypeHeaderValues.APP_SCIM),
         method: HttpMethods.GET,
-        url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).me
+        url: endpoint
     };
 
     return httpClient(requestConfig)
         .then(async (response: AxiosResponse) => {
-            let gravatar = "";
 
             if (response.status !== 200) {
                 throw new IdentityAppsApiException(
@@ -114,23 +112,6 @@ export const getProfileInfo = (onSCIMDisabled: () => void,
                     response.config);
             }
 
-            if (_.isEmpty(response.data.userImage) && !response.data.profileUrl) {
-                try {
-                    gravatar = await getGravatarImage(
-                        typeof response.data.emails[0] === "string"
-                            ? response.data.emails[0]
-                            : response.data.emails[0].value,
-                        gravatarConfig?.size,
-                        gravatarConfig?.defaultImage,
-                        gravatarConfig?.fallback
-                    );
-                } catch (error) {
-                    gravatar = "";
-                }
-            }
-
-            const profileImage: string = response.data.profileUrl ? response.data.profileUrl : gravatar;
-
             const profileResponse: ProfileInfoInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
@@ -139,7 +120,8 @@ export const getProfileInfo = (onSCIMDisabled: () => void,
                 profileUrl: response.data.profileUrl || "",
                 responseStatus: response.status || null,
                 roles: response.data.roles || [],
-                userImage: response.data.userImage || profileImage,
+                // TODO: Validate if necessary.
+                userImage: response.data.userImage || response.data.profileUrl,
                 userName: response.data.userName || "",
                 ...response.data
             };
@@ -156,7 +138,7 @@ export const getProfileInfo = (onSCIMDisabled: () => void,
 
                 // Fire `onSCIMDisabled` callback which will navigate the
                 // user to the corresponding error page.
-                onSCIMDisabled();
+                onSCIMDisabled && onSCIMDisabled();
             }
 
             throw new IdentityAppsApiException(
@@ -211,6 +193,29 @@ export const updateProfileInfo = (info: object): Promise<ProfileInfoInterface> =
 };
 
 /**
+ * Update the logged in user's profile image URL.
+ *
+ * @param {string} url - Image URL.
+ * @return {Promise<ProfileInfoInterface>} Updated profile info as a Promise.
+ * @throws {IdentityAppsApiException}
+ */
+export const updateProfileImageURL = (url: string): Promise<ProfileInfoInterface> => {
+    const data = {
+        Operations: [
+            {
+                op: "replace",
+                value: {
+                    profileUrl: url
+                }
+            }
+        ],
+        schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+    };
+
+    return updateProfileInfo(data);
+};
+
+/**
  * Retrieve the profile schemas of the user claims of the currently authenticated user.
  *
  * @return {Promise<ProfileSchemaInterface[]>} Array of profile schemas as a Promise.
@@ -223,6 +228,7 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
         method: HttpMethods.GET,
         url: CommonServiceResourcesEndpoints(ContextUtils.getRuntimeConfig().serverHost).profileSchemas
     };
+    const schemaAttributes: ProfileSchemaInterface[] = [];
 
     return httpClient(requestConfig)
         .then((response) => {
@@ -236,7 +242,20 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                     response.config);
             }
 
-            return Promise.resolve(response.data[0].attributes as ProfileSchemaInterface[]);
+            // Retrieve the attributes from all the available resources, and if the
+            // attribute belongs to an schema extension the boolean extended will be
+            // appended to the attribute object.
+            response.data.map((schema) => {
+                schema.attributes.map((attribute) => {
+                    if (schema.id !== ProfileConstants.SCIM2_CORE_USER_SCHEMA) {
+                        schemaAttributes.push({ ...attribute, extended: true });
+                        return;
+                    }
+                    schemaAttributes.push(attribute);
+                });
+            });
+
+            return Promise.resolve(schemaAttributes as ProfileSchemaInterface[]);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -246,48 +265,5 @@ export const getProfileSchemas = (): Promise<ProfileSchemaInterface[]> => {
                 error.request,
                 error.response,
                 error.config);
-        });
-};
-
-/**
- * Switches the logged in user's account to one of the linked accounts
- * associated to the corresponding user.
- *
- * @param {LinkedAccountInterface} account - The target account.
- * @param {string[]} scopes - Required scopes array.
- * @param {string} clientID - Client ID.
- * @param {string} clientHost - Client Host URL.
- * @return {Promise<any>}
- * @throws {IdentityAppsApiException}
- */
-export const switchAccount = (account: LinkedAccountInterface): Promise<any> => {
-    return auth
-        .customGrant({
-            attachToken: false,
-            data: {
-                clientId: "{{clientId}}",
-                grantType: "account_switch",
-                scope: "{{scope}}",
-                "tenant-domain": account.tenantDomain,
-                token: "{{token}}",
-                username: account.username,
-                "userstore-domain": account.userStoreDomain
-            },
-            returnResponse: true,
-            returnsSession: true,
-            signInRequired: true
-        })
-        .then((response: SignInResponse) => {
-            return Promise.resolve(response?.data);
-        })
-        .catch((error: AxiosError) => {
-            throw new IdentityAppsApiException(
-                ProfileConstants.ACCOUNT_SWITCH_REQUEST_ERROR,
-                error.stack,
-                error.code,
-                error.request,
-                error.response,
-                error.config
-            );
         });
 };

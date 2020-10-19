@@ -1,7 +1,10 @@
 language: java
-# cache:
-#   directories:
-#   - .autoconf
-#   - $HOME/.m2
-script: mvn clean install -q
+cache:
+  directories:
+    - .autoconf
+    - $HOME/.m2
+script: mvn clean install
 sudo: true
+language: node_js
+node_js:
+  - "12"

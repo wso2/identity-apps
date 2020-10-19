@@ -16,42 +16,46 @@
  * under the License.
  */
 
-import { CommonAuthReducerStateInterface } from "../../models";
 import { CommonAuthenticateActionTypes, CommonAuthenticateActions } from "../actions/types";
 
 /**
  * Reducer to handle the state of common authentication related actions.
  *
- * @param {CommonAuthReducerStateInterface} initialState - Reducer initial state.
- * @returns {CommonAuthReducerStateInterface} The new state.
+ * @param {T} initialState - Reducer initial state.
+ * @return {(state: T, action: CommonAuthenticateActions<S>) => T} The new state.
  */
-export const commonAuthenticateReducer = (initialState: CommonAuthReducerStateInterface) => (
-    state: CommonAuthReducerStateInterface = { ...initialState },
-    action: CommonAuthenticateActions
-): CommonAuthReducerStateInterface => {
+export const commonAuthenticateReducer = <T, S>(
+    initialState: T) => (
+        state: T = { ...initialState },
+        action: CommonAuthenticateActions<S>
+): T => {
 
     switch (action.type) {
         case CommonAuthenticateActionTypes.SET_SIGN_IN:
             if (action.payload) {
+
                 return {
                     ...state,
-                    displayName: action.payload.display_name,
-                    emails: action.payload.email,
+                    ...action.payload,
                     isAuthenticated: true,
                     loginInit: true,
-                    logoutInit: false,
-                    scope: action.payload.scope,
-                    username: action.payload.username
+                    logoutInit: false
                 };
             }
+
             return {
                 ...state
-            }
+            };
         case CommonAuthenticateActionTypes.SET_SIGN_OUT:
             return {
                 ...state,
                 loginInit: false,
                 logoutInit: true
+            };
+        case CommonAuthenticateActionTypes.SET_INITIALIZED:
+            return {
+                ...state,
+                initialized: action.payload
             };
         case CommonAuthenticateActionTypes.RESET_AUTHENTICATION:
             return {

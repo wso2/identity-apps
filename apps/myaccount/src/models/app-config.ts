@@ -16,16 +16,17 @@
  * under the License.
  */
 
+import { ResponseModeTypes, Storage } from "@asgardio/oidc-js";
 import {
     CommonConfigInterface,
     CommonDeploymentConfigInterface,
-    FeatureAccessConfigInterface,
-    CommonUIConfigInterface
+    CommonUIConfigInterface,
+    FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
 
 export type ConfigInterface = CommonConfigInterface<
-    CommonDeploymentConfigInterface,
+    DeploymentConfigInterface,
     ServiceResourceEndpointsInterface,
     FeatureConfigInterface,
     I18nModuleOptionsInterface,
@@ -122,3 +123,8 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
      */
     authenticatorApp?: AuthenticatorAppListInterface;
 }
+
+/**
+ * Portal Deployment config interface inheriting the common configs from core module.
+ */
+export type DeploymentConfigInterface = CommonDeploymentConfigInterface<ResponseModeTypes, Storage>;

@@ -20,6 +20,7 @@ import { CommonNS } from "../../../models";
 
 export const common: CommonNS = {
     access: "Acesso",
+    actions: "ações",
     active: "Activo",
     add: "AAdicionar",
     addURL: "Adicione URL",
@@ -70,6 +71,7 @@ export const common: CommonNS = {
     initiator: "Iniciador",
     ipAddress: "endereço de IP",
     lastAccessed: "Último acesso",
+    lastModified: "Última modificação",
     lastSeen: "Visto pela última vez",
     lastUpdatedOn: "Última atualização em",
     loginTime: "Hora de início de sessão",
@@ -113,6 +115,7 @@ export const common: CommonNS = {
     showLess: "Mostre menos",
     showMore: "Mostre mais",
     showPassword: "Mostrar senha",
+    generatePassword: "Gerar senha",
     startsWith: "Começa com",
     step: "Passo",
     submit: "Enviar",

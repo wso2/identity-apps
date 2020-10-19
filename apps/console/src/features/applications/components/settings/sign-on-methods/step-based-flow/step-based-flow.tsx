@@ -20,7 +20,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { GenericIcon, Heading, Hint, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -475,13 +475,14 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         authenticationSteps
                                                         && authenticationSteps instanceof Array
                                                         && authenticationSteps.length > 0
-                                                        && authenticationSteps.map((step, index) => {
+                                                        ? authenticationSteps.map((step, index) => {
                                                             return {
                                                                 key: step.id,
                                                                 text: `${ t("common:step") } ${ index + 1 }`,
                                                                 value: index + 1
                                                             }
                                                         })
+                                                        :[]
                                                     }
                                                     onChange={ handleSubjectRetrievalStepChange }
                                                     value={ subjectStepId }
@@ -514,13 +515,14 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         authenticationSteps
                                                         && authenticationSteps instanceof Array
                                                         && authenticationSteps.length > 0
-                                                        && authenticationSteps.map((step, index) => {
+                                                        ? authenticationSteps.map((step, index) => {
                                                             return {
                                                                 key: step.id,
                                                                 text: `${ t("common:step") } ${ index + 1 }`,
                                                                 value: index + 1
                                                             }
                                                         })
+                                                        :[]
                                                     }
                                                     onChange={ handleAttributeRetrievalStepChange }
                                                     value={ attributeStepId }
@@ -550,9 +552,8 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                         && authenticationSteps instanceof Array
                                         && authenticationSteps.length > 0
                                             ? authenticationSteps.map((step, stepIndex) => (
-                                                <>
+                                                <Fragment key={ stepIndex }>
                                                     <AuthenticationStep
-                                                        key={ stepIndex }
                                                         authenticators={
                                                             [ ...localAuthenticators, ...federatedAuthenticators ]
                                                         }
@@ -570,7 +571,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                         }
                                                     />
                                                     <Divider hidden />
-                                                </>
+                                                </Fragment>
                                             ))
                                             : null
                                     }

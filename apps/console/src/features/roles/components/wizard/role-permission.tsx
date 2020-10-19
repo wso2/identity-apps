@@ -41,7 +41,7 @@ interface PermissionListProp extends  TestableComponentInterface {
 
 /**
  * Component to create the permission tree structure from the give permission list.
- * 
+ *
  * @param props props containing event handlers for permission component
  */
 export const PermissionList: FunctionComponent<PermissionListProp> = (props: PermissionListProp): ReactElement => {
@@ -76,12 +76,12 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         const permissions = response.data;
                         permissions.forEach(permission => {
                             permissionsArray.push({
+                                fullPath: permission,
                                 id: permission,
                                 isChecked: false,
-                                fullPath: permission,
-                                name: permission,
+                                isExpanded: true,
                                 isPartiallyChecked: false,
-                                isExpanded: true
+                                name: permission
                             })
                         });
                         setAvailablePermissionsInRole(permissionsArray);
@@ -152,7 +152,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Util method to load the initial tree main elements collapsed.
-     * 
+     *
      * @param permissionNodes permissionTree
      */
     const setTopNodesCollapsed = (permissionNodes: Permission[]): void => {
@@ -163,7 +163,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Util method to remove indeterminate state.
-     * 
+     *
      * @param nodeTree permission node tree
      */
     const removeIndeterminateState = (nodeTree: Permission[]): void => {
@@ -177,7 +177,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Util method to change collapse state of tree nodes.
-     * 
+     *
      * @param permissionNodes Permssion Tree
      * @param parentCollapseState Collapsed state of the parent node
      */
@@ -194,7 +194,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     /**
      * Util method to change checked state in permission tree according to the selected permissions
      * array.
-     * 
+     *
      * @param selectedPermissions permissions already selected in the component
      * @param permissionNodes permission tree
      * @param isParentChecked state whether the parent node is checked
@@ -237,7 +237,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Add indeteminate state for parent node when checked on tree node.
-     * 
+     *
      * @param nodes permission node list
      * @param checkedNode current checked permission node
      * @param depth depth of the current checked permission node
@@ -257,7 +257,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     /**
      * Click event handler for the permission tree checkboxes.
-     * 
+     *
      * @param nodeData - array of checked elements returned.
      */
     const handlePermssionCheck = (nodeData: Permission[]): void => {
@@ -273,9 +273,9 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     };
 
     /**
-     * Handler to update collapse button state when tree node is expanded 
+     * Handler to update collapse button state when tree node is expanded
      * or collapsed.
-     * 
+     *
      * @param node - current node expanded or collapsed
      * @param depth - depth of the current node in the tree
      */
@@ -299,15 +299,15 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
 
     return (
         <EmphasizedSegment data-testid={ testId }>
-            { !isPermissionsLoading && 
+            { !isPermissionsLoading &&
                 <div className="action-container">
                         <Button
                             data-testid={ `${ testId }-tree-expand-all-button` }
                             basic
                             compact
                             size="tiny"
-                            onClick={ handleExpandAll } 
-                            icon={ collapseTree? "expand" : "compress" } 
+                            onClick={ handleExpandAll }
+                            icon={ collapseTree? "expand" : "compress" }
                             content={
                                 collapseTree ?
                                     t("adminPortal:components.roles.addRoleWizard.permissions.buttons.expandAll") :
@@ -321,7 +321,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 onSubmit={ () => { onSubmit(checkedPermissions); } }
             >
                 {
-                    !isPermissionsLoading ? 
+                    !isPermissionsLoading ?
                         <div className="treeview-container">
                             <TreeView
                                 data-testid={ `${ testId }-tree` }
@@ -332,8 +332,8 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 onUpdateCb={ updatedData => setPermissionTree(updatedData) }
                                 onCheckToggleCb={ handlePermssionCheck }
                                 onExpandToggleCb={ handleOnToggle }
-                            /> 
-                        </div> : 
+                            />
+                        </div> :
                         <ContentLoader active />
                 }
                 { isEdit && !isPermissionsLoading &&

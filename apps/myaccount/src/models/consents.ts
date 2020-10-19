@@ -175,7 +175,7 @@ export const createEmptyConsentReceipt = (): ConsentReceiptInterface => ({
                     purposeId: 0,
                     termination: "",
                     thirdPartyDisclosure: false,
-                    thirdPartyName: "",
+                    thirdPartyName: ""
                 }
             ],
             service: "",
@@ -200,5 +200,5 @@ export const createEmptyConsent = (): ConsentInterface => ({
     spDescription: "",
     spDisplayName: "",
     state: ConsentState.ACTIVE,
-    tenantDomain: "",
+    tenantDomain: ""
 });

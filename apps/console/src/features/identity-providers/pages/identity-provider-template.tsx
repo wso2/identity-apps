@@ -280,7 +280,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
         if (availableAuthenticators) {
             dispatch(setAvailableAuthenticatorsMeta(undefined));
         }
-        history.push(AppConstants.PATHS.get("IDP"));
+        history.push(AppConstants.getPaths().get("IDP"));
     };
 
     /**
@@ -292,6 +292,15 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
         if (id === "expert-mode") {
             setSelectedTemplate(ExpertModeTemplate)
+            setSelectedTemplateWithUniqueName({
+                ...ExpertModeTemplate,
+                idp: {
+                    ...selectedTemplate?.idp,
+                    name: ""
+                }
+            });
+
+            setShowWizard(true);
         } else {
             getTemplate(id);
         }
@@ -445,18 +454,20 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             } }
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unPinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
         >
             <PageLayout
                 title={ t("devPortal:pages.idpTemplate.title") }
                 contentTopMargin={ true }
                 description={ t("devPortal:pages.idpTemplate.subTitle") }
                 backButton={ {
+                    "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
                     text: t("devPortal:pages.idpTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }
+                data-testid={ `${ testId }-page-layout` }
                 showBottomDivider
             >
                 {
@@ -494,6 +505,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                         />
                                     ) }
                                     tagsSectionTitle={ t("common:services") }
+                                    data-testid={ `${ testId }-quick-start-template-grid` }
                                 />
                             </div>
                         )
@@ -527,6 +539,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                             />
                         ) }
                         tagsSectionTitle={ t("common:services") }
+                        data-testid={ `${ testId }-manual-setup-template-grid` }
                     />
                 </div>
                 { showWizard && (

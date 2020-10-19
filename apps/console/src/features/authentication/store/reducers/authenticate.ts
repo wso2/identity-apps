@@ -16,14 +16,17 @@
  * under the License.
  */
 
-import { CommonAuthReducerStateInterface } from "@wso2is/core/models";
+import { AuthReducerStateInterface } from "../../../core/models";
 
 /**
  * Initial state for the common authenticate reducer.
  */
-export const commonAuthenticateReducerInitialState: CommonAuthReducerStateInterface = {
+export const commonAuthenticateReducerInitialState: AuthReducerStateInterface = {
     displayName: "",
-    emails: "",
+    // eslint-disable-next-line @typescript-eslint/camelcase
+    display_name: "",
+    email: "",
+    initialized: false,
     isAuthenticated: false,
     loginInit: false,
     logoutInit: false,

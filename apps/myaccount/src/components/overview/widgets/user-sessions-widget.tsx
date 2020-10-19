@@ -17,12 +17,13 @@
  */
 
 import _ from "lodash";
-import React, { FunctionComponent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { fetchUserSessions } from "../../../api";
+import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
-import { AlertLevels, emptyUserSessions, UserSessions } from "../../../models";
+import { AlertLevels, UserSessions, emptyUserSessions } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
@@ -30,12 +31,15 @@ import { UserSessionsList } from "../../user-sessions";
 /**
  * User sessions widget.
  *
- * @return {JSX.Element}
+ * @return {ReactElement}
  */
-export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
-    const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
+export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
+
     const { t } = useTranslation();
+
     const dispatch = useDispatch();
+
+    const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
 
     /**
      * Retrieves the user sessions.
@@ -70,7 +74,7 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
                             level: AlertLevels.ERROR,
                             message: t(
                                 "userPortal:components.userSessions.notifications.fetchSessions.error.message"
-                            ),
+                            )
                         })
                     );
 
@@ -85,12 +89,12 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
                         level: AlertLevels.ERROR,
                         message: t(
                             "userPortal:components.userSessions.notifications.fetchSessions.genericError.message"
-                        ),
+                        )
                     })
                 );
             });
     };
-    
+
     useEffect(() => {
         getUserSessions();
     }, []);
@@ -99,7 +103,7 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): JSX.Element => {
      * Navigates to the Security page.
      */
     const navigate = () => {
-        history.push("/security");
+        history.push(AppConstants.getPaths().get("SECURITY") + "#" + CommonConstants.ACCOUNT_ACTIVITY);
     };
 
     return (

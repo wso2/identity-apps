@@ -49,5 +49,9 @@ export function useClickOutside(initialValue = false): any {
         };
     });
 
-    return { ref, isComponentVisible, setIsComponentVisible };
+    return {
+        isComponentVisible,
+        ref,
+        setIsComponentVisible
+    };
 }

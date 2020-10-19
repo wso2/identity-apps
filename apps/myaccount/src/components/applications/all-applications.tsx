@@ -17,8 +17,8 @@
  */
 
 import React, { FunctionComponent } from "react";
-import { Application } from "../../models";
 import { ApplicationList } from "./application-list";
+import { Application } from "../../models";
 
 /**
  * Proptypes for the all applications component.

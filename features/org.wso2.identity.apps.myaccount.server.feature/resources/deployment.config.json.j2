@@ -1,5 +1,8 @@
 {
     "appBaseName": "{{ myaccount.app_base_name }}",
+    {% if myaccount.app_base_name_for_history_api is defined %}
+        "appBaseNameForHistoryAPI": "{{ myaccount.app_base_name_for_history_api }}",
+    {% endif %}
     "clientID": "{{ myaccount.client_id }}",
     "loginCallbackPath": "{{ myaccount.login_callback_path }}",
     "logoutCallbackPath": "{{ myaccount.logout_callback_path }}",
@@ -14,6 +17,39 @@
         {% endfor %}
         {% endif %}
     },
+    "extensions": {
+        {% if myaccount.extensions is defined %}
+        {% for key, value in myaccount.extensions.items() %}
+        {% if value is number %}
+            "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% else %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    },
+    {% if myaccount.idp_configs is defined %}
+    "idpConfigs": {
+        {% if myaccount.idp_configs.items() is defined %}
+        {% for key, value in myaccount.idp_configs.items() %}
+        {% if value is string %}
+            "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
+        {% elif value is iterable %}
+            "{{ key }}": [
+                {% for item in value %}
+                    "{{ item }}"{{ "," if not loop.last }}
+                {% endfor %}
+            ]{{ "," if not loop.last }}
+        {% else %}
+            "{{ key }}": {{ value }}{{ "," if not loop.last }}
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+    },
+    {% endif %}
+    {% if myaccount.is_sass is defined %}
+        "isSaas": "{{ myaccount.is_sass }}",
+    {% endif %}
     "session": {
         {% if myaccount.session.params is defined %}
             {% for param, value in myaccount.session.params.items() %}
@@ -182,8 +218,8 @@
         },
         "productName": "{{ myaccount.ui.product_name }}",
         "productVersionConfig": {
-            {% if console.product_version.configs.items() is defined %}
-            {% for key, value in console.product_version.configs.items() %}
+            {% if myaccount.product_version.configs.items() is defined %}
+            {% for key, value in myaccount.product_version.configs.items() %}
             {% if value is string %}
                 "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
             {% else %}

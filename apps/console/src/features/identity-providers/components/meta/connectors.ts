@@ -21,23 +21,23 @@ import { AuthenticatorIcons, ConnectorIcons } from "../../configs";
 export const OutboundConnectors = [
     {
         connectorId: "Z29vZ2xlYXBwcw",
-        name: "googleapps",
-        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/Z29vZ2xlYXBwcw",
         displayName: "Google",
-        icon: AuthenticatorIcons.google
+        icon: AuthenticatorIcons.google,
+        name: "googleapps",
+        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/Z29vZ2xlYXBwcw"
     },
     {
         connectorId: "c2FsZXNmb3JjZQ",
-        name: "salesforce",
-        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ",
         displayName: "Salesforce",
-        icon: ConnectorIcons.salesforce
+        icon: ConnectorIcons.salesforce,
+        name: "salesforce",
+        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2FsZXNmb3JjZQ"
     },
-    {
+   {
         connectorId: "c2NpbQ",
-        name: "scim",
-        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2NpbQ",
         displayName: "SCIM",
-        icon: ConnectorIcons.scim
+        icon: ConnectorIcons.scim,
+        name: "scim",
+        self: "/t/carbon.super/api/server/v1/identity-providers/meta/outbound-provisioning-connectors/c2NpbQ"
     }
 ];

@@ -110,18 +110,18 @@ export const InboundProtocolLogos = {
 };
 
 export const ApplicationTemplateIllustrations = {
+    box: BoxTemplateIllustration,
     customApp: CustomApplicationTemplateIllustration,
     oidcMobile: OIDCMobileTemplateIllustration,
     oidcWebApp: OIDCWebAppTemplateIllustration,
     passiveSTS: PassiveSTSTemplateIllustration,
     samlWebApp: SAMLWebAppTemplateIllustration,
+    slack: SlackTemplateIllustration,
     spa: SPATemplateIllustration,
     windowsNative: WindowsTemplateIllustration,
-    wsTrust: WSTrustTemplateIllustration,
-    slack: SlackTemplateIllustration,
-    zoom: ZoomTemplateIllustration,
     workday: WorkdayTemplateIllustration,
-    box: BoxTemplateIllustration
+    wsTrust: WSTrustTemplateIllustration,
+    zoom: ZoomTemplateIllustration
 };
 
 export const ApplicationWizardStepIcons = {

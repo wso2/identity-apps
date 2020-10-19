@@ -640,6 +640,7 @@ export interface UserPortalNS {
                 };
             };
             notifications: {
+                getProfileCompletion: Notification;
                 getProfileInfo: Notification;
                 getUserReadOnlyStatus: Notification;
                 updateProfileInfo: Notification;
@@ -683,6 +684,7 @@ export interface UserPortalNS {
         };
     };
     modals: {
+        editAvatarModal: ModalInterface;
         sessionTimeoutModal: ModalInterface;
     };
     pages: {
@@ -695,6 +697,7 @@ export interface UserPortalNS {
     };
     placeholders: {
         404: Placeholder;
+        accessDeniedError: Placeholder;
         emptySearchResult: Placeholder;
         genericError: Placeholder;
         loginError: Placeholder;

@@ -23,13 +23,9 @@ import { CommonConfigInterface } from "./config";
  */
 export interface CommonAuthReducerStateInterface {
     /**
-     * Display name decoded from the ID token.
+     * Flag to specify if the authentication SDK has been initialized or not.
      */
-    displayName: string;
-    /**
-     * Emails decoded from the ID token.
-     */
-    emails: string;
+    initialized: boolean;
     /**
      * Flag to determine if the user is authenticated.
      */
@@ -42,14 +38,6 @@ export interface CommonAuthReducerStateInterface {
      * Flag to determine if logout is initiated.
      */
     logoutInit: boolean;
-    /**
-     * Username decoded from the ID token.
-     */
-    username: string;
-    /**
-     * Scopes that a user is allowed.
-     */
-    scope: string;
 }
 
 /**

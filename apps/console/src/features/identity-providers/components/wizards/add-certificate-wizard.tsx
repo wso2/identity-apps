@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
-import { Heading, LinkButton, PrimaryButton, Steps } from "@wso2is/react-components";
+import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -65,6 +65,8 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
 
     const [ partiallyCompletedStep, setPartiallyCompletedStep ] = useState<number>(undefined);
     const [ currentWizardStep, setCurrentWizardStep ] = useState<number>(currentStep);
+
+    const [ alert, setAlert, alertComponent ] = useWizardAlert();
 
     /**
      * Sets the current wizard step to the previous on every `partiallyCompletedStep`
@@ -137,21 +139,21 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
-                    dispatch(addAlert({
+                    setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
                         message: t("devPortal:components.idp.notifications.updateIDPCertificate.error.message")
-                    }));
+                    });
 
                     return;
                 }
 
-                dispatch(addAlert({
+                setAlert({
                     description: t("devPortal:components.idp.notifications.updateIDPCertificate.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.idp.notifications.updateIDPCertificate.genericError.message")
-                }));
+                });
             });
     };
 
@@ -175,7 +177,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                 />
             ),
             icon: AddIDPCertificateWizardStepIcons.general,
-            title: t("devPortal:components.certificates.keystore.wizard.steps.upload")
+            title: t("adminPortal:components.certificates.keystore.wizard.steps.upload")
         }
     ];
 
@@ -187,7 +189,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
             size="small"
             onClose={ closeWizard }
             data-testid={ testId }
-            closeOnDimmerClick
+            closeOnDimmerClick={ false }
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
@@ -212,6 +214,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                 </Steps.Group>
             </Modal.Content>
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

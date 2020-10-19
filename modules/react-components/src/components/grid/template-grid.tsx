@@ -239,25 +239,26 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
      * @return Predefined image if available. If not, return input parameter.
      */
     const resolveTemplateImage = (image: any) => {
-        if (typeof image !== "string") {
-            return image;
-        }
+        if (image) {
+            if (typeof image !== "string") {
+                return image;
+            }
 
-        if ((URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image)) && ImageUtils.isValidImageExtension(image)) {
-            return image;
-        }
+            if ((URLUtils.isHttpsUrl(image) || URLUtils.isHttpUrl(image)) && ImageUtils.isValidImageExtension(image)) {
+                return image;
+            }
 
-        if (URLUtils.isDataUrl(image)) {
-            return image;
-        }
+            if (URLUtils.isDataUrl(image)) {
+                return image;
+            }
 
-        if (!templateIcons) {
-            return image;
+            if (!templateIcons) {
+                return image;
+            }
         }
-
         const match = Object.keys(templateIcons).find(key => key.toString() === image);
 
-        return match ? templateIcons[match] : image;
+        return match ? templateIcons[ match ] : templateIcons[ "default" ] ?? image;
     };
 
     /**
@@ -424,7 +425,7 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                                         id={ template.id }
                                         onClick={ onTemplateSelect }
                                         imageSize={ templateIconSize }
-                                        data-testid={ `${ testId }-template-card` }
+                                        data-testid={ template.id }
                                     />
                                 ))
                                 : emptyPlaceholder && emptyPlaceholder

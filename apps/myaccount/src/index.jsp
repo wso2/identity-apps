@@ -20,6 +20,11 @@
 <%= htmlWebpackPlugin.options.importTenantPrefix %>
 <%= htmlWebpackPlugin.options.importSuperTenantConstant %>
 
+<jsp:scriptlet>
+    session.setAttribute("authCode",request.getParameter("code"));
+    session.setAttribute("sessionState", request.getParameter("session_state"));
+</jsp:scriptlet>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -32,157 +37,10 @@
 
         <title><%= htmlWebpackPlugin.options.title %></title>
 
-        <script src="<%= htmlWebpackPlugin.options.publicPath %>/app-utils.js"></script>
         <script>
-            // When OAuth2 response mode is set to "form_post", Authorization code sent in a POST.
-            // In such cases, the code is added to the sessionStorage under the key "code".
-            const authorizationCode = "<%= htmlWebpackPlugin.options.authorizationCode %>";
-
-            if (authorizationCode !== "null") {
-                window.sessionStorage.setItem("code", authorizationCode);
-            }
-
-            var sessionState = "<%= htmlWebpackPlugin.options.sessionState %>";
-            if (sessionState !== "null") {
-                sessionStorage.setItem("session_state", sessionState);
-            }
-
-            AppUtils.init({
-                serverOrigin: "<%= htmlWebpackPlugin.options.serverUrl %>",
-                superTenant: "<%= htmlWebpackPlugin.options.superTenantConstant %>",
-                tenantPrefix: "<%= htmlWebpackPlugin.options.tenantPrefix %>"
-            });
-
-            function getRandomPKCEChallenge() {
-                var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz-_";
-                var string_length = 43;
-                var randomString = "";
-                for (var i = 0; i < string_length; i++) {
-                    var rnum = Math.floor(Math.random() * chars.length);
-                    randomString += chars.substring(rnum, rnum + 1);
-                }
-                return randomString;
-            }
-
-            function sendPromptNoneRequest() {
-                var rpIFrame = document.getElementById("rpIFrame");
-                var promptNoneIFrame = rpIFrame.contentWindow.document.getElementById("promptNoneIFrame");
-                var config = window.parent["AppUtils"].getConfig();
-                promptNoneIFrame.src = sessionStorage.getItem("authorization_endpoint") +
-                    "?response_type=code" +
-                    "&client_id=" + config.clientID +
-                    "&scope=openid" +
-                    "&redirect_uri=" + config.loginCallbackURL +
-                    "&state=Y2hlY2tTZXNzaW9u" +
-                    "&prompt=none" +
-                    "&code_challenge_method=S256&code_challenge=" + getRandomPKCEChallenge();
-            }
-
-            var config = window["AppUtils"].getConfig();
-
-            var state = new URL(window.location.href).searchParams.get("state");
-            if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
-                // Prompt none response.
-                var code = new URL(window.location.href).searchParams.get("code");
-
-                if (code !== null && code.length !== 0) {
-                    var newSessionState = new URL(window.location.href).searchParams.get("session_state");
-
-                    sessionStorage.setItem("session_state", newSessionState);
-
-                    // Stop loading rest of the page inside the iFrame
-                    if (navigator.appName === 'Microsoft Internet Explorer') {
-                        document.execCommand("Stop");
-                    } else {
-                        window.stop();
-                    }
-                } else {
-                    window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
-                }
-            } else {
-                // Tracking user interactions
-                var IDLE_TIMEOUT = 600;
-                if (config.session != null && config.session.userIdleTimeOut != null
-                    && config.session.userIdleTimeOut > 1) {
-                    IDLE_TIMEOUT = config.session.userIdleTimeOut;
-                }
-                var IDLE_WARNING_TIMEOUT = 580;
-                if (config.session != null && config.session.userIdleWarningTimeOut != null
-                    && config.session.userIdleWarningTimeOut > 1) {
-                    IDLE_WARNING_TIMEOUT = config.session.userIdleWarningTimeOut;
-                }
-                var SESSION_REFRESH_TIMEOUT = 300;
-                if (config.session != null && config.session.sessionRefreshTimeOut != null
-                    && config.session.sessionRefreshTimeOut > 1) {
-                    SESSION_REFRESH_TIMEOUT = config.session.sessionRefreshTimeOut;
-                }
-
-                var _idleSecondsCounter = 0;
-                var _sessionAgeCounter = 0;
-
-                document.onclick = function () {
-                    _idleSecondsCounter = 0;
-                };
-                document.onmousemove = function () {
-                    _idleSecondsCounter = 0;
-                };
-                document.onkeypress = function () {
-                    _idleSecondsCounter = 0;
-                };
-
-                window.setInterval(CheckIdleTime, 1000);
-
-                function CheckIdleTime () {
-                    _idleSecondsCounter++;
-                    _sessionAgeCounter++;
-
-                    // Logout user if idle
-                    if (_idleSecondsCounter >= IDLE_TIMEOUT) {
-                        window.top.location.href = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
-                    } else if (_idleSecondsCounter === IDLE_WARNING_TIMEOUT) {
-
-                        var warningSearchParamKey = "session_timeout_warning";
-                        var currentURL = new URL(window.location.href);
-                    
-                        // If the URL already has the timeout warning search para, delete it first.
-                        if (currentURL
-                            && currentURL.searchParams
-                            && currentURL.searchParams.get(warningSearchParamKey) !== null) {
-                    
-                            currentURL.searchParams.delete(warningSearchParamKey);
-                        }
-                    
-                        var existingSearchParams = currentURL.search;
-                    
-                        // NOTE: This variable is used for push state.
-                        // If already other search params are available simply append using `&`,
-                        // otherwise just add the param using `?`.
-                        var searchParam = existingSearchParams + (existingSearchParams ? "&" : "?")
-                            + warningSearchParamKey + "=" + "true";
-                    
-                        // Append the search param to the URL object.
-                        currentURL.searchParams.append(warningSearchParamKey, "true");
-                    
-                        var state = {
-                            url: currentURL.href,
-                            idleTimeout: IDLE_TIMEOUT,
-                            idleWarningTimeout: IDLE_WARNING_TIMEOUT
-                        };
-                    
-                        window.history.pushState(state, null, searchParam);
-                    
-                        dispatchEvent(new PopStateEvent("popstate", { state: state }));
-                    }
-
-                    // Keep user session intact if the user is active
-                    if (_sessionAgeCounter > SESSION_REFRESH_TIMEOUT) {
-                        if (_sessionAgeCounter > _idleSecondsCounter) {
-                            sendPromptNoneRequest();
-                        }
-                        _sessionAgeCounter = 0;
-                    }
-                }
-            }
+            var serverOriginGlobal = "<%= htmlWebpackPlugin.options.serverUrl %>";
+            var superTenantGlobal = "<%= htmlWebpackPlugin.options.superTenantConstant %>";
+            var tenantPrefixGlobal = "<%= htmlWebpackPlugin.options.tenantPrefix %>";
         </script>
     </head>
     <body>

@@ -19,39 +19,15 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { I18n } from "@wso2is/i18n";
 import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, Icon } from "semantic-ui-react";
+import { Icon } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface } from "../../core";
 import { getOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
-
-const OIDC_SCOPE_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
-    {
-        key: 1,
-        text: I18n.instance.t("common:name"),
-        value: "name"
-    },
-    {
-        key: 2,
-        text: I18n.instance.t("common:type"),
-        value: "type"
-    },
-    {
-        key: 3,
-        text: I18n.instance.t("common:createdOn"),
-        value: "createdDate"
-    },
-    {
-        key: 4,
-        text: I18n.instance.t("common:lastUpdatedOn"),
-        value: "lastUpdated"
-    }
-];
 
 /**
  * Props for the OIDC scopes page.
@@ -81,13 +57,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
-    const [ listSortingStrategy, setListSortingStrategy ] = useState<DropdownItemProps>(
-        OIDC_SCOPE_LIST_SORTING_OPTIONS[ 0 ]
-    );
-
-    const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface>({});
+    const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface[]>([]);
     const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(false);
-    const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
 
     /**
@@ -103,8 +74,8 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const getOIDCScopes = (): void => {
         setScopesListRequestLoading(true);
 
-        getOIDCScopesList()
-            .then((response) => {
+        getOIDCScopesList<OIDCScopesListInterface[]>()
+            .then((response: OIDCScopesListInterface[]) => {
                 setScopeList(response);
             })
             .catch((error) => {
@@ -134,32 +105,28 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
 
     return (
         <PageLayout
+            action={
+                (hasRequiredScopes(
+                    featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))
+                    ? (
+                        <PrimaryButton
+                            onClick={ () => setShowWizard(true) }
+                            data-testid={ `${ testId }-list-layout-add-button` }
+                        >
+                            <Icon name="add"/>
+                            { t("devPortal:components.oidcScopes.buttons.addScope") }
+                        </PrimaryButton>
+                    )
+                    : null
+            }
             title={ t("devPortal:pages.oidcScopes.title") }
             description={ t("devPortal:pages.oidcScopes.subTitle") }
-            showBottomDivider={ true }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                advancedSearch={ null }
-                onPageChange={ null }
-                onSortStrategyChange={ null }
-                rightActionPanel={
-                    (hasRequiredScopes(
-                        featureConfig?.applications, featureConfig?.applications?.scopes?.create, allowedScopes))
-                        ? (
-                            <PrimaryButton
-                                onClick={ () => setShowWizard(true) }
-                                data-testid={ `${ testId }-list-layout-add-button` }
-                            >
-                                <Icon name="add"/>
-                                { t("devPortal:components.oidcScopes.buttons.addScope") }
-                            </PrimaryButton>
-                        )
-                        : null
-                }
+                showTopActionPanel={ false }
+                onPageChange={ () => null }
                 showPagination={ false }
-                sortOptions={ OIDC_SCOPE_LIST_SORTING_OPTIONS }
-                sortStrategy={ listSortingStrategy }
                 totalPages={ null }
                 data-testid={ `${ testId }-list-layout` }
             >

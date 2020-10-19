@@ -16,8 +16,8 @@
   ~ under the License.
 --%>
 
-<!-- localize.jsp MUST already be included in the calling script -->
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ include file="localize.jsp" %>
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta charset="utf-8">
@@ -26,4 +26,4 @@
 <link rel="icon" href="libs/themes/default/assets/images/favicon.ico" type="image/x-icon"/>
 <link href="libs/themes/default/theme.min.css" rel="stylesheet">
 
-<title>WSO2 Identity Server</title>
+<title><%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "wso2.identity.server")%></title>

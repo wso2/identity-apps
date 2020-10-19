@@ -75,7 +75,7 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
         style,
         square,
         transparent,
-        twoTone,
+        twoTone
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -92,7 +92,7 @@ export const ThemeIcon: React.FunctionComponent<ThemeIconProps> = (props): JSX.E
         "square": square,
         "transparent": transparent,
         "two-tone": twoTone,
-        [`${relaxLevel}`]: relaxLevel,
+        [`${relaxLevel}`]: relaxLevel
     }, className);
 
     const constructContent = (): HTMLElement | SVGElement | ReactElement | JSX.Element => {
@@ -156,5 +156,5 @@ ThemeIcon.defaultProps = {
     square: false,
     style: {},
     transparent: false,
-    twoTone: false,
+    twoTone: false
 };

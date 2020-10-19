@@ -60,5 +60,5 @@ export class CommonHelpers {
         }
 
         return null;
-    };
+    }
 }

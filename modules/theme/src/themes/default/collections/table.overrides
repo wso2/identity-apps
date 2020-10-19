@@ -26,3 +26,42 @@
         margin: 0.7em 1em;
     }
 }
+
+/*-------------------------------
+          Data Table
+--------------------------------*/
+
+.ui.table {
+    &.data-table {
+        &.transparent {
+            background: @dataTableTransparentBackground;
+            border: @dataTableTransparentBorder;
+        }
+        
+        &.selectable {
+            .data-table-body .data-table-row {
+                cursor: @dataTableSelectableRowCursor;
+            }
+        }
+        
+        .data-table-header {
+            th {
+                font-weight: @dataTableHeaderFontWeight;
+            }
+        }
+
+        .data-table-column-selector {
+            // Check popup.overrides for column selector popup styles.
+        }
+    }
+}
+
+@media only screen and (max-width: @tabletBreakpoint) {
+    .ui.table {
+        &.data-table {
+            .data-table-search {
+                margin-bottom: @mobileDataTableSearchMarginBottom;
+            }
+        }
+    }
+}

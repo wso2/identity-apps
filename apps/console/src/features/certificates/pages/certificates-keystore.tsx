@@ -301,6 +301,37 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                     data-testid={ `${ testId }-list-layout` }
                 >
                     <CertificatesList
+                        advancedSearch={
+                            <AdvancedSearchWithBasicFilters
+                                onFilter={ handleKeystoreFilter }
+                                filterAttributeOptions={ [
+                                    {
+                                        key: 0,
+                                        text: "Alias",
+                                        value: "alias"
+                                    }
+                                ] }
+                                filterAttributePlaceholder={
+                                    t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                        ".filterAttribute.placeholder")
+                                }
+                                filterConditionsPlaceholder={
+                                    t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                        ".filterCondition.placeholder")
+                                }
+                                filterValuePlaceholder={
+                                    t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                        ".filterValue.placeholder")
+                                }
+                                placeholder={
+                                    t("adminPortal:components.certificates.keystore.advancedSearch.placeholder")
+                                }
+                                defaultSearchAttribute="alias"
+                                defaultSearchOperator="co"
+                                triggerClearQuery={ triggerClearQuery }
+                                data-testid={ `${ testId }-advanced-search` }
+                            />
+                        }
                         isLoading={ isLoading }
                         list={ paginate(filteredCertificatesKeystore, listItemLimit, offset) }
                         onEmptyListPlaceholderActionClick={ () => setOpenModal(true) }
