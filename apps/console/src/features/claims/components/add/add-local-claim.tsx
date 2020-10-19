@@ -20,12 +20,16 @@ import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/mod
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { addLocalClaim } from "../../api";
 import { AddLocalClaimWizardStepIcons } from "../../configs";
+import { ClaimManagementConstants } from "../../constants";
 import { BasicDetailsLocalClaims, MappedAttributes, SummaryLocalClaims } from "../wizard";
 
 /**
@@ -87,30 +91,53 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
      * Submit handler that sends the API request to add the local claim
      */
     const handleSubmit = () => {
-        addLocalClaim(data).then(() => {
-            dispatch(addAlert(
-                {
-                    description: t("adminPortal:components.claims.local.notifications." +
-                        "addLocalClaim.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.local.notifications." +
-                        "addLocalClaim.success.message")
+        addLocalClaim(data)
+            .then((response) => {
+                dispatch(addAlert(
+                    {
+                        description: t("adminPortal:components.claims.local.notifications." +
+                            "addLocalClaim.success.description"),
+                        level: AlertLevels.SUCCESS,
+                        message: t("adminPortal:components.claims.local.notifications." +
+                            "addLocalClaim.success.message")
+                    }
+                ));
+
+                // The created resource's id is sent as a location header.
+                // If that's available, navigate to the edit page.
+                if (!isEmpty(response.headers.location)) {
+                    const location = response.headers.location;
+                    const createdClaim = location.substring(location.lastIndexOf("/") + 1);
+
+                    // Closes the modal.
+                    onClose();
+
+                    history.push({
+                        pathname: AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT")
+                            .replace(":id", createdClaim),
+                        search: ClaimManagementConstants.NEW_LOCAL_CLAIM_URL_SEARCH_PARAM
+                    });
+
+                    return;
                 }
-            ));
-            onClose();
-            update();
-        }).catch(error => {
-            setAlert(
-                {
-                    description: error?.description
-                        || t("adminPortal:components.claims.local.notifications." +
-                            "addLocalClaim.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message
-                        || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
-                }
-            );
-        })
+
+                // Fallback to listing, if the location header is not present.
+                // `onClose()` closes the modal and `update()` re-fetches the list.
+                // Check `LocalClaimsPage` component for the respective callback actions.
+                onClose();
+                update();
+            }).catch((error) => {
+                setAlert(
+                    {
+                        description: error?.description
+                            || t("adminPortal:components.claims.local.notifications." +
+                                "addLocalClaim.genericError.description"),
+                        level: AlertLevels.ERROR,
+                        message: error?.message
+                            || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
+                    }
+                );
+            })
     };
 
     /**

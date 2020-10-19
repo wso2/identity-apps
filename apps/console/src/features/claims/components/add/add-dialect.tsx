@@ -20,12 +20,17 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
+import { AppConstants } from "../../../core/constants";
+import { history } from "../../../core/helpers";
 import { addDialect, addExternalClaim } from "../../api";
 import { AddDialectWizardStepIcons } from "../../configs";
+import { ClaimManagementConstants } from "../../constants";
 import { AddExternalClaim } from "../../models";
 import { DialectDetails, ExternalClaims, SummaryAddDialect } from "../wizard";
 
@@ -82,33 +87,62 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
      * Submit handler that sends the API request to add the local claim.
      */
     const handleSubmit = () => {
-        addDialect(dialectDetailsData?.get("dialectURI").toString()).then(() => {
-            const dialectID = window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
-            const externalClaimPromises = [];
-            externalClaims.forEach(claim => {
-                externalClaimPromises.push(addExternalClaim(dialectID, claim));
-            });
-            Promise.all(externalClaimPromises).then(() => {
-                dispatch(addAlert({
-                    description: t("adminPortal:components.claims.dialects.notifications." +
-                        "addDialect.success.description"),
-                    level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.claims.dialects.notifications.addDialect.success.message")
-                }))
-            }).catch(() => {
-                dispatch(addAlert({
-                    description: t("adminPortal:components.claims.dialects.notifications." +
-                        "addDialect.genericError.description"),
-                    level: AlertLevels.WARNING,
-                    message: t("adminPortal:components.claims.dialects.notifications." +
-                        "addDialect.genericError.message")
-                }))
-            }).finally(() => {
-                onClose();
-                update();
-            });
-        }).catch(error => {
-            setAlert({
+
+        addDialect(dialectDetailsData?.get("dialectURI").toString())
+            .then((response: AxiosResponse) => {
+
+                const dialectID = window.btoa(dialectDetailsData?.get("dialectURI").toString()).replace(/=/g, "");
+                const externalClaimPromises = [];
+
+                externalClaims.forEach(claim => {
+                    externalClaimPromises.push(addExternalClaim(dialectID, claim));
+                });
+
+                Promise.all(externalClaimPromises)
+                    .then(() => {
+                        dispatch(addAlert({
+                            description: t("adminPortal:components.claims.dialects.notifications." +
+                                "addDialect.success.description"),
+                            level: AlertLevels.SUCCESS,
+                            message: t("adminPortal:components.claims.dialects.notifications.addDialect" +
+                                ".success.message")
+                        }))
+                    }).catch(() => {
+                        dispatch(addAlert({
+                            description: t("adminPortal:components.claims.dialects.notifications." +
+                                "addDialect.genericError.description"),
+                            level: AlertLevels.WARNING,
+                            message: t("adminPortal:components.claims.dialects.notifications." +
+                                "addDialect.genericError.message")
+                        }))
+                    }).finally(() => {
+                        // The created resource's id is sent as a location header.
+                        // If that's available, navigate to the edit page.
+                        if (!isEmpty(response.headers.location)) {
+                            const location = response.headers.location;
+                            const createdDialect = location.substring(location.lastIndexOf("/") + 1);
+
+                            // Closes the modal.
+                            onClose();
+    
+                            history.push({
+                                pathname: AppConstants.getPaths().get("EXTERNAL_DIALECT_EDIT")
+                                    .replace(":id", createdDialect),
+                                search: ClaimManagementConstants.NEW_DIALECT_URL_SEARCH_PARAM
+                            });
+    
+                            return;
+                        }
+
+                        // Fallback to listing, if the location header is not present.
+                        // `onClose()` closes the modal and `update()` re-fetches the list.
+                        // Check `ClaimDialectsPage` component for the respective callback actions.
+                        onClose();
+                        update();
+                    });
+            }).catch((error) => {
+
+                setAlert({
                 description: error?.description
                     || t("adminPortal:components.claims.dialects.notifications." +
                         "addDialect.error.description"),
