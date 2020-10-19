@@ -136,7 +136,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             id: "remote-repo",
             name: "Remote Repo Config",
             order: 3,
-            path: AppConstants.PATHS.get("REMOTE_REPO_CONFIG"),
+            path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
             protected: true,
             showOnSidePanel: false
         },
