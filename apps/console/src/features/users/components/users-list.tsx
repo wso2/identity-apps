@@ -379,7 +379,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 onColumnSelectionChange={ onColumnSelectionChange }
                 onRowClick={ (e: SyntheticEvent, user: UserBasicInterface): void => {
                     handleUserEdit(user?.id);
-                    onListItemClick(e, user);
+                    onListItemClick && onListItemClick(e, user);
                 } }
                 placeholders={ showPlaceholders() }
                 selectable={ selection }
