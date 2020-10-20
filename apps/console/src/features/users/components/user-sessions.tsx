@@ -28,7 +28,9 @@ import { addAlert } from "@wso2is/core/store";
 import {
     ConfirmationModal,
     ContentLoader,
-    DangerButton, GenericIcon,
+    DangerButton,
+    EmptyPlaceholder,
+    GenericIcon,
     SegmentedAccordion
 } from "@wso2is/react-components";
 import { AxiosError, AxiosResponse } from "axios";
@@ -43,7 +45,7 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
-import { FeatureConfigInterface } from "../../core";
+import { EmptyPlaceholderIllustrations, FeatureConfigInterface } from "../../core";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 
@@ -522,7 +524,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     data-testid={ `${ testId }-terminate-all-button` }
                                     onClick={ () => setShowAllSessionsTerminateConfirmationModal(true) }
                                 >
-                                    <Icon name="add"/>
+                                    <Icon name="stop circle outline"/>
                                     Terminate All
                                 </DangerButton>
                             </Grid.Column>
@@ -576,8 +578,11 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                                                 ) }
                                                                 actions={ [
                                                                     {
-                                                                        icon: "trash alternate",
-                                                                        onClick: () => null,
+                                                                        icon: "stop circle",
+                                                                        onClick: () => {
+                                                                            setTerminatingSession(session);
+                                                                            setShowSessionTerminateConfirmationModal(true);
+                                                                        },
                                                                         type: "icon"
                                                                     }
                                                                 ] }
@@ -713,7 +718,19 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                         }
                     </Grid>
                 )
-                : null
+                :
+                (
+                    <EmptyPlaceholder
+                        image={ EmptyPlaceholderIllustrations.emptySearch }
+                        imageSize="tiny"
+                        title={
+                            t("console:manage.features.users.userSessions.placeholders.emptyListPlaceholder.title")
+                        }
+                        subtitle={ [
+                            t("console:manage.features.users.userSessions.placeholders.emptyListPlaceholder.subtitles")
+                        ] }
+                    />
+                )
             : <ContentLoader/>
     );
 };

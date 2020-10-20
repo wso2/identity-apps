@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Confirmation, ModalInterface, Notification, ValidationInterface } from "../common";
+import { Confirmation, ModalInterface, Notification, Placeholder, ValidationInterface } from "../common";
 
 /**
  * Model for the Console namespace
@@ -54,6 +54,9 @@ export interface ConsoleNS {
                         getUserSessions: Notification;
                         terminateAllUserSessions: Notification;
                         terminateUserSession: Notification;
+                    };
+                    placeholders: {
+                        emptyListPlaceholder: Placeholder;
                     };
                 };
             };

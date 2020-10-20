@@ -162,6 +162,12 @@ export const console: ConsoleNS = {
                                 message: "Termination Successful"
                             }
                         }
+                    },
+                    placeholders: {
+                        emptyListPlaceholder: {
+                            subtitles: "There are no active sessions for this users.",
+                            title: "No active sessions"
+                        }
                     }
                 }
             }

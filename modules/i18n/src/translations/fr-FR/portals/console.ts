@@ -166,6 +166,12 @@ export const console: ConsoleNS = {
                                 message: "Résiliation réussie"
                             }
                         }
+                    },
+                    placeholders: {
+                        emptyListPlaceholder: {
+                            subtitles: "Il n'y a aucune session active pour cet utilisateur.",
+                            title: "Aucune session active"
+                        }
                     }
                 }
             }
