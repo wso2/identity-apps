@@ -2,8 +2,7 @@
     "packages": [
         "apps/*",
         "components/theme",
-        "modules/*",
-        "tests"
+        "modules/*"
     ],
     "version": "1.0.460"
 }
