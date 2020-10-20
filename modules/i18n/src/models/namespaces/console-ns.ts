@@ -50,6 +50,24 @@ export interface ConsoleNS {
                     };
                 };
                 userSessions: {
+                    components: {
+                        sessionDetails: {
+                            actions: {
+                                terminateAllSessions: string;
+                                terminateSession: string;
+                            };
+                            labels: {
+                                browser: string;
+                                deviceModel: string;
+                                ip: string;
+                                lastAccessed: string;
+                                loggedInAs: string;
+                                loginTime: string;
+                                os: string;
+                                recentActivity: string;
+                            };
+                        };
+                    };
                     notifications: {
                         getUserSessions: Notification;
                         terminateAllUserSessions: Notification;

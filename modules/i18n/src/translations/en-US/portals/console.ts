@@ -114,11 +114,29 @@ export const console: ConsoleNS = {
                             0: "Profile",
                             1: "Groups",
                             2: "Roles",
-                            3: "Sessions"
+                            3: "Active Sessions"
                         }
                     }
                 },
                 userSessions: {
+                    components: {
+                        sessionDetails: {
+                            actions: {
+                                terminateAllSessions: "Terminate All",
+                                terminateSession: "TerminateSession"
+                            },
+                            labels: {
+                                browser: "Browser",
+                                deviceModel: "Device Model",
+                                ip: "IP Address",
+                                lastAccessed: "Last Accessed",
+                                loggedInAs: "Logged in on <1>{{ app }}</1> as <3>{{ user }}</3>",
+                                loginTime: "Login Time",
+                                os: "Operating System",
+                                recentActivity: "Recent Activity"
+                            }
+                        }
+                    },
                     notifications: {
                         getUserSessions: {
                             error: {

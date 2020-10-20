@@ -172,3 +172,7 @@ export const CertificateIllustrations = {
     ribbon: CertificateRibbon,
     uploadPlaceholder: FileUploadIllustration
 };
+
+export const UserSessionAccordionIcons = {
+    terminate: ForbiddenIcon
+};
