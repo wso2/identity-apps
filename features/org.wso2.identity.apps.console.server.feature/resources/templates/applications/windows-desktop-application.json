@@ -1,5 +1,5 @@
 {
-	"id": "df929521-6768-44f5-8586-624126ec3f8b",
+    "id": "df929521-6768-44f5-8586-624126ec3f8b",
     "name": "Windows",
     "description": "Applications developed to target windows desktops.",
     "image": "windows",
@@ -34,7 +34,11 @@
                 "grantTypes": [
                     "authorization_code"
                 ],
-                "publicClient": false
+                "publicClient": false,
+		  "pkce": {
+		      "mandatory": false,
+		      "supportPlainTransformAlgorithm": true
+		  },
             }
         }
     }
