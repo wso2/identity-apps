@@ -184,7 +184,11 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
 
             if (isInputField(inputField) && !isRadioField(inputField) && inputField.required) {
                 if (!isCheckBoxField(inputField) && !isToggleField(inputField)) {
-                    value !== null && value !== ""
+                    const tempForm: Map<string, FormValue> = new Map(form);
+                    tempForm.set(name, tempForm.get(name).toString().trim());
+                    setForm(tempForm);
+
+                    value !== null && value.toString().trim() !== ""
                         ? requiredFieldsParam.set(name, true)
                         : requiredFieldsParam.set(name, false);
                 } else if (isToggleField(inputField)) {
@@ -231,8 +235,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             isValidatingRef.current = true;
             await validate(name, tempRequiredFields, tempValidFields);
 
-            validFieldsRef.current = tempValidFields;
-            requiredFieldsRef.current = tempRequiredFields;
+            validFieldsRef.current = new Map(tempValidFields);
+            requiredFieldsRef.current = new Map(tempRequiredFields);
             setIsValidating(false);
             isValidatingRef.current = false;
 
@@ -307,7 +311,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     const value = tempForm.get(inputField.name);
                     (
                         !((value instanceof Array && value.length > 0)
-                            || (!(value instanceof Array) && !!value))
+                            || (!(value instanceof Array) && !!value.trim()))
                         || isReset
                     )
                         && (!isRadioField(inputField) && inputField.required)
@@ -437,7 +441,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                     setIsSubmitting(false);
                     onSubmit && onSubmit(form);
                 } else {
-                	onSubmitError && onSubmitError(requiredFields, validFields);
+                    onSubmitError && onSubmitError(requiredFields, validFields);
                     setIsSubmitting(true);
                     setStartSubmission(false);
                 }

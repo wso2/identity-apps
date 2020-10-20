@@ -24,10 +24,11 @@ import { DangerZoneGroup } from "@wso2is/react-components/src";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Divider, Grid, Icon } from "semantic-ui-react";
+import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { AppConstants, history } from "../../../core";
 import { deleteUserStore, patchUserStore, updateUserStore } from "../../api";
+import { DISABLED } from "../../constants";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
 /**
  * Prop types of `EditBasicDetailsUserStore` component
@@ -64,7 +65,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
 
     const {
         userStore,
-        update,
+        //update,
         id,
         properties,
         [ "data-testid" ]: testId
@@ -73,6 +74,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
     const [ sql, setSql ] = useState<Map<string, string>>(null);
     const [ showMore, setShowMore ] = useState(false);
     const [ confirmDelete, setConfirmDelete ] = useState(false);
+    const [ enabled, setEnabled ] = useState<boolean>(undefined);
 
     const { t } = useTranslation();
 
@@ -187,12 +189,15 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
         delete data.className;
 
         const requiredData = properties?.required.map((property: TypeProperty) => {
-            return {
-                operation: "REPLACE",
-                path: `/properties/${property.name}`,
-                value: values.get(property.name).toString()
+            if (property.name !== DISABLED) {
+                return {
+                    operation: "REPLACE",
+                    path: `/properties/${ property.name }`,
+                    value: values.get(property.name).toString()
+                };
             }
-        });
+        }).filter(Boolean);
+
 
         const optionalNonSqlData = showMore
             ? properties?.optional.nonSql.map((property: TypeProperty) => {
@@ -264,7 +269,8 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                     message: t("adminPortal:components.userstores.notifications." +
                         "updateUserstore.success.message")
                 }));
-                update();
+                // Prevent update until the userstore update delay is fixed.
+                //update();
             }).catch(error => {
                 dispatch(addAlert({
                     description: error?.description
@@ -285,6 +291,47 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             }));
         });
     };
+
+    /**
+     * Handles userstore disabled toggle.
+     *
+     * @param {any} event - The emitted event.
+     * @param {CheckboxProps} data - The checkbox data.
+     */
+    const handleUserstoreDisable = (event: any, data: CheckboxProps): void => {
+        const name = properties?.required?.find(
+            (property: TypeProperty) => property?.name === DISABLED
+        )?.name;
+
+        const patchData = {
+            operation: "REPLACE",
+            path: `/properties/${ name }`,
+            value: data.checked ? "false" : "true"
+        }
+
+        patchUserStore(id, [ patchData ]).then(() => {
+            setEnabled(data.checked);
+
+            dispatch(addAlert({
+                description: t("adminPortal:components.userstores.notifications." +
+                    "updateUserstore.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("adminPortal:components.userstores.notifications." +
+                    "updateUserstore.success.message")
+            }));
+            // Prevent update until the userstore update delay is fixed.
+            //update();
+        }).catch(error => {
+            dispatch(addAlert({
+                description: error?.description
+                    || t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.genericError.description"),
+                level: AlertLevels.ERROR,
+                message: error?.message || t("adminPortal:components.userstores.notifications." +
+                    "updateUserstore.genericError.message")
+            }));
+        });
+    }
 
     return (
         <>
@@ -337,6 +384,11 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                             <Grid.Column width={ 8 }>
                                 {
                                     properties?.required?.map((property: TypeProperty, index: number) => {
+                                        const isDisabledField = property.description.split("#")[ 0 ] === DISABLED;
+                                        if (isDisabledField) {
+                                            return;
+                                        }
+
                                         const name = property.description.split("#")[ 0 ];
                                         const isPassword = property.attributes
                                             .find(attribute => attribute.name === "type").value === "password";
@@ -609,9 +661,24 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         ata-testid={ `${ testId }-danger-zone-group` }
                     >
                         <DangerZone
-                            actionTitle={ t("adminPortal:components.userstores.dangerZone.actionTitle") }
-                            header={ t("adminPortal:components.userstores.dangerZone.header") }
-                            subheader={ t("adminPortal:components.userstores.dangerZone.subheader") }
+                            actionTitle={ t("adminPortal:components.userstores.dangerZone.disable.actionTitle") }
+                            header={ t("adminPortal:components.userstores.dangerZone.disable.header") }
+                            subheader={ t("adminPortal:components.userstores.dangerZone.disable.subheader") }
+                            onActionClick={ undefined }
+                            data-testid={ `${ testId }-delete-danger-zone` }
+                            toggle={ {
+                                checked: enabled !== undefined
+                                    ? enabled
+                                    : properties?.required?.find(
+                                        (property: TypeProperty) => property?.name === DISABLED
+                                    )?.value === "false",
+                                onChange: handleUserstoreDisable
+                            } }
+                        />
+                        <DangerZone
+                            actionTitle={ t("adminPortal:components.userstores.dangerZone.delete.actionTitle") }
+                            header={ t("adminPortal:components.userstores.dangerZone.delete.header") }
+                            subheader={ t("adminPortal:components.userstores.dangerZone.delete.subheader") }
                             onActionClick={ () => setConfirmDelete(true) }
                             data-testid={ `${ testId }-delete-danger-zone` }
                         />

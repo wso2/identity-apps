@@ -1566,6 +1566,16 @@ export const adminPortal: AdminPortalNS = {
                         }
                     }
                 },
+                groups: {
+                    emptyPlaceholder: {
+                        action: "Attribuer un groupe",
+                        subtitles: "Aucun groupe n'est affecté à ce rôle pour le moment.",
+                        title: "Aucun groupe attribué"
+                    },
+                    heading: "Groupes attribués",
+                    subHeading: "Ajoutez ou supprimez les groupes affectés au rôle. Notez que ceci"
+                        + "affectera l'exécution de certaines tâches."
+                },
                 menuItems: {
                     basic: "Fondamentaux",
                     groups: "Groupes",
@@ -2424,10 +2434,18 @@ export const adminPortal: AdminPortalNS = {
                     + " l'annuaire sélectionné ainsi que ses configurations."
             },
             dangerZone: {
-                actionTitle: "Supprimer l'annuaire",
-                header: "Supprimer l'annuaire",
-                subheader: "Une fois supprimé, il est impossible de restaurer la conexion à annuaire. "
-                    + "Êtes-vous certain ?"
+                delete: {
+                    actionTitle: "Supprimer l'annuaire",
+                    header: "Supprimer l'annuaire",
+                    subheader: "Une fois supprimé, il est impossible de restaurer la conexion à annuaire. "
+                        + "Êtes-vous certain ?"
+                },
+                disable: {
+                    actionTitle: "Activer Userstore",
+                    header: "Activer Userstore",
+                    subheader: "La désactivation d'un magasin d'utilisateurs peut vous faire perdre l'accès aux utilisateurs du magasin d'utilisateurs." +
+                        "Procéder avec prudence."
+                }
             },
             forms: {
                 connection: {

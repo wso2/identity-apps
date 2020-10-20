@@ -57,7 +57,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     } = props;
 
     const { t } = useTranslation();
-    
+
     /**
      * Sets the attributes by which the list can be sorted.
      */
@@ -84,7 +84,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     const tenantDomain: string = useSelector<AppState, string>((state: AppState) => state.config.deployment.tenant);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-    
+
     const [ resetPagination, setResetPagination ] = useTrigger();
 
     const dispatch = useDispatch();
@@ -192,20 +192,12 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
      * @param {string} query - Search query.
      */
     const handleKeystoreFilter = (query: string): void => {
-        try {
-            // TODO: Implement once the API is ready
-            // fetchCertificatesKeystore(null, null, null, searchQuery);
-            setFilteredCertificatesKeystore(filterList(certificatesKeystore, query, "alias", true));
-            setSearchQuery(query);
-            setOffset(0);
-            setResetPagination();
-        } catch (error) {
-            dispatch(addAlert({
-                description: error.message,
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.certificates.keystore.advancedSearch.error")
-            }));
-        }
+        // TODO: Implement once the API is ready
+        // fetchCertificatesKeystore(null, null, null, searchQuery);
+        setFilteredCertificatesKeystore(filterList(certificatesKeystore, query, "alias", true));
+        setSearchQuery(query);
+        setOffset(0);
+        setResetPagination();
     };
 
     /**

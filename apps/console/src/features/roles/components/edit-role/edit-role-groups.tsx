@@ -510,7 +510,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 { alert && alertComponent }
                     <TransferComponent
                         searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
-                            { type: "Groups" }) }
+                            { type: "groups" }) }
                         addItems={ addGroups }
                         removeItems={ removeGroups }
                         handleUnelectedListSearch={ handleUnselectedListSearch }
@@ -527,7 +527,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             handleHeaderCheckboxChange={ selectAllUnAssignedList }
                             isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
                             emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
-                                "emptyPlaceholders.users.roles.unselected", { type: "groups" }) }
+                                "emptyPlaceholders.roles.unselected", { type: "groups" }) }
                             data-testid="user-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
                         >
                             {
@@ -568,7 +568,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                             handleHeaderCheckboxChange={ selectAllAssignedList }
                             isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
                             emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
-                                "emptyPlaceholders.users.roles.selected", { type: "groups" }) }
+                                "emptyPlaceholders.roles.selected", { type: "groups" }) }
                             data-testid="user-mgt-update-groups-modal-selected-groups-select-all-checkbox"
                         >
                             {
@@ -653,9 +653,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
     return (
         <>
             <Heading as="h4">
-                { t("adminPortal:components.user.updateUser.groups.editGroups.heading") }
+                { t("adminPortal:components.roles.edit.groups.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.groups.editGroups.subHeading") }
+                    { t("adminPortal:components.roles.edit.groups.subHeading") }
                 </Heading>
             </Heading>
             <Divider hidden/>
@@ -736,15 +736,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                 <EmphasizedSegment>
                                     <EmptyPlaceholder
                                         data-testid="user-mgt-empty-groups-list"
-                                        title={ t("adminPortal:components.user.updateUser.groups.editGroups." +
-                                            "groupList.emptyListPlaceholder.title") }
+                                        title={ t("adminPortal:components.roles.edit.groups." +
+                                            "emptyPlaceholder.title") }
                                         subtitle={ [
-                                            t("adminPortal:components.user.updateUser.groups.editGroups." +
-                                                "groupList.emptyListPlaceholder.subTitle.0"),
-                                            t("adminPortal:components.user.updateUser.groups.editGroups." +
-                                                "groupList.emptyListPlaceholder.subTitle.1"),
-                                            t("adminPortal:components.user.updateUser.groups.editGroups." +
-                                                "groupList.emptyListPlaceholder.subTitle.2")
+                                            t("adminPortal:components.roles.edit.groups." +
+                                                "emptyPlaceholder.subtitles")
                                         ] }
                                         action={
                                             !isReadOnly && (
@@ -753,7 +749,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                     icon="plus"
                                                     onClick={ handleOpenAddNewGroupModal }
                                                 >
-                                                    Assign Group
+                                                    {t("adminPortal:components.roles.edit.groups." +
+                                                    "emptyPlaceholder.action")}
                                                 </PrimaryButton>
                                             )
                                         }

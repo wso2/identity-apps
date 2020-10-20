@@ -211,7 +211,23 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             })
         );
 
-        return [ ...allProperties, ...connectionProperties, ...userProperties, ...groupProperties, ...basicProperties ];
+        const updatedProperties = [
+            ...connectionProperties,
+            ...userProperties,
+            ...groupProperties,
+            ...basicProperties
+        ];
+
+        return allProperties.map((property: UserStoreProperty) => {
+            const updatedProperty = updatedProperties
+                .find((updatedProperty: UserStoreProperty) => updatedProperty.name === property.name);
+
+            if (updatedProperty) {
+                return updatedProperty;
+            }
+
+            return property;
+        });
     };
 
     /**
@@ -340,6 +356,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
                 </Steps.Group>
             </Modal.Content >
             <Modal.Content className="content-container" scrolling>
+                { alert && alertComponent }
                 { STEPS[ currentWizardStep ].content }
             </Modal.Content>
             <Modal.Actions>

@@ -117,9 +117,9 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
-                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                data?.properties?.find((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[ 0 ]?.value,
+                                })?.value,
                                 index
                             )
                         )
@@ -132,9 +132,9 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
-                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                data?.properties?.find((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[ 0 ]?.value,
+                                })?.value,
                                 index
                             )
                         )
@@ -150,9 +150,9 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
-                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                data?.properties?.find((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[ 0 ]?.value,
+                                })?.value,
                                 index
                             )
                         )
@@ -168,9 +168,9 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                         return (
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
-                                data?.properties?.filter(((userStoreProperty: UserStoreProperty) => {
+                                data?.properties?.find((userStoreProperty: UserStoreProperty) => {
                                     return userStoreProperty.name === property.name
-                                }))[ 0 ]?.value,
+                                })?.value,
                                 index
                             )
                         )

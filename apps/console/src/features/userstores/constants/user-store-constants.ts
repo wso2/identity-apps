@@ -83,3 +83,10 @@ export const USERSTORE_REGEX_PROPERTIES = {
     RolenameRegEx: "RolenameJavaScriptRegEx",
     UsernameRegEx: "UsernameJavaScriptRegEx"
 };
+
+/**
+ * Disabled property name.
+ * @constant
+ * @type {string}
+ */
+export const DISABLED = "Disabled";

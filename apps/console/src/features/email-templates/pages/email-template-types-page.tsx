@@ -171,19 +171,11 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     };
 
     const handleSearch = (query: string): void => {
-        try {
-            // TODO: Implement using API once the API is ready
-            setFilteredEmailTemplateTypes(filterList(emailTemplateTypes, query, "displayName", true));
-            setSearchQuery(query);
-            setListOffset(0);
-            setResetPagination();
-        } catch (error) {
-            dispatch(addAlert({
-                description: error.message,
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.userstores.advancedSearch.error")
-            }));
-        }
+        // TODO: Implement using API once the API is ready
+        setFilteredEmailTemplateTypes(filterList(emailTemplateTypes, query, "displayName", true));
+        setSearchQuery(query);
+        setListOffset(0);
+        setResetPagination();
     }
 
     /**
@@ -339,7 +331,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                     onEmptyListPlaceholderActionClick={ () => setShowNewTypeWizard(true) }
                     templateTypeList={ paginate(filteredEmailTemplateTypes, listOffset, listItemLimit) }
                     data-testid={ `${ testId }-list` }
-                    searchQuery={ !!searchQuery }
+                    searchQuery={ searchQuery }
                     onSearchQueryClear={ handleSearchQueryClear }
                 />
                 {

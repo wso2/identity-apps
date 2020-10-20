@@ -195,20 +195,12 @@ const UserStores: FunctionComponent<UserStoresPageInterface> = (
      * @param {string} query - Search query.
      */
     const handleUserstoreFilter = (query: string): void => {
-        try {
-            // TODO: Implement once the API is ready
-            // fetchUserStores(null, null, null, query);
-            setFilteredUserStores(filterList(userStores, query, "name", true));
-            setSearchQuery(query);
-            setOffset(0);
-            setResetPagination();
-        } catch (error) {
-            dispatch(addAlert({
-                description: error.message,
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.userstores.advancedSearch.error")
-            }));
-        }
+        // TODO: Implement once the API is ready
+        // fetchUserStores(null, null, null, query);
+        setFilteredUserStores(filterList(userStores, query, "name", true));
+        setSearchQuery(query);
+        setOffset(0);
+        setResetPagination();
     };
 
     /**

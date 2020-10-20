@@ -39,6 +39,13 @@ import { FormField, FormValue, RadioChild } from "../models";
 import { filterPassedProps } from "../utils";
 
 /**
+ * The enter key.
+ * @constant
+ * @type {string}
+ */
+const ENTER_KEY = "Enter";
+
+/**
  * prop types for the Field component
  */
 interface InnerFieldPropsInterface {
@@ -116,6 +123,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         readOnly={ inputField.readOnly }
                         disabled={ inputField.disabled }
                         required={ inputField.label ? inputField.required : false }
+                        onKeyPress={ (event: React.KeyboardEvent) => {
+                            event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                        } }
                     />
                 );
             } else if (inputField.type === "textarea") {
@@ -147,6 +157,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         readOnly={ inputField.readOnly }
                         disabled={ inputField.disabled }
                         required={ inputField.label ? inputField.required : false }
+                        onKeyPress={ (event: React.KeyboardEvent) => {
+                            event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                        } }
                     />
                 );
             } else {
@@ -178,6 +191,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                         readOnly={ inputField.readOnly }
                         disabled={ inputField.disabled }
                         required={ inputField.label ? inputField.required : false }
+                        onKeyPress={ (event: React.KeyboardEvent) => {
+                            event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                        } }
                     />
                 );
             }
@@ -203,6 +219,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     autoFocus={ inputField.autoFocus || false }
                                     readOnly={ inputField.readOnly }
                                     disabled={ inputField.disabled }
+                                    onKeyPress={ (event: React.KeyboardEvent) => {
+                                        event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                                    } }
                                 />
                             </Form.Field>
                         );
@@ -237,6 +256,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     readOnly={ inputField.readOnly }
                     disabled={ inputField.disabled }
                     required={ inputField.label ? inputField.required : false }
+                    onKeyPress={ (event: React.KeyboardEvent) => {
+                        event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                    } }
                 />
             );
         } else if (isCheckBoxField(inputField)) {
@@ -286,6 +308,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                                     readOnly={ inputField.readOnly }
                                     disabled={ inputField.disabled }
                                     defaultChecked={ inputField.defaultChecked }
+                                    onKeyPress={ (event: React.KeyboardEvent) => {
+                                        event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                                    } }
                                 />
                             </Form.Field>
                         );
@@ -344,6 +369,9 @@ export const InnerField = React.forwardRef((props: InnerFieldPropsInterface, ref
                     readOnly={ inputField.readOnly }
                     disabled={ inputField.disabled }
                     defaultChecked={ inputField.defaultChecked }
+                    onKeyPress={ (event: React.KeyboardEvent) => {
+                        event.key === ENTER_KEY && handleBlur(event, inputField.name);
+                    } }
                 />
             );
         }

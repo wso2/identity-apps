@@ -202,19 +202,12 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
      * @param {string} query - Search query.
      */
     const handleDialectFilter = (query: string): void => {
-        try {
-            const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
-            setFilteredDialects(filteredDialects);
-            setSearchQuery(query);
-            setOffset(0);
-            setResetPagination();
-        } catch (error) {
-            dispatch(addAlert({
-                description: error.message,
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.claims.dialects.advancedSearch.error")
-            }));
-        }
+        const filteredDialects = filterList(dialects, query, sortBy.value, sortOrder);
+        setFilteredDialects(filteredDialects);
+        setSearchQuery(query);
+        setOffset(0);
+        setResetPagination();
+
     };
 
     /**

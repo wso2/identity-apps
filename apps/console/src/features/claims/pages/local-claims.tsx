@@ -217,19 +217,11 @@ const LocalClaimsPage: FunctionComponent<LocalClaimsPageInterface> = (
      * @param {string} query - Search query.
      */
     const handleLocalClaimsFilter = (query: string): void => {
-        try {
-            const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
-            setFilteredClaims(filteredClaims);
-            setSearchQuery(query);
-            setOffset(0);
-            setResetPagination();
-        } catch (error) {
-            dispatch(addAlert({
-                description: error?.message,
-                level: AlertLevels.ERROR,
-                message: t("adminPortal:components.claims.local.advancedSearch.error")
-            }));
-        }
+        const filteredClaims = filterList(claims, query, sortBy.value as string, sortOrder);
+        setFilteredClaims(filteredClaims);
+        setSearchQuery(query);
+        setOffset(0);
+        setResetPagination();
     };
 
     /**
