@@ -21,6 +21,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -90,6 +91,7 @@
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Username")%>
                                 </label>
                                 <input id="usernameUserInput" name="usernameUserInput" type="text" tabindex="0" required>
+                                <input id="username" name="username" type="hidden">
                                 <%
                                     if (!IdentityTenantUtil.isTenantQualifiedUrlsEnabled()) {
                                 %>

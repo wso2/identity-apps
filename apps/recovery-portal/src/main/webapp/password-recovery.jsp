@@ -20,6 +20,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementServiceUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.ReCaptchaApi" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.ReCaptchaProperties" %>
@@ -40,6 +41,16 @@
 
     if (StringUtils.isBlank(tenantDomain)) {
         tenantDomain = IdentityManagementEndpointConstants.SUPER_TENANT;
+    }
+    
+    // The user could have already been resolved and sent here.
+    // Trying to resolve tenant domain from user to handle saas scenario.
+    if (isSaaSApp &&
+            StringUtils.isNotBlank(username) &&
+            !IdentityTenantUtil.isTenantQualifiedUrlsEnabled() &&
+            StringUtils.equals(tenantDomain, IdentityManagementEndpointConstants.SUPER_TENANT)) {
+        
+        tenantDomain = IdentityManagementServiceUtil.getInstance().getUser(username).getTenantDomain();
     }
 
     ReCaptchaApi reCaptchaApi = new ReCaptchaApi();
