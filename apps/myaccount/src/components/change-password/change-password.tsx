@@ -272,7 +272,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         <Suspense fallback={ null }>
                             <PasswordMeter
                                 password={ password }
-                                onChangeScore={ (score: string) => {
+                                onChangeScore={ (score: number) => {
                                     setPasswordScore(score);
                                 } }
                                 scoreWords={ [

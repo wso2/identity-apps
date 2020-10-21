@@ -342,7 +342,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Suspense fallback={ null } >
                                 <PasswordMeter
                                     password={ password }
-                                    onChangeScore={ (score: string) => {
+                                    onChangeScore={ (score: number) => {
                                         setPasswordScore(score);
                                     } }
                                     scoreWords={ [
