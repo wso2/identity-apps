@@ -105,12 +105,12 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         onSessionTimeoutAbort,
         modalOptions
     } = props;
-    
+
     const timerIntervalID = useRef(null);
 
     const [
-        sessionTimoutEventState,
-        setSessionTimoutEventState
+        sessionTimeoutEventState,
+        setSessionTimeoutEventState
     ] = useState<SessionTimeoutEventStateInterface>(undefined);
     const [ showSessionTimeoutModal, setShowSessionTimeoutModal ] = useState<boolean>(false);
     const [ timerDisplay, setTimerDisplay ] = useState<string>(undefined);
@@ -123,7 +123,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
                 return;
             }
 
-            setSessionTimoutEventState(state);
+            setSessionTimeoutEventState(state);
 
             const { url, idleTimeout, idleWarningTimeout }: SessionTimeoutEventStateInterface = state;
 
@@ -143,17 +143,17 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
 
             setShowSessionTimeoutModal(!!timeout);
         });
-        
+
         return () => {
             performCleanupTasks();
         }
     }, []);
 
     /**
-     * Handles session timout abort.
+     * Handles session timeout abort.
      */
     const handleSessionTimeoutAbort = (): void => {
-        const parsedURL: URL = new URL(sessionTimoutEventState.url);
+        const parsedURL: URL = new URL(sessionTimeoutEventState.url);
 
         if (parsedURL && parsedURL.searchParams) {
             if (parsedURL.searchParams.get(CommonConstants.SESSION_TIMEOUT_WARNING_URL_SEARCH_PARAM_KEY)) {
