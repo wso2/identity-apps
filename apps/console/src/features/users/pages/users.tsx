@@ -264,7 +264,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     useEffect(() => {
         if (userListMetaContent) {
             const attributes = generateAttributesString(userListMetaContent?.values());
-            getList(listItemLimit, listOffset, null, attributes, "primary");
+            getList(listItemLimit, listOffset, null, attributes, userStore);
         }
     }, [ listOffset, listItemLimit ]);
 
