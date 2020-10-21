@@ -319,8 +319,6 @@
                 var errorMessage = $("#error-msg");
                 errorMessage.hide();
 
-                document.getElementById("tenant-domain").value = "<%= tenantDomain %>";
-
                 <% if (isFirstNameInClaims){ %>
                     var firstName = $("#first-name").val();
 
