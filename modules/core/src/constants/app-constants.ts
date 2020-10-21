@@ -46,4 +46,20 @@ export class AppConstants {
      */
     public static readonly APP_CONFIG_FETCH_ERROR_MESSAGE: string = "An error occurred while fetching the " +
         "application config.";
+
+    /**
+     * The name of the console app.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly CONSOLE_APP: string = "console";
+
+    /**
+     * The name of the my account app.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly MY_ACCOUNT_APP: string = "my_account";
 }
