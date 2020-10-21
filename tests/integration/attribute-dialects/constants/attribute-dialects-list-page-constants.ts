@@ -34,8 +34,6 @@ export class AttributeDialectsListPageConstants {
     // URL Matcher
     public static readonly PAGE_URL_MATCHER: string = "/claim-dialects";
 
-    public static readonly CLAIMS_PARENT_ITEM_DATA_ATTR: string = "side-panel-items-attribute-dialects";
-
     // Table
     public static readonly TABLE_DATA_ATTR: string = "attribute-dialects-list";
     public static readonly TABLE_BODY_DATA_ATTR: string = "data-table-body";
@@ -45,14 +43,15 @@ export class AttributeDialectsListPageConstants {
     public static readonly TABLE_ROW_DELETE_BUTTON_DATA_ATTR: string = "attribute-dialects-list-item-delete-button";
     public static readonly TABLE_ROW_IMAGE_DATA_ATTR: string = "attribute-dialects-list-item-image";
     public static readonly NEW_LIST_PLACEHOLDER: string = "attribute-dialects-list-empty-placeholder";
-    public static readonly NEW_LIST_PLACEHOLDER_ACTION_CONTAINER: string = "attribute-dialects-list-empty-placeholder-" +
-        "action-container";
+    public static readonly NEW_LIST_PLACEHOLDER_ACTION_CONTAINER: string = "attribute-dialects-list-empty-" +
+        "placeholder-action-container";
 
     // Page Layout.
     public static readonly PAGE_LAYOUT_HEADER_DATA_ATTR: string = "attribute-dialects-page-layout-page-header";
-    public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "attribute-dialects-page-layout-page-header-title";
-    public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "attribute-dialects-page-layout-page-header-" +
-        "sub-title";
+    public static readonly PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR: string = "attribute-dialects-page-layout-page-header-" +
+        "title";
+    public static readonly PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR: string = "attribute-dialects-page-layout-page-" +
+        "header-sub-title";
     public static readonly PAGE_LAYOUT_HEADER_ACTION: string = "attribute-dialects-list-layout-add-button";
 
     public static readonly LOCAL_DIALECT_CONTAINER_DATA_ATTR: string = "attribute-dialects-local-dialect-container";
@@ -63,11 +62,11 @@ export class AttributeDialectsListPageConstants {
         "wizard-dialect-details-form-dialect-uri-input";
     public static readonly ADD_DIALECT_WIZARD_ATTRIBUTE_URI_INPUT_DATA_ATTR: string = "attribute-dialects-add-" +
         "wizard-external-claims-add-external-claims-form-claim-uri-input";
-    public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_DATA_ATTR: string = "attribute-dialects-" +
+    public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTR_DROPDOWN_DATA_ATTR: string = "attribute-dialects-" +
         "add-wizard-external-claims-add-external-claims-form-local-claim-dropdown";
-    public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_OPTIONS_CONTAINER_DATA_ATTR: string = "div" +
+    public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTR_DROPDOWN_OPTIONS_DATA_ATTR: string = "div" +
         "[role=\"listbox\"]";
-    public static readonly ADD_DIALECT_WIZARD_ADD_EXTERNAL_ATTRIBUTE_BUTTON_DATA_ATTR: string = "attribute-dialects-" +
+    public static readonly ADD_DIALECT_WIZARD_ADD_EXTERNAL_ATTR_BUTTON_DATA_ATTR: string = "attribute-dialects-" +
         "add-wizard-external-claims-add-external-claims-form-submit-button";
     public static readonly ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
         "cancel-button";

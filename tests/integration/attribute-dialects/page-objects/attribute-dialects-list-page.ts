@@ -19,9 +19,9 @@
 
 /// <reference types="cypress" />
 
-import { AttributeDialectsListPageConstants } from "../constants";
+import { SidePanelDomConstants } from "@wso2/identity-cypress-test-base/constants";
 import { CommonUtils } from "@wso2/identity-cypress-test-base/utils";
-import { EmailTemplatesAddPageConstants } from "../../email-templates/constants";
+import { AttributeDialectsListPageConstants } from "../constants";
 
 /**
  * Class containing Claims List Page objects.
@@ -38,8 +38,8 @@ export class AttributeDialectsListPage {
      * Click on the Claims side panel item.
      */
     public clickOnSidePanelItem(): void {
-        cy.dataTestId(AttributeDialectsListPageConstants.CLAIMS_PARENT_ITEM_DATA_ATTR).click();
-    };
+        cy.dataTestId(SidePanelDomConstants.ATTRIBUTE_DIALECTS_PARENT_ITEM_DATA_ATTR).click();
+    }
 
     /**
      * Get the Claims table element.
@@ -47,7 +47,7 @@ export class AttributeDialectsListPage {
      */
     public getTable(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.TABLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Claims table body element.
@@ -55,7 +55,7 @@ export class AttributeDialectsListPage {
      */
     public getTableBody(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.TABLE_BODY_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Claims table first element.
@@ -67,7 +67,7 @@ export class AttributeDialectsListPage {
                 cy.dataTestId("data-table-row")
                     .eq(0);
             });
-    };
+    }
 
     /**
      * Click on the Claims table first element's edit button.
@@ -77,7 +77,7 @@ export class AttributeDialectsListPage {
             .within(() => {
                 this.getTableItemEditButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Click on the Claims table first element's view button.
@@ -87,7 +87,7 @@ export class AttributeDialectsListPage {
             .within(() => {
                 this.getTableItemViewButton().trigger("mouseover").click();
             });
-    };
+    }
 
     /**
      * Get the the Claims table item heading.
@@ -95,7 +95,7 @@ export class AttributeDialectsListPage {
      */
     public getTableItemHeading(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.TABLE_ROW_SUB_HEADING_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the Claims table item edit button.
@@ -103,7 +103,7 @@ export class AttributeDialectsListPage {
      */
     public getTableItemEditButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.TABLE_ROW_EDIT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the the Claims table item delete button.
@@ -111,7 +111,7 @@ export class AttributeDialectsListPage {
      */
     public getTableItemViewButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.TABLE_ROW_DELETE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Claims page layout header element.
@@ -119,7 +119,7 @@ export class AttributeDialectsListPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Claims page layout header title element.
@@ -127,7 +127,7 @@ export class AttributeDialectsListPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Claims page layout header sub title element.
@@ -135,7 +135,7 @@ export class AttributeDialectsListPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Claims page layout header action element.
@@ -145,7 +145,7 @@ export class AttributeDialectsListPage {
      */
     public getPageLayoutHeaderAction(options?: object): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.PAGE_LAYOUT_HEADER_ACTION);
-    };
+    }
 
     /**
      * Get the Claims list new placeholder element.
@@ -153,7 +153,7 @@ export class AttributeDialectsListPage {
      */
     public getNewTablePlaceholder(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.NEW_LIST_PLACEHOLDER);
-    };
+    }
 
     /**
      * Get the Claims list new placeholder action element.
@@ -164,7 +164,7 @@ export class AttributeDialectsListPage {
     public getNewTablePlaceholderAction(options?: object): Cypress.Chainable<JQuery<HTMLButtonElement>> {
         return cy.dataTestId(AttributeDialectsListPageConstants.NEW_LIST_PLACEHOLDER_ACTION_CONTAINER)
             .find("button");
-    };
+    }
 
     /**
      * Click on the new Attribute Dialect button.
@@ -180,7 +180,7 @@ export class AttributeDialectsListPage {
                     this.getNewTablePlaceholderAction().click();
                 }
             });
-    };
+    }
 
     /**
      * Get the Local Dialect container.
@@ -189,7 +189,7 @@ export class AttributeDialectsListPage {
      */
     public getLocalDialectContainer(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.LOCAL_DIALECT_CONTAINER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialect add wizard.
@@ -198,7 +198,7 @@ export class AttributeDialectsListPage {
      */
     public getAddDialectWizard(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialect add wizard cancel button.
@@ -207,7 +207,7 @@ export class AttributeDialectsListPage {
      */
     public getAddDialectWizardCancelButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the add wizard dialect URI input.
@@ -217,7 +217,7 @@ export class AttributeDialectsListPage {
     public getAddDialectWizardDialectURIInput(): Cypress.Chainable<JQuery<HTMLInputElement>> {
         return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_DIALECT_URI_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the add wizard attribute URI input.
@@ -227,7 +227,7 @@ export class AttributeDialectsListPage {
     public getAddDialectWizardAttributeURIInput(): Cypress.Chainable<JQuery<HTMLInputElement>> {
         return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_ATTRIBUTE_URI_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the add wizard local attributes dropdown.
@@ -235,15 +235,15 @@ export class AttributeDialectsListPage {
      * @return {Cypress.Chainable<Element>}
      */
     public getAddDialectWizardLocalAttributesDropdown(): Cypress.Chainable<Element> {
-        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_DATA_ATTR);
-    };
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_LOCAL_ATTR_DROPDOWN_DATA_ATTR);
+    }
 
     /**
      * Click on the add wizard local attributes dropdown.
      */
     public openAddDialectWizardLocalAttributesDropdown(): void {
         this.getAddDialectWizardLocalAttributesDropdown().click();
-    };
+    }
 
     /**
      * Get the add wizard local attributes dropdown options.
@@ -252,17 +252,17 @@ export class AttributeDialectsListPage {
     public getAddDialectWizardLocalAttributesDropdownOptions(): Cypress.Chainable<Element> {
         return this.getAddDialectWizardLocalAttributesDropdown()
             .within(() => {
-                cy.get(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_LOCAL_ATTRIBUTES_DROPDOWN_OPTIONS_CONTAINER_DATA_ATTR);
+                cy.get(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_LOCAL_ATTR_DROPDOWN_OPTIONS_DATA_ATTR);
             })
-    };
+    }
 
     /**
      * Get the add wizard add external dialect button.
      * @return {Cypress.Chainable<Element>}
      */
     public getAddDialectWizardAddExternalAttributeButton(): Cypress.Chainable<Element> {
-        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_ADD_EXTERNAL_ATTRIBUTE_BUTTON_DATA_ATTR);
-    };
+        return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_ADD_EXTERNAL_ATTR_BUTTON_DATA_ATTR);
+    }
 
     /**
      * Get the Attribute Dialect add wizard next button.
@@ -271,7 +271,7 @@ export class AttributeDialectsListPage {
      */
     public getAddDialectWizardNextButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_NEXT_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialect add wizard finish button.
@@ -280,5 +280,5 @@ export class AttributeDialectsListPage {
      */
     public getAddDialectWizardFinishButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsListPageConstants.ADD_DIALECT_WIZARD_FINISH_BUTTON_DATA_ATTR);
-    };
+    }
 }

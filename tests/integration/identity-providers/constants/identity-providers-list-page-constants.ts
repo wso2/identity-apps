@@ -34,8 +34,6 @@ export class IdentityProvidersListPageConstants {
     // URL Matcher
     public static readonly PAGE_URL_MATCHER: string = "/identity-providers";
 
-    public static readonly IDP_PARENT_ITEM_DATA_ATTR: string = "side-panel-items-identity-providers";
-
     // Table
     public static readonly TABLE_DATA_ATTR: string = "idp-list";
     public static readonly TABLE_BODY_DATA_ATTR: string = "data-table-body";
