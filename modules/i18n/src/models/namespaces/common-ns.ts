@@ -131,4 +131,10 @@ export interface CommonNS {
     user: string;
     verify: string;
     view: string;
+    weakPassword: string;
+    good: string;
+    strong: string;
+    weak: string;
+    tooShort: string;
+    okay: string;
 }
