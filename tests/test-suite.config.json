@@ -8,11 +8,25 @@
             "smokeTestPath": "./integration/applications/smoke.spec.ts"
         },
         {
+            "name": "attribute-dialects",
+            "skip": true,
+            "path": "./integration/attribute-dialects/**",
+            "smokeOnly": false,
+            "smokeTestPath": "./integration/attribute-dialects/smoke.spec.ts"
+        },
+        {
             "name": "email-templates",
             "skip": true,
             "path": "./integration/email-templates/**",
             "smokeOnly": false,
             "smokeTestPath": "./integration/email-templates/smoke.spec.ts"
+        },
+        {
+            "name": "identity-providers",
+            "skip": true,
+            "path": "./integration/identity-providers/**",
+            "smokeOnly": false,
+            "smokeTestPath": "./integration/identity-providers/smoke.spec.ts"
         }
     ]
 }
