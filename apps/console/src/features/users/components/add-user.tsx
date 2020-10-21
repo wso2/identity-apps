@@ -83,6 +83,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
     const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
+    const [ passwordScore, setPasswordScore ] = useState<number>(-1);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -331,10 +332,28 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                         validation.errorMessages.push( t("adminPortal:components.user.forms." +
                                             "addUserFor1m.inputs.newPassword.validations.regExViolation") );
                                     }
+
+                                    if (passwordScore < 3) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t("common:weakPassword"));
+                                    }
                                 } }
                             />
                             <Suspense fallback={ null } >
-                                <PasswordMeter password={ password } />
+                                <PasswordMeter
+                                    password={ password }
+                                    onChangeScore={ (score: string) => {
+                                        setPasswordScore(score);
+                                    } }
+                                    scoreWords={ [
+                                        t("common:tooShort"),
+                                        t("common:weak"),
+                                        t("common:okay"),
+                                        t("common:good"),
+                                        t("common:strong")
+                                    ] }
+                                    shortScoreWord={ t("common:tooShort") }
+                                />
                             </Suspense>
                         </Grid.Column>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
