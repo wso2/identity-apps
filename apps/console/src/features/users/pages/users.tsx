@@ -142,7 +142,9 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
         if (init.current) {
             init.current = false;
         } else {
-            setShowWizard(true);
+            if (emailVerificationEnabled !== undefined) {
+                setShowWizard(true);
+            }
         }
     }, [emailVerificationEnabled]);
 
@@ -584,7 +586,10 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     showWizard && (
                     <AddUserWizard
                         data-testid="user-mgt-add-user-wizard-modal"
-                        closeWizard={ () => setShowWizard(false) }
+                        closeWizard={ () => {
+                            setShowWizard(false);
+                            setEmailVerificationEnabled(undefined);
+                        } }
                         listOffset={ listOffset }
                         listItemLimit={ listItemLimit }
                         updateList={ () => setListUpdated(true) }
