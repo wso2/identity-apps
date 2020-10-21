@@ -55,26 +55,29 @@ export class AuthenticateUtils {
     /**
      * Get the authentication callback URL from the session storage.
      *
+     * @param {string} app - The name of the app.
      * @return {string} Authentication Callback from session.
      */
-    public static getAuthenticationCallbackUrl(): string {
-        return window.sessionStorage.getItem("auth_callback_url");
+    public static getAuthenticationCallbackUrl(app: string): string {
+        return window.sessionStorage.getItem(`auth_callback_url_${app}`);
     }
 
     /**
      * Update the authentication callback URL in the session storage.
      * This is used to improve UX in automatic sign-out scenarios due to session timeouts etc.
      *
+     * @param {string} app - The name of the app.
      * @param {string} location - history path.
      */
-    public static updateAuthenticationCallbackUrl(location: string): void {
-        window.sessionStorage.setItem("auth_callback_url", location);
+    public static updateAuthenticationCallbackUrl(app: string, location: string): void {
+        window.sessionStorage.setItem(`auth_callback_url_${app}`, location);
     }
 
     /**
+     * @param {string} app - The name of the app.
      * Removes the authentication callback URL from the session storage.
      */
-    public static removeAuthenticationCallbackUrl(): void {
-        window.sessionStorage.removeItem("auth_callback_url");
+    public static removeAuthenticationCallbackUrl(app: string): void {
+        window.sessionStorage.removeItem(`auth_callback_url_${app}`);
     }
 }

@@ -29,7 +29,7 @@ import {
     UserInfo
 } from "@asgardio/oidc-js";
 import { getProfileInfo, getProfileSchemas } from "@wso2is/core/api";
-import { TokenConstants } from "@wso2is/core/constants";
+import { AppConstants, TokenConstants } from "@wso2is/core/constants";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { AlertInterface, AlertLevels, ProfileInfoInterface, ProfileSchemaInterface } from "@wso2is/core/models";
 import {
@@ -167,7 +167,6 @@ export const initializeAuthentication = () => (dispatch) => {
      * @return {string[]}
      */
     const resolveBaseUrls = (): string[] => {
-        
         let baseUrls = window["AppUtils"].getConfig().idpConfigs?.baseUrls;
         const serverOrigin = window["AppUtils"].getConfig().serverOrigin;
 
@@ -278,7 +277,7 @@ export const handleSignOut = () => (dispatch) => {
     const auth = IdentityClient.getInstance();
     auth.signOut()
         .then(() => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl();
+            AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.CONSOLE_APP);
             dispatch(setSignOut());
         })
 };

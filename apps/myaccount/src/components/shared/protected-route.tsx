@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { RouteInterface } from "@wso2is/core/models";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
@@ -62,9 +63,9 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
         && (history.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
         && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND"))) {
 
-        AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP, history.location.pathname);
     } else {
-        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstants.getAppHomePath());
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP, AppConstants.getAppHomePath());
     }
 
     /**
