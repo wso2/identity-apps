@@ -21,9 +21,8 @@
 /// <reference types="../../types" />
 
 import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/utils";
-import { AttributeDialectsListPageConstants } from "./constants";
-import { AttributeDialectsListPage } from "./page-objects";
 import { v4 as uuidv4 } from "uuid";
+import { AttributeDialectsListPage } from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
@@ -35,8 +34,8 @@ describe("ITC-2.0.0 - [attribute dialects] - Attribute Dialect Management Integr
 
     const attributeDialectsListPage: AttributeDialectsListPage = new AttributeDialectsListPage();
 
-    let dialectURI: string = "https://" + uuidv4();
-    let attributeURI: string = uuidv4();
+    const dialectURI: string = "https://" + uuidv4();
+    const attributeURI: string = uuidv4();
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();

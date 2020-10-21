@@ -32,7 +32,7 @@ export class AttributeDialectsEditPage {
      */
     public getPageLayoutHeader(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.PAGE_LAYOUT_HEADER_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialects edit page layout header title element.
@@ -40,7 +40,7 @@ export class AttributeDialectsEditPage {
      */
     public getPageLayoutHeaderTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.PAGE_LAYOUT_HEADER_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialects edit page layout header sub title element.
@@ -48,7 +48,7 @@ export class AttributeDialectsEditPage {
      */
     public getPageLayoutHeaderSubTitle(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.PAGE_LAYOUT_HEADER_SUB_TITLE_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialects edit page layout header image element.
@@ -57,7 +57,7 @@ export class AttributeDialectsEditPage {
     public getPageLayoutImage(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.PAGE_LAYOUT_HEADER_IMAGE_WRAPPER_DATA_ATTR)
             .find("img");
-    };
+    }
 
     /**
      * Get the Attribute Dialects edit page back button.
@@ -65,7 +65,7 @@ export class AttributeDialectsEditPage {
      */
     public getPageBackButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.PAGE_LAYOUT_HEADER_BACK_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialects delete action in the danger zone.
@@ -73,7 +73,7 @@ export class AttributeDialectsEditPage {
      */
     public getDangerZoneDeleteButton(): Cypress.Chainable<Element> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.DANGER_ZONE_DELETE_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialects delete assertion.
@@ -81,7 +81,7 @@ export class AttributeDialectsEditPage {
      */
     public getDeleteAssertion(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.ATTRIBUTE_DIALECT_DELETE_ASSERTION_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialects delete assertion input.
@@ -90,7 +90,7 @@ export class AttributeDialectsEditPage {
     public getDeleteAssertionInput(): Cypress.Chainable<JQuery<Element>> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.ATTRIBUTE_DIALECT_DELETE_ASSERTION_INPUT_DATA_ATTR)
             .find("input");
-    };
+    }
 
     /**
      * Get the Attribute Dialects delete confirm button.
@@ -98,13 +98,13 @@ export class AttributeDialectsEditPage {
      */
     public getDeleteConfirmButton(): Cypress.Chainable<Element | any> {
         return cy.dataTestId(AttributeDialectsEditPageConstants.ATTRIBUTE_DIALECT_DELETE_CONFIRM_BUTTON_DATA_ATTR);
-    };
+    }
 
     /**
      * Get the Attribute Dialects delete confirm modal close button.
      * @return {Cypress.Chainable<Element>}
      */
     public getDeleteConfirmModalCloseButton(): Cypress.Chainable<Element | any> {
-        return cy.dataTestId(AttributeDialectsEditPageConstants.ATTRIBUTE_DIALECT_DELETE_CONFIRM_MODAL_CLOSE_BUTTON_DATA_ATTR);
-    };
+        return cy.dataTestId(AttributeDialectsEditPageConstants.ATTRIBUTE_DIALECT_DELETE_MODAL_CLOSE_BUTTON_DATA_ATTR);
+    }
 }

@@ -52,6 +52,6 @@ export class AttributeDialectsEditPageConstants {
         "delete-confirmation-modal-assertion-input";
     public static readonly ATTRIBUTE_DIALECT_DELETE_CONFIRM_BUTTON_DATA_ATTR: string = "external-dialect-edit-" +
         "delete-confirmation-modal-confirm-button";
-    public static readonly ATTRIBUTE_DIALECT_DELETE_CONFIRM_MODAL_CLOSE_BUTTON_DATA_ATTR: string = "external-" +
+    public static readonly ATTRIBUTE_DIALECT_DELETE_MODAL_CLOSE_BUTTON_DATA_ATTR: string = "external-" +
         "dialect-edit-delete-confirmation-modal-cancel-button";
 }

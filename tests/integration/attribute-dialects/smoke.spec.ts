@@ -21,7 +21,6 @@
 /// <reference types="../../types" />
 
 import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/utils";
-import { AttributeDialectsListPageConstants } from "./constants";
 import { AttributeDialectsListPage } from "./page-objects";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
