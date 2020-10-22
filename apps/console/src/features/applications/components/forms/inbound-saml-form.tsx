@@ -321,8 +321,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             (
                 <Forms
                     onSubmit={ (values) => {
-                        // eslint-disable-next-line no-debugger
-                        debugger;
                         if (isEmpty(assertionConsumerUrls)) {
                             setAssertionConsumerUrlError(true);
                             scrollToInValidField("consumerURL");
@@ -331,8 +329,6 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         }
                     } }
                     onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
-                        // eslint-disable-next-line no-debugger
-                        debugger;
                         const iterator = requiredFields.entries();
                         let result = iterator.next();
 
