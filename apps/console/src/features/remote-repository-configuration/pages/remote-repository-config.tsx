@@ -125,7 +125,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                     branch: values.gitBranch,
                     directory: values.gitDirectory,
                     uri: values.gitUrl,
-                    userName: values.userName
+                    username: values.userName
                 },
                 type: "GIT"
             }

@@ -73,7 +73,7 @@ export const CreateRemoteRepoConfig: FunctionComponent<CreateRemoteRepoConfigPro
                     branch: values.gitBranch,
                     directory: values.gitDirectory,
                     uri: values.gitUrl,
-                    userName: values.userName
+                    username: values.userName
                 },
                 type: "GIT"
             }

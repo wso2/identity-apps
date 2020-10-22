@@ -99,7 +99,7 @@ export interface InterfaceRepositoryManagerDetails {
     type: string;
     attributes: {
         accessToken: string;
-        userName: string;
+        username: string;
         uri: string;
         branch: string;
         directory: string;
