@@ -45,7 +45,6 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
 
     const loginSuccessRedirect = () => {
 
-        // TODO: Fix the auth callback isssue here.
         const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl(
             AppConstantsCore.MY_ACCOUNT_APP);
 
