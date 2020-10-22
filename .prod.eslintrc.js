@@ -17,10 +17,14 @@
  *
  */
 
-// ESLint Config which will be used by the IDE/Editors & webpack in development environments.
+// Base ESLint Config which can be extended to be used in the production environment.
 
 module.exports = {
     extends: [
-        "../../.eslintrc.js"
-    ]
+        "./.eslintrc.js"
+    ],
+    rules: {
+        // In production, build should fail if debug points are used.
+        "no-debugger": 2,
+    }
 };

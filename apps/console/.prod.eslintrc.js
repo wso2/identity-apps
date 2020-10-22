@@ -17,10 +17,12 @@
  *
  */
 
-// ESLint Config which will be used by the IDE/Editors & webpack in development environments.
+// ESLint Config which will be used by webpack in production environments.
+// Override any of the rules that has to specifically apply to the app's production build
+// which are not there in the base prod config.
 
 module.exports = {
     extends: [
-        "../../.eslintrc.js"
+        "../../.prod.eslintrc.js"
     ]
 };
