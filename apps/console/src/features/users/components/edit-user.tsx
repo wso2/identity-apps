@@ -77,9 +77,6 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             return;
         }
 
-        /* eslint-disable */
-        debugger;
-
         const userStore = user?.userName?.split("/").length > 1
             ? user?.userName?.split("/")[0]
             : PRIMARY_USERSTORE;
