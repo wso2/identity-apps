@@ -235,7 +235,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * @param {WizardConstants} formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardConstants): void => {
-        setCurrentWizardStep(currentWizardStep + 1);
+        !isExpertMode() && setCurrentWizardStep(currentWizardStep + 1);
         if (wizardSteps[currentWizardStep]?.name === WizardSteps.AUTHENTICATOR_SETTINGS ||
             wizardSteps[currentWizardStep]?.name === WizardSteps.OUTBOUND_PROVISIONING_SETTINGS) {
             setWizardState({
@@ -280,6 +280,15 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     };
 
     /**
+     * Returns if the wizard is in the expert mode.
+     *
+     * @return {boolean} isExpertMode - True if it's the expert mode.
+     */
+    const isExpertMode = (): boolean => {
+        return !template?.name;
+    }
+
+    /**
      * Resolves the step content.
      *
      * @return {React.ReactElement} Step content.
@@ -297,8 +306,14 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     <GeneralSettings
                         triggerSubmit={ submitGeneralSettings }
                         initialValues={ wizardState && wizardState[WizardConstants.IDENTITY_PROVIDER] }
-                        onSubmit={ (values): void => handleWizardFormSubmit(values,
-                            WizardConstants.IDENTITY_PROVIDER) }
+                        onSubmit={ (values): void => {
+                            handleWizardFormSubmit(values,
+                                WizardConstants.IDENTITY_PROVIDER);
+
+                            isExpertMode() && handleWizardFormFinish(generateWizardSummary())
+
+                        }
+                        }
                         data-testid={ `${ testId }-general-settings` }
                     />
                 );
@@ -523,15 +538,19 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             ];
         }
 
-        STEPS = [
-            ...STEPS,
-            {
-                icon: IdentityProviderWizardStepIcons.summary,
-                name: WizardSteps.SUMMARY,
-                submitCallback: setFinishSubmit,
-                title: t("devPortal:components.idp.wizards.addIDP.steps.summary.title")
-            }
-        ];
+        //Prevent summary step from showing in the expert mode
+        if (!isExpertMode()) {
+            STEPS = [
+                ...STEPS,
+                {
+                    icon: IdentityProviderWizardStepIcons.summary,
+                    name: WizardSteps.SUMMARY,
+                    submitCallback: setFinishSubmit,
+                    title: t("devPortal:components.idp.wizards.addIDP.steps.summary.title")
+                }
+            ];
+        }
+
         return STEPS;
     };
 
@@ -631,18 +650,22 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     {title}
                     {subTitle && <Heading as="h6">{subTitle}</Heading>}
                 </Modal.Header>
-                <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
-                    <Steps.Group header={ t("devPortal:components.idp.wizards.addIDP.header") }
-                                 current={ currentWizardStep }>
-                        {wizardSteps.map((step, index) => (
-                            <Steps.Step
-                                key={ index }
-                                icon={ step.icon }
-                                title={ step.title }
-                            />
-                        ))}
-                    </Steps.Group>
-                </Modal.Content>
+                { !isExpertMode() &&
+                    (
+                        <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
+                            <Steps.Group header={ t("devPortal:components.idp.wizards.addIDP.header") }
+                                current={ currentWizardStep }>
+                                { wizardSteps.map((step, index) => (
+                                    <Steps.Step
+                                        key={ index }
+                                        icon={ step.icon }
+                                        title={ step.title }
+                                    />
+                                )) }
+                            </Steps.Group>
+                        </Modal.Content>
+                    )
+                }
                 <Modal.Content className="content-container" scrolling data-testid={ `${ testId }-modal-content-2` }>
                     { alert && alertComponent }
                     { resolveStepContent(currentWizardStep) }
