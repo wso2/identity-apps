@@ -23,7 +23,6 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
