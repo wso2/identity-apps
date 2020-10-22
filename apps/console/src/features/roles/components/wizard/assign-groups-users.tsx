@@ -68,7 +68,7 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
         handleAddedGroupListChange,
         handleGroupListChange,
         handleInitialGroupListChange,
-        handleTempUsersListChange,
+        handleTempUsersListChange
     } = props;
 
     const panes = () => ([
