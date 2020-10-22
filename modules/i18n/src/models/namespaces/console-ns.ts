@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { ModalInterface, ValidationInterface } from "../common";
+import { Confirmation, ModalInterface, Notification, Placeholder, ValidationInterface } from "../common";
 
 /**
  * Model for the Console namespace
@@ -30,6 +30,54 @@ export interface ConsoleNS {
         validations: {
             inSecureURL: ValidationInterface;
             unrecognizedURL: ValidationInterface;
+        };
+    };
+    manage: {
+        features: {
+            users: {
+                confirmations: {
+                    terminateAllSessions: Confirmation;
+                    terminateSession: Confirmation;
+                };
+                editUser: {
+                    tab: {
+                        menuItems: {
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
+                        };
+                    };
+                };
+                userSessions: {
+                    components: {
+                        sessionDetails: {
+                            actions: {
+                                terminateAllSessions: string;
+                                terminateSession: string;
+                            };
+                            labels: {
+                                browser: string;
+                                deviceModel: string;
+                                ip: string;
+                                lastAccessed: string;
+                                loggedInAs: string;
+                                loginTime: string;
+                                os: string;
+                                recentActivity: string;
+                            };
+                        };
+                    };
+                    notifications: {
+                        getUserSessions: Notification;
+                        terminateAllUserSessions: Notification;
+                        terminateUserSession: Notification;
+                    };
+                    placeholders: {
+                        emptyListPlaceholder: Placeholder;
+                    };
+                };
+            };
         };
     };
 }

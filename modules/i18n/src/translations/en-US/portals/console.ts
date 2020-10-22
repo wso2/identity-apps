@@ -88,5 +88,107 @@ export const console: ConsoleNS = {
                 heading: "Unrecognized URL"
             }
         }
+    },
+    manage: {
+        features: {
+            users: {
+                confirmations: {
+                    terminateAllSessions: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you proceed with this action, the user will be logged out of all active " +
+                            "sessions. They will loose the progress of any ongoing tasks. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently terminate all the active sessions."
+                    },
+                    terminateSession: {
+                        assertionHint: "Please type <1>{{ name }}</1> to confirm.",
+                        content: "If you proceed with this action, the user will be logged out of the selected " +
+                            "session. They will loose the progress of any ongoing tasks. Please proceed with caution.",
+                        header: "Are you sure?",
+                        message: "This action is irreversible and will permanently terminate the session."
+                    }
+                },
+                editUser: {
+                    tab: {
+                        menuItems: {
+                            0: "Profile",
+                            1: "Groups",
+                            2: "Roles",
+                            3: "Active Sessions"
+                        }
+                    }
+                },
+                userSessions: {
+                    components: {
+                        sessionDetails: {
+                            actions: {
+                                terminateAllSessions: "Terminate All",
+                                terminateSession: "TerminateSession"
+                            },
+                            labels: {
+                                browser: "Browser",
+                                deviceModel: "Device Model",
+                                ip: "IP Address",
+                                lastAccessed: "Last Accessed",
+                                loggedInAs: "Logged in on <1>{{ app }}</1> as <3>{{ user }}</3>",
+                                loginTime: "Login Time",
+                                os: "Operating System",
+                                recentActivity: "Recent Activity"
+                            }
+                        }
+                    },
+                    notifications: {
+                        getUserSessions: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Retrieval Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while retrieving user sessions.",
+                                message: "Retrieval Error"
+                            },
+                            success: {
+                                description: "Successfully retrieved user sessions.",
+                                message: "Retrieval Successful"
+                            }
+                        },
+                        terminateAllUserSessions: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Termination Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while terminating the user sessions.",
+                                message: "Termination Error"
+                            },
+                            success: {
+                                description: "Successfully terminated all the user sessions.",
+                                message: "Termination Successful"
+                            }
+                        },
+                        terminateUserSession: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Termination Error"
+                            },
+                            genericError: {
+                                description: "An error occurred while terminating the user session.",
+                                message: "Termination Error"
+                            },
+                            success: {
+                                description: "Successfully terminated the user session.",
+                                message: "Termination Successful"
+                            }
+                        }
+                    },
+                    placeholders: {
+                        emptyListPlaceholder: {
+                            subtitles: "There are no active sessions for this users.",
+                            title: "No active sessions"
+                        }
+                    }
+                }
+            }
+        }
     }
 };

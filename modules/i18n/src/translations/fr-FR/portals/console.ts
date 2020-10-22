@@ -27,8 +27,8 @@ export const console: ConsoleNS = {
                         errors: {
                             noAssociation: {
                                 content: "Il semble que l'e-mail sélectionné ne soit pas enregistré sur Gravatar. " +
-                                    "Ouvrez un compte Gravatar en vous rendant sur le site officiel de Gravatar ou utilisez " +
-                                    "l'un des choix suivants.",
+                                    "Ouvrez un compte Gravatar en vous rendant sur le site officiel de Gravatar ou " +
+                                    "utilisez l'un des choix suivants.",
                                 header: "Aucune image Gravatar correspondante trouvée !"
                             }
                         },
@@ -39,8 +39,8 @@ export const console: ConsoleNS = {
                         input: {
                             errors: {
                                 http: {
-                                    content: "L'URL sélectionnée pointe vers une image non sécurisée servie par HTTP. " +
-                                        "Veuillez procéder avec prudence.",
+                                    content: "L'URL sélectionnée pointe vers une image non sécurisée servie par " +
+                                        "HTTP. Veuillez procéder avec prudence.",
                                     header: "Contenu non sécurisé !"
                                 },
                                 invalid: {
@@ -51,8 +51,8 @@ export const console: ConsoleNS = {
                             placeholder: "Entrez l'URL de l'image.",
                             warnings: {
                                 dataURL: {
-                                    content: "L'utilisation d'URL avec un grand nombre de caractères peut entraîner des problèmes " +
-                                        "de taille en base de données. Procédez avec prudence.",
+                                    content: "L'utilisation d'URL avec un grand nombre de caractères peut entraîner " +
+                                        "des problèmes de taille en base de données. Procédez avec prudence.",
                                     header: "Vérifiez l'URL des données saisies !"
                                 }
                             }
@@ -86,6 +86,112 @@ export const console: ConsoleNS = {
             unrecognizedURL: {
                 description: "L'URL saisie n'est ni HTTP ni HTTPS. Veuillez procéder avec prudence.",
                 heading: "URL non reconnue"
+            }
+        }
+    },
+    manage: {
+        features: {
+            users: {
+                confirmations: {
+                    terminateAllSessions: {
+                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        content: "Si vous procédez à cette action, l'utilisateur sera déconnecté de toutes les " +
+                            "sessions actives. Ils perdront la progression de toutes les tâches en cours. " +
+                            "Veuillez procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et mettra fin définitivement à toutes les sessions " +
+                            "actives."
+                    },
+                    terminateSession: {
+                        assertionHint: "Veuillez taper <1>{{ name }}</1> pour confirmer.",
+                        content: "Si vous procédez à cette action, l'utilisateur sera déconnecté de la session " +
+                            "sélectionnée. Ils perdront la progression de toutes les tâches en cours. Veuillez " +
+                            "procéder avec prudence.",
+                        header: "Êtes-vous sûr?",
+                        message: "Cette action est irréversible et mettra fin définitivement à la session."
+                    }
+                },
+                editUser: {
+                    tab: {
+                        menuItems: {
+                            0: "Profil",
+                            1: "Groupes",
+                            2: "Rôles",
+                            3: "Sessions Actives"
+                        }
+                    }
+                },
+                userSessions: {
+                    components: {
+                        sessionDetails: {
+                            actions: {
+                                terminateAllSessions: "Terminer tout",
+                                terminateSession: "Terminer la session"
+                            },
+                            labels: {
+                                browser: "Navigateur",
+                                deviceModel: "Modèle d'appareil",
+                                ip: "Adresse IP",
+                                lastAccessed: "Dernier accès",
+                                loggedInAs: "Connecté sous <1>{{ app }}</1> en tant que <3>{{ user }}</3>",
+                                loginTime: "Heure de connexion",
+                                os: "Système opérateur",
+                                recentActivity: "Activité récente"
+                            }
+                        }
+                    },
+                    notifications: {
+                        getUserSessions: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur de récupération"
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la récupération des sessions " +
+                                    "utilisateur.",
+                                message: "Erreur de récupération"
+                            },
+                            success: {
+                                description: "Sessions utilisateur récupérées avec succès.",
+                                message: "Récupération réussie"
+                            }
+                        },
+                        terminateAllUserSessions: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur de terminaison"
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la fin des sessions utilisateur.",
+                                message: "Erreur de terminaison"
+                            },
+                            success: {
+                                description: "Terminé avec succès toutes les sessions utilisateur.",
+                                message: "Résiliation réussie"
+                            }
+                        },
+                        terminateUserSession: {
+                            error: {
+                                description: "{{ description }}",
+                                message: "Erreur de terminaison"
+                            },
+                            genericError: {
+                                description: "Une erreur s'est produite lors de la fin de la session utilisateur.",
+                                message: "Erreur de terminaison"
+                            },
+                            success: {
+                                description: "Terminé avec succès la session utilisateur.",
+                                message: "Résiliation réussie"
+                            }
+                        }
+                    },
+                    placeholders: {
+                        emptyListPlaceholder: {
+                            subtitles: "Il n'y a aucune session active pour cet utilisateur.",
+                            title: "Aucune session active"
+                        }
+                    }
+                }
             }
         }
     }

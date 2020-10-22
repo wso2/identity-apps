@@ -1852,13 +1852,6 @@ export const adminPortal: AdminPortalNS = {
                         subheader: "Once you delete a user, there is no going back. Please be certain."
                     },
                     header: "Danger Zone"
-                },
-                menu: {
-                    menuItems: {
-                        0: "Profile",
-                        1: "Groups",
-                        2: "Roles"
-                    }
                 }
             },
             forms: {

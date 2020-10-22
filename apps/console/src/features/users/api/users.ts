@@ -19,9 +19,10 @@
 import { IdentityClient } from "@asgardio/oidc-js";
 import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods, ProfileInfoInterface } from "@wso2is/core/models";
+import { AxiosError, AxiosResponse } from "axios";
 import { store } from "../../core";
 import { UserManagementConstants } from "../constants";
-import { UserListInterface } from "../models";
+import { UserListInterface, UserSessionsInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -195,6 +196,136 @@ export const updateUserInfo = (userId: string, data: object): Promise<ProfileInf
         .catch((error) => {
             throw new IdentityAppsApiException(
                 UserManagementConstants.USER_INFO_UPDATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Retrieves information related to the active sessions of a user identified by the user-id.
+ *
+ * @param {string} userId - User ID.
+ * @return {Promise<AxiosResponse<UserSessionsInterface>>} a promise containing the response.
+ * @throws {IdentityAppsApiException}
+ */
+export const getUserSessions = (userId: string): Promise<AxiosResponse<UserSessionsInterface>> => {
+
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.userSessions.replace("{0}", userId)
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<UserSessionsInterface>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    UserManagementConstants.GET_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.GET_USER_SESSIONS_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Terminates a specific user session of a user.
+ *
+ * @param {string} userId - User ID.
+ * @param {string} sessionId - ID of the session.
+ * @return {Promise<AxiosResponse>} a promise containing the response.
+ * @throws {IdentityAppsApiException}
+ */
+export const terminateUserSession = (userId: string, sessionId: string): Promise<AxiosResponse> => {
+
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.userSessions.replace("{0}", userId) + `/${ sessionId }`
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<UserSessionsInterface>) => {
+            if (response.status !== 204) {
+                throw new IdentityAppsApiException(
+                    UserManagementConstants.TERMINATE_USER_SESSION_REQUEST_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.TERMINATE_USER_SESSION_REQUEST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
+        });
+};
+
+/**
+ * Terminates all the user session of a user.
+ *
+ * @param {string} userId - User ID.
+ * @return {Promise<AxiosResponse>} a promise containing the response.
+ * @throws {IdentityAppsApiException}
+ */
+export const terminateAllUserSessions = (userId: string): Promise<AxiosResponse> => {
+
+    const requestConfig = {
+        headers: {
+            "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
+            "Content-Type": "application/json"
+        },
+        method: HttpMethods.DELETE,
+        url: store.getState().config.endpoints.userSessions.replace("{0}", userId)
+    };
+
+    return httpClient(requestConfig)
+        .then((response: AxiosResponse<UserSessionsInterface>) => {
+            if (response.status !== 204) {
+                throw new IdentityAppsApiException(
+                    UserManagementConstants.TERMINATE_ALL_USER_SESSIONS_REQUEST_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
+            return Promise.resolve(response);
+        })
+        .catch((error: AxiosError) => {
+            throw new IdentityAppsApiException(
+                UserManagementConstants.TERMINATE_ALL_USER_SESSIONS_ERROR,
                 error.stack,
                 error.code,
                 error.request,

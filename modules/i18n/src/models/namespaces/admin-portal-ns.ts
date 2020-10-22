@@ -1081,13 +1081,6 @@ export interface AdminPortalNS {
                     header: string;
                     dangerZone: DangerZone;
                 };
-                menu: {
-                    menuItems: {
-                        0: string;
-                        1: string;
-                        2: string;
-                    };
-                };
             };
             forms: {
                 addUserForm: {

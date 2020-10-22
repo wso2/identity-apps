@@ -1850,16 +1850,10 @@ export const adminPortal: AdminPortalNS = {
                     dangerZone: {
                         actionTitle: "Supprimer l'utilisateur",
                         header: "Supprimer l'utilisateur",
-                        subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                        subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
+                            "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
                     },
                     header: "Zone sensible"
-                },
-                menu: {
-                    menuItems: {
-                        0: "Profil",
-                        1: "Groupes",
-                        2: "Rôles"
-                    }
                 }
             },
             forms: {
