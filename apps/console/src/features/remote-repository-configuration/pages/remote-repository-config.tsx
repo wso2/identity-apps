@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, Forms } from "@wso2is/forms";
 import { 
@@ -41,6 +41,7 @@ import {
     getRemoteRepoConfigList,
     updateRemoteRepoConfig 
 } from "../api";
+import { RemoteFetchConstants } from "../constants/remote-fetch-constants";
 import {
     InterfaceRemoteConfigDetails, 
     InterfaceRemoteConfigForm, 
@@ -49,12 +50,18 @@ import {
     InterfaceRemoteRepoListResponse 
 } from "../models";
 
+type RemoteRepoConfigProps = TestableComponentInterface
+
 /**
  * Component to handle Remote Repository Configuration.
  */
-const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
+const RemoteRepoConfig: FunctionComponent<RemoteRepoConfigProps> = (props: RemoteRepoConfigProps): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const [ remoteRepoConfig, setRemoteRepoConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
     const [ remoteRepoConfigDetail, setRemoteRepoConfigDetail ] = useState<InterfaceRemoteConfigDetails>(undefined);
@@ -66,16 +73,20 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
 
     useEffect(() => {
         getRemoteConfigList();
-    }, [ remoteRepoConfig != undefined, remoteRepoConfigDetail != undefined, isCreate ]);
+    }, [ remoteRepoConfigDetail != undefined, isCreate ]);
 
+    /**
+     * Util method to load configurations if available.
+     */
     const getRemoteConfigList = () => {
         getRemoteRepoConfigList().then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             if (response.status === 200) {
                 if (response.data.remotefetchConfigurations.length > 0) {
                     setRemoteRepoConfig(response.data.remotefetchConfigurations[0]);
                     setConnectivity(
-                        response.data.remotefetchConfigurations[0].actionListenerType === "POLLING" ? 
-                            "POLLING" : "WEBHOOK"
+                        response.data.remotefetchConfigurations[0]
+                            .actionListenerType === RemoteFetchConstants.REMOTE_FETCH_POLLING ? 
+                                RemoteFetchConstants.REMOTE_FETCH_POLLING : RemoteFetchConstants.REMOTE_FETCH_WEBHOOK
                     );
                     getRemoteRepoConfig(response.data.remotefetchConfigurations[0].id).then((
                         response: AxiosResponse<InterfaceRemoteConfigDetails>
@@ -87,11 +98,14 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                     })
                 }
             }
-        }).catch(() => {
-            //Handle Error
         })
     }
 
+    /**
+     * Util method to get 
+     * 
+     * @param values 
+     */
     const getFormValues = (values: any): any => {
         return {
             accessToken: values.get("accessToken")?.toString(),
@@ -115,7 +129,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             },
             configurationDeployer: {
                 attributes: {},
-                type: "SP"
+                type: RemoteFetchConstants.REMOTE_DEPLOYER_TYPE
             },
             isEnabled: true,
             remoteFetchName: values.configName,
@@ -127,7 +141,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                     uri: values.gitUrl,
                     username: values.userName
                 },
-                type: "GIT"
+                type: RemoteFetchConstants.REMOTE_REPOSITORY_TYPE
             }
         }
         createConfiguration(configs);
@@ -191,6 +205,9 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         });
     };
 
+    /**
+     * Util method to render remote configuration form.
+     */
     const getRemoteFecthForm = () => {
         return (
             <Forms
@@ -199,7 +216,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                 } }
             >
                 <Grid padded>
-                    {
+                {
                         remoteRepoConfigDetail && 
                             <>
                                 <Grid.Row columns={ 2 }>
@@ -213,11 +230,12 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                             checked={
                                                 isEnabled
                                             }
+                                            data-testid={ `${ testId }-config-state` }
                                             onChange={ ()=> {
                                                 setIsEnabled(!isEnabled);
-                                                updateRemoteRepoConfig(remoteRepoConfigDetail.id, {
+                                                updateRemoteRepoConfig(remoteRepoConfigDetail?.id, {
                                                     isEnabled: !isEnabled,
-                                                    remoteFetchName: remoteRepoConfigDetail.remoteFetchName
+                                                    remoteFetchName: remoteRepoConfigDetail?.remoteFetchName
                                                 })
                                             } }
                                             label={
@@ -239,6 +257,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                 required={ true }
                                 requiredErrorMessage={ "Github Repository URL is required." }
                                 disabled={ remoteRepoConfig ? true : false }
+                                data-testid={ `${ testId }-form-git-url` }
                                 value={ 
                                     remoteRepoConfigDetail ? 
                                         remoteRepoConfigDetail?.
@@ -255,6 +274,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                 required={ true }
                                 requiredErrorMessage={ "Github branch is required." }
                                 disabled={ remoteRepoConfig ? true : false }
+                                data-testid={ `${ testId }-form-git-branch` }
                                 value={ 
                                     remoteRepoConfigDetail ? 
                                         remoteRepoConfigDetail.
@@ -273,6 +293,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                 required={ true }
                                 requiredErrorMessage={ "Github configuration directory is required." }
                                 disabled={ remoteRepoConfig ? true : false }
+                                data-testid={ `${ testId }-form-git-directory` }
                                 value={ 
                                     remoteRepoConfigDetail ? 
                                         remoteRepoConfigDetail?.
@@ -288,11 +309,11 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                             </Form.Field>
                             <Form.Field>
                                 <Radio
-                                    label='Polling'
-                                    name='radioGroup'
-                                    value='this'
+                                    label="Polling"
+                                    name="radioGroup"
                                     checked={ connectivity === "POLLING" }
                                     disabled={ remoteRepoConfig ? true : false }
+                                    data-testid={ `${ testId }-form-connection-polling` }
                                     onChange={ () => {
                                         setConnectivity("POLLING")
                                     } }
@@ -300,11 +321,11 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                             </Form.Field>
                             <Form.Field>
                                 <Radio
-                                    label='Webhook'
-                                    name='radioGroup'
-                                    value='that'
+                                    label="Webhook"
+                                    name="radioGroup"
                                     disabled={ remoteRepoConfig ? true : false }
                                     checked={ connectivity === "WEBHOOK" }
+                                    data-testid={ `${ testId }-form-connection-webhook` }
                                     onChange={ () => {
                                         setConnectivity("WEBHOOK")
                                     } }
@@ -325,9 +346,11 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                         required={ false }
                                         disabled={ remoteRepoConfig ? true : false }
                                         requiredErrorMessage={ "" }
+                                        data-testid={ `${ testId }-form-git-username` }
                                         value={ 
-                                            remoteRepoConfigDetail?.
-                                                repositoryManagerAttributes?.userName 
+                                            remoteRepoConfigDetail ? 
+                                                remoteRepoConfigDetail?.
+                                                    repositoryManagerAttributes?.username : ""
                                         }
                                     />
                                 </GridColumn>
@@ -340,9 +363,11 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                         required={ false }
                                         disabled={ remoteRepoConfig ? true : false }
                                         requiredErrorMessage={ "" }
+                                        data-testid={ `${ testId }-form-git-accesstoken` }
                                         value={ 
-                                            remoteRepoConfigDetail?.
-                                                repositoryManagerAttributes?.accessToken 
+                                            remoteRepoConfigDetail ? 
+                                                remoteRepoConfigDetail?.
+                                                    repositoryManagerAttributes?.accessToken : ""
                                         }
                                     />
                                 </GridColumn>
@@ -373,6 +398,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                     required={ false }
                                     disabled={ remoteRepoConfig ? true : false }
                                     requiredErrorMessage={ "" }
+                                    data-testid={ `${ testId }-form-git-shared-key` }
                                 />
                             </GridColumn>
                         </GridRow>
@@ -385,6 +411,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                 <PrimaryButton
                                     disabled={ remoteRepoConfig ? true : false }
                                     floated="left"
+                                    data-testid={ `${ testId }-save-configuration` }
                                 >
                                     Save Configuration
                                 </PrimaryButton>
@@ -393,6 +420,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                 <LinkButton
                                     floated="left"
                                     attached
+                                    data-testid={ `${ testId }-remove-configuration` }
                                     onClick={ () => {
                                         setShowDeleteConfirmationModal(true)
                                     } }
@@ -403,6 +431,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                             { showFetchForm && 
                                 <LinkButton
                                     floated="left"
+                                    data-testid={ `${ testId }-cancel-configuration` }
                                     onClick={ () => {
                                         setShowFetchForm(false)
                                     } }
@@ -421,6 +450,7 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
         <PageLayout
             title="Remote Configurations"
             description="Configure github repository to work seamlessly with the identity server."
+            data-testid={ `${ testId }-page-layout` }
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
@@ -453,7 +483,10 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                                             !remoteRepoConfigDetail && !showFetchForm &&
                                             <EmptyPlaceholder
                                                 action={
-                                                    <PrimaryButton onClick={ () => { setShowFetchForm(true) } }>
+                                                    <PrimaryButton 
+                                                        data-testid={ `${ testId }-add-configuration` }
+                                                        onClick={ () => { setShowFetchForm(true) } }
+                                                    >
                                                         <Icon name="add"/>
                                                         { "Configure Repository" }
                                                     </PrimaryButton>
@@ -477,19 +510,20 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
             {
                 showConfigDeleteConfirmation && 
                 <ConfirmationModal
+                    data-testid={ `${ testId }-confirmation-modal` }
                     onClose={ (): void => setShowDeleteConfirmationModal(false) }
                     type="warning"
                     open={ showConfigDeleteConfirmation }
-                    assertion={ remoteRepoConfigDetail.remoteFetchName }
+                    assertion={ remoteRepoConfigDetail?.remoteFetchName }
                     assertionHint={ 
                         (
                             <p>
                                 <Trans
                                     i18nKey={ "devPortal:components:remoteConfig.list.confirmations.deleteItem." +
                                     "assertionHint" }
-                                    tOptions={ { roleName: remoteRepoConfigDetail.remoteFetchName } }
+                                    tOptions={ { roleName: remoteRepoConfigDetail?.remoteFetchName } }
                                 >
-                                    Please type <strong>{ remoteRepoConfigDetail.remoteFetchName }</strong> to confirm.
+                                    Please type <strong>{ remoteRepoConfigDetail?.remoteFetchName }</strong> to confirm.
                                 </Trans>
                             </p>
                         )

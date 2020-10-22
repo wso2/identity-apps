@@ -20,10 +20,8 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { LinkButton, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
-import { AxiosResponse } from "axios";
+import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import _ from "lodash";
-import moment from "moment";
 import React, {
     FunctionComponent,
     MouseEvent,
@@ -35,13 +33,10 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { 
-    Button,
     DropdownItemProps, 
     DropdownProps,
     Icon,
-    Menu,
-    PaginationProps,
-    Popup,
+    PaginationProps
 } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
@@ -51,17 +46,9 @@ import {
     UIConstants,
     history
 } from "../../core";
-import { 
-    InterfaceRemoteConfigDetails, 
-    InterfaceRemoteRepoConfig, 
-    InterfaceRemoteRepoListResponse, 
-    getRemoteRepoConfig, 
-    getRemoteRepoConfigList, 
-    triggerConfigDeployment 
-} from "../../remote-repository-configuration";
+import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
-import { RemoteFetchDetails } from "../components/remote-fetch-details";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationListInterface } from "../models";
 
@@ -125,9 +112,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
-    const [ remoteConfig, setRemoteConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
-    const [ remoteConfigDetails, setRemoteConfigDetails ] = useState<InterfaceRemoteConfigDetails>(undefined);
-    const [ openRemoteFetchDetails, setOpenRemoteFetchDetails ] = useState<boolean>(false);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -136,9 +120,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
 
-    useEffect(() => {
-        getRemoteConfigList();
-    }, [ remoteConfig != undefined ]);
+    
 
     /**
      * Retrieves the list of applications.
@@ -192,34 +174,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 setApplicationListRequestLoading(false);
             });
     };
-    
-    /**
-     * Util method to get remote configuration list 
-     */
-    const getRemoteConfigList = () => {
-        getRemoteRepoConfigList().then((remoteRepoList: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
-            if (remoteRepoList.status == 200 && remoteRepoList.data.count > 0 ) {
-                setRemoteConfig(remoteRepoList.data.remotefetchConfigurations[0]);
-                getRemoteRepoConfig(remoteRepoList.data.remotefetchConfigurations[0].id).then((
-                    response: AxiosResponse<InterfaceRemoteConfigDetails>
-                ) => {
-                    setRemoteConfigDetails(response.data);
-                }).catch(() => {
-                    dispatch(addAlert({
-                        description: "Error while retrieving remote configuration details",
-                        level: AlertLevels.ERROR,
-                        message: "There was an error while fetching the remote configuration details."
-                    }));
-                })
-            }
-        }).catch(() => {
-            dispatch(addAlert({
-                description: "Error while retrieving remote configuration details",
-                level: AlertLevels.ERROR,
-                message: "There was an error while fetching the remote configuration details."
-            }));
-        })
-    }
 
     /**
      * Sets the list sorting strategy.
@@ -282,12 +236,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         setTriggerClearQuery(!triggerClearQuery);
     };
 
-    const getHumanizedDeployment = (date: any): string => {
-        const now = moment(new Date());
-        const receivedDate = moment(date);
-        return "Last deployed " +   moment.duration(now.diff(receivedDate)).humanize() + " ago";
-    }
-
     return (
         <PageLayout
             action={
@@ -310,125 +258,8 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ t("devPortal:pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
-            {
-                openRemoteFetchDetails &&
-                    <RemoteFetchDetails 
-                        isOpen={ openRemoteFetchDetails }
-                        onClose={ ()=> {
-                            setOpenRemoteFetchDetails(false);
-                        } }
-                        remoteDeployment={ remoteConfigDetails }
-                    />
-            }
-            {
-                remoteConfig &&
-                <Menu size="small" borderless className="mb-6">
-                    <Menu.Item active header>Remote Configurations</Menu.Item>
-                    {
-                        remoteConfigDetails?.status?.failedDeployments &&
-                        <>
-                            <Menu.Item className="pr-3">
-                                <Icon.Group className="mr-2" size="large">
-                                    <Icon name="fork" />
-                                    <Icon 
-                                        color="green" 
-                                        corner="bottom right" 
-                                        name="checkmark" 
-                                    />
-                                </Icon.Group>
-                                {
-                                    remoteConfigDetails?.status?.successfulDeployments > 0 ?
-                                    <strong className="mr-1">{ 
-                                        remoteConfigDetails?.status?.successfulDeployments 
-                                    }</strong>
-                                    :
-                                    remoteConfigDetails?.status?.successfulDeployments
-                                } Successful
-                            </Menu.Item>
-                            <Menu.Item className="pl-1 pr-3">
-                                <Icon.Group className="mr-2" size="large">
-                                    <Icon name="fork" />
-                                    <Icon 
-                                        color="red" 
-                                        corner="bottom right" 
-                                        name="cancel" 
-                                    />
-                                </Icon.Group>
-                                {
-                                    remoteConfigDetails?.status?.failedDeployments > 0 ?
-                                    <strong className="mr-1">{ 
-                                        remoteConfigDetails?.status?.failedDeployments 
-                                    }</strong>
-                                    :
-                                    remoteConfigDetails?.status?.failedDeployments
-                                } Failed
-                                {
-                                    remoteConfigDetails?.status?.lastSynchronizedTime  &&
-                                    <LinkButton 
-                                        className="ml-2" 
-                                        compact
-                                        onClick={ () => {
-                                            setOpenRemoteFetchDetails(true);
-                                        } }
-                                    >
-                                        Details
-                                    </LinkButton>
-                                }
-                            </Menu.Item>
-                            <Menu.Item className="pl-1">
-                                <Icon.Group className="mr-2" size="large">
-                                    <Icon name="calendar alternate outline" />
-                                </Icon.Group>
-                                { getHumanizedDeployment(remoteConfigDetails?.status?.lastSynchronizedTime) }
-                            </Menu.Item>
-                        </>
-                    }
-                    <Menu.Item compact position="right">
-                        <Popup
-                            content={ remoteConfigDetails?.repositoryManagerAttributes?.uri }
-                            header="Github Repository URL"
-                            on="click"
-                            pinned
-                            offset={ "35%" }
-                            position="top right"
-                            trigger={
-                                <Icon.Group className="mr-3 p-1 link">
-                                    <Icon name="linkify"></Icon>
-                                </Icon.Group>
-                            }
-                        />
-                        <Button 
-                            basic 
-                            icon 
-                            labelPosition="left"
-                            onClick={ ()=> {
-                                triggerConfigDeployment(remoteConfigDetails.id).then((response: AxiosResponse<any>) => {
-                                    if (response.status === 202) {
-                                        dispatch(addAlert({
-                                            description: "The applications were successfully refetched.",
-                                            level: AlertLevels.SUCCESS,
-                                            message: "Successfully fetched applications."
-                                        }));
 
-                                        setTimeout(()=> {
-                                            getRemoteConfigList();
-                                        }, 3000)
-                                    }
-                                }).catch(() => {
-                                    dispatch(addAlert({
-                                        description: "There was an error while fetching the applications",
-                                        level: AlertLevels.ERROR,
-                                        message: "Error while refetching applications"
-                                    }));
-                                })
-                            } }
-                        >
-                            <Icon name="retweet" />
-                            Refetch
-                        </Button>
-                    </Menu.Item>
-                </Menu>
-            }
+            <RemoteFetchStatus />
             
             <ListLayout
                 advancedSearch={

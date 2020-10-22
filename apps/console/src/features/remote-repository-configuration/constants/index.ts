@@ -15,5 +15,3 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-export * from "./remote-fetch-status";

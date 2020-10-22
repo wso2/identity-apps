@@ -16,4 +16,25 @@
  * under the License.
  */
 
-export * from "./remote-fetch-status";
+export class RemoteFetchConstants {
+
+    /**
+     * Private constructor to avoid object instantiation from outside
+     * the class.
+     *
+     * @hideconstructor
+     */
+
+    /* eslint-disable @typescript-eslint/no-empty-function */
+    private constructor() {
+    }
+        
+    public static readonly REMOTE_FETCH_WEBHOOK = "WEB_HOOK";
+
+    public static readonly REMOTE_FETCH_POLLING = "POLLING";
+
+    public static readonly REMOTE_DEPLOYER_TYPE = "SP";
+
+    public static readonly REMOTE_REPOSITORY_TYPE = "GIT";
+    
+}
