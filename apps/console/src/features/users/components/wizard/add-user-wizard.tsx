@@ -401,7 +401,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                         familyName: userInfo.lastName,
                         givenName: userInfo.firstName
                     },
-                    password: "password",
+                    password: userInfo.newPassword,
                     profileUrl: userInfo.profileUrl,
                     "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User": {
                         askPassword: "true"

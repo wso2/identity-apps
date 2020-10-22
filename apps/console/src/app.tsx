@@ -142,7 +142,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
      */
     const handleSessionTimeoutAbort = (url: URL): void => {
         history.push({
-            pathname: (url.pathname).replace(config.deployment.appBaseName, ""),
+            pathname: url.pathname,
             search: url.search
         });
     };

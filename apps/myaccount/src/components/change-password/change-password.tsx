@@ -64,6 +64,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     });
     const [ password, setPassword ] = useState<string>("");
     const [ showConfirmationModal, setShowConfirmationModal ] = useState(false);
+    const [ passwordScore, setPasswordScore ] = useState<number>(-1);
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
 
@@ -207,7 +208,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         </Modal>
     );
 
-    const showChangePasswordView = activeForm === CommonConstants.SECURITY+CHANGE_PASSWORD_FORM_IDENTIFIER
+    const showChangePasswordView = activeForm === CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER
         ? (
             <EditSection>
                 <Forms
@@ -260,10 +261,29 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         listen={ (values: Map<string, FormValue>) => {
                             setPassword(values.get("newPassword").toString());
                         } }
+                        validation={ (value: FormValue, validation: Validation) => {
+                            if (passwordScore < 3) {
+                                validation.isValid = false;
+                                validation.errorMessages.push(t("common:weakPassword"));
+                            }
+                        } }
                     />
                     <Form.Field width={ 9 } >
                         <Suspense fallback={ null }>
-                            <PasswordMeter password={ password } />
+                            <PasswordMeter
+                                password={ password }
+                                onChangeScore={ (score: number) => {
+                                    setPasswordScore(score);
+                                } }
+                                scoreWords={ [
+                                    t("common:tooShort"),
+                                    t("common:weak"),
+                                    t("common:okay"),
+                                    t("common:good"),
+                                    t("common:strong")
+                                ] }
+                                shortScoreWord={ t("common:tooShort") }
+                            />
                         </Suspense>
                     </Form.Field>
                     <Field

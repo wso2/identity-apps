@@ -29,7 +29,7 @@ import {
     UserInfo
 } from "@asgardio/oidc-js";
 import { getProfileSchemas } from "@wso2is/core/api";
-import { TokenConstants } from "@wso2is/core/constants";
+import { AppConstants, TokenConstants } from "@wso2is/core/constants";
 import { AuthenticateUtils, ContextUtils } from "@wso2is/core/utils";
 import { I18n } from "@wso2is/i18n";
 import axios from "axios";
@@ -380,7 +380,7 @@ export const handleSignOut = () => (dispatch) => {
     auth
         .signOut()
         .then(() => {
-            AuthenticateUtils.removeAuthenticationCallbackUrl();
+            AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.MY_ACCOUNT_APP);
             dispatch(setSignOut());
         })
 };

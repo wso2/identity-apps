@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
 import { AuthenticateUtils } from "@wso2is/core/utils";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useSelector } from "react-redux";
@@ -47,9 +48,9 @@ export const ProtectedRoute: FunctionComponent<RouteProps> = (props: RouteProps)
         && (history.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
         && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND"))) {
 
-        AuthenticateUtils.updateAuthenticationCallbackUrl(history.location.pathname);
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, history.location.pathname);
     } else {
-        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstants.getAppHomePath());
+        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP, AppConstants.getAppHomePath());
     }
 
     return (

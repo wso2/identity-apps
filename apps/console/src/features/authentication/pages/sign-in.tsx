@@ -16,6 +16,8 @@
  * under the License.
  */
 
+import { AppConstants as AppConstantsCore } from "@wso2is/core/constants";
+import { AuthenticateUtils } from "@wso2is/core/utils";
 import { FunctionComponent, ReactElement, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -43,15 +45,14 @@ const SignIn: FunctionComponent<RouteComponentProps> = (
 
     const loginSuccessRedirect = () => {
 
-        // TODO: Fix the auth callback isssue here.
-        /* const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl();
+        const AuthenticationCallbackUrl = AuthenticateUtils.getAuthenticationCallbackUrl(AppConstantsCore.CONSOLE_APP);
 
         const location = !AuthenticationCallbackUrl
             || AuthenticationCallbackUrl === AppConstants.getAppLoginPath()
                 ? AppConstants.getAppHomePath()
-                : AuthenticationCallbackUrl;*/
+                : AuthenticationCallbackUrl;
 
-        history.push(AppConstants.getAppHomePath());
+        history.push(location);
     };
 
     useEffect(() => {
