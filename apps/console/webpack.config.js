@@ -34,6 +34,10 @@ const isSourceMapsEnabledInProduction = false;
 // Enable/Disable profiling in Production.
 const isProfilingEnabledInProduction = false;
 
+// ESLint Config File Names
+const DEVELOPMENT_ESLINT_CONFIG = ".eslintrc.js";
+const PRODUCTION_ESLINT_CONFIG = ".prod.eslintrc.js";
+
 module.exports = (env) => {
 
     // Build Environments.
@@ -56,6 +60,13 @@ module.exports = (env) => {
     // Build configurations.
     const distFolder = path.resolve(__dirname, "build", basename);
     const titleText = deploymentConfig.ui.appTitle;
+
+    // Paths to configs & other required files.
+    const PATHS = {
+        eslintrc: isProduction
+            ? path.resolve(__dirname, PRODUCTION_ESLINT_CONFIG)
+            : path.resolve(__dirname, DEVELOPMENT_ESLINT_CONFIG)
+    };
 
     return {
         devServer: {
@@ -166,6 +177,7 @@ module.exports = (env) => {
                         {
                             loader: "eslint-loader",
                             options: {
+                                configFile: PATHS.eslintrc,
                                 happyPackMode: true,
                                 transpileOnly: true
                             }
