@@ -3034,6 +3034,12 @@ export const devPortal: DevPortalNS = {
                     placeholder: "Nom pour la configuration du dépôt",
                     requiredMessage: "Le nom de la configuration est requis."
                 },
+                configStatus: {
+                    hint: "Activer la configuration pour récupérer les applications",
+                    label: "Activer la configuration de récupération",
+                    statusDisabled: "Activé",
+                    statusEnabled: "désactivé"
+                },
                 enableConfig: {
                     label: "Activer la configuration"
                 },
@@ -3152,14 +3158,9 @@ export const devPortal: DevPortalNS = {
                 }
             },
             pageTitles: {
-                editPage: {
-                    backLink: "Retour aux configurations",
-                    description: "Modifier les configurations des dépôts distants.",
-                    title: "Modifier la configuration : "
-                },
-                listingPage: {
-                    description: "Configurer un référentiel distant pour qu'il fonctionne de manière transparente avec le serveur d'identité.",
-                    title: "Configuration du déploiement d'un référentiel distant"
+                configurationPage: {
+                    subTitle: "Configurez le référentiel github pour qu'il fonctionne de manière transparente avec le serveur d'identité.",
+                    title: "Configurations à distance"
                 }
             },
             placeholders: {

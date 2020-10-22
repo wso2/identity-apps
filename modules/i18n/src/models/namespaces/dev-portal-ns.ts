@@ -78,17 +78,18 @@ export interface DevPortalNS {
         };
         remoteConfig: {
             pageTitles: {
-                listingPage: {
+                configurationPage: {
                     title: string;
-                    description: string;
-                };
-                editPage: {
-                    title: string;
-                    description: string;
-                    backLink: string;
+                    subTitle: string;
                 };
             };
             createConfigForm: {
+                configStatus: {
+                    label: string;
+                    hint: string;
+                    statusEnabled: string;
+                    statusDisabled: string;
+                };
                 configName: {
                     label: string;
                     placeholder: string;
