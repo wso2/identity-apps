@@ -91,8 +91,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const [ selectedUserStore, setSelectedUserStrore ] = useState<string>("");
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
-    const [ submitRoleUserList, setSubmitRoleUserList ] = useTrigger();
-    const [ submitGroupsList, setSubmitGroupsList ] = useTrigger();
     const [ submitPermissionList, setSubmitPermissionList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
@@ -318,8 +316,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         content: (
             <AssignGroupsUsers
                 data-testid="role-mgt-assign-users-and-groups"
-                onUsersSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes?.USER_LIST) }
-                onGroupsSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes?.GROUP_LIST) }
                 initialUsersList={ tempUsersList }
                 initialGroupList={
                     {
@@ -329,8 +325,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                         tempGroupList: tempGroupList
                     }
                 }
-                submitUserList={ submitRoleUserList }
-                submitGroupList={ submitGroupsList }
                 onRoleUpdate={ updateList }
                 selectedUserStore={ selectedUserStore }
                 handleAddedGroupInitialListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
