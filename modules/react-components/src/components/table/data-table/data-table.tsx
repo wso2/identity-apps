@@ -399,7 +399,7 @@ export const DataTable = <T extends object = {}>(
             for (const internalColumn of internalColumns) {
                 if (moderatedColumn.id === internalColumn.id) {
                     moderatedColumn.sortOrder = internalColumn.sortOrder;
-                    
+
                     break;
                 }
             }
@@ -422,7 +422,7 @@ export const DataTable = <T extends object = {}>(
         // Check if any of the columns have sortable prop. If yes, set `sortable` prop in the parent
         // `Table` component to true.
         const isSortable: boolean = columns.some((column: TableColumnInterface) => column.sortable);
-        
+
         if (isSortable) {
             setDynamicTableProps({
                 ...dynamicTableProps,
@@ -450,7 +450,7 @@ export const DataTable = <T extends object = {}>(
                 ? extensions.some((extension: TableExtensionInterface)=> extension.component)
                 : true);
     };
-    
+
     const isTableRenderable = (data: TableDataInterface[]): boolean => {
         return isDataValid(data);
     };
@@ -472,9 +472,9 @@ export const DataTable = <T extends object = {}>(
         if (actionHidden && actionHidden(item)) {
             return null;
         }
-        
+
         const resolvedIcon: SemanticICONS = actionIcon(item);
-        
+
         const resolvedPopupText: string = actionPopupText(item);
 
         if (actionRenderer === "dropdown") {
@@ -592,7 +592,7 @@ export const DataTable = <T extends object = {}>(
 
         const handleHeaderCellClick = (e: SyntheticEvent) => {
             columnOnClick && columnOnClick(e);
-            
+
             if (!columnSortable) {
                 return;
             }
@@ -646,7 +646,13 @@ export const DataTable = <T extends object = {}>(
             return showLoadingPlaceholders();
         }
 
-        return externalPlaceholders;
+        return (
+            <DataTable.Row>
+                <DataTable.Cell>
+                    { externalPlaceholders }
+                </DataTable.Cell>
+            </DataTable.Row>
+        );
     };
 
     /**
@@ -745,7 +751,7 @@ export const DataTable = <T extends object = {}>(
                                     })
                                 )
                             }
-                            
+
                             {
                                 showOperationsHeader && (showSearch || showColumnSelector) && (
                                     <DataTable.Header fullWidth>
