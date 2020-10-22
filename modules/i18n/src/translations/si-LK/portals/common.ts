@@ -135,6 +135,6 @@ export const common: CommonNS = {
     user: "පරිශීලක",
     verify: "සත්‍යාපනය කරන්න",
     view: "බලන්න",
-    weak: "දුර්වල",
+    weak: "දුර්වලයි",
     weakPassword: "මුරපදයේ ශක්තිය අවම වශයෙන් හොඳ විය යුතුය."
 };
