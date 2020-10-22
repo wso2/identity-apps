@@ -18,10 +18,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%@ page import="org.owasp.encoder.Encode" %>
-<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointConstants" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.io.File" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
 
 <%
@@ -143,9 +143,11 @@
                 errorMessage.hide();
                 var tenantDomain = $("#tenant-domain").val();
                 var isTenantQualifiedUrlsEnabled = '<%= IdentityTenantUtil.isTenantQualifiedUrlsEnabled() %>';
+                var tenantRequiredErrorMessage = '<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                "Enter.tenant.domain")%>'
 
                 if (isTenantQualifiedUrlsEnabled == 'false' && tenantDomain == '') {
-                    errorMessage.text("Please enter your tenant domain.");
+                    errorMessage.text(tenantRequiredErrorMessage);
                     errorMessage.show();
                     $("html, body").animate({scrollTop: errorMessage.offset().top}, 'slow');
                     return false;

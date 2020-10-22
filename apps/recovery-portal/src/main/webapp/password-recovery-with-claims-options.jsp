@@ -54,7 +54,6 @@
 
     boolean isEmailEnabled = false;
     String recoveryCode = "";
-    String emailValue = "";
     String emailId = "";
 
     List<Claim> claims;

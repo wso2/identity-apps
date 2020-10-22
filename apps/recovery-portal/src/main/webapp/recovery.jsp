@@ -26,13 +26,13 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV1" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.passwordrecovery.v1.*" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
