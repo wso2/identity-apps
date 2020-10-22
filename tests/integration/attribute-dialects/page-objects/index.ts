@@ -14,16 +14,7 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
  */
 
-// Import reusable commands.
-import "@wso2/identity-cypress-test-base/commands";
-
-// Import internal commands.
-import "./applications";
-import "./email-templates";
-import "./commands";
-import "./attribute-dialects";
-import "./identity-providers";
-import "./register";
+export * from "./attribute-dialects-edit-page";
+export * from "./attribute-dialects-list-page";
