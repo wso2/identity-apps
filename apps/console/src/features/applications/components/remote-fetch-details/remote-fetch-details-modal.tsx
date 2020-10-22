@@ -97,8 +97,8 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsProps> = (
                             data-testid={ testId }
                         >
                             {
-                                deploymentStatus && deploymentStatus.remoteFetchRevisionStatuses.length > 0 &&
-                                    deploymentStatus.remoteFetchRevisionStatuses.map((
+                                deploymentStatus && deploymentStatus?.remoteFetchRevisionStatuses.length > 0 &&
+                                    deploymentStatus?.remoteFetchRevisionStatuses.map((
                                         value: InterfaceRemoteFetchStatus, index: number
                                     ) => (
                                         value.deployedStatus === "FAIL" &&
@@ -113,7 +113,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsProps> = (
                                                 content={ (
                                                     <div className="floated left text-left">
                                                         <Icon.Group className="mr-2" size="large">
-                                                            <Icon name='fork' />
+                                                            <Icon name="fork" />
                                                             <Icon 
                                                                 color="red"
                                                                 corner="bottom right" 

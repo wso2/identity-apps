@@ -20,9 +20,10 @@ import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { I18n } from "@wso2is/i18n";
-import { Hint, LinkButton, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
+import { LinkButton, ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import _ from "lodash";
+import moment from "moment";
 import React, {
     FunctionComponent,
     MouseEvent,
@@ -34,15 +35,13 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { 
-    Button, 
-    Divider, 
+    Button,
     DropdownItemProps, 
-    DropdownProps, 
-    Grid, 
-    Header,
+    DropdownProps,
     Icon,
+    Menu,
     PaginationProps,
-    Segment
+    Popup,
 } from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
@@ -283,6 +282,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         setTriggerClearQuery(!triggerClearQuery);
     };
 
+    const getHumanizedDeployment = (date: any): string => {
+        const now = moment(new Date());
+        const receivedDate = moment(date);
+        return "Last deployed " +   moment.duration(now.diff(receivedDate)).humanize() + " ago";
+    }
+
     return (
         <PageLayout
             action={
@@ -317,106 +322,114 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             }
             {
                 remoteConfig &&
-                <>
-                    <Divider />
-                    <Header 
-                        as="h4" 
-                        className="m-0"
-                        data-testid={ `${ testId }-header` }
-                    >
-                        Remote Deployments Configured
-                    </Header>
-                    <Hint icon="linkify" className="mt-0 mb-3">
-                        { remoteConfigDetails?.repositoryManagerAttributes?.uri }
-                    </Hint>
-                    <Divider hidden/>
-                    <Segment basic className="p-0">
-                        <Grid columns={ 8 }>
-                            <Grid.Row>
-                                <Grid.Column>
-                                    <Icon.Group className="mr-2" size="large">
-                                        <Icon name='fork' />
-                                        <Icon 
-                                            color="green" 
-                                            corner="bottom right" 
-                                            name='checkmark' 
-                                        />
-                                    </Icon.Group>
-                                    <strong>{ remoteConfigDetails?.status?.successfulDeployments }</strong> Successful
-                                </Grid.Column>
-                                <Grid.Column>
-                                    <Icon.Group className="mr-2" size="large">
-                                        <Icon name='fork' />
-                                        <Icon 
-                                            color="red" 
-                                            corner="bottom right" 
-                                            name='cancel' 
-                                        />
-                                    </Icon.Group>
-                                    <strong>{ remoteConfigDetails?.status?.failedDeployments }</strong> Failed
-                                </Grid.Column>
-                                <Grid.Column
-                                    width="6"
-                                >
-                                    <Icon.Group className="mr-2" size="large">
-                                        <Icon name='calendar alternate outline' />
-                                    </Icon.Group>
-                                    Last Deployed on <strong>
-                                        { remoteConfigDetails?.status?.lastSynchronizedTime }
-                                    </strong> 
-                                </Grid.Column>
-                                <Grid.Column 
-                                    floated="right"
-                                    width="6"
-                                    verticalAlign="bottom"
-                                    textAlign="right"
-                                >
-                                    <Grid>
-                                        <Grid.Row 
-                                            className="pb-2 pt-2 pr-3" 
-                                            columns={ 1 }
-                                        >
-                                            <Grid.Column
-                                                verticalAlign="top"
-                                                className="pr-0"
-                                            >
-                                                <LinkButton 
-                                                    className="mr-5" 
-                                                    compact
-                                                    onClick={ () => {
-                                                        setOpenRemoteFetchDetails(true);
-                                                    } }
-                                                >
-                                                    Details
-                                                </LinkButton>
-                                                <Button 
-                                                    basic 
-                                                    icon 
-                                                    labelPosition='left'
-                                                    onClick={ ()=> {
-                                                        triggerConfigDeployment(remoteConfigDetails.id).then(() => {
-                                                            setTimeout(()=> {
-                                                                getRemoteConfigList();
-                                                            }, 3000)
-                                                        })
-                                                    } }
-                                                >
-                                                    <Icon name='retweet' />
-                                                    Refetch Applications
-                                                </Button>
-                                            </Grid.Column>
-                                        </Grid.Row>
-                                    </Grid>
-                                </Grid.Column>
-                            </Grid.Row>
-                        </Grid>
-                    </Segment>
-                    <Divider />
-                    <Divider hidden />
-                    <Divider hidden />
-                    <Divider hidden />
-                </>
+                <Menu size="small" borderless className="mb-6">
+                    <Menu.Item active header>Remote Configurations</Menu.Item>
+                    {
+                        remoteConfigDetails?.status?.failedDeployments &&
+                        <>
+                            <Menu.Item className="pr-3">
+                                <Icon.Group className="mr-2" size="large">
+                                    <Icon name="fork" />
+                                    <Icon 
+                                        color="green" 
+                                        corner="bottom right" 
+                                        name="checkmark" 
+                                    />
+                                </Icon.Group>
+                                {
+                                    remoteConfigDetails?.status?.successfulDeployments > 0 ?
+                                    <strong className="mr-1">{ 
+                                        remoteConfigDetails?.status?.successfulDeployments 
+                                    }</strong>
+                                    :
+                                    remoteConfigDetails?.status?.successfulDeployments
+                                } Successful
+                            </Menu.Item>
+                            <Menu.Item className="pl-1 pr-3">
+                                <Icon.Group className="mr-2" size="large">
+                                    <Icon name="fork" />
+                                    <Icon 
+                                        color="red" 
+                                        corner="bottom right" 
+                                        name="cancel" 
+                                    />
+                                </Icon.Group>
+                                {
+                                    remoteConfigDetails?.status?.failedDeployments > 0 ?
+                                    <strong className="mr-1">{ 
+                                        remoteConfigDetails?.status?.failedDeployments 
+                                    }</strong>
+                                    :
+                                    remoteConfigDetails?.status?.failedDeployments
+                                } Failed
+                                {
+                                    remoteConfigDetails?.status?.lastSynchronizedTime  &&
+                                    <LinkButton 
+                                        className="ml-2" 
+                                        compact
+                                        onClick={ () => {
+                                            setOpenRemoteFetchDetails(true);
+                                        } }
+                                    >
+                                        Details
+                                    </LinkButton>
+                                }
+                            </Menu.Item>
+                            <Menu.Item className="pl-1">
+                                <Icon.Group className="mr-2" size="large">
+                                    <Icon name="calendar alternate outline" />
+                                </Icon.Group>
+                                { getHumanizedDeployment(remoteConfigDetails?.status?.lastSynchronizedTime) }
+                            </Menu.Item>
+                        </>
+                    }
+                    <Menu.Item compact position="right">
+                        <Popup
+                            content={ remoteConfigDetails?.repositoryManagerAttributes?.uri }
+                            header="Github Repository URL"
+                            on="click"
+                            pinned
+                            offset={ "35%" }
+                            position="top right"
+                            trigger={
+                                <Icon.Group className="mr-3 p-1 link">
+                                    <Icon name="linkify"></Icon>
+                                </Icon.Group>
+                            }
+                        />
+                        <Button 
+                            basic 
+                            icon 
+                            labelPosition="left"
+                            onClick={ ()=> {
+                                triggerConfigDeployment(remoteConfigDetails.id).then((response: AxiosResponse<any>) => {
+                                    if (response.status === 202) {
+                                        dispatch(addAlert({
+                                            description: "The applications were successfully refetched.",
+                                            level: AlertLevels.SUCCESS,
+                                            message: "Successfully fetched applications."
+                                        }));
+
+                                        setTimeout(()=> {
+                                            getRemoteConfigList();
+                                        }, 3000)
+                                    }
+                                }).catch(() => {
+                                    dispatch(addAlert({
+                                        description: "There was an error while fetching the applications",
+                                        level: AlertLevels.ERROR,
+                                        message: "Error while refetching applications"
+                                    }));
+                                })
+                            } }
+                        >
+                            <Icon name="retweet" />
+                            Refetch
+                        </Button>
+                    </Menu.Item>
+                </Menu>
             }
+            
             <ListLayout
                 advancedSearch={
                     <AdvancedSearchWithBasicFilters
