@@ -52,7 +52,7 @@ interface AddRoleUserProps extends TestableComponentInterface {
     /**
      * Fired when a user is removed from teh list.
      */
-    handleTempUsersListChange: (list: UserBasicInterface[]) => void;
+    handleTempUsersListChange?: (list: UserBasicInterface[]) => void;
 }
 
 export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
@@ -94,7 +94,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         if (initialRenderTempUsers.current) {
             initialRenderTempUsers.current = false;
         } else {
-            handleTempUsersListChange(tempUserList);
+            handleTempUsersListChange && handleTempUsersListChange(tempUserList);
         }
 
     }, [ tempUserList ]);
