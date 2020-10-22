@@ -54,10 +54,6 @@ interface BasicRoleProps extends TestableComponentInterface {
      * Show if the user is read only.
      */
     isReadOnly?: boolean;
-    /**
-     * Enable roles and groups separation.
-     */
-    isGroupAndRoleSeparationEnabled?: boolean;
 }
 
 /**

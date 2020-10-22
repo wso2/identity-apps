@@ -133,7 +133,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         if (schema.extended) {
                             tempProfileInfo.set(
                                 schema.name,
-                                profileDetails.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
+                                ? profileDetails?.profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA][schemaNames[0]]
+                                : ""
                             );
                             return;
                         }
@@ -625,10 +627,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                        if (schema.name !== "roles.default" && schema.name !== "profileUrl") {
+                        if (!(schema.name === "roles.default"
+                            || schema.name === "profileUrl"
+                            || schema.name === "accountLocked"
+                            || schema.name === "accountDisabled"
+                            || schema.name === "oneTimePassword")) {
                             return (
                                 <List.Item key={ index } className="inner-list-item">
-                                    {generateSchemaForm(schema)}
+                                    { generateSchemaForm(schema) }
                                 </List.Item>
                             );
                         }
