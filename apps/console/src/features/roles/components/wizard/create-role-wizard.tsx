@@ -264,6 +264,15 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         setWizardState({ ...wizardState, [ formType ]: values });
     };
 
+    const handleGroupUserSubmit = (value: {
+            [ WizardStepsFormTypes.USER_LIST ]: any;
+            [ WizardStepsFormTypes.GROUP_LIST ]: any;
+        }
+    ): void => {
+        setCurrentWizardStep(currentStep + 1);
+        setWizardState({ ...wizardState, ...value });
+    }
+
     const handleGroupListChange = (groupList) => {
         setGroupList(groupList);
     };
@@ -361,8 +370,10 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 setSubmitPermissionList();
                 break;
             case 2:
-                setSubmitGroupsList();
-                setSubmitRoleUserList();
+                handleGroupUserSubmit({
+                    [ WizardStepsFormTypes.USER_LIST ]: tempUsersList,
+                    [ WizardStepsFormTypes?.GROUP_LIST ]: tempGroupList
+                });
                 break;
             case 3:
                 setFinishSubmit();
