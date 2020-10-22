@@ -21,6 +21,7 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AddRoleUsers } from "./role-user-assign";
 import { AssignGroups } from "../../../core";
+import { UserBasicInterface } from "../../../users";
 
 /**
  * Captures props needed for the assign roles and users component.
@@ -38,6 +39,10 @@ interface AssignGroupsUsersPropsInterface extends TestableComponentInterface {
     handleAddedGroupListChange: (groups) => void;
     handleAddedGroupInitialListChange: (groups) => void;
     handleInitialGroupListChange: (groups) => void;
+    /**
+     * Fired when a user is removed from the list.
+     */
+    handleTempUsersListChange: (list: UserBasicInterface[]) => void;
 }
 
 /**
@@ -62,7 +67,8 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
         handleAddedGroupInitialListChange,
         handleAddedGroupListChange,
         handleGroupListChange,
-        handleInitialGroupListChange
+        handleInitialGroupListChange,
+        handleTempUsersListChange,
     } = props;
 
     const panes = () => ([
@@ -102,6 +108,7 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
                         userStore={ selectedUserStore }
                         initialValues={ initialUsersList }
                         onSubmit={ onUsersSubmit }
+                        handleTempUsersListChange={ handleTempUsersListChange }
                     />
                 </ResourceTab.Pane>
             )

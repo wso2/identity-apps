@@ -31,7 +31,7 @@ import {
     UserAvatar
 } from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations, UIConstants } from "../../../core";
@@ -49,6 +49,10 @@ interface AddRoleUserProps extends TestableComponentInterface {
     userStore?: string;
     initialValues?: UserBasicInterface[];
     isReadOnly?: boolean;
+    /**
+     * Fired when a user is removed from teh list.
+     */
+    handleTempUsersListChange: (list: UserBasicInterface[]) => void;
 }
 
 export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRoleUserProps): ReactElement => {
@@ -61,6 +65,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         isGroup,
         userStore,
         isReadOnly,
+        handleTempUsersListChange,
         [ "data-testid" ]: testId
     } = props;
 
@@ -83,6 +88,16 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
 
     const [ showAddNewUserModal, setAddNewUserModalView ] = useState<boolean>(false);
 
+    const initialRenderTempUsers = useRef(true);
+
+    useEffect(() => {
+        if (initialRenderTempUsers.current) {
+            initialRenderTempUsers.current = false;
+        } else {
+            handleTempUsersListChange(tempUserList);
+        }
+
+    }, [ tempUserList ]);
 
     useEffect(() => {
         if (isSelectAllUnAssignedUsers) {
