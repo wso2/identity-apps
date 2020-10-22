@@ -30,6 +30,7 @@ import { UserSessions } from "./user-sessions";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState } from "../../core/store";
 import { UserManagementConstants } from "../constants";
+import { PRIMARY_USERSTORE } from "../../userstores/constants";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
     /**
@@ -76,7 +77,12 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             return;
         }
 
-        const userStore = user?.userName.split("/");
+        /* eslint-disable */
+        debugger;
+
+        const userStore = user?.userName?.split("/").length > 1
+            ? user?.userName?.split("/")[0]
+            : PRIMARY_USERSTORE;
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
