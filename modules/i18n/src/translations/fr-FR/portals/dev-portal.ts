@@ -811,7 +811,7 @@ export const devPortal: DevPortalNS = {
                                 },
                                 renew: {
                                     hint: "Émettre un nouveau jeton de rafraîchissement par requête lorsque le Refresh Token Grant est utilisé.",
-                                    label: "Renouveler le jeton de rafraîchissement",
+                                    label: "Faire pivoter le jeton d'actualisation",
                                     validations: {
                                         empty: "Ceci est un champ obligatoire."
                                     }
