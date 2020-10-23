@@ -21,23 +21,24 @@ import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement } from "react";
 import { AddRoleUsers } from "./role-user-assign";
 import { AssignGroups } from "../../../core";
+import { UserBasicInterface } from "../../../users";
 
 /**
  * Captures props needed for the assign roles and users component.
  */
 interface AssignGroupsUsersPropsInterface extends TestableComponentInterface {
     onRoleUpdate: () => void;
-    submitUserList: any;
-    submitGroupList: any;
     selectedUserStore: string;
     initialUsersList: any;
     initialGroupList: any;
-    onUsersSubmit: (values) => void;
-    onGroupsSubmit: (values) => void;
     handleGroupListChange: (groups) => void;
     handleAddedGroupListChange: (groups) => void;
     handleAddedGroupInitialListChange: (groups) => void;
     handleInitialGroupListChange: (groups) => void;
+    /**
+     * Fired when a user is removed from the list.
+     */
+    handleTempUsersListChange: (list: UserBasicInterface[]) => void;
 }
 
 /**
@@ -53,16 +54,13 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
 
     const {
         initialUsersList,
-        submitUserList,
-        submitGroupList,
         initialGroupList,
         selectedUserStore,
-        onGroupsSubmit,
-        onUsersSubmit,
         handleAddedGroupInitialListChange,
         handleAddedGroupListChange,
         handleGroupListChange,
-        handleInitialGroupListChange
+        handleInitialGroupListChange,
+        handleTempUsersListChange
     } = props;
 
     const panes = () => ([
@@ -75,8 +73,6 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
             render: () => (
                 <ResourceTab.Pane controlledSegmentation attached={ false }>
                     <AssignGroups
-                        triggerSubmit={ submitGroupList }
-                        onSubmit={ onGroupsSubmit }
                         initialValues={ initialGroupList }
                         handleGroupListChange={ (groups) => handleGroupListChange(groups) }
                         handleTempListChange={ (groups) => handleAddedGroupListChange(groups) }
@@ -98,10 +94,9 @@ export const AssignGroupsUsers: FunctionComponent<AssignGroupsUsersPropsInterfac
                         data-testid="new-role"
                         isEdit={ false }
                         isGroup={ false }
-                        triggerSubmit={ submitUserList }
                         userStore={ selectedUserStore }
                         initialValues={ initialUsersList }
-                        onSubmit={ onUsersSubmit }
+                        handleTempUsersListChange={ handleTempUsersListChange }
                     />
                 </ResourceTab.Pane>
             )

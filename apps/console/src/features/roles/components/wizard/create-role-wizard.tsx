@@ -32,6 +32,7 @@ import { AppConstants } from "../../../core/constants";
 import { history } from "../../../core/helpers";
 import { getGroupList } from "../../../groups/api";
 import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/models";
+import { UserBasicInterface } from "../../../users";
 import { createRole } from "../../api";
 import { RolesWizardStepIcons } from "../../configs";
 import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models";
@@ -90,8 +91,6 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const [ selectedUserStore, setSelectedUserStrore ] = useState<string>("");
 
     const [ submitGeneralSettings, setSubmitGeneralSettings ] = useTrigger();
-    const [ submitRoleUserList, setSubmitRoleUserList ] = useTrigger();
-    const [ submitGroupsList, setSubmitGroupsList ] = useTrigger();
     const [ submitPermissionList, setSubmitPermissionList ] = useTrigger();
     const [ finishSubmit, setFinishSubmit ] = useTrigger();
 
@@ -99,6 +98,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     const [ tempGroupList, setTempGroupList ] = useState<GroupsInterface[]>([]);
     const [ initialGroupList, setInitialGroupList ] = useState<GroupsInterface[]>([]);
     const [ initialTempGroupList, setInitialTempGroupList ] = useState<GroupsInterface[]>([]);
+
+    const [ tempUsersList, setTempUsersList ] = useState<UserBasicInterface[]>([]);
     const [ isEnded, setEnded ] = useState<boolean>(false);
 
     /**
@@ -261,6 +262,15 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         setWizardState({ ...wizardState, [ formType ]: values });
     };
 
+    const handleGroupUserSubmit = (value: {
+            [ WizardStepsFormTypes.USER_LIST ]: any;
+            [ WizardStepsFormTypes.GROUP_LIST ]: any;
+        }
+    ): void => {
+        setCurrentWizardStep(currentStep + 1);
+        setWizardState({ ...wizardState, ...value });
+    }
+
     const handleGroupListChange = (groupList) => {
         setGroupList(groupList);
     };
@@ -306,9 +316,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         content: (
             <AssignGroupsUsers
                 data-testid="role-mgt-assign-users-and-groups"
-                onUsersSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes?.USER_LIST) }
-                onGroupsSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes?.GROUP_LIST) }
-                initialUsersList={ wizardState && wizardState[ WizardStepsFormTypes?.USER_LIST ] }
+                initialUsersList={ tempUsersList }
                 initialGroupList={
                     {
                         groupList: groupList,
@@ -317,14 +325,15 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                         tempGroupList: tempGroupList
                     }
                 }
-                submitUserList={ submitRoleUserList }
-                submitGroupList={ submitGroupsList }
                 onRoleUpdate={ updateList }
                 selectedUserStore={ selectedUserStore }
                 handleAddedGroupInitialListChange={ (groups) => handleAddedGroupInitialListChange(groups) }
                 handleAddedGroupListChange={ (groups) => handleAddedGroupListChange(groups) }
                 handleGroupListChange={ (groups) => handleGroupListChange(groups) }
                 handleInitialGroupListChange={ (groups) => handleInitialGroupListChange(groups) }
+                handleTempUsersListChange={ (list: UserBasicInterface[]) => {
+                    setTempUsersList(list);
+                } }
             />
         ),
         icon: RolesWizardStepIcons.assignUser,
@@ -355,8 +364,10 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 setSubmitPermissionList();
                 break;
             case 2:
-                setSubmitGroupsList();
-                setSubmitRoleUserList();
+                handleGroupUserSubmit({
+                    [ WizardStepsFormTypes.USER_LIST ]: tempUsersList,
+                    [ WizardStepsFormTypes?.GROUP_LIST ]: tempGroupList
+                });
                 break;
             case 3:
                 setFinishSubmit();

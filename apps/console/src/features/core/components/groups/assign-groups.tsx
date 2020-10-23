@@ -28,8 +28,8 @@ import { useTranslation } from "react-i18next";
  */
 interface AssignGroupsPropsInterface {
     initialValues: any;
-    triggerSubmit: boolean;
-    onSubmit: (values: any) => void;
+    triggerSubmit?: boolean;
+    onSubmit?: (values: any) => void;
     handleGroupListChange: (groups: any) => void;
     handleTempListChange: (groups: any) => void;
     handleInitialTempListChange: (groups: any) => void;
