@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -33,6 +33,12 @@ describe("Test Suite - Remote Fetch Configuration Status Modal", () => {
     configDetails.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsResponse);
     });
+
+    jest.mock("react-i18next", (): any => ({
+        useTranslation: (): any => ({
+            t: (key: string): string => key.toUpperCase(),
+        }),
+    }));
 
     test("Test proper rendering of Remote Fetch Configuration Status modal", async () => {
         render(
