@@ -50,4 +50,20 @@ export class ProfileConstants {
     public static readonly ACCOUNT_SWITCH_REQUEST_ERROR: string = "An error occurred while switching the account.";
     public static readonly GRAVATAR_IMAGE_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "gravatar.";
+
+    /**
+     * Set of SCIM2 schema names.
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly SCIM2_SCHEMA_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("EMAILS", "emails")
+        .set("USERNAME", "userName")
+        .set("NAME", "name")
+        .set("ROLES_DEFAULT", "roles.default")
+        .set("PROFILE_URL", "profileUrl")
+        .set("ACCOUNT_LOCKED", "accountLocked")
+        .set("ACCOUNT_DISABLED", "accountDisabled")
+        .set("ONETIME_PASSWORD", "oneTimePassword");
 }

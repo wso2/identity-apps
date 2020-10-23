@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertInterface, ProfileInfoInterface, SBACInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
@@ -76,7 +77,9 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
             return;
         }
 
-        const userStore = user?.userName.split("/");
+        const userStore = user?.userName?.split("/").length > 1
+            ? user?.userName?.split("/")[0]
+            : UserstoreConstants.PRIMARY_USER_STORE;
 
         if (!isFeatureEnabled(featureConfig?.users, UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
             || readOnlyUserStores?.includes(userStore?.toString())
