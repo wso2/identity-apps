@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
  *
  * WSO2 Inc. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
@@ -18,12 +18,12 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { CodeEditor, Hint, LinkButton, PrimaryButton, SegmentedAccordion } from "@wso2is/react-components"
+import { CodeEditor, Hint, LinkButton, PrimaryButton, SegmentedAccordion } from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import moment from "moment";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { Grid, Icon, Modal } from "semantic-ui-react"
+import { Grid, Icon, Modal } from "semantic-ui-react";
 import { 
     InterfaceConfigDetails, 
     InterfaceRemoteConfigDetails, 

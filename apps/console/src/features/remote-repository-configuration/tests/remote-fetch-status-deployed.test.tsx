@@ -17,89 +17,38 @@
  */
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { AxiosResponse } from "axios";
 import React from "react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
+import MockConfigDetailsRequestResponse from "./__mocks__/mock.config-detail";
+import MockConfigListRequestResponse from "./__mocks__/mock.config-list";
+import MockConfigTriggerResponse from "./__mocks__/mock.config-trigger-response";
 import * as api from "../api/remote-repo-config";
 import { RemoteFetchStatus } from "../components";
 
+/**
+ * This will test the remote configuration status view.
+ */
 describe("Test Suite - Remote Fetch Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
-    const configListRequestResponse: AxiosResponse = {
-        config: {},
-        data: {
-            count: 1,
-            remotefetchConfigurations: [
-                {
-                    actionListenerType:"POLLING",
-                    configurationDeployerType:"SP",
-                    failedDeployments:0,
-                    id: "bd216d32-3d49-4e6f-a971-31045d1379f8",
-                    isEnabled: true,
-                    name:"ApplicationConfigurationRepository",
-                    repositoryManagerType:"GIT",
-                    successfulDeployments:0
-                }
-            ]
-        },
-        headers: {},
-        status: 200,
-        statusText: "OK"
-    };
-
-    const configTriggerResponse: AxiosResponse = {
-        config: {},
-        data: {
-            count: 0
-        },
-        headers: {},
-        status: 202,
-        statusText: "OK"
-    };
-
-    const configDetailsRequestResponse: AxiosResponse = {
-        config: {},
-        data: {
-            actionListenerAttributes: {
-                frequency: "60"
-            },
-            configurationDeployerType: "SP",
-            id: "bd216d32-3d49-4e6f-a971-31045d1379f8",
-            isEnabled: true,
-            remoteFetchName: "ApplicationConfigurationRepository",
-            repositoryManagerAttributes: {
-                accessToken: "sample access token",
-                branch: "master",
-                directory: "restDemo/",
-                uri: "https://github.com/Thumimku/TestGit.git",
-                username: "John"
-            },
-            repositoryManagerType: "GIT",
-            status:{
-               "count": 0
-            }
-        },
-        headers: {},
-        status: 200,
-        statusText: "OK"
-    };
-
+    // Mock api call to get remote config list
     const configList = jest.spyOn(api, "getRemoteRepoConfigList");
     configList.mockImplementation(() => {
-        return Promise.resolve(configListRequestResponse);
+        return Promise.resolve(MockConfigListRequestResponse);
     });
 
+    // Mock api call to get remote config detail
     const configDetail = jest.spyOn(api, "getRemoteRepoConfig");
     configDetail.mockImplementation(() => {
-        return Promise.resolve(configDetailsRequestResponse);
+        return Promise.resolve(MockConfigDetailsRequestResponse);
     })
 
+    // Mock api call to trigger remote config
     const configTrigger = jest.spyOn(api, "triggerConfigDeployment");
     configTrigger.mockImplementation(() => {
-        return Promise.resolve(configTriggerResponse);
+        return Promise.resolve(MockConfigTriggerResponse);
     });
 
     test("Test proper rendering of Remote Fetch Configuration Status", async () => {

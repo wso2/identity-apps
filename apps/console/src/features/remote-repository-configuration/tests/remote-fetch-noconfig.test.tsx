@@ -26,15 +26,21 @@ import MockSaveConfigResponse from "./__mocks__/mock.saveConfig";
 import * as api from "../api/remote-repo-config";
 import RemoteRepoConfig from "../pages/remote-repository-config";
 
-describe("Test Suite - Remote Fetch Configuration - Without Configuration", () => {
+/**
+ * This will test the remote fetch configuration component with
+ * no initial / saved configuration.
+ */
+describe("Test Suite - Remote Fetch Configuration ( Without Configuration )", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
+    // Mock api call to get remote config list
     const addMock =jest.spyOn(api, "getRemoteRepoConfigList")
     addMock.mockImplementation(() => {
         return Promise.resolve(MockEmptyAxiosResponse);
     })
     
+    // Mock api call to save remote config
     const saveMock =jest.spyOn(api, "createRemoteRepoConfig")
     saveMock.mockImplementation(() => {
         return Promise.resolve(MockSaveConfigResponse);
@@ -59,7 +65,7 @@ describe("Test Suite - Remote Fetch Configuration - Without Configuration", () =
         expect(screen.getByTestId("remote-fetch-form-git-url")).toBeInTheDocument();
     });
 
-    test("Test cancel save configuration event", () => {
+    test("Test cancel create save configuration event", () => {
         render(
             <Provider store={ store }>
                 <RemoteRepoConfig data-testid="remote-fetch" />
@@ -122,5 +128,3 @@ describe("Test Suite - Remote Fetch Configuration - Without Configuration", () =
     });
 
 });
-
-

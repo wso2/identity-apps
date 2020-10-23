@@ -30,16 +30,19 @@ describe("Test Suite - Remote Fetch Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
+    // Mock api call to get remote config list
     const configList = jest.spyOn(api, "getRemoteRepoConfigList");
     configList.mockImplementation(() => {
         return Promise.resolve(MockConfigListRequestResponse);
     });
 
+    // Mock api call to get remote config
     const configDetail = jest.spyOn(api, "getRemoteRepoConfig");
     configDetail.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsRequestResponse);
     })
 
+    // Mock api call to trigger remote config
     const configTrigger = jest.spyOn(api, "triggerConfigDeployment");
     configTrigger.mockImplementation(() => {
         return Promise.resolve(MockConfigTriggerResponse);

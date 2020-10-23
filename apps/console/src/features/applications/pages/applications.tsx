@@ -120,7 +120,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
 
-    
 
     /**
      * Retrieves the list of applications.

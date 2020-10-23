@@ -25,20 +25,18 @@ import MockConfigDetailsResponse from "./__mocks__/mock.config-status";
 import * as api from "../api/remote-repo-config";
 import { RemoteFetchDetails } from "../components/remote-fetch-details";
 
+/**
+ * This will test the remote fetch status detail modal.
+ */
 describe("Test Suite - Remote Fetch Configuration Status Modal", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
+    // Mock api call to get remote config details
     const configDetails = jest.spyOn(api, "getConfigDeploymentDetails");
     configDetails.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsResponse);
     });
-
-    jest.mock("react-i18next", (): any => ({
-        useTranslation: (): any => ({
-            t: (key: string): string => key.toUpperCase(),
-        }),
-    }));
 
     test("Test proper rendering of Remote Fetch Configuration Status modal", async () => {
         render(

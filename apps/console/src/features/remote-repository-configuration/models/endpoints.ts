@@ -17,7 +17,7 @@
  */
 
 /**
- * Interface for the Email Templates Management feature resource endpoints.
+ * Interface for the Remote Fetch feature resource endpoints.
  */
 export interface RemoteFetchConfigResourcesEndpointsInterface {
     remoteFetchConfig: string;

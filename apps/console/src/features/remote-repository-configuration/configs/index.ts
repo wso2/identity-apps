@@ -17,4 +17,4 @@
  */
 
 export * from "./ui";
-export * from "./endpoints"
+export * from "./endpoints";

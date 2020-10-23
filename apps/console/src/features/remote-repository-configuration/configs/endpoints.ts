@@ -29,5 +29,5 @@ export const getRemoteFetchConfigResourceEndpoints = (
 ): RemoteFetchConfigResourcesEndpointsInterface => {
     return {
         remoteFetchConfig: `${ serverHost }/api/server/v1/remote-fetch`
-    }
+    };
 };

@@ -16,6 +16,9 @@
  * under the License.
  */
 
+/**
+ * Class containing constants required for remote fetch feature.
+ */
 export class RemoteFetchConstants {
 
     /**
@@ -26,8 +29,7 @@ export class RemoteFetchConstants {
      */
 
     /* eslint-disable @typescript-eslint/no-empty-function */
-    private constructor() {
-    }
+    private constructor() { }
         
     public static readonly REMOTE_FETCH_WEBHOOK = "WEB_HOOK";
 
@@ -36,5 +38,5 @@ export class RemoteFetchConstants {
     public static readonly REMOTE_DEPLOYER_TYPE = "SP";
 
     public static readonly REMOTE_REPOSITORY_TYPE = "GIT";
-    
+
 }

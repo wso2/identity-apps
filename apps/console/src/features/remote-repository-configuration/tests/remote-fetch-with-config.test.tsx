@@ -27,20 +27,27 @@ import NoConfigResponse from "./__mocks__/mock.noconfig";
 import * as api from "../api/remote-repo-config";
 import RemoteRepoConfig from "../pages/remote-repository-config";
 
+/**
+ * This will test the remote fetch configuration management
+ * feature with a configuration.
+ */
 describe("Test Suite - Remote Fetch Configuration - With Configuration", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
+    // Mock api call to get remote config list
     const configList = jest.spyOn(api, "getRemoteRepoConfigList");
     configList.mockImplementation(() => {
         return Promise.resolve(MockConfigListRequestResponse);
     });
 
+    // Mock api call to get remote config
     const configDetail = jest.spyOn(api, "getRemoteRepoConfig");
     configDetail.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsRequestResponse);
     })
 
+    // Mock api call to update remote config
     const configUpdate = jest.spyOn(api, "updateRemoteRepoConfig");
     configUpdate.mockImplementation(() => {
         return Promise.resolve(NoConfigResponse);
@@ -78,5 +85,3 @@ describe("Test Suite - Remote Fetch Configuration - With Configuration", () => {
     });
 
 });
-
-

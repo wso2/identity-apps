@@ -34,7 +34,7 @@ import {
     triggerConfigDeployment 
 } from "..";
 
-type RemoteFetchStatusProps = TestableComponentInterface
+type RemoteFetchStatusProps = TestableComponentInterface;
 
 export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
     props: RemoteFetchStatusProps
