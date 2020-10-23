@@ -117,8 +117,6 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 setUsersList(data);
                 setUserStoreError(false);
             }).catch((error) => {
-                // eslint-disable-next-line no-debugger
-                debugger
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
                         ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
