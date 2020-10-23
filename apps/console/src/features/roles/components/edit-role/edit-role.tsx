@@ -116,7 +116,6 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                             isGroup={ false }
                             roleObject={ roleObject }
                             onRoleUpdate={ onRoleUpdate }
-                            isGroupAndRoleSeparationEnabled={ isGroupAndRoleSeparationEnabled }
                         />
                     </ResourceTab.Pane>
                 )

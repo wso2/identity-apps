@@ -33,7 +33,6 @@ interface RoleUserDetailsProps {
     isGroup: boolean;
     onRoleUpdate: () => void;
     isReadOnly?: boolean;
-    isGroupAndRoleSeparationEnabled?: boolean;
 }
 
 export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
@@ -46,7 +45,6 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         roleObject,
         onRoleUpdate,
         isReadOnly,
-        isGroupAndRoleSeparationEnabled
     } = props;
 
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
@@ -72,71 +70,36 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     const onUserUpdate = (userList: any) => {
         const newUsers: CreateRoleMemberInterface[] = [];
 
-        if (isGroupAndRoleSeparationEnabled) {
-            for (const selectedUser of userList) {
-                newUsers.push({
-                    display: selectedUser.userName,
-                    value: selectedUser.id
-                })
-            }
-
-            const groupData: PatchGroupDataInterface = {
-                Operations: [{
-                    "op": "replace",
-                    "value": {
-                        "members": newUsers
-                    }
-                }],
-                schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
-            };
-
-            updateGroupDetails(roleObject.id, groupData)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t("adminPortal:components.groups.notifications.updateGroup.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.groups.notifications.updateGroup.success.message")
-                    }));
-                    onRoleUpdate();
-                }).catch(() => {
-                dispatch(addAlert({
-                    description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
-                }));
-            })
-        } else {
-            for (const selectedUser of userList) {
-                newUsers.push({
-                    value: selectedUser.id
-                })
-            }
-
-            const roleData: PatchRoleDataInterface = {
-                Operations: [{
-                    "op": "replace",
-                    "path": "users",
-                    "value": newUsers
-                }],
-                schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
-            };
-
-            updateRoleDetails(roleObject.id, roleData)
-                .then(() => {
-                    handleAlerts({
-                        description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
-                        level: AlertLevels.SUCCESS,
-                        message: t("adminPortal:components.roles.notifications.updateRole.success.message")
-                    });
-                    onRoleUpdate();
-                }).catch(() => {
-                handleAlerts({
-                    description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
-                    level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.roles.notifications.updateRole.error.message")
-                });
+        for (const selectedUser of userList) {
+            newUsers.push({
+                value: selectedUser.id
             })
         }
+
+        const roleData: PatchRoleDataInterface = {
+            Operations: [{
+                "op": "replace",
+                "path": "users",
+                "value": newUsers
+            }],
+            schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+        };
+
+        updateRoleDetails(roleObject.id, roleData)
+            .then(() => {
+                handleAlerts({
+                    description: t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("adminPortal:components.roles.notifications.updateRole.success.message")
+                });
+                onRoleUpdate();
+            }).catch(() => {
+            handleAlerts({
+                description: t("adminPortal:components.roles.notifications.updateRole.error.description"),
+                level: AlertLevels.ERROR,
+                message: t("adminPortal:components.roles.notifications.updateRole.error.message")
+            });
+        })
     };
 
     return (
