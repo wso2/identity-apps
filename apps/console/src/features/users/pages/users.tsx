@@ -98,7 +98,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             .then((response) => {
                 const data = { ...response };
 
-                data.Resources = data.Resources.map((resource) => {
+                data.Resources = data?.Resources?.map((resource) => {
                     let email: string = null;
                     if (resource.emails instanceof Array) {
                         const emailElement = resource.emails[ 0 ];
@@ -117,6 +117,8 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                 setUsersList(data);
                 setUserStoreError(false);
             }).catch((error) => {
+                // eslint-disable-next-line no-debugger
+                debugger
                 dispatch(addAlert({
                     description: error?.response?.data?.description ?? error?.response?.data?.detail
                         ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
