@@ -2208,8 +2208,8 @@ export const adminPortal: AdminPortalNS = {
                             }
                         },
                         searchPlaceholder: "Search Roles",
-                        subHeading: "Add or remove the roles user is assigned with and note that this will affect " +
-                            "performing certain tasks."
+                        subHeading: "Add or remove the roles this group is assigned with and note that this " +
+                            "will affect performing certain tasks."
                     },
                     notifications: {
                         addUserRoles: {
