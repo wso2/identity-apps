@@ -56,15 +56,7 @@
         List<Claim> claims;
         UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
         try {
-            // This is added to maintain backward compatibility.
-            boolean isTenantQualifiedEndpointEnabled = IdentityManagementEndpointUtil.getConfiguration(
-                IdentityManagementEndpointConstants.ENABLE_TENANT_QUALIFIED_CLAIMS_ENDPOINT);
-            String resolvedTenant = null;
-            if (isTenantQualifiedEndpointEnabled) {
-                resolvedTenant = tenantDomain;
-            }
-            // If the config is not added, null will be passed as tenantDomain to maintain backward compatibility.
-            claims = usernameRecoveryApi.getClaimsForUsernameRecovery(resolvedTenant, true);
+            claims = usernameRecoveryApi.getClaimsForUsernameRecovery(null, true);
         } catch (ApiException e) {
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
