@@ -26,7 +26,7 @@ import MockConfigTriggerResponse from "./__mocks__/mock.config-trigger-response"
 import * as api from "../api/remote-repo-config";
 import { RemoteFetchStatus } from "../components";
 
-describe("Test Suite - Remote Fetch Configuration Status", () => {
+describe("UTC-4.0.0 - [Remote Fetch Configuration] - Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 

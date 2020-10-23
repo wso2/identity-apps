@@ -31,7 +31,7 @@ import RemoteRepoConfig from "../pages/remote-repository-config";
  * This will test the remote fetch configuration management
  * feature with a configuration.
  */
-describe("Test Suite - Remote Fetch Configuration - With Configuration", () => {
+describe("UTC-5.0.0 - [Remote Fetch Configuration] - With Configuration", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 

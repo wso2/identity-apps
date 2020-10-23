@@ -28,7 +28,7 @@ import { RemoteFetchDetails } from "../components/remote-fetch-details";
 /**
  * This will test the remote fetch status detail modal.
  */
-describe("Test Suite - Remote Fetch Configuration Status Modal", () => {
+describe("UTC-1.0.0 - [Remote Fetch Configuration] - Configuration Status Modal", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 

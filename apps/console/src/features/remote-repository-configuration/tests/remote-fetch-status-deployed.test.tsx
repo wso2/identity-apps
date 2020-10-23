@@ -29,7 +29,7 @@ import { RemoteFetchStatus } from "../components";
 /**
  * This will test the remote configuration status view.
  */
-describe("Test Suite - Remote Fetch Configuration Status", () => {
+describe("UTC-2.0.0 - [Remote Fetch Configuration] - Deployed Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 

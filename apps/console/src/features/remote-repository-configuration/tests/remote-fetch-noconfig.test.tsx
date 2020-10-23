@@ -30,7 +30,7 @@ import RemoteRepoConfig from "../pages/remote-repository-config";
  * This will test the remote fetch configuration component with
  * no initial / saved configuration.
  */
-describe("Test Suite - Remote Fetch Configuration ( Without Configuration )", () => {
+describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
