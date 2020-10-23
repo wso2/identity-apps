@@ -26,7 +26,7 @@ import MockConfigTriggerResponse from "./__mocks__/mock.config-trigger-response"
 import * as api from "../api/remote-repo-config";
 import { RemoteFetchStatus } from "../components";
 
-describe("UTC-4.0.0 - [Remote Fetch Configuration] - Configuration Status", () => {
+describe("UTC-4.0 - [Remote Fetch Configuration] - Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
@@ -48,7 +48,7 @@ describe("UTC-4.0.0 - [Remote Fetch Configuration] - Configuration Status", () =
         return Promise.resolve(MockConfigTriggerResponse);
     });
 
-    test("Test proper rendering of Remote Fetch Configuration Status", async () => {
+    test("UTC-4.1 - Test proper rendering of Remote Fetch Configuration Status", async () => {
         render(
             <Provider store={ store }>
                 <RemoteFetchStatus data-testid="remote-fetch-details" />
@@ -58,7 +58,7 @@ describe("UTC-4.0.0 - [Remote Fetch Configuration] - Configuration Status", () =
         expect(screen.getByTestId("remote-fetch-details-status")).toBeInTheDocument();
     });
 
-    test("Test trigger confirguration button click event", async () => {
+    test("UTC-4.2 - Test trigger confirguration button click event", async () => {
         render(
             <Provider store={ store }>
                 <RemoteFetchStatus data-testid="remote-fetch-details" />

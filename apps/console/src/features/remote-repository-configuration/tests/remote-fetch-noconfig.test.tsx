@@ -30,7 +30,7 @@ import RemoteRepoConfig from "../pages/remote-repository-config";
  * This will test the remote fetch configuration component with
  * no initial / saved configuration.
  */
-describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", () => {
+describe("UTC-1.0 - [Remote Fetch Configuration] - Without Configuration )", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
@@ -46,7 +46,7 @@ describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", (
         return Promise.resolve(MockSaveConfigResponse);
     })
 
-    test("Test proper rendering of Remote Fetch Management Component", () => {
+    test("UTC-1.1 - Test proper rendering of Remote Fetch Management Component", () => {
         render(
             <Provider store={ store }>
                 <RemoteRepoConfig data-testid="remote-fetch" />
@@ -55,7 +55,7 @@ describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", (
         expect(screen.getByTestId("remote-fetch-page-layout-page-header-title")).toBeInTheDocument();
     });
 
-    test("Test initial form load when no configuration", () => {
+    test("UTC-1.2 - Test initial form load when no configuration", () => {
         render(
             <Provider store={ store }>
                 <RemoteRepoConfig data-testid="remote-fetch" />
@@ -65,7 +65,7 @@ describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", (
         expect(screen.getByTestId("remote-fetch-form-git-url")).toBeInTheDocument();
     });
 
-    test("Test cancel create save configuration event", () => {
+    test("UTC-1.3 - Test cancel create save configuration event", () => {
         render(
             <Provider store={ store }>
                 <RemoteRepoConfig data-testid="remote-fetch" />
@@ -76,7 +76,7 @@ describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", (
         expect(screen.getByTestId("remote-fetch-add-configuration")).toBeInTheDocument();
     });
 
-    test("Test configuration save event", async () => {
+    test("UTC-1.4 - Test configuration save event", async () => {
         render(
             <Provider store={ store }>
                 <RemoteRepoConfig data-testid="remote-fetch" />
@@ -105,7 +105,7 @@ describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", (
         saveMock.mockClear();
     });
 
-    test("Test configuration type polling selection", async () => {
+    test("UTC-1.5 - Test configuration type polling selection", async () => {
         render(
             <Provider store={ store }>
                 <RemoteRepoConfig data-testid="remote-fetch" />
@@ -116,7 +116,7 @@ describe("UTC-1.0.0 - [Remote Fetch Configuration] - Without Configuration )", (
         expect(screen.getByTestId("remote-fetch-form-git-username")).toBeInTheDocument();
     });
 
-    test("Test configuration type webhook selection", async () => {
+    test("UTC-1.6 -  configuration type webhook selection", async () => {
         render(
             <Provider store={ store }>
                 <RemoteRepoConfig data-testid="remote-fetch" />

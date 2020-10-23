@@ -29,7 +29,7 @@ import { RemoteFetchStatus } from "../components";
 /**
  * This will test the remote configuration status view.
  */
-describe("UTC-2.0.0 - [Remote Fetch Configuration] - Deployed Configuration Status", () => {
+describe("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
@@ -51,7 +51,7 @@ describe("UTC-2.0.0 - [Remote Fetch Configuration] - Deployed Configuration Stat
         return Promise.resolve(MockConfigTriggerResponse);
     });
 
-    test("Test proper rendering of Remote Fetch Configuration Status", async () => {
+    test("UTC-2.1 - Test proper rendering of Remote Fetch Configuration Status", async () => {
         render(
             <Provider store={ store }>
                 <RemoteFetchStatus data-testid="remote-fetch-details" />
@@ -61,7 +61,7 @@ describe("UTC-2.0.0 - [Remote Fetch Configuration] - Deployed Configuration Stat
         expect(screen.getByTestId("remote-fetch-details-status")).toBeInTheDocument();
     });
 
-    test("Test trigger confirguration button click event", async () => {
+    test("UTC-2.2 - Test trigger confirguration button click event", async () => {
         render(
             <Provider store={ store }>
                 <RemoteFetchStatus data-testid="remote-fetch-details" />

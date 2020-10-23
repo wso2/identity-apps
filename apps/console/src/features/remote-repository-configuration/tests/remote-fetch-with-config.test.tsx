@@ -31,7 +31,7 @@ import RemoteRepoConfig from "../pages/remote-repository-config";
  * This will test the remote fetch configuration management
  * feature with a configuration.
  */
-describe("UTC-5.0.0 - [Remote Fetch Configuration] - With Configuration", () => {
+describe("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
@@ -53,7 +53,7 @@ describe("UTC-5.0.0 - [Remote Fetch Configuration] - With Configuration", () => 
         return Promise.resolve(NoConfigResponse);
     })
 
-    test("Test proper rendering of Remote Fetch Management Component", async () => {
+    test("UTC-5.1 - Test proper rendering of Remote Fetch Management Component", async () => {
         await act(async () => {
             render(
                 <Provider store={ store }>
@@ -70,7 +70,7 @@ describe("UTC-5.0.0 - [Remote Fetch Configuration] - With Configuration", () => 
         });
     });
 
-    test("Test remove configuration button click event", async () => {
+    test("UTC-5.2 - Test remove configuration button click event", async () => {
         await act(async () => {
             render(
                 <Provider store={ store }>
