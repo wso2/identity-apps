@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UserstoreConstants } from "@wso2is/core/constants";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { LoadableComponentInterface, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { CommonUtils } from "@wso2is/core/utils";
@@ -43,7 +44,6 @@ import {
 } from "../../core";
 import { UserManagementConstants } from "../constants";
 import { UserBasicInterface, UserListInterface } from "../models";
-import { PRIMARY_USERSTORE } from "../../userstores/constants";
 
 /**
  * Prop types for the liked accounts component.
@@ -289,7 +289,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
             hidden: (user: UserBasicInterface): boolean => {
                 const userStore = user?.userName?.split("/").length > 1
                     ? user?.userName?.split("/")[0]
-                    : PRIMARY_USERSTORE;
+                    : UserstoreConstants.PRIMARY_USER_STORE;
 
                 return !isFeatureEnabled(featureConfig?.users,
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))

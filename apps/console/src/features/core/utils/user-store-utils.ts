@@ -94,7 +94,8 @@ export class SharedUserStoreUtils {
              await getAUserStore(id)
                 .then((res) => {
                     res.properties.map((property: UserStoreProperty) => {
-                        if (property.name == SharedUserStoreConstants.READONLY_USER_STORE && property.value === "true") {
+                        if (property.name === SharedUserStoreConstants.READONLY_USER_STORE
+                            && property.value === "true") {
                             readOnlyUserStores.push(res.name.toUpperCase());
                         }
                     })

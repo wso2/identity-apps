@@ -90,11 +90,3 @@ export const USERSTORE_REGEX_PROPERTIES = {
  * @type {string}
  */
 export const DISABLED = "Disabled";
-
-/**
- * Primary userstore name.
- *
- * @constant
- * @type {string}
- */
-export const PRIMARY_USERSTORE = "PRIMARY";

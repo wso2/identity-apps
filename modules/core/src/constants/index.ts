@@ -21,7 +21,6 @@ export * from "./certificate-management-constants";
 export * from "./claim-constants";
 export * from "./common-constants";
 export * from "./documentation-constants";
-export * from "./is-constants";
 export * from "./pattern-constants";
 export * from "./profile-constants";
 export * from "./role-constants";

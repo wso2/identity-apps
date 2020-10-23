@@ -627,11 +627,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             <List divided={ true } verticalAlign="middle" className="main-content-inner">
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
-                        if (!(schema.name === "roles.default"
-                            || schema.name === "profileUrl"
-                            || schema.name === "accountLocked"
-                            || schema.name === "accountDisabled"
-                            || schema.name === "oneTimePassword")) {
+                        if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("PROFILE_URL")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_LOCKED")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
+                            || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))) {
                             return (
                                 <List.Item key={ index } className="inner-list-item">
                                     { generateSchemaForm(schema) }

@@ -17,7 +17,7 @@
  */
 
 import isEmpty from "lodash/isEmpty";
-import { ISConstants } from "../constants";
+import { UserstoreConstants } from "../constants";
 import { AuthReducerStateInterface, MultiValueAttributeInterface, ProfileInfoInterface } from "../models";
 
 /**
@@ -61,7 +61,7 @@ export const resolveUserDisplayName = (profileInfo: ProfileInfoInterface,
 export const resolveUsername = (username: string, userStoreDomain: string) => {
 
     // check if the user store is `PRIMARY`.
-    if (userStoreDomain === ISConstants.PRIMARY_USER_STORE_IDENTIFIER) {
+    if (userStoreDomain === UserstoreConstants.PRIMARY_USER_STORE) {
         return username;
     }
 
@@ -86,7 +86,7 @@ export const resolveUserStoreEmbeddedUsername = (username: string) => {
     }
 
     // check if the user store is `PRIMARY`.
-    if (parts[0] === ISConstants.PRIMARY_USER_STORE_IDENTIFIER) {
+    if (parts[0] === UserstoreConstants.PRIMARY_USER_STORE) {
         return parts[1];
     }
 

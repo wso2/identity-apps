@@ -35,4 +35,13 @@ export class UserstoreConstants {
         "status code while retrieving userstores.";
     public static readonly USERSTORES_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "userstores.";
+
+    /**
+     * Primary user store identifier.
+     *
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly PRIMARY_USER_STORE: string = "PRIMARY";
 }
