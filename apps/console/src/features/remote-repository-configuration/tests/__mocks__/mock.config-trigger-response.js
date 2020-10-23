@@ -16,4 +16,12 @@
  * under the License.
  */
 
-export * from "./remote-fetch-status";
+module.exports = {
+    config: {},
+    data: {
+        count: 0
+    },
+    headers: {},
+    status: 202,
+    statusText: "OK"
+};

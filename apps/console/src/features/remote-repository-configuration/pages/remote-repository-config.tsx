@@ -16,45 +16,166 @@
  * under the License.
  */
 
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ListLayout, PageLayout } from "@wso2is/react-components";
+import { Field, Forms } from "@wso2is/forms";
+import { 
+    ConfirmationModal, 
+    EmptyPlaceholder, 
+    Hint, 
+    LinkButton, 
+    PageLayout, 
+    PrimaryButton 
+} from "@wso2is/react-components";
 import { AxiosResponse } from "axios";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { UIConstants } from "../../core";
-import { deleteRemoteRepoConfig, getRemoteRepoConfigList, triggerConfigDeployment } from "../api";
-import { CreateRemoteRepoConfig, RemoteRepoList } from "../components";
-import { InterfaceRemoteRepoConfig, InterfaceRemoteRepoListResponse } from "../models";
+import { Checkbox, Divider, Form, Grid, GridColumn, GridRow, Header, Icon, Radio, Segment } from "semantic-ui-react";
+import { GovernanceConnectorsIllustration } from "../../../features/server-configurations";
+import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
+import { 
+    createRemoteRepoConfig, 
+    deleteRemoteRepoConfig, 
+    getRemoteRepoConfig, 
+    getRemoteRepoConfigList,
+    updateRemoteRepoConfig 
+} from "../api";
+import { RemoteFetchConstants } from "../constants/remote-fetch-constants";
+import {
+    InterfaceRemoteConfigDetails, 
+    InterfaceRemoteConfigForm, 
+    InterfaceRemoteRepoConfig, 
+    InterfaceRemoteRepoConfigDetails, 
+    InterfaceRemoteRepoListResponse 
+} from "../models";
 
-const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
+type RemoteConfigDetailsInterface = TestableComponentInterface
+
+/**
+ * Component to handle Remote Repository Configuration.
+ */
+const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
+    props: RemoteConfigDetailsInterface
+): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const [ remoteRepoConfig, setRemoteRepoConfig ] = useState<InterfaceRemoteRepoConfig[]>();
-    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
-    const [ isListUpdated, setListUpdated ] = useState(false);
-    const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const {
+        [ "data-testid" ]: testId
+    } = props;
+
+    const [ remoteRepoConfig, setRemoteRepoConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
+    const [ remoteRepoConfigDetail, setRemoteRepoConfigDetail ] = useState<InterfaceRemoteConfigDetails>(undefined);
+    const [ showConfigDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
+    const [ connectivity, setConnectivity ] = useState<string>("");
+    const [ isEnabled, setIsEnabled ] = useState<boolean>(false);
+    const [ isCreate, setIsCreate ] = useState<boolean>(false);
+    const [ showFetchForm, setShowFetchForm ] = useState<boolean>(false);
 
     useEffect(() => {
         getRemoteConfigList();
-    }, []);
+    }, [ remoteRepoConfigDetail != undefined, isCreate ]);
 
-    useEffect(() => {
-        getRemoteConfigList();
-        setListUpdated(false);
-    }, [ isListUpdated ]);
-
+    /**
+     * Util method to load configurations if available.
+     */
     const getRemoteConfigList = () => {
         getRemoteRepoConfigList().then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             if (response.status === 200) {
-                setRemoteRepoConfig(response.data.remotefetchConfigurations);
+                if (response.data.remotefetchConfigurations.length > 0) {
+                    setRemoteRepoConfig(response.data.remotefetchConfigurations[0]);
+                    setConnectivity(
+                        response.data.remotefetchConfigurations[0]
+                            .actionListenerType === RemoteFetchConstants.REMOTE_FETCH_POLLING ? 
+                                RemoteFetchConstants.REMOTE_FETCH_POLLING : RemoteFetchConstants.REMOTE_FETCH_WEBHOOK
+                    );
+                    getRemoteRepoConfig(response.data.remotefetchConfigurations[0].id).then((
+                        response: AxiosResponse<InterfaceRemoteConfigDetails>
+                    )  => {
+                        if (response.status === 200) {
+                            setRemoteRepoConfigDetail(response.data);
+                            setIsEnabled(response.data.isEnabled);
+                        }
+                    })
+                }
             }
-        }).catch(() => {
-            //Handle Error
         })
     }
+
+    /**
+     * Util method to get 
+     * 
+     * @param values 
+     */
+    const getFormValues = (values: any): any => {
+        return {
+            accessToken: values.get("accessToken")?.toString(),
+            configEnabled: isEnabled,
+            configName: "ApplicationConfigurationRepository",
+            gitBranch: values.get("gitBranch").toString(),
+            gitDirectory: values.get("gitFolder").toString(),
+            gitUrl: values.get("gitURL").toString(),
+            pollingfreq: parseInt(values.get("pollingFreq")?.toString()),
+            userName: values.get("userName")?.toString()
+        };
+    };
+
+    const handleFormSubmit = (values: InterfaceRemoteConfigForm): void => {
+        const configs: InterfaceRemoteRepoConfigDetails = {
+            actionListener: {
+                attributes: {
+                    frequency: values.pollingfreq
+                },
+                type: connectivity
+            },
+            configurationDeployer: {
+                attributes: {},
+                type: RemoteFetchConstants.REMOTE_DEPLOYER_TYPE
+            },
+            isEnabled: true,
+            remoteFetchName: values.configName,
+            repositoryManager: {
+                attributes: {
+                    accessToken: values.accessToken,
+                    branch: values.gitBranch,
+                    directory: values.gitDirectory,
+                    uri: values.gitUrl,
+                    username: values.userName
+                },
+                type: RemoteFetchConstants.REMOTE_REPOSITORY_TYPE
+            }
+        }
+        createConfiguration(configs);
+    };
+
+    const createConfiguration = (templateTypeName: InterfaceRemoteRepoConfigDetails): void => {
+        createRemoteRepoConfig(templateTypeName).then((response: AxiosResponse) => {
+            if (response.status === 201) {
+                setIsCreate(true);
+                setShowFetchForm(false);
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.remoteConfig.notifications.createConfig.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "devPortal:components.remoteConfig.notifications.createConfig.success.message"
+                    )
+                });
+            }
+        }).catch(() => {
+            handleAlerts({
+                description: t(
+                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.description"
+                ),
+                level: AlertLevels.ERROR,
+                message: t(
+                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.message"
+                )
+            });
+        })
+    };
 
     /**
      * Dispatches the alert object to the redux store.
@@ -72,6 +193,8 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
      */
     const handleOnDelete = (config: InterfaceRemoteRepoConfig): void => {
         deleteRemoteRepoConfig(config.id).then(() => {
+            setRemoteRepoConfig(undefined);
+            setRemoteRepoConfigDetail(undefined);
             handleAlerts({
                 description: t(
                     "devPortal:components.remoteConfig.notifications.deleteConfig.success.description"
@@ -81,60 +204,351 @@ const RemoteRepoConfig: FunctionComponent = (): ReactElement => {
                     "devPortal:components.remoteConfig.notifications.deleteConfig.success.message"
                 )
             });
-            setListUpdated(true);
         });
     };
 
     /**
-     * Function which will handle config trigger.
-     * @param config Config ID which needs to be triggered
+     * Util method to render remote configuration form.
      */
-    const handleOnTrigger = (config: InterfaceRemoteRepoConfig): void => {
-        triggerConfigDeployment(config.id).then(() => {
-            handleAlerts({
-                description: t(
-                    "devPortal:components.remoteConfig.notifications.triggerConfig.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.remoteConfig.notifications.triggerConfig.success.message"
-                )
-            });
-            setListUpdated(true);
-        });
+    const getRemoteFecthForm = () => {
+        return (
+            <Forms
+                onSubmit={ (values) => { 
+                    handleFormSubmit(getFormValues(values));
+                } }
+            >
+                <Grid padded>
+                {
+                        remoteRepoConfigDetail && 
+                            <>
+                                <Grid.Row columns={ 2 }>
+                                    <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 8 }>
+                                        <label>Enable Fetch Configuration</label>
+                                        <Hint>Enable configuration to fetch applications</Hint>
+                                    </Grid.Column>
+                                    <Grid.Column mobile={ 4 } tablet={ 4 } computer={ 6 }>
+                                        <Checkbox 
+                                            toggle
+                                            checked={
+                                                isEnabled
+                                            }
+                                            data-testid={ `${ testId }-config-state` }
+                                            onChange={ ()=> {
+                                                setIsEnabled(!isEnabled);
+                                                updateRemoteRepoConfig(remoteRepoConfigDetail?.id, {
+                                                    isEnabled: !isEnabled,
+                                                    remoteFetchName: remoteRepoConfigDetail?.remoteFetchName
+                                                })
+                                            } }
+                                            label={
+                                                isEnabled ? "Enabled" : "Disabled"
+                                            }
+                                        />
+                                    </Grid.Column>
+                                </Grid.Row>
+                                <Divider />
+                            </>
+                    }
+                    <GridRow columns={ 2 }>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                type="text"
+                                name="gitURL"
+                                label={ "GitHub Repository URL" }
+                                placeholder={ "Ex : https://github.com/samplerepo/sample-project" }
+                                required={ true }
+                                requiredErrorMessage={ "Github Repository URL is required." }
+                                disabled={ remoteRepoConfig ? true : false }
+                                data-testid={ `${ testId }-form-git-url` }
+                                value={ 
+                                    remoteRepoConfigDetail ? 
+                                        remoteRepoConfigDetail?.
+                                            repositoryManagerAttributes?.uri : ""
+                                }
+                            />
+                        </GridColumn>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                type="text"
+                                name="gitBranch"
+                                label={ "Github Branch" }
+                                placeholder={ "Ex : Master " }
+                                required={ true }
+                                requiredErrorMessage={ "Github branch is required." }
+                                disabled={ remoteRepoConfig ? true : false }
+                                data-testid={ `${ testId }-form-git-branch` }
+                                value={ 
+                                    remoteRepoConfigDetail ? 
+                                        remoteRepoConfigDetail.
+                                            repositoryManagerAttributes?.branch : ""
+                                }
+                            />
+                        </GridColumn>
+                    </GridRow>
+                    <GridRow columns={ 1 }>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                type="text"
+                                name="gitFolder"
+                                label={ "GitHub Directory" }
+                                placeholder={ "Ex : SampleConfigFolder/" }
+                                required={ true }
+                                requiredErrorMessage={ "Github configuration directory is required." }
+                                disabled={ remoteRepoConfig ? true : false }
+                                data-testid={ `${ testId }-form-git-directory` }
+                                value={ 
+                                    remoteRepoConfigDetail ? 
+                                        remoteRepoConfigDetail?.
+                                            repositoryManagerAttributes?.directory : ""
+                                }
+                            />
+                        </GridColumn>
+                    </GridRow>
+                    <GridRow columns={ 1 }>
+                        <GridColumn mobile={ 16 } tablet={ 16 } computer={ 6 }>
+                            <Form.Field>
+                                Connectivity Mechanism
+                            </Form.Field>
+                            <Form.Field>
+                                <Radio
+                                    label="Polling"
+                                    name="radioGroup"
+                                    checked={ connectivity === "POLLING" }
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    data-testid={ `${ testId }-form-connection-polling` }
+                                    onChange={ () => {
+                                        setConnectivity("POLLING")
+                                    } }
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <Radio
+                                    label="Webhook"
+                                    name="radioGroup"
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    checked={ connectivity === "WEBHOOK" }
+                                    data-testid={ `${ testId }-form-connection-webhook` }
+                                    onChange={ () => {
+                                        setConnectivity("WEBHOOK")
+                                    } }
+                                />
+                            </Form.Field>
+                        </GridColumn>
+                    </GridRow>
+                    {
+                        connectivity === "POLLING" &&
+                        <>
+                            <GridRow columns={ 2 }>
+                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        type="text"
+                                        name="userName"
+                                        label={ "Guthub Username" }
+                                        placeholder={ "Ex: John Doe" }
+                                        required={ false }
+                                        disabled={ remoteRepoConfig ? true : false }
+                                        requiredErrorMessage={ "" }
+                                        data-testid={ `${ testId }-form-git-username` }
+                                        value={ 
+                                            remoteRepoConfigDetail ? 
+                                                remoteRepoConfigDetail?.
+                                                    repositoryManagerAttributes?.username : ""
+                                        }
+                                    />
+                                </GridColumn>
+                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        type="text"
+                                        name="accessToken"
+                                        label={ "Github Personal Access Token" }
+                                        placeholder={ "Personal Access Token" }
+                                        required={ false }
+                                        disabled={ remoteRepoConfig ? true : false }
+                                        requiredErrorMessage={ "" }
+                                        data-testid={ `${ testId }-form-git-accesstoken` }
+                                        value={ 
+                                            remoteRepoConfigDetail ? 
+                                                remoteRepoConfigDetail?.
+                                                    repositoryManagerAttributes?.accessToken : ""
+                                        }
+                                    />
+                                </GridColumn>
+                            </GridRow>
+                            <GridRow columns={ 1 }>
+                                <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                    <Field
+                                        type="number"
+                                        name="pollingFreq"
+                                        disabled={ remoteRepoConfig ? true : false }
+                                        label={ "Polling Frequency" }
+                                        required={ true }
+                                        value="60"
+                                        requiredErrorMessage={ "" }
+                                    />
+                                </GridColumn>
+                            </GridRow>
+                        </>
+                    }
+                    {
+                        connectivity === "WEBHOOK" &&
+                        <GridRow columns={ 1 }>
+                            <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                <Field
+                                    type="text"
+                                    name="sharedKey"
+                                    label={ "GitHub Shared Key" }
+                                    required={ false }
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    requiredErrorMessage={ "" }
+                                    data-testid={ `${ testId }-form-git-shared-key` }
+                                />
+                            </GridColumn>
+                        </GridRow>
+                    }
+                </Grid>
+                <Grid padded>
+                    <Grid.Row column={ 1 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                            { !remoteRepoConfig &&
+                                <PrimaryButton
+                                    disabled={ remoteRepoConfig ? true : false }
+                                    floated="left"
+                                    data-testid={ `${ testId }-save-configuration` }
+                                >
+                                    Save Configuration
+                                </PrimaryButton>
+                            }
+                            { remoteRepoConfig && 
+                                <LinkButton
+                                    floated="left"
+                                    attached
+                                    data-testid={ `${ testId }-remove-configuration` }
+                                    onClick={ () => {
+                                        setShowDeleteConfirmationModal(true)
+                                    } }
+                                >
+                                    Remove Configuration
+                                </LinkButton>
+                            }
+                            { showFetchForm && 
+                                <LinkButton
+                                    floated="left"
+                                    data-testid={ `${ testId }-cancel-configuration` }
+                                    onClick={ () => {
+                                        setShowFetchForm(false)
+                                    } }
+                                >   
+                                    Cancel
+                                </LinkButton>
+                            }
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Forms>
+        )
     }
 
     return (
         <PageLayout
-                title="Remote Repository Deployment Configuration"
-                description="Configure a remote repository to work seamlessly with the identity server."
-            >
-                <ListLayout
-                    currentListSize={ listItemLimit }
-                    listItemLimit={ listItemLimit }
-                onPageChange={ () => {
-                        //onPageChange Handler
-                     } }
-                    showPagination={ false }
-                    showTopActionPanel={ false }
-                    totalPages={ Math.ceil(remoteRepoConfig?.length / listItemLimit) }
-                    totalListSize={ remoteRepoConfig?.length }
+            title="Remote Configurations"
+            description="Configure github repository to work seamlessly with the identity server."
+            data-testid={ `${ testId }-page-layout` }
+        >
+            <Grid>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column width={ 12 }>
+                        <Segment basic className="emphasized bordered">
+                            <Grid>
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column>
+                                        <Grid padded>
+                                            <Grid.Row columns={ 2 }>
+                                                <Grid.Column width={ 10 }>
+                                                    <Header>
+                                                        Application Configuration Repository
+                                                        <Header.Subheader>
+                                                            Configure repository for fetching applications
+                                                        </Header.Subheader>
+                                                    </Header>
+                                                </Grid.Column>
+                                                <Grid.Column width={ 6 } textAlign="right">
+                                                    <GovernanceConnectorsIllustration />
+                                                </Grid.Column>
+                                            </Grid.Row>
+                                        </Grid>
+                                        <Divider />
+                                        { 
+                                            ( showFetchForm || remoteRepoConfigDetail ) &&
+                                                getRemoteFecthForm()
+                                        }
+                                        {
+                                            !remoteRepoConfigDetail && !showFetchForm &&
+                                            <EmptyPlaceholder
+                                                action={
+                                                    <PrimaryButton 
+                                                        data-testid={ `${ testId }-add-configuration` }
+                                                        onClick={ () => { setShowFetchForm(true) } }
+                                                    >
+                                                        <Icon name="add"/>
+                                                        { "Configure Repository" }
+                                                    </PrimaryButton>
+                                                }
+                                                title={ "Add Configuration" }
+                                                subtitle={ [
+                                                    "Currently there are no repositories configured. You can" +
+                                                    " add a new configuration." 
+                                                ] }
+                                                image={ CodeForkIcon }
+                                                imageSize="tiny"
+                                            />
+                                        }
+                                    </Grid.Column>
+                                </Grid.Row>
+                            </Grid>
+                        </Segment>
+                    </Grid.Column>
+                </Grid.Row>
+            </Grid>
+            {
+                showConfigDeleteConfirmation && 
+                <ConfirmationModal
+                    data-testid={ `${ testId }-confirmation-modal` }
+                    onClose={ (): void => setShowDeleteConfirmationModal(false) }
+                    type="warning"
+                    open={ showConfigDeleteConfirmation }
+                    assertion={ remoteRepoConfigDetail?.remoteFetchName }
+                    assertionHint={ 
+                        (
+                            <p>
+                                <Trans
+                                    i18nKey={ "devPortal:components:remoteConfig.list.confirmations.deleteItem." +
+                                    "assertionHint" }
+                                    tOptions={ { roleName: remoteRepoConfigDetail?.remoteFetchName } }
+                                >
+                                    Please type <strong>{ remoteRepoConfigDetail?.remoteFetchName }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        )
+                    }
+                    assertionType="input"
+                    primaryAction="Confirm"
+                    secondaryAction="Cancel"
+                    onSecondaryActionClick={ (): void => setShowDeleteConfirmationModal(false) }
+                    onPrimaryActionClick={ (): void => { 
+                        handleOnDelete(remoteRepoConfig);
+                        setShowDeleteConfirmationModal(false);
+                    } }
                 >
-                    <RemoteRepoList
-                        showCreateWizard={ setShowWizard }
-                        handleConfigDelete={ handleOnDelete }
-                        repoObjectList={ remoteRepoConfig }
-                        handleOnTrigger={ handleOnTrigger }
-                    />
-                </ListLayout>
-                {
-                showWizard && (
-                    <CreateRemoteRepoConfig
-                        data-testid="role-mgt-create-role-wizard"
-                        closeWizard={ () => setShowWizard(false) }
-                        updateList={ () => setListUpdated(true) }
-                    />
-                )
+                    <ConfirmationModal.Header>
+                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.header") }
+                    </ConfirmationModal.Header>
+                    <ConfirmationModal.Message attached warning>
+                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.message") }
+                    </ConfirmationModal.Message>
+                    <ConfirmationModal.Content>
+                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.content") }
+                    </ConfirmationModal.Content>
+                </ConfirmationModal>
             }
         </PageLayout>
     )

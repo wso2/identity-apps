@@ -16,4 +16,24 @@
  * under the License.
  */
 
-export * from "./remote-repository-edit";
+module.exports = {
+    config: {},
+    data: {
+        count: 1,
+        remotefetchConfigurations: [
+            {
+                actionListenerType:"POLLING",
+                configurationDeployerType:"SP",
+                failedDeployments:0,
+                id: "bd216d32-3d49-4e6f-a971-31045d1379f8",
+                isEnabled: true,
+                name:"ApplicationConfigurationRepository",
+                repositoryManagerType:"GIT",
+                successfulDeployments:0
+            }
+        ]
+    },
+    headers: {},
+    status: 200,
+    statusText: "OK"
+};

@@ -17,3 +17,4 @@
  */
 
 export * from "./remote-repository-config";
+export * from "./endpoints";

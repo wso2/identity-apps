@@ -32,7 +32,12 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { DropdownItemProps, DropdownProps, Icon, PaginationProps } from "semantic-ui-react";
+import { 
+    DropdownItemProps, 
+    DropdownProps,
+    Icon,
+    PaginationProps
+} from "semantic-ui-react";
 import {
     AdvancedSearchWithBasicFilters,
     AppConstants,
@@ -41,6 +46,7 @@ import {
     UIConstants,
     history
 } from "../../core";
+import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
 import { ApplicationManagementConstants } from "../constants";
@@ -113,6 +119,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     useEffect(() => {
         getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
+
 
     /**
      * Retrieves the list of applications.
@@ -250,6 +257,9 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ t("devPortal:pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
+
+            <RemoteFetchStatus />
+            
             <ListLayout
                 advancedSearch={
                     <AdvancedSearchWithBasicFilters

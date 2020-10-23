@@ -16,4 +16,12 @@
  * under the License.
  */
 
-export * from "./create-config-wizard";
+module.exports = {
+    config: {},
+    data: {
+        count: 0
+    },
+    headers: {},
+    status: 201,
+    statusText: "OK"
+};

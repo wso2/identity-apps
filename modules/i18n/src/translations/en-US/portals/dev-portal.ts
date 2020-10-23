@@ -3036,6 +3036,12 @@ export const devPortal: DevPortalNS = {
                     placeholder: "Name for the repository configuration",
                     requiredMessage: "Configuration Name is required."
                 },
+                configStatus: {
+                    hint: "Enable configuration to fetch applications",
+                    label: "Enable Fetch Configuration",
+                    statusDisabled: "Disabled",
+                    statusEnabled: "Enabled"
+                },
                 enableConfig: {
                     label: "Enable Configuration"
                 },
@@ -3085,21 +3091,21 @@ export const devPortal: DevPortalNS = {
                 createConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Creation Error"
+                        message: "Configuration save error"
                     },
                     genericError: {
-                        description: "Failed to create the configuration",
+                        description: "Failed to save the configuration",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully created the confuguration.",
-                        message: "Creation successful"
+                        description: "Successfully saved the confuguration.",
+                        message: "Save configuration successful"
                     }
                 },
                 deleteConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Deletion Error"
+                        message: "Delete configuration error"
                     },
                     genericError: {
                         description: "Failed to delete the configuration",
@@ -3107,7 +3113,7 @@ export const devPortal: DevPortalNS = {
                     },
                     success: {
                         description: "Successfully deleted the configuration.",
-                        message: "Deletion successful"
+                        message: "Delete configuration successful"
                     }
                 },
                 editConfig: {
@@ -3116,26 +3122,26 @@ export const devPortal: DevPortalNS = {
                         message: "Edit Error"
                     },
                     genericError: {
-                        description: "Failed to edit the configuration",
+                        description: "Failed to change the configuration status",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully edited the configuration.",
-                        message: "Edit successful"
+                        description: "Successfully changed the configuration status",
+                        message: "Change successful"
                     }
                 },
                 getConfig: {
                     error: {
                         description: "{{description}}",
-                        message: "Creation Error"
+                        message: "Configuration retrieve error"
                     },
                     genericError: {
                         description: "Failed to retrieve the configuration",
                         message: "Something went wrong"
                     },
                     success: {
-                        description: "Successfully created the confuguration.",
-                        message: "Creation successful"
+                        description: "Successfully retrieved the confuguration.",
+                        message: "Configuration retreval successful"
                     }
                 },
                 triggerConfig: {
@@ -3149,19 +3155,14 @@ export const devPortal: DevPortalNS = {
                     },
                     success: {
                         description: "Successfully triggered the configuration.",
-                        message: "Trigger successful"
+                        message: "Trigger configuration successful"
                     }
                 }
             },
             pageTitles: {
-                editPage: {
-                    backLink: "Back to configurations",
-                    description: "Edit remote repository configurations.",
-                    title: "Edit Configuration : "
-                },
-                listingPage: {
-                    description: "Configure a remote repository to work seamlessly with the identity server.",
-                    title: "Remote Repository Deployment Configuration"
+                configurationPage: {
+                    subTitle: "Configure github repository to work seamlessly with the identity server.",
+                    title: "Remote Configurations"
                 }
             },
             placeholders: {

@@ -42,7 +42,7 @@ export interface InterfaceRemoteConfigDetails {
     configurationDeployerType?: string;
     repositoryManagerAttributes?: {
         accessToken: string;
-        userName: string;
+        username: string;
         uri: string;
         branch: string;
         directory: string;
@@ -50,10 +50,10 @@ export interface InterfaceRemoteConfigDetails {
     configurationDeployerAttributes?: any;
     status?: {
         count: number;
-        successfulDeployments: number;
-        failedDeployments: number;
-        lastSynchronizedTime: string;
-        remoteFetchRevisionStatuses: InterfaceRemoteRevisionStatus[];
+        successfulDeployments?: number;
+        failedDeployments?: number;
+        lastSynchronizedTime?: string;
+        remoteFetchRevisionStatuses?: InterfaceRemoteRevisionStatus[];
     };
     actionListenerAttributes?: {
         frequency: number;
@@ -99,7 +99,7 @@ export interface InterfaceRepositoryManagerDetails {
     type: string;
     attributes: {
         accessToken: string;
-        userName: string;
+        username: string;
         uri: string;
         branch: string;
         directory: string;

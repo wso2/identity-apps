@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./remote-fetch-status";
+export * from "./remote-fetch-details-modal";

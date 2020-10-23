@@ -126,35 +126,6 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             protected: true,
             showOnSidePanel: true
         },
-        /*{
-            category: "devPortal:components.sidePanel.categories.application",
-            children: [
-                {
-                    component: lazy(() =>
-                        import("../../remote-repository-configuration/pages/remote-repository-config-edit")),
-                    exact: true,
-                    icon: {
-                        icon: SidePanelIcons.childIcon
-                    },
-                    id: "remote-repo-edit",
-                    name: "Remote Repo Config Edit",
-                    path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("../../remote-repository-configuration/pages/remote-repository-config")),
-            exact: true,
-            icon: {
-                icon: SidePanelIcons.remoteFetch
-            },
-            id: "remote-repo",
-            name: "Remote Repo Config",
-            order: 3,
-            path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
-            protected: true,
-            showOnSidePanel: true
-        },*/
         {
             category: "devPortal:components.sidePanel.categories.general",
             children: [
@@ -450,6 +421,20 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             name: "adminPortal:components.sidePanel.emailTemplates",
             order: 7,
             path: AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            category: "adminPortal:components.sidePanel.categories.configurations",
+            component: lazy(() => import("../../remote-repository-configuration/pages/remote-repository-config")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.remoteFetch
+            },
+            id: "remoteFetchConfig",
+            name: "Remote Fetch Configuration",
+            order: 8,
+            path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
             protected: true,
             showOnSidePanel: true
         },

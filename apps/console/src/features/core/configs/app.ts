@@ -26,6 +26,7 @@ import { getEmailTemplatesResourceEndpoints } from "../../email-templates";
 import { getGroupsResourceEndpoints } from "../../groups";
 import { getIDPResourceEndpoints } from "../../identity-providers";
 import { getScopesResourceEndpoints } from "../../oidc-scopes";
+import { getRemoteFetchConfigResourceEndpoints } from "../../remote-repository-configuration";
 import { getRolesResourceEndpoints } from "../../roles";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getUsersResourceEndpoints } from "../../users";
@@ -127,6 +128,7 @@ export class Config {
             ...getUserstoreResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getScopesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getGroupsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getRemoteFetchConfigResourceEndpoints(this.getDeploymentConfig().serverHost),
             CORSOrigins: `${this.getDeploymentConfig().serverHost}/api/server/v1/cors/origins`,
             documentationContent: this.getDeploymentConfig().documentation.contentBaseURL,
             documentationStructure: this.getDeploymentConfig().documentation.structureFileURL,
