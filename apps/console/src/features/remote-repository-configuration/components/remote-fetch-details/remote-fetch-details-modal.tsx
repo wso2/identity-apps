@@ -32,14 +32,14 @@ import {
     triggerConfigDeployment
 } from "../../../remote-repository-configuration";
 
-interface RemoteFetchDetailsProps extends TestableComponentInterface {
+interface RemoteFetchDetailsPropsInterface extends TestableComponentInterface {
     isOpen?: boolean;
     onClose?: () => void;
     remoteDeployment: InterfaceRemoteConfigDetails;
 }
 
-export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsProps> = (
-    props: RemoteFetchDetailsProps
+export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterface> = (
+    props: RemoteFetchDetailsPropsInterface
 ): ReactElement => {
 
     const {

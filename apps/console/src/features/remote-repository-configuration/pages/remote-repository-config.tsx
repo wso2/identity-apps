@@ -50,12 +50,14 @@ import {
     InterfaceRemoteRepoListResponse 
 } from "../models";
 
-type RemoteRepoConfigProps = TestableComponentInterface
+type RemoteConfigDetailsInterface = TestableComponentInterface
 
 /**
  * Component to handle Remote Repository Configuration.
  */
-const RemoteRepoConfig: FunctionComponent<RemoteRepoConfigProps> = (props: RemoteRepoConfigProps): ReactElement => {
+const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
+    props: RemoteConfigDetailsInterface
+): ReactElement => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
