@@ -78,6 +78,16 @@ export const console: ConsoleNS = {
                 secondaryButton: "Logout"
             }
         },
+        placeholders: {
+            brokenPage: {
+                action: "Refresh the page",
+                subtitles: {
+                    0: "Something went wrong while displaying this page.",
+                    1: "See the browser console for technical details."
+                },
+                title: "Something went wrong"
+            }
+        },
         validations: {
             inSecureURL: {
                 description: "The entered URL a non-SSL URL. Please proceed with caution.",

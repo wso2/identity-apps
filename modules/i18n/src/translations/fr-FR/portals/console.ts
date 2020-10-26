@@ -78,6 +78,16 @@ export const console: ConsoleNS = {
                 secondaryButton: "Déconnexion"
             }
         },
+        placeholders: {
+            brokenPage: {
+                action: "Rafraîchir la page",
+                subtitles: {
+                    0: "Quelque chose s'est mal passé lors de l'affichage de cette page.",
+                    1: "Voir la console du navigateur pour les détails techniques."
+                },
+                title: "Quelque chose s'est mal passé"
+            }
+        },
         validations: {
             inSecureURL: {
                 description: "L'URL saisie est une URL non-SSL. Veuillez procéder avec prudence.",

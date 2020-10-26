@@ -17,11 +17,17 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
-import { AppLayout as AppLayoutSkeleton, ContentLoader } from "@wso2is/react-components";
+import {
+    AppLayout as AppLayoutSkeleton,
+    ContentLoader,
+    EmptyPlaceholder,
+    ErrorBoundary, LinkButton
+} from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ProtectedRoute } from "../features/core/components";
-import { getAppLayoutRoutes } from "../features/core/configs";
+import { EmptyPlaceholderIllustrations, getAppLayoutRoutes } from "../features/core/configs";
 import { AppConstants } from "../features/core/constants";
 
 /**
@@ -31,6 +37,8 @@ import { AppConstants } from "../features/core/constants";
  * @return {React.Element}
  */
 export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
+
+    const { t } = useTranslation();
 
     const [ appRoutes, setAppRoutes ] = useState<RouteInterface[]>(getAppLayoutRoutes());
 
@@ -43,37 +51,56 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
 
     return (
         <AppLayoutSkeleton>
-            <Suspense fallback={ <ContentLoader dimmer/> }>
-                <Switch>
-                    {
-                        appRoutes.map((route, index) => (
-                            route.redirectTo
-                                ? <Redirect to={ route.redirectTo } />
-                                : route.protected
-                                    ? (
-                                        <ProtectedRoute
-                                            component={ route.component ? route.component : null }
-                                            path={ route.path }
-                                            key={ index }
-                                            exact={ route.exact }
-                                        />
-                                    )
-                                    : (
-                                        <Route
-                                            path={ route.path }
-                                            render={ (renderProps) =>
-                                                route.component
-                                                    ? <route.component { ...renderProps } />
-                                                    : null
-                                            }
-                                            key={ index }
-                                            exact={ route.exact }
-                                        />
-                                    )
-                        ))
-                    }
-                </Switch>
-            </Suspense>
+            <ErrorBoundary
+                fallback={ (
+                    <EmptyPlaceholder
+                        action={ (
+                            <LinkButton onClick={ null }>
+                                { t("console:common.placeholders.brokenPage.action") }
+                            </LinkButton>
+                        ) }
+                        image={ EmptyPlaceholderIllustrations.genericError }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("console:common.placeholders.brokenPage.subtitles.0"),
+                            t("console:common.placeholders.brokenPage.subtitles.1")
+                        ] }
+                        title={ t("console:common.placeholders.brokenPage.title") }
+                    />
+                ) }
+            >
+                <Suspense fallback={ <ContentLoader dimmer/> }>
+                    <Switch>
+                        {
+                            appRoutes.map((route, index) => (
+                                route.redirectTo
+                                    ? <Redirect to={ route.redirectTo } />
+                                    : route.protected
+                                        ? (
+                                            <ProtectedRoute
+                                                component={ route.component ? route.component : null }
+                                                path={ route.path }
+                                                key={ index }
+                                                exact={ route.exact }
+                                            />
+                                        )
+                                        : (
+                                            <Route
+                                                path={ route.path }
+                                                render={ (renderProps) =>
+                                                    route.component
+                                                        ? <route.component { ...renderProps } />
+                                                        : null
+                                                }
+                                                key={ index }
+                                                exact={ route.exact }
+                                            />
+                                        )
+                            ))
+                        }
+                    </Switch>
+                </Suspense>
+            </ErrorBoundary>
         </AppLayoutSkeleton>
     );
 };

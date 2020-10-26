@@ -23,6 +23,9 @@ import {
     Alert,
     ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
+    EmptyPlaceholder,
+    ErrorBoundary,
+    LinkButton,
     SidePanel,
     TopLoadingBar
 } from "@wso2is/react-components";
@@ -44,7 +47,7 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
 import { Footer, Header, ProtectedRoute } from "../features/core/components";
-import { SidePanelMiscIcons, getDeveloperViewRoutes } from "../features/core/configs";
+import { EmptyPlaceholderIllustrations, SidePanelMiscIcons, getDeveloperViewRoutes } from "../features/core/configs";
 import { UIConstants } from "../features/core/constants";
 import { history } from "../features/core/helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
@@ -299,11 +302,30 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                 />
             ) }
         >
-            <Suspense fallback={ <ContentLoader dimmer/> }>
-                <Switch>
-                    { resolveRoutes() }
-                </Switch>
-            </Suspense>
+            <ErrorBoundary
+                fallback={ (
+                    <EmptyPlaceholder
+                        action={ (
+                            <LinkButton onClick={ null }>
+                                { t("console:common.placeholders.brokenPage.action") }
+                            </LinkButton>
+                        ) }
+                        image={ EmptyPlaceholderIllustrations.genericError }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("console:common.placeholders.brokenPage.subtitles.0"),
+                            t("console:common.placeholders.brokenPage.subtitles.1")
+                        ] }
+                        title={ t("console:common.placeholders.brokenPage.title") }
+                    />
+                ) }
+            >
+                <Suspense fallback={ <ContentLoader dimmer/> }>
+                    <Switch>
+                        { resolveRoutes() }
+                    </Switch>
+                </Suspense>
+            </ErrorBoundary>
         </DashboardLayoutSkeleton>
     );
 };
