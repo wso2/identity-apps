@@ -263,7 +263,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
     const removeValue = (removeURL) => {
         let urlsAfterRemoved = urlState;
         if (urlState.split(",").length > 1) {
-            urlsAfterRemoved = urlsAfterRemoved.split(removeURL + ",").join("");
+            const urls: string[] = urlsAfterRemoved.split(",");
+            const removeIndex = urls.findIndex((url) => url === removeURL);
+            urls.splice(removeIndex, 1);
+            urlsAfterRemoved = urls.join(",");
         } else {
             urlsAfterRemoved = "";
         }
@@ -452,7 +455,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                 </Label>
             );
         }
-        
+
         return customLabel;
     };
 
