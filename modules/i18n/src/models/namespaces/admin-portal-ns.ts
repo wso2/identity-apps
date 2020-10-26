@@ -1414,6 +1414,11 @@ export interface AdminPortalNS {
                 assignUserRoleBtn: string;
                 metaColumnBtn: string;
             };
+            forms: {
+                validation: {
+                    formatError: string;
+                };
+            };
             list: {
                 columns: {
                     actions: string;

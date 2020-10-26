@@ -2297,6 +2297,11 @@ export const adminPortal: AdminPortalNS = {
                 assignUserRoleBtn: "Assign roles",
                 metaColumnBtn: "Columns"
             },
+            forms: {
+                validation: {
+                    formatError: "The format of the {{field}} entered is incorrect."
+                }
+            },
             list: {
                 columns: {
                     actions: "Actions",
