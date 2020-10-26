@@ -628,6 +628,12 @@ export interface AdminPortalNS {
                 getConnector: Notification;
                 updateConnector: Notification;
             };
+            form: {
+                errors: {
+                    positiveIntegers: string;
+                    format: string;
+                };
+            };
             enabled: string;
             disabled: string;
             categories: string;

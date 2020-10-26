@@ -1010,6 +1010,12 @@ export const adminPortal: AdminPortalNS = {
             connectorSubHeading: "Configurer les paramètre {{ name }}.",
             disabled: "Désactivé",
             enabled: "Activé",
+            form: {
+                errors: {
+                    format: "Le format est incorrect.",
+                    positiveIntegers: "Le nombre ne doit pas être inférieur à 0."
+                }
+            },
             notifications: {
                 getConnector: {
                     error: {

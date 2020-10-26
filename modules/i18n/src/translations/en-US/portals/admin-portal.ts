@@ -1012,6 +1012,12 @@ export const adminPortal: AdminPortalNS = {
             connectorSubHeading: "Configure {{ name }} settings.",
             disabled: "Disabled",
             enabled: "Enabled",
+            form: {
+                errors: {
+                    format: "The format is incorrect.",
+                    positiveIntegers: "The number should not be less than 0."
+                }
+            },
             notifications: {
                 getConnector: {
                     error: {
