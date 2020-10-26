@@ -25,7 +25,7 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -316,6 +316,15 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                 key={ key }
                                 disabled={ schema.name === "userName" }
                                 readOnly={ isReadOnly }
+                                validation={ (value: string, validation: Validation) => {
+                                    if (!RegExp(schema.regEx).test(value)) {
+                                        validation.isValid = false;
+                                        validation.errorMessages
+                                            .push(t("adminPortal:components.users.forms.validation.formatError", {
+                                                field: fieldName
+                                            }));
+                                    }
+                                } }
                             />
                         )
                     }
