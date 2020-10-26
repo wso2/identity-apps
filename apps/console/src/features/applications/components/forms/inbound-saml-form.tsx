@@ -1129,7 +1129,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 />
                                 <Hint>
                                     { t("devPortal:components.applications.forms.inboundSAML.sections" +
-                                        ".attributeProfile.fields.serviceIndex.hint ") }
+                                        ".attributeProfile.fields.serviceIndex.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
