@@ -67,6 +67,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Divider hidden/>
                     <Form>
                         <Form.Select
+                            required
                             fluid
                             options={ dropDownOptions }
                             value={ getValidatedInitialValue(initialSubjectUri) }
@@ -81,7 +82,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             label={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.label") }
                             data-testid={ `${ testId }-form-element-subject` }
                             error={ subjectError && {
-                                content: "Can't be empty",
+                                content: t("devPortal:components.idp.forms.uriAttributeSettings.subject." +
+                                    "validation.empty"),
                                 pointing: "above"
                             } }
                         />
@@ -101,6 +103,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Divider hidden/>
                         <Form>
                             <Form.Select
+                                required
                                 fluid
                                 options={ dropDownOptions }
                                 value={ getValidatedInitialValue(initialRoleUri) }
@@ -116,7 +119,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 label={ t("devPortal:components.idp.forms.uriAttributeSettings.role.label") }
                                 data-testid={ `${ testId }-form-element-role` }
                                 error={ roleError && {
-                                    content: "Can't be empty",
+                                    content: t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                        "role.validation.empty"),
                                     pointing: "above"
                                 } }
                             />
