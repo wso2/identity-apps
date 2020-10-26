@@ -66,7 +66,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     connector.categoryId = categoryId;
                 });
                 setConnectorCategory(response);
-                setSelectorConnector(response.connectors[ 0 ]);
+                !selectedConnector && setSelectorConnector(response.connectors[ 0 ]);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
