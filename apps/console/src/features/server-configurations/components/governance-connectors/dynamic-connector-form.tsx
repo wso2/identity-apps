@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Divider, Form, Grid } from "semantic-ui-react";
 import { AppState } from "../../../core";
+import { ServerConfigurationsConstants } from "../../constants";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -127,8 +128,48 @@ const DynamicConnectorForm = (props) => {
     );
 };
 
+const validate = (values) => {
+    const errors = {};
+    if (
+        parseInt(
+            values[
+            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                ServerConfigurationsConstants.ALLOWED_IDLE_TIME_SPAN_IN_DAYS
+            )
+            ]
+        ) < 0
+    ) {
+        errors[
+            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                ServerConfigurationsConstants.ALLOWED_IDLE_TIME_SPAN_IN_DAYS
+            )
+        ] = I18n.instance.t("adminPortal:components.governanceConnectors.form.errors.positiveIntegers");
+
+    }
+
+    if (
+        !RegExp(/^(?:\d+,)+\d+$/).test(
+            values[
+            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                ServerConfigurationsConstants.ALERT_SENDING_TIME_PERIODS_IN_DAYS
+            )
+            ]
+        )
+    ) {
+        errors[
+            GovernanceConnectorUtils.encodeConnectorPropertyName(
+                ServerConfigurationsConstants.ALERT_SENDING_TIME_PERIODS_IN_DAYS
+            )
+        ] = I18n.instance.t("adminPortal:components.governanceConnectors.form.errors.format");
+
+    }
+
+    return errors;
+};
+
 export default reduxForm({
-    enableReinitialize: true
+    enableReinitialize: true,
+    validate
 })(DynamicConnectorForm);
 
 /**
