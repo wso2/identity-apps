@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { EmptyPlaceholder, TemplateGrid } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AppState, EmptyPlaceholderIllustrations, TechnologyLogos } from "../../../core";
@@ -81,6 +81,8 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
 
     const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
 
+    const init = useRef(true);
+
     /**
      * Called on `checkedCustomInboundProtocols` prop update.
      */
@@ -101,10 +103,11 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
      * Called when submit is triggered.
      */
     useEffect(() => {
-        if (!triggerSubmit) {
-            return;
+        if (init.current) {
+            init.current = false;
+        } else {
+            onSubmit(selectedTemplate);
         }
-        onSubmit(selectedTemplate);
     }, [triggerSubmit]);
 
     /**

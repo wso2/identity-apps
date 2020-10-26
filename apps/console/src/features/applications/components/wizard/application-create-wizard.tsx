@@ -24,6 +24,7 @@ import cloneDeep from "lodash/cloneDeep";
 import get from "lodash/get";
 import has from "lodash/has";
 import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
 import merge from "lodash/merge";
 import set from "lodash/set";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -158,7 +159,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const [submitOAuth, setSubmitOauth] = useTrigger();
     const [finishSubmit, setFinishSubmit] = useTrigger();
     const [selectedTemplate, setSelectedTemplate] = useState<ApplicationTemplateListItemInterface>(template);
-    const [triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit] = useState<boolean>(false);
+    const [triggerProtocolSelectionSubmit, setTriggerProtocolSelectionSubmit] = useTrigger();
     const [selectedCustomInboundProtocol, setSelectedCustomInboundProtocol] = useState<boolean>(false);
 
     const [selectedSAMLMetaFile, setSelectedSAMLMetaFile] = useState<boolean>(false);
@@ -331,7 +332,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     const navigateToNext = (): void => {
         switch (wizardSteps[currentWizardStep]?.name) {
             case WizardStepsFormTypes.PROTOCOL_SELECTION:
-                setTriggerProtocolSelectionSubmit(true);
+                setTriggerProtocolSelectionSubmit();
                 break;
             case WizardStepsFormTypes.GENERAL_SETTINGS:
                 setSubmitGeneralSettings();
@@ -361,12 +362,15 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param {WizardStepsFormTypes} formType - Type of the form.
      */
     const handleWizardFormSubmit = (values: any, formType: WizardStepsFormTypes): void => {
-
         if (formType === WizardStepsFormTypes.PROTOCOL_SELECTION) {
             if (values) {
-                setSelectedTemplate(values as ApplicationTemplateListItemInterface);
+                if (isEqual(values, selectedTemplate)) {
+                    setCurrentWizardStep(currentWizardStep + 1);
+                } else {
+                    setSelectedTemplate(values as ApplicationTemplateListItemInterface);
+                }
             } else {
-                setTriggerProtocolSelectionSubmit(false);
+                setTriggerProtocolSelectionSubmit();
             }
         } else {
             setCurrentWizardStep(currentWizardStep + 1);
@@ -514,6 +518,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         return (
                             <OauthProtocolSettingsWizardForm
                                 triggerSubmit={ submitOAuth }
+                                fields={ [ "callbackURLs" ] }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
                                 templateValues={ templateSettings }
                                 onSubmit={ (values): void => handleWizardFormSubmit(values,
@@ -700,15 +705,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
         setPartiallyCompletedStep(undefined);
     }, [partiallyCompletedStep]);
-
-    /**
-     * Called when protocol selection form trigger value is changed.
-     */
-    useEffect(() => {
-        if (triggerProtocolSelectionSubmit) {
-            setTriggerProtocolSelectionSubmit(!triggerProtocolSelectionSubmit);
-        }
-    }, [triggerProtocolSelectionSubmit]);
 
     const STEPS: WizardStepInterface[] = [
         {

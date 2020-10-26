@@ -749,7 +749,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 { t("adminPortal:components.user.updateUser.roles.editRoles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
+                { t("adminPortal:components.groups.edit.roles.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>

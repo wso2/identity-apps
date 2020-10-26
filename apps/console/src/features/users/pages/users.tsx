@@ -98,7 +98,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             .then((response) => {
                 const data = { ...response };
 
-                data.Resources = data.Resources.map((resource) => {
+                data.Resources = data?.Resources?.map((resource) => {
                     let email: string = null;
                     if (resource.emails instanceof Array) {
                         const emailElement = resource.emails[ 0 ];

@@ -491,6 +491,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     children={ createDefaultAssertionConsumerUrl() }
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-default-assertion-consumer-url-input` }
+                                    value={ initialValues?.defaultAssertionConsumerUrl }
                                 />
                                 <Hint>
                                     { t("devPortal:components.applications.forms.inboundSAML.fields" +

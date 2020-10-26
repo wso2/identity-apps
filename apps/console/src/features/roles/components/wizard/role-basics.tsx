@@ -19,6 +19,7 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
@@ -70,7 +71,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
      */
     useEffect(() => {
         setIsValidRoleName(false);
-        validateRoleName(updatedRoleName);
+        !isEmpty(updatedRoleName?.trim()) && validateRoleName(updatedRoleName);
     }, [ updatedRoleName ]);
 
     useEffect(() => {

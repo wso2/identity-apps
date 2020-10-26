@@ -845,12 +845,14 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     renderer: "semantic-icon"
                 },
                 {
-                    icon: (claim: ExternalClaim): SemanticICONS => editClaim == claim?.id
+                    icon: (claim: ExternalClaim): SemanticICONS => editClaim === claim?.id
                         ? "times"
                         : "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: ExternalClaim): void =>
                         setEditClaim(editClaim ? "" : claim?.id),
-                    popupText: (): string => t("common:edit"),
+                    popupText: (claim: ExternalClaim): string => editClaim === claim?.id
+                        ? t("common:cancel")
+                        : t("common:edit"),
                     renderer: "semantic-icon"
                 },
                 {

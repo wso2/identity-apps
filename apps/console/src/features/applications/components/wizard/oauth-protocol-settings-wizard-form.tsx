@@ -261,65 +261,71 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                 >
                     <Grid>
                         { !fields || fields.includes("callbackURLs") && (
-                            <URLInput
-                                labelEnabled={ true }
-                                handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
-                                tenantDomain={ tenantDomain }
-                                allowedOrigins={ allowedOrigins }
-                                urlState={ callBackUrls }
-                                setURLState={ setCallBackUrls }
-                                labelName={
-                                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
-                                }
-                                placeholder={
-                                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                        ".placeholder")
-                                }
-                                validationErrorMsg={
-                                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                        ".validations.empty")
-                                }
-                                validation={ (value: string) => {
-                                    
-                                    let label: ReactElement = null;
+                            <Grid.Row column={ 1 }>
+                                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                                    <URLInput
+                                        labelEnabled={ true }
+                                        handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                                        tenantDomain={ tenantDomain }
+                                        allowedOrigins={ allowedOrigins }
+                                        urlState={ callBackUrls }
+                                        setURLState={ setCallBackUrls }
+                                        labelName={
+                                            t("devPortal:components.applications.forms.inboundOIDC." +
+                                                "fields.callBackUrls.label")
+                                        }
+                                        placeholder={
+                                            t("devPortal:components.applications.forms.inboundOIDC." +
+                                                "fields.callBackUrls" +
+                                                ".placeholder")
+                                        }
+                                        validationErrorMsg={
+                                            t("devPortal:components.applications.forms.inboundOIDC." +
+                                                "fields.callBackUrls.validations.empty")
+                                        }
+                                        validation={ (value: string) => {
 
-                                    if (URLUtils.isHttpUrl(value)) {
-                                        label = (
-                                            <Label basic color="orange" className="mt-2">
-                                                { t("console:common.validations.inSecureURL.description") }
-                                            </Label>
-                                        );
-                                    }
+                                            let label: ReactElement = null;
 
-                                    if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
-                                        label = (
-                                            <Label basic color="orange" className="mt-2">
-                                                { t("console:common.validations.unrecognizedURL.description") }
-                                            </Label>
-                                        );
-                                    }
-                                    
-                                    setCallbackURLsErrorLabel(label);
+                                            if (URLUtils.isHttpUrl(value)) {
+                                                label = (
+                                                    <Label basic color="orange" className="mt-2">
+                                                        { t("console:common.validations.inSecureURL.description") }
+                                                    </Label>
+                                                );
+                                            }
 
-                                    return true;
-                                } }
-                                computerWidth={ 10 }
-                                setShowError={ setShowURLError }
-                                showError={ showURLError }
-                                hint={
-                                    !hideFieldHints && t("devPortal:components.applications.forms.inboundOIDC" +
-                                        ".fields.callBackUrls.hint")
-                                }
-                                addURLTooltip={ t("common:addURL") }
-                                duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                                data-testid={ `${ testId }-callback-url-input` }
-                                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                                    submitUrl = submitFunction;
-                                } }
-                                required={ true }
-                                showPredictions={ false }
-                                customLabel={ callbackURLsErrorLabel }
-                            />
+                                            if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                                label = (
+                                                    <Label basic color="orange" className="mt-2">
+                                                        { t("console:common.validations.unrecognizedURL.description") }
+                                                    </Label>
+                                                );
+                                            }
+
+                                            setCallbackURLsErrorLabel(label);
+
+                                            return true;
+                                        } }
+                                        computerWidth={ 10 }
+                                        setShowError={ setShowURLError }
+                                        showError={ showURLError }
+                                        hint={
+                                            !hideFieldHints && t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".fields.callBackUrls.hint")
+                                        }
+                                        addURLTooltip={ t("common:addURL") }
+                                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                        data-testid={ `${ testId }-callback-url-input` }
+                                        getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                            submitUrl = submitFunction;
+                                        } }
+                                        required={ true }
+                                        showPredictions={ false }
+                                        customLabel={ callbackURLsErrorLabel }
+                                    />
+                                </Grid.Column>
+                            </Grid.Row>
                         ) }
                         { !fields || fields.includes("publicClient") && (
                             <Grid.Row columns={ 1 }>

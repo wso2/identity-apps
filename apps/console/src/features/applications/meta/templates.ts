@@ -25,7 +25,7 @@ import {
 export const getDefaultTemplateGroups = (): ApplicationTemplateListItemInterface[] => [
     {
         category: ApplicationTemplateCategories.DEFAULT_GROUP,
-        description: "Regular web applications which uses re-directions inside browsers.",
+        description: "Regular web applications which use re-directions inside browsers.",
         id: DefaultTemplateGroupIds.WEB_APPLICATION,
         image: "oidcWebApp",
         name: "Web Application",

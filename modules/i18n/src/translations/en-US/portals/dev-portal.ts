@@ -813,7 +813,7 @@ export const devPortal: DevPortalNS = {
                                 },
                                 renew: {
                                     hint: "Issue a new refresh token per request when Refresh Token Grant is used.",
-                                    label: "Renew refresh token",
+                                    label: "Rotate refresh token",
                                     validations: {
                                         empty: "This is a required field."
                                     }

@@ -516,7 +516,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             <input
                 ref={ fileUpload }
                 type="file"
-                accept="application/x-x509-ca-cert"
+                accept=".pem, .cer, .crt"
                 hidden
                 onChange={ (event) => {
                     const file: File = event.target.files[ 0 ];

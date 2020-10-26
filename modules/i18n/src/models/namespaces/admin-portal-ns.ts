@@ -593,6 +593,9 @@ export interface AdminPortalNS {
                         };
                     };
                 };
+                roles: {
+                    subHeading: string;
+                };
             };
             list: {
                 columns: {
