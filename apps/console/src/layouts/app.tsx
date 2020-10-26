@@ -17,11 +17,13 @@
  */
 
 import { RouteInterface } from "@wso2is/core/models";
+import { CommonUtils } from "@wso2is/core/utils";
 import {
     AppLayout as AppLayoutSkeleton,
     ContentLoader,
     EmptyPlaceholder,
-    ErrorBoundary, LinkButton
+    ErrorBoundary,
+    LinkButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -55,7 +57,7 @@ export const AppLayout: FunctionComponent<{}> = (): ReactElement => {
                 fallback={ (
                     <EmptyPlaceholder
                         action={ (
-                            <LinkButton onClick={ null }>
+                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
                                 { t("console:common.placeholders.brokenPage.action") }
                             </LinkButton>
                         ) }

@@ -118,4 +118,12 @@ export class CommonUtils {
     public static getGravatar(emailAddress: string): string {
         return "https://www.gravatar.com/avatar/" + MD5(emailAddress.trim()) + "?d=404";
     }
+
+    /**
+     * Reloads the current document.
+     */
+    public static refreshPage(): void {
+
+        window.location.reload();
+    }
 }

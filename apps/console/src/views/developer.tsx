@@ -18,7 +18,7 @@
 
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils } from "@wso2is/core/utils";
+import { CommonUtils, RouteUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -306,7 +306,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                 fallback={ (
                     <EmptyPlaceholder
                         action={ (
-                            <LinkButton onClick={ null }>
+                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
                                 { t("console:common.placeholders.brokenPage.action") }
                             </LinkButton>
                         ) }
