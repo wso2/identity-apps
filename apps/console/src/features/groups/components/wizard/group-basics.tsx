@@ -237,7 +237,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                                     "forms.roleBasicDetails.roleName.validations.duplicate",
                                                     { type: "Group" }));
 
-                                        errorIndex > -1 && validation.errorMessages.splice(errorIndex);
+                                        errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
                                         if (validation.errorMessages.length === 0) {
                                             validation.isValid = true;
                                         }
@@ -249,7 +249,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                                 "forms.roleBasicDetails.roleName.validations.duplicate",
                                                 { type: "Group" }));
 
-                                    errorIndex > -1 && validation.errorMessages.splice(errorIndex);
+                                    errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
                                     if (validation.errorMessages.length === 0) {
                                         validation.isValid = true;
                                     }
