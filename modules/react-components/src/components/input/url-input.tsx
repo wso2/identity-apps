@@ -48,6 +48,11 @@ export interface URLInputPropsInterface extends TestableComponentInterface {
     disabled?: boolean;
     hideComponent?: boolean;
     /**
+     * Allows submitting empty values.
+     * When this is true, the `+` button will not be disabled when the input is empty.
+     */
+    allowEmptyValues?: boolean;
+    /**
      * Custom label to be passed from outside.
      */
     customLabel?: ReactNode;
@@ -98,6 +103,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
     const {
         addURLTooltip,
+        allowEmptyValues,
         customLabel,
         duplicateURLErrorMessage,
         isAllowEnabled,
@@ -491,7 +497,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                         onClick={ (e) => addFormButton(e) }
                                         icon="add"
                                         type="button"
-                                        disabled={ readOnly || disabled }
+                                        disabled={ readOnly || disabled || (!allowEmptyValues && !changeUrl) }
                                         data-testid={ `${ testId }-add-button` }
                                     />
                                 )
@@ -571,6 +577,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
  */
 URLInput.defaultProps = {
     addURLTooltip: "Add a URL",
+    allowEmptyValues: false,
     "data-testid": "url-input",
     duplicateURLErrorMessage: "This URL is already added. Please select a different one.",
     isAllowEnabled: true,
