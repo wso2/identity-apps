@@ -213,4 +213,8 @@ export class ServerConfigurationsConstants {
 		"code while updating the configurations.";
 	public static readonly CONFIGS_UPDATE_REQUEST_ERROR: string = "An error occurred while updating the " +
 		"configurations.";
+
+	//Idle account suspend names
+	public static readonly ALLOWED_IDLE_TIME_SPAN_IN_DAYS: string = "suspension.notification.account.disable.delay";
+	public static readonly ALERT_SENDING_TIME_PERIODS_IN_DAYS: string = "suspension.notification.delays";
 }
