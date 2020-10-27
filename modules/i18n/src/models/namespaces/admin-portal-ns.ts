@@ -628,6 +628,12 @@ export interface AdminPortalNS {
                 getConnector: Notification;
                 updateConnector: Notification;
             };
+            form: {
+                errors: {
+                    positiveIntegers: string;
+                    format: string;
+                };
+            };
             enabled: string;
             disabled: string;
             categories: string;
@@ -1407,6 +1413,11 @@ export interface AdminPortalNS {
                 addNewUserBtn: string;
                 assignUserRoleBtn: string;
                 metaColumnBtn: string;
+            };
+            forms: {
+                validation: {
+                    formatError: string;
+                };
             };
             list: {
                 columns: {

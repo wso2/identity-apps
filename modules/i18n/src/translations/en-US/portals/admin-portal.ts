@@ -1012,6 +1012,12 @@ export const adminPortal: AdminPortalNS = {
             connectorSubHeading: "Configure {{ name }} settings.",
             disabled: "Disabled",
             enabled: "Enabled",
+            form: {
+                errors: {
+                    format: "The format is incorrect.",
+                    positiveIntegers: "The number should not be less than 0."
+                }
+            },
             notifications: {
                 getConnector: {
                     error: {
@@ -2290,6 +2296,11 @@ export const adminPortal: AdminPortalNS = {
                 addNewUserBtn: "New User",
                 assignUserRoleBtn: "Assign roles",
                 metaColumnBtn: "Columns"
+            },
+            forms: {
+                validation: {
+                    formatError: "The format of the {{field}} entered is incorrect."
+                }
             },
             list: {
                 columns: {

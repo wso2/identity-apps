@@ -115,11 +115,17 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Selected role.
     const [roleClaimUri, setRoleClaimUri] = useState<string>();
 
+    // Sets if the form is submitting.
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+
+    // Sets role URI error.
+    const [ roleError, setRoleError ] = useState<boolean>(false);
+
+    // Sets subject URI error.
+    const [ subjectError, setSubjectError ] = useState<boolean>(false);
+
     // Selected role mapping.
     const [roleMapping, setRoleMapping] = useState<IdentityProviderRoleMappingInterface[]>(undefined);
-
-    // Trigger uri settings fields to enforce validations.
-    const [triggerUriOptionsValidations, setTriggerUriOptionsValidations] = useTrigger();
 
     // Trigger role mapping field to submission.
     const [triggerSubmission, setTriggerSubmission] = useTrigger();
@@ -179,6 +185,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
 
     const handleAttributesUpdate = () => {
 
+        setIsSubmitting(true);
+
         let canSubmit = true;
         const claimConfigurations: IdentityProviderClaimsInterface = { ...initialClaims };
 
@@ -207,9 +215,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         // Prepare subject for submission.
         if (_.isEmpty(subjectClaimUri)) {
             // Trigger form field validation on the empty subject uri.
-            setTriggerUriOptionsValidations();
+            setSubjectError(true);
             canSubmit = false;
+        } else {
+            setSubjectError(false);
         }
+
         const matchingLocalClaim = availableLocalClaims.find(element => element.uri === subjectClaimUri);
         claimConfigurations["userIdClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: subjectClaimUri } as
             IdentityProviderClaimInterface;
@@ -218,8 +229,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         if (!_.isEmpty(selectedClaimsWithMapping)) {
             if (_.isEmpty(roleClaimUri)) {
                 // Trigger form field validation on the empty subject uri.
-                setTriggerUriOptionsValidations();
+                setRoleError(true);
                 canSubmit = false;
+            } else {
+                setRoleError(false);
             }
             const matchingLocalClaim = availableLocalClaims.find(element => element.uri === roleClaimUri);
             claimConfigurations["roleClaim"] = matchingLocalClaim ? matchingLocalClaim : { uri: roleClaimUri } as
@@ -227,6 +240,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         }
 
         if (canSubmit) {
+            setIsSubmitting(false);
             handleAttributeSettingsFormSubmit(idpId, claimConfigurations, roleMapping, onUpdate);
         } else {
             dispatch(addAlert(
@@ -284,6 +298,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                             updateRole={ setRoleClaimUri }
                             updateSubject={ setSubjectClaimUri }
                             data-testid={ `${ testId }-uri-attribute-settings` }
+                            roleError={ isSubmitting && roleError && !roleClaimUri }
+                            subjectError={ isSubmitting && subjectError && !subjectClaimUri }
                         /> }
 
                         {/* Select attributes for provisioning. */ }

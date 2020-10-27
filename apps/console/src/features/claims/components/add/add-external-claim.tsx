@@ -99,8 +99,12 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
      */
     useEffect(() => {
         getAllLocalClaims(null).then(response => {
-            setLocalClaims(response);
-            setFilteredLocalClaims(response);
+            const sortedClaims = response.sort((a: Claim, b: Claim) => {
+                return a.displayName > b.displayName ? 1 : -1;
+            })
+
+            setLocalClaims(sortedClaims);
+            setFilteredLocalClaims(sortedClaims);
         }).catch(error => {
             dispatch(addAlert(
                 {

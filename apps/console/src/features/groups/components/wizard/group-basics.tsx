@@ -19,7 +19,7 @@
 import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
 import { SharedUserStoreConstants } from "../../../core/constants";
@@ -58,20 +58,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
 
     const { t } = useTranslation();
 
-    const [ isValidGroupName, setIsValidGroupName ] = useState<boolean>(true);
     const [ isGroupNamePatternValid, setIsGroupNamePatternValid ] = useState<boolean>(true);
-    const [ updatedGroupName, setUpdatedGroupName ] = useState<string>(initialValues?.roleName);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
-    /**
-     * Triggers when updatedGroupName is changed.
-     */
-    useEffect(() => {
-        setIsValidGroupName(false);
-        validateGroupName(updatedGroupName);
-    }, [ updatedGroupName ]);
+    const groupName = useRef<HTMLDivElement>();
 
     useEffect(() => {
         getUserStores();
@@ -86,35 +78,21 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
      * TODO : Discuss and add or remove the Hybrid domains
      *        to the dropdown.
      */
-    const groupDomains = [{
-        key: -1, text: SharedUserStoreConstants.PRIMARY_USER_STORE, value: SharedUserStoreConstants.PRIMARY_USER_STORE
-    }];
+    const groupDomains = [ {
+        key: -1,
+        text: SharedUserStoreConstants.PRIMARY_USER_STORE, value: SharedUserStoreConstants.PRIMARY_USER_STORE
+    } ];
 
-    const roleDomains = [{
-        key: -1, text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
-    },{
-        key: 0, text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
-    }];
-
-    /**
-     * Util method to validate if the provided role name exists in the system.
-     *
-     * @param groupName - new role name user entered.
-     */
-    const validateGroupName = (groupName: string): void => {
-        const searchData: SearchGroupInterface = {
-            filter: "displayName eq " + groupName,
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-            ],
-            startIndex: 1
-        };
-
-        searchGroupList(searchData)
-            .then((response) => {
-                setIsValidGroupName(response?.data?.totalResults === 0);
-            });
-    };
+    const roleDomains = [
+        {
+            key: -1,
+            text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
+        },
+        {
+            key: 0,
+            text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
+        }
+    ];
 
     /**
      * The following function change of the user stores.
@@ -125,6 +103,12 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
         const domain: string = values.get("domain").toString();
         setUserStore(domain);
     };
+
+    useEffect(() => {
+        const input = groupName.current.children[ 0 ].children[ 1 ].children[ 0 ] as HTMLInputElement;
+        input.focus();
+        input.blur();
+    }, [ userStore ]);
 
     /**
      * The following function validates role name against the user store regEx.
@@ -139,7 +123,7 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                 .then((response) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
-                })
+                });
         } else {
             userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         }
@@ -168,32 +152,18 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                     storeOptions.push(storeOption);
                 }
                 response.data.map((store, index) => {
-                        storeOption = {
-                            key: index,
-                            text: store.name,
-                            value: store.name
-                        };
-                        storeOptions.push(storeOption);
-                    }
+                    storeOption = {
+                        key: index,
+                        text: store.name,
+                        value: store.name
+                    };
+                    storeOptions.push(storeOption);
+                }
                 );
                 setUserStoresList(storeOptions);
             });
 
         setUserStoresList(storeOptions);
-    };
-
-    /**
-     * The following function handles the change of the username.
-     *
-     * @param values - form values from the listen event.
-     */
-    const groupNameChangeListener = (values: Map<string, FormValue>): void => {
-        const groupName: string = values?.get("groupName")?.toString();
-        setUpdatedGroupName(groupName);
-        validateGroupNamePattern(groupName)
-            .finally(() => {
-                setRegExLoading(false);
-            })
     };
 
     /**
@@ -233,28 +203,64 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                             required={ true }
                             element={ <div></div> }
                             listen={ handleDomainChange }
-                            value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
+                            value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[ 0 ]?.value }
                         />
                     </GridColumn>
                     <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
+                            ref={ groupName }
                             data-testid={ `${ testId }-role-name-input` }
                             type="text"
                             name="groupName"
                             label={ t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
-                                "roleName.label",{ type: "Group" }) }
+                                "roleName.label", { type: "Group" }) }
                             placeholder={ t("adminPortal:components.roles.addRoleWizard.forms." +
                                 "roleBasicDetails.roleName.placeholder", { type: "Group" }) }
                             required={ true }
                             requiredErrorMessage={ t("adminPortal:components.roles.addRoleWizard.forms." +
                                 "roleBasicDetails.roleName.validations.empty", { type: "Group" }) }
-                            validation={ (value: string, validation: Validation) => {
-                                if (isValidGroupName === false) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("adminPortal:components.roles.addRoleWizard." +
-                                        "forms.roleBasicDetails.roleName.validations.duplicate",
-                                        { type: "Group" }));
+                            validation={ async (value: string, validation: Validation) => {
+                                const searchData: SearchGroupInterface = {
+                                    filter: `displayName eq  ${ userStore }/${ value }`,
+                                    schemas: [
+                                        "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+                                    ],
+                                    startIndex: 1
+                                };
+
+                                try {
+                                    const list = await searchGroupList(searchData);
+                                    if (list?.data?.totalResults !== 0) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(
+                                            t("adminPortal:components.roles.addRoleWizard." +
+                                                "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                { type: "Group" }));
+                                    } else {
+                                        const errorIndex = validation.errorMessages.findIndex(
+                                            (element: string) =>
+                                                element === t("adminPortal:components.roles.addRoleWizard." +
+                                                    "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                    { type: "Group" }));
+
+                                        errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
+                                        if (validation.errorMessages.length === 0) {
+                                            validation.isValid = true;
+                                        }
+                                    }
+                                } catch{
+                                    const errorIndex = validation.errorMessages.findIndex(
+                                        (element: string) =>
+                                            element === t("adminPortal:components.roles.addRoleWizard." +
+                                                "forms.roleBasicDetails.roleName.validations.duplicate",
+                                                { type: "Group" }));
+
+                                    errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
+                                    if (validation.errorMessages.length === 0) {
+                                        validation.isValid = true;
+                                    }
                                 }
+
                                 if (!isGroupNamePatternValid) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(t("adminPortal:components.roles.addRoleWizard" +
@@ -263,12 +269,11 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                 }
                             } }
                             value={ initialValues && initialValues.groupName }
-                            listen={ groupNameChangeListener }
                             loading={ isRegExLoading }
                         />
                     </GridColumn>
                 </GridRow>
             </Grid>
         </Forms>
-    )
+    );
 };

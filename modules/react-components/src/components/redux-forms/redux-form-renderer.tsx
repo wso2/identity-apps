@@ -75,13 +75,13 @@ export const RenderInput = createRenderer(
                     meta.touched && ((meta.error && (
                         {
                             content: meta.error,
-                            pointing: "left"
+                            pointing: "above"
                         }
                     )) || (meta.warning
                         && (
                             {
                                 content: meta.warning,
-                                pointing: "left"
+                                pointing: "above"
                             }
                         )))
                 }

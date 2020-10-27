@@ -186,6 +186,10 @@ export interface ProfileSchemaInterface {
      * Flag to set if the attribute is extended.
      */
     extended?: boolean;
+    /**
+     * Regular expression to validate field.
+     */
+    regEx?: string;
 }
 
 /**

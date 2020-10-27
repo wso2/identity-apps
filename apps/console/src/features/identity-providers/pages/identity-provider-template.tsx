@@ -307,7 +307,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
     };
 
     const getPossibleListOfDuplicateIdps = (idpName: string) => {
-        getIdentityProviderList(null, null, "name sw " + idpName).then(
+        getIdentityProviderList(null, null, "name eq " + idpName).then(
             (response: IdentityProviderListResponseInterface) => {
             setPossibleListOfDuplicateIdps( response?.totalResults ? response?.identityProviders?.map(
                 eachIdp => eachIdp.name) : []);

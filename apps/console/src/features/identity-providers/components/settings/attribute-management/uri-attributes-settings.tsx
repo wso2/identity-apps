@@ -31,6 +31,8 @@ interface AdvanceAttributeSettingsPropsInterface extends TestableComponentInterf
     claimMappingOn: boolean;
     updateRole: (roleUri: string) => void;
     updateSubject: (subjectUri: string) => void;
+    roleError?: boolean;
+    subjectError?: boolean;
 }
 
 export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPropsInterface> = (
@@ -44,6 +46,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
         claimMappingOn,
         updateRole,
         updateSubject,
+        roleError,
+        subjectError,
         [ "data-testid" ]: testId
     } = props;
 
@@ -63,6 +67,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                     <Divider hidden/>
                     <Form>
                         <Form.Select
+                            required
                             fluid
                             options={ dropDownOptions }
                             value={ getValidatedInitialValue(initialSubjectUri) }
@@ -76,6 +81,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             fullTextSearch={ false }
                             label={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.label") }
                             data-testid={ `${ testId }-form-element-subject` }
+                            error={ subjectError && {
+                                content: t("devPortal:components.idp.forms.uriAttributeSettings.subject." +
+                                    "validation.empty"),
+                                pointing: "above"
+                            } }
                         />
                     </Form>
                     <Hint>
@@ -93,6 +103,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                         <Divider hidden/>
                         <Form>
                             <Form.Select
+                                required
                                 fluid
                                 options={ dropDownOptions }
                                 value={ getValidatedInitialValue(initialRoleUri) }
@@ -107,6 +118,11 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 fullTextSearch={ false }
                                 label={ t("devPortal:components.idp.forms.uriAttributeSettings.role.label") }
                                 data-testid={ `${ testId }-form-element-role` }
+                                error={ roleError && {
+                                    content: t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                        "role.validation.empty"),
+                                    pointing: "above"
+                                } }
                             />
                         </Form>
                         <Hint>
