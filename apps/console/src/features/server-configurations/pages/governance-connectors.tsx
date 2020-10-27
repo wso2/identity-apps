@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { PageLayout } from "@wso2is/react-components";
+import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -50,6 +50,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const { t } = useTranslation();
 
     const [ connectorCategory, setConnectorCategory ] = useState<GovernanceConnectorCategoryInterface>({});
+    const [ connectors, setConnectors ] = useState<GovernanceConnectorInterface & ReferableComponentInterface>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorInterface>(null);
 
     useEffect(() => {
@@ -62,10 +63,14 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
 
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
-                response.connectors.map((connector) => {
+
+                response.connectors.map((connector: GovernanceConnectorInterface & ReferableComponentInterface) => {
                     connector.categoryId = categoryId;
+                    connector.ref = React.createRef();
                 });
+
                 setConnectorCategory(response);
+                setConnectors(response?.connectors);
                 !selectedConnector && setSelectorConnector(response.connectors[ 0 ]);
             })
             .catch((error) => {
@@ -108,41 +113,63 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             title={ connectorCategory?.name }
             description={
                 connectorCategory?.description
-                    ? t("adminPortal:components.governanceConnectors.connectorSubHeading",
+                    ?? t("adminPortal:components.governanceConnectors.connectorSubHeading",
                     { name: connectorCategory?.name })
-                    : null
             }
             data-testid={ `${ testId }-page-layout` }
         >
             <Grid>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 12 }>
-                        <Segment basic className="emphasized bordered">
-                            { selectedConnector && (
-                                <DynamicGovernanceConnector
-                                    connector={ selectedConnector }
-                                    data-testid={ `${ testId }-` + selectedConnector?.id }
-                                    onUpdate={ loadCategoryConnectors }
-                                />
-                            ) }
-                        </Segment>
+                        {
+                            (connectors && Array.isArray(connectors) && connectors.length > 0)
+                                ? connectors.map((connector: GovernanceConnectorInterface, index: number) => (
+                                    <EmphasizedSegment key={ index }>
+                                        <div ref={ connector.ref }>
+                                            <DynamicGovernanceConnector
+                                                connector={ connector }
+                                                data-testid={ `${ testId }-` + connector?.id }
+                                                onUpdate={ loadCategoryConnectors }
+                                            />
+                                        </div>
+                                    </EmphasizedSegment>
+                                ))
+                                : null
+                        }
                     </Grid.Column>
                     <Grid.Column width={ 4 }>
-                        <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
-                        <Menu secondary vertical className="governance-connector-categories">
-                            { connectorCategory?.connectors?.map(
-                                (connector: GovernanceConnectorInterface, index: number) => (
-                                    <Menu.Item
-                                        as="a"
-                                        key={ index }
-                                        className={ selectedConnector?.id === connector?.id ? "active" : "" }
-                                        onClick={ () => setSelectorConnector(connector) }
-                                    >
-                                        { connector.friendlyName }
-                                    </Menu.Item>
-                                )
-                            ) }
-                        </Menu>
+                        {
+                            (connectors && Array.isArray(connectors) && connectors.length > 0) && (
+                                <>
+                                    <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
+                                    <Menu secondary vertical className="governance-connector-categories">
+                                        {
+                                            connectors.map((connector: GovernanceConnectorInterface, index: number) => (
+                                                <Menu.Item
+                                                    as="a"
+                                                    key={ index }
+                                                    className={
+                                                        selectedConnector?.id === connector?.id
+                                                            ? "active"
+                                                            : ""
+                                                    }
+                                                    onClick={ () => {
+                                                        // Scroll to the selected connector.
+                                                        connector?.ref?.current?.scrollIntoView({
+                                                            behavior: "smooth", block: "center"
+                                                        });
+
+                                                        setSelectorConnector(connector);
+                                                    } }
+                                                >
+                                                    { connector.friendlyName }
+                                                </Menu.Item>
+                                            ))
+                                        }
+                                    </Menu>
+                                </>
+                            )
+                        }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
