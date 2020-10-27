@@ -22,7 +22,7 @@ import { PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Menu, Segment } from "semantic-ui-react";
+import { Grid, Menu } from "semantic-ui-react";
 import { history } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
@@ -106,9 +106,12 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     return (
         <PageLayout
             title={ connectorCategory?.name }
-            description={ connectorCategory?.description
-                ?? t("adminPortal:components.governanceConnectors.connectorSubHeading",
-                    { name: connectorCategory?.name }) }
+            description={
+                connectorCategory?.description
+                    ? t("adminPortal:components.governanceConnectors.connectorSubHeading",
+                    { name: connectorCategory?.name })
+                    : null
+            }
             data-testid={ `${ testId }-page-layout` }
         >
             <Grid>
