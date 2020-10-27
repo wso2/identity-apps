@@ -130,20 +130,16 @@ const DynamicConnectorForm = (props) => {
 
 const validate = (values) => {
     const errors = {};
-    if (
-        parseInt(
-            values[
-            GovernanceConnectorUtils.encodeConnectorPropertyName(
-                ServerConfigurationsConstants.ALLOWED_IDLE_TIME_SPAN_IN_DAYS
-            )
-            ]
-        ) < 0
-    ) {
-        errors[
-            GovernanceConnectorUtils.encodeConnectorPropertyName(
-                ServerConfigurationsConstants.ALLOWED_IDLE_TIME_SPAN_IN_DAYS
-            )
-        ] = I18n.instance.t("adminPortal:components.governanceConnectors.form.errors.positiveIntegers");
+
+    const allowedIdleTimeSpanName = GovernanceConnectorUtils.encodeConnectorPropertyName(
+        ServerConfigurationsConstants.ALLOWED_IDLE_TIME_SPAN_IN_DAYS
+    );
+
+    const allowedIdleTimeSpan = parseInt(values[ allowedIdleTimeSpanName ]);
+
+    if (allowedIdleTimeSpan < 0) {
+        errors[ allowedIdleTimeSpanName ]
+            = I18n.instance.t("adminPortal:components.governanceConnectors.form.errors.positiveIntegers");
 
     }
 
