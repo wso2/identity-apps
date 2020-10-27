@@ -18,6 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import kebabCase from "lodash/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -138,7 +139,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         <DynamicConnectorForm
             onSubmit={ handleSubmit }
             props={ { properties: connector.properties } }
-            form={ connector.category + "-form" }
+            form={ kebabCase(connector.friendlyName) + "-form" }
             initialValues={ getConnectorInitialValues(connector) }
             data-testid={ `${ testId }-${ connector.name }-form` }
         />
