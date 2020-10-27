@@ -53,6 +53,7 @@ export interface BasicProfileInterface {
     name: Name;
     profileUrl: string;
     pendingEmails?: string | PendingEmail[] | any;
+    pendingMobileNumber?: string;
     isSecurity?: boolean;
     userImage?: string;
     userName?: string;

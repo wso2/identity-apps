@@ -22,14 +22,16 @@ import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Form, Grid, Icon, List } from "semantic-ui-react";
+import {Form, Grid, Icon, List, Placeholder} from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
-import { AlertInterface, AlertLevels, BasicProfileInterface } from "../../../models";
+import {AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema} from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { MobileUpdateWizard } from "../../shared/mobile-update-wizard";
 
 
 /**
@@ -62,6 +64,10 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         (state: any) => state.authenticationInformation.profileInfo
     );
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
+
+    // TODO: Get from config
+    const isMobileVerificationEnabled: boolean = true;
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -146,6 +152,101 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
             });
     };
 
+    /**
+     * This function generates the mobile number edit section when mobile verification is enabled.
+     * @param {Profile Schema} schema.
+     * @param {string} fieldName - Mobile number filed name.
+     */
+    const generateUpdateFormForMobileVerification = (): JSX.Element => {
+        return (
+            <>
+                {
+                    showMobileUpdateWizard
+                        ? (
+                            < MobileUpdateWizard
+                                onAlertFired={ onAlertFired }
+                                closeWizard={ () =>
+                                    handleCloseMobileUpdateWizard()
+                                }
+                                wizardOpen={ true }
+                                currentMobileNumber={ mobile }
+                                isMobileRequired={ true }
+                            />
+                        )
+                        : null
+                }
+                <EditSection>
+                    <p>
+                        { t("userPortal:components.profile.messages.mobileVerification.content") }
+                    </p>
+                    <Grid padded={ true }>
+                        <Grid.Row columns={ 2 }>
+                            < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                                <List.Content>{ t(
+                                    "userPortal:components.profile.forms.mobileChangeForm.inputs" +
+                                    ".mobile.label"
+                                ) }</List.Content>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                                <List.Content>
+                                    <List.Description>
+                                        {
+                                            mobile === ""
+                                                ? (
+                                                    <a
+                                                        className="placeholder-text"
+                                                        onClick={ () => {
+                                                            setShowMobileUpdateWizard(true);
+                                                        } }
+                                                    >
+                                                        { t(
+                                                            "userPortal:components.profile.forms." +
+                                                            "mobileChangeForm.inputs.mobile.label"
+                                                        ) }
+                                                    </a>
+                                                )
+                                                : mobile
+                                        }
+                                    </List.Description>
+                                </List.Content>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 2 }>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                <PrimaryButton
+                                    floated="left"
+                                    onClick={ () => {
+                                        setShowMobileUpdateWizard(true);
+                                    } }
+                                >
+                                    { t("common:update").toString() }
+                                </PrimaryButton>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                <LinkButton
+                                    floated="left"
+                                    onClick={ () => {
+                                        dispatch(setActiveForm(null));
+                                    } }
+                                >
+                                    { t("common:cancel").toString() }
+                                </LinkButton>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </Grid >
+                </EditSection>
+            </>
+        );
+    };
+
+    /**
+     * Handles the close action of the mobile update wizard.
+     */
+    const handleCloseMobileUpdateWizard = () => {
+        setShowMobileUpdateWizard(false);
+        dispatch(setActiveForm(null));
+    };
+
     const handleEdit = () => {
         dispatch(setActiveForm(CommonConstants.SECURITY + SMS));
     };
@@ -193,6 +294,8 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     </Grid.Row>
                 </Grid>
             );
+        } else if (isMobileVerificationEnabled) {
+            return generateUpdateFormForMobileVerification();
         }
         return (
             <EditSection>

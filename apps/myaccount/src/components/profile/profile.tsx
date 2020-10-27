@@ -20,7 +20,7 @@ import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { EditAvatarModal, UserAvatar } from "@wso2is/react-components";
+import { EditAvatarModal, UserAvatar, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
@@ -35,6 +35,7 @@ import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
+import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 
 /**
  * Prop types for the basic details component.
@@ -67,6 +68,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchema[]>();
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
+    const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
+
+    // TODO: Get from config
+    const isMobileVerificationEnabled: boolean = true;
 
     /**
      * Set the if the email verification is pending.
@@ -265,7 +270,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
-
+            if (isMobileVerificationEnabled && checkSchemaType(schema.name, "mobile")) {
+                return generateUpdateFormForMobileVerification(schema, fieldName);
+            }
             return (
                 <EditSection>
                     <Grid>
@@ -612,6 +619,82 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         setShowEditAvatarModal(true);
     };
 
+    /**
+     * This function generates the mobile number edit section when mobile verification is enabled.
+     * @param {Profile Schema} schema.
+     * @param {string} fieldName - Mobile number filed name.
+     */
+    const generateUpdateFormForMobileVerification = (schema: ProfileSchema, fieldName: string): JSX.Element => {
+        return (
+            <EditSection>
+                <p>
+                    { t("userPortal:components.profile.messages.mobileVerification.content") }
+                </p>
+                <Grid padded={ true }>
+                    <Grid.Row columns={ 2 }>
+                        < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                            <List.Content>{ fieldName }</List.Content>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                            <List.Content>
+                                <List.Description>
+                                    {
+                                        isProfileInfoLoading || profileSchemaLoader
+                                            ? (
+                                                <Placeholder><Placeholder.Line /></Placeholder>
+                                            )
+                                            : profileInfo.get(schema.name)
+                                            || (
+                                                <a
+                                                    className="placeholder-text"
+                                                    onClick={ () => {
+                                                        setShowMobileUpdateWizard(true);
+                                                    } }
+                                                >
+                                                    { t("userPortal:components.profile.forms.generic.inputs." +
+                                                        "placeholder", { fieldName }) }
+                                                </a>
+                                            )
+                                    }
+                                </List.Description>
+                            </List.Content>
+                        </Grid.Column>
+                    </Grid.Row>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                            <PrimaryButton
+                                floated="left"
+                                onClick={ () => {
+                                    setShowMobileUpdateWizard(true);
+                                } }
+                            >
+                                { t("common:update").toString() }
+                            </PrimaryButton>
+                        </Grid.Column>
+                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                            <LinkButton
+                                floated="left"
+                                onClick={ () => {
+                                    dispatch(setActiveForm(null));
+                                } }
+                            >
+                                { t("common:cancel").toString() }
+                            </LinkButton>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid >
+            </EditSection>
+        );
+    };
+
+    /**
+     * Handles the close action of the mobile update wizard.
+     */
+    const handleCloseMobileUpdateWizard = () => {
+        setShowMobileUpdateWizard(false);
+        dispatch(setActiveForm(null));
+    };
+
     return (
         <SettingsSection
             description={ t("userPortal:sections.profile.description") }
@@ -633,9 +716,26 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ACCOUNT_DISABLED")
                             || schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ONETIME_PASSWORD"))) {
                             return (
-                                <List.Item key={ index } className="inner-list-item">
-                                    { generateSchemaForm(schema) }
-                                </List.Item>
+                                <>
+                                    {
+                                        showMobileUpdateWizard && checkSchemaType(schema.name, "mobile")
+                                            ? (
+                                                < MobileUpdateWizard
+                                                    onAlertFired={ onAlertFired }
+                                                    closeWizard={ () =>
+                                                        handleCloseMobileUpdateWizard()
+                                                    }
+                                                    wizardOpen={ true }
+                                                    currentMobileNumber={ profileInfo.get(schema.name) }
+                                                    isMobileRequired={ schema.required }
+                                                />
+                                            )
+                                            : null
+                                    }
+                                    <List.Item key={ index } className="inner-list-item">
+                                        {generateSchemaForm(schema)}
+                                    </List.Item>
+                                </>
                             );
                         }
                     })

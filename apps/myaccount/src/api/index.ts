@@ -25,3 +25,4 @@ export * from "./security-questions";
 export * from "./multi-factor-fido";
 export * from "./user-sessions";
 export * from "./multi-factor-totp";
+export * from "./verify-mobile-smsotp";
