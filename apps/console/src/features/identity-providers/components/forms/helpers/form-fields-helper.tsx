@@ -142,9 +142,12 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 validation={ (value: string, validation: Validation) => {
                     if (propertyMetadata?.regex && !RegExp(propertyMetadata.regex).test(value)) {
                         validation.isValid = false;
-                        validation.errorMessages.push(I18n.instance.t(""))
+                        validation.errorMessages.push(I18n.instance.t("adminPortal:components.users.forms." +
+                            "validation.formatError", {
+                            field: propertyMetadata?.displayName
+                        }))
                     }
-                }}
+                } }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>
