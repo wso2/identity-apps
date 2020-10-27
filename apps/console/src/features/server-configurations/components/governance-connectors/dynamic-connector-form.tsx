@@ -140,7 +140,6 @@ const validate = (values) => {
     if (allowedIdleTimeSpan < 0) {
         errors[ allowedIdleTimeSpanName ]
             = I18n.instance.t("adminPortal:components.governanceConnectors.form.errors.positiveIntegers");
-
     }
 
     if (
