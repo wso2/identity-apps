@@ -31,6 +31,10 @@ import { addPath } from "../role-utils";
  * Interface to capture permission list props
  */
 interface PermissionListProp extends  TestableComponentInterface {
+    /**
+     * Should the content be emphasized.
+     */
+    emphasize?: boolean;
     triggerSubmit?: boolean;
     onSubmit?: (permissions: any) => void;
     roleObject?: RolesInterface;
@@ -47,6 +51,7 @@ interface PermissionListProp extends  TestableComponentInterface {
 export const PermissionList: FunctionComponent<PermissionListProp> = (props: PermissionListProp): ReactElement => {
 
     const {
+        emphasize,
         triggerSubmit,
         onSubmit,
         roleObject,
@@ -297,31 +302,32 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         setCollapseTree(!collapseTree);
     };
 
-    return (
-        <EmphasizedSegment data-testid={ testId }>
-            { !isPermissionsLoading &&
+    const renderChildren = (): ReactElement => (
+        <>
+            { !isPermissionsLoading && (
                 <div className="action-container">
-                        <Button
-                            data-testid={ `${ testId }-tree-expand-all-button` }
-                            basic
-                            compact
-                            size="tiny"
-                            onClick={ handleExpandAll }
-                            icon={ collapseTree? "expand" : "compress" }
-                            content={
-                                collapseTree ?
-                                    t("adminPortal:components.roles.addRoleWizard.permissions.buttons.expandAll") :
-                                    t("adminPortal:components.roles.addRoleWizard.permissions.buttons.collapseAll")
-                            }
-                        />
+                    <Button
+                        data-testid={ `${ testId }-tree-expand-all-button` }
+                        basic
+                        compact
+                        size="tiny"
+                        onClick={ handleExpandAll }
+                        icon={ collapseTree? "expand" : "compress" }
+                        content={
+                            collapseTree ?
+                                t("adminPortal:components.roles.addRoleWizard.permissions.buttons.expandAll") :
+                                t("adminPortal:components.roles.addRoleWizard.permissions.buttons.collapseAll")
+                        }
+                    />
                 </div>
-            }
+            ) }
             <Forms
                 submitState={ triggerSubmit }
                 onSubmit={ () => { onSubmit(checkedPermissions); } }
             >
                 {
-                    !isPermissionsLoading ?
+                    !isPermissionsLoading
+                        ? (
                         <div className="treeview-container">
                             <TreeView
                                 data-testid={ `${ testId }-tree` }
@@ -333,10 +339,11 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 onCheckToggleCb={ handlePermssionCheck }
                                 onExpandToggleCb={ handleOnToggle }
                             />
-                        </div> :
-                        <ContentLoader active />
+                        </div>
+                        )
+                        : <ContentLoader className="p-3" active />
                 }
-                { isEdit && !isPermissionsLoading &&
+                { isEdit && !isPermissionsLoading && (
                     <>
                         <Divider hidden/>
                         <Grid.Row columns={ 1 }>
@@ -353,9 +360,29 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                             </Grid.Column>
                         </Grid.Row>
                     </>
-                }
+                ) }
             </Forms>
-        </EmphasizedSegment>
-    )
+        </>
+    );
 
+    return (
+        emphasize
+            ? (
+                <EmphasizedSegment data-testid={ testId }>
+                    { renderChildren() }
+                </EmphasizedSegment>
+            )
+            : (
+                <div data-testid={ testId }>
+                    { renderChildren() }
+                </div>
+            )
+    )
+};
+
+/**
+ * Default props for the component.
+ */
+PermissionList.defaultProps = {
+    emphasize: true
 };
