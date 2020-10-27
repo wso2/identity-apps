@@ -21,7 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { updateRolePermissions } from "../../api";
+import { updateRolePermissions, updateRole } from "../../api";
 import { Permission } from "../../models";
 import { PermissionList } from "../wizard";
 
@@ -52,7 +52,15 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     } = props;
 
     const onPermissionUpdate = (updatedPerms: Permission[]) => {
-        updateRolePermissions(roleObject.id, updatedPerms.map(permissionsObject => permissionsObject.fullPath))
+        const roleData = {
+            "Operations": [ {
+                "op": "replace",
+                "path": "permissions",
+                "value": updatedPerms.map(perm => perm.fullPath)
+            } ],
+            "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
+        };
+        updateRole(roleObject.id, roleData)
             .then(() => {
                 dispatch(
                     addAlert({
