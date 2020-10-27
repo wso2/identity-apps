@@ -25,6 +25,7 @@ export interface RolesInterface {
     meta: RolesMetaInterface;
     groups?: RoleGroupsInterface[];
     users?: RolesMemberInterface[];
+    permissions: string[];
 }
 
 /**
