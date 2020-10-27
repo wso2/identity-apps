@@ -18,11 +18,14 @@
 
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { RouteUtils } from "@wso2is/core/utils";
+import { CommonUtils, RouteUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
     DashboardLayout as DashboardLayoutSkeleton,
+    EmptyPlaceholder,
+    ErrorBoundary,
+    LinkButton,
     SidePanel,
     TopLoadingBar
 } from "@wso2is/react-components";
@@ -45,7 +48,12 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
 import { Footer, Header, ProtectedRoute } from "../features/core/components";
-import { SidePanelIcons, SidePanelMiscIcons, getAdminViewRoutes } from "../features/core/configs";
+import {
+    EmptyPlaceholderIllustrations,
+    SidePanelIcons,
+    SidePanelMiscIcons,
+    getAdminViewRoutes
+} from "../features/core/configs";
 import { AppConstants, UIConstants } from "../features/core/constants";
 import { history } from "../features/core/helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
@@ -344,11 +352,30 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                 />
             ) }
         >
-            <Suspense fallback={ <ContentLoader dimmer/> }>
-                <Switch>
-                    { resolveRoutes() }
-                </Switch>
-            </Suspense>
+            <ErrorBoundary
+                fallback={ (
+                    <EmptyPlaceholder
+                        action={ (
+                            <LinkButton onClick={ () => CommonUtils.refreshPage() }>
+                                { t("console:common.placeholders.brokenPage.action") }
+                            </LinkButton>
+                        ) }
+                        image={ EmptyPlaceholderIllustrations.genericError }
+                        imageSize="tiny"
+                        subtitle={ [
+                            t("console:common.placeholders.brokenPage.subtitles.0"),
+                            t("console:common.placeholders.brokenPage.subtitles.1")
+                        ] }
+                        title={ t("console:common.placeholders.brokenPage.title") }
+                    />
+                ) }
+            >
+                <Suspense fallback={ <ContentLoader dimmer/> }>
+                    <Switch>
+                        { resolveRoutes() }
+                    </Switch>
+                </Suspense>
+            </ErrorBoundary>
         </DashboardLayoutSkeleton>
     );
 };

@@ -148,6 +148,10 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                 <Grid.Column width={ 8 }>
                     <Forms
                         onSubmit={ (values: Map<string, FormValue>) => {
+                            //reverse the value of disabled
+                            values.get(DISABLED) && values
+                                .set(DISABLED, values.get(DISABLED) === "false" ? "true" : "false");
+
                             onSubmit(values);
                         } }
                         submitState={ submitState }

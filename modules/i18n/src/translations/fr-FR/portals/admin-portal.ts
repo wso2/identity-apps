@@ -1083,6 +1083,10 @@ export const adminPortal: AdminPortalNS = {
                             required: "Le nom du groupe est obligatoire"
                         }
                     }
+                },
+                 roles: {
+                     subHeading: "Ajoutez ou supprimez les rôles auxquels ce groupe est affecté et " +
+                         "notez que cela affectera l'exécution de certaines tâches."
                 }
             },
             list: {

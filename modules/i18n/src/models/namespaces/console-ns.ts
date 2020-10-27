@@ -27,6 +27,9 @@ export interface ConsoleNS {
             editAvatarModal: ModalInterface;
             sessionTimeoutModal: ModalInterface;
         };
+        placeholders: {
+            brokenPage: Placeholder;
+        };
         validations: {
             inSecureURL: ValidationInterface;
             unrecognizedURL: ValidationInterface;

@@ -16,14 +16,14 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import { CommonUtils } from "@wso2is/core/utils";
+import { ErrorBoundary, LinkButton } from "@wso2is/react-components";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "semantic-ui-react";
 import {
     Alert,
     AppFooter,
     EmptyPlaceholder,
-    ErrorBoundary,
     GlobalLoader,
     Header,
     PageHeader,
@@ -51,11 +51,12 @@ const DEFAULT_HEADER_HEIGHT = 59;
  * Inner page layout.
  *
  * @param {InnerPageLayoutProps} props - Props injected to the inner page layout
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
 export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
     props: InnerPageLayoutProps
-): JSX.Element => {
+): ReactElement => {
+
     const { children, pageTitle, pageDescription, pageTitleTextAlign } = props;
 
     const { t } = useTranslation();
@@ -82,10 +83,6 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
         setMobileSidePanelVisibility(false);
     };
 
-    const handlePageRefresh = (): void => {
-        window.location.reload();
-    };
-
     return (
         <>
             <GlobalLoader height={ 3 }/>
@@ -103,12 +100,9 @@ export const InnerPageLayout: React.FunctionComponent<InnerPageLayoutProps> = (
                         fallback={ (
                             <EmptyPlaceholder
                                 action={ (
-                                    <Button
-                                        className="link-button"
-                                        onClick={ handlePageRefresh }
-                                    >
+                                    <LinkButton onClick={ () => CommonUtils.refreshPage() }>
                                         { t("userPortal:placeholders.genericError.action") }
-                                    </Button>
+                                    </LinkButton>
                                 ) }
                                 image={ EmptyPlaceholderIllustrations.genericError }
                                 imageSize="tiny"

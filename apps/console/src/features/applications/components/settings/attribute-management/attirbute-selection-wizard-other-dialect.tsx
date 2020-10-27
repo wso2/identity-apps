@@ -241,7 +241,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                 <TransferComponent
                     searchPlaceholder={
                         t("devPortal:components.applications.edit.sections.attributes.selection.addWizard" +
-                            ".steps.select.transfer.searchPlaceholders.role")
+                            ".steps.select.transfer.searchPlaceholders.attribute")
                     }
                     addItems={ addRoles }
                     removeItems={ removeRoles }
