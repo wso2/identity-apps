@@ -79,14 +79,20 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
      *        to the dropdown.
      */
     const groupDomains = [ {
-        key: -1, text: SharedUserStoreConstants.PRIMARY_USER_STORE, value: SharedUserStoreConstants.PRIMARY_USER_STORE
+        key: -1,
+        text: SharedUserStoreConstants.PRIMARY_USER_STORE, value: SharedUserStoreConstants.PRIMARY_USER_STORE
     } ];
 
-    const roleDomains = [ {
-        key: -1, text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
-    }, {
-        key: 0, text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
-    } ];
+    const roleDomains = [
+        {
+            key: -1,
+            text: APPLICATION_DOMAIN, value: APPLICATION_DOMAIN
+        },
+        {
+            key: 0,
+            text: INTERNAL_DOMAIN, value: INTERNAL_DOMAIN
+        }
+    ];
 
     /**
      * The following function change of the user stores.
