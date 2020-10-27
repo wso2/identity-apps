@@ -120,7 +120,7 @@ const DynamicConnectorForm = (props) => {
                 }) }
                 <Grid.Row columns={ 1 } className="pl-3">
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
-                        <PrimaryButton type="submit">{ I18n.instance.t("common:update").toString() }</PrimaryButton>
+                        <PrimaryButton type="submit">{ t("common:update") }</PrimaryButton>
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
