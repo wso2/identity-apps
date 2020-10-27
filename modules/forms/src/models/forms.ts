@@ -68,6 +68,7 @@ interface FormFieldModel {
     displayErrorOn?: "blur" | "submit";
     hidden?: boolean;
     "data-testid"?: string;
+    enableReinitialize?: boolean;
 }
 
 /**
