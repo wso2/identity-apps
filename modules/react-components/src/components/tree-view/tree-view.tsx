@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 /**
@@ -28,25 +28,24 @@ export interface TreeViewProps extends TestableComponentInterface {
     data: TreeNode[];
     depth?: number;
     deleteElement?: ReactElement;
+    /**
+     * Flag to enable/disable CSS transitions.
+     */
+    enableTransition?: boolean;
     getStyleClassCb?: (node, depth?) => {};
-
     isCheckable?: (node: TreeNode, depth: number) => {};
     isDeletable?: (node: TreeNode, depth: number) => {};
     isExpandable?: (node: TreeNode, depth: number) => {};
-
     keywordChildren?: string;
     keywordChildrenLoading?: string;
     keywordKey?: string;
     keywordLabel?: string;
-
     loadingElement?: ReactElement;
     noChildrenAvailableMessage?: string;
-
     onCheckToggleCb?: (arrayOfNodes: TreeNode[], depth: number) => void;
     onDeleteCb?: (node: TreeNode, updatedData: any, depth: number) => {};
     onExpandToggleCb?: (node: TreeNode, depth: number) => void;
     onUpdateCb?: (updatedData: any, depth: number) => void;
-
     transitionEnterTimeout?: number;
     transitionExitTimeout?: number;
 }
@@ -74,6 +73,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     const {
         data,
+        enableTransition,
         [ "data-testid" ]: testId
     } = props;
 
@@ -231,6 +231,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      * Util method to print the expand button of a given tree node.
      * 
      * @param node Tree node to draw the expand button
+     * @return {React.ReactElement}
      */
     const printExpandButton = (node: TreeNode): ReactElement => {
         const className = node.isExpanded ? "" : "active";
@@ -264,38 +265,58 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
     /**
      * Util method to print a text where no children is available.
+     * @return {React.ReactElement}
      */
-    const printNoChildrenMessage = () => {
+    const printNoChildrenMessage = (): ReactElement => {
+
         const {
             transitionExitTimeout,
             noChildrenAvailableMessage
         } = props;
-        
+
         const noChildrenTransitionProps = {
             classNames: "treeview-no-children-transition",
+            exit: false,
             key: "treeview-no-children",
             style: {
-                transitionDuration: `${transitionExitTimeout}ms`,
-                transitionDelay: `${transitionExitTimeout}ms`
+                transitionDelay: `${transitionExitTimeout}ms`,
+                transitionDuration: `${transitionExitTimeout}ms`
             },
             timeout: {
                 enter: transitionExitTimeout
-            },
-            exit: false
+            }
         };
 
-        return (
-            <CSSTransition { ...noChildrenTransitionProps }>
-                <div className="treeview-no-children">
-                    <div className="treeview-no-children-content">
-                        { noChildrenAvailableMessage }
-                    </div>
+        const renderChildren = (): ReactElement => (
+            <div className="treeview-no-children">
+                <div className="treeview-no-children-content">
+                    { noChildrenAvailableMessage }
                 </div>
-            </CSSTransition>
+            </div>
+        );
+
+        return (
+            !enableTransition
+                ? renderChildren()
+                : (
+                    <CSSTransition { ...noChildrenTransitionProps }>
+                        <div className="treeview-no-children">
+                            <div className="treeview-no-children-content">
+                                { noChildrenAvailableMessage }
+                            </div>
+                        </div>
+                    </CSSTransition>
+                )
         );
     };
 
-    const printNodes = (nodeArray: TreeNode[]) => {
+    /**
+     * Print tree nodes.
+     *
+     * @param {TreeNode[]} nodeArray - Node array.
+     * @return {React.ReactElement}
+     */
+    const printNodes = (nodeArray: TreeNode[]): ReactElement => {
         const {
             keywordKey,
             transitionEnterTimeout,
@@ -314,28 +335,42 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
             }
         };
 
+        const renderChildren = (node: TreeNode): ReactElement => (
+            <div
+                className={ "treeview-node" + getStyleClassCb(node) }
+            >
+                <div className={ `treeview-node-content ${!node.children
+                || node.children.length == 0 ? "no-child" : ""}` }>
+                    { node.children && node.children.length != 0 ? printExpandButton(node) : "" }
+                    { printCheckbox(node) }
+                    { printDeleteButton(node) }
+                </div>
+                { printChildren(node) }
+            </div>
+        );
+
         return (
             <TransitionGroup>
-                { _.isEmpty(nodeArray) ? printNoChildrenMessage() : nodeArray.map((node, index) => {
-                    return (
-                        <CSSTransition
-                            { ...nodeTransitionProps }
-                            key={ node[keywordKey] || index }
-                        >
-                            <div
-                                className={ "treeview-node" + getStyleClassCb(node) }
-                            >
-                                <div className={ `treeview-node-content ${!node.children 
-                                    || node.children.length == 0 ? "no-child" : ""}` }>
-                                    { node.children && node.children.length != 0 ? printExpandButton(node) : "" }
-                                    { printCheckbox(node) }
-                                    { printDeleteButton(node) }
-                                </div>
-                                { printChildren(node) }
-                            </div>
-                        </CSSTransition>
-                    );
-                }) }
+                {
+                    _.isEmpty(nodeArray)
+                        ? printNoChildrenMessage()
+                        : nodeArray.map((node, index) => {
+
+                            if (!enableTransition) {
+                                return (
+                                    <Fragment key={ node[ keywordKey ] || index }>
+                                        { renderChildren(node) }
+                                    </Fragment>
+                                )
+                            }
+
+                            return (
+                                <CSSTransition{ ...nodeTransitionProps } key={ node[ keywordKey ] || index }>
+                                    { renderChildren(node) }
+                                </CSSTransition>
+                            );
+                        })
+                }
             </TransitionGroup>
         );
     };
@@ -386,19 +421,19 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
 
 TreeView.defaultProps = {
     "data-testid": "treeview",
-    depth: 0,
     deleteElement: <div>(X)</div>,
-    keywordChildren: "children",
-    keywordChildrenLoading: "isChildrenLoading",
-    keywordLabel: "name",
-    keywordKey: "id",
-    loadingElement: <div>loading...</div>,
-    noChildrenAvailableMessage: "No data found",
-    transitionEnterTimeout: 1200,
-    transitionExitTimeout: 1200,
-
+    depth: 0,
+    enableTransition: false,
     getStyleClassCb: (/* node, depth */) => { return ""; },
     isCheckable: (/* node, depth */) => { return true; },
     isDeletable: (/* node, depth */) => { return true; },
-    isExpandable: (/* node, depth */) => { return true; }
+    isExpandable: (/* node, depth */) => { return true; },
+    keywordChildren: "children",
+    keywordChildrenLoading: "isChildrenLoading",
+    keywordKey: "id",
+    keywordLabel: "name",
+    loadingElement: <div>loading...</div>,
+    noChildrenAvailableMessage: "No data found",
+    transitionEnterTimeout: 1200,
+    transitionExitTimeout: 1200
 };
