@@ -34,6 +34,11 @@ import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } fr
 type GovernanceConnectorsPageInterface = TestableComponentInterface;
 
 /**
+ * `GovernanceConnectorInterface` type with `ref` attr.
+ */
+type GovernanceConnectorWithRef = GovernanceConnectorInterface & ReferableComponentInterface<HTMLDivElement>;
+
+/**
  * Governance connectors page.
  *
  * @param {GovernanceConnectorsPageInterface} props - Props injected to the component.
@@ -50,8 +55,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const { t } = useTranslation();
 
     const [ connectorCategory, setConnectorCategory ] = useState<GovernanceConnectorCategoryInterface>({});
-    const [ connectors, setConnectors ] = useState<GovernanceConnectorInterface & ReferableComponentInterface>([]);
-    const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorInterface>(null);
+    const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
+    const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
 
     useEffect(() => {
         loadCategoryConnectors();
@@ -64,14 +69,14 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
         getConnectorCategory(categoryId)
             .then((response: GovernanceConnectorCategoryInterface) => {
 
-                response.connectors.map((connector: GovernanceConnectorInterface & ReferableComponentInterface) => {
+                response.connectors.map((connector: GovernanceConnectorWithRef) => {
                     connector.categoryId = categoryId;
                     connector.ref = React.createRef();
                 });
 
                 setConnectorCategory(response);
-                setConnectors(response?.connectors);
-                !selectedConnector && setSelectorConnector(response.connectors[ 0 ]);
+                setConnectors(response?.connectors as GovernanceConnectorWithRef[]);
+                !selectedConnector && setSelectorConnector(response.connectors[ 0 ] as GovernanceConnectorWithRef);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
@@ -123,13 +128,13 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                     <Grid.Column width={ 12 }>
                         {
                             (connectors && Array.isArray(connectors) && connectors.length > 0)
-                                ? connectors.map((connector: GovernanceConnectorInterface, index: number) => (
+                                ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
                                     <EmphasizedSegment key={ index }>
                                         <div ref={ connector.ref }>
                                             <DynamicGovernanceConnector
                                                 connector={ connector }
                                                 data-testid={ `${ testId }-` + connector?.id }
-                                                onUpdate={ loadCategoryConnectors }
+                                                onUpdate={ () => loadCategoryConnectors() }
                                             />
                                         </div>
                                     </EmphasizedSegment>
@@ -144,7 +149,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                     <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
                                     <Menu secondary vertical className="governance-connector-categories">
                                         {
-                                            connectors.map((connector: GovernanceConnectorInterface, index: number) => (
+                                            connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
                                                 <Menu.Item
                                                     as="a"
                                                     key={ index }
