@@ -30,9 +30,10 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 ## Run in dev mode
 
 1. **Do only if you skip WSO2 Identity Server build step above:** Download the built distribution of WSO2 Identity Server from [https://wso2.com/identity-and-access-management/](https://wso2.com/identity-and-access-management/).
-2. Add below code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack to allow CORS.
 
-```
+2. Add the following code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack to allow CORS.
+
+    ```
     [cors]
     allowed_origins = [
        "https://localhost:9000",
@@ -50,38 +51,29 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
        "PATCH"
     ]
     exposed_headers = [ "Location" ]
-```
-3. Add your hostname and port as a trusted FIDO2 origin in `repository/resources/conf/templates/repository/conf/identity/identity.xml.j2` as given below.
+    ```
+3. Add your hostname and port as a trusted FIDO2 origin to the `deployment.toml` file as given below.
 
-```xml
-   <FIDO>
-        <WebAuthn>
-            <Enable>{{fido.webauthn.enable}}</Enable>
-        </WebAuthn>
-        <FIDO2TrustedOrigins>
-            {% for origin in fido.trusted.origins %}
-            <Origin>{{origin}}</Origin>
-            {% endfor %}
-            <Origin>https://localhost:9000</Origin>
-        </FIDO2TrustedOrigins>
-   </FIDO>
-```
+    ```toml
+     [fido.trusted]
+     origins=["https://localhost:9000"]
+    ```
 4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
 5. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
 > **Hint!** Can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
 6. In the system, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
 
-**My Account**
+    **My Account**
 
-```
-regexp=(https://localhost:9443/myaccount/login|https://localhost:9443/myaccount/logout|https://localhost:9000/myaccount/login|https://localhost:9000/myaccount/logout)
-```
+    ```
+    regexp=(https://localhost:9443/myaccount/login|https://localhost:9443/myaccount/logout|https://localhost:9000/myaccount/login|https://localhost:9000/myaccount/logout)
+    ```
 
-**Console**
+    **Console**
 
-```
-regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout)
-```
+    ```
+    regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout)
+    ```
 
 7. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
 
