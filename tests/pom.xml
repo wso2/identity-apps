@@ -29,10 +29,10 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>identity-apps-cypress-tests</artifactId>
-  <version>1.0.474</version>
     <packaging>jar</packaging>
     <name>WSO2 Identity Server Apps - Cypress Integration Tests</name>
     <description>Cypress Integration Tests for Identity Apps</description>
+    <url>http://wso2.org</url>
 
     <build>
         <plugins>
