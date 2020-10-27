@@ -145,9 +145,9 @@ const validate = (values) => {
     if (
         !RegExp(/^(?:\d+,)+\d+$/).test(
             values[
-            GovernanceConnectorUtils.encodeConnectorPropertyName(
-                ServerConfigurationsConstants.ALERT_SENDING_TIME_PERIODS_IN_DAYS
-            )
+                GovernanceConnectorUtils.encodeConnectorPropertyName(
+                    ServerConfigurationsConstants.ALERT_SENDING_TIME_PERIODS_IN_DAYS
+                )
             ]
         )
     ) {
