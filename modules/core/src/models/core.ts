@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { RefObject } from "react";
 import { Notification } from "react-notification-system";
 
 /**
@@ -115,6 +116,16 @@ export interface LoadableComponentInterface {
      * Flag for loading state.
      */
     isLoading?: boolean;
+}
+
+/**
+ * Common interface to be extended to have the `ref` attribute.
+ */
+export interface ReferableComponentInterface<T = {}> {
+    /**
+     * 
+     */
+    ref: RefObject<T>;
 }
 
 /**
