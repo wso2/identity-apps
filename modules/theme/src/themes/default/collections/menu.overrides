@@ -224,6 +224,8 @@
 
 .ui.vertical.menu {
     &.governance-connector-categories {
+        width: @governanceConnectorCategoriesMenuWidth;
+
         .item.active {
             border-left: @activeBorderWidth @primaryColor solid;
         }
