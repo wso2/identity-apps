@@ -17,7 +17,12 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
+import find from "lodash/find";
+import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
+import isEqual from "lodash/isEqual";
+import isNil from "lodash/isNil";
 import React, { Fragment, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
@@ -81,7 +86,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
     const [ lastCheckToggledNodeIndex, setLastCheckToggledNodeIndex ] = useState<number>();
 
     useEffect(() => {
-        setTreeData(_.cloneDeep(data));
+        setTreeData(cloneDeep(data));
     },[data]);
 
     /**
@@ -102,12 +107,12 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      */
     const handleCheckToggle = (node: TreeNode, e: any) => {
         const { onCheckToggleCb, depth } = props;
-        const data = _.cloneDeep(treeData);
-        const currentNode = _.find(data, node);
+        const data = cloneDeep(treeData);
+        const currentNode = find(data, node);
         const currentNodeIndex = data.indexOf(currentNode);
         const toggledNodes = [];
 
-        if (e.shiftKey && !_.isNil(lastCheckToggledNodeIndex)) {
+        if (e.shiftKey && !isNil(lastCheckToggledNodeIndex)) {
             const rangeStart = Math.min(
                 currentNodeIndex,
                 lastCheckToggledNodeIndex
@@ -141,10 +146,10 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      */
     const handleDelete = (node: any) => {
         const { onDeleteCb, depth } = props;
-        const data = _.cloneDeep(treeData);
+        const data = cloneDeep(treeData);
 
         const newData = data.filter((nodeItem) => {
-            return !_.isEqual(node, nodeItem);
+            return !isEqual(node, nodeItem);
         });
 
         onDeleteCb(node, newData, depth) && handleUpdate(newData);
@@ -157,8 +162,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      */
     const handleExpandToggle = (node: TreeNode) => {
         const { onExpandToggleCb, depth } = props;
-        const data = _.cloneDeep(treeData);
-        const currentNode = _.find(data, node);
+        const data = cloneDeep(treeData);
+        const currentNode = find(data, node);
 
         currentNode.isExpanded = !currentNode.isExpanded;
 
@@ -176,7 +181,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      */
     const printCheckbox = (node: TreeNode) => {
         const { isCheckable, keywordLabel, depth } = props;
-        const nodeText = _.get(node, keywordLabel, "");
+        const nodeText = get(node, keywordLabel, "");
 
         if (isCheckable(node, depth)) {
             return (
@@ -352,7 +357,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         return (
             <TransitionGroup>
                 {
-                    _.isEmpty(nodeArray)
+                    isEmpty(nodeArray)
                         ? printNoChildrenMessage()
                         : nodeArray.map((node, index) => {
 
@@ -381,11 +386,11 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         }
 
         const { keywordChildren, keywordChildrenLoading, depth } = props;
-        const isChildrenLoading = _.get(node, keywordChildrenLoading, false);
+        const isChildrenLoading = get(node, keywordChildrenLoading, false);
         let childrenElement;
 
         if (isChildrenLoading) {
-            childrenElement = _.get(props, "loadingElement");
+            childrenElement = get(props, "loadingElement");
         } else {
             childrenElement = (
                 <TreeView
@@ -404,8 +409,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
         );
 
         function onChildrenUpdateCb(updatedData) {
-            const data = _.cloneDeep(treeData);
-            const currentNode = _.find(data, node);
+            const data = cloneDeep(treeData);
+            const currentNode = find(data, node);
 
             currentNode[keywordChildren] = updatedData;
             handleUpdate(data);
