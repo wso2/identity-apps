@@ -18,8 +18,9 @@
  */
 
 /// <reference types="cypress" />
+/// <reference types="../../types" />
 
-import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base//utils";
+import { CookieUtils, HousekeepingUtils } from "@wso2/identity-cypress-test-base/utils";
 
 const USERNAME: string = Cypress.env("TENANT_USERNAME");
 const PASSWORD: string = Cypress.env("TENANT_PASSWORD");
@@ -27,18 +28,27 @@ const SERVER_URL: string = Cypress.env("SERVER_URL");
 const PORTAL: string = Cypress.env("CONSOLE_BASE_URL");
 const TENANT_DOMAIN: string = Cypress.env("TENANT_DOMAIN");
 
-describe("ITC-001-[groups]-User visits the groups page.", () => {
-
-    beforeEach(() => {
-        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL, TENANT_DOMAIN);
-        CookieUtils.preserveAllSessionCookies();
-    });
+describe("ITC-4.0.0 - [remote-configuration] - Remote configuration Smoke Test.", () => {
 
     before(() => {
         HousekeepingUtils.performCleanUpTasks();
+        cy.login(USERNAME, PASSWORD, SERVER_URL, PORTAL, TENANT_DOMAIN);
     });
 
-    it("ITC_1.1 - After User login and navigation in the develop section", () => {
-        // Test case implementation.
+    beforeEach(() => {
+        CookieUtils.preserveAllSessionCookies();
+    });
+
+    after(() => {
+        cy.logout();
+    });
+
+    context("ITC-4.1.0 - [remote-configuration] - Navigate to remote configuration view.", () => {
+
+        it("ITC-4.1.1 - [remote-configuration] - Can navigate to remote configuration view.", () => {
+
+            cy.navigateToRemoteFetchPage(true, false);
+        });
+
     });
 });

@@ -65,5 +65,15 @@ declare namespace Cypress {
          * Custom command to check if the Attribute Dialect listing page renders properly.
          */
         checkIfAttributeDialectsListingRenders(isNew?: boolean): Cypress.CanReturnChainable;
+
+        /**
+         * Custom command to navigate to the Remote configuration page.
+         */
+        navigateToRemoteFetchPage(switchPortalTab?: boolean, assertIfRenders?: boolean): Cypress.CanReturnChainable;
+
+        /**
+         * Custom command to check if the Remote configuration page renders properly.
+         */
+        checkIfRemoteFetchPageRenders(): Cypress.CanReturnChainable;
     }
 }

@@ -98,8 +98,9 @@ export interface InterfaceRemoteRepoConfigDetails {
 export interface InterfaceRepositoryManagerDetails {
     type: string;
     attributes: {
-        accessToken: string;
-        username: string;
+        accessToken?: string;
+        username?: string;
+        sharedKey?: string;
         uri: string;
         branch: string;
         directory: string;
@@ -109,7 +110,7 @@ export interface InterfaceRepositoryManagerDetails {
 export interface InterfaceRemoteActionListner {
     type: string;
     attributes: {
-        frequency: number;
+        frequency?: number;
     };
 }
 

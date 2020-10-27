@@ -27,6 +27,13 @@
             "path": "./integration/identity-providers/**",
             "smokeOnly": false,
             "smokeTestPath": "./integration/identity-providers/smoke.spec.ts"
+        },
+        {
+            "name": "remote-fetch",
+            "skip": true,
+            "path": "./integration/remote-fetch/**",
+            "smokeOnly": false,
+            "smokeTestPath": "./integration/remote-fetch/smoke.spec.ts"
         }
     ]
 }

@@ -115,7 +115,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                     {
                         remoteConfigDetails?.status?.failedDeployments &&
                         <>
-                            <Menu.Item className="pr-3">
+                            <Menu.Item data-testid={ `${ testId }-success` } className="pr-3">
                                 <Icon.Group className="mr-2" size="large">
                                     <Icon name="fork" />
                                     <Icon 
@@ -133,7 +133,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                     remoteConfigDetails?.status?.successfulDeployments
                                 } Successful
                             </Menu.Item>
-                            <Menu.Item className="pl-1 pr-3">
+                            <Menu.Item data-testid={ `${ testId }-failed` } className="pl-1 pr-3">
                                 <Icon.Group className="mr-2" size="large">
                                     <Icon name="fork" />
                                     <Icon 
@@ -163,7 +163,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                     </LinkButton>
                                 }
                             </Menu.Item>
-                            <Menu.Item className="pl-1">
+                            <Menu.Item data-testid={ `${ testId }-last-deplyed` } className="pl-1">
                                 <Icon.Group className="mr-2" size="large">
                                     <Icon name="calendar alternate outline" />
                                 </Icon.Group>

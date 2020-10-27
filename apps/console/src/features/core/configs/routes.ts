@@ -432,7 +432,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.remoteFetch
             },
             id: "remoteFetchConfig",
-            name: "Remote Fetch Configuration",
+            name: "Remote Configurations",
             order: 8,
             path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
             protected: true,

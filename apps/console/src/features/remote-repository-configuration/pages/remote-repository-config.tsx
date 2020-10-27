@@ -213,6 +213,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
     const getRemoteFecthForm = () => {
         return (
             <Forms
+                data-testid={ `${ testId }-config-form` }
                 onSubmit={ (values) => { 
                     handleFormSubmit(getFormValues(values));
                 } }
@@ -326,10 +327,10 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
                                     label="Webhook"
                                     name="radioGroup"
                                     disabled={ remoteRepoConfig ? true : false }
-                                    checked={ connectivity === "WEBHOOK" }
+                                    checked={ connectivity === "WEB_HOOK" }
                                     data-testid={ `${ testId }-form-connection-webhook` }
                                     onChange={ () => {
-                                        setConnectivity("WEBHOOK")
+                                        setConnectivity("WEB_HOOK")
                                     } }
                                 />
                             </Form.Field>
@@ -390,7 +391,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
                         </>
                     }
                     {
-                        connectivity === "WEBHOOK" &&
+                        connectivity === "WEB_HOOK" &&
                         <GridRow columns={ 1 }>
                             <GridColumn mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Field
@@ -553,6 +554,13 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
         </PageLayout>
     )
 }
+
+/**
+ * Default props for the component.
+ */
+RemoteRepoConfig.defaultProps = {
+    "data-testid": "remote-fetch"
+};
 
 /**
  * A default export was added to support React.lazy.

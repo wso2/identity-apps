@@ -258,7 +258,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
 
-            <RemoteFetchStatus />
+            <RemoteFetchStatus data-testid={ "remote-fetch" } />
             
             <ListLayout
                 advancedSearch={
