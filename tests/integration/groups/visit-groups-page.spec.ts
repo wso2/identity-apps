@@ -38,7 +38,7 @@ describe("ITC-001-[groups]-User visits the groups page.", () => {
         HousekeepingUtils.performCleanUpTasks();
     });
 
-    it("CDS_1.1 - After User login and navigation in the develop section", function () {
+    it("ITC_1.1 - After User login and navigation in the develop section", () => {
         // Test case implementation.
     });
 });

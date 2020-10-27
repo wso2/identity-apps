@@ -44,11 +44,11 @@ describe("ITC-3.0.0 - [remote-configuration] - Remote configuration.", () => {
 
     context("ITC-3.1.0 - [remote-configuration] - Remote configuration page.", () => {
 
-        it("CDS_3.1.1 - After User login and navigate to remote configuration page", function () {
+        it("ITC_3.1.1 - After User login and navigate to remote configuration page", function () {
             cy.navigateToRemoteFetchPage(true, false);
         });
 
-        it("CDS_3.1.2 - Check if remote configuration page is rendered.", function () {
+        it("ITC_3.1.2 - Check if remote configuration page is rendered.", function () {
             cy.checkIfRemoteFetchPageRenders()
         });
 
@@ -62,7 +62,7 @@ describe("ITC-3.0.0 - [remote-configuration] - Remote configuration.", () => {
         const configUsername = "SampleUsername";
         const configAccessToken = uuidv4();
 
-        it("CDS_3.2.1 - After navigate to remote configuration page, click add remote configuration.", function () {
+        it("ITC_3.2.1 - After navigate to remote configuration page, click add remote configuration.", () => {
 
             remoteFetchConfigurationPage.clickAddConfigureRepository();
 
@@ -71,7 +71,7 @@ describe("ITC-3.0.0 - [remote-configuration] - Remote configuration.", () => {
             remoteFetchConfigurationPage.getSaveConfigGitURL().should("be.visible");
         });
 
-        it("CDS_3.2.2 - Fill remote config details into form", function () {
+        it("ITC_3.2.2 - Fill remote config details into form", () => {
 
             remoteFetchConfigurationPage.getSaveConfigGitURL().type(configURL);
             remoteFetchConfigurationPage.getSaveConfigGitBranch().type(configBranch);
@@ -81,7 +81,7 @@ describe("ITC-3.0.0 - [remote-configuration] - Remote configuration.", () => {
             remoteFetchConfigurationPage.getSaveConfigGitAccessToken().type(configAccessToken);
         });
 
-        it("CDS_3.2.3 - Save remote configurations details", function () {
+        it("ITC_3.2.3 - Save remote configurations details", () => {
 
             remoteFetchConfigurationPage.clickSaveConfiguration();
 
@@ -94,14 +94,14 @@ describe("ITC-3.0.0 - [remote-configuration] - Remote configuration.", () => {
 
     context("ITC-3.3.0 - [remote-configuration] - View remote configuration status on application view.", () => {
 
-        it("CDS_3.2.3 - Remote configuration status rendered", function () {
+        it("ITC_3.2.3 - Remote configuration status rendered", () => {
 
             cy.navigateToApplicationsList(true, false);
 
             remoteFetchConfigurationPage.getApplicationRemoteFetchStatus().should("be.visible");
         });
 
-        it("CDS_3.2.3 - Remote configuration status rendered", function () {
+        it("ITC_3.2.3 - Remote configuration status rendered", () => {
 
             remoteFetchConfigurationPage.clickRemoteFetchTrigger();
 
@@ -113,12 +113,12 @@ describe("ITC-3.0.0 - [remote-configuration] - Remote configuration.", () => {
 
     context("ITC-3.4.0 - [remote-configuration] - Remove remote configuration.", () => {
 
-        it("CDS_3.4.1 - Save remote configurations details", function () {
+        it("ITC_3.4.1 - Save remote configurations details", () => {
 
             cy.navigateToRemoteFetchPage(true, false);
         });
 
-        it("CDS_3.4.2 - After navigate to remote configuration page, click add remote configuration.", function () {
+        it("ITC_3.4.2 - After navigate to remote configuration page, click add remote configuration.", () => {
 
             remoteFetchConfigurationPage.clickRemoveConfiguration();
             remoteFetchConfigurationPage.getConfigRemoveModal().should("be.visible");
