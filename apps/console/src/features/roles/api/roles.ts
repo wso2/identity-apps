@@ -155,7 +155,7 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: store.getState().config.endpoints.groups + "/" + roleId + "/permissions"
+        url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
     return httpClient(requestConfig).then((response) => {
