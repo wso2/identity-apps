@@ -1049,6 +1049,7 @@ export interface AdminPortalNS {
         sidePanel: {
             addEmailTemplate: string;
             addEmailTemplateLocale: string;
+            approvals: string;
             attributeDialects: string;
             categories: {
                 attributes: string;

@@ -16,17 +16,16 @@
  * under the License.
  */
 
-import { ApplicationsResourceEndpointsInterface } from "../models";
+import { ApprovalsResourceEndpointsInterface } from "../models";
 
 /**
- * Get the resource endpoints for the Application Management feature.
+ * Get the resource endpoints for the Workflow approvals Management feature.
  *
  * @param {string} serverHost - Server Host.
- * @return {ApplicationsResourceEndpointsInterface}
+ * @return {ApprovalsResourceEndpointsInterface}
  */
-export const getApplicationsResourceEndpoints = (serverHost: string): ApplicationsResourceEndpointsInterface => {
+export const getApprovalsResourceEndpoints = (serverHost: string): ApprovalsResourceEndpointsInterface => {
     return {
-        applications: `${ serverHost }/api/server/v1/applications`,
-        requestPathAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators?type=REQUEST_PATH`
+        approvals: `${ serverHost }/api/users/v1/me/approval-tasks`
     }
 };

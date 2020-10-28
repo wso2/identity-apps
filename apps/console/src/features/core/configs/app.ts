@@ -33,6 +33,7 @@ import { getUsersResourceEndpoints } from "../../users";
 import { getUserstoreResourceEndpoints } from "../../userstores";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
+import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 
 /**
  * Class to handle application config operations.
@@ -118,6 +119,7 @@ export class Config {
     public static getServiceResourceEndpoints(): ServiceResourceEndpointsInterface {
         return {
             ...getApplicationsResourceEndpoints(this.getDeploymentConfig().serverHost),
+            ...getApprovalsResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getClaimResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getCertificatesResourceEndpoints(this.getDeploymentConfig().serverHost),
             ...getIDPResourceEndpoints(this.getDeploymentConfig().serverHost),

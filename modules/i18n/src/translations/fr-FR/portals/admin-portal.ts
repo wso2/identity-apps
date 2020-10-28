@@ -1875,6 +1875,7 @@ export const adminPortal: AdminPortalNS = {
         sidePanel: {
             addEmailTemplate: "Ajouter un modèle d'e-mail",
             addEmailTemplateLocale: "Ajouter une langue de modèle d'e-mail",
+            approvals: "Approbations",
             attributeDialects: "Dialectes d'attributs",
             categories: {
                 attributes: "Attributs",
