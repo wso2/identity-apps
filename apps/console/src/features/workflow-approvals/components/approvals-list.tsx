@@ -394,6 +394,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 data-testid={ testId }
             />
             <ApprovalTaskComponent
+                resolveApprovalTagColor={ resolveApprovalTagColor }
                 onCloseApprovalTaskModal={ () => setOpenApprovalTaskModal(false) }
                 openApprovalTaskModal={ openApprovalTaskModal }
                 approval={ approval }

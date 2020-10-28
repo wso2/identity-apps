@@ -24,9 +24,11 @@ import {
     Divider,
     Grid,
     Header,
+    Label,
     List,
     Modal,
     Responsive,
+    SemanticCOLORS,
     Table
 } from "semantic-ui-react";
 import moment from "moment";
@@ -59,6 +61,14 @@ interface ApprovalTaskComponentPropsInterface extends TestableComponentInterface
         id: string,
         status: ApprovalStatus.CLAIM | ApprovalStatus.RELEASE | ApprovalStatus.APPROVE | ApprovalStatus.REJECT
     ) => void;
+    /**
+     * Resolve the label color of the task.
+     *
+     * @param status
+     */
+    resolveApprovalTagColor?: (
+        status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED
+    ) => SemanticCOLORS;
 }
 
 /**
@@ -74,6 +84,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
 
     const {
         approval,
+        resolveApprovalTagColor,
         updateApprovalStatus,
         openApprovalTaskModal,
         onCloseApprovalTaskModal,
@@ -251,6 +262,12 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                     <Header.Content>
                         { t("adminPortal:components.approvals.modals.taskDetails.header") }
                         <Header.Subheader>
+                            <Label
+                                circular
+                                size="mini"
+                                className="micro spaced-right"
+                                color={ resolveApprovalTagColor(approval?.taskStatus) }
+                            />
                             { approval?.id + " " + approval?.subject + " " }
                         </Header.Subheader>
                     </Header.Content>

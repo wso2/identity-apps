@@ -288,13 +288,13 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                currentListSize={ approvals.length - 1 }
+                currentListSize={ approvals.length }
                 listItemLimit={ listItemLimit }
                 onPageChange={ null }
                 showPagination={ true }
                 showTopActionPanel={ isApprovalListRequestLoading || !(approvals?.length == 0) }
-                totalPages={ Math.ceil(approvals.length - 1 / listItemLimit) }
-                totalListSize={ approvals.length - 1 }
+                totalPages={ Math.ceil(approvals.length / listItemLimit) }
+                totalListSize={ approvals.length }
                 data-testid={ `${ testId }-list-layout` }
                 rightActionPanel={
                     <Dropdown
