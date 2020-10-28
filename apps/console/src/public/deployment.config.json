@@ -76,6 +76,16 @@
                     ]
                 }
             },
+            "approvals": {
+                "disabledFeatures": [],
+                "enabled": true,
+                "scopes": {
+                    "create": [],
+                    "read": [ "internal_humantask_view" ],
+                    "update": [],
+                    "delete": []
+                }
+            },
             "attributeDialects": {
                 "enabled": true,
                 "disabledFeatures": [],
