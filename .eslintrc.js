@@ -71,6 +71,7 @@ module.exports = {
                 spacing: { objectLiterals: "always" }
             }
         ],
+        "no-unused-vars": 1,
         "react-hooks/exhaustive-deps": ["off"],
         "react/no-children-prop": 0,
         "sort-keys": ["warn", "asc", {"caseSensitive": true, "natural": false, "minKeys": 2}],
