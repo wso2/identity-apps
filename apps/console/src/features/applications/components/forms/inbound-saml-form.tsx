@@ -176,6 +176,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         returnToUrls: returnToURLS ? returnToURLS.split(",") : []
                     },
                     logoutMethod: values.get("logoutMethod"),
+                    logoutRequestUrl: values.get("singleLogoutRequestUrl"),
                     logoutResponseUrl: values.get("singleLogoutResponseUrl")
                 },
                 singleSignOnProfile: {
