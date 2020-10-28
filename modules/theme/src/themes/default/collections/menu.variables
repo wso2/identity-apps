@@ -136,4 +136,5 @@
       Governance Connectors
 --------------------------------*/
 
+@governanceConnectorCategoriesMenuWidth: 18rem;
 @activeBorderWidth: 5px;
