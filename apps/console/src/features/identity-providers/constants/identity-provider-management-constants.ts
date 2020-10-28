@@ -97,4 +97,6 @@ export class IdentityProviderManagementConstants {
         "configurations of the identity provider.";
     public static readonly IDENTITY_PROVIDER_CERTIFICATE_UPDATE_ERROR: string = "An error occurred while updating " +
         "the certificate of the identity provider.";
+    public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
+    public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
 }
