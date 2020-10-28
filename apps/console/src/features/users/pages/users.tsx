@@ -18,7 +18,7 @@
 
 import { getUserStoreList } from "@wso2is/core/api";
 import { CommonHelpers } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
@@ -58,13 +58,26 @@ import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
 /**
+ * Props for the Users page.
+ */
+type UsersPageInterface = TestableComponentInterface;
+
+/**
  * Users info page.
  *
+ * @param {UsersPageInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-const UsersPage: FunctionComponent<any> = (): ReactElement => {
+const UsersPage: FunctionComponent<UsersPageInterface> = (
+    props: UsersPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -419,7 +432,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     )
                 });
             });
-    }
+    };
 
     return (
         <PageLayout
@@ -437,6 +450,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             }
             title={ t("adminPortal:pages.users.title") }
             description={ t("adminPortal:pages.users.subTitle") }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 // TODO add sorting functionality.
@@ -601,6 +615,13 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             </ListLayout>
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+UsersPage.defaultProps = {
+    "data-testid": "users"
 };
 
 /**
