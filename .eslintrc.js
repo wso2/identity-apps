@@ -65,7 +65,7 @@ module.exports = {
         "react/jsx-curly-spacing": [
             "warn",
             {
-                when: "never",
+                when: "always",
                 children: { "when": "always" },
                 allowMultiline: true,
                 spacing: { objectLiterals: "always" }
