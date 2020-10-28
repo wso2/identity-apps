@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import React, { FunctionComponent, ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -51,8 +51,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
         onSubmit,
         [ "data-testid" ]: testId
     } = props;
-
-    const [ isNameValid, setIsNameValid ] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -97,7 +95,6 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 } catch (error) {
                                     handleGetIDPListCallError(error);
                                 }
-
                             } }
                             value={ initialValues?.name }
                             data-testid={ `${ testId }-idp-name` }
