@@ -64,8 +64,6 @@ type UsersPageInterface = TestableComponentInterface;
 
 /**
  * Temporary value to append to the list limit to figure out if the next button is there.
- * TODO: Remove this once there is a proper way of getting the correct `totalResults` from LDAP.
- * @remarks This is used in the fix to workaround LDAP pagination issues.
  * @type {number}
  */
 const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
@@ -116,8 +114,6 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
     const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
         setUserListRequestLoading(true);
 
-        // Adds a fixed count to the list limit to figure out if there is a next page.
-        // TODO: Remove this once there is a proper way of getting the correct `totalResults` from LDAP.
         const modifiedLimit = limit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
 
         getUsersList(modifiedLimit, offset, filter, attribute, domain)
@@ -211,6 +207,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
      * @remarks There is no proper way to count the total entries in the userstore with LDAP. So as a workaround, when
      * fetching users, we request an extra entry to figure out if there is a next page.
      * TODO: Remove this function and other related variables once there is a proper fix for LDAP pagination.
+     * @see {@link https://github.com/wso2/product-is/issues/7320}
      *
      * @param {UserListInterface} list - Users list retrieved from the API.
      * @param {number} requestedLimit - Requested item limit.
