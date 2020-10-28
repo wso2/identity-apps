@@ -67,9 +67,7 @@ import {
     PassiveStsProtocolTemplate,
     PassiveStsProtocolTemplateItem,
     SAMLProtocolTemplate,
-    SAMLProtocolTemplateItem,
-    WSTrustProtocolTemplate,
-    WSTrustProtocolTemplateItem
+    SAMLProtocolTemplateItem
 } from "../meta";
 
 /**
@@ -176,8 +174,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             setTemplateSettings(OAuthProtocolTemplate.application);
         } else if (id === DefaultProtocolTemplate.SAML) {
             setTemplateSettings(SAMLProtocolTemplate.application);
-        } else if (id === DefaultProtocolTemplate.WS_TRUST) {
-            setTemplateSettings(WSTrustProtocolTemplate.application);
         } else if (id === DefaultProtocolTemplate.WS_FEDERATION) {
             setTemplateSettings(PassiveStsProtocolTemplate.application);
         } else {
@@ -463,8 +459,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         defaultTemplates={ [
                             PassiveStsProtocolTemplateItem,
                             OAuthProtocolTemplateItem,
-                            SAMLProtocolTemplateItem,
-                            WSTrustProtocolTemplateItem
+                            SAMLProtocolTemplateItem
                         ] }
                         triggerSubmit={ triggerProtocolSelectionSubmit }
                         selectedProtocols={ selectedProtocols }
