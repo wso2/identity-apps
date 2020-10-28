@@ -213,59 +213,63 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Finds the configured inbound protocol.
      */
     const findConfiguredInboundProtocol = (appId): void => {
-
         let protocolConfigs: any = {};
         const selectedProtocolList: string[] = [];
 
-        application.inboundProtocols.forEach((protocol) => {
+        if (application?.inboundProtocols?.length > 0) {
+            application.inboundProtocols.forEach((protocol) => {
 
-            if (protocol.type === "openid") {
-                return;
-            }
+                if (protocol.type === "openid") {
+                    return;
+                }
 
-            const protocolName = mapProtocolTypeToName(protocol.type);
+                const protocolName = mapProtocolTypeToName(protocol.type);
 
-            setIsInboundProtocolConfigRequestLoading(true);
+                setIsInboundProtocolConfigRequestLoading(true);
 
-            getInboundProtocolConfig(appId, protocolName)
-                .then((response) => {
-                    protocolConfigs = {
-                        ...protocolConfigs,
-                        [protocolName]: response
-                    };
+                getInboundProtocolConfig(appId, protocolName)
+                    .then((response) => {
+                        protocolConfigs = {
+                            ...protocolConfigs,
+                            [ protocolName ]: response
+                        };
 
-                    selectedProtocolList.push(protocolName);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
+                        selectedProtocolList.push(protocolName);
+                    })
+                    .catch((error) => {
+                        if (error?.response?.status === 404) {
+                            return;
+                        }
 
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                        if (error?.response && error?.response?.data && error?.response?.data?.description) {
+                            dispatch(addAlert({
+                                description: error.response?.data?.description,
+                                level: AlertLevels.ERROR,
+                                message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                                    ".error.message")
+                            }));
+
+                            return;
+                        }
+
                         dispatch(addAlert({
-                            description: error.response?.data?.description,
+                            description: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                                ".genericError.description"),
                             level: AlertLevels.ERROR,
                             message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
-                                ".error.message")
+                                ".genericError.message")
                         }));
-
-                        return;
-                    }
-
-                    dispatch(addAlert({
-                        description: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
-                            ".genericError.description"),
-                        level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
-                            ".genericError.message")
-                    }));
-                })
-                .finally(() => {
-                    setInboundProtocolList(selectedProtocolList);
-                    setInboundProtocolConfig(protocolConfigs);
-                    setIsInboundProtocolConfigRequestLoading(false);
-                });
-        });
+                    })
+                    .finally(() => {
+                        setInboundProtocolList(selectedProtocolList);
+                        setInboundProtocolConfig(protocolConfigs);
+                        setIsInboundProtocolConfigRequestLoading(false);
+                    });
+            });
+        } else {
+            setInboundProtocolList([]);
+            setInboundProtocolConfig({});
+        }
     };
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
