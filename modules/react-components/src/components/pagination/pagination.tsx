@@ -40,6 +40,14 @@ export interface PaginationPropsInterface extends PaginationProps, TestableCompo
      */
     currentListSize?: number;
     /**
+     * Disables the next button used in minimal pagination.
+     */
+    disableNextButton?: boolean;
+    /**
+     * Disables the previous button used in minimal pagination.
+     */
+    disablePreviousButton?: boolean;
+    /**
      * Float direction.
      */
     float?: "left" | "right";
@@ -123,6 +131,8 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     
     const {
         className,
+        disableNextButton,
+        disablePreviousButton,
         itemsPerPageDropdownLabel,
         itemsPerPageDropdownLowerLimit,
         itemsPerPageDropdownMultiple,
@@ -220,12 +230,16 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
                         prevItem={ {
                             "aria-label": "Previous Page",
                             content: previousButtonText,
-                            disabled: (activePage === 1)
+                            disabled: disablePreviousButton !== undefined
+                                ? disablePreviousButton
+                                : (activePage === 1)
                         } }
                         nextItem={ {
                             "aria-label": "Next Page",
                             content: nextButtonText,
-                            disabled: (activePage === totalPages)
+                            disabled: disableNextButton !== undefined
+                                ? disableNextButton
+                                : (activePage === totalPages)
                         } }
                     />
                 </>
