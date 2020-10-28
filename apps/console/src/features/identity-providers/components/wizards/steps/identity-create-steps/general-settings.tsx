@@ -83,25 +83,22 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                                 "generalDetails.name.placeholder") }
                             type="text"
                             validation={ async (value: string, validation: Validation) => {
-                                if (!isNameValid) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("devPortal:components.idp.forms." +
-                                        "generalDetails.name.validations.duplicate"));
+                                try {
+                                    const idpList = await getIdentityProviderList(
+                                        null, null, "name eq " + value.toString());
+
+                                    if (idpList?.totalResults === 0) {
+                                        validation.isValid = true;
+                                    } else {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t("devPortal:components.idp.forms." +
+                                            "generalDetails.name.validations.duplicate"));
+                                    }
+                                } catch (error) {
+                                    handleGetIDPListCallError(error);
                                 }
+
                             } }
-                            listen={ (values: Map<string, FormValue>) => {
-                                getIdentityProviderList(
-                                    null, null, "name eq " + values.get("name").toString()).then((response) => {
-                                        if (response?.totalResults === 0) {
-                                            setIsNameValid(true);
-                                        } else {
-                                            setIsNameValid(false);
-                                        }
-                                    }).catch((error) => {
-                                        handleGetIDPListCallError(error);
-                                    });
-                            }
-                            }
                             value={ initialValues?.name }
                             data-testid={ `${ testId }-idp-name` }
                         />
