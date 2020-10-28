@@ -62,6 +62,93 @@ export const adminPortal: AdminPortalNS = {
             },
             resultsIndicator: "Afficher des résultats pour la requête \"{{query}}\""
         },
+        approvals: {
+            list: {
+                columns: {
+                    actions: "Actions",
+                    name: "Nom"
+                }
+            },
+            modals: {
+                taskDetails: {
+                    header: "Tâche d'approbation",
+                    description: "Vous avez une demande d'approbation d'une action opérationnelle d'un utilisateur.",
+                }
+            },
+            notifications: {
+                fetchApprovalDetails: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur lors de la récupération des détails de l'approbation"
+                    },
+                    genericError: {
+                        description: "Impossible de mettre à jour les détails de l'approbation",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "Détails de l'approbation récupérés avec succès",
+                        message: "Récupération des détails de l'approbation réussie"
+                    }
+                },
+                fetchPendingApprovals: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur de récupération des approbations en attente"
+                    },
+                    genericError: {
+                        description: "Impossible à récupérer la liste des approbations en attente",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "Liste des approbations en attente récupérée avec succès",
+                        message: "Récupération des approbations en attente réussie"
+                    }
+                },
+                updatePendingApprovals: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Erreur lors de la mise à jour de l'approbation"
+                    },
+                    genericError: {
+                        description: "Impossible de mettre à jour l'approbation",
+                        message: "Quelque chose s'est mal passé"
+                    },
+                    success: {
+                        description: "Approbation mis à jour avec succès",
+                        message: "Mise à jour réussie"
+                    }
+                }
+            },
+            placeholders: {
+                emptyApprovalList: {
+                    action: "",
+                    subtitles: {
+                        0: "Il n'y a actuellement aucune approbation à examiner.",
+                        1: "Veuillez vérifier si vous avez ajouté un flux de travail pour contrôler les tâches",
+                        2: "dans le système."
+                    },
+                    title: "Aucune approbation"
+                },
+                emptyApprovalFilter: {
+                    action: "Voir tout",
+                    subtitles: {
+                        0: "Il n'y a actuellement aucune approbation dans l'état {{status}}.",
+                        1: "Veuillez vérifier si vous avez des tâches dans l'état {{status}} à",
+                        2: "les voir ici."
+                    },
+                    title: "Aucune {{status}} approbation"
+                },
+                emptySearchResults: {
+                    action: "Voir tout",
+                    subtitles: {
+                        0: "Nous n'avons pas trouvé le flux de travail que vous avez recherché.",
+                        1: "Veuillez vérifier si vous avez un flux de travail avec ce nom dans",
+                        2: "le système."
+                    },
+                    title: "Aucune approbation"
+                }
+            }
+        },
         certificates: {
             keystore: {
                 advancedSearch: {
@@ -2660,6 +2747,10 @@ export const adminPortal: AdminPortalNS = {
             backButton: "Revenir au modèle {{name}}",
             subTitle: null,
             title: "Ajouter un modèle"
+        },
+        approvalsPage: {
+            subTitle: "Examiner les tâches opérationnelles qui nécessitent votre approbation",
+            title: "Approbations"
         },
         editTemplate: {
             backButton: "Revenir au modèle {{name}}",

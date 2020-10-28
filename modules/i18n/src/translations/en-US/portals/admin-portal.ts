@@ -62,6 +62,93 @@ export const adminPortal: AdminPortalNS = {
             },
             resultsIndicator: "Showing results for the query \"{{query}}\""
         },
+        approvals: {
+            list: {
+                columns: {
+                    actions: "Actions",
+                    name: "Name"
+                }
+            },
+            modals: {
+                taskDetails: {
+                    header: "Approval Task",
+                    description: "You have a request to approve an operational action of a user.",
+                }
+            },
+            notifications: {
+                fetchApprovalDetails: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error retrieving the approval details"
+                    },
+                    genericError: {
+                        description: "Couldn't update the approval details",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved the approval details",
+                        message: "Approval details retrieval successful"
+                    }
+                },
+                fetchPendingApprovals: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error retrieving pending approvals"
+                    },
+                    genericError: {
+                        description: "Couldn't retrieve pending approvals",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully retrieved pending approvals",
+                        message: "Pending approvals retrieval successful"
+                    }
+                },
+                updatePendingApprovals: {
+                    error: {
+                        description: "{{description}}",
+                        message: "Error updating the approval"
+                    },
+                    genericError: {
+                        description: "Couldn't update the approval",
+                        message: "Something went wrong"
+                    },
+                    success: {
+                        description: "Successfully updated the approval",
+                        message: "Update successful"
+                    }
+                }
+            },
+            placeholders: {
+                emptyApprovalList: {
+                    action: "",
+                    subtitles: {
+                        0: "There are currently no approvals to review.",
+                        1: "Please check if you have added a workflow to control the tasks in",
+                        2: "the system."
+                    },
+                    title: "No Approvals"
+                },
+                emptyApprovalFilter: {
+                    action: "View all",
+                    subtitles: {
+                        0: "There are currently no approvals in {{status}} state.",
+                        1: "Please check if you have any tasks in {{status}} state to",
+                        2: "view them here."
+                    },
+                    title: "No Approvals"
+                },
+                emptySearchResults: {
+                    action: "View all",
+                    subtitles: {
+                        0: "We couldn't find the workflow you searched for.",
+                        1: "Please check if you have a workflow with that name in",
+                        2: "the system."
+                    },
+                    title: "No Approvals"
+                }
+            }
+        },
         certificates: {
             keystore: {
                 advancedSearch: {
@@ -2662,6 +2749,10 @@ export const adminPortal: AdminPortalNS = {
             backButton: "Go back to {{name}} template",
             subTitle: null,
             title: "Add New Template"
+        },
+        approvalsPage: {
+            subTitle: "Review operational tasks that requires your approval",
+            title: "Approvals"
         },
         editTemplate: {
             backButton: "Go back to {{name}} template",
