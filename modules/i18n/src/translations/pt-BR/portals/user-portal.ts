@@ -217,52 +217,6 @@ export const userPortal: UserPortalNS = {
                 heading: "Aplicações recentes"
             }
         },
-        approvals: {
-            notifications: {
-                fetchApprovalDetails: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Erro ao recuperar os detalhes da aprovação"
-                    },
-                    genericError: {
-                        description: "Não foi possível atualizar os detalhes da aprovação",
-                        message: "Algo deu errado"
-                    },
-                    success: {
-                        description: "Recuperou com êxito os detalhes da aprovação",
-                        message: "Recuperação de detalhes da aprovação bem-sucedida"
-                    }
-                },
-                fetchPendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Erro ao recuperar aprovações pendentes"
-                    },
-                    genericError: {
-                        description: "Não foi possível recuperar as aprovações pendentes",
-                        message: "Algo deu errado"
-                    },
-                    success: {
-                        description: "Recuperações pendentes recuperadas com sucesso",
-                        message: "Recuperação de aprovações pendentes bem-sucedida"
-                    }
-                },
-                updatePendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Erro ao atualizar a aprovação"
-                    },
-                    genericError: {
-                        description: "Não foi possível atualizar a aprovação",
-                        message: "Algo deu errado"
-                    },
-                    success: {
-                        description: "Atualização aprovada com sucesso",
-                        message: "Atualização bem sucedida"
-                    }
-                }
-            }
-        },
         changePassword: {
             forms: {
                 passwordResetForm: {
@@ -1286,10 +1240,6 @@ export const userPortal: UserPortalNS = {
             subTitle: "Manage and maintain your applications",
             title: "Applications"
         },
-        operations: {
-            subTitle: "Gerenciar e manter tarefas como aprovações pendentes etc.",
-            title: "Operações"
-        },
         overview: {
             subTitle: "Gerencie suas informações, segurança, privacidade e todas as configurações relacionadas",
             title: "Bem-vindo, {{firstName}}"
@@ -1354,15 +1304,6 @@ export const userPortal: UserPortalNS = {
         accountRecovery: {
             description: "Ver e gerenciar suas opções de recuperação de conta",
             heading: "Recuperação de conta"
-        },
-        approvals: {
-            description: "Você pode gerenciar aprovações pendentes aqui",
-            heading: "Aprovações pendentes",
-            placeholders: {
-                emptyApprovalList: {
-                    heading: "Você não tem {{status}} aprovações pendentes"
-                }
-            }
         },
         changePassword: {
             actionTitles: {

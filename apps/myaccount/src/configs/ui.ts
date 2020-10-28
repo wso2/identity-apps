@@ -102,7 +102,6 @@ export const SidePanelIcons = {
     account: ControlsIcon,
     apps: AppIcon,
     consent: TickCircleIcon,
-    operations: ToolsIcon,
     overview: DashboardIcon,
     personal: UserIcon,
     security: LockIcon,

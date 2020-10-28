@@ -78,7 +78,6 @@ export interface ServiceResourceEndpointsInterface {
     jwks: string;
     logout: string;
     me: string;
-    pendingApprovals: string;
     profileSchemas: string;
     receipts: string;
     sessions: string;

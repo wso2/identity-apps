@@ -23,4 +23,3 @@ export * from "./errors";
 export * from "./overview";
 export * from "./personal-info";
 export * from "./privacy";
-export * from "./operations";

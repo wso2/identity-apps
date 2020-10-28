@@ -85,16 +85,6 @@ export const getAppRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            component: lazy(() => import("../pages/operations")),
-            icon: "operations",
-            id: "operations",
-            name: "common:operations",
-            path: AppConstants.getPaths().get("OPERATIONS"),
-            protected: true,
-            scope: TokenConstants.HUMAN_TASK_SCOPE,
-            showOnSidePanel: true
-        },
-        {
             component: lazy(() => import("../pages/privacy")),
             icon: "security",
             id: "privacy",

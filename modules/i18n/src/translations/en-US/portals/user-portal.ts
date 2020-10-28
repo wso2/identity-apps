@@ -217,52 +217,6 @@ export const userPortal: UserPortalNS = {
                 heading: "Recent Applications"
             }
         },
-        approvals: {
-            notifications: {
-                fetchApprovalDetails: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error retrieving the approval details"
-                    },
-                    genericError: {
-                        description: "Couldn't update the approval details",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully retrieved the approval details",
-                        message: "Approval details retrieval successful"
-                    }
-                },
-                fetchPendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error retrieving pending approvals"
-                    },
-                    genericError: {
-                        description: "Couldn't retrieve pending approvals",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully retrieved pending approvals",
-                        message: "Pending approvals retrieval successful"
-                    }
-                },
-                updatePendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Error updating the approval"
-                    },
-                    genericError: {
-                        description: "Couldn't update the approval",
-                        message: "Something went wrong"
-                    },
-                    success: {
-                        description: "Successfully updated the approval",
-                        message: "Update successful"
-                    }
-                }
-            }
-        },
         changePassword: {
             forms: {
                 passwordResetForm: {
@@ -1304,10 +1258,6 @@ export const userPortal: UserPortalNS = {
             subTitle: "Manage and maintain your applications",
             title: "Applications"
         },
-        operations: {
-            subTitle: "Review operational tasks that requires your approval",
-            title: "Operations"
-        },
         overview: {
             subTitle: "Manage your personal information, account security, and privacy",
             title: "Welcome, {{firstName}}"
@@ -1373,17 +1323,6 @@ export const userPortal: UserPortalNS = {
                 "If you forget your password or username, recover your account " +
                 "using email, SMS, or challenge questions",
             heading: "Account recovery"
-        },
-        approvals: {
-            description:
-                "Approve or deny tasks related to workflow operations like adding users, " +
-                "updating user claims, deleting user roles, etc.",
-            heading: "Pending approvals",
-            placeholders: {
-                emptyApprovalList: {
-                    heading: "You don't have any {{status}} pending approvals"
-                }
-            }
         },
         changePassword: {
             actionTitles: {

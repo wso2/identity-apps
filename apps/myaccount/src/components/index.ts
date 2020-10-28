@@ -18,7 +18,6 @@
 
 export * from "./applications";
 export * from "./account-recovery";
-export * from "./approvals";
 export * from "./change-password";
 export * from "./consents";
 export * from "./footer";

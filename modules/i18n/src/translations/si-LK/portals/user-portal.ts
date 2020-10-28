@@ -217,52 +217,6 @@ export const userPortal: UserPortalNS = {
                 heading: "මෑතකදී විවෘත කළ ඇප්ස්"
             }
         },
-        approvals: {
-            notifications: {
-                fetchApprovalDetails: {
-                    error: {
-                        description: "{{description}}",
-                        message: "අනුමත තොරතුරු ලබා ගැනීමේදී දෝෂයක් ඇතිවිය"
-                    },
-                    genericError: {
-                        description: "අනුමත තොරතුරු යාවත්කාලීන කිරීමට නොහැකි විය",
-                        message: "දෝෂයක් ඇතිවිය !!!"
-                    },
-                    success: {
-                        description: "අනුමත තොරතුරු සාර්ථකව ලබා ගන්නා ලදි",
-                        message: "අනුමත තොරතුරු ලබා ගැනීම සාර්ථකයි"
-                    }
-                },
-                fetchPendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "අපේක්ෂිත අනුමැතිය ලබා ගැනීමේ දෝෂයකි"
-                    },
-                    genericError: {
-                        description: "අපේක්ෂිත අනුමත ලබා ගැනීමට නොහැකි විය",
-                        message: "දෝෂයක් ඇතිවිය !!!"
-                    },
-                    success: {
-                        description: "අපේක්ෂිත අනුමත කිරීම් සාර්ථකව ලබා ගන්නා ලදි",
-                        message: "අපේක්ෂිත අනුමත කිරීම් නැවත ලබා ගැනීම සාර්ථකයි"
-                    }
-                },
-                updatePendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "අනුමැතිය යාවත්කාලීන කිරීමේදී දෝෂයකි"
-                    },
-                    genericError: {
-                        description: "අනුමැතිය යාවත්කාලීන කළ නොහැක",
-                        message: "දෝෂයක් ඇතිවිය !!!"
-                    },
-                    success: {
-                        description: "අනුමැතිය සාර්ථකව යාවත්කාලීන කරන ලදි",
-                        message: "යාවත්කාලීන කිරීම සාර්ථකයි"
-                    }
-                }
-            }
-        },
         changePassword: {
             forms: {
                 passwordResetForm: {
@@ -1296,12 +1250,6 @@ export const userPortal: UserPortalNS = {
             subTitle: "Manage and maintain your applications",
             title: "Applications"
         },
-        operations: {
-            subTitle:
-                "මෙහෙයුම් ක්‍රියාවලියට ඉදිරියට යාමට ඉඩ දීම හෝ ප්‍රතික්ෂේප කිරීම සඳහා ඔබේ " +
-                "අන්තර්ක්‍රියා කළමනාකරණය කිරීම.",
-            title: "මෙහෙයුම්"
-        },
         overview: {
             subTitle: "ඔබගේ තොරතුරු, ආරක්ෂාව, පෞද්ගලිකත්වය සහ අදාළ සියලු වින්‍යාසයන් කළමනාකරණය කිරීම",
             title: "ආයුබෝවන්, {{firstName}}"
@@ -1369,17 +1317,6 @@ export const userPortal: UserPortalNS = {
                 "ඔබගේ මුරපදය හෝ පරිශීලක නාමය ඔබට අමතක වුවහොත් විද්‍යුත් තැපෑලක්, " +
                 "ප්‍රතිසාධන කේතයක් භාවිතා කර ඔබගේ ගිණුම අයකර ගන්න.",
             heading: "ගිණුම් ප්‍රතිසාධනය"
-        },
-        approvals: {
-            description:
-                "ඔබගේ අනුමැතිය බලාපොරොත්තුවෙන් සිටින කාර්ය ප්‍රවාහ මෙහෙයුම් වලට " +
-                "අදාළ කාර්යයන් නිරීක්ෂණය සහ කළමනාකරණය කිරීම",
-            heading: "අපේක්ෂිත අනුමත කිරීම්",
-            placeholders: {
-                emptyApprovalList: {
-                    heading: "ඔබට අපේක්ෂිත අනුමත කිරීම් නොමැත"
-                }
-            }
         },
         changePassword: {
             actionTitles: {

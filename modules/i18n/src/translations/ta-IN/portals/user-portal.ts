@@ -218,52 +218,6 @@ export const userPortal: UserPortalNS = {
                 heading: "அண்மையில் பயன்படுத்தப்பட்ட செயலிகள்"
             }
         },
-        approvals: {
-            notifications: {
-                fetchApprovalDetails: {
-                    error: {
-                        description: "{{description}}",
-                        message: "ஒப்புதல்களை பெறுவதில் தவறேற்பட்டுவிட்டது"
-                    },
-                    genericError: {
-                        description: "ஒப்புதல்களை புதுப்பிக்க இயலவில்லை",
-                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
-                    },
-                    success: {
-                        description: "ஒப்புதல் விவரங்கள் வெற்றிகரமாக பெறப்பட்டுவிட்டன",
-                        message: "ஒப்புதல் விவரங்கள் பெறப்பட்டுவிட்டன"
-                    }
-                },
-                fetchPendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "முடிவெடுக்கப்படாத ஒப்புதல்களை பெறுவதில் தவறு"
-                    },
-                    genericError: {
-                        description: "முடிவெடுக்கப்படாத ஒப்புதல்களை பெறுவதில் தவறேற்பட்டுவிட்டது",
-                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
-                    },
-                    success: {
-                        description: "முடிவெடுக்கப்படாத ஒப்புதல்களை வெற்றிகரமாக பெறப்பட்டுவிட்டன",
-                        message: "முடிவெடுக்கப்படாத ஒப்புதல்களை பெறப்பட்டுவிட்டன"
-                    }
-                },
-                updatePendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "ஒப்புதல் புதுப்பிக்கப்பட்டுவிட்டது"
-                    },
-                    genericError: {
-                        description: "ஒப்புதலை புதுப்பிக்க இயலவில்லை",
-                        message: "ஏதோ தவறேற்பட்டுவிட்டது"
-                    },
-                    success: {
-                        description: "ஒப்புதல் வெற்றிகரமாக புதுப்பிக்கப்பட்டுவிட்டது",
-                        message: "புதுப்பித்தல் வெற்றி"
-                    }
-                }
-            }
-        },
         changePassword: {
             forms: {
                 passwordResetForm: {
@@ -1333,10 +1287,6 @@ export const userPortal: UserPortalNS = {
             subTitle: "உங்கள் செயலிகளை முகாமை செய்ய மற்றும் பராமரிக்க",
             title: "செயலிகள்"
         },
-        operations: {
-            subTitle: "முடிவு செய்யப்படாத அனுமதிகள் போன்ற பணிகளை முகாமை செய்யவும் பராமரிக்கவும்",
-            title: "செயற்பாடுகள்"
-        },
         overview: {
             subTitle: "உங்களின் தகவல், பாதுகாப்பு, தனியுரிமை மற்றும் ஏனைய சார்ந்த கட்டமைப்புக்களை முகாமை செய்க",
             title: "வருக, {{firstName}}"
@@ -1401,15 +1351,6 @@ export const userPortal: UserPortalNS = {
         accountRecovery: {
             description: "உங்கள் கணக்கின் மீட்பு சம்பந்தமான விருப்புகளை பார்வையிட மற்றும் மாற்ற",
             heading: "கணக்கு மீட்பு"
-        },
-        approvals: {
-            description: "முடிவெடுக்கப்படாதா ஒப்புதல்களை முகாமை செய்ய",
-            heading: "முடிவெடுக்கப்படாத ஒப்புதல்கள்",
-            placeholders: {
-                emptyApprovalList: {
-                    heading: "உங்களிடம் {{status}} நிலையில் உள்ள முடிவெடுக்கப்படாத ஒப்புதல்கள் இல்லை"
-                }
-            }
         },
         changePassword: {
             actionTitles: {
