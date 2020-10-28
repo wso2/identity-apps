@@ -66,7 +66,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                 name={ propertyMetadata?.key }
                 key={ propertyMetadata?.key }
                 type="checkbox"
-                required={ propertyMetadata?.isMandatory }
+                required={ false }
                 value={ (eachProp?.value == "true") ? [eachProp?.key] : [] }
                 requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 children={
