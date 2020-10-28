@@ -92,6 +92,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Callback to update the allowed origins.
      */
     onAllowedOriginsUpdate?: () => void;
+    /**
+     * Specifies if the inbound protocol list is loading.
+     */
+    inboundProtocolsLoading?: boolean;
 }
 
 /**
@@ -115,6 +119,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         onUpdate,
         allowedOriginList,
         onAllowedOriginsUpdate,
+        inboundProtocolsLoading,
         [ "data-testid" ]: testId
     } = props;
 
@@ -470,14 +475,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     </Button>
                                 )
                                     : (
-                                        <EmptyPlaceholder
+                                        !inboundProtocolsLoading
+                                        && <EmptyPlaceholder
                                             action={
                                                 hasRequiredScopes(
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes) && (
                                                     <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                                        <Icon name="add"/>
+                                                        <Icon name="add" />
                                                         { t("devPortal:components.applications.placeholders" +
                                                             ".emptyProtocolList.action") }
                                                     </PrimaryButton>

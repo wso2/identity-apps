@@ -20,6 +20,7 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, ResourceTab } from "@wso2is/react-components";
+import Axios from "axios";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,7 +45,6 @@ import {
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
-import Axios from "axios";
 
 /**
  * Proptypes for the applications edit component.
@@ -277,6 +277,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         } else {
             setInboundProtocolList([]);
             setInboundProtocolConfig({});
+            setIsInboundProtocolConfigRequestLoading(false);
         }
     };
 
@@ -310,6 +311,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
+                inboundProtocolsLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
