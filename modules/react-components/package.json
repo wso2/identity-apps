@@ -32,7 +32,8 @@
     "dependencies": {
         "@wso2is/core": "^1.0.478",
         "@wso2is/forms": "^1.0.478",
-        "@wso2is/theme": "^1.0.478"
+        "@wso2is/theme": "^1.0.478",
+        "react-transition-group": "^4.4.1"
     },
     "peerDependencies": {
         "@babel/core": "*",

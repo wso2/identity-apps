@@ -99,8 +99,8 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                     }
                 </Modal.Header>
                 <Modal.Content image>
-                    <div className="permissions-edit-container">
-                        <PermissionList isEdit={ false } isRole roleObject={ role }/>
+                    <div className="permissions-edit-container fluid">
+                        <PermissionList emphasize={ false } isEdit={ false } isRole roleObject={ role }/>
                     </div>
                 </Modal.Content>
                 <Modal.Actions>
