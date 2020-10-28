@@ -29,7 +29,7 @@ import {
     PaginationProps,
     Popup
 } from "semantic-ui-react";
-import { Pagination } from "../components";
+import { Pagination, PaginationPropsInterface } from "../components";
 
 /**
  * List layout component Prop types.
@@ -76,6 +76,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      * @param {boolean} isAscending - Is the order ascending.
      */
     onSortOrderChange?: (isAscending: boolean) => void;
+    /**
+     * Extra props to override the default pagination props.
+     */
+    paginationOptions?: PaginationPropsInterface;
     /**
      * Flag to reset the pagination.
      */
@@ -138,6 +142,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         onPageChange,
         onSortStrategyChange,
         onSortOrderChange,
+        paginationOptions,
         resetPagination,
         rightActionPanel,
         showPagination,
@@ -247,6 +252,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                                 totalPages={ totalPages }
                                 onPageChange={ onPageChange }
                                 onItemsPerPageDropdownChange={ onItemsPerPageDropdownChange }
+                                { ...paginationOptions }
                             />
                         )
                         : null
