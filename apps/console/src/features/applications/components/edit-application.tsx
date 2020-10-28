@@ -20,18 +20,19 @@ import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { ContentLoader, ResourceTab } from "@wso2is/react-components";
+import Axios from "axios";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { InboundProtocolsMeta } from "./meta";
 import {
-  AccessConfiguration,
-  AdvancedSettings,
-  AttributeSettings,
-  GeneralApplicationSettings,
-  ProvisioningSettings,
-  SignOnMethods
+    AccessConfiguration,
+    AdvancedSettings,
+    AttributeSettings,
+    GeneralApplicationSettings,
+    ProvisioningSettings,
+    SignOnMethods
 } from "./settings";
 import { ComponentExtensionPlaceholder } from "../../../extensions";
 import { AppState, CORSOriginsListInterface, FeatureConfigInterface, getCORSOrigins } from "../../core";
@@ -109,11 +110,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
 
-    const [isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading] = useState<boolean>(true);
-    const [inboundProtocolList, setInboundProtocolList] = useState<string[]>([]);
-    const [inboundProtocolConfig, setInboundProtocolConfig] = useState<any>(undefined);
-    const [isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading] = useState<boolean>(false);
-    const [tabPaneExtensions, setTabPaneExtensions] = useState<any>(undefined);
+    const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
+    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
+    const [ inboundProtocolConfig, setInboundProtocolConfig ] = useState<any>(undefined);
+    const [ isInboundProtocolsRequestLoading, setInboundProtocolsRequestLoading ] = useState<boolean>(false);
+    const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
 
@@ -161,8 +162,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             component: "application",
             subComponent: "edit",
             type: "tab"
-        })) ;
-    }, [tabPaneExtensions]);
+        }));
+    }, [ tabPaneExtensions ]);
 
     /**
      * Called on `availableInboundProtocols` prop update.
@@ -178,7 +179,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             .finally(() => {
                 setInboundProtocolsRequestLoading(false);
             });
-    }, [availableInboundProtocols]);
+    }, [ availableInboundProtocols ]);
 
     /**
      * Watch for `inboundProtocols` array change and fetch configured protocols if there's a difference.
@@ -189,7 +190,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
 
         findConfiguredInboundProtocol(application.id);
-    }, [application?.inboundProtocols]);
+    }, [ application?.inboundProtocols ]);
 
     /**
      * Todo Remove this mapping and fix the backend.
@@ -213,29 +214,37 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * Finds the configured inbound protocol.
      */
     const findConfiguredInboundProtocol = (appId): void => {
-
         let protocolConfigs: any = {};
         const selectedProtocolList: string[] = [];
+        const inboundProtocolRequests: Promise<any>[] = [];
+        const protocolNames: string[] = [];
 
-        application.inboundProtocols.forEach((protocol) => {
+        if (application?.inboundProtocols?.length > 0) {
+            application.inboundProtocols.forEach((protocol) => {
 
-            if (protocol.type === "openid") {
-                return;
-            }
+                if (protocol.type === "openid") {
+                    return;
+                }
 
-            const protocolName = mapProtocolTypeToName(protocol.type);
+                const protocolName = mapProtocolTypeToName(protocol.type);
+
+                protocolNames.push(protocolName);
+
+                inboundProtocolRequests.push(getInboundProtocolConfig(appId, protocolName));
+            });
 
             setIsInboundProtocolConfigRequestLoading(true);
-
-            getInboundProtocolConfig(appId, protocolName)
-                .then((response) => {
+            Axios.all(inboundProtocolRequests).then(Axios.spread((...responses) => {
+                responses.forEach((response, index: number) => {
                     protocolConfigs = {
                         ...protocolConfigs,
-                        [protocolName]: response
+                        [ protocolNames[ index ] ]: response
                     };
 
-                    selectedProtocolList.push(protocolName);
-                })
+                    selectedProtocolList.push(protocolNames[ index ]);
+                });
+
+            }))
                 .catch((error) => {
                     if (error?.response?.status === 404) {
                         return;
@@ -265,7 +274,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     setInboundProtocolConfig(protocolConfigs);
                     setIsInboundProtocolConfigRequestLoading(false);
                 });
-        });
+        } else {
+            setInboundProtocolList([]);
+            setInboundProtocolConfig({});
+            setIsInboundProtocolConfigRequestLoading(false);
+        }
     };
 
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
@@ -298,6 +311,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 isInboundProtocolConfigRequestLoading={ isInboundProtocolConfigRequestLoading }
+                inboundProtocolsLoading={ isInboundProtocolConfigRequestLoading }
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
@@ -313,7 +327,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 claimConfigurations={ application.claimConfiguration }
                 featureConfig={ featureConfig }
                 onlyOIDCConfigured={
-                    inboundProtocolList.length === 1 && (inboundProtocolList[0] === SupportedAuthProtocolTypes.OIDC)
+                    inboundProtocolList.length === 1 && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ onUpdate }
                 data-testid={ `${ testId }-attribute-settings` }
@@ -461,7 +475,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     defaultActiveIndex={ defaultActiveIndex }
                 />
             )
-            : <ContentLoader/>
+            : <ContentLoader />
     );
 };
 

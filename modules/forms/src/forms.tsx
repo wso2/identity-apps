@@ -66,7 +66,9 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
         // This specifies if the submit has been clicked or not.
         const [ startSubmission, setStartSubmission ] = useState(false);
 
-        //This specifies if a form field is currently validating or not.
+        const initialValues = useRef(new Map<string, FormValue>());
+
+        // This specifies if a form field is currently validating or not.
         const [ isValidating, setIsValidating ] = useState(false);
         const isValidatingRef = useRef(false);
 
@@ -260,6 +262,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                  * Check if the element is an input element(an element that can hold a value)
                  *      -> Then:
                  *          Check if the field has not been touched OR the reset button has been pressed
+                 *             OR enableReInitialize is true and the initial value has changed
                  *          -> Then:
                  *              Check if the element has a value and the reset button has not been clicked
                  *                  -> Then:
@@ -281,7 +284,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                  *                                                  corresponding FormValue key
                  */
                 if (isInputField(inputField)) {
-                    if (!touchedFields.get(inputField.name) || isReset) {
+                    if (!touchedFields.get(inputField.name)
+                        || isReset
+                        || (inputField.enableReinitialize
+                            && initialValues.current.get(inputField.name) !== inputField.value)) {
                         inputField.value && !isReset
                             ? tempForm.set(inputField.name, inputField.value)
                             : (isRadioField(inputField) || isDropdownField(inputField)) && inputField.default
@@ -291,6 +297,8 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                                     : isToggleField(inputField)
                                         ? tempForm.set(inputField.name, "false")
                                         : tempForm.set(inputField.name, "");
+
+                        initialValues.current.set(inputField.name, inputField.value);
                     }
 
                     /**

@@ -18,7 +18,8 @@
 
 import {
     Field,
-    FormValue
+    FormValue,
+    Validation
 } from "@wso2is/forms";
 import { I18n } from "@wso2is/i18n";
 import { Hint } from "@wso2is/react-components";
@@ -65,7 +66,7 @@ export const getCheckboxField = (eachProp: CommonPluggableComponentPropertyInter
                 name={ propertyMetadata?.key }
                 key={ propertyMetadata?.key }
                 type="checkbox"
-                required={ propertyMetadata?.isMandatory }
+                required={ false }
                 value={ (eachProp?.value == "true") ? [eachProp?.key] : [] }
                 requiredErrorMessage={ I18n.instance.t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                 children={
@@ -138,6 +139,15 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                 key={ eachProp?.key }
                 disabled={ disable }
                 data-testid={ `${ testId }-${ propertyMetadata?.key }` }
+                validation={ (value: string, validation: Validation) => {
+                    if (propertyMetadata?.regex && !RegExp(propertyMetadata.regex).test(value)) {
+                        validation.isValid = false;
+                        validation.errorMessages.push(I18n.instance.t("adminPortal:components.users.forms." +
+                            "validation.formatError", {
+                            field: propertyMetadata?.displayName
+                        }))
+                    }
+                } }
             />
             { propertyMetadata?.description && (
                 <Hint disabled={ disable }>{ propertyMetadata?.description }</Hint>

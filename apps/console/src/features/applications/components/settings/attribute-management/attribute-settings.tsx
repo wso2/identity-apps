@@ -168,9 +168,12 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Role Mapping.
     const [ roleMapping, setRoleMapping ] = useState<RoleMappingInterface[]>([]);
 
+    const [ isClaimLoading, setIsClaimLoading ] = useState<boolean>(true);
+
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const getClaims = () => {
+        setIsClaimLoading(true);
         getAllLocalClaims(null)
             .then((response) => {
                 setClaims(response);
@@ -182,6 +185,8 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     level: AlertLevels.ERROR,
                     message: t("devPortal:components.claims.local.notifications.fetchLocalClaims.genericError.message")
                 }));
+            }).finally(() => {
+                setIsClaimLoading(false);
             });
     };
 
@@ -549,7 +554,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     }, [claimConfigurations]);
 
     return (
-        !isClaimRequestLoading && selectedDialect && !(_.isEmpty(claims) && _.isEmpty(externalClaims))
+        !isClaimRequestLoading && selectedDialect && !(isClaimLoading && _.isEmpty(externalClaims))
             ?
             <EmphasizedSegment>
                 <Grid className="claim-mapping">

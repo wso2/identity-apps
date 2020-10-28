@@ -23,7 +23,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Grid } from "semantic-ui-react";
-import { getPermissionList, getPermissionsForRole } from "../../api";
+import { getPermissionList } from "../../api";
 import { Permission } from "../../models";
 import { addPath } from "../role-utils";
 
@@ -74,32 +74,25 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
      */
     useEffect(() => {
         if (isRole && roleObject) {
-            getPermissionsForRole(roleObject.id)
-                .then(response => {
-                    if (response.status === 200 && response.data instanceof Array) {
-                        const permissionsArray: Permission[] = [];
-                        const permissions = response.data;
-                        permissions.forEach(permission => {
-                            permissionsArray.push({
-                                fullPath: permission,
-                                id: permission,
-                                isChecked: false,
-                                isExpanded: true,
-                                isPartiallyChecked: false,
-                                name: permission
-                            })
-                        });
-                        setAvailablePermissionsInRole(permissionsArray);
-                        getAllPermissions();
-                    }
-                })
-                .catch(() => {
-                    //Handle Role Retrieval Properly
-                })
+            const permissionsArray: Permission[] = [];
+            const permissions = roleObject.permissions;
+            permissions?.forEach(permission => {
+                permissionsArray.push({
+                    fullPath: permission,
+                    id: permission,
+                    isChecked: false,
+                    isExpanded: true,
+                    isPartiallyChecked: false,
+                    name: permission
+                });
+            });
+            setAvailablePermissionsInRole(permissionsArray);
+            getAllPermissions();
+
         } else {
             getAllPermissions();
         }
-    }, [availablePermissionsInRole.toString()]);
+    }, [ availablePermissionsInRole.toString() ]);
 
     useEffect(() => {
         const collapsedTree = _.cloneDeep(permissionTree);

@@ -739,6 +739,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <div ref={ allowedOrigin }></div>
                                 <URLInput
+                                    required
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
                                     setURLState={ setAllowedOrigins }

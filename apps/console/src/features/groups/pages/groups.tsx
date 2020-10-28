@@ -264,7 +264,7 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
      * @param itemLimit pagination item limit
      * @param list - Role list.
      */
-    const setGroupsPage = (offsetValue: number, itemLimit: number, list: RolesInterface[]) => {
+    const setGroupsPage = (offsetValue: number, itemLimit: number, list: GroupsInterface[]) => {
         setPaginatedGroups(list?.slice(offsetValue, itemLimit + offsetValue));
     };
 

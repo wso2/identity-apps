@@ -340,6 +340,10 @@ export const devPortal: DevPortalNS = {
                                 addIdp: "New Identity Provider"
                             },
                             addIdpWizard: {
+                                errors: {
+                                    noProvisioningConnector: "The selected identity provider doesn't have" +
+                                        " any provisioning connectors."
+                                },
                                 heading: "Add Outbound Provisioning IDP",
                                 steps: {
                                     details: "IDP Details"

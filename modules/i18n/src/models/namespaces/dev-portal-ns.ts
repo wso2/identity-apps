@@ -345,6 +345,9 @@ export interface DevPortalNS {
                                 steps: {
                                     details: string;
                                 };
+                                errors: {
+                                    noProvisioningConnector: string;
+                                };
                             };
                             heading: string;
                             subHeading: string;

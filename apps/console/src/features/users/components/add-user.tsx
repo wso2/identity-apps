@@ -338,6 +338,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                         validation.errorMessages.push(t("common:weakPassword"));
                                     }
                                 } }
+                                tabIndex={ 6 }
+                                enableReinitialize={ true }
                             />
                             <Suspense fallback={ null } >
                                 <PasswordMeter
@@ -395,6 +397,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                                 ".confirmPassword.validations.mismatch"));
                                     }
                                 } }
+                                tabIndex={ 7 }
+                                enableReinitialize={ true }
                             />
                         </Grid.Column>
                     </Grid.Row>
@@ -447,6 +451,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             required={ true }
                             value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
                             listen={ handleUserStoreChange }
+                            tabIndex={ 1 }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -481,6 +486,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             value={ initialValues && initialValues.userName }
                             listen={ handleUserNameChange }
                             loading={ isUsernameRegExLoading }
+                            tabIndex={ 2 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -503,6 +509,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             ) }
                             type="text"
                             value={ initialValues && initialValues.firstName }
+                            tabIndex={ 3 }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -523,6 +530,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             ) }
                             type="text"
                             value={ initialValues && initialValues.lastName }
+                            tabIndex={ 4 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -556,6 +564,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             }
                             type="email"
                             value={ initialValues && initialValues.email }
+                            tabIndex={ 5 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -570,7 +579,8 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 default="createPw"
                                 listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }
                                 children={ passwordOptions }
-                            value={ initialValues?.passwordOption ?? "createPw" }
+                                value={ initialValues?.passwordOption ?? "createPw" }
+                                tabIndex={ 6 }
                             />
                         </Grid.Column>
                     </Grid.Row>

@@ -64,7 +64,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
     const { t } = useTranslation();
 
     const [ idpListOptions, setIdpListOptions ] = useState<DropdownOptionsInterface[]>([]);
-    const [ connectorListOptions, setConnectorListOptions ] = useState<DropdownOptionsInterface[]>([]);
+    const [ connectorListOptions, setConnectorListOptions ] = useState<DropdownOptionsInterface[]>(undefined);
     const [ selectedIdp, setSelectedIdp ] = useState<string>();
     const [ isBlockingChecked, setIsBlockingChecked ] = useState<boolean>(initialValues?.blocking);
     const [ isJITChecked, setIsJITChecked ] = useState<boolean>(initialValues?.jit);
@@ -218,7 +218,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                 t("devPortal:components.applications.forms.outboundProvisioning.fields" +
                                     ".connector.validations.empty")
                             }
-                            required={ false }
+                            required={ true }
                             value={ initialValues?.connector }
                             listen={
                                 (values) => {
@@ -227,6 +227,12 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             }
                             data-testid={ `${ testId }-provisioning-connector-dropdown` }
                         />
+                        { connectorListOptions?.length <= 0 &&
+                            <Hint icon="warning sign">
+                            { t("devPortal:components.applications.edit.sections.provisioning." +
+                                "outbound.addIdpWizard.errors.noProvisioningConnector") }
+                            </Hint>
+                        }
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>

@@ -318,7 +318,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      * Called when template is selected.
      */
     useEffect(() => {
-        if (!selectedTemplate) {
+        if (!selectedTemplate || !selectedTemplate?.idp?.name) {
             return;
         }
         getPossibleListOfDuplicateIdps(selectedTemplate?.idp?.name);
