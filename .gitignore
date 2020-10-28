@@ -105,7 +105,7 @@ apps/myaccount/src/themes/
 apps/console/src/themes/
 
 # Integration test module.
-tests/coutput/
+tests/output/
 tests/dist/
 
 .classpath
