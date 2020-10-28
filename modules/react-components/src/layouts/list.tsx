@@ -56,6 +56,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      */
     listItemLimit?: number;
     /**
+     * Flag to enable pagination minimal mode. 
+     */
+    minimalPagination?: boolean;
+    /**
      * Callback to be fired on page number change.
      * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event - Event.
      * @param {PaginationProps} data - Pagination data.
@@ -84,6 +88,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      * Flag to toggle pagination visibility.
      */
     showPagination?: boolean;
+    /**
+     * Flag to toggle pagination page limit dropdown visibility.
+     */
+    showPaginationPageLimit?: boolean;
     /**
      * Flag to toggle top action panel visibility.
      */
@@ -125,7 +133,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         children,
         className,
         leftActionPanel,
-        listItemLimit,
+        minimalPagination,
         onItemsPerPageDropdownChange,
         onPageChange,
         onSortStrategyChange,
@@ -133,6 +141,7 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         resetPagination,
         rightActionPanel,
         showPagination,
+        showPaginationPageLimit,
         showTopActionPanel,
         sortOptions,
         sortStrategy,
@@ -230,6 +239,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                     (showPagination && totalListSize)
                         ? (
                             <Pagination
+                                minimal={ minimalPagination }
+                                showItemsPerPageDropdown={ showPaginationPageLimit }
                                 data-testid={ `${ testId }-pagination` }
                                 resetPagination={ resetPagination }
                                 totalListSize={ totalListSize }
@@ -251,6 +262,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
 ListLayout.defaultProps = {
     advancedSearchPosition: "left",
     "data-testid": "list-layout",
+    minimalPagination: true,
     showPagination: false,
+    showPaginationPageLimit: true,
     showTopActionPanel: true
 };
