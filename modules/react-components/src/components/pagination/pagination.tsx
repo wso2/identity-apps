@@ -60,11 +60,23 @@ export interface PaginationPropsInterface extends PaginationProps, TestableCompo
      */
     itemsPerPageDropdownUpperLimit?: number;
     /**
+     * Minimal Mode toggle.
+     */
+    minimal?: boolean;
+    /**
+     * Overrides the default Next button text.
+     */
+    nextButtonText?: string;
+    /**
      * Callback for items per page change.
      * @param {React.SyntheticEvent<HTMLElement>} event - Click event.
      * @param {DropdownProps} data - Data.
      */
     onItemsPerPageDropdownChange?: (event: React.SyntheticEvent<HTMLElement>, data: DropdownProps) => void;
+    /**
+     * Overrides the default Previous button text.
+     */
+    previousButtonText?: string;
     /**
      * Items per page dropdown visibility.
      */
@@ -73,6 +85,10 @@ export interface PaginationPropsInterface extends PaginationProps, TestableCompo
      * Show/ Hide list summary.
      */
     showListSummary?: boolean;
+    /**
+     * Whether to show page numbers on minimal mode.
+     */
+    showPagesOnMinimalMode?: boolean;
     /**
      * Total size of the list.
      */
@@ -107,17 +123,19 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
     
     const {
         className,
-        currentListSize,
         itemsPerPageDropdownLabel,
         itemsPerPageDropdownLowerLimit,
         itemsPerPageDropdownMultiple,
         itemsPerPageDropdownUpperLimit,
+        minimal,
+        nextButtonText,
         onItemsPerPageDropdownChange,
         onPageChange,
+        previousButtonText,
         resetPagination,
         showItemsPerPageDropdown,
-        showListSummary,
-        totalListSize,
+        showPagesOnMinimalMode,
+        totalPages,
         [ "data-testid" ]: testId,
         ...rest
     } = props;
@@ -161,31 +179,77 @@ export const Pagination: FunctionComponent<PaginationPropsInterface> = (
         onPageChange(event, data);
     };
 
+    /**
+     * Renders the content based on the mode.
+     * @return {React.ReactElement}
+     */
+    const renderChildren = (): ReactElement => {
+
+        const ItemsPerPageDropdown: ReactElement = (
+            showItemsPerPageDropdown && (
+                <label className="page-limit-label">
+                    { itemsPerPageDropdownLabel }
+                    <Dropdown
+                        data-testid={ `${ testId }-items-per-page-dropdown` }
+                        className="labeled horizontal right page-limit-dropdown"
+                        compact
+                        defaultValue={ itemsPerPageDropdownLowerLimit }
+                        options={ generatePageCountDropdownOptions() }
+                        onChange={ onItemsPerPageDropdownChange }
+                        selection
+                    />
+                </label>
+            )
+        );
+
+        if (minimal) {
+            return (
+                <>
+                    { ItemsPerPageDropdown }
+                    <SemanticPagination
+                        { ...rest }
+                        totalPages={ totalPages }
+                        className="list-pagination"
+                        data-testid={ `${ testId }-steps` }
+                        activePage={ activePage }
+                        onPageChange={ pageChangeHandler }
+                        ellipsisItem={ null }
+                        firstItem={ null }
+                        lastItem={ null }
+                        pageItem={ showPagesOnMinimalMode ? undefined : null }
+                        prevItem={ {
+                            "aria-label": "Previous Page",
+                            content: previousButtonText,
+                            disabled: (activePage === 1)
+                        } }
+                        nextItem={ {
+                            "aria-label": "Next Page",
+                            content: nextButtonText,
+                            disabled: (activePage === totalPages)
+                        } }
+                    />
+                </>
+            )
+        }
+
+        return (
+            <>
+                { ItemsPerPageDropdown }
+                <SemanticPagination
+                    { ...rest }
+                    totalPages={ totalPages }
+                    className="list-pagination"
+                    data-testid={ `${ testId }-steps` }
+                    activePage={ activePage }
+                    onPageChange={ pageChangeHandler }
+                />
+            </>
+        )
+    };
+
     return (
         <div className={ classes } data-testid={ testId }>
-            {
-                showItemsPerPageDropdown && (
-                    <label className="page-limit-label">
-                        { itemsPerPageDropdownLabel }
-                        <Dropdown
-                            data-testid={ `${ testId }-items-per-page-dropdown` }
-                            className="labeled horizontal right page-limit-dropdown"
-                            compact
-                            defaultValue={ itemsPerPageDropdownLowerLimit }
-                            options={ generatePageCountDropdownOptions() }
-                            onChange={ onItemsPerPageDropdownChange }
-                            selection
-                        />
-                    </label>
-                )
-            }
-            <SemanticPagination
-                { ...rest }
-                className="list-pagination"
-                data-testid={ `${ testId }-steps` }
-                activePage={ activePage }
-                onPageChange={ pageChangeHandler }
-            />
+            { renderChildren() }
         </div>
     );
 };
@@ -200,5 +264,9 @@ Pagination.defaultProps =  {
     itemsPerPageDropdownLowerLimit: 10,
     itemsPerPageDropdownMultiple: 10,
     itemsPerPageDropdownUpperLimit: 50,
-    showItemsPerPageDropdown: true
+    minimal: false,
+    nextButtonText: "Next",
+    previousButtonText: "Previous",
+    showItemsPerPageDropdown: false,
+    showPagesOnMinimalMode: false
 };
