@@ -61,6 +61,14 @@ interface AdaptiveScriptsPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * The number of authentication steps.
+     */
+    authenticationSteps: number;
+    /**
+     * Specifies if the script is default or not.
+     */
+    isDefaultScript: boolean;
 }
 
 /**
@@ -78,6 +86,8 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
         onTemplateSelect,
         onScriptChange,
         readOnly,
+        authenticationSteps,
+        isDefaultScript,
         [ "data-testid" ]: testId
     } = props;
 
@@ -135,7 +145,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
      */
     useEffect(() => {
         resolveAdaptiveScript(authenticationSequence?.script);
-    }, [ authenticationSequence?.steps, authenticationSequence?.script ]);
+    }, [ authenticationSequence?.steps, authenticationSequence?.script, authenticationSteps ]);
 
     /**
      * Resolves the adaptive script.
@@ -153,6 +163,11 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
 
         if (!script && authenticationSequence?.steps?.length > 0) {
             setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSequence.steps.length));
+            return;
+        }
+
+        if (isDefaultScript) {
+            setSourceCode(AdaptiveScriptUtils.generateScript(authenticationSteps));
             return;
         }
 
