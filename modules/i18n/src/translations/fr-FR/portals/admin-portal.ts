@@ -124,8 +124,8 @@ export const adminPortal: AdminPortalNS = {
                     action: "",
                     subtitles: {
                         0: "Il n'y a actuellement aucune approbation à examiner.",
-                        1: "Veuillez vérifier si vous avez ajouté un flux de travail pour contrôler les tâches",
-                        2: "dans le système."
+                        1: "Veuillez vérifier si vous avez ajouté un flux de travail pour",
+                        2: "contrôler les tâches dans le système."
                     },
                     title: "Aucune approbation"
                 },

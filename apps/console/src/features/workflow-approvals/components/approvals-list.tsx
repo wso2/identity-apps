@@ -218,7 +218,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                     subtitle={ [
                         t("adminPortal:components.approvals.placeholders.emptySearchResults.subtitles.0"),
                         t("adminPortal:components.approvals.placeholders.emptySearchResults.subtitles.1"),
-                        t("adminPortal:components.approvals.placeholders.emptyApprovalFilter.subtitles.2")
+                        t("adminPortal:components.approvals.placeholders.emptySearchResults.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -289,20 +289,10 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 renderer: "semantic-icon"
             },
             {
-                "data-testid": `${ testId }-item-reject-button`,
-                hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.status === ApprovalStatus.COMPLETED,
-                icon: (): SemanticICONS => "times",
-                onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
-                    updateApprovalStatus(approval?.id, ApprovalStatus.REJECT),
-                popupText: (): string => t("common:reject"),
-                renderer: "semantic-icon"
-            },
-            {
                 "data-testid": `${ testId }-item-claim-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
                     approval?.status === ApprovalStatus.COMPLETED || approval?.status === ApprovalStatus.RESERVED,
-                icon: (): SemanticICONS => "pin",
+                icon: (): SemanticICONS => "hand paper outline",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.CLAIM),
                 popupText: (): string => t("common:claim"),

@@ -124,8 +124,8 @@ export const adminPortal: AdminPortalNS = {
                     action: "",
                     subtitles: {
                         0: "There are currently no approvals to review.",
-                        1: "Please check if you have added a workflow to control the tasks in",
-                        2: "the system."
+                        1: "Please check if you have added a workflow to control the operations in the system.",
+                        2: ""
                     },
                     title: "No Approvals"
                 },
