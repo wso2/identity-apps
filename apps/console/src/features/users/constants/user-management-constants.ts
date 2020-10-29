@@ -92,4 +92,16 @@ export class UserManagementConstants {
         .set("EMAILS", "emails")
         .set("USERNAME", "userName")
         .set("NAME", "name");
+
+    /**
+     * Set of SCIM2 enterprise attributes.
+     *
+     * @constant
+     * @type {Map<string, string>}
+     * @default
+     */
+    public static readonly SCIM2_ATTRIBUTES_DICTIONARY: Map<string, string> = new Map<string, string>()
+        .set("ACCOUNT_LOCKED", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountLocked")
+        .set("ACCOUNT_DISABLED", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.accountDisabled")
+        .set("ONETIME_PASSWORD", "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User.oneTimePassword");
 }

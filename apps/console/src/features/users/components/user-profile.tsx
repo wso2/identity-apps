@@ -17,29 +17,39 @@
  */
 
 import { ProfileConstants } from "@wso2is/core/constants";
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import {
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
     ProfileSchemaInterface,
+    SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    DangerZone,
+    DangerZoneGroup,
+    EmphasizedSegment
+} from "@wso2is/react-components";
 import _ from "lodash";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { Button, Divider, Form, Grid, Input } from "semantic-ui-react";
-import { AppConstants, AppState, history } from "../../core";
-import { deleteUser, updateUserInfo } from "../api";
+import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input, List, Popup } from "semantic-ui-react";
+import { ChangePasswordComponent } from "./user-change-password";
+import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
+import { ServerConfigurationsConstants } from "../../server-configurations/constants";
+import { ConnectorPropertyInterface } from "../../server-configurations/models";
+import { deleteUser, getUserDetails, updateUserInfo } from "../api";
 import { UserManagementConstants } from "../constants";
 
 /**
  * Prop types for the basic details component.
  */
-interface UserProfilePropsInterface extends TestableComponentInterface {
+interface UserProfilePropsInterface extends TestableComponentInterface, SBACInterface<FeatureConfigInterface> {
     /**
      * On alert fired callback.
      */
@@ -56,6 +66,10 @@ interface UserProfilePropsInterface extends TestableComponentInterface {
      * Show if the user is read only.
      */
     isReadOnly?: boolean;
+    /**
+     * Password reset connector properties
+     */
+    connectorProperties: ConnectorPropertyInterface[];
 }
 
 /**
@@ -73,18 +87,97 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         user,
         handleUserUpdate,
         isReadOnly,
+        featureConfig,
+        connectorProperties,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ profileInfo, setProfileInfo ] = useState(new Map<string, string>());
     const [ profileSchema, setProfileSchema ] = useState<ProfileSchemaInterface[]>();
-    const [ urlSchema, setUrlSchema ] = useState<ProfileSchemaInterface>();
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingUser, setDeletingUser ] = useState<ProfileInfoInterface>(undefined);
+    const [ editingAttribute, setEditingAttribute ] = useState(undefined);
+    const [ showDisableConfirmationModal, setShowDisableConfirmationModal ] = useState<boolean>(false);
+    const [ showLockConfirmationModal, setShowLockConfirmationModal ] = useState<boolean>(false);
+    const [ openChangePasswordModal, setOpenChangePasswordModal ] = useState<boolean>(false);
+    const [ configSettings, setConfigSettings ] = useState({
+        accountDisable: "false",
+        accountLock: "false",
+        forcePasswordReset: "false"
+    });
+    const [ forcePasswordTriggered, setForcePasswordTriggered ] = useState<boolean>(false);
+    const [ accountLock, setAccountLock ] = useState<string>(undefined);
+    const [ accountDisable, setAccountDisable ] = useState<string>(undefined);
+    const [ oneTimePassword, setOneTimePassword ] = useState<string>(undefined);
+
+    useEffect(() => {
+
+        if (connectorProperties && Array.isArray(connectorProperties) && connectorProperties?.length > 0) {
+
+            let configurationStatuses = { ...configSettings } ;
+
+             for (const property of connectorProperties) {
+                if (property.name === ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE) {
+                    configurationStatuses = {
+                        ...configurationStatuses,
+                        accountDisable: property.value
+                    }
+                } else if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
+                    || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
+                    || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
+
+                    if(property.value === "true") {
+                        configurationStatuses = {
+                            ...configurationStatuses,
+                            forcePasswordReset: property.value
+                        }
+                    }
+                } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+                    configurationStatuses = {
+                        ...configurationStatuses,
+                        accountLock: property.value
+                    };
+                }
+            }
+
+            setConfigSettings(configurationStatuses);
+        }
+    }, [ connectorProperties ]);
+
+    useEffect(() => {
+        if (user?.id === undefined) {
+            return;
+        }
+
+        const attributes = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
+
+        getUserDetails(user?.id, attributes)
+            .then((response) => {
+                setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
+            });
+    }, [ forcePasswordTriggered ]);
+
+    useEffect(() => {
+        if (user?.id === undefined) {
+            return;
+        }
+
+        const attributes = UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_LOCKED") + "," +
+            UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ACCOUNT_DISABLED") + "," +
+            UserManagementConstants.SCIM2_ATTRIBUTES_DICTIONARY.get("ONETIME_PASSWORD");
+
+        getUserDetails(user?.id, attributes)
+            .then((response) => {
+                setAccountLock(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked);
+                setAccountDisable(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled);
+                setOneTimePassword(response[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.oneTimePassword);
+            });
+    }, [ user ]);
 
     /**
      * The following function maps profile details to the SCIM schemas.
@@ -158,11 +251,6 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
         const url = sortedSchemas.filter((schema: ProfileSchemaInterface) => {
             return schema.name === "profileUrl";
         });
-
-        if (sortedSchemas.length > 0) {
-            setUrlSchema(url[0]);
-        }
-
     }, [profileSchemas]);
 
     useEffect(() => {
@@ -187,6 +275,24 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     )
                 });
                 history.push(AppConstants.getPaths().get("USERS"));
+            })
+            .catch((error) => {
+                if (error.response && error.response.data && error.response.data.description) {
+                    onAlertFired({
+                        description: error.response.data.description,
+                        level: AlertLevels.ERROR,
+                        message: t("adminPortal:components.users.notifications.deleteUser.error.message")
+                    });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t("adminPortal:components.users.notifications.deleteUser.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.users.notifications.deleteUser.genericError" +
+                        ".message")
+                });
             });
     };
 
@@ -269,6 +375,279 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     };
 
     /**
+     * Handle admin initiated password reset.
+     */
+    const handleForcePasswordReset = () => {
+        if (configSettings?.forcePasswordReset === "false") {
+            onAlertFired({
+                description: t(
+                    "adminPortal:components.user.profile.notifications.noPasswordResetOptions.error.description"
+                ),
+                level: AlertLevels.WARNING,
+                message: t(
+                    "adminPortal:components.user.profile.notifications.noPasswordResetOptions.error.message"
+                )
+            });
+
+            return;
+        }
+
+        const data = {
+            "Operations": [
+                {
+                    "op": "add",
+                    "value": {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            "forcePasswordReset": true
+                        }
+                    }
+                }
+            ],
+            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+        };
+
+        updateUserInfo(user.id, data).then(() => {
+            onAlertFired({
+                description: t(
+                    "adminPortal:components.user.profile.notifications.forcePasswordReset.success.description"
+                ),
+                level: AlertLevels.SUCCESS,
+                message: t(
+                    "adminPortal:components.user.profile.notifications.forcePasswordReset.success.message"
+                )
+            });
+            setForcePasswordTriggered(true);
+        })
+        .catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
+                onAlertFired({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.user.profile.notifications.forcePasswordReset.error." +
+                        "message")
+                });
+
+                return;
+            }
+
+            onAlertFired({
+                description: t("adminPortal:components.user.profile.notifications.forcePasswordReset.genericError." +
+                    "description"),
+                level: AlertLevels.ERROR,
+                message: t("adminPortal:components.user.profile.notifications.forcePasswordReset.genericError." +
+                    "message")
+            });
+        });
+    };
+
+    /**
+     * Handle danger zone toggle actions.
+     *
+     * @param toggleData
+     */
+    const handleDangerZoneToggles = (toggleData: CheckboxProps) => {
+        setEditingAttribute({
+            name: toggleData?.target?.id,
+            value: toggleData?.target?.checked
+        });
+
+        if(toggleData?.target?.checked) {
+            setShowDisableConfirmationModal(true);
+        } else {
+            handleDangerActions(toggleData?.target?.id, toggleData?.target?.checked);
+        }
+    };
+
+    /**
+     * The method handles the locking and disabling of user account.
+     */
+    const handleDangerActions = (attributeName: string, attributeValue: boolean): void => {
+        const data = {
+            "Operations": [
+                {
+                    "op": "replace",
+                    "value": {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            [attributeName]: attributeValue
+                        }
+                    }
+                }
+            ],
+            "schemas": ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
+        };
+
+        updateUserInfo(user.id, data)
+            .then(() => {
+                onAlertFired({
+                    description:
+                        attributeName == "accountLocked"
+                            ? (
+                                attributeValue
+                                    ? t("adminPortal:components.user.profile.notifications.lockUserAccount." +
+                                    "success.description")
+                                    : t("adminPortal:components.user.profile.notifications.unlockUserAccount." +
+                                    "success.description")
+                            ) : (
+                                attributeValue
+                                    ? t("adminPortal:components.user.profile.notifications.disableUserAccount." +
+                                    "success.description")
+                                    : t("adminPortal:components.user.profile.notifications.enableUserAccount." +
+                                    "success.description")
+                            ),
+                    level: AlertLevels.SUCCESS,
+                    message:
+                        attributeName == "accountLocked"
+                            ? (
+                                attributeValue
+                                    ? t("adminPortal:components.user.profile.notifications.lockUserAccount." +
+                                    "success.message", { name: user.userName })
+                                    : t("adminPortal:components.user.profile.notifications.unlockUserAccount." +
+                                    "success.message", { name: user.userName })
+                            ) : (
+                                attributeValue
+                                    ? t("adminPortal:components.user.profile.notifications.disableUserAccount." +
+                                    "success.message", { name: user.userName })
+                                    : t("adminPortal:components.user.profile.notifications.enableUserAccount." +
+                                    "success.message", { name: user.userName })
+                            )
+            });
+            setShowDisableConfirmationModal(false);
+            handleUserUpdate(user.id);
+            setEditingAttribute(undefined);
+        })
+        .catch((error) => {
+            if (error.response && error.response.data && error.response.data.description) {
+                onAlertFired({
+                    description: error.response.data.description,
+                    level: AlertLevels.ERROR,
+                    message:
+                        attributeName == "accountLocked"
+                            ? t("adminPortal:components.user.profile.notifications.lockUserAccount.error." +
+                            "message")
+                            : t("adminPortal:components.user.profile.notifications.disableUserAccount.error." +
+                            "message")
+                });
+
+                return;
+            }
+
+            onAlertFired({
+                description:
+                    editingAttribute?.name == "accountLocked"
+                        ? t("adminPortal:components.user.profile.notifications.lockUserAccount.genericError." +
+                        "description")
+                        : t("adminPortal:components.user.profile.notifications.disableUserAccount.genericError." +
+                        "description"),
+                level: AlertLevels.ERROR,
+                message:
+                    editingAttribute?.name == "accountLocked"
+                        ? t("adminPortal:components.user.profile.notifications.lockUserAccount.genericError." +
+                        "message")
+                        : t("adminPortal:components.user.profile.notifications.disableUserAccount.genericError." +
+                        "message")
+            });
+        });
+    };
+
+    const resolveDangerActions = (): ReactElement => {
+        if (!hasRequiredScopes(
+            featureConfig?.users, featureConfig?.users?.scopes?.update, allowedScopes)) {
+            return null;
+        }
+
+        return (
+            <>
+                <DangerZoneGroup
+                    sectionHeader={ t("adminPortal:components.user.editUser.dangerZoneGroup.header") }
+                >
+                    {
+                        configSettings?.accountDisable === "true" && (
+                            <DangerZone
+                                data-testid={ `${ testId }-danger-zone` }
+                                actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                    "disableUserZone.actionTitle") }
+                                header={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                    "disableUserZone.header") }
+                                subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                    "disableUserZone.subheader") }
+                                onActionClick={ undefined }
+                                toggle={ {
+                                    checked: accountDisable
+                                        ? accountDisable
+                                        : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled,
+                                    id: "accountDisabled",
+                                    onChange: handleDangerZoneToggles
+                                } }
+                            />
+                        )
+                    }
+                    {
+                        configSettings?.accountLock === "true" && (
+                            <DangerZone
+                                data-testid={ `${ testId }-danger-zone` }
+                                actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                    "lockUserZone.actionTitle") }
+                                header={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
+                                    "header") }
+                                subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
+                                    "subheader") }
+                                onActionClick={ undefined }
+                                toggle={ {
+                                    checked: accountLock
+                                        ? accountLock
+                                        : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked,
+                                    id: "accountLocked",
+                                    onChange: handleDangerZoneToggles
+                                } }
+                            />
+                        )
+                    }
+                    {
+                        (hasRequiredScopes(featureConfig?.users, featureConfig?.applications?.scopes?.delete,
+                            allowedScopes) && !isReadOnly && user.userName !== "admin") && (
+                            <DangerZone
+                                data-testid={ `${ testId }-danger-zone` }
+                                actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                    "deleteUserZone.actionTitle") }
+                                header={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                    "deleteUserZone.header") }
+                                subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                    "deleteUserZone.subheader") }
+                                onActionClick={ (): void => {
+                                    setShowDeleteConfirmationModal(true);
+                                    setDeletingUser(user);
+                                } }
+                            />
+                        )
+                    }
+                </DangerZoneGroup>
+            </>
+        )
+    };
+
+    const resolveConfigurationList = (connectorProperties: ConnectorPropertyInterface[]): ReactNode => {
+        return connectorProperties?.map((property, index) => {
+            if (property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLE_INTERNAL_NOTIFICATION_MANAGEMENT
+                && property?.name !== ServerConfigurationsConstants.ACCOUNT_DISABLING_ENABLE
+                && property?.name !== ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+
+                return (
+                    <List.Item key={ index }>
+                        <Icon
+                            color={ property?.value === "true"
+                                ? "green"
+                                : "red" }
+                            name={ property?.value === "true"
+                                ? "check circle"
+                                : "times circle" }/>
+                        { property?.displayName }
+                    </List.Item>
+                );
+            }
+        });
+    };
+
+    /**
      * This function generates the user profile details form based on the input Profile Schema
      *
      * @param {ProfileSchemaInterface} schema
@@ -336,6 +715,59 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     return (
         <>
             {
+                <Grid>
+                    <Grid.Row>
+                        <Grid.Column>
+                            {
+                                connectorProperties && (
+                                    <Popup
+                                        trigger={
+                                            <Button
+                                                onClick={ handleForcePasswordReset }
+                                                basic
+                                                color="grey"
+                                                floated="right"
+                                            >
+                                                <Icon name="redo"/>
+                                                Reset Password
+                                            </Button>
+                                        }
+                                        position="bottom center"
+                                        hoverable
+                                        inverted
+                                        size="huge"
+                                        className="list-options-popup"
+                                    >
+                                       <Popup.Header>
+                                           Password Reset Options
+                                        </Popup.Header>
+                                        <Divider/>
+                                        <Popup.Content>
+                                            {
+                                                connectorProperties?.length > 1 && (
+                                                    <List>
+                                                        { resolveConfigurationList(connectorProperties) }
+                                                    </List>
+                                                )
+                                            }
+                                        </Popup.Content>
+                                    </Popup>
+                                )
+                            }
+                            <Button
+                                basic
+                                color="orange"
+                                onClick={ () => setOpenChangePasswordModal(true) }
+                                floated="right"
+                            >
+                                <Icon name="edit outline" />
+                                Change Password
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            }
+            {
                 !_.isEmpty(profileInfo) && (
                     <EmphasizedSegment>
                         <Forms
@@ -352,6 +784,27 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             );
                                         }
                                     })
+                                }
+                                {
+                                    oneTimePassword && (
+                                        <Grid.Row columns={ 1 }>
+                                            <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 6 }>
+                                                <Field
+                                                    data-testid={ `${ testId }-profile-form-one-time-pw }
+                                                    -input` }
+                                                    name="oneTimePassword"
+                                                    label={ t("adminPortal:components.user.profile.fields." +
+                                                        "oneTimePassword") }
+                                                    required={ false }
+                                                    requiredErrorMessage=""
+                                                    type="text"
+                                                    hidden={ oneTimePassword === undefined }
+                                                    value={ oneTimePassword && oneTimePassword }
+                                                    readOnly={ true }
+                                                />
+                                            </Grid.Column>
+                                        </Grid.Row>
+                                    )
                                 }
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -376,26 +829,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 )
             }
             <Divider hidden />
-            {
-                !isReadOnly && (
-                    <DangerZoneGroup
-                        sectionHeader={ t("adminPortal:components.user.editUser.dangerZoneGroup.header") }
-                    >
-                        <DangerZone
-                            data-testid={ `${ testId }-danger-zone` }
-                            actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone." +
-                                "actionTitle") }
-                            header={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone.header") }
-                            subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup.dangerZone." +
-                                "subheader") }
-                            onActionClick={ (): void => {
-                                setShowDeleteConfirmationModal(true);
-                                setDeletingUser(user);
-                            } }
-                        />
-                    </DangerZoneGroup>
-                )
-            }
+            { resolveDangerActions() }
             {
                 deletingUser && (
                     <ConfirmationModal
@@ -438,6 +872,115 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     </ConfirmationModal>
                 )
             }
+            {
+                editingAttribute && (
+                    <ConfirmationModal
+                        data-testid={ `${ testId }-confirmation-modal` }
+                        onClose={ (): void => {
+                            setShowDisableConfirmationModal(false);
+                            setEditingAttribute(undefined);
+                        } }
+                        type="warning"
+                        open={ showDisableConfirmationModal }
+                        assertion={ user.userName }
+                        assertionHint={ (
+                            <p>
+                                <Trans
+                                    i18nKey={ "adminPortal:components.user.disableUser.confirmationModal." +
+                                    "assertionHint" }
+                                    tOptions={ { userName: user.userName } }
+                                >
+                                    Please type <strong>{ user.userName }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) }
+                        assertionType="input"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => {
+                            setEditingAttribute(undefined);
+                            handleUserUpdate(user.id);
+                            setShowDisableConfirmationModal(false);
+                        } }
+                        onPrimaryActionClick={ () =>
+                            handleDangerActions(editingAttribute.name, editingAttribute.value)
+                        }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header data-testid={ `${ testId }-confirmation-modal-header` }>
+                            { t("adminPortal:components.user.disableUser.confirmationModal.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            data-testid={ `${ testId }-disable-confirmation-modal-message` }
+                            attached
+                            warning
+                        >
+                            { t("adminPortal:components.user.disableUser.confirmationModal.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("adminPortal:components.user.disableUser.confirmationModal.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            {
+                editingAttribute && (
+                    <ConfirmationModal
+                        data-testid={ `${ testId }-lock-confirmation-modal` }
+                        onClose={ (): void => {
+                            setShowLockConfirmationModal(false);
+                            setEditingAttribute(undefined);
+                        } }
+                        type="warning"
+                        open={ showLockConfirmationModal }
+                        assertion={ user.userName }
+                        assertionHint={ (
+                            <p>
+                                <Trans
+                                    i18nKey={ "adminPortal:components.user.lockUser.confirmationModal." +
+                                    "assertionHint" }
+                                    tOptions={ { userName: user.userName } }
+                                >
+                                    Please type <strong>{ user.userName }</strong> to confirm.
+                                </Trans>
+                            </p>
+                        ) }
+                        assertionType="input"
+                        primaryAction={ t("common:confirm") }
+                        secondaryAction={ t("common:cancel") }
+                        onSecondaryActionClick={ (): void => {
+                            setEditingAttribute(undefined);
+                            handleUserUpdate(user.id);
+                            setShowLockConfirmationModal(false);
+                        } }
+                        onPrimaryActionClick={ () =>
+                            handleDangerActions(editingAttribute.name, editingAttribute.value)
+                        }
+                        closeOnDimmerClick={ false }
+                    >
+                        <ConfirmationModal.Header data-testid={ `${ testId }-lock-confirmation-modal-header` }>
+                            { t("adminPortal:components.user.lockUser.confirmationModal.header") }
+                        </ConfirmationModal.Header>
+                        <ConfirmationModal.Message
+                            data-testid={ `${ testId }-confirmation-modal-message` }
+                            attached
+                            warning
+                        >
+                            { t("adminPortal:components.user.lockUser.confirmationModal.message") }
+                        </ConfirmationModal.Message>
+                        <ConfirmationModal.Content>
+                            { t("adminPortal:components.user.lockUser.confirmationModal.content") }
+                        </ConfirmationModal.Content>
+                    </ConfirmationModal>
+                )
+            }
+            <ChangePasswordComponent
+                handleCloseChangePasswordModal={ () => setOpenChangePasswordModal(false) }
+                openChangePasswordModal={ openChangePasswordModal }
+                onAlertFired={ onAlertFired }
+                user={ user }
+                handleUserUpdate={ handleUserUpdate }
+            />
         </>
     );
 };
