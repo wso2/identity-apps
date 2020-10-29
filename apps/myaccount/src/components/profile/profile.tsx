@@ -388,7 +388,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     }
                                                 }
                                             } }
-                                            value={ profileInfo.get(schema.name) }
+                                                value={ profileInfo.get(schema.name) }
+                                                maxLength={ schema.name === "emails" ? 50 : 30 }
                                         />
                                         <Field
                                             hidden={ true }
