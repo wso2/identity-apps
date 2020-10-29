@@ -922,6 +922,7 @@ export interface AdminPortalNS {
                         permissions: string;
                         roleName: string;
                         users: string;
+                        groups: string;
                     };
                 };
                 users: {

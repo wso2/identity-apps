@@ -1602,6 +1602,7 @@ export const adminPortal: AdminPortalNS = {
                             group: "Annuaire",
                             role: "Type de rôle"
                         },
+                        groups: "Groupe (s) attribué (s)",
                         permissions: "Permission(s)",
                         roleName: "Nom de {{type}}",
                         users: "Assigné aux utilisateurs"

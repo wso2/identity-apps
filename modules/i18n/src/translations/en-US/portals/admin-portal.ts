@@ -1603,6 +1603,7 @@ export const adminPortal: AdminPortalNS = {
                             group: "Userstore",
                             role: "Role Type"
                         },
+                        groups: "Assigned Group(s)",
                         permissions: "Permission(s)",
                         roleName: "{{type}} Name",
                         users: "Assigned User(s)"
