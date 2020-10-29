@@ -112,6 +112,14 @@ export class IdentityProviderManagementUtils {
                         return;
                     }
 
+                    if (
+                        authenticator.name ===
+                            IdentityProviderManagementConstants.BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR ||
+                        authenticator.name === IdentityProviderManagementConstants.OAUTH_REQUEST_PATH_AUTHENTICATOR
+                    ) {
+                        return;
+                    }
+
                     localAuthenticators.push({
                         authenticators: [
                             {
