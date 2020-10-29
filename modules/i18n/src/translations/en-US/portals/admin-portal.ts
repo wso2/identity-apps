@@ -1848,20 +1848,48 @@ export const adminPortal: AdminPortalNS = {
             deleteUser: {
                 confirmationModal: {
                     assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
-                    content: "If you delete this user, the user will not be able to login to the developer portal or " +
+                    content: "If you delete this user, the user will not be able to login to the My Account or " +
                         "any other application the user was subscribed before. Please proceed with caution.",
                     header: "Are you sure?",
                     message: "This action is irreversible and will permanently delete the user."
                 }
             },
+            disableUser: {
+                confirmationModal: {
+                    assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
+                    content: "If you disable this user, the user will not be able to login to the My Account " +
+                        "or any other application the user was subscribed before. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "Make sure that the user no longer requires access to the system."
+                }
+            },
             editUser: {
                 dangerZoneGroup: {
-                    dangerZone: {
+                    deleteUserZone: {
                         actionTitle: "Delete User",
                         header: "Delete user",
                         subheader: "Once you delete a user, there is no going back. Please be certain."
                     },
-                    header: "Danger Zone"
+                    disableUserZone: {
+                        actionTitle: "Disable User",
+                        header: "Disable user",
+                        subheader: "Once you disable an account, the user can not access the system. Please " +
+                            "be certain."
+                    },
+                    header: "Danger Zone",
+                    lockUserZone: {
+                        actionTitle: "Lock User",
+                        header: "Lock user",
+                        subheader: "Once you lock the account, the user can no longer log in to the system. Please " +
+                            "be certain."
+                    }
+                },
+                menu: {
+                    menuItems: {
+                        0: "Profile",
+                        1: "Groups",
+                        2: "Roles"
+                    }
                 }
             },
             forms: {
@@ -1952,6 +1980,15 @@ export const adminPortal: AdminPortalNS = {
                     }
                 }
             },
+            lockUser: {
+                confirmationModal: {
+                    assertionHint: "Please type <1>{{ userName }}</1> to confirm.",
+                    content: "If you lock this user, the user will not be able to login to the My Account " +
+                        "or any other application the user was subscribed before. Please proceed with caution.",
+                    header: "Are you sure?",
+                    message: "Make sure that this user should be prevented from logging into the system."
+                }
+            },
             modals: {
                 addUserWarnModal: {
                     heading: "Warning",
@@ -1985,6 +2022,11 @@ export const adminPortal: AdminPortalNS = {
                         roles: "Role(s)",
                         username: "Username"
                     }
+                },
+                changePasswordModal: {
+                    header: "Change User Password",
+                    message: "NOTE: Please note that after changing the password the user will no longer be " +
+                        "able to log into any application using the current password."
                 }
             },
             profile: {
@@ -2001,6 +2043,7 @@ export const adminPortal: AdminPortalNS = {
                     },
                     name_familyName: "Last Name",
                     name_givenName: "First Name",
+                    oneTimePassword: "One Time Password",
                     phoneNumbers: "Phone Number",
                     phoneNumbers_home: "Home Phone Number",
                     phoneNumbers_mobile: "Mobile Number",
@@ -2077,6 +2120,62 @@ export const adminPortal: AdminPortalNS = {
                     }
                 },
                 notifications: {
+                    changeUserPassword: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while changing the user password."
+                        },
+                        genericError: {
+                            description: "Error occurred while changing the user password",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The password of the user was changed successfully",
+                            message: "Successfully changed password"
+                        }
+                    },
+                    disableUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while disabling the user account."
+                        },
+                        genericError: {
+                            description: "Error occurred while disabling the user account",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The user account disabled successfully",
+                            message: "{{name}}'s account is disabled"
+                        }
+                    },
+                    enableUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while enabling the user account."
+                        },
+                        genericError: {
+                            description: "Error occurred while enabling the user account",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The user account enabled successfully",
+                            message: "{{name}}'s account is enabled"
+                        }
+                    },
+                    forcePasswordReset: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while triggering the password reset flow."
+                        },
+                        genericError: {
+                            description: "Error occurred while triggering the password reset flow",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The user account password reset triggered successfully",
+                            message: "Successfully triggered password reset"
+                        }
+                    },
                     getProfileInfo: {
                         error: {
                             description: "{{description}}",
@@ -2089,6 +2188,40 @@ export const adminPortal: AdminPortalNS = {
                         success: {
                             description: "The required user profile details are retrieved successfully",
                             message: "Successfully retrieved user profile"
+                        }
+                    },
+                    lockUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while locking the user account."
+                        },
+                        genericError: {
+                            description: "Error occurred while locking the user account.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The user account locked successfully.",
+                            message: "{{name}}'s account is locked"
+                        }
+                    },
+                    noPasswordResetOptions: {
+                        error: {
+                            description: "None of the force password options are enabled.",
+                            message: "Unable to trigger a force password reset"
+                        }
+                    },
+                    unlockUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Error occurred while unlocking the user account."
+                        },
+                        genericError: {
+                            description: "Error occurred while unlocking the user account.",
+                            message: "Something went wrong"
+                        },
+                        success: {
+                            description: "The user account unlocked successfully.",
+                            message: "{{name}}'s account is unlocked"
                         }
                     },
                     updateProfileInfo: {

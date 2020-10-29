@@ -1085,10 +1085,15 @@ export interface AdminPortalNS {
             deleteUser: {
                 confirmationModal: Confirmation;
             };
+            disableUser: {
+                confirmationModal: Confirmation;
+            };
             editUser: {
                 dangerZoneGroup: {
                     header: string;
-                    dangerZone: DangerZone;
+                    deleteUserZone: DangerZone;
+                    disableUserZone: DangerZone;
+                    lockUserZone: DangerZone;
                 };
             };
             forms: {
@@ -1178,6 +1183,9 @@ export interface AdminPortalNS {
                     };
                 };
             };
+            lockUser: {
+                confirmationModal: Confirmation;
+            };
             modals: {
                 addUserWarnModal: {
                     heading: string;
@@ -1211,6 +1219,10 @@ export interface AdminPortalNS {
                         };
                     };
                 };
+                changePasswordModal: {
+                    header: string;
+                    message: string;
+                };
             };
             profile: {
                 fields: {
@@ -1231,6 +1243,7 @@ export interface AdminPortalNS {
                     phoneNumbers_mobile: string;
                     phoneNumbers_work: string;
                     phoneNumbers_other: string;
+                    oneTimePassword: string;
                     userName: string;
                 };
                 forms: {
@@ -1302,6 +1315,13 @@ export interface AdminPortalNS {
                 notifications: {
                     getProfileInfo: Notification;
                     updateProfileInfo: Notification;
+                    lockUserAccount: Notification;
+                    unlockUserAccount: Notification;
+                    disableUserAccount: Notification;
+                    enableUserAccount: Notification;
+                    changeUserPassword: Notification;
+                    forcePasswordReset: Notification;
+                    noPasswordResetOptions: Notification;
                 };
                 placeholders: {
                     SCIMDisabled: {
