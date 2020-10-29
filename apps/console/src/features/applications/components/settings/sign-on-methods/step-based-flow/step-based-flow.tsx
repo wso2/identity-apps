@@ -65,6 +65,10 @@ interface AuthenticationFlowPropsInterface extends TestableComponentInterface {
      * Make the form read only.
      */
     readOnly?: boolean;
+    /**
+     * Update authentication steps.
+     */
+    updateSteps: (add: boolean) => void;
 }
 
 /**
@@ -107,6 +111,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         onUpdate,
         readOnly,
         triggerUpdate,
+        updateSteps,
         [ "data-testid" ]: testId
     } = props;
 
@@ -320,6 +325,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         steps.forEach((step, index) => step.id = index + 1);
 
         setAuthenticationSteps(steps);
+        updateSteps(false);
     };
 
     /**
@@ -334,6 +340,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
         });
 
         setAuthenticationSteps(steps);
+        updateSteps(true);
     };
 
     /**

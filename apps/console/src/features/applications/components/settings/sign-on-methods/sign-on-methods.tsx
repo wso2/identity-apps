@@ -86,9 +86,11 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     const [ adaptiveScript, setAdaptiveScript ] = useState<string | string[]>(undefined);
     const [ requestPathAuthenticators, setRequestPathAuthenticators ] = useState<any>(undefined);
     const [ selectedRequestPathAuthenticators, setSelectedRequestPathAuthenticators ] = useState<any>(undefined);
+    const [ steps, setSteps ] = useState<number>(1);
+    const [ isDefaultScript, setIsDefaultScript ] = useState<boolean>(true);
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
-    
+
     /**
      * Toggles the update trigger.
      */
@@ -108,6 +110,15 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
     }, [] );
 
     /**
+     * Updates the number of authentication steps.
+     *
+     * @param {boolean} add - Set to `true` to add and `false` to remove.
+     */
+    const updateSteps = (add: boolean): void => {
+        setSteps(add ? steps + 1 : steps - 1);
+    }
+
+    /**
      * Handles the data loading from a adaptive auth template when it is selected
      * from the panel.
      *
@@ -118,6 +129,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             return;
         }
 
+        setIsDefaultScript(false);
         let newSequence = { ...sequence };
 
         if (template.code) {
@@ -297,6 +309,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     )
                 }
                 data-testid={ `${ testId }-step-based-flow` }
+                updateSteps={ updateSteps }
             />
             <ScriptBasedFlow
                 authenticationSequence={ sequence }
@@ -309,6 +322,8 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     )
                 }
                 data-testid={ `${ testId }-script-based-flow` }
+                authenticationSteps={ steps }
+                isDefaultScript={ isDefaultScript }
             />
             { requestPathAuthenticators && showRequestPathAuthenticators }
             {
