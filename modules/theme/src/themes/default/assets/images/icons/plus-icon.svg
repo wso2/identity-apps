@@ -16,10 +16,6 @@
  * under the License.
 -->
 
-<svg version="1.1" id="plus-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" x="0px" y="0px" viewBox="0 0 512 512" xml:space="preserve">
-	<g>
-		<g>
-			<path class="path" d="M492,236H276V20c0-11.046-8.954-20-20-20c-11.046,0-20,8.954-20,20v216H20c-11.046,0-20,8.954-20,20s8.954,20,20,20h216 v216c0,11.046,8.954,20,20,20s20-8.954,20-20V276h216c11.046,0,20-8.954,20-20C512,244.954,503.046,236,492,236z"/>
-		</g>
-	</g>
+<svg xmlns="http://www.w3.org/2000/svg" id="plus-icon" class="icon" width="14" height="14" viewBox="0 0 14 14">
+    <path id="plus-outline" class="path fill primary" d="M6.7,14V7.3H0V6.7H6.7V0h.6V6.7H14v.6H7.3V14Z" fill="#464646"/>
 </svg>

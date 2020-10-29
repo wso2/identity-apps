@@ -18,13 +18,8 @@
  * under the License.
 -->
 
-<svg version="1.1" class="icon" id="tick-circle-icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="14px" height="14px" viewBox="0 0 510 510" xml:space="preserve">
-	<g>
-		<g>
-			<path class="path fill primary" d="M150.45,206.55l-35.7,35.7L229.5,357l255-255l-35.7-35.7L229.5,285.6L150.45,206.55z M459,255c0,112.2-91.8,204-204,204
-				S51,367.2,51,255S142.8,51,255,51c20.4,0,38.25,2.55,56.1,7.65l40.801-40.8C321.3,7.65,288.15,0,255,0C114.75,0,0,114.75,0,255
-				s114.75,255,255,255s255-114.75,255-255H459z"/>
-		</g>
-	</g>
+<svg xmlns="http://www.w3.org/2000/svg" id="tick-circle-icon" class="icon" width="14" height="14" viewBox="0 0 14 14">
+    <path id="checked-circle-outline" class="path fill primary"
+          d="M0,7a7,7,0,1,1,7,7A7.008,7.008,0,0,1,0,7ZM.6,7A6.4,6.4,0,1,0,7,.6,6.407,6.407,0,0,0,.6,7Zm3.011.325L4.036,6.9,6.089,8.953,10.042,5l.425.424L6.224,9.667l0,0L6.086,9.8Z"
+          fill="#464646"/>
 </svg>

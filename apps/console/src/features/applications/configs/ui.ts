@@ -33,7 +33,7 @@ import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/i
 import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
 import {
     ReactComponent as IDPCertificateIcon
-} from "../../../themes/default/assets/images/icons/idpCertificate.svg";
+} from "../../../themes/default/assets/images/icons/idp-certificate.svg";
 import { ReactComponent as IntrospectIcon } from "../../../themes/default/assets/images/icons/introspect.svg";
 import { ReactComponent as IssuerIcon } from "../../../themes/default/assets/images/icons/issuer.svg";
 import { ReactComponent as JWKSIcon } from "../../../themes/default/assets/images/icons/jwks.svg";
