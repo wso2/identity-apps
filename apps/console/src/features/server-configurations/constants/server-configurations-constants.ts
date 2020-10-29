@@ -123,6 +123,16 @@ export class ServerConfigurationsConstants {
 	 */
 	public static readonly OTHER_SETTINGS_CONNECTOR_CATEGORY_ID: string = "T3RoZXIgU2V0dGluZ3M";
 
+	/**
+	 * UUID of the Login Attempt Security governance connector category.
+	 */
+	public static readonly LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID: string = "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk";
+
+	/**
+	 * UUID of the Account Management governance connector category.
+	 */
+	public static readonly ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID: string = "QWNjb3VudCBNYW5hZ2VtZW50";
+
     /**
      * User email verification API Keyword constants.
      */
