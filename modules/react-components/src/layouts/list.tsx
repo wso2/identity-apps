@@ -79,7 +79,7 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
     /**
      * Extra props to override the default pagination props.
      */
-    paginationOptions?: PaginationPropsInterface;
+    paginationOptions?: Omit<PaginationPropsInterface, "totalPages">;
     /**
      * Flag to reset the pagination.
      */
