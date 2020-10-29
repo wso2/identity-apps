@@ -122,11 +122,9 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
     };
 
     const handleFormSubmit = (values: InterfaceRemoteConfigForm): void => {
-        const configs: InterfaceRemoteRepoConfigDetails = {
+        let configs: InterfaceRemoteRepoConfigDetails = {
             actionListener: {
-                attributes: {
-                    frequency: values.pollingfreq
-                },
+                attributes: {},
                 type: connectivity
             },
             configurationDeployer: {
@@ -145,7 +143,22 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
                 },
                 type: RemoteFetchConstants.REMOTE_REPOSITORY_TYPE
             }
+        };
+
+        // `frequency` is only required when the listener type is `POLLING`.
+        if (connectivity === RemoteFetchConstants.REMOTE_FETCH_POLLING) {
+            configs = {
+                ...configs,
+                actionListener: {
+                    ...configs.actionListener,
+                    attributes: {
+                        ...configs.actionListener.attributes,
+                        frequency: values.pollingfreq
+                    }
+                }
+            }
         }
+
         createConfiguration(configs);
     };
 
