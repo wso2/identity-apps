@@ -28,6 +28,7 @@
 <%@ page import="java.io.File" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="javax.ws.rs.HttpMethod" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
@@ -39,6 +40,12 @@
     String username = request.getParameter("username");
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
+    String httpMethod = request.getMethod();
+
+    if (!StringUtils.equals(httpMethod, HttpMethod.GET) || !StringUtils.equals(httpMethod, HttpMethod.POST)) {
+        response.setStatus(response.SC_OK);
+        return;
+    }
 
     if (StringUtils.isBlank(callback)) {
         callback = IdentityManagementEndpointUtil.getUserPortalUrl(
