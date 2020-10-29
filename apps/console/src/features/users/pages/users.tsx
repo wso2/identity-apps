@@ -122,12 +122,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
 
                 data.Resources = data?.Resources?.map((resource) => {
                     let email: string = null;
-                    if (resource.emails instanceof Array) {
-                        const emailElement = resource.emails[ 0 ];
+                    if (resource?.emails instanceof Array) {
+                        const emailElement = resource?.emails[ 0 ];
                         if (typeof emailElement === "string") {
                             email = emailElement;
                         } else {
-                            email = emailElement.value;
+                            email = emailElement?.value;
                         }
                     }
 
