@@ -107,7 +107,7 @@ export interface PaginationPropsInterface extends PaginationProps, TestableCompo
      * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event MouseEvent.
      * @param {PaginationProps} data Pagination props data.
      */
-    onPageChange: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
+    onPageChange?: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>, data: PaginationProps) => void;
     /**
      * Toggles pagination reset.
      */
