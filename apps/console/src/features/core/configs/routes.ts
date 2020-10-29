@@ -275,7 +275,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             component: lazy(() => import("../../workflow-approvals/pages/approvals")),
             exact: true,
             icon: {
-                icon: SidePanelIcons.roles
+                icon: SidePanelIcons.approvals
             },
             id: "approvals",
             name: "adminPortal:components.sidePanel.approvals",

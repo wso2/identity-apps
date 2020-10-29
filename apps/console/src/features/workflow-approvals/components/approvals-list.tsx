@@ -25,7 +25,7 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { Header, Label, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
+import {Header, Icon, Label, Popup, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
 import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } from "../models";
 import { UIConstants } from "../../core/constants";
 import {
@@ -33,7 +33,8 @@ import {
     EmptyPlaceholder,
     TableActionsInterface,
     TableColumnInterface,
-    LinkButton
+    LinkButton,
+    GenericIcon
 } from "@wso2is/react-components";
 import { FeatureConfigInterface } from "../../core/models";
 import {
@@ -47,6 +48,7 @@ import { fetchPendingApprovalDetails } from "../api";
 import { useDispatch } from "react-redux";
 import { addAlert } from "@wso2is/core/store";
 import { ApprovalTaskComponent } from "./approval-task";
+import { ApprovalsListIcons } from "../configs";
 
 /**
  * Prop types for the approvals list component.
@@ -279,20 +281,10 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
 
         return [
             {
-                "data-testid": `${ testId }-item-approve-button`,
-                hidden: (approval: ApprovalTaskListItemInterface): boolean =>
-                    approval?.status === ApprovalStatus.COMPLETED,
-                icon: (): SemanticICONS => "check",
-                onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
-                    updateApprovalStatus(approval?.id, ApprovalStatus.APPROVE),
-                popupText: (): string => t("common:approve"),
-                renderer: "semantic-icon"
-            },
-            {
                 "data-testid": `${ testId }-item-claim-button`,
                 hidden: (approval: ApprovalTaskListItemInterface): boolean =>
                     approval?.status === ApprovalStatus.COMPLETED || approval?.status === ApprovalStatus.RESERVED,
-                icon: (): SemanticICONS => "hand paper outline",
+                icon: (): SemanticICONS => "hand pointer outline",
                 onClick: (e: SyntheticEvent, approval: ApprovalTaskListItemInterface): void =>
                     updateApprovalStatus(approval?.id, ApprovalStatus.CLAIM),
                 popupText: (): string => t("common:claim"),
