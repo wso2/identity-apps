@@ -17,50 +17,7 @@
  */
 
 import {
-    ReactComponent as AssociatedAccountsMini
-} from "../../../themes/default/assets/images/illustrations/associated-accounts-mini.svg";
-import {
-    ReactComponent as AssociatedAccounts
-} from "../../../themes/default/assets/images/illustrations/associated-accounts.svg";
-import {
-    ReactComponent as ChangePasswordMini
-} from "../../../themes/default/assets/images/illustrations/change-password-mini.svg";
-import {
-    ReactComponent as ChangePassword
-} from "../../../themes/default/assets/images/illustrations/change-password.svg";
-import {
-    ReactComponent as FederatedAssociationsMini
-} from "../../../themes/default/assets/images/illustrations/federated-associations-mini.svg";
-import {
-    ReactComponent as FederatedAssociations
-} from "../../../themes/default/assets/images/illustrations/federated-associations.svg";
-import {
     ReactComponent as GovernanceConnectors
 } from "../../../themes/default/assets/images/illustrations/governance-connectors.svg";
-import {
-    ReactComponent as ProfileExportMini
-} from "../../../themes/default/assets/images/illustrations/profile-export-mini.svg";
-import {
-    ReactComponent as ProfileExport
-} from "../../../themes/default/assets/images/illustrations/profile-export.svg";
-import {
-    ReactComponent as SecurityQuestionsMini
-} from "../../../themes/default/assets/images/illustrations/security-questions-mini.svg";
-import {
-    ReactComponent as SecurityQuestions
-} from "../../../themes/default/assets/images/illustrations/security-questions.svg";
-
-export const SettingsSectionIcons = {
-    associatedAccounts: AssociatedAccounts,
-    associatedAccountsMini: AssociatedAccountsMini,
-    changePassword: ChangePassword,
-    changePasswordMini: ChangePasswordMini,
-    federatedAssociations: FederatedAssociations,
-    federatedAssociationsMini: FederatedAssociationsMini,
-    profileExport: ProfileExport,
-    profileExportMini: ProfileExportMini,
-    securityQuestions: SecurityQuestions,
-    securityQuestionsMini: SecurityQuestionsMini
-};
 
 export const GovernanceConnectorsIllustration = GovernanceConnectors;
