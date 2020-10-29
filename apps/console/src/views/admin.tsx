@@ -58,7 +58,11 @@ import { AppConstants, UIConstants } from "../features/core/constants";
 import { history } from "../features/core/helpers";
 import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
 import { AppState } from "../features/core/store";
-import { GovernanceConnectorCategoryInterface, GovernanceConnectorUtils } from "../features/server-configurations";
+import {
+    GovernanceConnectorCategoryInterface,
+    GovernanceConnectorUtils,
+    ServerConfigurationsConstants
+} from "../features/server-configurations";
 
 /**
  * Admin View Prop types.
@@ -151,7 +155,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
                 const filteredRoutesClone = [ ...filteredRoutes ];
 
-                governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface) => {
+                governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
                     let subCategoryExists = false;
                     category.connectors?.map(connector => {
                         if (connector.subCategory !== "DEFAULT") {
@@ -172,6 +176,9 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         },
                         id: category.id,
                         name: category.name,
+                        order: (category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID)
+                            ? filteredRoutes.length + governanceConnectorCategories.length
+                            : filteredRoutes.length + index,
                         path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
                         protected: true,
                         showOnSidePanel: true
