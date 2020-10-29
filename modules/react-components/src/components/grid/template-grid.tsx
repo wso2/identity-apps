@@ -21,7 +21,7 @@ import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import get from "lodash/get";
 import take from "lodash/take";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { Grid, Card } from "semantic-ui-react";
+import { Card, Grid } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
 import { LinkButton } from "../button";
 import { SelectionCard, TemplateCard, TemplateCardPropsInterface } from "../card";
