@@ -18,18 +18,8 @@
  * under the License.
 -->
 
-<svg version="1.1" id="minimize-icon" class="icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14"
-	 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 502.56 502.56" xml:space="preserve">
-	<g>
-		<g>
-			<g>
-				<path class="path fill primary" d="M171.36,148.8L22.72,0L0,22.72l148.8,148.64H75.36v32h112c8.837,0,16-7.163,16-16v-112h-32V148.8z"/>
-				<path class="path fill primary" d="M315.36,203.36h112v-32h-73.44L502.56,22.72L480,0L331.36,148.8V75.36h-32v112
-					C299.36,196.197,306.523,203.36,315.36,203.36z"/>
-				<path class="path fill primary" d="M427.36,331.36v-32h-112c-8.837,0-16,7.163-16,16v112h32v-73.44L480,502.56L502.56,480L353.92,331.36H427.36z"/>
-				<path class="path fill primary" d="M187.36,299.36h-112v32h73.44L0,480l22.56,22.56l148.8-148.64v73.44h32v-112
-					C203.36,306.523,196.197,299.36,187.36,299.36z"/>
-			</g>
-		</g>
-	</g>
+<svg xmlns="http://www.w3.org/2000/svg" id="minimize-icon" class="icon" width="14" height="14" viewBox="0 0 13.998 14">
+    <path id="minimize-outline" class="path fill primary"
+          d="M9.23,9.662V11.95H8.622V8.6H11.97v.609H9.64L14,13.569l-.43.431ZM0,13.571l4.357-4.36H2.029V8.6H5.378V11.95h-.61V9.663L.43,14ZM9.231,5.4H8.622V2.05h.609V4.337L13.568,0,14,.43,9.64,4.789h2.33V5.4Zm-4.464,0H2.029V4.789h2.33L0,.43.431,0,4.768,4.337V2.05h.609V5.4Z"
+          transform="translate(-0.001)" fill="#464646"/>
 </svg>

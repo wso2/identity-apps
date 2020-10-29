@@ -1,0 +1,23 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="14" height="14" viewBox="0 0 12.601 14.001">
+    <path id="ldap" class="path fill primary"
+          d="M2.191,14H.4a.4.4,0,0,1-.4-.4V.4A.4.4,0,0,1,.4,0H6.7a.4.4,0,0,1,.4.4V3.2h5.1a.4.4,0,0,1,.4.4V14H4.941V11.12a.4.4,0,0,0-.4-.4H2.59a.4.4,0,0,0-.4.4V14ZM7.1,10.72v.6H12v-.6ZM10.471,8.5v.6h.6V8.5Zm-1.2,0v.6h.6V8.5Zm-1.2,0v.6h.6V8.5Zm-2.989,0v.6h.6V8.5Zm-1.2,0v.6h.6V8.5Zm-1.2,0v.6h.6V8.5Zm-1.2,0v.6h.6V8.5Zm8.99-1.2v.6h.6V7.3Zm-1.2,0v.6h.6V7.3Zm-1.2,0v.6h.6V7.3Zm-2.989,0v.6h.6V7.3Zm-1.2,0v.6h.6V7.3Zm-1.2,0v.6h.6V7.3Zm-1.2,0v.6h.6V7.3Zm8.99-1.2v.6h.6V6.1Zm-1.2,0v.6h.6V6.1Zm-1.2,0v.6h.6V6.1Zm-2.989,0v.6h.6V6.1Zm-1.2,0v.6h.6V6.1Zm-1.2,0v.6h.6V6.1Zm-1.2,0v.6h.6V6.1Zm8.99-1.2v.6h.6V4.9Zm-1.2,0v.6h.6V4.9Zm-1.2,0v.6h.6V4.9Zm-2.989,0v.6h.6V4.9Zm-1.2,0v.6h.6V4.9Zm-1.2,0v.6h.6V4.9Zm-1.2,0v.6h.6V4.9Zm3.6-1.2v.6h.6V3.7Zm-1.2,0v.6h.6V3.7Zm-1.2,0v.6h.6V3.7Zm-1.2,0v.6h.6V3.7Zm3.6-1.2v.6h.6V2.5Zm-1.2,0v.6h.6V2.5Zm-1.2,0v.6h.6V2.5Zm-1.2,0v.6h.6V2.5Zm3.6-1.2v.6h.6V1.3Zm-1.2,0v.6h.6V1.3Zm-1.2,0v.6h.6V1.3Zm-1.2,0v.6h.6V1.3ZM4.34,14H2.79V11.32H4.34V14Z"
+          fill="#464646"/>
+</svg>
