@@ -29,7 +29,7 @@ import {
     PaginationProps,
     Popup
 } from "semantic-ui-react";
-import { Pagination } from "../components";
+import { Pagination, PaginationPropsInterface } from "../components";
 
 /**
  * List layout component Prop types.
@@ -56,6 +56,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      */
     listItemLimit?: number;
     /**
+     * Flag to enable pagination minimal mode. 
+     */
+    minimalPagination?: boolean;
+    /**
      * Callback to be fired on page number change.
      * @param {React.MouseEvent<HTMLAnchorElement, MouseEvent>} event - Event.
      * @param {PaginationProps} data - Pagination data.
@@ -73,6 +77,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      */
     onSortOrderChange?: (isAscending: boolean) => void;
     /**
+     * Extra props to override the default pagination props.
+     */
+    paginationOptions?: Omit<PaginationPropsInterface, "totalPages">;
+    /**
      * Flag to reset the pagination.
      */
     resetPagination?: boolean;
@@ -84,6 +92,10 @@ export interface ListLayoutPropsInterface extends PaginationProps, TestableCompo
      * Flag to toggle pagination visibility.
      */
     showPagination?: boolean;
+    /**
+     * Flag to toggle pagination page limit dropdown visibility.
+     */
+    showPaginationPageLimit?: boolean;
     /**
      * Flag to toggle top action panel visibility.
      */
@@ -125,14 +137,16 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
         children,
         className,
         leftActionPanel,
-        listItemLimit,
+        minimalPagination,
         onItemsPerPageDropdownChange,
         onPageChange,
         onSortStrategyChange,
         onSortOrderChange,
+        paginationOptions,
         resetPagination,
         rightActionPanel,
         showPagination,
+        showPaginationPageLimit,
         showTopActionPanel,
         sortOptions,
         sortStrategy,
@@ -230,12 +244,15 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                     (showPagination && totalListSize)
                         ? (
                             <Pagination
+                                minimal={ minimalPagination }
+                                showItemsPerPageDropdown={ showPaginationPageLimit }
                                 data-testid={ `${ testId }-pagination` }
                                 resetPagination={ resetPagination }
                                 totalListSize={ totalListSize }
                                 totalPages={ totalPages }
                                 onPageChange={ onPageChange }
                                 onItemsPerPageDropdownChange={ onItemsPerPageDropdownChange }
+                                { ...paginationOptions }
                             />
                         )
                         : null
@@ -251,6 +268,8 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
 ListLayout.defaultProps = {
     advancedSearchPosition: "left",
     "data-testid": "list-layout",
+    minimalPagination: true,
     showPagination: false,
+    showPaginationPageLimit: true,
     showTopActionPanel: true
 };

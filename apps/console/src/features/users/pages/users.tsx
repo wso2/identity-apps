@@ -18,7 +18,7 @@
 
 import { getUserStoreList } from "@wso2is/core/api";
 import { CommonHelpers } from "@wso2is/core/helpers";
-import { AlertInterface, AlertLevels } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { LocalStorageUtils } from "@wso2is/core/utils";
 import {
@@ -58,13 +58,32 @@ import { UserManagementConstants } from "../constants";
 import { UserListInterface } from "../models";
 
 /**
+ * Props for the Users page.
+ */
+type UsersPageInterface = TestableComponentInterface;
+
+/**
+ * Temporary value to append to the list limit to figure out if the next button is there.
+ * @type {number}
+ */
+const TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET: number = 1;
+
+/**
  * Users info page.
  *
+ * @param {UsersPageInterface} props - Props injected to the component.
  * @return {React.ReactElement}
  */
-const UsersPage: FunctionComponent<any> = (): ReactElement => {
+const UsersPage: FunctionComponent<UsersPageInterface> = (
+    props: UsersPageInterface
+): ReactElement => {
+
+    const {
+        [ "data-testid" ]: testId
+    } = props;
 
     const { t } = useTranslation();
+
     const dispatch = useDispatch();
 
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
@@ -84,6 +103,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ userStoreError, setUserStoreError ] = useState(false);
     const [ emailVerificationEnabled, setEmailVerificationEnabled ] = useState<boolean>(undefined);
+    const [ isNextPageAvailable, setIsNextPageAvailable ] = useState<boolean>(undefined);
 
     const init = useRef(true);
 
@@ -94,7 +114,9 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
     const getList = (limit: number, offset: number, filter: string, attribute: string, domain: string) => {
         setUserListRequestLoading(true);
 
-        getUsersList(limit, offset, filter, attribute, domain)
+        const modifiedLimit = limit + TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET;
+
+        getUsersList(modifiedLimit, offset, filter, attribute, domain)
             .then((response) => {
                 const data = { ...response };
 
@@ -114,7 +136,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     return resource;
                 });
 
-                setUsersList(data);
+                setUsersList(moderateUsersList(data, modifiedLimit, TEMP_RESOURCE_LIST_ITEM_LIMIT_OFFSET));
                 setUserStoreError(false);
             }).catch((error) => {
                 dispatch(addAlert({
@@ -178,6 +200,34 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             setUserListMetaContent(tempColumns);
         }
     }, []);
+
+    /**
+     * Returns a moderated users list.
+     *
+     * @remarks There is no proper way to count the total entries in the userstore with LDAP. So as a workaround, when
+     * fetching users, we request an extra entry to figure out if there is a next page.
+     * TODO: Remove this function and other related variables once there is a proper fix for LDAP pagination.
+     * @see {@link https://github.com/wso2/product-is/issues/7320}
+     *
+     * @param {UserListInterface} list - Users list retrieved from the API.
+     * @param {number} requestedLimit - Requested item limit.
+     * @param {number} popCount - Tempt count used which will be removed after figuring out if next page is available.
+     * @return {UserListInterface}
+     */
+    const moderateUsersList = (list: UserListInterface, requestedLimit: number,
+                               popCount: number = 1): UserListInterface => {
+
+        const moderated: UserListInterface = list;
+
+        if (moderated.itemsPerPage === requestedLimit) {
+            moderated.Resources.splice(-1, popCount);
+            setIsNextPageAvailable(true);
+        } else {
+            setIsNextPageAvailable(false);
+        }
+
+        return moderated;
+    };
 
     /**
      * The following function fetch the userstore list and set it to the state.
@@ -419,7 +469,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                     )
                 });
             });
-    }
+    };
 
     return (
         <PageLayout
@@ -437,6 +487,7 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             }
             title={ t("adminPortal:pages.users.title") }
             description={ t("adminPortal:pages.users.subTitle") }
+            data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
                 // TODO add sorting functionality.
@@ -525,6 +576,9 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
                         && usersList?.totalResults <= 0) }
                 totalPages={ Math.ceil(usersList.totalResults / listItemLimit) }
                 totalListSize={ usersList.totalResults }
+                paginationOptions={ {
+                    disableNextButton: !isNextPageAvailable
+                } }
             >
                 { userStoreError
                     ? <EmptyPlaceholder
@@ -601,6 +655,13 @@ const UsersPage: FunctionComponent<any> = (): ReactElement => {
             </ListLayout>
         </PageLayout>
     );
+};
+
+/**
+ * Default props for the component.
+ */
+UsersPage.defaultProps = {
+    "data-testid": "users"
 };
 
 /**
