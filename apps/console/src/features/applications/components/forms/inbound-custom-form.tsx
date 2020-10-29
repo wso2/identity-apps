@@ -228,7 +228,6 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
     };
 
     useEffect(() => {
-        // console.log(metadata);
         if (metadata) {
             generateFormElements();
         }
