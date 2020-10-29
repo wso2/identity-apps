@@ -67,7 +67,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
-    const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
     const [ userStore, setUserStore ] = useState<string>(initialValues?.domain);
     const [ randomPassword, setRandomPassword ] = useState<string>("");
     const [ isPasswordGenerated, setIsPasswordGenerated ] = useState<boolean>(false);
@@ -76,7 +75,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         setUsernameRegEx
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
-    const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
     const [ passwordScore, setPasswordScore ] = useState<number>(-1);
 
@@ -160,27 +158,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     };
 
     /**
-     * The following function checks if the password pattern is valid against the user store regEx.
-     *
-     * @param password
-     */
-    const setPasswordRegEx = async (password: string): Promise<void> => {
-        let passwordRegex = "";
-        if (userStore !== "primary") {
-            // Set the username regEx of the secondary user store.
-            await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
-                .then((response) => {
-                    setPasswordRegExLoading(true);
-                    passwordRegex = response;
-                })
-        } else {
-            // Set the username regEx of the primary user store.
-            passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
-        }
-        setIsPasswordPatternValid(validateInputAgainstRegEx(password, passwordRegex));
-    };
-
-    /**
      * The following function handles the change of the password.
      *
      * @param values
@@ -188,11 +165,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
         setPassword(password);
-
-        setPasswordRegEx(password)
-            .finally(() => {
-                setPasswordRegExLoading(false);
-            });
     };
 
     /**
@@ -279,22 +251,33 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value={ isPasswordGenerated ? randomPassword : initialValues?.newPassword }
-                                listen={ handlePasswordChange }
-                                loading={ isPasswordRegExLoading }
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!isPasswordPatternValid) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push( t("adminPortal:components.user.forms." +
-                                            "addUserFor1m.inputs.newPassword.validations.regExViolation") );
+                                validation={ async (value: string, validation: Validation) => {
+                                    let passwordRegex = "";
+                                    if (userStore !== "primary") {
+                                        // Set the username regEx of the secondary user store.
+                                        passwordRegex
+                                            = await getUserstoreRegEx(
+                                                userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
+                                    } else {
+                                        // Set the username regEx of the primary user store.
+                                        passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
                                     }
 
-                                    if (passwordScore < 3) {
+                                    if(!validateInputAgainstRegEx(value, passwordRegex)){
+                                        validation.isValid = false;
+                                        validation.errorMessages.push( t("adminPortal:components.user.forms." +
+                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
+                                    }
+
+                                    // Password strength validation is disabled
+                                    /* if (passwordScore < 3) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(t("common:weakPassword"));
-                                    }
+                                    } */
                                 } }
                                 tabIndex={ 6 }
                                 enableReinitialize={ true }
+                                listen = { handlePasswordChange }
                             />
                             <Suspense fallback={ null } >
                                 <PasswordMeter
@@ -435,17 +418,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                             validation.isValid = false;
                                             validation.errorMessages.push(t("adminPortal:components.user.forms." +
                                                 "addUserForm.inputs.username.validations.invalid"));
-                                        } else {
-                                            if (validation.errorMessages.length === 1) {
-                                                validation.isValid = true;
-                                                const errorIndex
-                                                    = validation.errorMessages.findIndex((value: string) => {
-                                                    return value === t("adminPortal:components.user.forms." +
-                                                        "addUserForm.inputs.username.validations.invalid");
-                                                });
-
-                                                errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
-                                            }
                                         }
                                     }
                                 } catch(error) {
@@ -461,7 +433,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     }));
                                 }
 
-                                if (value && validateInputAgainstRegEx(value, usernameRegEx)) {
+                                if (value && !validateInputAgainstRegEx(value, usernameRegEx)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(t("adminPortal:components.user.forms." +
                                         "addUserForm.inputs.username.validations.regExViolation"));
