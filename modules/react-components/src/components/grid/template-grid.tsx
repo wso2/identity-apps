@@ -21,7 +21,7 @@ import { ImageUtils, URLUtils } from "@wso2is/core/utils";
 import get from "lodash/get";
 import take from "lodash/take";
 import React, { ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
-import { Grid } from "semantic-ui-react";
+import { Grid, Card } from "semantic-ui-react";
 import { UserAvatar } from "../avatar";
 import { LinkButton } from "../button";
 import { SelectionCard, TemplateCard, TemplateCardPropsInterface } from "../card";
@@ -410,24 +410,28 @@ export const TemplateGrid = <T extends WithPropertiesInterface>(
                         )
                         : (
                             (templateList && templateList instanceof Array && templateList.length > 0)
-                                ? templateList.map((template, index) => (
-                                    <TemplateCard
-                                        key={ index }
-                                        description={ template.description }
-                                        image={ resolveTemplateImage(template.image) }
-                                        imageOptions={ templateIconOptions }
-                                        tagsSectionTitle={ tagsSectionTitle }
-                                        tags={ get(template, tagsKey) }
-                                        tagsAs={ tagsAs }
-                                        showTags={ showTags }
-                                        showTagIcon={ showTagIcon }
-                                        name={ template.name }
-                                        id={ template.id }
-                                        onClick={ onTemplateSelect }
-                                        imageSize={ templateIconSize }
-                                        data-testid={ template.id }
-                                    />
-                                ))
+                                ? <Card.Group>
+                                    {
+                                        templateList.map((template, index) => (
+                                            <TemplateCard
+                                                key={ index }
+                                                description={ template.description }
+                                                image={ resolveTemplateImage(template.image) }
+                                                imageOptions={ templateIconOptions }
+                                                tagsSectionTitle={ tagsSectionTitle }
+                                                tags={ get(template, tagsKey) }
+                                                tagsAs={ tagsAs }
+                                                showTags={ showTags }
+                                                showTagIcon={ showTagIcon }
+                                                name={ template.name }
+                                                id={ template.id }
+                                                onClick={ onTemplateSelect }
+                                                imageSize={ templateIconSize }
+                                                data-testid={ template.id }
+                                            />
+                                        ))
+                                    }
+                                </Card.Group>
                                 : emptyPlaceholder && emptyPlaceholder
                         )
                     }
