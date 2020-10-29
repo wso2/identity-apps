@@ -77,7 +77,7 @@ const UserEditPage = (): ReactElement => {
     }, []);
 
     useEffect(() => {
-        if(connectorProperties === undefined) {
+        if(connectorProperties !== undefined) {
             return;
         }
 

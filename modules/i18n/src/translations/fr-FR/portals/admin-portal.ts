@@ -1886,13 +1886,6 @@ export const adminPortal: AdminPortalNS = {
                         subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
                             "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
                     }
-                },
-                menu: {
-                    menuItems: {
-                        0: "Profil",
-                        1: "Groupes",
-                        2: "Rôles"
-                    }
                 }
             },
             forms: {

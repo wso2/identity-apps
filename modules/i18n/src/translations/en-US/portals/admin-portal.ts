@@ -1883,13 +1883,6 @@ export const adminPortal: AdminPortalNS = {
                         subheader: "Once you lock the account, the user can no longer log in to the system. Please " +
                             "be certain."
                     }
-                },
-                menu: {
-                    menuItems: {
-                        0: "Profile",
-                        1: "Groups",
-                        2: "Roles"
-                    }
                 }
             },
             forms: {
