@@ -128,6 +128,7 @@ export class AppConstants {
         .set("PROFILEINFO_LINKED_ACCOUNTS", "profileInfo.linkedAccounts")
         .set("PROFILEINFO_EXTERNAL_LOGINS", "profileInfo.externalLogins")
         .set("PROFILEINFO_EXPORT_PROFILE", "profileInfo.exportProfile")
+        .set("PROFILEINFO_MOBILE_VERIFICATION", "profileInfo.mobileVerification")
         .set("SECURITY_CHANGE_PASSWORD", "security.changePassword")
         .set("SECURITY_ACCOUNT_RECOVERY", "security.accountRecovery")
         .set("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS", "security.accountRecovery.challengeQuestions")

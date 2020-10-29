@@ -1057,6 +1057,13 @@ export const userPortal: UserPortalNS = {
                 emailConfirmation: {
                     content: "Veuillez confirmer votre adresse e-mail afin de pouvoir l'ajouter à votre profil",
                     header: "Confirmation en attente !"
+                },
+                mobileVerification: {
+                    content: "Ce numéro de mobile est utilisé pour l'envoi de SMS OTP lorsque l'authentification " +
+                        "second facteur est activée et pour l'envoi de codes de récupération en cas de " +
+                        "récupération d'un nom d'utilisateur / mot de passe. Pour mettre à jour ce numéro, " +
+                        "vous devez vérifier le nouveau numéro en entrant le code de vérification envoyé à votre " +
+                        "nouveau numéro. Cliquez sur mettre à jour si vous souhaitez continuer.",
                 }
             },
             notifications: {
@@ -1202,6 +1209,35 @@ export const userPortal: UserPortalNS = {
                     success: {
                         description: "Fermeture de la session authentifiée effectuée avec succès",
                         message: "Session supprimée avec succès"
+                    }
+                }
+            }
+        },
+        mobileUpdateWizard: {
+            done: "Succès! Votre numéro de mobile a été vérifié avec succès.",
+            submitMobile: {
+                heading: "Entrez votre nouveau numéro de mobile",
+            },
+            verifySmsOtp: {
+                generate: "Renvoyer un nouveau code de vérification",
+                heading: "Entrez le code de vérification envoyé à votre numéro de mobile",
+                error: "Échec de la vérification. Veuillez réessayer.",
+                label: "Code de vérification",
+                placeholder: "Entrez votre code de vérification",
+                requiredError: "Entrer le code de vérification",
+            },
+            notifications: {
+                resendSuccess: {
+                    message: "La demande de code de renvoi a été envoyée avec succès"
+                },
+                resendError: {
+                    error: {
+                        description: "{{error}}",
+                        message: "Un problème est survenu"
+                    },
+                    genericError: {
+                        description: "Une erreur s'est produite lors de la tentative d'obtention d'un nouveau code de vérification",
+                        message: "Un problème est survenu"
                     }
                 }
             }

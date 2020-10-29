@@ -672,7 +672,7 @@ export const userPortal: UserPortalNS = {
             },
             smsOtp: {
                 descriptions: {
-                    hint: "You'll receive a text message containing a one-time verification code"
+                    hint: "You'll receive a text message containing an one-time verification code",
                 },
                 heading: "via SMS",
                 notifications: {
@@ -1056,6 +1056,12 @@ export const userPortal: UserPortalNS = {
                 emailConfirmation: {
                     content: "Please confirm the email address update in order to add the new email to your profile.",
                     header: "Confirmation pending!"
+                },
+                mobileVerification: {
+                    content: "This mobile number is used for sending SMS OTP when second factor authentication " +
+                        "is enabled and for sending recovery codes in case of a username/password recovery. " +
+                        "To update this number, you have to verify the new number by entering the verification " +
+                        "code sent to your new number. Click update if you wish to proceed.",
                 }
             },
             notifications: {
@@ -1201,6 +1207,35 @@ export const userPortal: UserPortalNS = {
                     success: {
                         description: "Successfully terminated the IDP session",
                         message: "Session terminate success"
+                    }
+                }
+            }
+        },
+        mobileUpdateWizard: {
+            done: "Success! Your mobile number is successfully verified.",
+            submitMobile: {
+                heading: "Enter your new mobile number",
+            },
+            verifySmsOtp: {
+                generate: "Resend a new verification code",
+                heading: "Enter the verification code sent to your mobile number",
+                error: "Verification failed. Please try again.",
+                label: "Verification Code",
+                placeholder: "Enter your verification code",
+                requiredError: "Enter the verification code",
+            },
+            notifications: {
+                resendSuccess: {
+                    message: "Resend code request is sent successfully"
+                },
+                resendError: {
+                    error: {
+                        description: "{{error}}",
+                        message: "Something went wrong"
+                    },
+                    genericError: {
+                        description: "An error occurred while trying to get a new verification code",
+                        message: "Something went wrong"
                     }
                 }
             }

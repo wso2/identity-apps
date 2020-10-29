@@ -64,7 +64,10 @@ const PersonalInfoPage = (): ReactElement => {
                                 AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_PROFILE")
                             )
                             ? (
-                                <Profile onAlertFired={ handleAlerts } />
+                                <Profile
+                                    featureConfig={ accessConfig }
+                                    onAlertFired={ handleAlerts }
+                                />
                             )
                             : null
                         }

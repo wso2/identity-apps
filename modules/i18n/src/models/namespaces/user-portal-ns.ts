@@ -638,6 +638,9 @@ export interface UserPortalNS {
                     content: string;
                     header: string;
                 };
+                mobileVerification: {
+                    content: string;
+                };
             };
             notifications: {
                 getProfileCompletion: Notification;
@@ -680,6 +683,29 @@ export interface UserPortalNS {
                 fetchSessions: Notification;
                 terminateAllUserSessions: Notification;
                 terminateUserSession: Notification;
+            };
+        };
+        mobileUpdateWizard: {
+            submitMobile: {
+                heading: string;
+            };
+            verifySmsOtp: {
+                heading: string;
+                generate: string;
+                label: string;
+                placeholder: string;
+                error: string;
+                requiredError: string;
+            };
+            done: string;
+            notifications: {
+                resendSuccess: {
+                    message: string;
+                };
+                resendError: {
+                    genericError: NotificationItem;
+                    error: NotificationItem;
+                };
             };
         };
     };
