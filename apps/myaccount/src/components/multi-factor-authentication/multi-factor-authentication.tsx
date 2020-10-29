@@ -55,7 +55,10 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
                         AppConstants.FEATURE_DICTIONARY.get("SECURITY_MFA_SMS")
                     ) ? (
                         <List.Item className="inner-list-item">
-                            <SMSOTPAuthenticator onAlertFired={ onAlertFired } />
+                            <SMSOTPAuthenticator
+                                featureConfig={ featureConfig }
+                                onAlertFired={ onAlertFired }
+                            />
                         </List.Item>
                     ) : null }
 

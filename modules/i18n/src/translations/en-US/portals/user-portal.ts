@@ -672,7 +672,7 @@ export const userPortal: UserPortalNS = {
             },
             smsOtp: {
                 descriptions: {
-                    hint: "You'll receive a text message containing a one-time verification code",
+                    hint: "You'll receive a text message containing an one-time verification code",
                 },
                 heading: "via SMS",
                 notifications: {

@@ -22,16 +22,18 @@ import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {Form, Grid, Icon, List, Placeholder} from "semantic-ui-react";
+import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { updateProfileInfo } from "../../../api";
 import { MFAIcons } from "../../../configs";
-import { CommonConstants } from "../../../constants";
-import {AlertInterface, AlertLevels, BasicProfileInterface, ProfileSchema} from "../../../models";
+import { AppConstants, CommonConstants } from "../../../constants";
+import { AlertInterface, AlertLevels, BasicProfileInterface, FeatureConfigInterface } from "../../../models";
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { MobileUpdateWizard } from "../../shared/mobile-update-wizard";
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { SBACInterface } from "@wso2is/core/models";
 
 
 /**
@@ -46,7 +48,7 @@ const SMS = "sms";
 /**
  * Prop types for the SMS OTP component.
  */
-interface SMSOTPProps {
+interface SMSOTPProps extends SBACInterface<FeatureConfigInterface> {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -58,16 +60,13 @@ interface SMSOTPProps {
 export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
     const [mobile, setMobile] = useState("");
     const { t } = useTranslation();
-    const { onAlertFired } = props;
+    const { onAlertFired, featureConfig } = props;
     const dispatch = useDispatch();
     const profileInfo: BasicProfileInterface = useSelector(
         (state: any) => state.authenticationInformation.profileInfo
     );
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
-
-    // TODO: Get from config
-    const isMobileVerificationEnabled: boolean = true;
 
     useEffect(() => {
         if (isEmpty(profileInfo)) {
@@ -294,10 +293,13 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     </Grid.Row>
                 </Grid>
             );
-        } else if (isMobileVerificationEnabled) {
-            return generateUpdateFormForMobileVerification();
         }
         return (
+            isFeatureEnabled(
+                featureConfig?.personalInfo,
+                AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
+            )
+            ? generateUpdateFormForMobileVerification() :
             <EditSection>
                 <Grid>
                     <Grid.Row>

@@ -17,8 +17,9 @@
  */
 
 import { updateProfileImageURL } from "@wso2is/core/api";
+import { SBACInterface } from "@wso2is/core/models";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { resolveUserDisplayName, resolveUserEmails, isFeatureEnabled } from "@wso2is/core/helpers";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, UserAvatar, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -28,9 +29,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
-import { CommonConstants } from "../../constants";
+import { CommonConstants, AppConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
-import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
+import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
 import { flattenSchemas } from "../../utils";
@@ -40,7 +41,7 @@ import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 /**
  * Prop types for the basic details component.
  */
-interface ProfileProps {
+interface ProfileProps extends SBACInterface<FeatureConfigInterface> {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -52,7 +53,7 @@ interface ProfileProps {
  */
 export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
 
-    const { onAlertFired } = props;
+    const { onAlertFired, featureConfig } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -69,9 +70,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const [ isEmailPending, setEmailPending ] = useState<boolean>(false);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
     const [ showMobileUpdateWizard, setShowMobileUpdateWizard ] = useState<boolean>(false);
-
-    // TODO: Get from config
-    const isMobileVerificationEnabled: boolean = true;
 
     /**
      * Set the if the email verification is pending.
@@ -270,91 +268,154 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
-            if (isMobileVerificationEnabled && checkSchemaType(schema.name, "mobile")) {
-                return generateUpdateFormForMobileVerification(schema, fieldName);
-            }
             return (
-                <EditSection>
-                    <Grid>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 4 }>{fieldName}</Grid.Column>
-                            <Grid.Column width={ 12 }>
-                                <Forms
-                                    onSubmit={ (values) => {
-                                        handleSubmit(values, schema.name, schema.extended);
-                                    } }
-                                >
-                                    <Field
-                                        autoFocus={ true }
-                                        label=""
-                                        name={ schema.name }
-                                        placeholder={ t("userPortal:components.profile.forms.generic.inputs." +
-                                            "placeholder", {
-                                            fieldName
-                                        }) }
-                                        required={ schema.required }
-                                        requiredErrorMessage={ t(
-                                            "userPortal:components.profile.forms.generic.inputs.validations.empty",
+                isFeatureEnabled(
+                    featureConfig?.personalInfo,
+                    AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
+                ) && checkSchemaType(schema.name, "mobile")
+                ? (
+                    <EditSection>
+                        <p>
+                            { t("userPortal:components.profile.messages.mobileVerification.content") }
+                        </p>
+                        <Grid padded={ true }>
+                            <Grid.Row columns={ 2 }>
+                                < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
+                                    <List.Content>{ fieldName }</List.Content>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
+                                    <List.Content>
+                                        <List.Description>
                                             {
-                                                fieldName
+                                                isProfileInfoLoading || profileSchemaLoader
+                                                    ? (
+                                                        <Placeholder><Placeholder.Line /></Placeholder>
+                                                    )
+                                                    : profileInfo.get(schema.name)
+                                                    || (
+                                                        <a
+                                                            className="placeholder-text"
+                                                            onClick={ () => {
+                                                                setShowMobileUpdateWizard(true);
+                                                            } }
+                                                        >
+                                                            { t("userPortal:components.profile.forms.generic.inputs." +
+                                                                "placeholder", { fieldName }) }
+                                                        </a>
+                                                    )
                                             }
-                                        ) }
-                                        type="text"
-                                        validation={ (value: string, validation: Validation) => {
-                                            if (checkSchemaType(schema.name, "emails")) {
-                                                if (!FormValidation.email(value)) {
-                                                    validation.errorMessages.push(
-                                                        t(
+                                        </List.Description>
+                                    </List.Content>
+                                </Grid.Column>
+                            </Grid.Row>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                    <PrimaryButton
+                                        floated="left"
+                                        onClick={ () => {
+                                            setShowMobileUpdateWizard(true);
+                                        } }
+                                    >
+                                        { t("common:update").toString() }
+                                    </PrimaryButton>
+                                </Grid.Column>
+                                <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
+                                    <LinkButton
+                                        floated="left"
+                                        onClick={ () => {
+                                            dispatch(setActiveForm(null));
+                                        } }
+                                    >
+                                        { t("common:cancel").toString() }
+                                    </LinkButton>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid >
+                    </EditSection>
+                )
+                : (
+                    <EditSection>
+                        <Grid>
+                            <Grid.Row columns={ 2 }>
+                                <Grid.Column width={ 4 }>{fieldName}</Grid.Column>
+                                <Grid.Column width={ 12 }>
+                                    <Forms
+                                        onSubmit={ (values) => {
+                                            handleSubmit(values, schema.name, schema.extended);
+                                        } }
+                                    >
+                                        <Field
+                                            autoFocus={ true }
+                                            label=""
+                                            name={ schema.name }
+                                            placeholder={ t("userPortal:components.profile.forms.generic.inputs." +
+                                                "placeholder", {
+                                                fieldName
+                                            }) }
+                                            required={ schema.required }
+                                            requiredErrorMessage={ t(
+                                                "userPortal:components.profile.forms.generic.inputs.validations.empty",
+                                                {
+                                                    fieldName
+                                                }
+                                            ) }
+                                            type="text"
+                                            validation={ (value: string, validation: Validation) => {
+                                                if (checkSchemaType(schema.name, "emails")) {
+                                                    if (!FormValidation.email(value)) {
+                                                        validation.errorMessages.push(
+                                                            t(
+                                                                "userPortal:components.profile.forms." +
+                                                                "generic.inputs.validations.invalidFormat",
+                                                                {
+                                                                    fieldName
+                                                                }
+                                                            )
+                                                        );
+                                                        validation.isValid = false;
+                                                    }
+                                                }
+                                                if (checkSchemaType(schema.name, "mobile")) {
+                                                    if (!FormValidation.mobileNumber(value)) {
+                                                        validation.errorMessages.push(t(
                                                             "userPortal:components.profile.forms." +
                                                             "generic.inputs.validations.invalidFormat",
                                                             {
                                                                 fieldName
                                                             }
-                                                        )
-                                                    );
-                                                    validation.isValid = false;
+                                                        ));
+                                                        validation.isValid = false;
+                                                    }
                                                 }
-                                            }
-                                            if (checkSchemaType(schema.name, "mobile")) {
-                                                if (!FormValidation.mobileNumber(value)) {
-                                                    validation.errorMessages.push(t(
-                                                        "userPortal:components.profile.forms." +
-                                                        "generic.inputs.validations.invalidFormat",
-                                                        {
-                                                            fieldName
-                                                        }
-                                                    ));
-                                                    validation.isValid = false;
-                                                }
-                                            }
-                                        } }
-                                        value={ profileInfo.get(schema.name) }
-                                    />
-                                    <Field
-                                        hidden={ true }
-                                        type="divider"
-                                    />
-                                    <Form.Group>
-                                        <Field
-                                            size="small"
-                                            type="submit"
-                                            value={ t("common:save").toString() }
-                                        />
-                                        <Field
-                                            className="link-button"
-                                            onClick={ () => {
-                                                dispatch(setActiveForm(null));
                                             } }
-                                            size="small"
-                                            type="button"
-                                            value={ t("common:cancel").toString() }
+                                            value={ profileInfo.get(schema.name) }
                                         />
-                                    </Form.Group>
-                                </ Forms>
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Grid>
-                </EditSection >
+                                        <Field
+                                            hidden={ true }
+                                            type="divider"
+                                        />
+                                        <Form.Group>
+                                            <Field
+                                                size="small"
+                                                type="submit"
+                                                value={ t("common:save").toString() }
+                                            />
+                                            <Field
+                                                className="link-button"
+                                                onClick={ () => {
+                                                    dispatch(setActiveForm(null));
+                                                } }
+                                                size="small"
+                                                type="button"
+                                                value={ t("common:cancel").toString() }
+                                            />
+                                        </Form.Group>
+                                    </ Forms>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </EditSection >
+                )
             );
         } else {
             const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
@@ -620,74 +681,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     };
 
     /**
-     * This function generates the mobile number edit section when mobile verification is enabled.
-     * @param {Profile Schema} schema.
-     * @param {string} fieldName - Mobile number filed name.
-     */
-    const generateUpdateFormForMobileVerification = (schema: ProfileSchema, fieldName: string): JSX.Element => {
-        return (
-            <EditSection>
-                <p>
-                    { t("userPortal:components.profile.messages.mobileVerification.content") }
-                </p>
-                <Grid padded={ true }>
-                    <Grid.Row columns={ 2 }>
-                        < Grid.Column mobile={ 6 } tablet={ 6 } computer={ 4 } className="first-column">
-                            <List.Content>{ fieldName }</List.Content>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 10 }>
-                            <List.Content>
-                                <List.Description>
-                                    {
-                                        isProfileInfoLoading || profileSchemaLoader
-                                            ? (
-                                                <Placeholder><Placeholder.Line /></Placeholder>
-                                            )
-                                            : profileInfo.get(schema.name)
-                                            || (
-                                                <a
-                                                    className="placeholder-text"
-                                                    onClick={ () => {
-                                                        setShowMobileUpdateWizard(true);
-                                                    } }
-                                                >
-                                                    { t("userPortal:components.profile.forms.generic.inputs." +
-                                                        "placeholder", { fieldName }) }
-                                                </a>
-                                            )
-                                    }
-                                </List.Description>
-                            </List.Content>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row columns={ 2 }>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                            <PrimaryButton
-                                floated="left"
-                                onClick={ () => {
-                                    setShowMobileUpdateWizard(true);
-                                } }
-                            >
-                                { t("common:update").toString() }
-                            </PrimaryButton>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 2 }>
-                            <LinkButton
-                                floated="left"
-                                onClick={ () => {
-                                    dispatch(setActiveForm(null));
-                                } }
-                            >
-                                { t("common:cancel").toString() }
-                            </LinkButton>
-                        </Grid.Column>
-                    </Grid.Row>
-                </Grid >
-            </EditSection>
-        );
-    };
-
-    /**
      * Handles the close action of the mobile update wizard.
      */
     const handleCloseMobileUpdateWizard = () => {
@@ -733,7 +726,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             : null
                                     }
                                     <List.Item key={ index } className="inner-list-item">
-                                        {generateSchemaForm(schema)}
+                                        { generateSchemaForm(schema) }
                                     </List.Item>
                                 </>
                             );

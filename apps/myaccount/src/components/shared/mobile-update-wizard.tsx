@@ -47,12 +47,12 @@ interface MobileUpdateWizardProps {
 export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps> =
     (props: MobileUpdateWizardProps): JSX.Element => {
     const { onAlertFired, closeWizard, wizardOpen, currentMobileNumber, isMobileRequired } = props;
-    const [step, setStep] = useState<number>(0);
-    const [verificationError, setVerificationError] = useState<boolean>(false);
-    const [resendSuccess, setResendSuccess] = useState<boolean>(false);
+    const [ step, setStep ] = useState<number>(0);
+    const [ verificationError, setVerificationError ] = useState<boolean>(false);
+    const [ resendSuccess, setResendSuccess ] = useState<boolean>(false);
     const { t } = useTranslation();
-    const [updateMobile, setUpdateMobile] = useTrigger();
-    const [submit, setSubmit] = useTrigger();
+    const [ updateMobile, setUpdateMobile ] = useTrigger();
+    const [ submit, setSubmit ] = useTrigger();
     const dispatch = useDispatch();
 
     /**
