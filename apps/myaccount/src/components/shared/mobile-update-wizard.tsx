@@ -185,7 +185,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const stepIllustration = (stepToDisplay: number): JSX.Element => {
         switch (stepToDisplay) {
             case 0:
-                return <QRCodeScan />;
+                return <EnterCode />;
             case 1:
                 return <EnterCode />;
         }
