@@ -90,7 +90,6 @@ export class ServerConfigurationsConstants {
 	 * @constant
 	 * @type {string}
 	 */
-
 	public static readonly IDENTITY_GOVERNANCE_PASSWORD_POLICIES_ID: string = "UGFzc3dvcmQgUG9saWNpZXM";
 
 	/**
@@ -108,14 +107,22 @@ export class ServerConfigurationsConstants {
 	 * @type {string}
 	 */
 	public static readonly PASSWORD_POLICY_CONNECTOR_ID: string = "cGFzc3dvcmRQb2xpY3k";
+
 	/**
 	 * UUID of the user on boarding connector.
 	 */
 	public static readonly USER_ONBOARDING_CONNECTOR_ID: string = "VXNlciBPbmJvYXJkaW5n";
+
 	/**
 	 * UUID of the email verification category.
 	 */
 	public static readonly USER_EMAIL_VERIFICATION_CONNECTOR_ID: string = "dXNlci1lbWFpbC12ZXJpZmljYXRpb24";
+
+	/**
+	 * UUID of the Other Sttings governance connector category.
+	 */
+	public static readonly OTHER_SETTINGS_CONNECTOR_CATEGORY_ID: string = "T3RoZXIgU2V0dGluZ3M";
+
     /**
      * User email verification API Keyword constants.
      */
