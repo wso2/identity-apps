@@ -67,10 +67,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
-    const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
-    const [ usernameValidationErrorMessage, setUsernameValidationErrorMessage ] = useState<string>(undefined);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
-    const [ updatedUsername, setUpdatedUsername ] = useState<string>(initialValues?.userName);
     const [ userStore, setUserStore ] = useState<string>(initialValues?.domain);
     const [ randomPassword, setRandomPassword ] = useState<string>("");
     const [ isPasswordGenerated, setIsPasswordGenerated ] = useState<boolean>(false);
@@ -103,24 +100,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     }, [ randomPassword ]);
 
     /**
-     * The following useEffect is triggered when the username gets updated.
-     */
-    useEffect(() => {
-        setIsUsernameValid(false);
-        setUsernameValidationErrorMessage(undefined);
-        validateUsername(updatedUsername);
-    }, [ updatedUsername ]);
-
-    /**
-     * The following useEffect is triggered when the username gets updated.
-     */
-    useEffect(() => {
-        setIsUsernameValid(false);
-        setUsernameValidationErrorMessage(undefined);
-        validateUsername(updatedUsername);
-    }, [ userStore ]);
-
-    /**
      * Fetch the list of available user stores.
      */
     useEffect(() => {
@@ -146,43 +125,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             value: "askPw"
         }
     ];
-
-    /**
-     * The following function validates whether the username entered by the user already exists in the
-     * user store selected by the user.
-     *
-     * @param {string} username - Username to validate.
-     */
-    const validateUsername = (username: string): void => {
-
-        // Stop sending username validation requests, if the input is empty.
-        if (!username) {
-            return;
-        }
-
-        getUsersList(null, null, "userName eq " + username, null, userStore)
-            .then((response) => {
-                // If the search API call returns more than `0` results, show user already exists error.
-                setIsUsernameValid(response?.totalResults === 0);
-                setUsernameValidationErrorMessage(USER_ALREADY_EXIST_ERROR_MESSAGE);
-            })
-            .catch((error: AxiosError) => {
-                // Some non ascii characters are not accepted by DBs with certain charsets.
-                // Hence, the API sends a `500` status code.
-                // see https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
-                if (error?.response?.status === 500) {
-                    setIsUsernameValid(false);
-                    setUsernameValidationErrorMessage(USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                }
-            })
-            .finally(() => {
-                // If the username regex validation fails, show the corresponding error.
-                if (!validateInputAgainstRegEx(username, usernameRegEx)) {
-                    setIsUsernameValid(false);
-                    setUsernameValidationErrorMessage(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                }
-            });
-    };
 
     /**
      * The following function handles the change of the userstore.
@@ -251,15 +193,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             .finally(() => {
                 setPasswordRegExLoading(false);
             });
-    };
-
-    /**
-     * The following function handles the change of the username.
-     *
-     * @param values
-     */
-    const handleUserNameChange = (values: Map<string, FormValue>): void => {
-        setUpdatedUsername(values?.get("userName")?.toString());
     };
 
     /**
@@ -493,16 +426,61 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "inputs.username.validations.empty"
                             ) }
                             type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!isUsernameValid) {
+                            validation={ async (value: string, validation: Validation) => {
+                                try {
+                                    if (value) {
+                                        const usersList
+                                            = await getUsersList(null, null, "userName eq " + value, null, userStore);
+                                        if (usersList?.totalResults > 0) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(t("adminPortal:components.user.forms." +
+                                                "addUserForm.inputs.username.validations.invalid"));
+                                        } else {
+                                            if (validation.errorMessages.length === 1) {
+                                                validation.isValid = true;
+                                                const errorIndex
+                                                    = validation.errorMessages.findIndex((value: string) => {
+                                                    return value === t("adminPortal:components.user.forms." +
+                                                        "addUserForm.inputs.username.validations.invalid");
+                                                });
+
+                                                errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
+                                            }
+                                        }
+                                    }
+                                } catch(error) {
+                                    dispatch(addAlert({
+                                        description: error?.response?.data?.description
+                                            ?? error?.response?.data?.detail
+                                            ?? t("adminPortal:components.users.notifications." +
+                                                "fetchUsers.genericError.description"),
+                                        level: AlertLevels.ERROR,
+                                        message: error?.response?.data?.message
+                                            ?? t("adminPortal:components.users.notifications." +
+                                                "fetchUsers.genericError.message")
+                                    }));
+                                }
+
+                                if (value && validateInputAgainstRegEx(value, usernameRegEx)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(usernameValidationErrorMessage);
+                                    validation.errorMessages.push(t("adminPortal:components.user.forms." +
+                                        "addUserForm.inputs.username.validations.regExViolation"));
+                                } else {
+                                    if (validation.errorMessages.length === 1) {
+                                        validation.isValid = true;
+                                        const errorIndex = validation.errorMessages.findIndex((value: string) => {
+                                            return value === t("adminPortal:components.user.forms." +
+                                                "addUserForm.inputs.username.validations.invalid");
+                                        });
+
+                                        errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
+                                    }
                                 }
                             } }
                             value={ initialValues && initialValues.userName }
-                            listen={ handleUserNameChange }
                             loading={ isUsernameRegExLoading }
                             tabIndex={ 2 }
+                            maxLength={ 30 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -526,6 +504,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="text"
                             value={ initialValues && initialValues.firstName }
                             tabIndex={ 3 }
+                            maxLength={ 30 }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -547,6 +526,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="text"
                             value={ initialValues && initialValues.lastName }
                             tabIndex={ 4 }
+                            maxLength={ 30 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -581,6 +561,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="email"
                             value={ initialValues && initialValues.email }
                             tabIndex={ 5 }
+                            maxLength={ 50 }
                         />
                     </Grid.Column>
                 </Grid.Row>
