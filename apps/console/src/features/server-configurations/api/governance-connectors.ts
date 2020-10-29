@@ -132,6 +132,18 @@ export const updateGovernanceConnector = (data: object, categoryId: string, conn
 };
 
 /**
+ * Get governance connector configurations.
+ *
+ * @param categoryId ID of the connector category
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const getGovernanceConnectors = (categoryId: string): Promise<any> => {
+    const url = store.getState().config.endpoints.governanceConnectorCategories +
+        "/" + categoryId + "/connectors/";
+    return getData(url);
+};
+
+/**
  * Retrieve server configurations.
  *
  * @returns {Promise<any>} a promise containing the response.
