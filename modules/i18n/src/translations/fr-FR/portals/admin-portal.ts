@@ -803,7 +803,10 @@ export const adminPortal: AdminPortalNS = {
                 addLocale: {
                     fields: {
                         bodyEditor: {
-                            label: "Corps"
+                            label: "Corps",
+                            validations: {
+                                empty: "Le corps de l'e-mail ne peut pas être vide."
+}
                         },
                         locale: {
                             label: "Langue",
@@ -813,7 +816,10 @@ export const adminPortal: AdminPortalNS = {
                             }
                         },
                         signatureEditor: {
-                            label: "Signature du courrier"
+                            label: "Signature du courrier",
+                             validations: {
+                                empty: "La signature électronique ne peut pas être vide."
+                            }
                         },
                         subject: {
                             label: "Objet",
