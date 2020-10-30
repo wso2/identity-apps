@@ -31,7 +31,6 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useS
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../../core";
-import { EmailTemplateIllustrations } from "../../configs";
 import { EmailTemplateType } from "../../models";
 
 /**
@@ -151,7 +150,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                         t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.subtitles.1"),
                         t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.subtitles.2")
                     ] }
-                    image={ EmailTemplateIllustrations.emptyEmailListing }
+                    image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
