@@ -47,16 +47,6 @@
                     "delete": []
                 }
             },
-            "operations": {
-                "disabledFeatures": [],
-                "enabled": true,
-                "scopes": {
-                    "create": [],
-                    "read": [ "internal_humantask_view" ],
-                    "update": [],
-                    "delete": []
-                }
-            },
             "overview": {
                 "disabledFeatures": [],
                 "enabled": true,

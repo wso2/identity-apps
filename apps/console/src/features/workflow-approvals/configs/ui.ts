@@ -16,16 +16,12 @@
  * under the License.
  */
 
-export * from "./applications";
-export * from "./account-recovery";
-export * from "./change-password";
-export * from "./consents";
-export * from "./footer";
-export * from "./linked-accounts";
-export * from "./multi-factor-authentication";
-export * from "./overview";
-export * from "./profile";
-export * from "./shared";
-export * from "./side-panel";
-export * from "./user-sessions";
-export * from "./federated-associations";
+import { ReactComponent as ReleaseApprovalIcon
+} from "../../../themes/default/assets/images/icons/solid-icons/release-solid.svg";
+import { ReactComponent as ClaimApprovalIcon
+} from "../../../themes/default/assets/images/icons/solid-icons/claim-gesture-solid.svg";
+
+export const ApprovalsListIcons = {
+    claim: ClaimApprovalIcon,
+    release: ReleaseApprovalIcon
+};

@@ -17,6 +17,8 @@
  */
 
 import { ReactComponent as AppIcon } from "../../../themes/dark/assets/images/icons/app-icon.svg";
+import { ReactComponent as ApprovalsIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
 import {
     ReactComponent as AccountPolicyIcon
 } from "../../../themes/default/assets/images/icons/account-policy-icon.svg";
@@ -109,6 +111,7 @@ export const TechnologyLogos = {
 export const SidePanelIcons = {
     appLogs: IDPMetadataIcon,
     applications: AppIcon,
+    approvals: ApprovalsIcon,
     certificate: CertificateIcon,
     childIcon: ArrowRight,
     claims: ClaimsIcon,

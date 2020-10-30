@@ -86,7 +86,6 @@ export class Config {
             jwks: `${this.getDeploymentConfig().serverHost}/oauth2/jwks`,
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
-            pendingApprovals: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/approval-tasks`,
             profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
             receipts: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,

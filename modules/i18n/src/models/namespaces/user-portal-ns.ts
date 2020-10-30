@@ -160,13 +160,6 @@ export interface UserPortalNS {
                 heading: string;
             };
         };
-        approvals: {
-            notifications: {
-                fetchApprovalDetails: Notification;
-                fetchPendingApprovals: Notification;
-                updatePendingApprovals: Notification;
-            };
-        };
         changePassword: {
             forms: {
                 passwordResetForm: {
@@ -715,7 +708,6 @@ export interface UserPortalNS {
     };
     pages: {
         applications: Page;
-        operations: Page;
         overview: Page;
         personalInfo: Page;
         privacy: Page;
@@ -732,15 +724,6 @@ export interface UserPortalNS {
         accountRecovery: {
             description: string;
             heading: string;
-        };
-        approvals: {
-            description: string;
-            heading: string;
-            placeholders: {
-                emptyApprovalList: {
-                    heading: string;
-                };
-            };
         };
         changePassword: {
             actionTitles: {

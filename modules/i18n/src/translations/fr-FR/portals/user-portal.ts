@@ -217,52 +217,6 @@ export const userPortal: UserPortalNS = {
                 heading: "Applications récentes"
             }
         },
-        approvals: {
-            notifications: {
-                fetchApprovalDetails: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Erreur lors de la récupération des détails de l'approbation"
-                    },
-                    genericError: {
-                        description: "Impossible de mettre à jour les détails de l'approbation",
-                        message: "Quelque chose s'est mal passé"
-                    },
-                    success: {
-                        description: "Détails de l'approbation récupérés avec succès",
-                        message: "Récupération des détails de l'approbation réussie"
-                    }
-                },
-                fetchPendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Erreur de récupération des approbations en attente"
-                    },
-                    genericError: {
-                        description: "Impossible à récupérer la liste des approbations en attente",
-                        message: "Quelque chose s'est mal passé"
-                    },
-                    success: {
-                        description: "Liste des approbations en attente récupérée avec succès",
-                        message: "Récupération des approbations en attente réussie"
-                    }
-                },
-                updatePendingApprovals: {
-                    error: {
-                        description: "{{description}}",
-                        message: "Erreur lors de la mise à jour de l'approbation"
-                    },
-                    genericError: {
-                        description: "Impossible de mettre à jour l'approbation",
-                        message: "Quelque chose s'est mal passé"
-                    },
-                    success: {
-                        description: "Approbation mis à jour avec succès",
-                        message: "Mise à jour réussie"
-                    }
-                }
-            }
-        },
         changePassword: {
             forms: {
                 passwordResetForm: {
@@ -1307,10 +1261,6 @@ export const userPortal: UserPortalNS = {
             subTitle: "Gérer et maintenir vos applications",
             title: "Applications"
         },
-        operations: {
-            subTitle: "Examiner les tâches opérationnelles qui nécessitent votre approbation",
-            title: "Gestion"
-        },
         overview: {
             subTitle: "Gérer vos informations personnelles, la sécurité de votre compte et vos options de confidentialité",
             title: "Bienvenue, {{firstName}}"
@@ -1376,17 +1326,6 @@ export const userPortal: UserPortalNS = {
                 "Configurez les paramètres de récupération de votre compte " +
                 "en cas d'oubli de votre nom d'utilisateur ou mot de passe.",
             heading: "Récupération de votre compte"
-        },
-        approvals: {
-            description:
-                "Approuver ou refuser les tâches opérationnelles telles que " +
-                "la création de compte, la mise à jour d'attributs utilisateurs, etc.",
-            heading: "Tâches en attente d'approbation",
-            placeholders: {
-                emptyApprovalList: {
-                    heading: "Vous n'avez aucune tâche {{status}} en attente d'approbation"
-                }
-            }
         },
         changePassword: {
             actionTitles: {

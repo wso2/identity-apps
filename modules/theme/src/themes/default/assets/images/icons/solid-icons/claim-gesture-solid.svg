@@ -1,0 +1,21 @@
+<!--
+ * Copyright (c) 2020, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ *
+ * WSO2 Inc. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+-->
+
+<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="14" height="14" viewBox="0 0 9.571 14">
+  <path id="claim-gesture" class="path fill primary" d="M3,14a.273.273,0,0,1-.274-.274V11.813a.273.273,0,0,1,.255-.273,1.509,1.509,0,0,0-.815-1.1,3.132,3.132,0,0,1-1.3-1.57A3.728,3.728,0,0,0,.238,7.735C.187,7.669.139,7.606.1,7.544A.633.633,0,0,1,.133,6.82a1.2,1.2,0,0,1,1.229-.456,1.607,1.607,0,0,1,1.094.77,2.5,2.5,0,0,0,.276.344V2.242A1.078,1.078,0,0,1,3.792,1.148a1.08,1.08,0,0,1,1.06,1.088l.046,2.1a1.365,1.365,0,0,1,1.33.419,1.375,1.375,0,0,1,1.064.076,1.3,1.3,0,0,1,.454.362,1.27,1.27,0,0,1,.894.045,1.482,1.482,0,0,1,.932,1.429V8.972A5.676,5.676,0,0,1,9.3,10.465a6.641,6.641,0,0,0-.238,1.075.274.274,0,0,1,.257.273v1.914A.273.273,0,0,1,9.045,14Zm5.516-2.462a6.884,6.884,0,0,1,.259-1.22,5.175,5.175,0,0,0,.252-1.347V6.665a.937.937,0,0,0-.589-.922.8.8,0,0,0-.46-.052A1.2,1.2,0,0,1,8,5.927a.273.273,0,1,1-.546,0,.663.663,0,0,0-.4-.606.879.879,0,0,0-.575-.073,1.281,1.281,0,0,1,.032.284.274.274,0,0,1-.547,0,.68.68,0,0,0-.544-.661.629.629,0,0,0-.508.049l.02.932a.273.273,0,0,1-.546.012L4.306,2.248A.544.544,0,0,0,3.792,1.7a.531.531,0,0,0-.513.546V8.278a.273.273,0,1,1-.546,0V8.166A2.293,2.293,0,0,1,2.01,7.45,1.067,1.067,0,0,0,1.247,6.9a.661.661,0,0,0-.661.23c-.005.008-.054.08-.032.113s.071.1.118.157a4.262,4.262,0,0,1,.708,1.284A2.6,2.6,0,0,0,2.481,10a2.006,2.006,0,0,1,1.047,1.543H8.512Zm-3.025-9.3a1.7,1.7,0,0,0-3.39,0,.274.274,0,1,1-.547,0,2.242,2.242,0,0,1,4.485,0,.274.274,0,0,1-.547,0Z" transform="translate(0)" fill="#666"/>
+</svg>

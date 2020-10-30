@@ -271,6 +271,20 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "adminPortal:components.sidePanel.categories.users",
+            component: lazy(() => import("../../workflow-approvals/pages/approvals")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.approvals
+            },
+            id: "approvals",
+            name: "adminPortal:components.sidePanel.approvals",
+            order: 4,
+            path: AppConstants.getPaths().get("APPROVALS"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
             category: "adminPortal:components.sidePanel.categories.attributes",
             children: [
                 {
@@ -354,7 +368,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             },
             id: "userStores",
             name: "adminPortal:components.sidePanel.userstores",
-            order: 4,
+            order: 5,
             path: AppConstants.getPaths().get("USERSTORES"),
             protected: true,
             showOnSidePanel: true
@@ -367,7 +381,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             },
             id: "certificates",
             name: "adminPortal:components.sidePanel.certificates",
-            order: 5,
+            order: 7,
             path: AppConstants.getPaths().get("CERTIFICATES"),
             protected: true,
             showOnSidePanel: true
@@ -419,7 +433,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             },
             id: "emailTemplates",
             name: "adminPortal:components.sidePanel.emailTemplates",
-            order: 7,
+            order: 8,
             path: AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"),
             protected: true,
             showOnSidePanel: true
@@ -433,7 +447,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             },
             id: "remoteFetchConfig",
             name: "Remote Configurations",
-            order: 8,
+            order: 9,
             path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
             protected: true,
             showOnSidePanel: true
@@ -444,7 +458,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             icon: null,
             id: "governanceConnectors",
             name: "adminPortal:components.sidePanel.governanceConnectors",
-            order: 8,
+            order: 10,
             path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
             protected: true,
             showOnSidePanel: false

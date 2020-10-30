@@ -138,8 +138,7 @@ export class AppConstants {
         .set("SECURITY_MFA_FIDO", "security.mfa.fido")
         .set("SECURITY_MFA_TOTP", "security.mfa.totp")
         .set("SECURITY_ACTIVE_SESSIONS", "security.activeSessions")
-        .set("SECURITY_CONSENTS", "security.manageConsents")
-        .set("OPERATIONS", "operations");
+        .set("SECURITY_CONSENTS", "security.manageConsents");
 
     /**
      * Get all the app paths as a map.
@@ -159,7 +158,6 @@ export class AppConstants {
             .set("PROFILE_INFO", `${ this.getMainViewBasePath() }/personal-info`)
             .set("PERSONAL_INFO", `${ this.getMainViewBasePath() }/personal-info`)
             .set("SECURITY", `${ this.getMainViewBasePath() }/security`)
-            .set("OPERATIONS", `${ this.getMainViewBasePath() }/operations`)
             .set("PRIVACY", `${ this.getMainViewBasePath() }/privacy`)
             .set("ROOT", "/")
             .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/unauthorized`);

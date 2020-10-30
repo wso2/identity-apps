@@ -74,6 +74,30 @@ export interface AdminPortalNS {
             };
             resultsIndicator: string;
         };
+        approvals: {
+            list: {
+                columns: {
+                    actions: string;
+                    name: string;
+                };
+            };
+            modals: {
+                taskDetails: {
+                    header: string;
+                    description: string;
+                }
+            };
+            notifications: {
+                fetchApprovalDetails: Notification;
+                fetchPendingApprovals: Notification;
+                updatePendingApprovals: Notification;
+            };
+            placeholders: {
+                emptyApprovalList: Placeholder;
+                emptyApprovalFilter: Placeholder;
+                emptySearchResults: Placeholder;
+            };
+        };
         certificates: {
             keystore: {
                 advancedSearch: {
@@ -1025,6 +1049,7 @@ export interface AdminPortalNS {
         sidePanel: {
             addEmailTemplate: string;
             addEmailTemplateLocale: string;
+            approvals: string;
             attributeDialects: string;
             categories: {
                 attributes: string;
@@ -1585,6 +1610,7 @@ export interface AdminPortalNS {
     };
     pages: {
         addEmailTemplate: EditPage;
+        approvalsPage: Page;
         editTemplate: EditPage;
         emailLocaleAdd: EditPage;
         emailLocaleAddWithDisplayName: EditPage;

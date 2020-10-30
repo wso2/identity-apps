@@ -51,3 +51,13 @@ describe("ITC-1.0.0 - [email-templates] - Email Templates Smoke Test.", () => {
         });
     });
 });
+
+/**
+ * Return false here prevents Cypress from failing the test
+ * expect(err.message).to.include('Ignoring error for now');
+ */
+Cypress.on("uncaught:exception", (err, runnable) => {
+
+    cy.log("Cypress detected uncaught exception", err);
+    return false;
+});

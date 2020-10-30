@@ -17,15 +17,17 @@
  */
 
 import { IdentityClient } from "@asgardio/oidc-js";
-import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskSummary, HttpMethods } from "../models";
-import { store } from "../store";
+import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface, ApprovalTaskSummary } from "../models";
+import { HttpMethods } from "@wso2is/core/models";
+import { store } from "../../core";
 
 /**
  * Get an axios instance.
  *
- * @type {AxiosHttpClientInstance}
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = IdentityClient.getInstance()
+    .httpRequest.bind(IdentityClient.getInstance())
+    .bind(IdentityClient.getInstance());
 
 /**
  * Fetches the list of pending approvals from the list.
@@ -36,12 +38,11 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
  *     Approval task's status to filter tasks by their status.
  * @return {Promise<any>} A promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchPendingApprovals = (
     limit: number,
     offset: number,
-    status: ApprovalStatus.READY | ApprovalStatus.RESERVED | ApprovalStatus.COMPLETED | ApprovalStatus.ALL
-): Promise<any> => {
+    status: string
+): Promise<ApprovalTaskListItemInterface[]> => {
     let requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -54,7 +55,7 @@ export const fetchPendingApprovals = (
             offset,
             status
         },
-        url: store.getState().config.endpoints.pendingApprovals
+        url: store.getState().config.endpoints.approvals
     };
 
     // To fetch all the approvals from the api, the status
@@ -71,7 +72,7 @@ export const fetchPendingApprovals = (
 
     return httpClient(requestConfig)
         .then((response) => {
-            return Promise.resolve(response.data as ApprovalTaskSummary[]);
+            return Promise.resolve(response.data as ApprovalTaskListItemInterface[]);
         })
         .catch((error) => {
             return Promise.reject(`Failed to retrieve the pending approvals - ${ error }`);
@@ -84,7 +85,6 @@ export const fetchPendingApprovals = (
  * @param {string} id - `id` of the approval.
  * @return {Promise<any>} A promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
     const requestConfig = {
         headers: {
@@ -93,7 +93,7 @@ export const fetchPendingApprovalDetails = (id: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: `${ store.getState().config.endpoints.pendingApprovals }/${ id }`
+        url: store.getState().config.endpoints.approvals + "/" + id
     };
 
     return httpClient(requestConfig)
@@ -128,7 +128,7 @@ export const updatePendingApprovalStatus = (
             "Content-Type": "application/json"
         },
         method: HttpMethods.PUT,
-        url: `${ store.getState().config.endpoints.pendingApprovals }/${ id }/state`
+        url: store.getState().config.endpoints.approvals + "/" + id + "/state"
     };
 
     return httpClient(requestConfig)

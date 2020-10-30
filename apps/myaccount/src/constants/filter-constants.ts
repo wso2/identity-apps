@@ -161,14 +161,6 @@ export const ACTIVE_SESSIONS = "activeSessions";
 export const MANAGE_CONSENTS = "manageConsents";
 
 /**
- * Operations key.
- * @constant
- * @type {string}
- * @default
- */
-export const OPERATIONS = "operations";
-
-/**
  * Account Status.
  * @constant
  * @type {string}
