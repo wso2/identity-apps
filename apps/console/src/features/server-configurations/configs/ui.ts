@@ -19,5 +19,65 @@
 import {
     ReactComponent as GovernanceConnectors
 } from "../../../themes/default/assets/images/illustrations/governance-connectors.svg";
+import {
+    default as AccountDisableConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/account-disable-illustration.svg";
+import {
+    default as AccountLockConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/account-lock.svg";
+import {
+    default as AccountRecoveryConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/account-recovery-illustration.svg";
+import {
+    default as AnalyticsEngineConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/analytics-engine-illustration.svg";
+import {
+    default as reCaptchaConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/captcha-sso-illustration.svg";
+import {
+    default as ConsentInfoConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/consent-management-illustration.svg";
+import {
+    default as LiteUserRegistrationConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/lite-user-registration.svg";
+import {
+    default as idleAccountSuspendConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/lock-idle-accounts-illustration.svg";
+import {
+    default as PasswordHistoryConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-history.svg";
+import {
+    default as PasswordPatternConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-pattern-illustration.svg";
+import {
+    default as PasswordResetConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-reset-illustration.svg";
+import {
+    default as AskPasswordConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-reset-illustration.svg";
+import {
+    default as SelfRegConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/self-registration-illustration.svg";
+import {
+    default as UserClaimUpdateConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
+import { ServerConfigurationsConstants } from "../constants";
+
+export const GovernanceConnectorIllustrations = {
+    [ ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID ]: PasswordHistoryConnectorIllustration,
+    [ ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID ]: PasswordPatternConnectorIllustration,
+    [ ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID ]: SelfRegConnectorIllustration,
+    [ ServerConfigurationsConstants.LITE_USER_REGISTRATION_CONNECTOR_ID ]: LiteUserRegistrationConnectorIllustration,
+    [ ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID ]: AskPasswordConnectorIllustration,
+    [ ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID ]: AccountLockConnectorIllustration,
+    [ ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID ]: reCaptchaConnectorIllustration,
+    [ ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID ]: idleAccountSuspendConnectorIllustration,
+    [ ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID ]: AccountDisableConnectorIllustration,
+    [ ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID ]: AccountRecoveryConnectorIllustration,
+    [ ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID ]: PasswordResetConnectorIllustration,
+    [ ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID ]: ConsentInfoConnectorIllustration,
+    [ ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID ]: AnalyticsEngineConnectorIllustration,
+    [ ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID ]: UserClaimUpdateConnectorIllustration
+};
 
 export const GovernanceConnectorsIllustration = GovernanceConnectors;
