@@ -22,6 +22,7 @@ import { HttpMethods } from "@wso2is/core/models";
 import { AxiosResponse } from "axios";
 import { store } from "../../core";
 import { ServerConfigurationsConstants } from "../constants";
+import { GovernanceConnectorInterface } from "../models";
 
 /**
  * Initialize an axios Http client.
@@ -129,6 +130,18 @@ export const updateGovernanceConnector = (data: object, categoryId: string, conn
     const url = store.getState().config.endpoints.governanceConnectorCategories +
         "/" + categoryId + "/connectors/" + connectorId;
     return updateConfigurations(data, url);
+};
+
+/**
+ * Get governance connector configurations.
+ *
+ * @param categoryId ID of the connector category
+ * @returns {Promise<any>} a promise containing the response.
+ */
+export const getGovernanceConnectors = (categoryId: string): Promise<GovernanceConnectorInterface[]> => {
+    const url = store.getState().config.endpoints.governanceConnectorCategories +
+        "/" + categoryId + "/connectors/";
+    return getData(url);
 };
 
 /**

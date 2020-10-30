@@ -315,7 +315,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                 assertionQueryProfile.current.scrollIntoView(options);
                 break;
         }
-    }
+    };
 
     return (
         metadata ?

@@ -30,6 +30,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { getProfileInformation } from "../../authentication/store";
 import { AppConstants, AppState, FeatureConfigInterface, SharedUserStoreUtils, history } from "../../core";
+import { getGovernanceConnectors } from "../../server-configurations/api";
+import { ServerConfigurationsConstants } from "../../server-configurations/constants";
+import { ConnectorPropertyInterface, GovernanceConnectorInterface } from "../../server-configurations/models";
 import { getUserDetails, updateUserInfo } from "../api";
 import { EditUser } from "../components";
 import { UserManagementUtils } from "../utils";
@@ -52,6 +55,50 @@ const UserEditPage = (): ReactElement => {
     const [ isUserDetailsRequestLoading, setIsUserDetailsRequestLoading ] = useState<boolean>(false);
     const [ readOnlyUserStoresList, setReadOnlyUserStoresList ] = useState<string[]>(undefined);
     const [ showEditAvatarModal, setShowEditAvatarModal ] = useState<boolean>(false);
+    const [ connectorProperties, setConnectorProperties ] = useState<ConnectorPropertyInterface[]>(undefined);
+
+    useEffect(() => {
+        getGovernanceConnectors(ServerConfigurationsConstants.ACCOUNT_MANAGEMENT_CATEGORY_ID)
+            .then((response: GovernanceConnectorInterface[]) => {
+                const properties: ConnectorPropertyInterface[] = [];
+
+                response.map((connector) => {
+                    if (connector.id === ServerConfigurationsConstants.ACCOUNT_DISABLING_CONNECTOR_ID
+                        || connector.id === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID) {
+                        connector.properties.map((property) => {
+                            properties.push(property);
+                        })
+                    }
+                });
+
+                setConnectorProperties(properties);
+            });
+
+    }, []);
+
+    useEffect(() => {
+        if(connectorProperties !== undefined) {
+            return;
+        }
+
+        getGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
+            .then((response: GovernanceConnectorInterface[]) => {
+                const properties: ConnectorPropertyInterface[] = [ ...connectorProperties ];
+
+                response.map((connector) => {
+                    if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
+                        connector.properties.map((property) => {
+                            if(property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+                                properties.push(property);
+                            }
+                        })
+                    }
+                });
+
+                setConnectorProperties(properties);
+            });
+
+    }, [ connectorProperties ]);
 
     useEffect(() => {
         const path = history.location.pathname.split("/");
@@ -69,7 +116,7 @@ const UserEditPage = (): ReactElement => {
     const getUser = (id: string) => {
         setIsUserDetailsRequestLoading(true);
 
-        getUserDetails(id)
+        getUserDetails(id, null)
             .then((response) => {
                 setUserProfile(response);
             })
@@ -185,6 +232,7 @@ const UserEditPage = (): ReactElement => {
                 user={ user }
                 handleUserUpdate={ handleUserUpdate }
                 readOnlyUserStores={ readOnlyUserStoresList }
+                connectorProperties={ connectorProperties }
             />
             {
                 showEditAvatarModal && (

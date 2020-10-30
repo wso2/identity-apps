@@ -1943,15 +1943,37 @@ export const adminPortal: AdminPortalNS = {
                     message: "Cette action est irréversible et supprimera définitivement le compte utilisateur."
                 }
             },
+            disableUser: {
+                confirmationModal: {
+                    assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
+                    content: "Si vous désactivez cet utilisateur, l'utilisateur ne pourra pas se connecter à Mon " +
+                        "compte ou à toute autre application à laquelle l'utilisateur était auparavant abonné. " +
+                        "Veuillez procéder avec prudence.",
+                    header: "Êtes-vous sûr?",
+                    message: "Assurez-vous que l'utilisateur n'a plus besoin d'accéder au système."
+                }
+            },
             editUser: {
                 dangerZoneGroup: {
-                    dangerZone: {
+                    deleteUserZone: {
                         actionTitle: "Supprimer l'utilisateur",
                         header: "Supprimer l'utilisateur",
                         subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
                             "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
                     },
-                    header: "Zone sensible"
+                    disableUserZone: {
+                        actionTitle: "Supprimer l'utilisateur",
+                        header: "Supprimer l'utilisateur",
+                        subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
+                            "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                    },
+                    header: "Zone sensible",
+                    lockUserZone: {
+                        actionTitle: "Supprimer l'utilisateur",
+                        header: "Supprimer l'utilisateur",
+                        subheader: "Cette action est irréversible et supprimera définitivement l'utilisateur. " +
+                            "Êtes-vous ABSOLUMENT certain de vouloir supprimer cet utilisateur ?"
+                    }
                 }
             },
             forms: {
@@ -2042,11 +2064,21 @@ export const adminPortal: AdminPortalNS = {
                     }
                 }
             },
+            lockUser: {
+                confirmationModal: {
+                    assertionHint: "Veuillez saisir <1>{{ userName }}</1> pour confirmer.",
+                    content: "Si vous verrouillez cet utilisateur, l'utilisateur ne pourra pas se connecter à Mon " +
+                        "compte ou à toute autre application à laquelle l'utilisateur était abonné auparavant. " +
+                        "Veuillez procéder avec prudence.",
+                    header: "Êtes-vous sûr?",
+                    message: "Assurez-vous que cet utilisateur ne doit pas être autorisé à se connecter au système."
+                }
+            },
             modals: {
                 addUserWarnModal: {
                     heading: "Attention",
                     message: "Veuillez noter qu'aucun rôle ne sera attribué au nouvel utilisateur. Si vous souhaitez " +
-                        "lui en attribuer, veuillez cliquer sur le bouton ci-dessous.",
+                        "lui en attribuer, veuillez cliquer sur le bouton ci-dessous."
                 },
                 addUserWizard: {
                     buttons: {
@@ -2075,6 +2107,11 @@ export const adminPortal: AdminPortalNS = {
                         roles: "Rôle(s)",
                         username: "Nom d'utilisateur"
                     }
+                },
+                changePasswordModal: {
+                    header: "Changer le mot de passe de l'utilisateur",
+                    message: "REMARQUE: veuillez noter qu'après avoir modifié le mot de passe, l'utilisateur ne " +
+                        "pourra plus se connecter à aucune application en utilisant le mot de passe actuel."
                 }
             },
             profile: {
@@ -2091,6 +2128,7 @@ export const adminPortal: AdminPortalNS = {
                     },
                     name_familyName: "Nom de famille",
                     name_givenName: "Prénom",
+                    oneTimePassword: "Mot de passe à usage unique",
                     phoneNumbers: "Numéros de téléphone",
                     phoneNumbers_home: "Numéro de téléphone personnel",
                     phoneNumbers_mobile: "Numéro de téléphone portable",
@@ -2127,7 +2165,8 @@ export const adminPortal: AdminPortalNS = {
                         inputs: {
                             mobile: {
                                 label: "Numéro de téléphone portable",
-                                note: "NOTE: Le numéro de téléphone portable associé de votre profil utilisateur sera modifié",
+                                note: "NOTE: Le numéro de téléphone portable associé de votre profil utilisateur " +
+                                    "sera modifié",
                                 placeholder: "Veuillez saisir votre numéro de portable",
                                 validations: {
                                     empty: "Le numéro de portable est un champ obligatoire",
@@ -2167,18 +2206,114 @@ export const adminPortal: AdminPortalNS = {
                     }
                 },
                 notifications: {
+                    changeUserPassword: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Une erreur s'est produite lors de la modification du mot de passe utilisateur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la modification du mot de passe " +
+                                "utilisateur.",
+                            message: "Un problème est survenu"
+                        },
+                        success: {
+                            description: "Le mot de passe de l'utilisateur a été modifié avec succès",
+                            message: "Mot de passe modifié avec succès"
+                        }
+                    },
+                    disableUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Une erreur s'est produite lors de la désactivation du compte utilisateur."
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la désactivation du compte utilisateur",
+                            message: "Un problème est survenu"
+                        },
+                        success: {
+                            description: "Le compte utilisateur a bien été désactivé",
+                            message: "Le compte de {{name}} est désactivé"
+                        }
+                    },
+                    enableUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Une erreur s'est produite lors de l'activation du compte utilisateur."
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de l'activation du compte utilisateur",
+                            message: "Un problème est survenu"
+                        },
+                        success: {
+                            description: "Le compte d'utilisateur a bien été activé",
+                            message: "Le compte de {{name}} est activé"
+                        }
+                    },
+                    forcePasswordReset: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Une erreur s'est produite lors du déclenchement du flux de " +
+                                "réinitialisation du mot de passe."
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors du déclenchement du flux de " +
+                                "réinitialisation du mot de passe.",
+                            message: "Un problème est survenu"
+                        },
+                        success: {
+                            description: "La réinitialisation du mot de passe du compte utilisateur a été " +
+                                "déclenchée avec succès",
+                            message: "Réinitialisation du mot de passe déclenchée avec succès"
+                        }
+                    },
                     getProfileInfo: {
                         error: {
                             description: "{{description}}",
                             message: "Une erreur s'est produite lors de la récupération des détails de votre profil"
                         },
                         genericError: {
-                            description: "Une erreur s'est produite lors de la récupération des détails de votre profil",
+                            description: "Une erreur s'est produite lors de la récupération des détails de " +
+                                "votre profil",
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Les attributs obligatoires du profil utilisateur ont été récupérés avec succès",
+                            description: "Les attributs obligatoires du profil utilisateur ont été récupérés " +
+                                "avec succès",
                             message: "Profil utilisateur récupéré avec succès"
+                        }
+                    },
+                    lockUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Une erreur s'est produite lors du verrouillage du compte utilisateur."
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors du verrouillage du compte utilisateur.",
+                            message: "Un problème est survenu"
+                        },
+                        success: {
+                            description: "Le compte d'utilisateur a été verrouillé avec succès.",
+                            message: "Le compte de {{name}} est verrouillé"
+                        }
+                    },
+                    noPasswordResetOptions: {
+                        error: {
+                            description: "Aucune des options de mot de passe forcé n'est activée.",
+                            message: "Impossible de déclencher une réinitialisation forcée du mot de passe"
+                        }
+                    },
+                    unlockUserAccount: {
+                        error: {
+                            description: "{{description}}",
+                            message: "Une erreur s'est produite lors du déverrouillage du compte utilisateur."
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors du déverrouillage du compte utilisateur.",
+                            message: "Un problème est survenu"
+                        },
+                        success: {
+                            description: "Le compte utilisateur a été déverrouillé avec succès.",
+                            message: "Le compte de {{name}} est déverrouillé"
                         }
                     },
                     updateProfileInfo: {
@@ -2191,7 +2326,8 @@ export const adminPortal: AdminPortalNS = {
                             message: "Quelque chose s'est mal passé"
                         },
                         success: {
-                            description: "Les attributs obligatoires du profil utilisateur ont été mis à jour avec succès",
+                            description: "Les attributs obligatoires du profil utilisateur ont été mis à " +
+                                "jour avec succès",
                             message: "Profil utilisateur mis à jour avec succès"
                         }
                     }
@@ -2206,7 +2342,8 @@ export const adminPortal: AdminPortalNS = {
                 groups: {
                     addGroupsModal: {
                         heading: "Mise à jour des groupes d'utilisateurs",
-                        subHeading: "Ajouter de nouveaux groupes ou supprimer des groupes existants attribués à l'utilisateur."
+                        subHeading: "Ajouter de nouveaux groupes ou supprimer des groupes existants " +
+                            "attribués à l'utilisateur."
                     },
                     editGroups: {
                         groupList: {
@@ -2238,7 +2375,8 @@ export const adminPortal: AdminPortalNS = {
                                 message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur",
+                                description: "Une erreur s'est produite lors de la mise à jour des groupes de " +
+                                    "l'utilisateur",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
@@ -2252,7 +2390,8 @@ export const adminPortal: AdminPortalNS = {
                                 message: "Une erreur s'est produite lors de la récupération de la liste des groupes"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la récupération de la liste des groupes",
+                                description: "Une erreur s'est produite lors de la récupération de la " +
+                                    "liste des groupes",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
@@ -2266,7 +2405,8 @@ export const adminPortal: AdminPortalNS = {
                                 message: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la mise à jour des groupes de l'utilisateur",
+                                description: "Une erreur s'est produite lors de la mise à jour des groupes de " +
+                                    "l'utilisateur",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
@@ -2279,7 +2419,8 @@ export const adminPortal: AdminPortalNS = {
                 roles: {
                     addRolesModal: {
                         heading: "Mettre à jour les rôles des utilisateurs",
-                        subHeading: "Ajouter de nouveaux rôles ou supprimer les rôles existants attribués à l'utilisateur."
+                        subHeading: "Ajouter de nouveaux rôles ou supprimer les rôles existants " +
+                            "attribués à l'utilisateur."
                     },
                     editRoles: {
                         heading: "Rôles assignés",
@@ -2311,7 +2452,8 @@ export const adminPortal: AdminPortalNS = {
                                 message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur",
+                                description: "Une erreur s'est produite lors de la mise à jour des rôles de " +
+                                    "l'utilisateur",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
@@ -2339,7 +2481,8 @@ export const adminPortal: AdminPortalNS = {
                                 message: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur"
                             },
                             genericError: {
-                                description: "Une erreur s'est produite lors de la mise à jour des rôles de l'utilisateur",
+                                description: "Une erreur s'est produite lors de la mise à jour des rôles " +
+                                    "de l'utilisateur",
                                 message: "Quelque chose s'est mal passé"
                             },
                             success: {
@@ -2380,7 +2523,8 @@ export const adminPortal: AdminPortalNS = {
             },
             all: {
                 heading: "Utilisateurs",
-                subHeading: "Gérer et ajouter des comptes utilisateurs, assigner les rôles et maintenir les identités des utilisateurs."
+                subHeading: "Gérer et ajouter des comptes utilisateurs, assigner les rôles et maintenir les " +
+                    "identités des utilisateurs."
             },
             buttons: {
                 addNewUserBtn: "Nouvel Utilisateur",
@@ -2453,7 +2597,8 @@ export const adminPortal: AdminPortalNS = {
                 },
                 userstoreError: {
                     subtitles: {
-                        0: "Une erreur s'est produite lors de la tentative de récupération des utilisateurs dans l'annuaire'",
+                        0: "Une erreur s'est produite lors de la tentative de récupération des utilisateurs dans " +
+                            "l'annuaire'",
                         1: "Veuillez vous assurer que les informations de connexion à l'annuaire sont exactes."
                     },
                     title: "Impossible d'aller chercher les utilisateurs dans l'annuaire"
@@ -2598,13 +2743,15 @@ export const adminPortal: AdminPortalNS = {
                 },
                 fetchUserstoreMetadata: {
                     genericError: {
-                        description: "Une erreur s'est produite lors de la récupération des méta-données de l'annuaire.",
+                        description: "Une erreur s'est produite lors de la récupération des méta-données de " +
+                            "l'annuaire.",
                         message: "Quelque chose s'est mal passé"
                     }
                 },
                 fetchUserstoreTemplates: {
                     genericError: {
-                        description: "Une erreur s'est produite lors de la récupération des détails de types d'annuaires.",
+                        description: "Une erreur s'est produite lors de la récupération des détails de types " +
+                            "d'annuaires.",
                         message: "Quelque chose s'est mal passé"
                     }
                 },
@@ -2819,7 +2966,8 @@ export const adminPortal: AdminPortalNS = {
             action: "Revenir à la page d'accueil",
             subtitles: {
                 0: "La page que vous essayez de consulter n'existe pas.",
-                1: "Veuillez vérifier l'URL ou cliquez sur le bouton ci-dessous pour être redirigé vers la page d'accueil."
+                1: "Veuillez vérifier l'URL ou cliquez sur le bouton ci-dessous pour être redirigé vers la " +
+                    "page d'accueil."
             },
             title: "Page introuvable"
         },

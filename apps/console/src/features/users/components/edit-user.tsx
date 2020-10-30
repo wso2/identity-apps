@@ -30,6 +30,7 @@ import { UserRolesList } from "./user-roles-edit";
 import { UserSessions } from "./user-sessions";
 import { FeatureConfigInterface } from "../../core/models";
 import { AppState } from "../../core/store";
+import { ConnectorPropertyInterface } from "../../server-configurations/models";
 import { UserManagementConstants } from "../constants";
 
 interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
@@ -45,6 +46,10 @@ interface EditUserPropsInterface extends SBACInterface<FeatureConfigInterface> {
      * List of readOnly user stores.
      */
     readOnlyUserStores?: string[];
+    /**
+     * Password reset connector properties
+     */
+    connectorProperties: ConnectorPropertyInterface[];
 }
 
 /**
@@ -60,7 +65,8 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
         user,
         handleUserUpdate,
         featureConfig,
-        readOnlyUserStores
+        readOnlyUserStores,
+        connectorProperties
     } = props;
 
     const { t } = useTranslation();
@@ -103,6 +109,7 @@ export const EditUser: FunctionComponent<EditUserPropsInterface> = (
                         user={ user }
                         handleUserUpdate={ handleUserUpdate }
                         isReadOnly={ isReadOnly }
+                        connectorProperties={ connectorProperties }
                     />
                 </ResourceTab.Pane>
             )

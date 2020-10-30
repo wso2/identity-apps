@@ -149,14 +149,16 @@ export const addUserRole = (data: object, groupId: string): Promise<any> => {
  *
  * @return {Promise<any>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const getUserDetails = (id: string): Promise<any> => {
+export const getUserDetails = (id: string, attributes: string): Promise<ProfileInfoInterface> => {
     const requestConfig = {
         headers: {
             "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost,
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
+        params: {
+            attributes
+        },
         url: store.getState().config.endpoints.users + "/" + id
     };
 

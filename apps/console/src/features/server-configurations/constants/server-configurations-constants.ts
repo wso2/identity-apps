@@ -224,4 +224,13 @@ export class ServerConfigurationsConstants {
 	// Idle account suspend names
 	public static readonly ALLOWED_IDLE_TIME_SPAN_IN_DAYS: string = "suspension.notification.account.disable.delay";
 	public static readonly ALERT_SENDING_TIME_PERIODS_IN_DAYS: string = "suspension.notification.delays";
+
+	/**
+   * Account Management Connector Constants.
+   */
+	public static readonly ACCOUNT_MANAGEMENT_CATEGORY_ID: string = "QWNjb3VudCBNYW5hZ2VtZW50";
+	public static readonly ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
+	public static readonly RECOVERY_LINK_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.RecoveryLink";
+	public static readonly OTP_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.OTP";
+	public static readonly OFFLINE_PASSWORD_RESET: string = "Recovery.AdminPasswordReset.Offline";
 }

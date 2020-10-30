@@ -61,6 +61,10 @@ export interface DangerZoneToggleProps {
      * @param {CheckboxProps} data - Checkbox data.
      */
     onChange: (event, data: CheckboxProps) => void;
+    /**
+     * ID of the toggle.
+     */
+    id?: string;
 }
 
 /**
@@ -95,6 +99,7 @@ export const DangerZone: FunctionComponent<DangerZoneProps> = (
                 toggle ?
                     <Checkbox
                         toggle
+                        id={ toggle?.id }
                         onChange={ toggle?.onChange }
                         checked={ toggle?.checked }
                         className="danger-zone toggle-switch"
