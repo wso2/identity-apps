@@ -160,12 +160,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                             <Grid.Column width={ 16 }>
                                 <div
                                     style={ {
-                                    height: CONNECTOR_ILLUSTRATION_WRAPPER_HEIGHT,
-                                    background: `url(${ get(GovernanceConnectorIllustrations, connector?.id) })`,
-                                    backgroundRepeat: "no-repeat",
-                                    backgroundSize: "contain",
-                                    backgroundPosition: "right",
-                                    backgroundOrigin: "unset"
+                                        height: CONNECTOR_ILLUSTRATION_WRAPPER_HEIGHT,
+                                        background: `url(${ get(GovernanceConnectorIllustrations, connector?.id) })`,
+                                        backgroundRepeat: "no-repeat",
+                                        backgroundSize: "contain",
+                                        backgroundPosition: "right",
+                                        backgroundOrigin: "unset"
                                     } }
                                 >
                                     <Header>
