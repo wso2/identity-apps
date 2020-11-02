@@ -187,7 +187,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                                     basic
                                                     circular
                                                 >
-                                                    { group.displayName }
+                                                    { group?.displayName }
                                                 </Label>
                                             ))
                                     }
