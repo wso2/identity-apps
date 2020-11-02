@@ -127,7 +127,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     : null
             }
             {
-                summary?.UserList && summary.UserList instanceof Array &&
+                summary?.UserList && summary?.UserList instanceof Array &&
                 summary.UserList.length > 0
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
