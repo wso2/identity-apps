@@ -66,6 +66,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
         id,
         properties,
         type,
+        update,
         [ "data-testid" ]: testId
     } = props;
 
@@ -240,12 +241,15 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 
                 // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
                 // applied at once. As a temp solution, a notification informing the delay is shown here.
-                // TODO: Remove delay notification and fetch the new updates once backend is fixed.
+                // TODO: Remove delay notification once backend is fixed.
                 dispatch(addAlert<AlertInterface>({
                     description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
                     message: t("adminPortal:components.userstores.notifications.updateDelay.message")
                 }));
+
+                // Re-fetch the userstore details
+                update();
             })
             .catch(error => {
                 dispatch(addAlert<AlertInterface>({

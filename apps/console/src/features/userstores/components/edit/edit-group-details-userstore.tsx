@@ -64,6 +64,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
     const {
         id,
         properties,
+        update,
         [ "data-testid" ]: testId
     } = props;
 
@@ -194,6 +195,9 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                     level: AlertLevels.WARNING,
                     message: t("adminPortal:components.userstores.notifications.updateDelay.message")
                 }));
+
+                // Re-fetch the userstore details
+                update();
             })
             .catch(error => {
                 dispatch(addAlert<AlertInterface>({
