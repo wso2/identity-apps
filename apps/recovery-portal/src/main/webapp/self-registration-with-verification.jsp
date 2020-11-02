@@ -238,10 +238,14 @@
 
                                 <% Claim firstNamePII =
                                         uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM);
+                                   Claim lastNamePII =
+                                        uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
                                     if (firstNamePII != null) {
                                         String firstNameValue = request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM);
                                 %>
-                                <div class="two fields">
+                                <% if (lastNamePII !=null) { %>
+                                    <div class="two fields">
+                                <% } %>
                                     <div class="<% if (firstNamePII.getRequired() || !piisConfigured) {%> required <%}%> field">
                                         <label class="control-label">
                                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "First.name")%>
@@ -253,8 +257,7 @@
                                     </div>
                                     <%}%>
 
-                                    <% Claim lastNamePII =
-                                            uniquePIIs.get(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
+                                    <%
                                         if (lastNamePII != null) {
                                             String lastNameValue =
                                                     request.getParameter(IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM);
@@ -269,7 +272,9 @@
                                                value="<%= Encode.forHtmlAttribute(lastNameValue)%>" disabled <% } %>>
 
                                     </div>
-                                </div>
+                                <% if(firstNamePII != null ) {%>
+                                    </div>
+                                <% } %>
                                 <%}%>
                                 <div class="field">
                                     <input id="username" name="username" type="hidden"
