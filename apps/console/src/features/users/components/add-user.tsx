@@ -17,14 +17,12 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store"
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
+import { AxiosError } from "axios";
 import { generate } from "generate-password";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
 import {
     Grid,
     Message
@@ -70,7 +68,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
     const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
-    const [ isUsernamePatternValid, setIsUsernamePatternValid ] = useState<boolean>(true);
+    const [ usernameValidationErrorMessage, setUsernameValidationErrorMessage ] = useState<string>(undefined);
     const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
     const [ updatedUsername, setUpdatedUsername ] = useState<string>(initialValues?.userName);
     const [ userStore, setUserStore ] = useState<string>(initialValues?.domain);
@@ -86,7 +84,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const [ passwordScore, setPasswordScore ] = useState<number>(-1);
 
     const { t } = useTranslation();
-    const dispatch = useDispatch();
+
+    // Username input validation error messages.
+    const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("adminPortal:components.user.forms.addUserForm.inputs." +
+        "username.validations.invalid");
+    const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("adminPortal:components.user.forms.addUserForm.inputs." +
+        "username.validations.regExViolation");
+    const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("adminPortal:components.user.forms.addUserForm." +
+        "inputs.username.validations.invalidCharacters");
 
     /**
      * The following useEffect is triggered when a random password is generated.
@@ -102,6 +107,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     useEffect(() => {
         setIsUsernameValid(false);
+        setUsernameValidationErrorMessage(undefined);
         validateUsername(updatedUsername);
     }, [ updatedUsername ]);
 
@@ -110,6 +116,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     useEffect(() => {
         setIsUsernameValid(false);
+        setUsernameValidationErrorMessage(undefined);
         validateUsername(updatedUsername);
     }, [ userStore ]);
 
@@ -144,22 +151,32 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      * The following function validates whether the username entered by the user already exists in the
      * user store selected by the user.
      *
-     * @param username
+     * @param {string} username - Username to validate.
      */
     const validateUsername = (username: string): void => {
+
         getUsersList(null, null, "userName eq " + username, null, userStore)
             .then((response) => {
+                // If the search API call returns more than `0` results, show user already exists error.
                 setIsUsernameValid(response?.totalResults === 0);
-            }).catch((error) => {
-                dispatch(addAlert({
-                    description: error?.response?.data?.description ?? error?.response?.data?.detail
-                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.response?.data?.message
-                        ?? t("adminPortal:components.users.notifications.fetchUsers.genericError.message")
-                }))
+                setUsernameValidationErrorMessage(USER_ALREADY_EXIST_ERROR_MESSAGE);
+            })
+            .catch((error: AxiosError) => {
+                // Some non ascii characters are not accepted by DBs with certain charsets.
+                // Hence, the API sends a `500` status code.
+                // see https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
+                if (error?.response?.status === 500) {
+                    setIsUsernameValid(false);
+                    setUsernameValidationErrorMessage(USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                }
+            })
+            .finally(() => {
+                // If the username regex validation fails, show the corresponding error.
+                if (!validateInputAgainstRegEx(username, usernameRegEx)) {
+                    setIsUsernameValid(false);
+                    setUsernameValidationErrorMessage(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
+                }
             });
-        setIsUsernamePatternValid(validateInputAgainstRegEx(username, usernameRegEx));
     };
 
     /**
@@ -472,15 +489,9 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             ) }
                             type="text"
                             validation={ (value: string, validation: Validation) => {
-                                if (isUsernameValid === false) {
+                                if (!isUsernameValid) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push( t("adminPortal:components.user.forms." +
-                                        "addUserForm.inputs.username.validations.invalid") );
-                                }
-                                if (!isUsernamePatternValid) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push( t("adminPortal:components.user.forms." +
-                                        "addUserForm.inputs.username.validations.regExViolation") );
+                                    validation.errorMessages.push(usernameValidationErrorMessage);
                                 }
                             } }
                             value={ initialValues && initialValues.userName }

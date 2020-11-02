@@ -2040,6 +2040,7 @@ export const adminPortal: AdminPortalNS = {
                             validations: {
                                 empty: "Le nom d'utilisateur est obligatoire",
                                 invalid: "Ce nom d'utilisateur n'est pas disponible.",
+                                invalidCharacters: "Le nom d'utilisateur semble contenir des caractères non valides.",
                                 regExViolation: "Ce nom d'utilisateur est invalide"
                             }
                         }

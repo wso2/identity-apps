@@ -2037,7 +2037,8 @@ export const adminPortal: AdminPortalNS = {
                             validations: {
                                 empty: "Username is a required field",
                                 invalid: "A user already exists with this username.",
-                                regExViolation: "Please enter a valid username"
+                                invalidCharacters: "Username seems to contain invalid characters.",
+                                regExViolation: "Please enter a valid username."
                             }
                         }
                     },
