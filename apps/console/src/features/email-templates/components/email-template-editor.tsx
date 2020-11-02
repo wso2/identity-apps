@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EmailTemplateManagementConstants } from "../constants";
 
@@ -32,8 +32,7 @@ interface EmailTemplateEditorPropsInterface extends TestableComponentInterface {
     customClass?: string;
     isAddFlow: boolean;
     isSignature: boolean;
-    updateHtmlContent?: boolean;
-    getContent: (value: string) => void;
+    updateHtmlContent?: (value) => void;
 }
 
 /**
@@ -55,32 +54,18 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         isPreviewOnly,
         isAddFlow,
         isSignature,
-        getContent,
         [ "data-testid" ]: testId
     } = props;
 
     const { t } = useTranslation();
 
-    const [ content, setContent ] = useState<string>("'");
-    const [ updatedContent, setUpdatedContent ] = useState<string>("");
-
-    const init = useRef(true);
-
-    useEffect(() => {
-        if (init.current) {
-            init.current = false;
-        } else {
-            getContent(updatedContent);
-        }
-    }, [ updateHtmlContent ]);
+    const [ content, setContent ] = useState<string>("");
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
             setContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
-            setUpdatedContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
         } else {
             setContent(htmlContent);
-            setUpdatedContent(htmlContent);
         }
     }, [ htmlContent ]);
 
@@ -98,9 +83,6 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                     </div>
                     :
                     <ResourceTab
-                        onTabChange={ () => {
-                            setContent(updatedContent);
-                        } }
                         defaultActiveTab={ isAddFlow ? 1 : 0 }
                         panes={ [
                             {
@@ -135,7 +117,9 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                                 lineWrapping: true
                                             } }
                                             onChange={ (editor, data, value) => {
-                                                setUpdatedContent(value);
+                                                if (updateHtmlContent) {
+                                                    updateHtmlContent(value);
+                                                }
                                             } }
                                             readOnly={ isReadOnly }
                                             theme={ "dark" }

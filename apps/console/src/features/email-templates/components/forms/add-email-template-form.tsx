@@ -18,7 +18,7 @@
 
 import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms, useTrigger } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { AxiosError, AxiosResponse } from "axios";
 import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -75,10 +75,6 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
     const [ htmlBodyContent, setHtmlBodyContent ] = useState<string>("");
     const [ htmlFooterContent, setHtmlFooterContent ] = useState<string>("");
 
-    const [updateBody, setUpdateBody] = useTrigger();
-    const [ updateSignature, setUpdateSignature ] = useTrigger();
-    const [ values, setValues ] = useState<Map<string, FormValue>>(new Map());
-
     /**
      * This will load the locales to the dropdown.
      */
@@ -103,20 +99,6 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
 
         setLocaleList(localeDropDown);
     }, []);
-
-    useEffect(() => {
-        if (!updateSignature || !updateBody) {
-            return;
-        }
-
-        if (!templateId || mode === EmailTemplateFormModes.ADD) {
-            createTemplate(values);
-
-            return;
-        }
-
-        updateTemplate(values);
-    }, [ updateBody, updateSignature ]);
 
     /**
      * Will get fired if there is a template ID to trigger edit flow.
@@ -225,9 +207,13 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
     };
 
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
-        setUpdateBody();
-        setUpdateSignature();
-        setValues(values);
+        if (!templateId || mode === EmailTemplateFormModes.ADD) {
+            createTemplate(values);
+
+            return;
+        }
+
+        updateTemplate(values);
     };
 
     return (
@@ -308,9 +294,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                 isReadOnly={ false }
                                 isSignature
                                 isAddFlow={ templateId === "" }
-                                updateHtmlContent={ updateBody }
+                                updateHtmlContent={ setHtmlBodyContent }
                                 data-testid={ `${ testId }-email-template-body-editor` }
-                                getContent={ (value: string) => { setHtmlBodyContent(value); } }
                             />
                         </Form.Field>
                     </Grid.Column>
@@ -328,9 +313,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                 isSignature={ false }
                                 isAddFlow={ templateId === "" }
                                 customClass="mail-signature"
-                                updateHtmlContent={ updateSignature }
+                                updateHtmlContent={ setHtmlFooterContent }
                                 data-testid={ `${ testId }-email-template-footer-editor` }
-                                getContent={ (value: string) => { setHtmlFooterContent(value); } }
                             />
                         </Form.Field>
                     </Grid.Column>
