@@ -163,7 +163,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
             }
             {
                 summary?.GroupList && summary.GroupList instanceof Array &&
-                    summary.GroupList.length > 0
+                    summary?.GroupList?.length > 0
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
