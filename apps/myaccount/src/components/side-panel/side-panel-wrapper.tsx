@@ -66,7 +66,7 @@ export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = 
             </Responsive>
             <Responsive as={ Container } minWidth={ Responsive.onlyTablet.minWidth }>
                 <Grid style={ desktopContentStyle }>
-                    <Grid.Row columns={ 2 }>
+                    <Grid.Row className="layout-wrapper-row" columns={ 2 }>
                         <Grid.Column tablet={ 4 } computer={ 3 }>
                             <SidePanel headerHeight={ headerHeight } onSidePanelItemClick={ onSidePanelItemClick }/>
                         </Grid.Column>
