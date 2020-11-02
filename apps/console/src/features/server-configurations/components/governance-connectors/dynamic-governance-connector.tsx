@@ -18,6 +18,7 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import get from "lodash/get";
 import kebabCase from "lodash/kebabCase";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
@@ -25,7 +26,7 @@ import { useDispatch } from "react-redux";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
 import { updateGovernanceConnector } from "../../api";
-import { GovernanceConnectorsIllustration } from "../../configs";
+import { GovernanceConnectorIllustrations } from "../../configs";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -36,6 +37,11 @@ interface DynamicGovernanceConnectorProps extends TestableComponentInterface {
     connector: GovernanceConnectorInterface;
     onUpdate: () => void;
 }
+
+/**
+ * Height of the connector illustration wrapper.
+ */
+const CONNECTOR_ILLUSTRATION_WRAPPER_HEIGHT: string = "180px";
 
 /**
  * Dynamic governance connector component.
@@ -150,19 +156,27 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             <Grid.Row columns={ 1 }>
                 <Grid.Column>
                     <Grid padded>
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column width={ 10 }>
-                                <Header>
-                                    { connector?.friendlyName }
-                                    <Header.Subheader>
-                                        { t("adminPortal:components.governanceConnectors.connectorSubHeading", {
-                                            name: connector?.friendlyName
-                                        }) }
-                                    </Header.Subheader>
-                                </Header>
-                            </Grid.Column>
-                            <Grid.Column width={ 6 } textAlign="right">
-                                <GovernanceConnectorsIllustration />
+                        <Grid.Row>
+                            <Grid.Column width={ 16 }>
+                                <div
+                                    style={ {
+                                        height: CONNECTOR_ILLUSTRATION_WRAPPER_HEIGHT,
+                                        background: `url(${ get(GovernanceConnectorIllustrations, connector?.id) })`,
+                                        backgroundRepeat: "no-repeat",
+                                        backgroundSize: "contain",
+                                        backgroundPosition: "right",
+                                        backgroundOrigin: "unset"
+                                    } }
+                                >
+                                    <Header>
+                                        { connector?.friendlyName }
+                                        <Header.Subheader>
+                                            { t("adminPortal:components.governanceConnectors.connectorSubHeading", {
+                                                name: connector?.friendlyName
+                                            }) }
+                                        </Header.Subheader>
+                                    </Header>
+                                </div>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

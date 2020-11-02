@@ -16,6 +16,5 @@
  * under the License.
  */
 
-export * from "./realm-configurations";
 export * from "./dynamic-connector-form";
 export * from "./dynamic-governance-connector";

@@ -44,12 +44,52 @@ export class ServerConfigurationsConstants {
 	public static readonly SELF_SIGN_UP_CONNECTOR_ID: string = "c2VsZi1zaWduLXVw";
 
 	/**
+	 * UUID of the identity governance light user registration connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly LITE_USER_REGISTRATION_CONNECTOR_ID: string = "bGl0ZS11c2VyLXNpZ24tdXA";
+
+	/**
 	 * UUID of the identity governance account recovery connector.
 	 *
 	 * @constant
 	 * @type {string}
 	 */
 	public static readonly ACCOUNT_RECOVERY_CONNECTOR_ID: string = "YWNjb3VudC1yZWNvdmVyeQ";
+
+	/**
+	 * UUID of the identity governance password reset connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly PASSWORD_RESET_CONNECTOR_ID: string = "YWRtaW4tZm9yY2VkLXBhc3N3b3JkLXJlc2V0";
+
+	/**
+	 * UUID of the identity governance consent information connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly CONSENT_INFO_CONNECTOR_ID: string = "cGlpLWNvbnRyb2xsZXI";
+
+	/**
+	 * UUID of the identity governance analytics engine connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly ANALYTICS_ENGINE_CONNECTOR_ID: string = "YW5hbHl0aWNzLWVuZ2luZQ";
+
+	/**
+	 * UUID of the identity governance user claim update connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly USER_CLAIM_UPDATE_CONNECTOR_ID: string = "dXNlci1jbGFpbS11cGRhdGU";
 
 	/**
 	 * UUID of the identity governance login policies category.
@@ -83,6 +123,22 @@ export class ServerConfigurationsConstants {
 	 * @type {string}
 	 */
 	public static readonly CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID: string = "c3NvLmxvZ2luLnJlY2FwdGNoYQ";
+
+	/**
+	 * UUID of the identity governance idle account suspend connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID: string = "c3VzcGVuc2lvbi5ub3RpZmljYXRpb24";
+
+	/**
+	 * UUID of the identity governance account disable connector.
+	 *
+	 * @constant
+	 * @type {string}
+	 */
+	public static readonly ACCOUNT_DISABLE_CONNECTOR_ID: string = "YWNjb3VudC5kaXNhYmxlLmhhbmRsZXI";
 
 	/**
 	 * UUID of the identity governance login policies category.
@@ -122,6 +178,16 @@ export class ServerConfigurationsConstants {
 	 * UUID of the Other Sttings governance connector category.
 	 */
 	public static readonly OTHER_SETTINGS_CONNECTOR_CATEGORY_ID: string = "T3RoZXIgU2V0dGluZ3M";
+
+	/**
+	 * UUID of the Login Attempt Security governance connector category.
+	 */
+	public static readonly LOGIN_ATTEMPT_SECURITY_CONNECTOR_CATEGORY_ID: string = "TG9naW4gQXR0ZW1wdHMgU2VjdXJpdHk";
+
+	/**
+	 * UUID of the Account Management governance connector category.
+	 */
+	public static readonly ACCOUNT_MANAGEMENT_CONNECTOR_CATEGORY_ID: string = "QWNjb3VudCBNYW5hZ2VtZW50";
 
     /**
      * User email verification API Keyword constants.

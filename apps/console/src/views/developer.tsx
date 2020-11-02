@@ -310,7 +310,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                                 { t("console:common.placeholders.brokenPage.action") }
                             </LinkButton>
                         ) }
-                        image={ EmptyPlaceholderIllustrations.genericError }
+                        image={ EmptyPlaceholderIllustrations.brokenPage }
                         imageSize="tiny"
                         subtitle={ [
                             t("console:common.placeholders.brokenPage.subtitles.0"),

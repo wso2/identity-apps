@@ -172,7 +172,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                         component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
                         exact: true,
                         icon: {
-                            icon: SidePanelIcons.connectors[ category.name ] ?? SidePanelIcons.connectors.default
+                            icon: SidePanelIcons.connectors[ category.id ] ?? SidePanelIcons.connectors.default
                         },
                         id: category.id,
                         name: category.name,
@@ -367,7 +367,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                                 { t("console:common.placeholders.brokenPage.action") }
                             </LinkButton>
                         ) }
-                        image={ EmptyPlaceholderIllustrations.genericError }
+                        image={ EmptyPlaceholderIllustrations.brokenPage }
                         imageSize="tiny"
                         subtitle={ [
                             t("console:common.placeholders.brokenPage.subtitles.0"),
