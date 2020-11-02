@@ -155,6 +155,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
      */
     const validateUsername = (username: string): void => {
 
+        // Stop sending username validation requests, if the input is empty.
+        if (!username) {
+            return;
+        }
+
         getUsersList(null, null, "userName eq " + username, null, userStore)
             .then((response) => {
                 // If the search API call returns more than `0` results, show user already exists error.
