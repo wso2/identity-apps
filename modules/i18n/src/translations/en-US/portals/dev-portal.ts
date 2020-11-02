@@ -512,7 +512,7 @@ export const devPortal: DevPortalNS = {
                         },
                         saas: {
                             hint: "Applications are by default restricted for usage by users of the service" +
-                                "provider&apos;s tenant. If this application is SaaS enabled it is opened up for " +
+                                " provider's tenant. If this application is SaaS enabled it is opened up for " +
                                 "all the users of all the tenants.",
                             label: "SaaS application",
                             validations: {
@@ -520,14 +520,16 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         skipConsentLogin: {
-                            hint: "User consent will be skipped during login flows.",
+                            hint: "Once enabled, the page prompt for obtaining user consent will " +
+                                "be skipped for this application during sign in.",
                             label: "Skip login consent",
                             validations: {
                                 empty: "This is a required field."
                             }
                         },
                         skipConsentLogout: {
-                            hint: "User consent will be skipped during logout flows.",
+                            hint: "Once enabled, the page prompt for obtaining user consent will " +
+                                "be skipped for this application during sign out.",
                             label: "Skip logout consent",
                             validations: {
                                 empty: "This is a required field."
