@@ -128,7 +128,12 @@ interface ExternalAppConfigInterface {
 /**
  * Portal UI config interface inheriting the common configs from core module.
  */
-export type UIConfigInterface = CommonUIConfigInterface;
+export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
+    /**
+     * Enable roles and groups separation.
+     */
+    isGroupAndRoleSeparationEnabled?: boolean;
+}
 
 /**
  * Service resource endpoints config.

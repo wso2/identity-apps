@@ -153,10 +153,6 @@ export interface CommonUIConfigInterface<T = {}> {
      */
     gravatarConfig?: GravatarConfig;
     /**
-     * Enable roles and groups separation.
-     */
-    isGroupAndRoleSeparationEnabled?: boolean;
-    /**
      * Application features configurations
      */
     features?: T;
