@@ -57,6 +57,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const { onAlertFired } = props;
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
+    const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -71,7 +72,6 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      * The following method handles the `onSubmit` event of forms.
      *
      * @param {Map<string, string | string[]>} values - Form values.
-     * @param formName - Name of the form
      */
     const handleSubmit = (values: Map<string, string | string[]>): void => {
         const username = values.get("username");
@@ -84,7 +84,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     value: "string"
                 }
             ],
-            userId: username
+            userId: tenantDomain !== "carbon.super" ? username + "@" + tenantDomain : username
         };
 
         addAccountAssociation(data)
