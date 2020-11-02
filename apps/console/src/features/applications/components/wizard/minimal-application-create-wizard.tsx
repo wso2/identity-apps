@@ -161,7 +161,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
      * main form, it triggers the submit of the protocol form.
      */
     useEffect(() => {
-        if ((!protocolFormValues && subTemplates?.length > 0) || !generalFormValues) {
+        if ((!protocolFormValues
+            && (template?.authenticationProtocol || template.subTemplates?.length > 0))
+            || !generalFormValues) {
             return;
         }
 
