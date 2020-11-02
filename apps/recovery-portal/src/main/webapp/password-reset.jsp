@@ -86,10 +86,19 @@
                             <div class="ui negative message" hidden="hidden" id="error-msg"></div>
                             <div class="field">
                                 <label>
-                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.new.password")%>
+                                    <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                                    "Enter.new.password")%>
                                 </label>
-                                <input id="reset-password" name="reset-password" type="password"
-                                    required="">
+                                <div class="ui right icon input">
+                                    <input
+                                        id="reset-password"
+                                        name="reset-password"
+                                        type="password"
+                                        required=""
+                                        onpaste="return false"
+                                    />
+                                    <i id="password1ShowHide" class="eye link icon" onclick="password1ShowToggle()"></i>
+                                </div>
                             </div>
 
                             <%
@@ -132,12 +141,21 @@
                             <%
                                 }
                             %>
-                            <div class="field">
+                           <div class="field">
                                 <label>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Confirm.password")%>
                                 </label>
-                                <input id="reset-password2" name="reset-password2" type="password"
-                                    data-match="reset-password" required="">
+                                <div class="ui right icon input">
+                                    <input
+                                        id="reset-password2"
+                                        name="reset-password2"
+                                        type="password"
+                                        data-match="reset-password"
+                                        required=""
+                                        onpaste="return false"
+                                    />
+                                    <i id="password2ShowHide" class="eye link icon" onclick="password2ShowToggle()"></i>
+                                </div>
                             </div>
                             <div class="ui divider hidden"></div>
 
@@ -204,6 +222,32 @@
                 });
             });
 
+            var password1 = true;
+            var password2 = true;
+
+            function password1ShowToggle(){
+                if(password1) {
+                    password1 = false;
+                    document.getElementById("password1ShowHide").classList.add("slash");
+                    document.getElementById("reset-password").setAttribute("type","text");
+                } else{
+                    password1 = true;
+                    document.getElementById("password1ShowHide").classList.remove("slash");
+                    document.getElementById("reset-password").setAttribute("type","password");
+                }
+            }
+
+            function password2ShowToggle(){
+                if(password2) {
+                    password2 = false;
+                    document.getElementById("password2ShowHide").classList.add("slash");
+                    document.getElementById("reset-password2").setAttribute("type","text");
+                } else{
+                    password2 = true;
+                    document.getElementById("password2ShowHide").classList.remove("slash");
+                    document.getElementById("reset-password2").setAttribute("type","password");
+                }
+            }
         </script>
     </body>
 </html>
