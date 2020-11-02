@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
-import React, { FunctionComponent, ReactElement, useState } from "react";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { getIdentityProviderList } from "../../../../api";
@@ -61,7 +61,7 @@ export const GeneralSettings: FunctionComponent<GeneralSettingsWizardFormPropsIn
                     description: values.get("description").toString(),
                     image: values.get("image").toString(),
                     name: values.get("name").toString()
-                }
+                };
 
                 onSubmit(data);
             } }
