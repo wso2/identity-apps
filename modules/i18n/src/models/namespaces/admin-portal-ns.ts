@@ -1161,6 +1161,7 @@ export interface AdminPortalNS {
                             validations: {
                                 empty: string;
                                 invalid: string;
+                                invalidCharacters: string;
                                 regExViolation: string;
                             };
                         };
