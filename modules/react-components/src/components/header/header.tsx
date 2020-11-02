@@ -249,7 +249,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 data-testid={ `${ testId }-left-extensions` }
                             >
                                 {
-                                    extensions.map((extension: HeaderExtension) => 
+                                    extensions.map((extension: HeaderExtension) =>
                                         extension.floated === "left" && extension.component)
                                 }
                             </Menu.Menu>
@@ -267,7 +267,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                 extensions instanceof Array
                                 && extensions.length > 0
                                 && extensions.some((extension: HeaderExtension) => extension.floated === "right")
-                                && extensions.map((extension: HeaderExtension) => 
+                                && extensions.map((extension: HeaderExtension) =>
                                     extension.floated === "right" && extension.component)
                             )
                         }
@@ -362,6 +362,7 @@ export const Header: FunctionComponent<HeaderPropsInterface> = (
                                                                         image={ getGravatarImage(association.email) }
                                                                         name={ association.username }
                                                                         data-testid={ `${ testId }-la-avatar` }
+                                                                        spaced="right"
                                                                     />
                                                                     <Item.Content verticalAlign="middle">
                                                                         <Item.Description>
