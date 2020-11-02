@@ -22,9 +22,9 @@ import { Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Message, Modal } from "semantic-ui-react";
+import { SharedUserStoreUtils } from "../../core/utils";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../userstores/constants";
 import { updateUserInfo } from "../api";
-import {SharedUserStoreUtils} from "../../core/utils";
 
 /**
  * import pass strength bat dynamically.
