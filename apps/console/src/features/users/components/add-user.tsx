@@ -17,6 +17,9 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
+import { UserstoreConstants } from "@wso2is/core/constants";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store"
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { AxiosError } from "axios";
@@ -253,7 +256,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 value={ isPasswordGenerated ? randomPassword : initialValues?.newPassword }
                                 validation={ async (value: string, validation: Validation) => {
                                     let passwordRegex = "";
-                                    if (userStore !== "primary") {
+                                    if (userStore !== UserstoreConstants.PRIMARY_USER_STORE) {
                                         // Set the username regEx of the secondary user store.
                                         passwordRegex
                                             = await getUserstoreRegEx(
