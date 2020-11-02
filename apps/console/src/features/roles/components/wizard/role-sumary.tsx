@@ -177,7 +177,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
-                                        summary.GroupList
+                                        summary?.GroupList
                                             .map((group, index) => (
                                                 <Label
                                                     data-testid={
