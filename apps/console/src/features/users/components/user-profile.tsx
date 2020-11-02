@@ -26,6 +26,7 @@ import {
     SBACInterface,
     TestableComponentInterface
 } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import {
@@ -34,10 +35,11 @@ import {
     DangerZoneGroup,
     EmphasizedSegment
 } from "@wso2is/react-components";
+import { AxiosError } from "axios";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, ReactNode, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, CheckboxProps, Divider, Form, Grid, Icon, Input, List, Popup } from "semantic-ui-react";
 import { ChangePasswordComponent } from "./user-change-password";
 import { AppConstants, AppState, FeatureConfigInterface, history } from "../../core";
@@ -93,6 +95,8 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    
+    const dispatch = useDispatch();
 
     const profileSchemas: ProfileSchemaInterface[] = useSelector((state: AppState) => state.profile.profileSchemas);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
@@ -360,18 +364,41 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             data.Operations.push(operation);
         });
 
-        updateUserInfo(user.id, data).then(() => {
-            onAlertFired({
-                    description: t(
-                        "adminPortal:components.user.profile.notifications.updateProfileInfo.success.description"
-                    ),
-                    level: AlertLevels.SUCCESS,
-                    message: t(
-                        "adminPortal:components.user.profile.notifications.updateProfileInfo.success.message"
-                    )
-                });
-            handleUserUpdate(user.id);
-        });
+        updateUserInfo(user.id, data)
+            .then(() => {
+                onAlertFired({
+                        description: t(
+                            "adminPortal:components.user.profile.notifications.updateProfileInfo.success.description"
+                        ),
+                        level: AlertLevels.SUCCESS,
+                        message: t(
+                            "adminPortal:components.user.profile.notifications.updateProfileInfo.success.message"
+                        )
+                    });
+
+                handleUserUpdate(user.id);
+            })
+            .catch((error: AxiosError) => {
+
+                if (error?.response?.data?.detail || error?.response?.data?.description) {
+                    dispatch(addAlert({
+                        description: error?.response?.data?.detail || error?.response?.data?.description,
+                        level: AlertLevels.ERROR,
+                        message: t("adminPortal:components.user.profile.notifications.updateProfileInfo." +
+                            "error.message")
+                    }));
+
+                    return;
+                }
+
+                dispatch(addAlert({
+                    description: t("adminPortal:components.user.profile.notifications.updateProfileInfo." +
+                        "genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("adminPortal:components.user.profile.notifications.updateProfileInfo." +
+                        "genericError.message")
+                }));
+            });
     };
 
     /**
