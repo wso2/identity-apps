@@ -209,7 +209,16 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
             bottomMargin={ false }
             data-testid={ `${ testId }-page-layout` }
         >
-            <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` }/>
+            <ResourceTab
+                panes={ panes }
+                onTabChange={ () => {
+                    // Re-fetch userstore details on every tab change to try to get the latest available updated
+                    // userstore properties due to the asynchronous nature of userstore operations.
+                    // TODO: Remove once the userstore operations are made synchronous.
+                    getUserStore()
+                } }
+                data-testid={ `${ testId }-tabs` }
+            />
         </PageLayout>
     )
 };
