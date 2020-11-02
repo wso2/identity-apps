@@ -183,35 +183,3 @@ export const reOrganizeProperties = (
         }
     };
 };
-
-/**
- * The following method get the username regEx for the selected user store.
- *
- * @param userstore
- * @param regExName
- */
-export const getUserstoreRegEx = async (userstore: string, regExName: string): Promise<string> => {
-    let usernameRegEx: UserStoreProperty = null;
-    return getUserStoreList()
-         .then((response) => {
-            const store = response.data.find(item => item.name === userstore);
-            if (!_.isEmpty(store)) {
-                return getAUserStore(store.id)
-                    .then((resp) => {
-                        usernameRegEx = resp.properties.find(property => property.name === regExName);
-                        return usernameRegEx?.value;
-                    })
-            }
-        });
-};
-
-/**
- * The following method validate user input against the user store regEx.
- *
- * @param inputValue
- * @param regExValue
- */
-export const validateInputAgainstRegEx = (inputValue: string, regExValue: string): boolean => {
-    const regEx = new RegExp(regExValue);
-    return regEx.test(inputValue);
-};
