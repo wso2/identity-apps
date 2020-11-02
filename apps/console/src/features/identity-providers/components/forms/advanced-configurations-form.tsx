@@ -65,10 +65,6 @@ export const AdvanceConfigurationsForm: FunctionComponent<AdvanceConfigurationsF
     const updateConfiguration = (values: any): any => {
         return {
             alias: values.get("alias"),
-            certificate: {
-                certificates: values.get("type") === "PEM" ? [values.get("value")] : config?.certificate?.certificates,
-                jwksUri: values.get("type") === "JWKS" ? values.get("value") : config?.certificate?.jwksUri
-            },
             homeRealmIdentifier: values.get("homeRealmIdentifier"),
             isFederationHub: !!values.get("federationHub")?.includes("federationHub")
         };
