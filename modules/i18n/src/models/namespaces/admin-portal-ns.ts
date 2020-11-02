@@ -1552,6 +1552,7 @@ export interface AdminPortalNS {
                 updateUserstore: Notification;
                 testConnection: Notification;
                 addUserstore: Notification;
+                updateDelay: NotificationItem;
             };
             confirmation: {
                 hint: string;

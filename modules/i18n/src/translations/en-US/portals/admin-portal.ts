@@ -2758,6 +2758,10 @@ export const adminPortal: AdminPortalNS = {
                         message: "Connection successful!"
                     }
                 },
+                updateDelay: {
+                    description: "It might take some time for the updated properties to appear.",
+                    message: "Updating properties takes time"
+                },
                 updateUserstore: {
                     genericError: {
                         description: "An error occurred while updating the userstore.",

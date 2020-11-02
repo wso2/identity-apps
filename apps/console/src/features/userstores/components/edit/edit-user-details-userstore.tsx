@@ -62,7 +62,6 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
 ): ReactElement => {
 
     const {
-        update,
         id,
         properties,
         [ "data-testid" ]: testId
@@ -169,25 +168,35 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
             ]
             : requiredData;
 
-        patchUserStore(id, data).then(() => {
-            dispatch(addAlert({
-                description: t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.success.message")
-            }));
-            update();
-        }).catch(error => {
-            dispatch(addAlert({
-                description: error?.description
-                    || t("adminPortal:components.userstores.notifications." +
-                        "updateUserstore.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: error?.message || t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.genericError.message")
-            }));
-        });
+        patchUserStore(id, data)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.success.message")
+                }));
+
+                // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
+                // applied at once. As a temp solution, a notification informing the delay is shown here.
+                // TODO: Remove delay notification and fetch the new updates once backend is fixed.
+                dispatch(addAlert({
+                    description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("adminPortal:components.userstores.notifications.updateDelay.message")
+                }));
+            })
+            .catch(error => {
+                dispatch(addAlert({
+                    description: error?.description
+                        || t("adminPortal:components.userstores.notifications." +
+                            "updateUserstore.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message || t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.genericError.message")
+                }));
+            });
     };
 
     return (
