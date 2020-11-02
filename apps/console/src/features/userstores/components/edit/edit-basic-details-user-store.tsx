@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -263,7 +263,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             .then(() => {
                 patchUserStore(id, patchData)
                     .then(() => {
-                        dispatch(addAlert({
+                        dispatch(addAlert<AlertInterface>({
                             description: t("adminPortal:components.userstores.notifications." +
                                 "updateUserstore.success.description"),
                             level: AlertLevels.SUCCESS,
@@ -274,14 +274,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
                         // applied at once. As a temp solution, a notification informing the delay is shown here.
                         // TODO: Remove delay notification and fetch the new updates once backend is fixed.
-                        dispatch(addAlert({
+                        dispatch(addAlert<AlertInterface>({
                             description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
                             level: AlertLevels.WARNING,
                             message: t("adminPortal:components.userstores.notifications.updateDelay.message")
                         }));
                     })
                     .catch((error) => {
-                        dispatch(addAlert({
+                        dispatch(addAlert<AlertInterface>({
                             description: error?.description
                                 || t("adminPortal:components.userstores.notifications." +
                                     "updateUserstore.genericError.description"),
@@ -292,7 +292,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                     });
             })
             .catch((error) => {
-                dispatch(addAlert({
+                dispatch(addAlert<AlertInterface>({
                     description: error?.description ?? t("adminPortal:components.userstores.notifications." +
                         "updateUserstore.genericError.description"),
                     level: AlertLevels.ERROR,
@@ -323,7 +323,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             .then(() => {
                 setEnabled(data.checked);
 
-                dispatch(addAlert({
+                dispatch(addAlert<AlertInterface>({
                     description: t("adminPortal:components.userstores.notifications." +
                         "updateUserstore.success.description"),
                     level: AlertLevels.SUCCESS,
@@ -334,14 +334,14 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
                 // applied at once. As a temp solution, a notification informing the delay is shown here.
                 // TODO: Remove delay notification and fetch the new updates once backend is fixed.
-                dispatch(addAlert({
+                dispatch(addAlert<AlertInterface>({
                     description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
                     level: AlertLevels.WARNING,
                     message: t("adminPortal:components.userstores.notifications.updateDelay.message")
                 }));
             })
             .catch(error => {
-                dispatch(addAlert({
+                dispatch(addAlert<AlertInterface>({
                     description: error?.description
                         || t("adminPortal:components.userstores.notifications." +
                             "updateUserstore.genericError.description"),
