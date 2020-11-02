@@ -327,6 +327,13 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-application-discoverable-checkbox` }
                         />
+                        <Hint>
+                            { t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.hint") }
+                        </Hint>
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 1 }>
+                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="accessUrl"
                             label={
@@ -355,9 +362,6 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                             readOnly={ readOnly }
                             data-testid={ `${ testId }-application-access-url-input` }
                         />
-                        <Hint>
-                            { t("devPortal:components.applications.forms.generalDetails.fields.accessUrl.hint") }
-                        </Hint>
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row columns={ 1 }>
