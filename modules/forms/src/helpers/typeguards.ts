@@ -147,6 +147,7 @@ export const isInputField = (
         isDropdownField(toBeDetermined) ||
         isRadioField(toBeDetermined) ||
         isPasswordField(toBeDetermined) ||
-        isToggleField(toBeDetermined)
+        isToggleField(toBeDetermined) ||
+        isQueryParamsField(toBeDetermined)
     );
 };
