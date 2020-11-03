@@ -16,7 +16,14 @@
  * under the License.
  */
 
-import { Confirmation, ModalInterface, Notification, Placeholder, ValidationInterface } from "../common";
+import {
+    Confirmation,
+    FormAttributes,
+    ModalInterface,
+    Notification,
+    Placeholder,
+    ValidationInterface
+} from "../common";
 
 /**
  * Model for the Console namespace
@@ -33,6 +40,23 @@ export interface ConsoleNS {
         validations: {
             inSecureURL: ValidationInterface;
             unrecognizedURL: ValidationInterface;
+        };
+    };
+    develop: {
+        features: {
+            applications: {
+                confirmations: {
+                    clientSecretHashDisclaimer: {
+                        modal: Confirmation;
+                        forms: {
+                           clientIdSecretForm: {
+                               clientId: FormAttributes;
+                               clientSecret: FormAttributes;
+                           };
+                        };
+                    };
+                };
+            };
         };
     };
     manage: {

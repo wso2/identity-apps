@@ -99,6 +99,46 @@ export const console: ConsoleNS = {
             }
         }
     },
+    develop: {
+        features: {
+            applications: {
+                confirmations: {
+                    clientSecretHashDisclaimer: {
+                        forms: {
+                            clientIdSecretForm: {
+                                clientId: {
+                                    hide: "Masquer l'ID",
+                                    label: "Identifiant du client",
+                                    placeholder: "identité du client",
+                                    show: "Afficher l'ID",
+                                    validations: {
+                                        empty: "Ceci est un champ obligatoire."
+                                    }
+                                },
+                                clientSecret: {
+                                    hideSecret: "Cacher le secret",
+                                    label: "Secret du client",
+                                    placeholder: "Saisir le secret du client",
+                                    showSecret: "Montrez le secret",
+                                    validations: {
+                                        empty: "Ceci est un champ obligatoire."
+                                    }
+                                }
+                            }
+                        },
+                        modal: {
+                            assertionHint: "",
+                            content: "",
+                            header: "Informations d'identification de l'application OAuth",
+                            message: "La valeur du secret du consommateur ne sera affichée qu'une seule fois en " +
+                                "texte brut.Veuillez vous assurer de la copier et de la sauvegarder dans un " +
+                                "endroit sûr."
+                        }
+                    }
+                }
+            }
+        }
+    },
     manage: {
         features: {
             users: {
