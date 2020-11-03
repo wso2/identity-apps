@@ -384,6 +384,9 @@
            {% endfor %}
            {% endif %}
         },
+        {% if oauth.hash_tokens_and_secrets is defined %}
+        "isClientSecretHashEnabled": {{ oauth.hash_tokens_and_secrets }},
+        {% endif %}
         "isGroupAndRoleSeparationEnabled": {{ authorization_manager.properties.GroupAndRoleSeparationEnabled }},
         "productName": "{{ console.ui.product_name }}",
         "productVersionConfig": {
