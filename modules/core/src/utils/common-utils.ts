@@ -112,8 +112,8 @@ export class CommonUtils {
     /**
      * Get user image from gravatar.com.
      *
-     * @param emailAddress email address received authenticated user.
-     * @returns {string} gravatar image path.
+     * @param {string} emailAddress - email address received authenticated user.
+     * @returns {string} - gravatar image path.
      */
     public static getGravatar(emailAddress: string): string {
         return "https://www.gravatar.com/avatar/" + MD5(emailAddress.trim()) + "?d=404";
@@ -126,4 +126,22 @@ export class CommonUtils {
 
         window.location.reload();
     }
+
+    /**
+     * Scroll page to a specific target element.
+     * 
+     * @param {DOMElement} element - target element.
+     * @param {number?} offset - scroll stop offset value.
+     */
+    public static scrollToTarget = (element, offset?: number): void => {
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = element.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = offset ? elementPosition - offset : elementPosition;
+    
+        window.scrollTo({
+             top: offsetPosition,
+             behavior: "smooth"
+        });
+    };
 }

@@ -91,10 +91,10 @@ export class UIConstants {
         .set("5.11.0", "https://is.docs.wso2.com/en/5.11.0/");
 
     /**
-     * Governance connector menu additional top offset for sticky scrolling.
+     * Additional top offset padding for page scrolling placement.
      * This will use along with the header height (appHeaderHeight + thisValues).
      * @constant
      * @type {number}
      */
-    public static readonly CONNECTOR_MENU_TOP_PADDING = 20;
+    public static readonly PAGE_SCROLL_TOP_PADDING = 20;
 }

@@ -18,6 +18,7 @@
 
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -147,7 +148,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                             }
 
                             <Rail position="right" close="very">
-                                <Sticky context={ pageContextRef } offset={ headerHeight + UIConstants.CONNECTOR_MENU_TOP_PADDING } bottomOffset={ footerHeight }>
+                                <Sticky context={ pageContextRef } offset={ headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING } bottomOffset={ footerHeight }>
                                     {
                                         (connectors && Array.isArray(connectors) && connectors.length > 0) && (
                                             <>
@@ -165,9 +166,7 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                                                 }
                                                                 onClick={ () => {
                                                                     // Scroll to the selected connector.
-                                                                    connector?.ref?.current?.scrollIntoView({
-                                                                        behavior: "smooth", block: "center"
-                                                                    });
+                                                                    CommonUtils.scrollToTarget(connector?.ref?.current, headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING);
 
                                                                     setSelectorConnector(connector);
                                                                 } }
