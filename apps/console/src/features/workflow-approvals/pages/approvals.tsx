@@ -269,7 +269,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const searchApprovalList = (event) => {
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
-            const searchResult =approvals.filter((item) =>
+            const searchResult = approvals.filter((item) =>
                 item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
             setTempApprovals(searchResult);
 

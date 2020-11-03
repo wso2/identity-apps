@@ -23,8 +23,8 @@ import { ListLayout, PageLayout, PrimaryButton } from "@wso2is/react-components"
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Icon } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../core";
+import { Icon, Input } from "semantic-ui-react";
+import { AppState, FeatureConfigInterface, UIConstants } from "../../core";
 import { getOIDCScopesList } from "../api";
 import { OIDCScopeCreateWizard, OIDCScopeList } from "../components";
 import { OIDCScopesListInterface } from "../models";
@@ -58,8 +58,10 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     const [ scopeList, setScopeList ] = useState<OIDCScopesListInterface[]>([]);
+    const [ tempScopeList, setTempScopeList ] = useState<OIDCScopesListInterface[]>([]);
     const [ isScopesListRequestLoading, setScopesListRequestLoading ] = useState<boolean>(false);
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
+    const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
 
     /**
      * Called on every `listOffset` & `listItemLimit` change.
@@ -67,6 +69,14 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
     useEffect(() => {
         getOIDCScopes();
     }, []);
+
+    /**
+     * Updates the scope list on change.
+     */
+    useEffect(() => {
+        setScopeList(scopeList);
+        setTempScopeList(scopeList);
+    }, [ scopeList ]);
 
     /**
      * Retrieves the list of OIDC scopes.
@@ -77,6 +87,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
         getOIDCScopesList<OIDCScopesListInterface[]>()
             .then((response: OIDCScopesListInterface[]) => {
                 setScopeList(response);
+                setTempScopeList(response);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -103,6 +114,22 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             });
     };
 
+    /**
+     * Search the scope list.
+     *
+     * @param event
+     */
+    const searchScopeList = (event) => {
+        const changeValue = event.target.value;
+        if (changeValue.length > 0) {
+            const result = scopeList.filter((item) =>
+                item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
+            setTempScopeList(result);
+        } else {
+            setTempScopeList(scopeList);
+        }
+    };
+
     return (
         <PageLayout
             action={
@@ -124,21 +151,36 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                showTopActionPanel={ false }
-                onPageChange={ () => null }
+                showTopActionPanel={ isScopesListRequestLoading || !(scopeList?.length == 0) }
+                listItemLimit={ listItemLimit }
                 showPagination={ false }
-                totalPages={ null }
+                onPageChange={ () => null }
+                totalPages={ Math.ceil(scopeList?.length / listItemLimit) }
                 data-testid={ `${ testId }-list-layout` }
+                leftActionPanel={
+                    <div className="advanced-search-wrapper aligned-left fill-default">
+                        <Input
+                            className="advanced-search with-add-on"
+                            data-testid={ `${ testId }-list-search-input` }
+                            icon="search"
+                            iconPosition="left"
+                            onChange={ searchScopeList }
+                            placeholder={ t("devPortal:components.oidcScopes.list.searchPlaceholder") }
+                            floated="right"
+                            size="small"
+                        />
+                    </div>
+                }
             >
                 <OIDCScopeList
                     featureConfig={ featureConfig }
                     isLoading={ isScopesListRequestLoading }
-                    list={ scopeList }
+                    list={ tempScopeList }
                     onScopeDelete={ getOIDCScopes }
                     onEmptyListPlaceholderActionClick={ () => setShowWizard(true) }
-                    onSearchQueryClear={ null }
-                    searchQuery={ null }
                     data-testid={ `${ testId }-list` }
+                    searchResult={ tempScopeList?.length }
+                    getOIDCScopesList={ getOIDCScopes }
                 />
                 {
                     showWizard && (

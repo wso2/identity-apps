@@ -31,7 +31,8 @@ import {
     EmptyPlaceholder,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface
+    TableColumnInterface,
+    LinkButton
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -98,6 +99,14 @@ interface OIDCScopesListPropsInterface extends SBACInterface<FeatureConfigInterf
      * Show list item actions.
      */
     showListItemActions?: boolean;
+    /**
+     * Search query string
+     */
+    searchResult?: number;
+    /**
+     * Fetch OIDC scopes list
+     */
+    getOIDCScopesList?: () => void;
 }
 
 /**
@@ -117,6 +126,8 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
         featureConfig,
         isLoading,
         list,
+        searchResult,
+        getOIDCScopesList,
         onScopeDelete,
         onListItemClick,
         onEmptyListPlaceholderActionClick,
@@ -270,7 +281,28 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
      * @return {React.ReactElement}
      */
     const showPlaceholders = (): ReactElement => {
-        if (list instanceof Array && list?.length === 0) {
+
+        if (searchResult === 0) {
+            return (
+                <EmptyPlaceholder
+                    action={ (
+                        <LinkButton onClick={ getOIDCScopesList }>
+                            { t("devPortal:components.oidcScopes.placeholders.emptySearch.action") }
+                        </LinkButton>
+                    ) }
+                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    imageSize="tiny"
+                    title={ t("devPortal:components.oidcScopes.placeholders.emptySearch.title") }
+                    subtitle={ [
+                        t("devPortal:components.oidcScopes.placeholders.emptySearch.subtitles.0"),
+                        t("devPortal:components.oidcScopes.placeholders.emptySearch.subtitles.1"),
+                    ] }
+                    data-testid={ `${ testId }-empty-search-placeholder` }
+                />
+            );
+        }
+
+        if (list?.length === 0) {
             return (
                 <EmptyPlaceholder
                     action={ onEmptyListPlaceholderActionClick && (
