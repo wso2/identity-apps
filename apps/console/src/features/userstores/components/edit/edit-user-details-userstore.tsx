@@ -181,6 +181,7 @@ export const EditUserDetails: FunctionComponent<EditUserDetailsPropsInterface> =
 
                 // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
                 // applied at once. As a temp solution, a notification informing the delay is shown here.
+                // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once the backend is fixed.
                 dispatch(addAlert<AlertInterface>({
                     description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
