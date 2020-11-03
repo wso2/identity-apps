@@ -24,7 +24,9 @@ import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
-import { Button, Divider, Form, Grid, Label } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Button, Divider, Form, Grid, Label, Message } from "semantic-ui-react";
+import { AppState } from "../../../core/store";
 import {
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
@@ -82,6 +84,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     } = props;
 
     const { t } = useTranslation();
+
+    const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.isClientSecretHashEnabled);
 
     const [ isEncryptionEnabled, setEncryptionEnable ] = useState(false);
     const [ callBackUrls, setCallBackUrls ] = useState("");
@@ -488,19 +493,32 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                                         ".clientSecret.label")
                                                 }
                                             </label>
-                                            <CopyInputField
-                                                secret
-                                                value={ initialValues?.clientSecret }
-                                                hideSecretLabel={
-                                                    t("devPortal:components.applications.forms.inboundOIDC.fields" +
-                                                        ".clientSecret.hideSecret")
-                                                }
-                                                showSecretLabel={
-                                                    t("devPortal:components.applications.forms.inboundOIDC.fields" +
-                                                        ".clientSecret.showSecret")
-                                                }
-                                                data-testid={ `${ testId }-client-secret-readonly-input` }
-                                            />
+                                            {
+                                                isClientSecretHashEnabled
+                                                    ? (
+                                                        <Message info visible>
+                                                            {
+                                                                t("devPortal:components.applications.forms." +
+                                                                    "inboundOIDC.fields.clientSecret.hashedDisclaimer")
+                                                            }
+                                                        </Message>
+                                                    )
+                                                    : (
+                                                        <CopyInputField
+                                                            secret
+                                                            value={ initialValues?.clientSecret }
+                                                            hideSecretLabel={
+                                                                t("devPortal:components.applications.forms." +
+                                                                    "inboundOIDC.fields.clientSecret.hideSecret")
+                                                            }
+                                                            showSecretLabel={
+                                                                t("devPortal:components.applications.forms." +
+                                                                    "inboundOIDC.fields.clientSecret.showSecret")
+                                                            }
+                                                            data-testid={ `${ testId }-client-secret-readonly-input` }
+                                                        />
+                                                    )
+                                            }
                                         </Form.Field>
                                     </Grid.Column>
                                 </Grid.Row>
