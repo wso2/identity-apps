@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CodeEditor, ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { EmailTemplateManagementConstants } from "../constants";
 
@@ -62,6 +62,12 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     const [ content, setContent ] = useState<string>("");
     const [ updatedContent, setUpdatedContent ] = useState<string>("");
 
+    const iframe = useRef<HTMLIFrameElement>();
+
+    useEffect(() => {
+        writeToIframe();
+    }, [ content ]);
+
     useEffect(() => {
         if (isAddFlow && isSignature) {
             setContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
@@ -72,12 +78,23 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         }
     }, [ htmlContent ]);
 
+    /**
+     * Write content to iFrame.
+     */
+    const writeToIframe = (): void => {
+        const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
+        iframeDoc.body.innerHTML = content;
+    }
+
     return (
         <div className={ "email-code-editor " + customClass } data-testid={ testId }>
             {
                 isPreviewOnly ?
                     <div className="render-view" data-testid={ `${ testId }-preview-only-render-view` }>
-                        <iframe id="iframe" srcDoc={ content }>
+                        <iframe id="iframe" ref={ (ref) => {
+                            iframe.current = ref;
+                            iframe.current && writeToIframe();
+                        } }>
                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
                                 { t("adminPortal:components.emailTemplates.notifications.iframeUnsupported" +
                                     ".genericError.description") }
@@ -101,7 +118,10 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                         attached={ false }
                                         data-testid="preview-tab-pane"
                                     >
-                                        <iframe id="iframe" srcDoc={ content }>
+                                        <iframe id="iframe" ref={ (ref) => {
+                                            iframe.current = ref;
+                                            iframe.current && writeToIframe();
+                                        } }>
                                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
                                                 { t("adminPortal:components.emailTemplates.notifications" +
                                                     ".iframeUnsupported.genericError.description") }
