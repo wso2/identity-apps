@@ -45,6 +45,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
+    OIDCDataInterface,
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
@@ -126,6 +127,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
     const [ showClientSecretHashDisclaimerModal, setShowClientSecretHashDisclaimerModal ] = useState<boolean>(false);
+    const [
+        clientSecretHashDisclaimerModalInputs,
+        setClientSecretHashDisclaimerModalInputs
+    ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -299,6 +304,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
     };
 
+    /**
+     * Handles application secret regenerate.
+     * @param {OIDCDataInterface} config - Config response.
+     */
+    const handleApplicationSecretRegenerate = (config: OIDCDataInterface): void => {
+
+        if (isEmpty(config) || !config.clientSecret || !config.clientId) {
+            return;
+        }
+
+        setClientSecretHashDisclaimerModalInputs({
+            clientId: config.clientId,
+            clientSecret: config.clientSecret
+        });
+        setShowClientSecretHashDisclaimerModal(true);
+    };
+
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralApplicationSettings
@@ -324,7 +346,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AccessConfiguration
                 allowedOriginList={ allowedOrigins }
                 onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }
-                onApplicationRevoke={ () => setShowClientSecretHashDisclaimerModal(true) }
+                onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
                 appId={ application.id }
                 appName={ application.name }
                 isLoading={ isLoading }
@@ -485,6 +507,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         ];
     };
 
+    /**
+     * Renders the client secret hash disclaimer modal.
+     * @return {React.ReactElement}
+     */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
 
         const isOIDCConfigured: boolean = inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC);
@@ -497,9 +523,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return null;
         }
 
-        if (!ApplicationManagementUtils.isDisplayableClientSecret(inboundProtocolConfig.oidc.clientSecret)) {
-            return null;
-        }
+        const clientSecret: string = clientSecretHashDisclaimerModalInputs.clientSecret
+            || inboundProtocolConfig.oidc.clientSecret;
+        const clientId: string = clientSecretHashDisclaimerModalInputs.clientId
+            || inboundProtocolConfig.oidc.clientId;
 
         return (
             <ConfirmationModal
@@ -507,9 +534,13 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 type="warning"
                 open={ true }
                 primaryAction={ t("common:confirm") }
-                secondaryAction={ t("common:cancel") }
-                onSecondaryActionClick={ (): void => setShowClientSecretHashDisclaimerModal(false) }
-                onPrimaryActionClick={ (): void => null }
+                onPrimaryActionClick={ (): void => {
+                    setShowClientSecretHashDisclaimerModal(false);
+                    setClientSecretHashDisclaimerModalInputs({
+                        clientId: "",
+                        clientSecret: ""
+                    });
+                } }
             >
                 <ConfirmationModal.Header
                     data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-header` }
@@ -560,7 +591,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                             "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.placeholder")
                                     }
                                     type="password"
-                                    value={ inboundProtocolConfig.oidc.clientId }
+                                    value={ clientId }
                                     data-testid={ `${ testId }-client-secret-readonly-input` }
                                     readOnly
                                 />
@@ -590,7 +621,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                                             "placeholder")
                                     }
                                     type="password"
-                                    value={ inboundProtocolConfig.oidc.clientSecret }
+                                    value={ clientSecret }
                                     data-testid={ `${ testId }-client-secret-readonly-input` }
                                     readOnly
                                 />
