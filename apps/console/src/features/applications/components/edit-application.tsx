@@ -497,6 +497,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             return null;
         }
 
+        if (!ApplicationManagementUtils.isDisplayableClientSecret(inboundProtocolConfig.oidc.clientSecret)) {
+            return null;
+        }
+
         return (
             <ConfirmationModal
                 data-testid={ `${ testId }-client-secret-hash-disclaimer-modal` }
