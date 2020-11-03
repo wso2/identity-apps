@@ -62,6 +62,8 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
 
+    const ScrollTopPosition = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
+
     useEffect(() => {
         loadCategoryConnectors();
     }, []);
@@ -148,14 +150,20 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                             }
 
                             <Rail position="right" close="very">
-                                <Sticky context={ pageContextRef } offset={ headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING } bottomOffset={ footerHeight }>
+                                <Sticky
+                                    context={ pageContextRef }
+                                    offset={ ScrollTopPosition }
+                                    bottomOffset={ footerHeight }>
                                     {
                                         (connectors && Array.isArray(connectors) && connectors.length > 0) && (
                                             <>
                                                 <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
                                                 <Menu secondary vertical className="governance-connector-categories">
                                                     {
-                                                        connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
+                                                        connectors.map((
+                                                            connector: GovernanceConnectorWithRef,
+                                                            index: number) => (
+
                                                             <Menu.Item
                                                                 as="a"
                                                                 key={ index }
@@ -166,7 +174,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                                                 }
                                                                 onClick={ () => {
                                                                     // Scroll to the selected connector.
-                                                                    CommonUtils.scrollToTarget(connector?.ref?.current, headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING);
+                                                                    CommonUtils.scrollToTarget(
+                                                                        connector?.ref?.current, ScrollTopPosition
+                                                                    );
 
                                                                     setSelectorConnector(connector);
                                                                 } }

@@ -130,10 +130,10 @@ export class CommonUtils {
     /**
      * Scroll page to a specific target element.
      * 
-     * @param {DOMElement} element - target element.
+     * @param {any} element - target element.
      * @param {number?} offset - scroll stop offset value.
      */
-    public static scrollToTarget = (element, offset?: number): void => {
+    public static scrollToTarget (element: any, offset?: number): void {
         const bodyRect = document.body.getBoundingClientRect().top;
         const elementRect = element.getBoundingClientRect().top;
         const elementPosition = elementRect - bodyRect;
