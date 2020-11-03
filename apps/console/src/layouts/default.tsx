@@ -36,10 +36,16 @@ import { System } from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
-import { Footer, Header, ProtectedRoute } from "../features/core/components";
-import { getDefaultLayoutRoutes } from "../features/core/configs";
-import { AppConstants, UIConstants } from "../features/core/constants";
-import { AppState } from "../features/core/store";
+import {
+    AppConstants,
+    AppState,
+    Footer,
+    Header,
+    ProtectedRoute,
+    UIConstants,
+    getDefaultLayoutRoutes,
+    useUIElementSizes
+} from "../features/core";
 
 /**
  * Default page layout component Prop types.
@@ -65,29 +71,14 @@ export const DefaultLayout: FunctionComponent<DefaultLayoutPropsInterface> = (
     const { fluid } = props;
 
     const dispatch = useDispatch();
+    const { headerHeight, footerHeight } = useUIElementSizes();
 
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: System = useSelector((state: AppState) => state.global.alertSystem);
     const isAJAXTopLoaderVisible: boolean = useSelector((state: AppState) => state.global.isAJAXTopLoaderVisible);
 
     const [ defaultLayoutRoutes, setDefaultLayoutRoutes ] = useState<RouteInterface[]>(getDefaultLayoutRoutes());
-    const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
-    const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
-
-    useEffect(() => {
-        if (headerHeight === document.getElementById("app-header")?.offsetHeight) {
-            return;
-        }
-        setHeaderHeight(document.getElementById("app-header")?.offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
-    });
-
-    useEffect(() => {
-        if (footerHeight === document.getElementById("app-footer")?.offsetHeight) {
-            return;
-        }
-        setFooterHeight(document.getElementById("app-footer")?.offsetHeight);
-    });
 
     /**
      * Listen for base name changes and updated the layout routes.

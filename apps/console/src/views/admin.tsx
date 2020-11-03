@@ -47,17 +47,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
-import { Footer, Header, ProtectedRoute } from "../features/core/components";
 import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
     EmptyPlaceholderIllustrations,
+    FeatureConfigInterface,
+    Footer,
+    Header,
+    ProtectedRoute,
     SidePanelIcons,
     SidePanelMiscIcons,
-    getAdminViewRoutes
-} from "../features/core/configs";
-import { AppConstants, UIConstants } from "../features/core/constants";
-import { history } from "../features/core/helpers";
-import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
-import { AppState } from "../features/core/store";
+    UIConstants,
+    getAdminViewRoutes,
+    history,
+    useUIElementSizes
+} from "../features/core";
 import {
     GovernanceConnectorCategoryInterface,
     GovernanceConnectorUtils,
@@ -91,6 +96,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { headerHeight, footerHeight } = useUIElementSizes();
 
     const dispatch = useDispatch();
 
@@ -111,8 +117,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         setSelectedRoute
     ] = useState<RouteInterface | ChildRouteInterface>(getAdminViewRoutes()[ 0 ]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
-    const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
-    const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -134,20 +138,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         dispatch(getProfileInformation());
     }, []);
-
-    useEffect(() => {
-        if (headerHeight === document.getElementById("app-header").offsetHeight) {
-            return;
-        }
-        setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
-    });
-
-    useEffect(() => {
-        if (footerHeight === document.getElementById("app-footer").offsetHeight) {
-            return;
-        }
-        setFooterHeight(document.getElementById("app-footer").offsetHeight);
-    });
 
     useEffect(() => {
         if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
