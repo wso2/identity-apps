@@ -261,13 +261,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         listen={ (values: Map<string, FormValue>) => {
                             setPassword(values.get("newPassword").toString());
                         } }
-                        validation={ (value: FormValue, validation: Validation) => {
-                            // Disable password strength validation
-                            /* if (passwordScore < 3) {
-                                validation.isValid = false;
-                                validation.errorMessages.push(t("common:weakPassword"));
-                            } */
-                        } }
                     />
                     <Form.Field width={ 9 } >
                         <Suspense fallback={ null }>
