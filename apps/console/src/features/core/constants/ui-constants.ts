@@ -22,8 +22,7 @@
 export class UIConstants {
 
     /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
+     * Private constructor to avoid object instantiation from outside the class.
      *
      * @hideconstructor
      */
@@ -31,14 +30,14 @@ export class UIConstants {
     private constructor() { }
 
     /**
-     * Default header height to be used in state initializations
+     * Default header height to be used in state initializations.
      * @constant
      * @type {number}
      */
     public static readonly DEFAULT_HEADER_HEIGHT = 59;
 
     /**
-     * Default footer height to be used in state initializations
+     * Default footer height to be used in state initializations.
      * @constant
      * @type {number}
      */
