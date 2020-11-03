@@ -18,11 +18,8 @@
 
 import { getUserStoreList } from "@wso2is/core/api";
 import { UserstoreConstants } from "@wso2is/core/constants";
-import { AlertLevels } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store"
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
-import { AxiosError } from "axios";
 import { generate } from "generate-password";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -271,12 +268,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                         validation.errorMessages.push( t("adminPortal:components.user.forms." +
                                             "addUserForm.inputs.newPassword.validations.regExViolation") );
                                     }
-
-                                    // Password strength validation is disabled
-                                    /* if (passwordScore < 3) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push(t("common:weakPassword"));
-                                    } */
                                 } }
                                 tabIndex={ 6 }
                                 enableReinitialize={ true }
@@ -419,37 +410,22 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                             = await getUsersList(null, null, "userName eq " + value, null, userStore);
                                         if (usersList?.totalResults > 0) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push(t("adminPortal:components.user.forms." +
-                                                "addUserForm.inputs.username.validations.invalid"));
+                                            validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
                                         }
                                     }
-                                } catch(error) {
-                                    dispatch(addAlert({
-                                        description: error?.response?.data?.description
-                                            ?? error?.response?.data?.detail
-                                            ?? t("adminPortal:components.users.notifications." +
-                                                "fetchUsers.genericError.description"),
-                                        level: AlertLevels.ERROR,
-                                        message: error?.response?.data?.message
-                                            ?? t("adminPortal:components.users.notifications." +
-                                                "fetchUsers.genericError.message")
-                                    }));
+                                } catch (error) {
+                                    // Some non ascii characters are not accepted by DBs with certain charsets.
+                                    // Hence, the API sends a `500` status code.
+                                    // see https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
+                                    if (error?.response?.status === 500) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                    }
                                 }
 
                                 if (value && !validateInputAgainstRegEx(value, usernameRegEx)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(t("adminPortal:components.user.forms." +
-                                        "addUserForm.inputs.username.validations.regExViolation"));
-                                } else {
-                                    if (validation.errorMessages.length === 1) {
-                                        validation.isValid = true;
-                                        const errorIndex = validation.errorMessages.findIndex((value: string) => {
-                                            return value === t("adminPortal:components.user.forms." +
-                                                "addUserForm.inputs.username.validations.invalid");
-                                        });
-
-                                        errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
-                                    }
+                                    validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                 }
                             } }
                             value={ initialValues && initialValues.userName }
