@@ -420,30 +420,4 @@ export class ApplicationManagementUtils {
      */
     public static getConfigDocsKey = (template: string) => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
-
-    /**
-     * Check if the client secret is possible to be displayed.
-     * When "OAuth Token Hashing" is enabled, the secret is returned in the following format.
-     * {"hash":"<HASH_VALUE>","algorithm":"<HASHING_ALG>"}. This is not in the format to be presented
-     * in the UI. This function can be used to check the above scenario.
-     *
-     * @param {string} secret - Client secret.
-     * @return {boolean}
-     */
-    public static isDisplayableClientSecret = (secret: string): boolean => {
-
-        if (typeof secret !== "string") {
-            return false;
-        }
-
-        try {
-            const parsed: object = JSON.parse(secret);
-
-            if (typeof parsed === "object") {
-                return false;
-            }
-        } catch (e) {
-            return true;
-        }
-    }
 }
