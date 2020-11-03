@@ -198,7 +198,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
      */
     const getCustomProperties = (): string => {
         const values: string[] = [];
-        initialValues?.properties?.forEach(
+        dynamicValues?.properties?.forEach(
             (property: CommonPluggableComponentPropertyInterface) => {
             if (!metadata?.properties?.find(meta => meta.key === property.key)) {
                 values.push(property.key+"="+property.value);
@@ -251,13 +251,12 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
-                            name={ "customProperties" }
+                            name="customProperties"
                             label={ t("devPortal:components.idp.forms.common.customProperties") }
                             required={ false }
                             requiredErrorMessage={ t("devPortal:components.idp.forms.common.requiredErrorMessage") }
                             type="queryParams"
                             value={ getCustomProperties() }
-                            key={ "customProperties" }
                             data-testid={ `${ testId }-${ "customProperties" }` }
                         />
                     </Grid.Column>
