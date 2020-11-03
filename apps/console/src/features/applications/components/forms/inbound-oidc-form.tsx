@@ -716,6 +716,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     );
                                 }
 
+                                if (!URLUtils.isMobileDeepLink(value)) {
+                                    return false;
+                                }
+
                                 setCallbackURLsErrorLabel(label);
 
                                 return true;

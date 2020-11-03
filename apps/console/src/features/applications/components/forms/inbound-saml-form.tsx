@@ -453,6 +453,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     );
                                 }
 
+                                if (!URLUtils.isMobileDeepLink(value)) {
+                                    return false;
+                                }
+
                                 setAssertionConsumerURLsErrorLabel(label);
 
                                 return true;

@@ -314,6 +314,10 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                             );
                                         }
 
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
+
                                         setAssertionURLsErrorLabel(label);
 
                                         return true;
