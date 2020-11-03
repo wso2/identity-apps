@@ -52,7 +52,7 @@
     Transfer Component Variation
 *************************************/
 
-@TransferComponentSegmentWidth: 281px !important;
+@TransferComponentSegmentWidth: 100% !important;
 @TransferComponentSegmentTableFontSize: 12px;
 @TransferComponentSegmentApplicationLabelBackgroundColor: #99A1CC;
 @TransferComponentSegmentApplicationLabelBorderColor: #8E95B6;
