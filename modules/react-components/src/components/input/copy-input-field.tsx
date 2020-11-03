@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
-import { Button, Input, Popup } from "semantic-ui-react";
+import { Button, Icon, Input, Popup } from "semantic-ui-react";
 
 /**
  * Copy to clipboard input field props.
@@ -32,6 +32,18 @@ export interface CopyInputFieldPropsInterface extends TestableComponentInterface
      * Additional CSS classes.
      */
     className?: string;
+    /**
+     * Popup label for secret show state.
+     */
+    showSecretLabel?: string;
+    /**
+     * Popup label for secret hide state.
+     */
+    hideSecretLabel?: string;
+    /**
+     * Should the content appear as a secret.
+     */
+    secret?: boolean;
 }
 
 /**
@@ -48,13 +60,17 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
     const {
         value,
         className,
+        hideSecretLabel,
+        secret,
+        showSecretLabel,
         [ "data-testid" ]: testId
     } = props;
 
     const claimURIText = useRef<Input>(null);
     const copyButton = useRef(null);
 
-    const [copied, setCopied] = useState(false);
+    const [ copied, setCopied ] = useState<boolean>(false);
+    const [ show, setShow ] = useState<boolean>(false);
 
     useEffect(() => {
         if (copied) {
@@ -68,44 +84,77 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
             value={ value }
             labelPosition="right"
             readOnly
-            action
+            action={
+                <Popup
+                    trigger={
+                        (
+                            <Button
+                                icon="copy"
+                                type="button"
+                                onMouseEnter={ () => {
+                                    setCopied(false);
+                                } }
+                                ref={ copyButton as React.RefObject<Button> }
+                                onClick={ (e: MouseEvent<HTMLButtonElement>) => {
+                                    e.stopPropagation();
+
+                                    claimURIText.current?.select();
+                                    setCopied(true);
+                                    document.execCommand("copy");
+                                    copyButton.current.ref.current.blur();
+
+                                    if (window.getSelection) {
+                                        window.getSelection().removeAllRanges();
+                                    }
+                                } }
+                            />
+                        )
+                    }
+                    openOnTriggerFocus
+                    closeOnTriggerBlur
+                    position="top center"
+                    content={ copied ? "Copied!" : "Copy to clipboard" }
+                    inverted
+                />
+            }
             fluid
             className={ className }
-            data-testid={ `${ testId }-wrapper` }
-        >
-            <input data-testid={ testId } />
-            <Popup
-                trigger={
-                    (
-                        <Button
-                            icon="copy"
-                            type="button"
-                            onMouseEnter={ () => {
-                                setCopied(false);
-                            } }
-                            ref={ copyButton as React.RefObject<Button> }
-                            onClick={ (e: MouseEvent<HTMLButtonElement>) => {
-                                e.stopPropagation();
-
-                                claimURIText.current?.select();
-                                setCopied(true);
-                                document.execCommand("copy");
-                                copyButton.current.ref.current.blur();
-
-                                if (window.getSelection) {
-                                    window.getSelection().removeAllRanges();
+            type={
+                !secret
+                    ? "text"
+                    : show
+                        ? "text"
+                        : "password"
+            }
+            icon={
+                secret && (
+                    <Popup
+                        trigger={ (
+                            <Icon
+                                name={
+                                    !show
+                                        ? "eye"
+                                        : "eye slash"
                                 }
-                            } }
-                        />
-                    )
-                }
-                openOnTriggerFocus
-                closeOnTriggerBlur
-                position="top center"
-                content={ copied ? "Copied!" : "Copy to clipboard" }
-                inverted
-            />
-        </Input>
+                                disabled={ !value }
+                                link
+                                onClick={ () => {
+                                    setShow(!show);
+                                } }
+                            />
+                        ) }
+                        position="top center"
+                        content={
+                            !show
+                                ? showSecretLabel
+                                : hideSecretLabel
+                        }
+                        inverted
+                    />
+                )
+            }
+            data-testid={ `${ testId }-wrapper` }
+        />
     )
 };
 
@@ -113,5 +162,8 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
  * Default proptypes for the copy input component.
  */
 CopyInputField.defaultProps = {
-    "data-testid": "copy-input"
+    "data-testid": "copy-input",
+    hideSecretLabel: "Show",
+    secret: false,
+    showSecretLabel: "Hide"
 };
