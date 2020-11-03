@@ -117,6 +117,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
+    const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.isClientSecretHashEnabled);
 
     const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -511,6 +513,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
      * @return {React.ReactElement}
      */
     const renderClientSecretHashDisclaimerModal = (): ReactElement => {
+        
+        // If client hashing is disabled, don't show the modal.
+        if (!isClientSecretHashEnabled) {
+            return null;
+        }
 
         const isOIDCConfigured: boolean = inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC);
 
