@@ -60,12 +60,15 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     const { t } = useTranslation();
 
     const [ content, setContent ] = useState<string>("");
+    const [ updatedContent, setUpdatedContent ] = useState<string>("");
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
             setContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
+            setUpdatedContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
         } else {
             setContent(htmlContent);
+            setUpdatedContent(htmlContent);
         }
     }, [ htmlContent ]);
 
@@ -83,6 +86,11 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                     </div>
                     :
                     <ResourceTab
+                        onTabChange={ () => {
+                            if (updateHtmlContent) {
+                                updateHtmlContent(updatedContent);
+                            }
+                        } }
                         defaultActiveTab={ isAddFlow ? 1 : 0 }
                         panes={ [
                             {
@@ -117,8 +125,11 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                                 lineWrapping: true
                                             } }
                                             onChange={ (editor, data, value) => {
+                                                setUpdatedContent(value);
+                                            } }
+                                            onBlur={ () => {
                                                 if (updateHtmlContent) {
-                                                    updateHtmlContent(value);
+                                                    updateHtmlContent(updatedContent);
                                                 }
                                             } }
                                             readOnly={ isReadOnly }
