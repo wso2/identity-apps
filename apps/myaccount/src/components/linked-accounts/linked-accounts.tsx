@@ -57,7 +57,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     const { onAlertFired } = props;
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-    const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
+    const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -73,9 +73,17 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
      *
      * @param {Map<string, string | string[]>} values - Form values.
      */
-    const handleSubmit = (values: Map<string, string | string[]>): void => {
-        const username = values.get("username");
-        const password = values.get("password");
+    const handleSubmit = (values: any): void => {
+        const username = values.username;
+        const password = values.password;
+        const usernameSplit = username?.split("@");
+        const superTenant = "carbon.super";
+        let userId = username;
+
+        if (usernameSplit?.length >= 1 && tenantDomain !== superTenant && !usernameSplit.includes(tenantDomain)) {
+            userId = username + "@" + tenantDomain;
+        }
+
         const data = {
             password,
             properties: [
@@ -84,7 +92,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     value: "string"
                 }
             ],
-            userId: tenantDomain !== "carbon.super" ? username + "@" + tenantDomain : username
+            userId: userId
         };
 
         addAccountAssociation(data)
