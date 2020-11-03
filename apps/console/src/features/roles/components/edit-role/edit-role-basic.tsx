@@ -29,8 +29,8 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react"
-import { AppConstants, history } from "../../../core";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
+import { AppConstants, history, SharedUserStoreUtils } from "../../../core";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteRoleById, updateRoleDetails } from "../../api";
 import { PatchRoleDataInterface } from "../../models";
 
@@ -124,7 +124,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
      * @param data
      */
     const handleRoleNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
-        setIsRoleNamePatternValid(validateInputAgainstRegEx(data?.value, userStoreRegEx));
+        setIsRoleNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(data?.value, userStoreRegEx));
     };
 
     /**

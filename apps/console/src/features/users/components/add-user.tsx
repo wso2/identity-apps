@@ -27,11 +27,10 @@ import {
     Grid,
     Message
 } from "semantic-ui-react";
+import { SharedUserStoreUtils } from "../../core/utils";
 import {
     PRIMARY_USERSTORE_PROPERTY_VALUES,
-    USERSTORE_REGEX_PROPERTIES,
-    getUserstoreRegEx,
-    validateInputAgainstRegEx
+    USERSTORE_REGEX_PROPERTIES
 } from "../../userstores";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
@@ -146,7 +145,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const setUserStoreRegEx = async (userstore: string): Promise<void> => {
         if (userstore !== "primary") {
             // Set the username regEx of the secondary user store.
-            await getUserstoreRegEx(userstore, USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
+            await SharedUserStoreUtils.getUserStoreRegEx(userstore, USERSTORE_REGEX_PROPERTIES.UsernameRegEx)
                 .then((response) => {
                     setUsernameRegExLoading(true);
                     setUsernameRegEx(response);
@@ -256,14 +255,14 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (userStore !== UserstoreConstants.PRIMARY_USER_STORE) {
                                         // Set the username regEx of the secondary user store.
                                         passwordRegex
-                                            = await getUserstoreRegEx(
+                                            = await SharedUserStoreUtils.getUserStoreRegEx(
                                                 userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
                                     } else {
                                         // Set the username regEx of the primary user store.
                                         passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
                                     }
 
-                                    if(!validateInputAgainstRegEx(value, passwordRegex)){
+                                    if(!SharedUserStoreUtils.validateInputAgainstRegEx(value, passwordRegex)){
                                         validation.isValid = false;
                                         validation.errorMessages.push( t("adminPortal:components.user.forms." +
                                             "addUserForm.inputs.newPassword.validations.regExViolation") );
@@ -423,7 +422,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     }
                                 }
 
-                                if (value && !validateInputAgainstRegEx(value, usernameRegEx)) {
+                                if (value && !SharedUserStoreUtils.validateInputAgainstRegEx(value, usernameRegEx)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                 }

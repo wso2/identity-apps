@@ -16,19 +16,29 @@
  * under the License.
  */
 
-import { Field, Forms } from "@wso2is/forms";
-import React, { FunctionComponent } from "react";
+import { Field, FormValue, Forms } from "@wso2is/forms";
+import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Form, Grid } from "semantic-ui-react";
+import { useSelector } from "react-redux";
+import { Form, Grid, Input, InputOnChangeData } from "semantic-ui-react";
 import * as UIConstants from "../../constants/ui-constants";
+import { AppState } from "../../store";
 import { EditSection } from "../shared";
+
+/**
+ * Model for user linked  account
+ */
+interface UserAccountInterface {
+    username: string;
+    password: string;
+}
 
 /**
  * Proptypes for the linked accounts edit component.
  */
 interface LinkedAccountsEditProps {
     onFormEditViewHide: (formName: string) => void;
-    onFormSubmit: (values: Map<string, string | string[]>, formName: string) => void;
+    onFormSubmit: (values: UserAccountInterface, formName: string) => void;
 }
 
 /**
@@ -43,6 +53,31 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
     const { onFormEditViewHide, onFormSubmit } = props;
     const { t } = useTranslation();
 
+    const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
+    const [ userName, setUserName ] = useState<string>(undefined);
+
+    /**
+     *
+     * @param {React.ChangeEvent<HTMLInputElement>} event - Username change event.
+     * @param {InputOnChangeData} data - Input field data.
+     */
+    const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
+        setUserName(data.value)
+    };
+
+    /**
+     * Get the values of the form on submit.
+     * @param {Map<string, FormValue>} values - Form values
+     */
+    const getFormValues = (values: Map<string, FormValue>) => {
+        const formValues = {
+            password: values.get("password").toString(),
+            username: userName
+        };
+
+        onFormSubmit(formValues, UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER)
+    };
+
     return (
         <EditSection>
             <Grid>
@@ -50,30 +85,35 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                     <Grid.Column width={ 4 }>
                         { t("userPortal:components.linkedAccounts.accountTypes.local.label") }
                     </Grid.Column>
-                    <Grid.Column width={ 12 }>
+                    <Grid.Column width={ 10 }>
                         <Forms
-                            onSubmit={ (values) => {
-                                onFormSubmit(values, UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER);
-                            } }
+                            onSubmit={ (values) => getFormValues(values) }
                         >
-                            <Field
-                                autoFocus={ true }
-                                label={ t(
+                            <Form.Field required>
+                                <label>
+                                    { t(
                                     "userPortal:components.linkedAccounts.forms.addAccountForm" +
                                     ".inputs.username.label"
-                                ) }
-                                name="username"
-                                placeholder={ t(
-                                    "userPortal:components.linkedAccounts.forms." +
-                                    "addAccountForm.inputs.username.placeholder"
-                                ) }
-                                required={ true }
-                                requiredErrorMessage={ t(
-                                    "userPortal:components.linkedAccounts.forms" +
-                                    ".addAccountForm.inputs.username.validations.empty"
-                                ) }
-                                type="text"
-                            />
+                                    ) }
+                                </label>
+                                <Input
+                                    autoFocus={ true }
+                                    label={ "@" + tenantDomain }
+                                    labelPosition="right"
+                                    name="username"
+                                    placeholder={ t(
+                                        "userPortal:components.linkedAccounts.forms." +
+                                        "addAccountForm.inputs.username.placeholder"
+                                    ) }
+                                    required={ true }
+                                    requiredErrorMessage={ t(
+                                        "userPortal:components.linkedAccounts.forms" +
+                                        ".addAccountForm.inputs.username.validations.empty"
+                                    ) }
+                                    type="text"
+                                    onChange={ handleUsernameChange }
+                                />
+                            </Form.Field>
                             <Field
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(

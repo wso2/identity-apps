@@ -28,8 +28,8 @@ import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useStat
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react"
-import { AppConstants, history } from "../../../core";
-import { PRIMARY_USERSTORE_PROPERTY_VALUES, validateInputAgainstRegEx } from "../../../userstores";
+import { AppConstants, history, SharedUserStoreUtils } from "../../../core";
+import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteGroupById, updateGroupDetails } from "../../api";
 import { GroupsInterface, PatchGroupDataInterface } from "../../models";
 
@@ -127,7 +127,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
      * @param data
      */
     const handleGroupNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
-        setIsGroupNamePatternValid(validateInputAgainstRegEx(data?.value, userStoreRegEx));
+        setIsGroupNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(data?.value, userStoreRegEx));
     };
 
     /**

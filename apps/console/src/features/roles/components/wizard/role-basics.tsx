@@ -18,8 +18,7 @@
 
 import { getUserStoreList } from "@wso2is/core/api";
 import { TestableComponentInterface } from "@wso2is/core/models";
-import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import isEmpty from "lodash/isEmpty";
+import { Field, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
@@ -59,45 +58,14 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
 
     const { t } = useTranslation();
 
-    const [ isValidRoleName, setIsValidRoleName ] = useState<boolean>(true);
     const [ isRoleNamePatternValid, setIsRoleNamePatternValid ] = useState<boolean>(true);
-    const [ updatedRoleName, setUpdatedRoleName ] = useState<string>(initialValues?.roleName);
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ userStore, setUserStore ] = useState<string>(SharedUserStoreConstants.PRIMARY_USER_STORE);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
 
-    /**
-     * Triggers when updatedRoleName is changed.
-     */
-    useEffect(() => {
-        setIsValidRoleName(false);
-        !isEmpty(updatedRoleName?.trim()) && validateRoleName(updatedRoleName);
-    }, [ updatedRoleName ]);
-
     useEffect(() => {
         getUserStores();
     }, [ isAddGroup ]);
-
-    /**
-     * Util method to validate if the provided role name exists in the system.
-     *
-     * @param roleName - new role name user entered.
-     */
-    const validateRoleName = (roleName: string): void => {
-        const searchData: SearchRoleInterface = {
-            filter: "displayName eq " + roleName,
-            schemas: [
-                "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
-            ],
-            startIndex: 1
-        };
-
-        // TODO: Change the following to search from role list when the API is ready.
-        searchGroupList(searchData)
-            .then((response) => {
-                setIsValidRoleName(response?.data?.totalResults === 0);
-            });
-    };
 
     /**
      * The following function validates role name against the user store regEx.
@@ -156,20 +124,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
     };
 
     /**
-     * The following function handles the change of the username.
-     *
-     * @param values - form values from the listen event.
-     */
-    const roleNameChangeListener = (values: Map<string, FormValue>): void => {
-        const roleName: string = values?.get("rolename")?.toString();
-        setUpdatedRoleName(roleName);
-        validateRoleNamePattern(roleName)
-            .finally(() => {
-                setRegExLoading(false);
-            })
-    };
-
-    /**
      * Util method to collect form data for processing.
      *
      * @param values - contains values from form elements
@@ -208,14 +162,27 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails.roleName." +
                                         "validations.empty", { type: "Role" })
                             }
-                            validation={ (value: string, validation: Validation) => {
-                                if (isValidRoleName === false) {
+                            validation={ async (value: string, validation: Validation) => {
+
+                                const searchData: SearchRoleInterface = {
+                                    filter: "displayName eq " + value.toString(),
+                                    schemas: [
+                                        "urn:ietf:params:scim:api:messages:2.0:SearchRequest"
+                                    ],
+                                    startIndex: 1
+                                };
+                                const response = await searchGroupList(searchData);
+
+                                if (response?.data?.totalResults > 0) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t("adminPortal:components.roles.addRoleWizard.forms.roleBasicDetails." +
-                                                "roleName.validations.duplicate", { type: "Role" })
+                                            "roleName.validations.duplicate", { type: "Role" })
                                     );
                                 }
+
+                                await validateRoleNamePattern(value.toString());
+
                                 if (!isRoleNamePatternValid) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
@@ -225,7 +192,6 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                 }
                             } }
                             value={ initialValues && initialValues.roleName }
-                            listen={ roleNameChangeListener }
                             loading={ isRegExLoading }
                         />
                     </GridColumn>

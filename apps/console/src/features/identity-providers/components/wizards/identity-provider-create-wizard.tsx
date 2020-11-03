@@ -286,7 +286,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      */
     const isExpertMode = (): boolean => {
         return !template?.name;
-    }
+    };
 
     /**
      * Resolves the step content.
