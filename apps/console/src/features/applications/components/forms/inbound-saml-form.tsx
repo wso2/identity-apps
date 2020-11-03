@@ -725,8 +725,16 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     default={ ["HTTP_POST", "HTTP_REDIRECT"] }
                                     children={ [
-                                        { label: "HTTP Post", value: "HTTP_POST" },
-                                        { label: "HTTP Redirect", value: "HTTP_REDIRECT" },
+                                        {
+                                            label: "HTTP Post",
+                                            readOnly: true,
+                                            value: "HTTP_POST"
+                                        },
+                                        {
+                                            label: "HTTP Redirect",
+                                            readOnly: true,
+                                            value: "HTTP_REDIRECT"
+                                        },
                                         { label: "Artifact", value: "ARTIFACT" }
                                     ] }
                                     value={ initialValues?.singleSignOnProfile?.bindings }
