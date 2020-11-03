@@ -2785,6 +2785,10 @@ export const adminPortal: AdminPortalNS = {
                         message: "Connexion réussie !"
                     }
                 },
+                updateDelay: {
+                    description: "L'apparition des propriétés mises à jour peut prendre un certain temps.",
+                    message: "La mise à jour des propriétés prend du temps"
+                },
                 updateUserstore: {
                     genericError: {
                         description: "Une erreur s'est produite lors de la mise à jour de l'annuaire.",
