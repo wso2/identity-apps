@@ -27,8 +27,8 @@ import {
     OIDCEndpointsInterface
 } from "../../models";
 import { IdentityClient } from "@asgardio/oidc-js";
-import { addAlert } from "@wso2is/core/dist/src/store";
-import { AlertLevels } from "@wso2is/core/dist/src/models";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
 import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../../core/store";
 
