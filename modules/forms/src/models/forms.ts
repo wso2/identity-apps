@@ -130,6 +130,7 @@ export interface RadioField extends FormFieldModel {
 export interface CheckboxChild {
     label: string;
     value: string;
+    readOnly?: boolean;
 }
 
 /**

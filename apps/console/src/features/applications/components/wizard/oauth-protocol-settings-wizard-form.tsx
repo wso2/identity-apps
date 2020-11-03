@@ -303,6 +303,10 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                 );
                                             }
 
+                                            if (!URLUtils.isMobileDeepLink(value)) {
+                                                return false;
+                                            }
+
                                             setCallbackURLsErrorLabel(label);
 
                                             return true;
