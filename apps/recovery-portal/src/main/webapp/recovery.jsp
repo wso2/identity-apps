@@ -23,12 +23,16 @@
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.ApiException" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.UsernameRecoveryApi" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.api.PasswordRecoveryApiV1" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Claim" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.UserClaim" %>
-<%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.Property" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.client.model.passwordrecovery.v1.*" %>
+
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
@@ -36,6 +40,8 @@
     boolean isPasswordRecoveryEmailConfirmation =
             Boolean.parseBoolean(request.getParameter("isPasswordRecoveryEmailConfirmation"));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
+    boolean isPasswordRecoveryWithClaimsNotify =
+            Boolean.parseBoolean(request.getParameter("isPasswordRecoveryWithClaimsNotify"));
 
     // Common parameters for password recovery with email and self registration with email
     String username = request.getParameter("username");
@@ -98,6 +104,62 @@
             return;
         }
 
+    } else if (isPasswordRecoveryWithClaimsNotify) {
+        // Let user recover password by email or security questions.
+        String recoveryCode = request.getParameter("recoveryCode");
+        String notificationChannel = "";
+
+        PasswordRecoveryApiV1 passwordRecoveryApiV1 = new PasswordRecoveryApiV1();
+        if (recoveryOption.equals("SECURITY_QUESTIONS")) {
+            username = IdentityManagementEndpointUtil.getFullQualifiedUsername(username, tenantDomain, null);
+            request.setAttribute("callback", callback);
+            request.setAttribute("sessionDataKey", sessionDataKey);
+            request.setAttribute("username", username);
+            session.setAttribute("username", username);
+            IdentityManagementEndpointUtil.addReCaptchaHeaders(request, passwordRecoveryApiV1.
+                    getApiClient().getResponseHeaders());
+            request.getRequestDispatcher("challenge-question-request.jsp?username=" + username).forward(request,
+                    response);
+            return;
+        } else {
+            List<Property> properties = new ArrayList<>();
+            Property callbackProperty = new Property();
+            callbackProperty.setKey("callback");
+            callbackProperty.setValue(URLEncoder.encode(callback, "UTF-8"));
+            properties.add(callbackProperty);
+
+            Property sessionDataKeyProperty = new Property();
+            sessionDataKeyProperty.setKey("sessionDataKey");
+            sessionDataKeyProperty.setValue(sessionDataKey);
+            properties.add(sessionDataKeyProperty);
+
+            RecoveryRequest recoveryRequest = new RecoveryRequest();
+            recoveryRequest.setProperties(properties);
+            recoveryRequest.setChannelId(recoveryOption);
+            recoveryRequest.setRecoveryCode(recoveryCode);
+            try {
+                Map<String, String> requestHeaders = new HashedMap();
+                RecoveryResponse recoveryResponse = passwordRecoveryApiV1.recoverPassword(recoveryRequest,
+                        tenantDomain, requestHeaders);
+                notificationChannel = recoveryResponse.getNotificationChannel();
+                request.setAttribute("callback", callback);
+                if (notificationChannel.equals("EMAIL")) {
+                    request.getRequestDispatcher("password-recovery-with-claims-notify.jsp").forward(request,
+                            response);
+                    return;
+                } else {
+                    request.setAttribute("error", true);
+                    request.setAttribute("errorMsg", IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                            "Unknown.password.recovery.option"));
+                    request.getRequestDispatcher("error.jsp").forward(request, response);
+                }
+            }
+            catch (ApiException e) {
+                IdentityManagementEndpointUtil.addErrorInformation(request, e);
+                request.getRequestDispatcher("error.jsp").forward(request, response);
+                return;
+            }
+        }
     } else {
         request.setAttribute("sessionDataKey", sessionDataKey);
         
