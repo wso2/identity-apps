@@ -50,6 +50,8 @@ import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/
 import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images/icons/sso.svg";
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
+import { ReactComponent as WellKnownIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/discovery-endpoint.svg";
 import {
     ReactComponent as BoxTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/box-template-illustration.svg";
@@ -161,7 +163,8 @@ export const HelpPanelIcons = {
         samlSLO: SLOIcon,
         samlSSO: SSOIcon,
         token: TokenIcon,
-        userInfo: UserInfoIcon
+        userInfo: UserInfoIcon,
+        wellKnown: WellKnownIcon
     },
     tabs: {
         docs: OpenBookIcon,

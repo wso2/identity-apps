@@ -220,7 +220,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.introspect }
+                            icon={ HelpPanelIcons.endpoints.wellKnown }
                             size="micro"
                             square
                             transparent
