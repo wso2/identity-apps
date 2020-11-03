@@ -333,7 +333,8 @@ export const OutboundProvisioningConnectorCreateWizard:
                 <OutboundProvisioningSettings
                     metadata={ connectorMetaData }
                     isLoading={ isConnectorMetadataRequestLoading }
-                    initialValues={ identityProvider }
+                    initialValues={
+                        (wizardState && wizardState[ WizardStepsFormTypes.CONNECTOR_DETAILS ]) ?? identityProvider }
                     onSubmit={ (values): void => handleWizardFormSubmit(
                         values, WizardStepsFormTypes.CONNECTOR_DETAILS) }
                     triggerSubmit={ submitConnectorSettings }
