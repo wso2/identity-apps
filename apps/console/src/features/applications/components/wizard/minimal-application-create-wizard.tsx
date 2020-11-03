@@ -30,7 +30,7 @@ import isEmpty from "lodash/isEmpty";
 import merge from "lodash/merge";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
 import { GenericMinimalWizardFormHelp } from "./help";
 import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizard-form";
@@ -43,11 +43,12 @@ import {
 } from "../..";
 import {
     AppConstants,
+    AppState,
     CORSOriginsListInterface,
     ModalWithSidePanel,
     TechnologyLogos,
-    getCORSOrigins,
-    history, store
+    getCORSOrigins, history,
+    store
 } from "../../../core";
 import { createApplication, getApplicationTemplateData } from "../../api";
 import { InboundProtocolLogos } from "../../configs";
@@ -110,6 +111,9 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
 
     const [ submit, setSubmit ] = useTrigger();
     const [ submitProtocolForm, setSubmitProtocolForm ] = useTrigger();
+    
+    const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.isClientSecretHashEnabled);
 
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
@@ -195,13 +199,20 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                     const location = response.headers.location;
                     const createdAppID = location.substring(location.lastIndexOf("/") + 1);
 
+                    let searchParams: string = `?${
+                        ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
+                        ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE
+                        }`;
+
+                    if (isClientSecretHashEnabled) {
+                        searchParams = `${ searchParams }&${
+                            ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY }=true`;
+                    }
+
                     history.push({
                         pathname: AppConstants.getPaths().get("APPLICATION_EDIT")
                             .replace(":id", createdAppID),
-                        search: `?${
-                            ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY }=${
-                            ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_VALUE
-                            }`
+                        search: searchParams
                     });
 
                     return;
