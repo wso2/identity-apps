@@ -17,6 +17,7 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import classNames from "classNames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
 
@@ -66,21 +67,23 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const claimURIText = useRef<Input>(null);
-    const copyButton = useRef(null);
+    const classes = classNames("copy-input", className);
+
+    const inputRef = useRef<Input>(null);
+    const copyButtonRef = useRef(null);
 
     const [ copied, setCopied ] = useState<boolean>(false);
     const [ show, setShow ] = useState<boolean>(false);
 
     useEffect(() => {
         if (copied) {
-            copyButton.current.focus();
+            copyButtonRef.current.focus();
         }
-    }, [copied]);
-    
+    }, [ copied ]);
+
     return (
         <Input
-            ref={ claimURIText }
+            ref={ inputRef }
             value={ value }
             labelPosition="right"
             readOnly
@@ -89,19 +92,20 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                     trigger={
                         (
                             <Button
+                                className="copy-input-action"
                                 icon="copy"
                                 type="button"
                                 onMouseEnter={ () => {
                                     setCopied(false);
                                 } }
-                                ref={ copyButton as React.RefObject<Button> }
+                                ref={ copyButtonRef as React.RefObject<Button> }
                                 onClick={ (e: MouseEvent<HTMLButtonElement>) => {
                                     e.stopPropagation();
 
-                                    claimURIText.current?.select();
+                                    inputRef.current?.select();
                                     setCopied(true);
                                     document.execCommand("copy");
-                                    copyButton.current.ref.current.blur();
+                                    copyButtonRef.current.ref.current.blur();
 
                                     if (window.getSelection) {
                                         window.getSelection().removeAllRanges();
@@ -118,7 +122,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                 />
             }
             fluid
-            className={ className }
+            className={ classes }
             type={
                 !secret
                     ? "text"
@@ -131,6 +135,7 @@ export const CopyInputField: FunctionComponent<CopyInputFieldPropsInterface> = (
                     <Popup
                         trigger={ (
                             <Icon
+                                className="copy-input-eye-icon"
                                 name={
                                     !show
                                         ? "eye"
