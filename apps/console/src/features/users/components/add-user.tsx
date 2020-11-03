@@ -17,9 +17,9 @@
  */
 
 import { getUserStoreList } from "@wso2is/core/api";
+import { UserstoreConstants } from "@wso2is/core/constants";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
-import { AxiosError } from "axios";
 import { generate } from "generate-password";
 import React, { ReactElement, Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -67,10 +67,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const [ userStoreOptions, setUserStoresList ] = useState([]);
     const [ passwordOption, setPasswordOption ] = useState(initialValues?.passwordOption ?? "createPw");
-    const [ isUsernameValid, setIsUsernameValid ] = useState<boolean>(true);
-    const [ usernameValidationErrorMessage, setUsernameValidationErrorMessage ] = useState<string>(undefined);
-    const [ isPasswordPatternValid, setIsPasswordPatternValid ] = useState<boolean>(true);
-    const [ updatedUsername, setUpdatedUsername ] = useState<string>(initialValues?.userName);
     const [ userStore, setUserStore ] = useState<string>(initialValues?.domain);
     const [ randomPassword, setRandomPassword ] = useState<string>("");
     const [ isPasswordGenerated, setIsPasswordGenerated ] = useState<boolean>(false);
@@ -79,7 +75,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         setUsernameRegEx
     ] = useState<string>(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
     const [ isUsernameRegExLoading, setUsernameRegExLoading ] = useState<boolean>(false);
-    const [ isPasswordRegExLoading, setPasswordRegExLoading ] = useState<boolean>(false);
     const [ password, setPassword ] = useState<string>("");
     const [ passwordScore, setPasswordScore ] = useState<number>(-1);
 
@@ -101,24 +96,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             setIsPasswordGenerated(true);
         }
     }, [ randomPassword ]);
-
-    /**
-     * The following useEffect is triggered when the username gets updated.
-     */
-    useEffect(() => {
-        setIsUsernameValid(false);
-        setUsernameValidationErrorMessage(undefined);
-        validateUsername(updatedUsername);
-    }, [ updatedUsername ]);
-
-    /**
-     * The following useEffect is triggered when the username gets updated.
-     */
-    useEffect(() => {
-        setIsUsernameValid(false);
-        setUsernameValidationErrorMessage(undefined);
-        validateUsername(updatedUsername);
-    }, [ userStore ]);
 
     /**
      * Fetch the list of available user stores.
@@ -146,43 +123,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
             value: "askPw"
         }
     ];
-
-    /**
-     * The following function validates whether the username entered by the user already exists in the
-     * user store selected by the user.
-     *
-     * @param {string} username - Username to validate.
-     */
-    const validateUsername = (username: string): void => {
-
-        // Stop sending username validation requests, if the input is empty.
-        if (!username) {
-            return;
-        }
-
-        getUsersList(null, null, "userName eq " + username, null, userStore)
-            .then((response) => {
-                // If the search API call returns more than `0` results, show user already exists error.
-                setIsUsernameValid(response?.totalResults === 0);
-                setUsernameValidationErrorMessage(USER_ALREADY_EXIST_ERROR_MESSAGE);
-            })
-            .catch((error: AxiosError) => {
-                // Some non ascii characters are not accepted by DBs with certain charsets.
-                // Hence, the API sends a `500` status code.
-                // see https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
-                if (error?.response?.status === 500) {
-                    setIsUsernameValid(false);
-                    setUsernameValidationErrorMessage(USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
-                }
-            })
-            .finally(() => {
-                // If the username regex validation fails, show the corresponding error.
-                if (!validateInputAgainstRegEx(username, usernameRegEx)) {
-                    setIsUsernameValid(false);
-                    setUsernameValidationErrorMessage(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
-                }
-            });
-    };
 
     /**
      * The following function handles the change of the userstore.
@@ -218,27 +158,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     };
 
     /**
-     * The following function checks if the password pattern is valid against the user store regEx.
-     *
-     * @param password
-     */
-    const setPasswordRegEx = async (password: string): Promise<void> => {
-        let passwordRegex = "";
-        if (userStore !== "primary") {
-            // Set the username regEx of the secondary user store.
-            await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
-                .then((response) => {
-                    setPasswordRegExLoading(true);
-                    passwordRegex = response;
-                })
-        } else {
-            // Set the username regEx of the primary user store.
-            passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
-        }
-        setIsPasswordPatternValid(validateInputAgainstRegEx(password, passwordRegex));
-    };
-
-    /**
      * The following function handles the change of the password.
      *
      * @param values
@@ -246,20 +165,6 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const handlePasswordChange = (values: Map<string, FormValue>): void => {
         const password: string = values.get("newPassword").toString();
         setPassword(password);
-
-        setPasswordRegEx(password)
-            .finally(() => {
-                setPasswordRegExLoading(false);
-            });
-    };
-
-    /**
-     * The following function handles the change of the username.
-     *
-     * @param values
-     */
-    const handleUserNameChange = (values: Map<string, FormValue>): void => {
-        setUpdatedUsername(values?.get("userName")?.toString());
     };
 
     /**
@@ -346,22 +251,27 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 showPassword={ t("common:showPassword") }
                                 type="password"
                                 value={ isPasswordGenerated ? randomPassword : initialValues?.newPassword }
-                                listen={ handlePasswordChange }
-                                loading={ isPasswordRegExLoading }
-                                validation={ (value: string, validation: Validation) => {
-                                    if (!isPasswordPatternValid) {
-                                        validation.isValid = false;
-                                        validation.errorMessages.push( t("adminPortal:components.user.forms." +
-                                            "addUserFor1m.inputs.newPassword.validations.regExViolation") );
+                                validation={ async (value: string, validation: Validation) => {
+                                    let passwordRegex = "";
+                                    if (userStore !== UserstoreConstants.PRIMARY_USER_STORE) {
+                                        // Set the username regEx of the secondary user store.
+                                        passwordRegex
+                                            = await getUserstoreRegEx(
+                                                userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
+                                    } else {
+                                        // Set the username regEx of the primary user store.
+                                        passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
                                     }
 
-                                    if (passwordScore < 3) {
+                                    if(!validateInputAgainstRegEx(value, passwordRegex)){
                                         validation.isValid = false;
-                                        validation.errorMessages.push(t("common:weakPassword"));
+                                        validation.errorMessages.push( t("adminPortal:components.user.forms." +
+                                            "addUserForm.inputs.newPassword.validations.regExViolation") );
                                     }
                                 } }
                                 tabIndex={ 6 }
                                 enableReinitialize={ true }
+                                listen = { handlePasswordChange }
                             />
                             <Suspense fallback={ null } >
                                 <PasswordMeter
@@ -493,16 +403,35 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 "inputs.username.validations.empty"
                             ) }
                             type="text"
-                            validation={ (value: string, validation: Validation) => {
-                                if (!isUsernameValid) {
+                            validation={ async (value: string, validation: Validation) => {
+                                try {
+                                    if (value) {
+                                        const usersList
+                                            = await getUsersList(null, null, "userName eq " + value, null, userStore);
+                                        if (usersList?.totalResults > 0) {
+                                            validation.isValid = false;
+                                            validation.errorMessages.push(USER_ALREADY_EXIST_ERROR_MESSAGE);
+                                        }
+                                    }
+                                } catch (error) {
+                                    // Some non ascii characters are not accepted by DBs with certain charsets.
+                                    // Hence, the API sends a `500` status code.
+                                    // see https://github.com/wso2/product-is/issues/10190#issuecomment-719760318
+                                    if (error?.response?.status === 500) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE);
+                                    }
+                                }
+
+                                if (value && !validateInputAgainstRegEx(value, usernameRegEx)) {
                                     validation.isValid = false;
-                                    validation.errorMessages.push(usernameValidationErrorMessage);
+                                    validation.errorMessages.push(USERNAME_REGEX_VIOLATION_ERROR_MESSAGE);
                                 }
                             } }
                             value={ initialValues && initialValues.userName }
-                            listen={ handleUserNameChange }
                             loading={ isUsernameRegExLoading }
                             tabIndex={ 2 }
+                            maxLength={ 30 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -526,6 +455,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="text"
                             value={ initialValues && initialValues.firstName }
                             tabIndex={ 3 }
+                            maxLength={ 30 }
                         />
                     </Grid.Column>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -547,6 +477,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="text"
                             value={ initialValues && initialValues.lastName }
                             tabIndex={ 4 }
+                            maxLength={ 30 }
                         />
                     </Grid.Column>
                 </Grid.Row>
@@ -581,6 +512,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             type="email"
                             value={ initialValues && initialValues.email }
                             tabIndex={ 5 }
+                            maxLength={ 50 }
                         />
                     </Grid.Column>
                 </Grid.Row>

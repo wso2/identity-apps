@@ -170,7 +170,9 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                 render: (user: UserBasicInterface): ReactNode => {
                     const resolvedUserName = (user.name && user.name.givenName !== undefined)
                         ? user.name.givenName + " " + user.name.familyName
-                        : user.userName;
+                        : user.userName.split("/")?.length > 1
+                            ? user.userName.split("/")[ 1 ]
+                            : user.userName.split("/")[ 0 ];
 
                     const resolvedDescription = user.emails
                         ? user.emails[ 0 ]?.toString()

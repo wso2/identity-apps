@@ -469,10 +469,16 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                             driverName: formValue?.get("driverName").toString(),
                                             username: formValue?.get("userName").toString()
                                         };
-                                        testConnection(testData).then(() => {
+                                        testConnection(testData).then((response) => {
                                             setIsTesting(false);
-                                            setConnectionFailed(false);
-                                            setConnectionSuccessful(true);
+                                            if (response?.connection) {
+                                                setConnectionFailed(false);
+                                                setConnectionSuccessful(true);
+                                            } else {
+                                                setConnectionSuccessful(false);
+                                                setConnectionFailed(true);
+                                            }
+
                                         }).catch(() => {
                                             setIsTesting(false);
                                             setConnectionSuccessful(false);

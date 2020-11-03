@@ -17,11 +17,11 @@
  */
 
 import { updateProfileImageURL } from "@wso2is/core/api";
-import { SBACInterface } from "@wso2is/core/models";
 import { ProfileConstants } from "@wso2is/core/constants";
-import { resolveUserDisplayName, resolveUserEmails, isFeatureEnabled } from "@wso2is/core/helpers";
+import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
+import { SBACInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
-import { EditAvatarModal, UserAvatar, LinkButton, PrimaryButton } from "@wso2is/react-components";
+import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { FunctionComponent, MouseEvent, useEffect, useState } from "react";
@@ -29,7 +29,7 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List, Placeholder, Popup, Responsive } from "semantic-ui-react";
 import { updateProfileInfo } from "../../api";
-import { CommonConstants, AppConstants } from "../../constants";
+import { AppConstants, CommonConstants } from "../../constants";
 import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
@@ -388,7 +388,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     }
                                                 }
                                             } }
-                                            value={ profileInfo.get(schema.name) }
+                                                value={ profileInfo.get(schema.name) }
+                                                maxLength={ schema.name === "emails" ? 50 : 30 }
                                         />
                                         <Field
                                             hidden={ true }

@@ -82,7 +82,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     const { t } = useTranslation();
 
     /**
-     * Enum containing the icons a test connection button can have 
+     * Enum containing the icons a test connection button can have
      */
     enum TestButtonIcon {
         TESTING = "spinner",
@@ -93,7 +93,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 
     /**
      * This returns of the icon for the test button.
-     * 
+     *
      * @returns {TestButtonIcon} The icon of the test button.
      */
     const findTestButtonIcon = (): TestButtonIcon => {
@@ -120,7 +120,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 
     /**
      * This finds the right color for the test button
-     * 
+     *
      * @return {TestButtonColor} The color of the test button.
      */
     const findTestButtonColor = (): TestButtonColor => {
@@ -268,7 +268,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                         .find(attribute => attribute.name === "type").value === "password";
                                     const toggle = property.attributes
                                         .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                     return (
                                         isPassword
                                             ? (
@@ -348,7 +348,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                     );
                                 })
                             }
-    
+
                         </Grid.Column>
                     </Grid.Row>
                     { type.typeName.includes(JDBC) && (
@@ -383,17 +383,31 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         ?? properties?.required
                                                             .find(property => property.name === "userName")?.value
                                                 };
-                                                testConnection(testData).then(() => {
-                                                    dispatch(addAlert({
-                                                        description: t("adminPortal:components.userstores" +
-                                                            ".notifications.testConnection.success.description"),
-                                                        level: AlertLevels.SUCCESS,
-                                                        message: t("adminPortal:components.userstores.notifications." +
-                                                            "testConnection.success.message")
-                                                    }));
+                                                testConnection(testData).then((response) => {
                                                     setIsTesting(false);
-                                                    setConnectionFailed(false);
-                                                    setConnectionSuccessful(true);
+                                                    if (response?.connection) {
+                                                        dispatch(addAlert({
+                                                            description: t("adminPortal:components.userstores" +
+                                                                ".notifications.testConnection.success.description"),
+                                                            level: AlertLevels.SUCCESS,
+                                                            message: t("adminPortal:components.userstores." +
+                                                                "notifications.testConnection.success.message")
+                                                        }));
+                                                        setConnectionFailed(false);
+                                                        setConnectionSuccessful(true);
+                                                    } else {
+                                                        dispatch(addAlert({
+                                                            description: t("adminPortal:components.userstores." +
+                                                                "notifications.testConnection.genericError" +
+                                                                ".description"),
+                                                            level: AlertLevels.ERROR,
+                                                            message: t("adminPortal:components." +
+                                                                "userstores.notifications.testConnection.genericError" +
+                                                                ".message")
+                                                        }));
+                                                        setConnectionSuccessful(false);
+                                                        setConnectionFailed(true);
+                                                    }
                                                 }).catch((error) => {
                                                     dispatch(addAlert({
                                                         description: error?.description
@@ -431,7 +445,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                         </Grid.Row>
                     ) }
                 </Grid>
-    
+
                 {
                     (properties?.optional.nonSql.length > 0
                         || properties?.optional.sql.delete.length > 0
@@ -451,10 +465,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                 </LinkButton>
                             </Grid.Column>
                         </Grid>
-    
+
                     )
                 }
-    
+
                 { showMore && properties?.optional.nonSql.length > 0 && (
                     <Grid>
                         <Grid.Row columns={ 1 }>
@@ -466,7 +480,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             .find(attribute => attribute.name === "type").value === "password";
                                         const toggle = property.attributes
                                             .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                         return (
                                             isPassword
                                                 ? (

@@ -707,6 +707,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     value={ domainName[1] }
                                     key={ key }
                                     readOnly={ isReadOnly }
+                                    maxLength={ 30 }
                                 />
                             </Form.Field>
                         ) : (
@@ -731,6 +732,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                             }));
                                     }
                                 } }
+                                maxLength={ 30 }
                             />
                         )
                     }

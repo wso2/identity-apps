@@ -806,7 +806,10 @@ export const adminPortal: AdminPortalNS = {
                 addLocale: {
                     fields: {
                         bodyEditor: {
-                            label: "Body"
+                            label: "Body",
+                            validations: {
+                                empty: "The email body cannot be empty."
+                            }
                         },
                         locale: {
                             label: "Locale",
@@ -816,7 +819,10 @@ export const adminPortal: AdminPortalNS = {
                             }
                         },
                         signatureEditor: {
-                            label: "Mail signature"
+                            label: "Mail signature",
+                            validations: {
+                                empty: "The email signature cannot be empty."
+                            }
                         },
                         subject: {
                             label: "Subject",
@@ -1597,6 +1603,7 @@ export const adminPortal: AdminPortalNS = {
                             group: "Userstore",
                             role: "Role Type"
                         },
+                        groups: "Assigned Group(s)",
                         permissions: "Permission(s)",
                         roleName: "{{type}} Name",
                         users: "Assigned User(s)"
