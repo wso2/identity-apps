@@ -376,7 +376,7 @@ export interface CustomInboundProtocolConfigurationInterface {
 }
 
 /**
- * Interface face to hold config values.
+ * Interface to hold config values.
  */
 export interface SubmitFormCustomPropertiesInterface {
     /**
@@ -391,4 +391,38 @@ export interface SubmitFormCustomPropertiesInterface {
      * Friendly name of the config.
      */
     friendlyName?: string;
+}
+
+/**
+ * OIDC service endpoints.
+ */
+export interface OIDCEndpointsInterface {
+    /**
+     * Authorization endpoint.
+     */
+    authorize?: string;
+    /**
+     * JWKS endpoint.
+     */
+    jwks?: string;
+    /**
+     * Logout endpoint.
+     */
+    logout?: string;
+    /**
+     * OIDC session IFrame endpoint.
+     */
+    oidcSessionIFrame?: string;
+    /**
+     * Revocation endpoint.
+     */
+    revoke?: string;
+    /**
+     * Token endpoint.
+     */
+    token?: string;
+    /**
+     * WellKnown endpoint.
+     */
+    wellKnown?: string;
 }
