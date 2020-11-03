@@ -145,7 +145,7 @@ export const adminPortal: AdminPortalNS = {
                         1: "Veuillez vérifier si vous avez un flux de travail avec ce nom dans",
                         2: "le système."
                     },
-                    title: "Aucune approbation"
+                    title: "Aucun résultat trouvé"
                 }
             }
         },

@@ -1071,6 +1071,7 @@ export interface DevPortalNS {
                     name: string;
                 };
                 empty: Placeholder;
+                searchPlaceholder: string;
             };
             wizards: {
                 addScopeWizard: {
@@ -1116,6 +1117,7 @@ export interface DevPortalNS {
                     };
                     title: string;
                 };
+                emptySearch: Placeholder;
             };
         };
         overview: {

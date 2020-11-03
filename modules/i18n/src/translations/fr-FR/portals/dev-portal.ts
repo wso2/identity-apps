@@ -2647,7 +2647,8 @@ export const devPortal: DevPortalNS = {
                         1: "Veuillez ajouter de nouveaux scopes OIDC pour les voir ici."
                     },
                     title: "Pas de scope OIDC"
-                }
+                },
+                searchPlaceholder: "Recherche par nom d'étendue"
             },
             notifications: {
                 addOIDCClaim: {
@@ -2772,6 +2773,14 @@ export const devPortal: DevPortalNS = {
                         2: "étapes de l'assistant de création."
                     },
                     title: "Ajouter un nouveau scope OIDC"
+                },
+                emptySearch: {
+                    action: "Voir tout",
+                    subtitles: {
+                        0: "Nous n'avons pas trouvé la portée que vous avez recherchée.",
+                        1: "Veuillez essayer un autre nom.",
+                    },
+                    title: "Aucun résultat trouvé"
                 }
             },
             wizards: {
