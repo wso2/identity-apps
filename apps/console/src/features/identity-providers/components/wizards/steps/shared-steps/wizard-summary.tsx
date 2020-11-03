@@ -181,7 +181,8 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
             <Grid className="wizard-summary" data-testid={ testId }>
                 { !isAddAuthenticatorWizard && getGeneralDetailsComponent() }
 
-                { isAuthenticatorSettingsStepAvailable() && getAuthenticatorSettingsComponent() }
+                { authenticatorMetadata
+                    && isAuthenticatorSettingsStepAvailable() && getAuthenticatorSettingsComponent() }
 
                 { isProvisioningSettingsStepAvailable() && getProvisioningSettingsComponent() }
             </Grid>
