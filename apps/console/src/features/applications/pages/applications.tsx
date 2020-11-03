@@ -120,7 +120,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         getAppLists(listItemLimit, listOffset, null);
     }, [ listOffset, listItemLimit ]);
 
-
     /**
      * Retrieves the list of applications.
      *
@@ -149,7 +148,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 } else {
                     setAppList(response);
                 }
-
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -295,7 +293,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
-                showPagination={ true }
+                showPagination={ (appList?.totalResults - listOffsetAddition) !== 0 }
                 showTopActionPanel={ isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }
