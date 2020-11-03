@@ -324,6 +324,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AccessConfiguration
                 allowedOriginList={ allowedOrigins }
                 onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }
+                onApplicationRevoke={ () => setShowClientSecretHashDisclaimerModal(true) }
                 appId={ application.id }
                 appName={ application.name }
                 isLoading={ isLoading }

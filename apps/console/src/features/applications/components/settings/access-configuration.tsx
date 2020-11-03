@@ -93,6 +93,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      */
     onAllowedOriginsUpdate?: () => void;
     /**
+     * Callback to be fired when an OIDC application is revoked.
+     */
+    onApplicationRevoke?: () => void;
+    /**
      * Specifies if the inbound protocol list is loading.
      */
     inboundProtocolsLoading?: boolean;
@@ -119,6 +123,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         onUpdate,
         allowedOriginList,
         onAllowedOriginsUpdate,
+        onApplicationRevoke,
         inboundProtocolsLoading,
         [ "data-testid" ]: testId
     } = props;
@@ -263,6 +268,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     level: AlertLevels.SUCCESS,
                     message: t("devPortal:components.applications.notifications.revokeApplication.success.message")
                 }));
+
+                onApplicationRevoke();
                 onUpdate(appId);
             })
             .catch((error) => {
