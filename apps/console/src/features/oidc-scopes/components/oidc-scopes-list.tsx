@@ -19,7 +19,6 @@
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import {
     AlertLevels,
-    FeatureConfigInterface,
     LoadableComponentInterface,
     SBACInterface,
     TestableComponentInterface
@@ -43,6 +42,7 @@ import {
     AppConstants,
     AppState,
     EmptyPlaceholderIllustrations,
+    FeatureConfigInterface,
     history
 } from "../../core";
 import { deleteOIDCScope } from "../api";
