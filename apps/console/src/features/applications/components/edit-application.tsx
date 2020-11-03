@@ -19,15 +19,14 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, Forms } from "@wso2is/forms";
-import { ConfirmationModal, ContentLoader, ResourceTab } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
 import _ from "lodash";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Grid } from "semantic-ui-react";
+import { Form, Grid } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -563,71 +562,53 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 <ConfirmationModal.Content
                     data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-content` }
                 >
-                    <Forms>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <Field
-                                    name="clientId"
-                                    label={
+                    <Form>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Form.Field>
+                                <label>
+                                    {
                                         t("console:develop.features.applications.confirmations." +
                                             "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.label")
                                     }
-                                    hidePassword={
+                                </label>
+                                <CopyInputField
+                                    value={ clientId }
+                                    hideSecretLabel={
                                         t("console:develop.features.applications.confirmations." +
                                             "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.hide")
                                     }
-                                    showPassword={
+                                    showSecretLabel={
                                         t("console:develop.features.applications.confirmations." +
                                             "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.show")
                                     }
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId." +
-                                            "validations.empty")
-                                    }
-                                    placeholder={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.placeholder")
-                                    }
-                                    type="password"
-                                    value={ clientId }
                                     data-testid={ `${ testId }-client-secret-readonly-input` }
-                                    readOnly
                                 />
-                                <Field
-                                    name="clientId"
-                                    label={
+                            </Form.Field>
+                            <Form.Field>
+                                <label>
+                                    {
                                         t("console:develop.features.applications.confirmations." +
                                             "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.label")
                                     }
-                                    hidePassword={
+                                </label>
+                                <CopyInputField
+                                    secret
+                                    value={ clientSecret }
+                                    hideSecretLabel={
                                         t("console:develop.features.applications.confirmations." +
                                             "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.hide")
                                     }
-                                    showPassword={
+                                    showSecretLabel={
                                         t("console:develop.features.applications.confirmations." +
                                             "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.show")
                                     }
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret." +
-                                            "validations.empty")
-                                    }
-                                    placeholder={
-                                        t("console:develop.features.applications.confirmations." +
-                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret." +
-                                            "placeholder")
-                                    }
-                                    type="password"
-                                    value={ clientSecret }
                                     data-testid={ `${ testId }-client-secret-readonly-input` }
-                                    readOnly
                                 />
-                            </Grid.Column>
-                        </Grid.Row>
-                    </Forms>
+                            </Form.Field>
+                        </Grid.Column>
+                    </Grid.Row>
+                    </Form>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
         )

@@ -481,35 +481,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             initialValues.clientSecret && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Field
-                                            name="clientSecret"
-                                            ref={ clientSecret }
-                                            label={
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
-                                                    ".clientSecret.label")
-                                            }
-                                            hidePassword={
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
-                                                    ".clientSecret.hideSecret")
-                                            }
-                                            showPassword={
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
-                                                    ".clientSecret.showSecret")
-                                            }
-                                            required={ false }
-                                            requiredErrorMessage={
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
-                                                    ".clientSecret.validations.empty")
-                                            }
-                                            placeholder={
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields" +
-                                                    ".clientSecret.placeholder")
-                                            }
-                                            type="password"
-                                            value={ initialValues.clientSecret }
-                                            data-testid={ `${ testId }-client-secret-readonly-input` }
-                                            readOnly
-                                        />
+                                        <Form.Field>
+                                            <label>
+                                                {
+                                                    t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                        ".clientSecret.label")
+                                                }
+                                            </label>
+                                            <CopyInputField
+                                                secret
+                                                value={ initialValues?.clientSecret }
+                                                hideSecretLabel={
+                                                    t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                        ".clientSecret.hideSecret")
+                                                }
+                                                showSecretLabel={
+                                                    t("devPortal:components.applications.forms.inboundOIDC.fields" +
+                                                        ".clientSecret.showSecret")
+                                                }
+                                                data-testid={ `${ testId }-client-secret-readonly-input` }
+                                            />
+                                        </Form.Field>
                                     </Grid.Column>
                                 </Grid.Row>
                             )
