@@ -99,4 +99,6 @@ export class IdentityProviderManagementConstants {
         "the certificate of the identity provider.";
     public static readonly BASIC_AUTH_REQUEST_PATH_AUTHENTICATOR: string = "BasicAuthRequestPathAuthenticator";
     public static readonly OAUTH_REQUEST_PATH_AUTHENTICATOR: string = "OAuthRequestPathAuthenticator";
+    public static readonly PROVISIONING_CONNECTOR_DISPLAY_NAME: string = "displayName";
+    public static readonly PROVISIONING_CONNECTOR_GOOGLE: string = "googleapps";
 }
