@@ -158,9 +158,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
             return url;
         } else {
-            const availableURls = urlState.split(",");
-            const duplicate = availableURls.includes(url);
+            const availableURls: string[] = !urlState
+                ? []
+                : urlState.split(",");
+
+            const duplicate: boolean = availableURls.includes(url);
+
             urlValid && setDuplicateURL(duplicate);
+
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
