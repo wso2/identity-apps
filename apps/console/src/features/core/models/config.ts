@@ -130,6 +130,10 @@ interface ExternalAppConfigInterface {
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
     /**
+     * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
+     */
+    isClientSecretHashEnabled?: boolean;
+    /**
      * Enable roles and groups separation.
      */
     isGroupAndRoleSeparationEnabled?: boolean;

@@ -154,6 +154,7 @@ export class Config {
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,
+            isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig

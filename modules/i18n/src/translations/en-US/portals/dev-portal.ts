@@ -665,6 +665,8 @@ export const devPortal: DevPortalNS = {
                             label: "Client ID"
                         },
                         clientSecret: {
+                            hashedDisclaimer: "Client secret is hashed. If you need to retrieve it, " +
+                                "please regenerate the secret again.",
                             hideSecret: "Hide secret",
                             label: "Client secret",
                             placeholder: "Enter Client Secret",

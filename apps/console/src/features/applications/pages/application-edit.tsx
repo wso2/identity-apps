@@ -78,7 +78,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         [ "data-testid" ]: testId
     } = props;
 
-    const urlSearchParams = new URLSearchParams(location.search);
+    const urlSearchParams: URLSearchParams = new URLSearchParams(location.search);
 
     const { t } = useTranslation();
 
@@ -791,6 +791,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     template={ applicationTemplate }
                     data-testid={ testId }
                     isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
+                    urlSearchParams={ urlSearchParams }
                 />
             </PageLayout>
         </HelpPanelLayout>

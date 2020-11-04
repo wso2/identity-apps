@@ -420,5 +420,4 @@ export class ApplicationManagementUtils {
      */
     public static getConfigDocsKey = (template: string) => `${
         ApplicationManagementConstants.APPLICATION_DOCS_KEY }["${ template }"].Configurations`;
-
 }

@@ -27,6 +27,7 @@ import {
     PrimaryButton,
     UserAvatar
 } from "@wso2is/react-components";
+import { AxiosResponse } from "axios";
 import _ from "lodash";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -47,7 +48,7 @@ import {
     updateAuthProtocolConfig
 } from "../../api";
 import { InboundProtocolLogos } from "../../configs";
-import { SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
+import { OIDCDataInterface, SupportedAuthProtocolMetaTypes, SupportedAuthProtocolTypes } from "../../models";
 import { setAuthProtocolMeta } from "../../store";
 import { InboundFormFactory } from "../forms";
 import { ApplicationCreateWizard } from "../wizard";
@@ -93,6 +94,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      */
     onAllowedOriginsUpdate?: () => void;
     /**
+     * Callback to be fired when an OIDC application secret is regenerated.
+     */
+    onApplicationSecretRegenerate?: (response: OIDCDataInterface) => void;
+    /**
      * Specifies if the inbound protocol list is loading.
      */
     inboundProtocolsLoading?: boolean;
@@ -119,6 +124,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         onUpdate,
         allowedOriginList,
         onAllowedOriginsUpdate,
+        onApplicationSecretRegenerate,
         inboundProtocolsLoading,
         [ "data-testid" ]: testId
     } = props;
@@ -222,13 +228,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
      */
     const handleApplicationRegenerate = (): void => {
         regenerateClientSecret(appId)
-            .then(() => {
+            .then((response: AxiosResponse<OIDCDataInterface>) => {
                 dispatch(addAlert({
                     description: t("devPortal:components.applications.notifications.regenerateSecret.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
                     message: t("devPortal:components.applications.notifications.regenerateSecret.success.message")
                 }));
+
+                onApplicationSecretRegenerate(response.data);
                 onUpdate(appId);
             })
             .catch((error) => {

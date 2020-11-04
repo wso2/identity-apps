@@ -19,12 +19,14 @@
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { AlertLevels, SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ContentLoader, ResourceTab } from "@wso2is/react-components";
+import { ConfirmationModal, ContentLoader, CopyInputField, ResourceTab } from "@wso2is/react-components";
 import Axios from "axios";
 import _ from "lodash";
+import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Form, Grid } from "semantic-ui-react";
 import { InboundProtocolsMeta } from "./meta";
 import {
     AccessConfiguration,
@@ -42,6 +44,7 @@ import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
+    OIDCDataInterface,
     SupportedAuthProtocolTypes
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
@@ -78,6 +81,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      * Callback to see if tab extensions are available
      */
     isTabExtensionsAvailable: (isAvailable: boolean) => void;
+    /**
+     * URL Search params received to the parent edit page component.
+     */
+    urlSearchParams?: URLSearchParams;
 }
 
 /**
@@ -100,6 +107,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onUpdate,
         template,
         isTabExtensionsAvailable,
+        urlSearchParams,
         [ "data-testid" ]: testId
     } = props;
 
@@ -109,6 +117,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
     const availableInboundProtocols: AuthProtocolMetaListItemInterface[] =
         useSelector((state: AppState) => state.application.meta.inboundProtocols);
+    const isClientSecretHashEnabled: boolean = useSelector((state: AppState) =>
+        state.config.ui.isClientSecretHashEnabled);
 
     const [ isInboundProtocolConfigRequestLoading, setIsInboundProtocolConfigRequestLoading ] = useState<boolean>(true);
     const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>([]);
@@ -117,6 +127,11 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     const [ tabPaneExtensions, setTabPaneExtensions ] = useState<any>(undefined);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
     const [ isAllowedOriginsUpdated, setIsAllowedOriginsUpdated ] = useState<boolean>(false);
+    const [ showClientSecretHashDisclaimerModal, setShowClientSecretHashDisclaimerModal ] = useState<boolean>(false);
+    const [
+        clientSecretHashDisclaimerModalInputs,
+        setClientSecretHashDisclaimerModalInputs
+    ] = useState<{ clientSecret: string; clientId: string }>({ clientId: "", clientSecret: "" });
 
     /**
      * Fetch the allowed origins list whenever there's an update.
@@ -191,6 +206,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         findConfiguredInboundProtocol(application.id);
     }, [ application?.inboundProtocols ]);
+
+    useEffect(() => {
+
+        if (!urlSearchParams.get(ApplicationManagementConstants.APP_STATE_URL_SEARCH_PARAM_KEY)) {
+            return;
+        }
+
+        setShowClientSecretHashDisclaimerModal(true);
+    }, [ urlSearchParams.get(ApplicationManagementConstants.CLIENT_SECRET_HASH_ENABLED_URL_SEARCH_PARAM_KEY) ]);
 
     /**
      * Todo Remove this mapping and fix the backend.
@@ -281,6 +305,23 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         }
     };
 
+    /**
+     * Handles application secret regenerate.
+     * @param {OIDCDataInterface} config - Config response.
+     */
+    const handleApplicationSecretRegenerate = (config: OIDCDataInterface): void => {
+
+        if (isEmpty(config) || !config.clientSecret || !config.clientId) {
+            return;
+        }
+
+        setClientSecretHashDisclaimerModalInputs({
+            clientId: config.clientId,
+            clientSecret: config.clientSecret
+        });
+        setShowClientSecretHashDisclaimerModal(true);
+    };
+
     const GeneralApplicationSettingsTabPane = (): ReactElement => (
         <ResourceTab.Pane controlledSegmentation>
             <GeneralApplicationSettings
@@ -306,6 +347,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
             <AccessConfiguration
                 allowedOriginList={ allowedOrigins }
                 onAllowedOriginsUpdate={ () => setIsAllowedOriginsUpdated(!isAllowedOriginsUpdated) }
+                onApplicationSecretRegenerate={ handleApplicationSecretRegenerate }
                 appId={ application.id }
                 appName={ application.name }
                 isLoading={ isLoading }
@@ -466,14 +508,130 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         ];
     };
 
+    /**
+     * Renders the client secret hash disclaimer modal.
+     * @return {React.ReactElement}
+     */
+    const renderClientSecretHashDisclaimerModal = (): ReactElement => {
+        
+        // If client hashing is disabled, don't show the modal.
+        if (!isClientSecretHashEnabled) {
+            return null;
+        }
+
+        const isOIDCConfigured: boolean = inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC);
+
+        if (!isOIDCConfigured
+            || isEmpty(inboundProtocolConfig?.oidc)
+            || !inboundProtocolConfig.oidc.clientId
+            || !inboundProtocolConfig.oidc.clientSecret) {
+
+            return null;
+        }
+
+        const clientSecret: string = clientSecretHashDisclaimerModalInputs.clientSecret
+            || inboundProtocolConfig.oidc.clientSecret;
+        const clientId: string = clientSecretHashDisclaimerModalInputs.clientId
+            || inboundProtocolConfig.oidc.clientId;
+
+        return (
+            <ConfirmationModal
+                data-testid={ `${ testId }-client-secret-hash-disclaimer-modal` }
+                type="warning"
+                open={ true }
+                primaryAction={ t("common:confirm") }
+                onPrimaryActionClick={ (): void => {
+                    setShowClientSecretHashDisclaimerModal(false);
+                    setClientSecretHashDisclaimerModalInputs({
+                        clientId: "",
+                        clientSecret: ""
+                    });
+                } }
+            >
+                <ConfirmationModal.Header
+                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-header` }
+                >
+                    {
+                        t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
+                            ".modal.header")
+                    }
+                </ConfirmationModal.Header>
+                <ConfirmationModal.Message
+                    attached
+                    warning
+                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-message` }
+                >
+                    {
+                        t("console:develop.features.applications.confirmations.clientSecretHashDisclaimer" +
+                            ".modal.message")
+                    }
+                </ConfirmationModal.Message>
+                <ConfirmationModal.Content
+                    data-testid={ `${ testId }-client-secret-hash-disclaimer-modal-content` }
+                >
+                    <Form>
+                    <Grid.Row>
+                        <Grid.Column>
+                            <Form.Field>
+                                <label>
+                                    {
+                                        t("console:develop.features.applications.confirmations." +
+                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.label")
+                                    }
+                                </label>
+                                <CopyInputField
+                                    value={ clientId }
+                                    hideSecretLabel={
+                                        t("console:develop.features.applications.confirmations." +
+                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.hide")
+                                    }
+                                    showSecretLabel={
+                                        t("console:develop.features.applications.confirmations." +
+                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientId.show")
+                                    }
+                                    data-testid={ `${ testId }-client-secret-readonly-input` }
+                                />
+                            </Form.Field>
+                            <Form.Field>
+                                <label>
+                                    {
+                                        t("console:develop.features.applications.confirmations." +
+                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.label")
+                                    }
+                                </label>
+                                <CopyInputField
+                                    secret
+                                    value={ clientSecret }
+                                    hideSecretLabel={
+                                        t("console:develop.features.applications.confirmations." +
+                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.hide")
+                                    }
+                                    showSecretLabel={
+                                        t("console:develop.features.applications.confirmations." +
+                                            "clientSecretHashDisclaimer.forms.clientIdSecretForm.clientSecret.show")
+                                    }
+                                    data-testid={ `${ testId }-client-secret-readonly-input` }
+                                />
+                            </Form.Field>
+                        </Grid.Column>
+                    </Grid.Row>
+                    </Form>
+                </ConfirmationModal.Content>
+            </ConfirmationModal>
+        )
+    };
+
     return (
         application && !isInboundProtocolsRequestLoading
             ? (
-                <ResourceTab
-                    data-testid={ `${ testId }-resource-tabs` }
-                    panes={ resolveTabPanes() }
-                    defaultActiveIndex={ defaultActiveIndex }
-                />
+                <>
+                    <ResourceTab
+                        data-testid={ `${ testId }-resource-tabs` }
+                        panes={ resolveTabPanes() }
+                        defaultActiveIndex={ defaultActiveIndex }
+                    />
+                    { showClientSecretHashDisclaimerModal && renderClientSecretHashDisclaimerModal() }
+                </>
             )
             : <ContentLoader />
     );

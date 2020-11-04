@@ -99,6 +99,45 @@ export const console: ConsoleNS = {
             }
         }
     },
+    develop: {
+        features: {
+            applications: {
+                confirmations: {
+                    clientSecretHashDisclaimer: {
+                        forms: {
+                            clientIdSecretForm: {
+                                clientId: {
+                                    hide: "Hide ID",
+                                    label: "Client ID",
+                                    placeholder: "Client ID",
+                                    show: "Show ID",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                },
+                                clientSecret: {
+                                    hide: "Hide secret",
+                                    label: "Client secret",
+                                    placeholder: "Client secret",
+                                    show: "Show secret",
+                                    validations: {
+                                        empty: "This is a required field."
+                                    }
+                                }
+                            }
+                        },
+                        modal: {
+                            assertionHint: "",
+                            content: "",
+                            header: "OAuth Application Credentials",
+                            message: "The consumer secret value will be displayed in plain text only once. " +
+                                "Please make sure to copy and save it somewhere safe."
+                        }
+                    }
+                }
+            }
+        }
+    },
     manage: {
         features: {
             users: {

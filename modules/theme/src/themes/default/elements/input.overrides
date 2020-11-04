@@ -73,3 +73,15 @@
         }
     }
 }
+
+/*-------------------------------
+         Copy Input Field
+--------------------------------*/
+
+.ui.input {
+    &.copy-input {
+        .copy-input-eye-icon {
+            margin-right: @copyInputFieldMarginRight;
+        }
+    }
+}
