@@ -150,7 +150,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                 const finalData: RoleMappingInterface[] = data.map(mapping => {
                                     return {
                                         applicationRole: mapping.value,
-                                        localRole: mapping.key
+                                        localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
                                     }
                                 });
                                 onSubmit(finalData);
