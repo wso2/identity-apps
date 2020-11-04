@@ -102,6 +102,7 @@ export const common: CommonNS = {
     release: "விடுவி",
     remove: "நீக்கு",
     removeAll: "அனைத்து நீக்க",
+    required: "இது தேவை",
     reserved: "ஒதுக்கப்பட்டவை",
     resetFilters: "வடிகட்டல்களை மீட்டடமை",
     retry: "மீண்டும் முயற்சி செய்",

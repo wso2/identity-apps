@@ -87,7 +87,7 @@
                 font-weight: @dataTableColumnSelectorPopupHeadingFontWeight;
             }
         }
-        
+
         .data-table-column-selector-popup-content {
             padding: @verticalPadding @horizontalPadding;
         }
@@ -103,5 +103,15 @@
         .ui.divider {
             margin: @corsDetailsPopupDividerMargin;
         }
+    }
+}
+
+/*-------------------------------
+        Advanced Search
+--------------------------------*/
+
+.ui.popup {
+    &.advanced-search {
+        max-width: unset !important;
     }
 }

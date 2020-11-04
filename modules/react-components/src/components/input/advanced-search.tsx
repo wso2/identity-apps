@@ -382,6 +382,7 @@ export const AdvancedSearch: FunctionComponent<PropsWithChildren<AdvancedSearchP
                 data-testid={ `${ testId }-dropdown` }
                 hoverable
                 pinned
+                className="advanced-search"
             />
         </div>
     );
