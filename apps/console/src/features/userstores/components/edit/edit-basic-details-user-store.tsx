@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { AppConstants, history } from "../../../core";
-import { deleteUserStore, patchUserStore, updateUserStore } from "../../api";
+import { deleteUserStore, patchUserStore } from "../../api";
 import { DISABLED } from "../../constants";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
 /**
