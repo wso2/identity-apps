@@ -104,6 +104,7 @@ export interface CommonNS {
     retry: string;
     revoke: string;
     revokeAll: string;
+    required: string;
     samples: string;
     save: string;
     services: string;

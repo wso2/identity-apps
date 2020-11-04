@@ -102,6 +102,7 @@ export const common: CommonNS = {
     release: "මුදා හැරීම",
     remove: "ඉවත් කරන්න",
     removeAll: "සියල්ල ඉවත් කරන්න",
+    required: "මෙය අවශ්‍ය වේ",
     reserved: "වෙන් කරන ලද",
     resetFilters: "පෙරහන් නැවත සකසන්න",
     retry: "නැවත උත්සාහ කරන්න",

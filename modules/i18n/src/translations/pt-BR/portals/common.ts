@@ -102,6 +102,7 @@ export const common: CommonNS = {
     release: "Liberação",
     remove: "Retirar",
     removeAll: "Remover tudo",
+    required: "Isso é obrigatório",
     reserved: "Reservado",
     resetFilters: "Redefinir filtros",
     retry: "Repetir",
