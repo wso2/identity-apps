@@ -31,9 +31,9 @@ import { getRolesResourceEndpoints } from "../../roles";
 import { getServerConfigurationsResourceEndpoints } from "../../server-configurations";
 import { getUsersResourceEndpoints } from "../../users";
 import { getUserstoreResourceEndpoints } from "../../userstores";
+import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 import { I18nConstants } from "../constants";
 import { DeploymentConfigInterface, ServiceResourceEndpointsInterface, UIConfigInterface } from "../models";
-import { getApprovalsResourceEndpoints } from "../../workflow-approvals";
 
 /**
  * Class to handle application config operations.
@@ -157,7 +157,9 @@ export class Config {
             isClientSecretHashEnabled: window["AppUtils"].getConfig().ui.isClientSecretHashEnabled,
             isGroupAndRoleSeparationEnabled: window["AppUtils"].getConfig().ui.isGroupAndRoleSeparationEnabled,
             productName: window["AppUtils"].getConfig().ui.productName,
-            productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig
+            productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
+            selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,
+            systemAppsIdentifiers: window["AppUtils"].getConfig().ui.systemAppsIdentifiers
         };
     }
 }

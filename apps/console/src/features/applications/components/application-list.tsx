@@ -44,6 +44,7 @@ import {
     AppState,
     EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
+    UIConfigInterface,
     UIConstants,
     history
 } from "../../core";
@@ -139,6 +140,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
+    
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -146,8 +150,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -332,7 +334,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
                     return hasScopes
-                        || ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(app?.name);
+                        || UIConfig.systemAppsIdentifiers.includes(app?.name);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
@@ -413,7 +415,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 columns={ resolveTableColumns() }
                 data={
                     list?.applications?.filter((app: ApplicationListItemInterface) =>
-                        app.name !== ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP)
+                        app.name !== ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP &&
+                        app.name !== UIConfig.selfAppIdentifier)
                 }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
                     handleApplicationEdit(app.id, app.access);

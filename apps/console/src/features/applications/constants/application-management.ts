@@ -143,13 +143,6 @@ export class ApplicationManagementConstants {
         .set(ApplicationManagementConstants.TEMPLATE_IDS.get("zoom"), "OIDC Web Application");
 
     /**
-     * Set of internal application which are forbidden from deleting.
-     * // TODO: Remove this once validating is available from the backend level.
-     * @type {string[]}
-     */
-    public static readonly DELETING_FORBIDDEN_APPLICATIONS: string[] = [ "Console", "My Account" ];
-
-    /**
      * Template categories to be used to extract the filter types.
      * @type {ApplicationTemplateCategories[]}
      */

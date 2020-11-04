@@ -30,9 +30,8 @@ import React, { FunctionComponent, ReactElement, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Divider } from "semantic-ui-react";
-import { AppState, FeatureConfigInterface } from "../../../core";
+import { AppState, FeatureConfigInterface, UIConfigInterface } from "../../../core";
 import { deleteApplication, updateApplicationDetails } from "../../api";
-import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
@@ -128,8 +127,9 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
     const { t } = useTranslation();
 
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
-    const [showDeleteConfirmationModal, setShowDeleteConfirmationModal] = useState<boolean>(false);
+    const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
 
     /**
      * Deletes an application.
@@ -219,7 +219,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
             return null;
         }
 
-        if (ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(name)) {
+        if (UIConfig.systemAppsIdentifiers.includes(name)) {
             return null;
         }
 

@@ -149,6 +149,14 @@ export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfig
      * Enable roles and groups separation.
      */
     isGroupAndRoleSeparationEnabled?: boolean;
+    /**
+     * Self app name.
+     */
+    selfAppIdentifier: string;
+    /**
+     * System apps list.
+     */
+    systemAppsIdentifiers: string[];
 }
 
 /**
