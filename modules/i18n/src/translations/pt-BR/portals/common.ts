@@ -21,6 +21,7 @@ import { CommonNS } from "../../../models";
 export const common: CommonNS = {
     access: "Acesso",
     actions: "ações",
+    activate: "Ativar",
     active: "Activo",
     add: "AAdicionar",
     addURL: "Adicione URL",

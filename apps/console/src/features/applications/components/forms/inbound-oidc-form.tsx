@@ -532,24 +532,34 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             !readOnly && (
                                                 <>
                                                     <Button
-                                                        color="red"
+                                                        color={
+                                                            (initialValues?.state === State.REVOKED)
+                                                                ? "green"
+                                                                : "red"
+                                                        }
                                                         className="oidc-regenerate-button"
                                                         onClick={ handleRegenerateButton }
                                                         data-testid={ `${ testId }-oidc-regenerate-button` }
                                                     >
-                                                        { t("common:regenerate") }
+                                                        {
+                                                            (initialValues?.state === State.REVOKED)
+                                                                ? t("common:activate")
+                                                                : t("common:regenerate")
+                                                        }
                                                     </Button>
-                                                    <Button
-                                                        color="red"
-                                                        className="oidc-revoke-button"
-                                                        onClick={ handleRevokeButton }
-                                                        disabled={ (initialValues?.state === State.REVOKED) }
-                                                        data-testid={ `${ testId }-oidc-revoke-button` }
-                                                    >
-                                                        { t("common:revoke") }
-                                                    </Button>
+                                                    {
+                                                        (initialValues?.state !== State.REVOKED) && (
+                                                            <Button
+                                                                color="red"
+                                                                className="oidc-revoke-button"
+                                                                onClick={ handleRevokeButton }
+                                                                data-testid={ `${ testId }-oidc-revoke-button` }
+                                                            >
+                                                                { t("common:revoke") }
+                                                            </Button>
+                                                        )
+                                                    }
                                                 </>
-
                                             )
                                         }
                                     </Grid.Column>

@@ -22,6 +22,7 @@
 export interface CommonNS {
     access: string;
     actions: string;
+    activate: string;
     active: string;
     add: string;
     addURL: string;
