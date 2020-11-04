@@ -415,7 +415,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 scopeValidator.current.scrollIntoView(options);
                 break;
         }
-    }
+    };
 
     /**
      * submitURL function.
@@ -691,7 +691,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     readOnly={ readOnly }
                                     data-testid={ `${ testId }-grant-type-checkbox-group` }
                                 />
-                                <Hint>This will determine how the application communicates with the token service</Hint>
+                                <Hint>
+                                    {
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.grant.hint")
+                                    }
+                                </Hint>
                             </Grid.Column>
                         </Grid.Row>
                         <div ref={ url }></div>
