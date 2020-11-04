@@ -65,4 +65,12 @@ export class PatternConstants {
      * @default
      */
     public static readonly DATA_URL_REGEX_PATTERN: RegExp = /^data:.+\/(.+);base64,(.*)$/;
+
+    /**
+     * Mobile deep link pattern regex.
+     * @constant
+     * @type {RegExp}
+     * @default
+     */
+    public static readonly MOBILE_DEEP_LINK_URL_REGEX_PATTERN: RegExp = /^.+:\/\/.+$/;
 }

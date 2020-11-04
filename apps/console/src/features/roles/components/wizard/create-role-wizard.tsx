@@ -269,7 +269,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
     ): void => {
         setCurrentWizardStep(currentStep + 1);
         setWizardState({ ...wizardState, ...value });
-    }
+    };
 
     const handleGroupListChange = (groupList) => {
         setGroupList(groupList);

@@ -37,6 +37,10 @@
         <param-name>EnableMultiTenancy</param-name>
         <param-value>false</param-value>
     </context-param>
+    <context-param>
+        <param-name>EnableMultiClaimPasswordRecovery</param-name>
+        <param-value>false</param-value>
+    </context-param>
     <!--context-param>
         <param-name>UserPortalUrl</param-name>
         <param-value>https://localhost:9443/dashboard/index.jag</param-value>

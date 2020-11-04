@@ -80,7 +80,7 @@
                 <%
                     }
                 %>
-
+                <div class="ui negative message" id="error-msg" hidden="hidden"></div>
                 <div class="segment-form">
                     <form class="ui large form" method="post" action="processsecurityquestions.do"
                           id="securityQuestionForm">
@@ -139,5 +139,33 @@
     <% } else { %>
     <jsp:include page="includes/footer.jsp"/>
     <% } %>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#securityQuestionForm").submit(function (e) {
+                $("#server-error-msg").hide();
+                var errorMessage = $("#error-msg");
+                errorMessage.hide();
+
+                // Validate reCaptcha
+                <% if (reCaptchaEnabled) { %>
+
+                var reCaptchaResponse = $("[name='g-recaptcha-response']")[0].value;
+
+                if (reCaptchaResponse.trim() == '') {
+                    errorMessage.text("Please select reCaptcha.");
+                    errorMessage.show();
+
+                    return false;
+                }
+
+                <% } %>
+
+                return true;
+            });
+        });
+
+    </script>
 </body>
 </html>

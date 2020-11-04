@@ -17,6 +17,7 @@
  *
  */
 
+import { ProfileConstants } from "@wso2is/core/constants";
 import _ from "lodash";
 import {
     BasicProfileInterface,
@@ -83,9 +84,15 @@ export const isMultiValuedProfileAttribute = (attribute: any): attribute is Mult
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const flattenProfileInfo = (profileInfo: any, parentAttributeName?: string): any[] => {
     const tempProfile = [];
+    let mutatedProfileInfo = { ...profileInfo };
 
-    for (let key in profileInfo) {
-        const value = profileInfo[key];
+    if (profileInfo[ ProfileConstants.SCIM2_ENT_USER_SCHEMA ]) {
+        mutatedProfileInfo = { ...profileInfo, ...profileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA] };
+        delete mutatedProfileInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA];
+    }
+
+    for (let key in mutatedProfileInfo) {
+        const value = mutatedProfileInfo[key];
 
         // Skip `associations`, `responseStatus` & `roles`.
         if (key === "associations" || key === "responseStatus" || value == undefined || key === "roles") {

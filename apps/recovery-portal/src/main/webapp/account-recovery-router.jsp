@@ -23,7 +23,9 @@
     boolean enableMultiTenancy = Boolean.parseBoolean(application.getInitParameter(
             IdentityManagementEndpointConstants.RecoveryOptions.ENABLE_MULTI_TENANCY));
     boolean isUsernameRecovery = Boolean.parseBoolean(request.getParameter("isUsernameRecovery"));
-    
+    boolean isMultiClaimPasswordRecoveryEnabled = Boolean.parseBoolean(application.getInitParameter(
+            "EnableMultiClaimPasswordRecovery"));
+
     if (isUsernameRecovery) {
         if (enableMultiTenancy) {
             request.getRequestDispatcher("username-recovery-tenant-request.jsp").forward(request, response);
@@ -31,10 +33,19 @@
             request.getRequestDispatcher("username-recovery.jsp").forward(request, response);
         }
     } else {
-        if (enableMultiTenancy) {
-            request.getRequestDispatcher("password-recovery-username-request.jsp").forward(request, response);
-        } else {
-            request.getRequestDispatcher("password-recovery.jsp").forward(request, response);
+        if (isMultiClaimPasswordRecoveryEnabled) {
+            if (enableMultiTenancy) {
+                request.getRequestDispatcher("password-recovery-tenant-request.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("password-recovery-with-claims.jsp").forward(request, response);
+            }
+        }
+        else {
+            if (enableMultiTenancy) {
+                request.getRequestDispatcher("password-recovery-username-request.jsp").forward(request, response);
+            } else {
+                request.getRequestDispatcher("password-recovery.jsp").forward(request, response);
+            }
         }
     }
 %>

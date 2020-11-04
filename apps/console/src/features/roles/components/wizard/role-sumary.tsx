@@ -66,28 +66,6 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     <Grid.Row className="summary-field" columns={ 2 }>
                         <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
                             <div
-                                data-testid={ `${ testId }-domain-label` }
-                                className="label"
-                            >
-                                {
-                                    isAddGroup ?
-                                        t("adminPortal:components.roles.addRoleWizard.summary.labels.domain.group") :
-                                        t("adminPortal:components.roles.addRoleWizard.summary.labels.domain.role")
-                                }
-                            </div>
-                        </Grid.Column>
-                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
-                            <div
-                                data-testid={ `${ testId }-domain-value` }
-                                className="value url"
-                            >
-                                { summary.BasicDetails.domain }
-                            </div>
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row className="summary-field" columns={ 2 }>
-                        <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
-                            <div
                                 data-testid={ `${ testId }-role-name-label` }
                                 className="label"
                             >
@@ -149,8 +127,8 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     : null
             }
             {
-                summary?.RoleUserList && summary.RoleUserList instanceof Array &&
-                summary.RoleUserList.length > 0
+                summary?.UserList && summary?.UserList instanceof Array &&
+                summary?.UserList?.length > 0
                     ? (
                         <Grid.Row className="summary-field" columns={ 2 }>
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
@@ -164,7 +142,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                             <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
                                 <Label.Group>
                                     {
-                                        summary.RoleUserList
+                                        summary?.UserList
                                             .map((user, index) => (
                                                 <div key={ index } className="role-summary-user">
                                                     <UserAvatar
@@ -175,6 +153,42 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                                     />
                                                     { user.userName }
                                                 </div>
+                                            ))
+                                    }
+                                </Label.Group>
+                            </Grid.Column>
+                        </Grid.Row>
+                    )
+                    : null
+            }
+            {
+                summary?.GroupList && summary?.GroupList instanceof Array &&
+                    summary?.GroupList?.length > 0
+                    ? (
+                        <Grid.Row className="summary-field" columns={ 2 }>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 7 } textAlign="right">
+                                <div
+                                    data-testid={ `${ testId }-users-label` }
+                                    className="label"
+                                >
+                                    { t("adminPortal:components.roles.addRoleWizard.summary.labels.groups") }
+                                </div>
+                            </Grid.Column>
+                            <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 } textAlign="left">
+                                <Label.Group>
+                                    {
+                                        summary?.GroupList
+                                            .map((group, index) => (
+                                                <Label
+                                                    data-testid={
+                                                        `${ testId }-permissions-${ index }-label`
+                                                    }
+                                                    key={ index }
+                                                    basic
+                                                    circular
+                                                >
+                                                    { group?.displayName }
+                                                </Label>
                                             ))
                                     }
                                 </Label.Group>

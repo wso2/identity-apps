@@ -127,55 +127,9 @@ export interface CommonDeploymentConfigInterface<T = {}, S = {}> {
 }
 
 /**
- * Application configuration interface.
- */
-export interface FeatureConfigInterface {
-    /**
-     * Application management feature.
-     */
-    applications?: FeatureAccessConfigInterface;
-    /**
-     * Attribute dialects(Claim dialects) feature.
-     */
-    attributeDialects?: FeatureAccessConfigInterface;
-    /**
-     * Certificates configurations feature.
-     */
-    certificates?: FeatureAccessConfigInterface;
-    /**
-     * Email templates feature.
-     */
-    emailTemplates?: FeatureAccessConfigInterface;
-    /**
-     * General Configuration settings feature.
-     */
-    generalConfigurations?: FeatureAccessConfigInterface;
-    /**
-     * Groups feature.
-     */
-    groups?: FeatureAccessConfigInterface;
-    /**
-     * Identity provider management feature.
-     */
-    identityProviders?: FeatureAccessConfigInterface;
-    /**
-     * Role management feature.
-     */
-    roles?: FeatureAccessConfigInterface;
-    /**
-     * User store configurations feature.
-     */
-    userStores?: FeatureAccessConfigInterface;
-    /**
-     * User management feature.
-     */
-    users?: FeatureAccessConfigInterface;
-}
-
-/**
  * Common config interface for UI settings.
  */
-export interface CommonUIConfigInterface {
+export interface CommonUIConfigInterface<T = {}> {
     /**
      * Portal Announcement banner.
      */
@@ -199,13 +153,9 @@ export interface CommonUIConfigInterface {
      */
     gravatarConfig?: GravatarConfig;
     /**
-     * Enable roles and groups separation.
-     */
-    isGroupAndRoleSeparationEnabled?: boolean;
-    /**
      * Application features configurations
      */
-    features?: FeatureConfigInterface;
+    features?: T;
     /**
      * Name of the product.
      * ex: `Identity Server`

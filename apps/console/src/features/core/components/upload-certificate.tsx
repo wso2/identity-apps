@@ -24,6 +24,23 @@ import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
 import { CertificateIllustrations } from "../configs";
 
+// This is a polyfill to support `File.arrayBuffer()` in Safari and IE.
+if ("File" in self) {
+    File.prototype.arrayBuffer = File.prototype.arrayBuffer || myArrayBuffer;
+}
+Blob.prototype.arrayBuffer = Blob.prototype.arrayBuffer || myArrayBuffer;
+
+function myArrayBuffer() {
+    // this: File or Blob
+    return new Promise<ArrayBuffer>((resolve) => {
+        const fr = new FileReader();
+        fr.onload = () => {
+            resolve(fr.result as ArrayBuffer);
+        };
+        fr.readAsArrayBuffer(this);
+    });
+}
+
 /**
  * The model of the object returned by the `convertFromPem()` function.
  */
@@ -203,7 +220,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * Gets the browser color scheme so that the color scheme of the textarea can be decided.
      */
     useEffect(() => {
-        if (window.matchMedia("(prefers-color-scheme:dark)").matches) {
+        if (window.matchMedia("(prefers-color-scheme:dark)")?.matches) {
             setDark(true);
         }
         const callback = (e) => {
@@ -213,10 +230,17 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 setDark(false);
             }
         };
-        window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
+
+        // Check to see if match media API is available with the browser.
+        if (window.matchMedia("(prefers-color-scheme:dark)")?.addEventListener) {
+            window.matchMedia("(prefers-color-scheme:dark)").addEventListener("change", callback);
+        }
 
         return () => {
-            window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
+            // Check to see if match media API is available with the browser.
+            if (window.matchMedia("(prefers-color-scheme:dark)")?.addEventListener) {
+                window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
+            }
         }
     }, []);
 

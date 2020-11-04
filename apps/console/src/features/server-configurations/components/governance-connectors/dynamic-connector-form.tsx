@@ -111,6 +111,35 @@ const DynamicConnectorForm = (props) => {
                                                 ? t("adminPortal:components.governanceConnectors.enabled")
                                                 : t("adminPortal:components.governanceConnectors.disabled")
                                         }
+                                        onChange={ (event: any, newValue: boolean) => {
+                                            if (
+                                                property.name ===
+                                                ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE &&
+                                                newValue
+                                            ) {
+                                                props.change(
+                                                    GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                                        ServerConfigurationsConstants
+                                                            .RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE
+                                                    ),
+                                                    false
+                                                );
+                                            }
+
+                                            if (
+                                                property.name ===
+                                                ServerConfigurationsConstants
+                                                    .RE_CAPTCHA_AFTER_MAX_FAILED_ATTEMPTS_ENABLE &&
+                                                newValue
+                                            ) {
+                                                props.change(
+                                                    GovernanceConnectorUtils.encodeConnectorPropertyName(
+                                                        ServerConfigurationsConstants.RE_CAPTCHA_ALWAYS_ENABLE
+                                                    ),
+                                                    false
+                                                );
+                                            }
+                                        } }
                                     />
                                 ) }
                             </Grid.Column>

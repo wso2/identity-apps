@@ -922,6 +922,7 @@ export interface AdminPortalNS {
                         permissions: string;
                         roleName: string;
                         users: string;
+                        groups: string;
                     };
                 };
                 users: {
@@ -1552,6 +1553,7 @@ export interface AdminPortalNS {
                 updateUserstore: Notification;
                 testConnection: Notification;
                 addUserstore: Notification;
+                updateDelay: NotificationItem;
             };
             confirmation: {
                 hint: string;

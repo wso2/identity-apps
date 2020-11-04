@@ -186,10 +186,8 @@ export const deleteUserStore = (id: string): Promise<any> => {
 /**
  * Patches a userstore.
  *
- * @param {string} id Userstore ID.
- * @param {string} path The path to patch.
- * @param {string} value The data to be patched with.
- *
+ * @param {string} id - Userstore ID.
+ * @param {PatchData[]} data - Payload.
  * @return {Promise<any>} Response
  */
 export const patchUserStore = (id: string, data: PatchData[]): Promise<any> => {

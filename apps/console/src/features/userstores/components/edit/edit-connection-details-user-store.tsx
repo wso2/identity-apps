@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -63,10 +63,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 ): ReactElement => {
 
     const {
-        update,
         id,
         properties,
         type,
+        update,
         [ "data-testid" ]: testId
     } = props;
 
@@ -82,7 +82,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
     const { t } = useTranslation();
 
     /**
-     * Enum containing the icons a test connection button can have 
+     * Enum containing the icons a test connection button can have
      */
     enum TestButtonIcon {
         TESTING = "spinner",
@@ -93,7 +93,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 
     /**
      * This returns of the icon for the test button.
-     * 
+     *
      * @returns {TestButtonIcon} The icon of the test button.
      */
     const findTestButtonIcon = (): TestButtonIcon => {
@@ -120,7 +120,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
 
     /**
      * This finds the right color for the test button
-     * 
+     *
      * @return {TestButtonColor} The color of the test button.
      */
     const findTestButtonColor = (): TestButtonColor => {
@@ -229,25 +229,39 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
             ]
             : requiredData;
 
-        patchUserStore(id, data).then(() => {
-            dispatch(addAlert({
-                description: t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.success.message")
-            }));
-            update();
-        }).catch(error => {
-            dispatch(addAlert({
-                description: error?.description
-                    || t("adminPortal:components.userstores.notifications." +
-                        "updateUserstore.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: error?.message || t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.genericError.message")
-            }));
-        });
+        patchUserStore(id, data)
+            .then(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.success.message")
+                }));
+
+                // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
+                // applied at once. As a temp solution, a notification informing the delay is shown here.
+                // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
+                // TODO: Remove delay notification once backend is fixed.
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("adminPortal:components.userstores.notifications.updateDelay.message")
+                }));
+
+                // Re-fetch the userstore details
+                update();
+            })
+            .catch(error => {
+                dispatch(addAlert<AlertInterface>({
+                    description: error?.description
+                        || t("adminPortal:components.userstores.notifications." +
+                            "updateUserstore.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message || t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.genericError.message")
+                }));
+            });
     };
 
     return (
@@ -268,7 +282,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                         .find(attribute => attribute.name === "type").value === "password";
                                     const toggle = property.attributes
                                         .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                     return (
                                         isPassword
                                             ? (
@@ -348,7 +362,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                     );
                                 })
                             }
-    
+
                         </Grid.Column>
                     </Grid.Row>
                     { type.typeName.includes(JDBC) && (
@@ -383,17 +397,31 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                         ?? properties?.required
                                                             .find(property => property.name === "userName")?.value
                                                 };
-                                                testConnection(testData).then(() => {
-                                                    dispatch(addAlert({
-                                                        description: t("adminPortal:components.userstores" +
-                                                            ".notifications.testConnection.success.description"),
-                                                        level: AlertLevels.SUCCESS,
-                                                        message: t("adminPortal:components.userstores.notifications." +
-                                                            "testConnection.success.message")
-                                                    }));
+                                                testConnection(testData).then((response) => {
                                                     setIsTesting(false);
-                                                    setConnectionFailed(false);
-                                                    setConnectionSuccessful(true);
+                                                    if (response?.connection) {
+                                                        dispatch(addAlert({
+                                                            description: t("adminPortal:components.userstores" +
+                                                                ".notifications.testConnection.success.description"),
+                                                            level: AlertLevels.SUCCESS,
+                                                            message: t("adminPortal:components.userstores." +
+                                                                "notifications.testConnection.success.message")
+                                                        }));
+                                                        setConnectionFailed(false);
+                                                        setConnectionSuccessful(true);
+                                                    } else {
+                                                        dispatch(addAlert({
+                                                            description: t("adminPortal:components.userstores." +
+                                                                "notifications.testConnection.genericError" +
+                                                                ".description"),
+                                                            level: AlertLevels.ERROR,
+                                                            message: t("adminPortal:components." +
+                                                                "userstores.notifications.testConnection.genericError" +
+                                                                ".message")
+                                                        }));
+                                                        setConnectionSuccessful(false);
+                                                        setConnectionFailed(true);
+                                                    }
                                                 }).catch((error) => {
                                                     dispatch(addAlert({
                                                         description: error?.description
@@ -431,7 +459,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                         </Grid.Row>
                     ) }
                 </Grid>
-    
+
                 {
                     (properties?.optional.nonSql.length > 0
                         || properties?.optional.sql.delete.length > 0
@@ -451,10 +479,10 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                 </LinkButton>
                             </Grid.Column>
                         </Grid>
-    
+
                     )
                 }
-    
+
                 { showMore && properties?.optional.nonSql.length > 0 && (
                     <Grid>
                         <Grid.Row columns={ 1 }>
@@ -466,7 +494,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                             .find(attribute => attribute.name === "type").value === "password";
                                         const toggle = property.attributes
                                             .find(attribute => attribute.name === "type")?.value === "boolean";
-    
+
                                         return (
                                             isPassword
                                                 ? (

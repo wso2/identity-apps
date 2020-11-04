@@ -24,7 +24,7 @@ import * as CountryLanguage from "country-language";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, DropdownItemProps, Form, Grid } from "semantic-ui-react";
+import { Button, DropdownItemProps, Form, Grid, Message } from "semantic-ui-react";
 import { AppConstants, history } from "../../../core";
 import { createLocaleTemplate, getTemplateDetails, replaceLocaleTemplateContent } from "../../api";
 import { EmailTemplate, EmailTemplateFormModes, EmailTemplateType } from "../../models";
@@ -74,6 +74,9 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
     const [ locale, setLocale ] = useState<string>("");
     const [ htmlBodyContent, setHtmlBodyContent ] = useState<string>("");
     const [ htmlFooterContent, setHtmlFooterContent ] = useState<string>("");
+    const [ isSubmitting, setIsSubmitting ] = useState<boolean>(false);
+    const [ bodyError, setBodyError ] = useState<boolean>(false);
+    const [ footerError, setFooterError ] = useState<boolean>(false);
 
     /**
      * This will load the locales to the dropdown.
@@ -208,7 +211,14 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
 
     const handleFormSubmit = (values: Map<string, FormValue>): void => {
         if (!templateId || mode === EmailTemplateFormModes.ADD) {
-            createTemplate(values);
+            if (htmlBodyContent && htmlFooterContent) {
+                createTemplate(values);
+                setIsSubmitting(false);
+            } else {
+                setIsSubmitting(true);
+                setBodyError(!htmlBodyContent);
+                setFooterError(!htmlFooterContent);
+            }
 
             return;
         }
@@ -217,7 +227,15 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
     };
 
     return (
-        <Forms onSubmit={ handleFormSubmit }>
+        <Forms
+            onSubmit={ handleFormSubmit }
+            onSubmitError={ () => {
+                setIsSubmitting(true);
+                setBodyError(!htmlBodyContent);
+                setFooterError(!htmlFooterContent);
+            } }
+            error={ isSubmitting && (bodyError || footerError) }
+        >
             <Grid>
                 {
                     (mode === EmailTemplateFormModes.ADD) && (
@@ -297,6 +315,14 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                 updateHtmlContent={ setHtmlBodyContent }
                                 data-testid={ `${ testId }-email-template-body-editor` }
                             />
+                            {
+                                isSubmitting && bodyError && (
+                                    <Message attached error>
+                                        { t("adminPortal:components.emailLocale.forms.addLocale.fields." +
+                                            "bodyEditor.validations.empty") }
+                                    </Message>
+                                )
+                            }
                         </Form.Field>
                     </Grid.Column>
                 </Grid.Row>
@@ -316,6 +342,14 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                 updateHtmlContent={ setHtmlFooterContent }
                                 data-testid={ `${ testId }-email-template-footer-editor` }
                             />
+                            {
+                                isSubmitting && footerError && (
+                                    <Message attached error>
+                                        { t("adminPortal:components.emailLocale.forms.addLocale.fields." +
+                                            "signatureEditor.validations.empty") }
+                                    </Message>
+                                )
+                            }
                         </Form.Field>
                     </Grid.Column>
                 </Grid.Row>

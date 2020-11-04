@@ -22,8 +22,8 @@ import { Hint, LinkButton, PrimaryButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Message, Modal } from "semantic-ui-react";
+import { SharedUserStoreUtils } from "../../core/utils";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES, USERSTORE_REGEX_PROPERTIES } from "../../userstores/constants";
-import { getUserstoreRegEx, validateInputAgainstRegEx } from "../../userstores/utils";
 import { updateUserInfo } from "../api";
 
 /**
@@ -143,7 +143,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
 
         if (userStore !== "primary") {
             // Set the username regEx of the secondary user store.
-            await getUserstoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
+            await SharedUserStoreUtils.getUserStoreRegEx(userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
                 .then((response) => {
                     setPasswordRegExLoading(true);
                     passwordRegex = response;
@@ -152,7 +152,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             // Set the username regEx of the primary user store.
             passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
         }
-        setIsPasswordPatternValid(validateInputAgainstRegEx(password, passwordRegex));
+        setIsPasswordPatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(password, passwordRegex));
     };
 
     /**

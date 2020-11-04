@@ -236,36 +236,14 @@ export const GroupBasics: FunctionComponent<GroupBasicProps> = (props: GroupBasi
                                             t("adminPortal:components.roles.addRoleWizard." +
                                                 "forms.roleBasicDetails.roleName.validations.duplicate",
                                                 { type: "Group" }));
-                                    } else {
-                                        const errorIndex = validation.errorMessages.findIndex(
-                                            (element: string) =>
-                                                element === t("adminPortal:components.roles.addRoleWizard." +
-                                                    "forms.roleBasicDetails.roleName.validations.duplicate",
-                                                    { type: "Group" }));
-
-                                        errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
-                                        if (validation.errorMessages.length === 0) {
-                                            validation.isValid = true;
-                                        }
                                     }
-                                } catch{
-                                    const errorIndex = validation.errorMessages.findIndex(
-                                        (element: string) =>
-                                            element === t("adminPortal:components.roles.addRoleWizard." +
-                                                "forms.roleBasicDetails.roleName.validations.duplicate",
-                                                { type: "Group" }));
-
-                                    errorIndex > -1 && validation.errorMessages.splice(errorIndex, 1);
-                                    if (validation.errorMessages.length === 0) {
-                                        validation.isValid = true;
+                                } finally {
+                                    if (!isGroupNamePatternValid) {
+                                        validation.isValid = false;
+                                        validation.errorMessages.push(t("adminPortal:components.roles.addRoleWizard" +
+                                            ".forms.roleBasicDetails.roleName.validations.invalid",
+                                            { type: "group" }));
                                     }
-                                }
-
-                                if (!isGroupNamePatternValid) {
-                                    validation.isValid = false;
-                                    validation.errorMessages.push(t("adminPortal:components.roles.addRoleWizard" +
-                                        ".forms.roleBasicDetails.roleName.validations.invalid",
-                                        { type: "group" }));
                                 }
                             } }
                             value={ initialValues && initialValues.groupName }

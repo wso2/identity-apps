@@ -76,4 +76,15 @@ export class URLUtils {
     public static isDataUrl(url: string): boolean {
         return !!url.trim().match(PatternConstants.DATA_URL_REGEX_PATTERN);
     }
+
+    /**
+     * Checks if the the provided URL is a valid mobile deep link.
+     *
+     * @param {string} url - The URL to evaluate.
+     *
+     * @return {boolean} True if the URL is a mobile deep link.
+     */
+    public static isMobileDeepLink(url: string): boolean{
+        return !!url.trim().match(PatternConstants.MOBILE_DEEP_LINK_URL_REGEX_PATTERN);
+    }
 }

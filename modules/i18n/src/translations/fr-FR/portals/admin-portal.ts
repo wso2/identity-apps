@@ -803,7 +803,10 @@ export const adminPortal: AdminPortalNS = {
                 addLocale: {
                     fields: {
                         bodyEditor: {
-                            label: "Corps"
+                            label: "Corps",
+                            validations: {
+                                empty: "Le corps de l'e-mail ne peut pas être vide."
+}
                         },
                         locale: {
                             label: "Langue",
@@ -813,7 +816,10 @@ export const adminPortal: AdminPortalNS = {
                             }
                         },
                         signatureEditor: {
-                            label: "Signature du courrier"
+                            label: "Signature du courrier",
+                             validations: {
+                                empty: "La signature électronique ne peut pas être vide."
+                            }
                         },
                         subject: {
                             label: "Objet",
@@ -1596,6 +1602,7 @@ export const adminPortal: AdminPortalNS = {
                             group: "Annuaire",
                             role: "Type de rôle"
                         },
+                        groups: "Groupe (s) attribué (s)",
                         permissions: "Permission(s)",
                         roleName: "Nom de {{type}}",
                         users: "Assigné aux utilisateurs"
@@ -2777,6 +2784,10 @@ export const adminPortal: AdminPortalNS = {
                         description: "Connexion à l'annuaire établie",
                         message: "Connexion réussie !"
                     }
+                },
+                updateDelay: {
+                    description: "L'apparition des propriétés mises à jour peut prendre un certain temps.",
+                    message: "La mise à jour des propriétés prend du temps"
                 },
                 updateUserstore: {
                     genericError: {

@@ -16,7 +16,7 @@
 * under the License.
 */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertInterface, AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import { EmphasizedSegment, LinkButton, PrimaryButton } from "@wso2is/react-components";
@@ -62,9 +62,9 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
 ): ReactElement => {
 
     const {
-        update,
         id,
         properties,
+        update,
         [ "data-testid" ]: testId
     } = props;
 
@@ -177,25 +177,39 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
             ]
             : requiredData;
 
-        patchUserStore(id, data).then(() => {
-            dispatch(addAlert({
-                description: t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.success.description"),
-                level: AlertLevels.SUCCESS,
-                message: t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.success.message")
-            }));
-            update();
-        }).catch(error => {
-            dispatch(addAlert({
-                description: error?.description
-                    || t("adminPortal:components.userstores.notifications." +
-                        "updateUserstore.genericError.description"),
-                level: AlertLevels.ERROR,
-                message: error?.message || t("adminPortal:components.userstores.notifications." +
-                    "updateUserstore.genericError.message")
-            }));
-        });
+        patchUserStore(id, data)
+            .then(() => {
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.success.description"),
+                    level: AlertLevels.SUCCESS,
+                    message: t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.success.message")
+                }));
+
+                // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
+                // applied at once. As a temp solution, a notification informing the delay is shown here.
+                // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
+                // TODO: Remove delay notification and fetch the new updates once backend is fixed.
+                dispatch(addAlert<AlertInterface>({
+                    description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
+                    level: AlertLevels.WARNING,
+                    message: t("adminPortal:components.userstores.notifications.updateDelay.message")
+                }));
+
+                // Re-fetch the userstore details
+                update();
+            })
+            .catch(error => {
+                dispatch(addAlert<AlertInterface>({
+                    description: error?.description
+                        || t("adminPortal:components.userstores.notifications." +
+                            "updateUserstore.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: error?.message || t("adminPortal:components.userstores.notifications." +
+                        "updateUserstore.genericError.message")
+                }));
+            });
     };
 
     return (

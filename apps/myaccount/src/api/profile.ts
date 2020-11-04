@@ -121,7 +121,6 @@ export const getGravatarImage = (email: string): Promise<string> => {
  * @returns {Promise<BasicProfileInterface>} a promise containing the user profile details.
  */
 export const getProfileInfo = (): Promise<BasicProfileInterface> => {
-    const orgKey = "urn:ietf:params:scim:schemas:extension:enterprise:2.0:User";
     const requestConfig = {
         headers: {
             "Accept": "application/json",
@@ -143,7 +142,6 @@ export const getProfileInfo = (): Promise<BasicProfileInterface> => {
             const profileResponse: BasicProfileInterface = {
                 emails: response.data.emails || "",
                 name: response.data.name || { familyName: "", givenName: "" },
-                organisation: response.data[orgKey]?.organization ? response.data[orgKey].organization : "",
                 pendingEmails: response.data[ProfileConstants.SCIM2_ENT_USER_SCHEMA]
                     ? response.data[ProfileConstants.SCIM2_ENT_USER_SCHEMA].pendingEmails
                     : [],
