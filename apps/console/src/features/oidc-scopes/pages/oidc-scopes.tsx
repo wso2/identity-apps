@@ -121,6 +121,7 @@ const OIDCScopesPage: FunctionComponent<OIDCScopesPageInterface> = (
      */
     const searchScopeList = (event) => {
         const changeValue = event.target.value;
+
         if (changeValue.length > 0) {
             const result = scopeList.filter((item) =>
                 item.name.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1);
