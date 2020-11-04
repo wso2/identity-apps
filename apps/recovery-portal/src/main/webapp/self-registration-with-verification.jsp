@@ -634,6 +634,13 @@
                         $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
                         invalidInput = true;
                         return false;
+                    } else if (elements[i].type === 'text' && elements[i].required && elements[i].value.trim() === "") {
+                        error_msg.text("<%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle,
+                            "For.required.fields.cannot.be.empty")%>");
+                        error_msg.show();
+                        $("html, body").animate({scrollTop: error_msg.offset().top}, 'slow');
+                        invalidInput = true;
+                        return false;
                     }
                 }
 
