@@ -42,7 +42,9 @@
     String callback = request.getParameter("callback");
     String httpMethod = request.getMethod();
 
-    if (!StringUtils.equals(httpMethod, HttpMethod.GET) || !StringUtils.equals(httpMethod, HttpMethod.POST)) {
+    // Some mail providers initially sends a HEAD request to
+    // check the validity of the link before redirecting users.
+    if (StringUtils.equals(httpMethod, HttpMethod.HEAD)) {
         response.setStatus(response.SC_OK);
         return;
     }
