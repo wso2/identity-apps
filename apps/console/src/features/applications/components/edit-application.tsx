@@ -168,16 +168,21 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     }, [ isAllowedOriginsUpdated ]);
 
     useEffect(() => {
-        if (tabPaneExtensions && Array.isArray(tabPaneExtensions) && tabPaneExtensions.length > 0) {
-            isTabExtensionsAvailable(true);
+        if (tabPaneExtensions) {
             return;
         }
 
-        setTabPaneExtensions(ComponentExtensionPlaceholder({
+        const extensions: any[] = ComponentExtensionPlaceholder({
             component: "application",
             subComponent: "edit",
             type: "tab"
-        }));
+        });
+
+        if (Array.isArray(extensions) && extensions.length > 0) {
+            isTabExtensionsAvailable(true);
+        }
+
+        setTabPaneExtensions(extensions);
     }, [ tabPaneExtensions ]);
 
     /**
