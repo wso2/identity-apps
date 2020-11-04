@@ -64,8 +64,9 @@
     boolean allowchangeusername = Boolean.parseBoolean(request.getParameter("allowchangeusername"));
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     boolean isPasswordProvisionEnabled = Boolean.parseBoolean(request.getParameter("passwordProvisionEnabled"));
+    boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, false);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
 
     if (skipSignUpEnableCheck) {
         consentPurposeGroupName = "JIT";

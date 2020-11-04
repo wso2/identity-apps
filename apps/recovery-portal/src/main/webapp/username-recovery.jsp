@@ -85,7 +85,7 @@
     List<Claim> claims;
     UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
     try {
-        claims = usernameRecoveryApi.getClaimsForUsernameRecovery(null, true);
+        claims = usernameRecoveryApi.getClaimsForUsernameRecovery(tenantDomain, true);
     } catch (ApiException e) {
         request.setAttribute("error", true);
         request.setAttribute("errorMsg", e.getMessage());

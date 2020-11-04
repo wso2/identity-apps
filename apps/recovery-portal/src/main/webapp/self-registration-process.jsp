@@ -135,7 +135,7 @@
             List<Claim> claimsList;
             UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
             try {
-                claimsList = usernameRecoveryApi.claimsGet(null);
+                claimsList = usernameRecoveryApi.claimsGet(user.getTenantDomain());
                 if (claimsList != null) {
                     claims = claimsList.toArray(new Claim[claimsList.size()]);
                 }

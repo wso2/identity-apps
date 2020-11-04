@@ -62,7 +62,7 @@
         List<Claim> claims;
         UsernameRecoveryApi usernameRecoveryApi = new UsernameRecoveryApi();
         try {
-            claims = usernameRecoveryApi.getClaimsForUsernameRecovery(null, true);
+            claims = usernameRecoveryApi.getClaimsForUsernameRecovery(tenantDomain, true);
         } catch (ApiException e) {
             IdentityManagementEndpointUtil.addErrorInformation(request, e);
             request.getRequestDispatcher("error.jsp").forward(request, response);
