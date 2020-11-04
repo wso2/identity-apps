@@ -1329,7 +1329,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            initialValues.clientSecret && (
+                            (initialValues.clientSecret && (initialValues?.state !== State.REVOKED)) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Form.Field>
