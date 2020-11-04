@@ -179,7 +179,9 @@
                                     window.performance.navigation.type === 2 );
 
             if ( historyTraversal ) {
-                window.location.reload();
+                if($('#register')){
+                    $('#register').data("submitted", false);
+                }
             }
         });
 
