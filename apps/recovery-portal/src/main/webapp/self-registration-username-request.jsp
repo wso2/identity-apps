@@ -171,6 +171,18 @@
     <% } %>
 
     <script>
+        // Reloads the page if the page is loaded by going back in history.
+        // Fixes issues with Firefox.
+        window.addEventListener( "pageshow", function ( event ) {
+            var historyTraversal = event.persisted ||
+                                ( typeof window.performance != "undefined" &&
+                                    window.performance.navigation.type === 2 );
+
+            if ( historyTraversal ) {
+                window.location.reload();
+            }
+        });
+
         function goBack() {
             window.history.back();
         }
