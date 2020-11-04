@@ -20,7 +20,9 @@ import { RolesInterface, TestableComponentInterface } from "@wso2is/core/models"
 import { LinkButton } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Grid, Modal } from "semantic-ui-react";
+import { Button, Grid, Modal } from "semantic-ui-react";
+import { AppConstants } from "../../core/constants";
+import { history } from "../../core/helpers";
 import { PermissionList, getRoleById } from "../../roles";
 
 /**
@@ -84,6 +86,13 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
         setRoleCheck(true);
     }, [ role ]);
 
+    /**
+     * Redirect to the relevant role's edit page.
+     */
+    const handleEditPermissions = () => {
+        history.push(AppConstants.getPaths().get("ROLE_EDIT").replace(":id", roleId));
+    };
+
     return (
         isRoleSet && (
             <Modal
@@ -100,12 +109,18 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                 </Modal.Header>
                 <Modal.Content image>
                     <div className="permissions-edit-container fluid">
-                        <PermissionList emphasize={ false } isEdit={ false } isRole roleObject={ role }/>
+                        <PermissionList
+                            isReadOnly={ true }
+                            emphasize={ false }
+                            isEdit={ false }
+                            isRole
+                            roleObject={ role }
+                        />
                     </div>
                 </Modal.Content>
                 <Modal.Actions>
                     <Grid>
-                        <Grid.Row column={ 1 }>
+                        <Grid.Row column={ 2 }>
                             <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                                 <LinkButton
                                     data-testid={ `${ testId }-back-button` }
@@ -114,6 +129,17 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                                 >
                                     Cancel
                                 </LinkButton>
+                            </Grid.Column>
+                            <Grid.Column floated="right" mobile={ 8 } tablet={ 8 } computer={ 8 }>
+                                <Button
+                                    data-testid={ `${ testId }-edit-button` }
+                                    color="orange"
+                                    basic
+                                    onClick={ () => handleEditPermissions() }
+                                >
+                                    { t("adminPortal:components.user.updateUser.roles.viewPermissionModal." +
+                                        "editButton") }
+                                </Button>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

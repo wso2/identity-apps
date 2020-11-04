@@ -41,6 +41,7 @@ interface PermissionListProp extends  TestableComponentInterface {
     isEdit: boolean;
     initialValues?: Permission[];
     isRole?: boolean;
+    isReadOnly?: boolean;
 }
 
 /**
@@ -51,6 +52,7 @@ interface PermissionListProp extends  TestableComponentInterface {
 export const PermissionList: FunctionComponent<PermissionListProp> = (props: PermissionListProp): ReactElement => {
 
     const {
+        isReadOnly,
         emphasize,
         triggerSubmit,
         onSubmit,
@@ -323,6 +325,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         ? (
                         <div className="treeview-container">
                             <TreeView
+                                isReadOnly={ isReadOnly }
                                 data-testid={ `${ testId }-tree` }
                                 data={ permissionTree }
                                 keywordLabel= "label"
@@ -377,5 +380,6 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
  * Default props for the component.
  */
 PermissionList.defaultProps = {
-    emphasize: true
+    emphasize: true,
+    isReadOnly: false
 };
