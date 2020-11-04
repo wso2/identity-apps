@@ -598,7 +598,26 @@
     <script type="text/javascript" src="js/consent_template_1.js"></script>
     <script type="text/javascript" src="js/consent_template_2.js"></script>
     <script type="text/javascript">
+        var registrationDataKey = "registrationData";
         $(document).ready(function () {
+            <%
+                if (error){
+            %>
+                var registrationData = sessionStorage.getItem(registrationDataKey);
+                sessionStorage.removeItem(registrationDataKey);
+                if(registrationData){
+                    var fields = JSON.parse(registrationData);
+
+                    if(fields.length > 0) {
+                        fields.forEach(function (field){
+                            document.getElementsByName(field.name)[0].value = field.value;
+                        })
+                    }
+                }
+            <%
+                }
+            %>
+
             var container;
             var allAttributes = [];
             var canSubmit;
@@ -708,6 +727,13 @@
                 <%
                 }
                 %>
+
+                var data = $("#register").serializeArray();
+                var filteredData = data.filter(function (row) {
+                    return !(row.name === "password" || row.name === "password2");
+                });
+
+                sessionStorage.setItem(registrationDataKey, JSON.stringify(filteredData));
 
                 return true;
             });
