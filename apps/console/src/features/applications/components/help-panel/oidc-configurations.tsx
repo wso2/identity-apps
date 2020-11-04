@@ -18,11 +18,25 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
 import { HelpPanelIcons } from "../../configs";
-import { OIDCApplicationConfigurationInterface } from "../../models";
+import {
+    OIDCApplicationConfigurationInterface,
+    OIDCEndpointsInterface
+} from "../../models";
+import { IdentityClient } from "@asgardio/oidc-js";
+import { addAlert } from "@wso2is/core/store";
+import { AlertLevels } from "@wso2is/core/models";
+import { useDispatch, useSelector } from "react-redux";
+import { AppState } from "../../../core/store";
+
+/**
+ * Get an identity client instance.
+ *
+ */
+const identityClient = IdentityClient.getInstance();
 
 /**
  * Proptypes for the OIDC application configurations component.
@@ -43,10 +57,37 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
 ): ReactElement => {
 
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const {
         oidcConfigurations,
         [ "data-testid" ]: testId
     } = props;
+
+    const serverOrigin: string = useSelector((state: AppState) => state?.config?.deployment?.serverOrigin);
+
+    const [ endpoints, setEndpoints ] = useState<OIDCEndpointsInterface>(undefined);
+
+    useEffect(() => {
+        if (endpoints !== undefined) {
+            return;
+        }
+
+        // Fetch the server endpoints for OIDC applications.
+        identityClient.getServiceEndpoints()
+            .then((response) => {
+                setEndpoints(response);
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t("devPortal:components.applications.notifications.fetchOIDCServiceEndpoints" +
+                        ".genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("devPortal:components.applications.notifications.fetchOIDCServiceEndpoints." +
+                        "genericError.message")
+                }));
+            });
+    });
 
     return (
         <>
@@ -70,7 +111,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ oidcConfigurations?.authorizeEndpoint }
+                            value={ endpoints?.authorize }
                             className="panel-url-input"
                             data-testid={ `${ testId }-authorize-readonly-input` }
                         />
@@ -95,7 +136,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ oidcConfigurations?.tokenEndpoint }
+                            value={ endpoints?.token }
                             className="panel-url-input"
                             data-testid={ `${ testId }-token-readonly-input` }
                         />
@@ -145,7 +186,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     </Grid.Column>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
-                            value={ oidcConfigurations?.jwksEndpoint }
+                            value={ endpoints?.jwks }
                             className="panel-url-input"
                             data-testid={ `${ testId }-jwks-readonly-input` }
                         />
@@ -171,6 +212,31 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
                         <CopyInputField
                             value={ oidcConfigurations?.introspectionEndpoint }
+                            className="panel-url-input"
+                            data-testid={ `${ testId }-introspection-readonly-input` }
+                        />
+                    </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={ 2 }>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
+                        <GenericIcon
+                            icon={ HelpPanelIcons.endpoints.wellKnown }
+                            size="micro"
+                            square
+                            transparent
+                            inline
+                            className="left-icon"
+                            verticalAlign="middle"
+                            spaced="right"
+                        />
+                        <label data-testid={ `${ testId }-introspection-label` }>
+                            { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                                "oidcConfigurations.labels.wellKnown") }
+                        </label>
+                    </Grid.Column>
+                    <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 11 }>
+                        <CopyInputField
+                            value={ serverOrigin + endpoints?.wellKnown }
                             className="panel-url-input"
                             data-testid={ `${ testId }-introspection-readonly-input` }
                         />

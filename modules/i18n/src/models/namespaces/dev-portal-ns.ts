@@ -673,6 +673,7 @@ export interface DevPortalNS {
                 updateInboundProvisioningConfig: Notification;
                 updateOutboundProvisioning: Notification;
                 updateProtocol: Notification;
+                fetchOIDCServiceEndpoints: Notification;
             };
             placeholders: {
                 emptyAttributesList: Placeholder;

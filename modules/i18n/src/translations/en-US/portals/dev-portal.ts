@@ -1287,7 +1287,8 @@ export const devPortal: DevPortalNS = {
                                     introspection: "Introspection",
                                     keystore: "Key Set",
                                     token: "Token",
-                                    userInfo: "UserInfo"
+                                    userInfo: "UserInfo",
+                                    wellKnown: "Discovery"
                                 }
                             },
                             samlConfigurations: {
@@ -1476,6 +1477,12 @@ export const devPortal: DevPortalNS = {
                     success: {
                         description: "Successfully retrieved the IDP configurations for the OIDC application.",
                         message: "Retrieval successful"
+                    }
+                },
+                fetchOIDCServiceEndpoints: {
+                    genericError: {
+                        description: "An error occurred retrieving the server endpoints for OIDC applications.",
+                        message: "Un problème est survenu"
                     }
                 },
                 fetchProtocolMeta: {
