@@ -172,7 +172,7 @@
 
     <script>
         function goBack() {
-            window.location.replace(document.referrer);
+            window.history.back();
         }
 
         // Handle form submission preventing double submission.
