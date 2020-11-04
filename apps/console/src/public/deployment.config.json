@@ -39,7 +39,9 @@
     "loginCallbackPath": "/login",
     "logoutCallbackPath": "/login",
     "productVersion": "",
+    "selfAppName": "Console",
     "serverOrigin": "https://localhost:9443",
+    "systemAppNames": [ "Console", "My Account" ],
     "routePaths": {
         "home": "/develop/applications",
         "login": "/login",
