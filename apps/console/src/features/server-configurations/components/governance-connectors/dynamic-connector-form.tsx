@@ -27,6 +27,7 @@ import { AppState } from "../../../core";
 import { ServerConfigurationsConstants } from "../../constants";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
+import { TFunction } from "i18next";
 
 /**
  * Determine the matching Form component based on the property attributes.
@@ -58,6 +59,9 @@ const getFieldType = (property: ConnectorPropertyInterface) => {
     }
 };
 
+const required =
+    (value: string) => value ? undefined : I18n.instance.t("common:required");
+
 /**
  * Dynamically render governance connector forms.
  *
@@ -74,7 +78,7 @@ const DynamicConnectorForm = (props) => {
 
     return (
         <Form onSubmit={ handleSubmit }>
-            <Grid padded={ true }>
+            { <Grid padded={ true }>
                 { properties?.map((property, index) => {
                     return (
                         <Grid.Row columns={ 2 } className="pl-3" key={ index }>
@@ -89,6 +93,9 @@ const DynamicConnectorForm = (props) => {
                                         placeholder={ property.value }
                                         data-testid={ `${ testId }-${ property.name }` }
                                         label={ property.displayName }
+                                        validate={ [
+                                            required
+                                        ] }
                                     />
                                 ) : (
                                         <label>{ property.displayName }</label>
@@ -124,6 +131,7 @@ const DynamicConnectorForm = (props) => {
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
+            }
         </Form>
     );
 };
