@@ -220,7 +220,7 @@
                 return this;
             };
 
-             $registerForm.preventDoubleSubmission();
+            $registerForm.preventDoubleSubmission();
         });
     </script>
 
