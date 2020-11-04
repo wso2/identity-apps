@@ -19,6 +19,7 @@
 import {
     Confirmation,
     FormAttributes,
+    Message,
     ModalInterface,
     Notification,
     Placeholder,
@@ -53,6 +54,13 @@ export interface ConsoleNS {
                                clientId: FormAttributes;
                                clientSecret: FormAttributes;
                            };
+                        };
+                    };
+                };
+                forms: {
+                    inboundOIDC: {
+                        messages: {
+                            revokeDisclaimer: Message;
                         };
                     };
                 };

@@ -134,6 +134,17 @@ export const console: ConsoleNS = {
                                 "Please make sure to copy and save it somewhere safe."
                         }
                     }
+                },
+                forms: {
+                    inboundOIDC: {
+                        messages: {
+                            revokeDisclaimer: {
+                                content: "The application has been revoked. Please regenrate the secret if you wish " +
+                                    "to reactivate the application.",
+                                heading: "Application is Revoked"
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -171,3 +171,11 @@ export interface ValidationInterface {
     heading: string;
     description: string;
 }
+
+/**
+ * Interface for UI messages.
+ */
+export interface Message {
+    heading: string;
+    content: string;
+}
