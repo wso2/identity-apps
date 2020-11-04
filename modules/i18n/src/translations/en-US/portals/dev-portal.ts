@@ -2651,7 +2651,8 @@ export const devPortal: DevPortalNS = {
                         1: "Please add new OIDC scopes to view them here."
                     },
                     title: "No OIDC Scopes"
-                }
+                },
+                searchPlaceholder: "Search by scope name"
             },
             notifications: {
                 addOIDCClaim: {
@@ -2776,6 +2777,14 @@ export const devPortal: DevPortalNS = {
                         2: "steps in the creation wizard."
                     },
                     title: "Add a new OIDC Scope"
+                },
+                emptySearch: {
+                    action: "View all",
+                    subtitles: {
+                        0: "We couldn't find the scope you searched for.",
+                        1: "Please try a different name.",
+                    },
+                    title: "No results found"
                 }
             },
             wizards: {

@@ -136,7 +136,7 @@ export const adminPortal: AdminPortalNS = {
                         1: "Please check if you have any tasks in {{status}} state to",
                         2: "view them here."
                     },
-                    title: "No Approvals"
+                    title: "No results found"
                 },
                 emptySearchResults: {
                     action: "View all",

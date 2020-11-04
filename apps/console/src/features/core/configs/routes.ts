@@ -127,45 +127,6 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "devPortal:components.sidePanel.categories.general",
-            children: [
-                {
-                    component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
-                    exact: true,
-                    icon: {
-                        icon: SidePanelIcons.childIcon
-                    },
-                    id: "oidcScopesEdit",
-                    name: "OIDC Scopes Edit",
-                    path: AppConstants.getPaths().get("OIDC_SCOPES_EDIT"),
-                    protected: true,
-                    showOnSidePanel: false
-                }
-            ],
-            component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes")),
-            exact: true,
-            icon: {
-                icon: SidePanelIcons.scopes
-            },
-            id: "oidcScopes",
-            name: "OIDC Scopes",
-            order: 4,
-            path: AppConstants.getPaths().get("OIDC_SCOPES"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
-            component: lazy(() => import("../pages/customize")),
-            icon: {
-                icon: SidePanelIcons.overview
-            },
-            id: "customize",
-            name: "Customize",
-            path: AppConstants.getPaths().get("CUSTOMIZE"),
-            protected: true,
-            showOnSidePanel: false
-        },
-        {
             component: null,
             icon: null,
             id: "404",
@@ -337,6 +298,45 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
+            category: "adminPortal:components.sidePanel.categories.attributes",
+            children: [
+                {
+                    component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes-edit")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.childIcon
+                    },
+                    id: "oidcScopesEdit",
+                    name: "OIDC Scopes Edit",
+                    path: AppConstants.getPaths().get("OIDC_SCOPES_EDIT"),
+                    protected: true,
+                    showOnSidePanel: false
+                }
+            ],
+            component: lazy(() => import("../../oidc-scopes/pages/oidc-scopes")),
+            exact: true,
+            icon: {
+                icon: SidePanelIcons.scopes
+            },
+            id: "oidcScopes",
+            name: "OIDC Scopes",
+            order: 7,
+            path: AppConstants.getPaths().get("OIDC_SCOPES"),
+            protected: true,
+            showOnSidePanel: true
+        },
+        {
+            component: lazy(() => import("../pages/customize")),
+            icon: {
+                icon: SidePanelIcons.overview
+            },
+            id: "customize",
+            name: "Customize",
+            path: AppConstants.getPaths().get("CUSTOMIZE"),
+            protected: true,
+            showOnSidePanel: false
+        },
+        {
             category: "adminPortal:components.sidePanel.categories.userstores",
             children: [
                 {
@@ -381,7 +381,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             },
             id: "certificates",
             name: "adminPortal:components.sidePanel.certificates",
-            order: 7,
+            order: 8,
             path: AppConstants.getPaths().get("CERTIFICATES"),
             protected: true,
             showOnSidePanel: true
@@ -433,7 +433,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             },
             id: "emailTemplates",
             name: "adminPortal:components.sidePanel.emailTemplates",
-            order: 8,
+            order: 9,
             path: AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"),
             protected: true,
             showOnSidePanel: true
@@ -447,7 +447,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             },
             id: "remoteFetchConfig",
             name: "Remote Configurations",
-            order: 9,
+            order: 10,
             path: AppConstants.getPaths().get("REMOTE_REPO_CONFIG"),
             protected: true,
             showOnSidePanel: true
@@ -458,7 +458,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             icon: null,
             id: "governanceConnectors",
             name: "adminPortal:components.sidePanel.governanceConnectors",
-            order: 10,
+            order: 11,
             path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS"),
             protected: true,
             showOnSidePanel: false
