@@ -171,6 +171,8 @@
     <% } %>
 
     <script>
+        var $registerForm = $("#register");
+
         // Reloads the page if the page is loaded by going back in history.
         // Fixes issues with Firefox.
         window.addEventListener( "pageshow", function ( event ) {
@@ -179,8 +181,8 @@
                                     window.performance.navigation.type === 2 );
 
             if ( historyTraversal ) {
-                if($('#register')){
-                    $('#register').data("submitted", false);
+                if($registerForm){
+                    $registerForm.data("submitted", false);
                 }
             }
         });
@@ -218,7 +220,7 @@
                 return this;
             };
 
-            $('#register').preventDoubleSubmission();
+             $registerForm.preventDoubleSubmission();
         });
     </script>
 
