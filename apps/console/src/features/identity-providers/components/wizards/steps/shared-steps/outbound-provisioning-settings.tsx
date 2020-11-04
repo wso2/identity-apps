@@ -56,7 +56,6 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
         isLoading,
         onSubmit,
         triggerSubmit,
-        defaultConnector,
         [ "data-testid" ]: testId
     } = props;
 
@@ -81,7 +80,7 @@ export const OutboundProvisioningSettings: FunctionComponent<OutboundProvisionin
             ? (
                 <OutboundProvisioningConnectorFormFactory
                     metadata={ metadata }
-                    initialValues={ initialValues }
+                    initialValues={ initialValues?.provisioning?.outboundConnectors?.connectors[ 0 ] }
                     onSubmit={ handleSubmit }
                     triggerSubmit={ triggerSubmit }
                     enableSubmitButton={ false }
