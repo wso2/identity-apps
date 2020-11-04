@@ -676,6 +676,7 @@ export const devPortal: DevPortalNS = {
                             }
                         },
                         grant: {
+                            hint: "This will determine how the application communicates with the token service",
                             label: "Allowed grant type",
                             validations: {
                                 empty: "Select at least a  grant type"

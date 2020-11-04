@@ -21,6 +21,7 @@ import { CommonNS } from "../../../models";
 export const common: CommonNS = {
     access: "அணுகல்",
     actions: "செயல்கள்",
+    activate: "செயல்படுத்த",
     active: "செயல்பாட்டில் உள்ள",
     add: "சேர்",
     addURL: "URL ஐச் சேர்க்கவும்",
