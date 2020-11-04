@@ -17,7 +17,7 @@
 */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import classNames from "classNames";
+import classNames from "classnames";
 import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useRef, useState } from "react";
 import { Button, Icon, Input, Popup } from "semantic-ui-react";
 
