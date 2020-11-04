@@ -168,7 +168,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
     }, [ isAllowedOriginsUpdated ]);
 
     useEffect(() => {
-        if (tabPaneExtensions) {
+        if (tabPaneExtensions && Array.isArray(tabPaneExtensions) && tabPaneExtensions.length > 0) {
             isTabExtensionsAvailable(true);
             return;
         }
