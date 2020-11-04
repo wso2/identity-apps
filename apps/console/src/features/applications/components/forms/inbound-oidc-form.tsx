@@ -1293,6 +1293,12 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Message warning visible>
+                                            <Message.Header>
+                                                {
+                                                    t("console:develop.features.applications.forms.inboundOIDC." +
+                                                        "messages.revokeDisclaimer.heading")
+                                                }
+                                            </Message.Header>
                                             <p>
                                                 {
                                                     t("console:develop.features.applications.forms.inboundOIDC." +
