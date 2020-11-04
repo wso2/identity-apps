@@ -22,8 +22,7 @@
 export class UIConstants {
 
     /**
-     * Private constructor to avoid object instantiation from outside
-     * the class.
+     * Private constructor to avoid object instantiation from outside the class.
      *
      * @hideconstructor
      */
@@ -31,14 +30,14 @@ export class UIConstants {
     private constructor() { }
 
     /**
-     * Default header height to be used in state initialisations
+     * Default header height to be used in state initializations.
      * @constant
      * @type {number}
      */
     public static readonly DEFAULT_HEADER_HEIGHT = 59;
 
     /**
-     * Default footer height to be used in state initialisations
+     * Default footer height to be used in state initializations.
      * @constant
      * @type {number}
      */
@@ -88,5 +87,13 @@ export class UIConstants {
      * @type {Map<string, string>}
      */
     public static readonly IS_DOC_URLS: Map<string, string> = new Map<string, string>()
-        .set("5.11.0", "https://is.docs.wso2.com/en/5.11.0/")
+        .set("5.11.0", "https://is.docs.wso2.com/en/5.11.0/");
+
+    /**
+     * Additional top offset padding for page scrolling placement.
+     * This will use along with the header height (appHeaderHeight + thisValues).
+     * @constant
+     * @type {number}
+     */
+    public static readonly PAGE_SCROLL_TOP_PADDING = 20;
 }

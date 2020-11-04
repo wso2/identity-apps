@@ -46,13 +46,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
-import { Footer, Header, ProtectedRoute } from "../features/core/components";
-import { EmptyPlaceholderIllustrations, SidePanelMiscIcons, getDeveloperViewRoutes } from "../features/core/configs";
-import { UIConstants } from "../features/core/constants";
-import { history } from "../features/core/helpers";
-import { ConfigReducerStateInterface, FeatureConfigInterface } from "../features/core/models";
-import { AppState } from "../features/core/store";
-import { AppUtils } from "../features/core/utils";
+import {
+    AppState,
+    AppUtils,
+    ConfigReducerStateInterface,
+    EmptyPlaceholderIllustrations,
+    FeatureConfigInterface,
+    Footer,
+    Header,
+    ProtectedRoute,
+    SidePanelMiscIcons,
+    UIConstants,
+    getDeveloperViewRoutes,
+    history,
+    useUIElementSizes
+} from "../features/core";
 
 /**
  * Developer View Prop types.
@@ -81,6 +89,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     } = props;
 
     const { t } = useTranslation();
+    const { headerHeight, footerHeight } = useUIElementSizes();
 
     const dispatch = useDispatch();
 
@@ -98,8 +107,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         setSelectedRoute
     ] = useState<RouteInterface | ChildRouteInterface>(getDeveloperViewRoutes()[0]);
     const [ mobileSidePanelVisibility, setMobileSidePanelVisibility ] = useState<boolean>(false);
-    const [ headerHeight, setHeaderHeight ] = useState<number>(UIConstants.DEFAULT_HEADER_HEIGHT);
-    const [ footerHeight, setFooterHeight ] = useState<number>(UIConstants.DEFAULT_FOOTER_HEIGHT);
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
@@ -121,14 +128,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
         dispatch(getProfileInformation());
     }, [ featureConfig, getDeveloperViewRoutes ]);
-
-    useEffect(() => {
-        setHeaderHeight(document.getElementById("app-header").offsetHeight - UIConstants.AJAX_TOP_LOADING_BAR_HEIGHT);
-    });
-
-    useEffect(() => {
-        setFooterHeight(document.getElementById("app-footer").offsetHeight);
-    });
 
     /**
      * Handles side panel toggle click.

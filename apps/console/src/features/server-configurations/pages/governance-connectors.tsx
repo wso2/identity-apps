@@ -18,14 +18,16 @@
 
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
+import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Grid, Menu } from "semantic-ui-react";
-import { history } from "../../core";
+import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
+import { UIConstants, history, useUIElementSizes } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
+
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
 
 /**
@@ -51,12 +53,16 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const { [ "data-testid" ]: testId } = props;
 
     const dispatch = useDispatch();
+    const pageContextRef = useRef(null);
 
     const { t } = useTranslation();
+    const { headerHeight, footerHeight } = useUIElementSizes();
 
     const [ connectorCategory, setConnectorCategory ] = useState<GovernanceConnectorCategoryInterface>({});
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
+
+    const ScrollTopPosition = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
 
     useEffect(() => {
         loadCategoryConnectors();
@@ -123,61 +129,72 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             }
             data-testid={ `${ testId }-page-layout` }
         >
-            <Grid>
-                <Grid.Row columns={ 2 }>
-                    <Grid.Column width={ 12 }>
-                        {
-                            (connectors && Array.isArray(connectors) && connectors.length > 0)
-                                ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
-                                    <EmphasizedSegment key={ index }>
-                                        <div ref={ connector.ref }>
-                                            <DynamicGovernanceConnector
-                                                connector={ connector }
-                                                data-testid={ `${ testId }-` + connector?.id }
-                                                onUpdate={ () => loadCategoryConnectors() }
-                                            />
-                                        </div>
-                                    </EmphasizedSegment>
-                                ))
-                                : null
-                        }
-                    </Grid.Column>
-                    <Grid.Column width={ 4 }>
-                        {
-                            (connectors && Array.isArray(connectors) && connectors.length > 0) && (
-                                <>
-                                    <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
-                                    <Menu secondary vertical className="governance-connector-categories">
-                                        {
-                                            connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
-                                                <Menu.Item
-                                                    as="a"
-                                                    key={ index }
-                                                    className={
-                                                        selectedConnector?.id === connector?.id
-                                                            ? "active"
-                                                            : ""
-                                                    }
-                                                    onClick={ () => {
-                                                        // Scroll to the selected connector.
-                                                        connector?.ref?.current?.scrollIntoView({
-                                                            behavior: "smooth", block: "center"
-                                                        });
+            <Ref innerRef={ pageContextRef }>
+                <Grid>
+                    <Grid.Row columns={ 2 }>
+                        <Grid.Column width={ 12 }>
+                            {
+                                (connectors && Array.isArray(connectors) && connectors.length > 0)
+                                    ? connectors.map((connector: GovernanceConnectorWithRef, index: number) => (
+                                        <EmphasizedSegment key={ index }>
+                                            <div ref={ connector.ref }>
+                                                <DynamicGovernanceConnector
+                                                    connector={ connector }
+                                                    data-testid={ `${ testId }-` + connector?.id }
+                                                    onUpdate={ () => loadCategoryConnectors() }
+                                                />
+                                            </div>
+                                        </EmphasizedSegment>
+                                    ))
+                                    : null
+                            }
 
-                                                        setSelectorConnector(connector);
-                                                    } }
-                                                >
-                                                    { connector.friendlyName }
-                                                </Menu.Item>
-                                            ))
-                                        }
-                                    </Menu>
-                                </>
-                            )
-                        }
-                    </Grid.Column>
-                </Grid.Row>
-            </Grid>
+                            <Rail position="right" close="very">
+                                <Sticky
+                                    context={ pageContextRef }
+                                    offset={ ScrollTopPosition }
+                                    bottomOffset={ footerHeight }>
+                                    {
+                                        (connectors && Array.isArray(connectors) && connectors.length > 0) && (
+                                            <>
+                                                <h5>{ t("adminPortal:components.governanceConnectors.categories") }</h5>
+                                                <Menu secondary vertical className="governance-connector-categories">
+                                                    {
+                                                        connectors.map((
+                                                            connector: GovernanceConnectorWithRef,
+                                                            index: number) => (
+
+                                                            <Menu.Item
+                                                                as="a"
+                                                                key={ index }
+                                                                className={
+                                                                    selectedConnector?.id === connector?.id
+                                                                        ? "active"
+                                                                        : ""
+                                                                }
+                                                                onClick={ () => {
+                                                                    // Scroll to the selected connector.
+                                                                    CommonUtils.scrollToTarget(
+                                                                        connector?.ref?.current, ScrollTopPosition
+                                                                    );
+
+                                                                    setSelectorConnector(connector);
+                                                                } }
+                                                            >
+                                                                { connector.friendlyName }
+                                                            </Menu.Item>
+                                                        ))
+                                                    }
+                                                </Menu>
+                                            </>
+                                        )
+                                    }
+                                </Sticky>
+                            </Rail>
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid>
+            </Ref>
         </PageLayout>
     );
 };
