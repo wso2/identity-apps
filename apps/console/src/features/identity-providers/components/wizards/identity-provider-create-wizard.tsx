@@ -263,6 +263,16 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * @param identityProvider - Identity provider data.
      */
     const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
+        // Remove displayName from Google provisioning connector.
+        if (
+            identityProvider?.provisioning?.outboundConnectors?.connectors[0][
+                IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
+            ] === IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_GOOGLE
+        ) {
+            delete identityProvider?.provisioning?.outboundConnectors?.connectors[0][
+                IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
+            ];
+        }
         createNewIdentityProvider(identityProvider);
     };
 
