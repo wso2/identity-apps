@@ -32,7 +32,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Divider, Form, Grid, GridColumn, GridRow, Header, Icon, Radio, Segment } from "semantic-ui-react";
-import { GovernanceConnectorsIllustration } from "../../../features/server-configurations";
+import { GovernanceConnectorsIllustration } from "../../server-configurations/configs";
 import { 
     createRemoteRepoConfig, 
     deleteRemoteRepoConfig, 
@@ -50,15 +50,23 @@ import {
     InterfaceRemoteRepoListResponse 
 } from "../models";
 
-type RemoteConfigDetailsInterface = TestableComponentInterface;
+/**
+ * Proptypes for the remote config details component.
+ */
+type RemoteConfigDetailsPropsInterface = TestableComponentInterface;
 
 /**
  * Component to handle Remote Repository Configuration.
+ *
+ * @param {RemoteConfigDetailsPropsInterface} props - Props injected to the component.
+ * @return {React.ReactElement}
  */
-const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
-    props: RemoteConfigDetailsInterface
+const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
+    props: RemoteConfigDetailsPropsInterface
 ): ReactElement => {
+
     const dispatch = useDispatch();
+
     const { t } = useTranslation();
 
     const {
@@ -72,6 +80,9 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
     const [ isEnabled, setIsEnabled ] = useState<boolean>(false);
     const [ showFetchForm, setShowFetchForm ] = useState<boolean>(false);
 
+    /**
+     * Fetched the list of remote repo configs on component load.
+     */
     useEffect(() => {
         getRemoteConfigList();
     }, []);
@@ -79,7 +90,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
     /**
      * Util method to load configurations if available.
      */
-    const getRemoteConfigList = () => {
+    const getRemoteConfigList = (): void => {
         getRemoteRepoConfigList().then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             if (response.status === 200) {
                 if (response.data.remotefetchConfigurations.length > 0) {
@@ -100,7 +111,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
                 }
             }
         })
-    }
+    };
 
     /**
      * Util method to get 
@@ -120,6 +131,11 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
         };
     };
 
+    /**
+     * Handles form submit.
+     *
+     * @param values - Form values.
+     */
     const handleFormSubmit = (values: InterfaceRemoteConfigForm): void => {
         let configs: InterfaceRemoteRepoConfigDetails = {
             actionListener: {
@@ -163,6 +179,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
 
     /**
      * Creates a repo configuration.
+     *
      * @param {InterfaceRemoteRepoConfigDetails} templateTypeName - Template type name.
      */
     const createConfiguration = (templateTypeName: InterfaceRemoteRepoConfigDetails): void => {
@@ -200,14 +217,14 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
      *
      * @param {AlertInterface} alert - Alert object.
      */
-    const handleAlerts = (alert: AlertInterface) => {
+    const handleAlerts = (alert: AlertInterface): void => {
         dispatch(addAlert(alert));
     };
 
     /**
      * Function which will handle config deletion action.
      *
-     * @param role - Config ID which needs to be deleted
+     * @param {InterfaceRemoteRepoConfig} config - Repo Config.
      */
     const handleOnDelete = (config: InterfaceRemoteRepoConfig): void => {
         deleteRemoteRepoConfig(config.id).then(() => {
@@ -227,8 +244,10 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
 
     /**
      * Util method to render remote configuration form.
+     * 
+     * @return {ReactElement}
      */
-    const getRemoteFecthForm = () => {
+    const getRemoteFecthForm = (): ReactElement => {
         return (
             <Forms
                 data-testid={ `${ testId }-config-form` }
@@ -465,7 +484,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
                 </Grid>
             </Forms>
         )
-    }
+    };
 
     return (
         <PageLayout
@@ -571,7 +590,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
             }
         </PageLayout>
     )
-}
+};
 
 /**
  * Default props for the component.

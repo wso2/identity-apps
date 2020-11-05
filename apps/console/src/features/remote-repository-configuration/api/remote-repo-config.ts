@@ -112,6 +112,13 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
         });
 }
 
+/**
+ * Creates a repo config using the REST API.
+ *
+ * @param {InterfaceRemoteRepoConfigDetails} configObj - Configuration object.
+ * @return {Promise<AxiosResponse>}
+ * @throws {IdentityAppsApiException}
+ */
 export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetails): Promise<AxiosResponse> => {
 
     const requestConfig: AxiosRequestConfig = {
