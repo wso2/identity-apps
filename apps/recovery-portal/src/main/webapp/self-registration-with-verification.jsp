@@ -599,6 +599,7 @@
     <script type="text/javascript" src="js/consent_template_2.js"></script>
     <script type="text/javascript">
         var registrationDataKey = "registrationData";
+        
         $(document).ready(function () {
             <%
                 if (error){
