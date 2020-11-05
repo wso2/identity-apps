@@ -22,7 +22,7 @@ import {
     Message,
     ModalInterface,
     Notification,
-    Placeholder,
+    Placeholder, Popup,
     ValidationInterface
 } from "../common";
 
@@ -62,6 +62,13 @@ export interface ConsoleNS {
                         messages: {
                             revokeDisclaimer: Message;
                         };
+                    };
+                };
+                popups: {
+                    appStatus: {
+                        active: Popup;
+                        notConfigured: Popup;
+                        revoked: Popup;
                     };
                 };
             };

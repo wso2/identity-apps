@@ -146,6 +146,27 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                popups: {
+                    appStatus: {
+                        active: {
+                            content: "L'application est active.",
+                            header: "Actif",
+                            subHeader: ""
+                        },
+                        notConfigured: {
+                            content: "L'application n'est pas configurée. Veuillez configurer les configurations " +
+                                "d'accès.",
+                            header: "Pas configuré",
+                            subHeader: ""
+                        },
+                        revoked: {
+                            content: "La demande est révoquée. Veuillez réactiver l'application dans les " +
+                                "configurations d'accès.",
+                            header: "Révoqué",
+                            subHeader: ""
+                        }
+                    }
                 }
             }
         }
