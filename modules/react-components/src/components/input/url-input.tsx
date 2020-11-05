@@ -322,6 +322,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         if (allowedOrigins?.includes(origin) || allowOrigin) {
             return (
                 <LabelWithPopup
+                    className="cors-details-popup"
                     popupHeader={ t("devPortal:components.URLInput.withLabel.positive.header") }
                     popupSubHeader={
                         <>
@@ -366,12 +367,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             { origin }
                         </>
                     }
+                    popupOptions={ {
+                        basic: true,
+                        on: "click"
+                    } }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
+                    className="cors-details-popup"
                     popupHeader={ t("devPortal:components.URLInput.withLabel.negative.header") }
                     popupSubHeader={
                         <>
@@ -428,6 +434,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             { origin }
                         </>
                     }
+                    popupOptions={ {
+                        basic: true,
+                        on: "click"
+                    } }
                     labelColor="red"
                 />
             );
