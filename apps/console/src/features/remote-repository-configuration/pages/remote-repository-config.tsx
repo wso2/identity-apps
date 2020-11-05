@@ -70,12 +70,11 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
     const [ showConfigDeleteConfirmation, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ connectivity, setConnectivity ] = useState<string>("");
     const [ isEnabled, setIsEnabled ] = useState<boolean>(false);
-    const [ isCreate, setIsCreate ] = useState<boolean>(false);
     const [ showFetchForm, setShowFetchForm ] = useState<boolean>(false);
 
     useEffect(() => {
         getRemoteConfigList();
-    }, [ remoteRepoConfigDetail != undefined, isCreate ]);
+    }, []);
 
     /**
      * Util method to load configurations if available.
@@ -170,7 +169,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
 
         createRemoteRepoConfig(templateTypeName)
             .then(() => {
-                setIsCreate(true);
+                getRemoteConfigList();
                 setShowFetchForm(false);
 
                 handleAlerts({
