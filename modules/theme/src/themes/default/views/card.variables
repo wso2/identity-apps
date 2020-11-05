@@ -89,9 +89,9 @@ Recent Application Card
 @templateCardTransition: @defaultCardTransition;
 @templateCardBorder: @defaultCardBorder;
 @templateCardTextContainerPadding: 0.8em 1em;
-@templateCardHeaderFontSize: 1em !important;
-@templateCardHeaderFontWeight: 500 !important;
-@templateCardHeaderLineHeight: 1.3em !important;
+@templateCardHeaderFontSize: 1em;
+@templateCardHeaderFontWeight: 500;
+@templateCardHeaderLineHeight: 1.3em;
 @templateCardDescriptionFontSize: 0.8em;
 @templateCardDescriptionHeight: 3.5em;
 @templateCardHeaderMaxWidth: 100%;

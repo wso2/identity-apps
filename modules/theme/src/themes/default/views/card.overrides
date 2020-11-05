@@ -347,79 +347,81 @@
              Template Card Variation
 *********************************************/
 
-.ui.card {
-    &.template-card {
-        width: @templateCardDefaultWidth;
-        transition: @templateCardTransition;
-        border: @templateCardBorder;
-        box-shadow: none;
-
-        &:hover {
-            transform: none;
-            text-decoration: none;
-            cursor: pointer;
-            box-shadow: @templateCardHoverBoxShadow;
-        }
-        &.inline {
-            display: inline-block;
-            margin-right: @templateCardRightSpacing;
-        }
-        &.selected {
-            border-bottom-width: @templateCardBorderBottomWidth;
-            border-bottom-color: @templateCardSelectedStateBorderBottomColor;
-        }
-        &.disabled {
-            cursor: not-allowed;
-            filter: grayscale(100%);
-        }
-        .card-image-container {
-        }
-        .card-text-container {
-            padding: @templateCardTextContainerPadding;
-            border-top: none;
-
-            .header {
-                font-size: @templateCardHeaderFontSize;
-                font-weight: @templateCardHeaderFontWeight;
-                line-height: @templateCardHeaderLineHeight;
-                max-width: @templateCardHeaderMaxWidth;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
+.ui.cards {
+    .ui.card {
+        &.template-card {
+            width: @templateCardDefaultWidth;
+            transition: @templateCardTransition;
+            border: @templateCardBorder;
+            box-shadow: none;
+    
+            &:hover {
+                transform: none;
+                text-decoration: none;
+                cursor: pointer;
+                box-shadow: @templateCardHoverBoxShadow;
             }
-            .description {
-                font-size: @templateCardDescriptionFontSize;
-                max-width: @templateCardDescriptionMaxWidth;
-                min-height: @templateCardDescriptionMinHeight;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                height: @templateCardDescriptionHeight;
+            &.inline {
+                display: inline-block;
+                margin-right: @templateCardRightSpacing;
             }
-            .tags-container {
-                margin: 8px 0;
-
-                .title {
-                    font-size: @templateCardTagTitleFontSize;
-                    color: @lightFontColor;
-                    margin-bottom: 5px;
+            &.selected {
+                border-bottom-width: @templateCardBorderBottomWidth;
+                border-bottom-color: @templateCardSelectedStateBorderBottomColor;
+            }
+            &.disabled {
+                cursor: not-allowed;
+                filter: grayscale(100%);
+            }
+            .card-image-container {
+            }
+            .card-text-container {
+                padding: @templateCardTextContainerPadding;
+                border-top: none;
+    
+                .header {
+                    font-size: @templateCardHeaderFontSize;
+                    font-weight: @templateCardHeaderFontWeight;
+                    line-height: @templateCardHeaderLineHeight;
+                    max-width: @templateCardHeaderMaxWidth;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
                 }
-                
-                .tags {
-                    .tag-icon {
-                        color: @templateCardTagIconColor;
+                .description {
+                    font-size: @templateCardDescriptionFontSize;
+                    max-width: @templateCardDescriptionMaxWidth;
+                    min-height: @templateCardDescriptionMinHeight;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    height: @templateCardDescriptionHeight;
+                }
+                .tags-container {
+                    margin: 8px 0;
+    
+                    .title {
+                        font-size: @templateCardTagTitleFontSize;
+                        color: @lightFontColor;
+                        margin-bottom: 5px;
                     }
                     
-                    .tag {
-                        &.default {
-                            font-size: @templateCardTextTagFontSize;
-                            color: @templateCardTextTagColor;
+                    .tags {
+                        .tag-icon {
+                            color: @templateCardTagIconColor;
                         }
                         
-                        &:not(:first-child) {
-                            margin: @templateCardTextTagMargin;
+                        .tag {
+                            &.default {
+                                font-size: @templateCardTextTagFontSize;
+                                color: @templateCardTextTagColor;
+                            }
+                            
+                            &:not(:first-child) {
+                                margin: @templateCardTextTagMargin;
+                            }
                         }
                     }
                 }
