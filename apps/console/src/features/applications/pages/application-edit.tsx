@@ -25,7 +25,8 @@ import {
     AppAvatar,
     HelpPanelLayout,
     HelpPanelTabInterface,
-    PageLayout
+    PageLayout,
+    LabelWithPopup
 } from "@wso2is/react-components";
 import get from "lodash/get";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -53,6 +54,8 @@ import { ApplicationManagementConstants } from "../constants";
 import {
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
+    State,
+    SupportedAuthProtocolTypes,
     emptyApplication
 } from "../models";
 import { ApplicationManagementUtils } from "../utils";
@@ -124,6 +127,8 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
     const [ tabsActiveIndex, setTabsActiveIndex ] = useState<number>(0);
     const [ isExtensionsAvailable, setIsExtensionsAvailable ] = useState<boolean>(false);
     const [ defaultActiveIndex, setDefaultActiveIndex ] = useState<number>(0);
+    const [ inboundProtocolList, setInboundProtocolList ] = useState<string[]>(undefined);
+    const [ inboundProtocolConfigs, setInboundProtocolConfigs ] = useState<object>(undefined);
 
     /**
      * Fetch the application details on initial component load.
@@ -726,6 +731,53 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         }*/
     ];
 
+    /**
+     * Resolves the application status label.
+     * @return {ReactElement}
+     */
+    const resolveApplicationStatusLabel = (): ReactElement => {
+
+        if (!inboundProtocolList || !inboundProtocolConfigs) {
+            return null;
+        }
+
+        if (inboundProtocolList.length === 0) {
+            
+            return (
+                <LabelWithPopup
+                    popupHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.header") }
+                    popupSubHeader={ t("console:develop.features.applications.popups.appStatus.notConfigured.content") }
+                    labelColor="yellow"
+                />
+            );
+        }
+
+        if (inboundProtocolList.length === 1
+            && inboundProtocolList.includes(SupportedAuthProtocolTypes.OIDC)
+            && inboundProtocolConfigs
+            && inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ]) {
+
+            if (inboundProtocolConfigs[ SupportedAuthProtocolTypes.OIDC ].state === State.REVOKED) {
+
+                return (
+                    <LabelWithPopup
+                        popupHeader={ t("console:develop.features.applications.popups.appStatus.revoked.header") }
+                        popupSubHeader={ t("console:develop.features.applications.popups.appStatus.revoked.content") }
+                        labelColor="grey"
+                    />
+                );
+            }
+        }
+
+        return (
+            <LabelWithPopup
+                popupHeader={ t("console:develop.features.applications.popups.appStatus.active.header") }
+                popupSubHeader={ t("console:develop.features.applications.popups.appStatus.active.content") }
+                labelColor="green"
+            />
+        );
+    };
+
     return (
         <HelpPanelLayout
             activeIndex={ tabsActiveIndex }
@@ -746,7 +798,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         >
             <PageLayout
                 isLoading={ isApplicationRequestLoading }
-                title={ application.name }
+                title={ (
+                    <>
+                        <span>{ application.name }</span>
+                        { resolveApplicationStatusLabel() }
+                    </>
+                ) }
                 contentTopMargin={ true }
                 description={ (
                     <div className="with-label ellipsis">
@@ -792,6 +849,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     data-testid={ testId }
                     isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                     urlSearchParams={ urlSearchParams }
+                    getConfiguredInboundProtocolsList={ (list: string[]) => {
+                        setInboundProtocolList(list)
+                    } }
+                    getConfiguredInboundProtocolConfigs={ (configs: object) => {
+                        setInboundProtocolConfigs(configs)
+                    } }
                 />
             </PageLayout>
         </HelpPanelLayout>

@@ -62,6 +62,14 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      */
     defaultActiveIndex?: number;
     /**
+     * Used to the configured inbound protocols list from the parent component.
+     */
+    getConfiguredInboundProtocolsList?: (list: string[]) => void;
+    /**
+     * Used to the configured inbound protocol configs from the parent component.
+     */
+    getConfiguredInboundProtocolConfigs?: (configs: object) => void;
+    /**
      * Is the data still loading.
      */
     isLoading?: boolean;
@@ -103,6 +111,8 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         defaultActiveIndex,
         featureConfig,
         isLoading,
+        getConfiguredInboundProtocolsList,
+        getConfiguredInboundProtocolConfigs,
         onDelete,
         onUpdate,
         template,
@@ -297,11 +307,15 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     setInboundProtocolList(selectedProtocolList);
                     setInboundProtocolConfig(protocolConfigs);
                     setIsInboundProtocolConfigRequestLoading(false);
+                    getConfiguredInboundProtocolsList(selectedProtocolList);
+                    getConfiguredInboundProtocolConfigs(protocolConfigs);
                 });
         } else {
             setInboundProtocolList([]);
             setInboundProtocolConfig({});
             setIsInboundProtocolConfigRequestLoading(false);
+            getConfiguredInboundProtocolsList([]);
+            getConfiguredInboundProtocolConfigs({});
         }
     };
 
@@ -641,5 +655,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
  * Default props for the application edit component.
  */
 EditApplication.defaultProps = {
-    "data-testid": "edit-application"
+    "data-testid": "edit-application",
+    getConfiguredInboundProtocolConfigs: () => null,
+    getConfiguredInboundProtocolsList: () => null
 };

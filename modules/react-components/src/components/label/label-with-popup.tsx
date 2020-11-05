@@ -16,10 +16,11 @@
  * under the License.
  */
 
+import classNames from "classnames";
 import React, { FunctionComponent, ReactElement, ReactNode } from "react";
-import { Divider, Grid, Label, Popup, SemanticCOLORS } from "semantic-ui-react";
+import { Divider, Grid, Label, LabelProps, Popup, PopupProps } from "semantic-ui-react";
 
-export interface LabelWithPopupPropsInterface {
+export interface LabelWithPopupPropsInterface extends LabelProps {
     /**
      * Header of the popup
      */
@@ -45,9 +46,13 @@ export interface LabelWithPopupPropsInterface {
      */
     popupFooterLeftContent?: ReactNode | string;
     /**
+     * Other props for the popup.
+     */
+    popupOptions?: PopupProps;
+    /**
      * Color of the circular label.
      */
-    labelColor: SemanticCOLORS;
+    labelColor: LabelProps["color"];
 }
 
 /**
@@ -62,65 +67,96 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
 ): ReactElement => {
 
     const {
+        className,
         popupHeader,
         popupSubHeader,
         popupContent,
         popupFooterRightActions,
-        popupFooterLeftActions,
         popupFooterLeftContent,
-        labelColor
+        popupOptions,
+        labelColor,
+        ...rest
     } = props;
+
+    const classes = classNames("label-with-popup", className);
+
     return (
         <Popup
-            size="small"
             wide
-            className="cors-details-popup"
-            basic
+            size="small"
+            className={ classes }
             position="right center"
-            on="click"
             trigger={
                 <Label
-                    className="micro spaced-right"
                     circular
-                    color={ labelColor }
                     size="mini"
+                    className="micro spaced-right"
+                    color={ labelColor }
+                    { ...rest }
                 />
             }
+            on="hover"
+            { ...popupOptions }
         >
             <Popup.Content>
                 <Grid>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <Popup.Header>
-                                <strong>{ popupHeader }</strong>
-                            </Popup.Header>
-                            { popupSubHeader }
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                        <Grid.Column>
-                            { popupContent }
-                        </Grid.Column>
-                    </Grid.Row>
-                    <Divider/>
-                    <Grid.Row>
-                        {
-                            popupFooterLeftContent && (
-                                <Grid.Column verticalAlign="middle" floated="left" width={ 10 }>
-                                    { popupFooterLeftContent }
+                    {
+                        (popupHeader || popupSubHeader) && (
+                            <Grid.Row>
+                                <Grid.Column>
+                                    {
+                                        popupHeader && (
+                                            <Popup.Header>
+                                                <strong>{ popupHeader }</strong>
+                                            </Popup.Header>
+                                        )
+                                    }
+                                    { popupSubHeader }
                                 </Grid.Column>
-                            )
-                        }
-                        {
-                            popupFooterRightActions && (
-                                <Grid.Column verticalAlign="middle" floated="right" width={ 6 }>
-                                    { popupFooterRightActions }
+                            </Grid.Row>
+                        )
+                    }
+                    {
+                        popupContent && (
+                            <Grid.Row>
+                                <Grid.Column>
+                                    { popupContent }
                                 </Grid.Column>
-                            )
-                        }
-                    </Grid.Row>
+                            </Grid.Row>
+                        )
+                    }
+                    {
+                        (popupFooterLeftContent || popupFooterRightActions) && (
+                           <>
+                               <Divider/>
+                               <Grid.Row>
+                                   {
+                                       popupFooterLeftContent && (
+                                           <Grid.Column verticalAlign="middle" floated="left" width={ 10 }>
+                                               { popupFooterLeftContent }
+                                           </Grid.Column>
+                                       )
+                                   }
+                                   {
+                                       popupFooterRightActions && (
+                                           <Grid.Column verticalAlign="middle" floated="right" width={ 6 }>
+                                               { popupFooterRightActions }
+                                           </Grid.Column>
+                                       )
+                                   }
+                               </Grid.Row>
+                           </>
+                       )
+                    }
                 </Grid>
             </Popup.Content>
         </Popup>
     );
+};
+
+/**
+ * Default proptypes for component.
+ */
+LabelWithPopup.defaultProps = {
+    "data-testid": "label-with-popup"
 };

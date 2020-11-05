@@ -179,3 +179,12 @@ export interface Message {
     heading: string;
     content: string;
 }
+
+/**
+ * Interface for UI Popup.
+ */
+export interface Popup {
+    content: string;
+    header: string;
+    subHeader: string;
+}

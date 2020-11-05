@@ -145,6 +145,26 @@ export const console: ConsoleNS = {
                             }
                         }
                     }
+                },
+                popups: {
+                    appStatus: {
+                        active: {
+                            content: "The application is active.",
+                            header: "Active",
+                            subHeader: ""
+                        },
+                        notConfigured: {
+                            content: "The application is not configured. Please configure access configurations.",
+                            header: "Not Configured",
+                            subHeader: ""
+                        },
+                        revoked: {
+                            content: "The application is revoked. Please reactivate the application in access " +
+                                "configurations.",
+                            header: "Revoked",
+                            subHeader: ""
+                        }
+                    }
                 }
             }
         }
