@@ -171,6 +171,22 @@
     <% } %>
 
     <script>
+        var $registerForm = $("#register");
+
+        // Reloads the page if the page is loaded by going back in history.
+        // Fixes issues with Firefox.
+        window.addEventListener( "pageshow", function ( event ) {
+            var historyTraversal = event.persisted ||
+                                ( typeof window.performance != "undefined" &&
+                                    window.performance.navigation.type === 2 );
+
+            if ( historyTraversal ) {
+                if($registerForm){
+                    $registerForm.data("submitted", false);
+                }
+            }
+        });
+
         function goBack() {
             window.history.back();
         }
@@ -204,7 +220,7 @@
                 return this;
             };
 
-            $('#register').preventDoubleSubmission();
+            $registerForm.preventDoubleSubmission();
         });
     </script>
 
