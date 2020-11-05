@@ -381,7 +381,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     <Field
                                         type="text"
                                         name="userName"
-                                        label={ "Guthub Username" }
+                                        label={ "Github Username" }
                                         placeholder={ "Ex: John Doe" }
                                         required={ false }
                                         disabled={ remoteRepoConfig ? true : false }
