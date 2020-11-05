@@ -731,7 +731,7 @@
                 %>
 
                 var data = $("#register").serializeArray();
-                var filteredData = data.filter(function (row) {
+                var filteredData = data.filter(function(row) {
                     return !(row.name === "password" || row.name === "password2");
                 });
 
