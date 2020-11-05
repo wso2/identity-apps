@@ -792,6 +792,12 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     data-testid={ testId }
                     isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                     urlSearchParams={ urlSearchParams }
+                    getConfiguredInboundProtocolsList={ (list: string[]) => {
+                        setInboundProtocolList(list)
+                    } }
+                    getConfiguredInboundProtocolConfigs={ (configs: object) => {
+                        setInboundProtocolConfigs(configs)
+                    } }
                 />
             </PageLayout>
         </HelpPanelLayout>
