@@ -247,7 +247,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
      * 
      * @return {ReactElement}
      */
-    const getRemoteFecthForm = (): ReactElement => {
+    const getRemoteFetchForm = (): ReactElement => {
         return (
             <Forms
                 data-testid={ `${ testId }-config-form` }
@@ -517,7 +517,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                         <Divider />
                                         { 
                                             ( showFetchForm || remoteRepoConfigDetail ) &&
-                                                getRemoteFecthForm()
+                                                getRemoteFetchForm()
                                         }
                                         {
                                             !remoteRepoConfigDetail && !showFetchForm &&
