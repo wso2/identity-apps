@@ -605,7 +605,8 @@
             %>
                 var registrationData = sessionStorage.getItem(registrationDataKey);
                 sessionStorage.removeItem(registrationDataKey);
-                if(registrationData){
+
+                if (registrationData){
                     var fields = JSON.parse(registrationData);
 
                     if (fields.length > 0) {
