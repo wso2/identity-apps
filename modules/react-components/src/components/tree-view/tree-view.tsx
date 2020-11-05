@@ -53,6 +53,7 @@ export interface TreeViewProps extends TestableComponentInterface {
     onUpdateCb?: (updatedData: any, depth: number) => void;
     transitionEnterTimeout?: number;
     transitionExitTimeout?: number;
+    isReadOnly?: boolean;
 }
 
 /**
@@ -77,6 +78,7 @@ interface TreeNode {
 export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps): ReactElement => {
 
     const {
+        isReadOnly,
         data,
         enableTransition,
         [ "data-testid" ]: testId
@@ -180,13 +182,14 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      * @param node Tree node to print the check box
      */
     const printCheckbox = (node: TreeNode) => {
-        const { isCheckable, keywordLabel, depth } = props;
+        const { isCheckable, keywordLabel, depth, isReadOnly } = props;
         const nodeText = get(node, keywordLabel, "");
 
         if (isCheckable(node, depth)) {
             return (
                 <label htmlFor={ node.id } className="tree-label">
                     <input
+                        disabled={ isReadOnly }
                         type="checkbox"
                         name={ node[keywordLabel] }
                         className="invisible"
@@ -196,7 +199,8 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
                         checked={ !!node.isChecked }
                         id={ node.id }
                     />
-                    <div className={ "checkbox " + (node.isPartiallyChecked ? "indeterminate" : "") }>
+                    <div className={ "checkbox " + (isReadOnly ? "disabled " : "") + (node.isPartiallyChecked ?
+                        "indeterminate" : "") }>
                         <svg width="17px" height="17px" viewBox="0 0 20 20">
                             <path d="M3,1 L17,1 L17,1 C18.1045695,1 19,1.8954305 19,3 L19,17 L19,17 C19,
                                 18.1045695 18.1045695,19 17,19 L3,19 L3,19 C1.8954305,19 1,18.1045695 1,17 L1,3 L1,
@@ -326,6 +330,7 @@ export const TreeView: FunctionComponent<TreeViewProps> = (props: TreeViewProps)
      * @return {React.ReactElement}
      */
     const printNodes = (nodeArray: TreeNode[]): ReactElement => {
+        const { isReadOnly } = props;
         const {
             keywordKey,
             transitionEnterTimeout,

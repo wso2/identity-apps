@@ -2482,6 +2482,7 @@ export const adminPortal: AdminPortalNS = {
                     },
                     viewPermissionModal: {
                         backButton: "Back to list",
+                        editButton: "Edit Permissions",
                         heading: "Permissions for {{role}}"
                     }
                 }
