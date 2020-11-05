@@ -34,6 +34,7 @@ export * from "./header";
 export * from "./help-panel";
 export * from "./icon";
 export * from "./input";
+export * from "./label";
 export * from "./language-switcher";
 export * from "./list";
 export * from "./loader";
