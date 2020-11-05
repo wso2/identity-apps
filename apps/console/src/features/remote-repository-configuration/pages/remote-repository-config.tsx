@@ -33,7 +33,6 @@ import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Divider, Form, Grid, GridColumn, GridRow, Header, Icon, Radio, Segment } from "semantic-ui-react";
 import { GovernanceConnectorsIllustration } from "../../../features/server-configurations";
-import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
 import { 
     createRemoteRepoConfig, 
     deleteRemoteRepoConfig, 
@@ -41,6 +40,7 @@ import {
     getRemoteRepoConfigList,
     updateRemoteRepoConfig 
 } from "../api";
+import { EmptyPlaceholderIllustrations } from "../configs";
 import { RemoteFetchConstants } from "../constants/remote-fetch-constants";
 import {
     InterfaceRemoteConfigDetails, 
@@ -50,7 +50,7 @@ import {
     InterfaceRemoteRepoListResponse 
 } from "../models";
 
-type RemoteConfigDetailsInterface = TestableComponentInterface
+type RemoteConfigDetailsInterface = TestableComponentInterface;
 
 /**
  * Component to handle Remote Repository Configuration.
@@ -517,7 +517,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
                                                     "Currently there are no repositories configured. You can" +
                                                     " add a new configuration." 
                                                 ] }
-                                                image={ CodeForkIcon }
+                                                image={ EmptyPlaceholderIllustrations.add }
                                                 imageSize="tiny"
                                             />
                                         }
