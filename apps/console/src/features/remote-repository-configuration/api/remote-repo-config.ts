@@ -17,9 +17,11 @@
  */
 
 import { IdentityClient } from "@asgardio/oidc-js";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
+import { RemoteFetchConstants } from "../constants/remote-fetch-constants";
 import {
     InterfaceConfigDetails,
     InterfaceEditDetails,
@@ -111,6 +113,7 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
 }
 
 export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetails): Promise<AxiosResponse> => {
+
     const requestConfig: AxiosRequestConfig = {
         data: configObj,
         headers: {
@@ -121,14 +124,31 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteFetchConfig
     };
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
+            if (response.status !== 201) {
+                throw new IdentityAppsApiException(
+                    RemoteFetchConstants.CREATE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.CREATE_REPO_CONFIG_CREATE_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
-}
+};
 
 export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetails): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {

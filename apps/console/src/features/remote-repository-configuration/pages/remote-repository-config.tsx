@@ -162,11 +162,17 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
         createConfiguration(configs);
     };
 
+    /**
+     * Creates a repo configuration.
+     * @param {InterfaceRemoteRepoConfigDetails} templateTypeName - Template type name.
+     */
     const createConfiguration = (templateTypeName: InterfaceRemoteRepoConfigDetails): void => {
-        createRemoteRepoConfig(templateTypeName).then((response: AxiosResponse) => {
-            if (response.status === 201) {
+
+        createRemoteRepoConfig(templateTypeName)
+            .then(() => {
                 setIsCreate(true);
                 setShowFetchForm(false);
+
                 handleAlerts({
                     description: t(
                         "devPortal:components.remoteConfig.notifications.createConfig.success.description"
@@ -176,18 +182,18 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsInterface> = (
                         "devPortal:components.remoteConfig.notifications.createConfig.success.message"
                     )
                 });
-            }
-        }).catch(() => {
-            handleAlerts({
-                description: t(
-                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.description"
-                ),
-                level: AlertLevels.ERROR,
-                message: t(
-                    "devPortal:components.remoteConfig.notifications.createConfig.genericError.message"
-                )
-            });
-        })
+            })
+            .catch(() => {
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.remoteConfig.notifications.createConfig.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "devPortal:components.remoteConfig.notifications.createConfig.genericError.message"
+                    )
+                });
+            })
     };
 
     /**

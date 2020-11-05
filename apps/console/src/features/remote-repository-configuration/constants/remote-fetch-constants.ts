@@ -39,4 +39,8 @@ export class RemoteFetchConstants {
 
     public static readonly REMOTE_REPOSITORY_TYPE = "GIT";
 
+    // API errors
+    public static readonly CREATE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code creating a remote repo config.";
+    public static readonly CREATE_REPO_CONFIG_CREATE_ERROR: string = "Error occured while creating a repo config.";
 }
