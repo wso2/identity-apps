@@ -608,7 +608,7 @@
                 if(registrationData){
                     var fields = JSON.parse(registrationData);
 
-                    if(fields.length > 0) {
+                    if (fields.length > 0) {
                         fields.forEach(function(field) {
                             document.getElementsByName(field.name)[0].value = field.value;
                         })
