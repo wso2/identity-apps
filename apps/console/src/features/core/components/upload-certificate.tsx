@@ -19,6 +19,7 @@
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
 import { KJUR, X509 } from "jsrsasign";
+import * as forge from "node-forge";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
@@ -330,17 +331,36 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      */
     const checkCertType = (file: File): Promise<string> => {
         return file.arrayBuffer().then((value: ArrayBuffer) => {
-            const hex = Array.prototype.map
-                .call(new Uint8Array(value), x => ("00" + x.toString(16)).slice(-2)).join("");
+            try {
+                const hex = Array.prototype.map
+                    .call(new Uint8Array(value), x => ("00" + x.toString(16)).slice(-2)).join("");
+                const cert = new X509();
+                cert.readCertHex(hex);
+                const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
+                const pem = certificate.getPEM();
+                setForgeCertificate(cert);
+                return Promise.resolve(stripPem(pem));
+            } catch {
+                const byteString = forge.util.createBuffer(value);
+                try {
+                    const asn1 = forge.asn1.fromDer(byteString);
+                    const certificate = forge.pki.certificateFromAsn1(asn1);
+                    const pem = forge.pki.certificateToPem(certificate);
 
-            const cert = new X509();
-            cert.readCertHex(hex);
-            const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
-            const pem = certificate.getPEM();
+                    const cert = new X509();
+                    cert.readCertPEM(pem);
+                    setForgeCertificate(cert);
 
-            setForgeCertificate(cert);
-            return Promise.resolve(stripPem(pem));
-
+                    return Promise.resolve(stripPem(pem));
+                } catch {
+                    const cert = new X509();
+                    cert.readCertPEM(byteString.data);
+                    const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
+                    const pem = certificate.getPEM();
+                    setForgeCertificate(cert);
+                    return Promise.resolve(stripPem(pem));
+                }
+            }
         }).catch((error) => {
             return Promise.reject(error);
         });
