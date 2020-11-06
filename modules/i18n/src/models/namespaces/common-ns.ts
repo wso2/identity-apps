@@ -139,4 +139,6 @@ export interface CommonNS {
     weak: string;
     tooShort: string;
     okay: string;
+    enabled: string;
+    disabled: string;
 }
