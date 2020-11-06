@@ -18,7 +18,7 @@
 
 import { CertificateManagementConstants } from "@wso2is/core/constants";
 import { Certificate, TestableComponentInterface } from "@wso2is/core/models";
-import * as forge from "node-forge";
+import { KJUR, X509 } from "jsrsasign";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Divider, Form, Icon, Message, Segment, Tab, TextArea } from "semantic-ui-react";
@@ -52,7 +52,7 @@ interface PemCertificate {
     /**
      * The forge certificate object.
      */
-    certificate: forge.pki.Certificate;
+    certificate: X509;
 }
 
 /**
@@ -68,7 +68,7 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
         pem: string,
         fileDecoded: string,
         file: File,
-        forgeCertificate: forge.pki.Certificate
+        forgeCertificate: X509
     ) => void;
     /**
      * Triggers submit.
@@ -93,7 +93,7 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
     /**
      * The forge certificate object.
      */
-    forgeCertificateData: forge.pki.Certificate;
+    forgeCertificateData: X509;
     /**
      * Hides the alias input.
      */
@@ -101,7 +101,7 @@ interface UploadCertificatePropsInterface extends TestableComponentInterface {
 }
 
 /**
- * This is teh first step of the import certificate wizard.
+ * This is the first step of the import certificate wizard.
  * TODO: Move this to `@wso2is/react-components`.
  *
  * @param {UploadCertificatePropsInterface} props
@@ -134,7 +134,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     const [ dragOver, setDragOver ] = useState(false);
     const [ activeIndex, setActiveIndex ] = useState(0);
     const [ dark, setDark ] = useState(false);
-    const [ forgeCertificate, setForgeCertificate ] = useState<forge.pki.Certificate>(null);
+    const [ forgeCertificate, setForgeCertificate ] = useState<X509>(null);
 
     const fileUpload = useRef(null);
     const init = useRef(true);
@@ -245,28 +245,6 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     }, []);
 
     /**
-     * This takes in a `.cer` file and converts it to PEM.
-     *
-     * @param {File} file .cer `File`.
-     *
-     * @returns {Promise<string>} The PEM encoded string.
-     */
-    const convertFromCerToPem = (file: File): Promise<string> => {
-        return file.arrayBuffer().then((value: ArrayBuffer) => {
-            const byteString = forge.util.createBuffer(value);
-            const asn1 = forge.asn1.fromDer(byteString);
-            const certificate = forge.pki.certificateFromAsn1(asn1);
-            const pem = forge.pki.certificateToPem(certificate);
-            setForgeCertificate(certificate);
-
-            return stripPem(pem);
-        }).catch(() => {
-            setFileError(true);
-            return "";
-        });
-    };
-
-    /**
      * This strips **BEGIN CERTIFICATE** and **END CERTIFICATE** parts from
      * the PEM encoded string.
      *
@@ -329,8 +307,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
     const convertFromPem = (pem: string): PemCertificate => {
         const pemValue = enclosePem(pem);
         try {
-            const certificateForge = forge.pki
-                .certificateFromPem(pemValue);
+            const certificateForge = new X509().readCertFromPEM(pemValue);
 
             setForgeCertificate(certificateForge);
 
@@ -352,26 +329,21 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      * @returns {Promise<string>} A promise that resolves to the content of the file.
      */
     const checkCertType = (file: File): Promise<string> => {
-        const extension = file.name.split(".").pop();
-        if (extension === "cer") {
-            return convertFromCerToPem(file);
-        } else {
-            return file.arrayBuffer().then((value: ArrayBuffer) => {
-                const byteString = forge.util.createBuffer(value);
-                try {
-                    const asn1 = forge.asn1.fromDer(byteString);
-                    const certificate = forge.pki.certificateFromAsn1(asn1);
-                    setForgeCertificate(certificate);
+        return file.arrayBuffer().then((value: ArrayBuffer) => {
+            const hex = Array.prototype.map
+                .call(new Uint8Array(value), x => ("00" + x.toString(16)).slice(-2)).join("");
 
-                    return stripPem(forge.pki.certificateToPem(certificate));
-                } catch {
-                    return convertFromPem(byteString?.data)?.value;
-                }
+            const cert = new X509();
+            cert.readCertHex(hex);
+            const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
+            const pem = certificate.getPEM();
 
-            }).catch((error) => {
-                return Promise.reject(error);
-            })
-        }
+            setForgeCertificate(cert);
+            return Promise.resolve(stripPem(pem));
+
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
     };
 
     /**
