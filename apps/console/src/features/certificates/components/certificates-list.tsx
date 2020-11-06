@@ -386,14 +386,14 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
 
         const displayCertificate: DisplayCertificate = {
             alias: certificate.alias,
-            issuerDN: cert.getIssuerString().split("/")
+            issuerDN: cert.getIssuerString().split("/").slice(1)
                 .map(attribute => {
                     return {
                         [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
                     };
                 }),
             serialNumber: cert.getSerialNumberHex(),
-            subjectDN: cert.getSubjectString().split("/")
+            subjectDN: cert.getSubjectString().split("/").slice(1)
                 .map(attribute => {
                     return {
                         [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]

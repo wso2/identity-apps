@@ -158,14 +158,14 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const decodeCertificate = (data: Certificate, cert: X509): void => {
         const displayCertificate: DisplayCertificate = {
             alias: data.alias,
-            issuerDN: cert.getIssuerString().split("/")
+            issuerDN: cert.getIssuerString().split("/").slice(1)
                 .map(attribute => {
                     return {
                         [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
                     };
                 }),
             serialNumber: cert.getSerialNumberHex(),
-            subjectDN: cert.getSubjectString().split("/")
+            subjectDN: cert.getSubjectString().split("/").slice(1)
                 .map(attribute => {
                     return {
                         [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
