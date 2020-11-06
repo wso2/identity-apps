@@ -54,6 +54,7 @@ import {
     retrievePublicCertificate
 } from "../api";
 import { CertificateIllustrations } from "../configs";
+import { X509, hexToArrayBuffer } from "jsrsasign";
 
 /**
  * @constant
@@ -383,10 +384,11 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
 
         const pemCert = pemValue?.join("\n");
 
-        const certificateForge = forge.pki
-            .certificateFromPem(pemCert);
+        const cert = new X509();
 
-        return certificateForge;
+        cert.readCertPEM(pemCert);
+
+        return cert;
     };
 
     /**
@@ -396,27 +398,26 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
      * @param {string} pem The PEM encoded certificate content.
      */
     const displayCertificate = (certificate: Certificate, pem: string): void => {
-
-        const certificateForge = decodeCertificate(pem);
+        const cert: X509 = decodeCertificate(pem);
 
         const displayCertificate: DisplayCertificate = {
             alias: certificate.alias,
-            issuerDN: certificateForge.issuer.attributes
+            issuerDN: cert.getIssuerString().split("/")
                 .map(attribute => {
                     return {
-                        [ attribute.shortName ]: attribute.value
-                    }
+                        [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
+                    };
                 }),
-            serialNumber: certificateForge.serialNumber,
-            subjectDN: certificateForge.subject.attributes
+            serialNumber: cert.getSerialNumberHex(),
+            subjectDN: cert.getSubjectString().split("/")
                 .map(attribute => {
                     return {
-                        [ attribute.shortName ]: attribute.value
-                    }
+                        [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
+                    };
                 }),
-            validFrom: certificateForge.validity.notBefore,
-            validTill: certificateForge.validity.notAfter,
-            version: certificateForge.version
+            validFrom: cert.getNotBefore(),
+            validTill: cert.getNotAfter(),
+            version: cert.getVersion()
         };
 
         setCertificateDisplay(displayCertificate);
