@@ -151,6 +151,13 @@ export class ApplicationManagementConstants {
     ];
 
     /**
+     * Set of grant types to hide from the UI.
+     * @constant
+     * @type {string[]}
+     */
+    public static readonly HIDDEN_GRANT_TYPES: string[] = [ "account_switch" ];
+
+    /**
      * Key for the SPA template.
      * @constant
      * @type {string}

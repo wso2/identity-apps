@@ -27,7 +27,9 @@ import { Trans, useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Form, Grid, Label, Message } from "semantic-ui-react";
 import { AppState } from "../../../core/store";
+import { ApplicationManagementConstants } from "../../constants";
 import {
+    GrantTypeInterface,
     GrantTypeMetaDataInterface,
     MetadataPropertyInterface,
     OAuth2PKCEConfigurationInterface,
@@ -207,12 +209,20 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @return {any[]}
      */
     const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
+
         const allowedList = [];
+
         if (metadataProp) {
-            metadataProp.options.map((grant) => {
+            metadataProp.options.map((grant: GrantTypeInterface) => {
+                // Hides the grant types specified in the array.
+                // TODO: Remove this once the specified grant types such as `account-switch` are handled properly.
+                // See https://github.com/wso2/product-is/issues/8806.
+                if (ApplicationManagementConstants.HIDDEN_GRANT_TYPES.includes(grant.name)) {
+                    return;
+                }
+
                 allowedList.push({ label: grant.displayName, value: grant.name });
             });
-
         }
 
         return allowedList;
@@ -306,14 +316,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         };
 
         // If the app is newly created do not add `clientId` & `clientSecret`.
-        if (!initialValues?.clientId || !values.get("clientSecret")) {
+        if (!initialValues?.clientId || !initialValues?.clientSecret) {
             return formValues;
         }
 
         return {
             ...formValues,
             clientId: initialValues?.clientId,
-            clientSecret: values.get("clientSecret")
+            clientSecret: initialValues?.clientSecret
         };
     };
 
