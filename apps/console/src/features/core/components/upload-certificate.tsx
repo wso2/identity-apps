@@ -316,9 +316,21 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                 certificate: certificateForge,
                 value: stripPem(pem)
             };
-        } catch (error) {
-            setFileError(true);
-            return null;
+        } catch {
+            try {
+                const certificate = forge.pki.certificateFromPem(pemValue);
+                const pem = forge.pki.certificateToPem(certificate);
+                const cert = new X509();
+                cert.readCertPEM(pem);
+
+                return {
+                    certificate: cert,
+                    value: stripPem(pem)
+                };
+            } catch (error) {
+                setFileError(true);
+                return null;
+            }
         }
     };
 
@@ -346,19 +358,28 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
                     const asn1 = forge.asn1.fromDer(byteString);
                     const certificate = forge.pki.certificateFromAsn1(asn1);
                     const pem = forge.pki.certificateToPem(certificate);
-
                     const cert = new X509();
                     cert.readCertPEM(pem);
                     setForgeCertificate(cert);
 
                     return Promise.resolve(stripPem(pem));
                 } catch {
-                    const cert = new X509();
-                    cert.readCertPEM(byteString.data);
-                    const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
-                    const pem = certificate.getPEM();
-                    setForgeCertificate(cert);
-                    return Promise.resolve(stripPem(pem));
+                    try {
+                        const cert = new X509();
+                        cert.readCertPEM(byteString.data);
+                        const certificate = new KJUR.asn1.x509.Certificate(cert.getParam());
+                        const pem = certificate.getPEM();
+                        setForgeCertificate(cert);
+                        return Promise.resolve(stripPem(pem));
+                    } catch {
+                        const certificate = forge.pki.certificateFromPem(byteString.data);
+                        const pem = forge.pki.certificateToPem(certificate);
+                        const cert = new X509();
+                        cert.readCertPEM(pem);
+                        setForgeCertificate(cert);
+
+                        return Promise.resolve(stripPem(pem));
+                    }
                 }
             }
         }).catch((error) => {
