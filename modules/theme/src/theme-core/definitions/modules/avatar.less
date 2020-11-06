@@ -24,7 +24,7 @@
 .loadVariables();
 
 /*-------------------------------
-        Avatar Container
+        Avatar Wrapper
 --------------------------------*/
 
 .ui-avatar-wrapper {
@@ -103,6 +103,20 @@
             max-width: max-content;
             left: 0;
         }
+    }
+
+    &.overflow {
+        &-hidden {
+            overflow: hidden;
+        }
+
+        &-auto {
+            overflow: auto;
+        }
+    }
+
+    &.rounded {
+        border-radius: @defaultBorderRadius;
     }
 }
 

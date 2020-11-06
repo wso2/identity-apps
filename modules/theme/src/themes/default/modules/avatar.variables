@@ -26,6 +26,7 @@
 --------------------------------*/
 
 @avatarWrapperDisplayInline: inline-block;
+@avatarWrapperRounded: @defaultBorderRadius;
 
 /*-------------------------------
         Avatar Container

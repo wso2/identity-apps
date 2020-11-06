@@ -97,6 +97,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
      */
     onMouseOver?: (e: MouseEvent) => void;
     /**
+     * Set overflow attribute to the wrapper.
+     */
+    overflow?: "auto" | "hidden";
+    /**
      * Adds padding to the avatar content.
      */
     relaxed?: boolean | "very";
@@ -163,7 +167,9 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         onClick,
         onMouseOver,
         onMouseOut,
+        overflow,
         relaxed,
+        rounded,
         shape,
         size,
         spaced,
@@ -195,12 +201,14 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
             "hoverable": onClick,
             [ `initials-color-${ initialsColor }` ]: initialsColor,
             relaxed,
+            rounded,
             [ `${ size }` ]: size, // Size is used as a class to support the custom size "little"
             [ `spaced-${ spaced }` ]: spaced,
             [ shape ]: shape,
             transparent,
             [ `${ relaxLevel }` ]: relaxLevel,
-            "with-background-image": withBackgroundImage
+            "with-background-image": withBackgroundImage,
+            [ `overflow-${ overflow }` ]: overflow
         }
     );
 
@@ -413,7 +421,6 @@ Avatar.defaultProps = {
     onMouseOut: null,
     onMouseOver: null,
     relaxed: false,
-    rounded: true,
     shape: "circular",
     size: "mini",
     spaced: null,

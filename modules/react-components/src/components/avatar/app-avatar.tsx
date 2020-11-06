@@ -60,7 +60,6 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
         return (
             <Avatar
                 avatar
-                shape="square"
                 image={ image }
                 bordered={ false }
                 initialsColor={ onCard ? "primary" : "white" }
@@ -77,7 +76,6 @@ export const AppAvatar: FunctionComponent<AppAvatarPropsInterface> = (
         <Avatar
             avatar
             bordered
-            shape="square"
             className={ appAvatarClassNames }
             style={ onCard ? {} : { backgroundImage: `url(${ OrangeAppIconBackground })` } }
             name={ name }
@@ -99,5 +97,8 @@ AppAvatar.defaultProps = {
     defaultIcon: CodeIcon,
     image: null,
     name: null,
-    onCard: false
+    onCard: false,
+    overflow: "hidden",
+    rounded: true,
+    shape: "square"
 };
