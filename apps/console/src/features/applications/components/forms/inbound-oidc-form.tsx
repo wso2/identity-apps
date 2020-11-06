@@ -579,6 +579,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 );
                             }
 
+                            if (!URLUtils.isMobileDeepLink(value)) {
+                                return false;
+                            }
+
                             setAllowedOriginsErrorLabel(label);
 
                             return true;
@@ -734,7 +738,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                         listen={ (values) => {
-                            setIsTokenBindingTypeSelected(values.get("bindingType") !== "None")
+                            setIsTokenBindingTypeSelected(values.get("bindingType") !== "None");
                         } }
                     />
                 </Grid.Column>
@@ -1143,7 +1147,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 validation.errorMessages.push((
                                     t("devPortal:components.applications.forms.inboundOIDC.sections" +
                                         ".logoutURLs.fields.back.validations.invalid")
-                                ))
+                                ));
                             }
                         } }
                         value={ initialValues.logout?.backChannelLogoutUrl }

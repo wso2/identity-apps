@@ -876,6 +876,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     );
                                 }
 
+                                if (!URLUtils.isMobileDeepLink(value)) {
+                                    return false;
+                                }
+
                                 setAudiencesErrorLabel(label);
 
                                 return true;
@@ -928,6 +932,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             { t("console:common.validations.unrecognizedURL.description") }
                                         </Label>
                                     );
+                                }
+
+                                if (!URLUtils.isMobileDeepLink(value)) {
+                                    return false;
                                 }
 
                                 setRecipientsErrorLabel(label);
@@ -1385,6 +1393,10 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             { t("console:common.validations.unrecognizedURL.description") }
                                         </Label>
                                     );
+                                }
+
+                                if (!URLUtils.isMobileDeepLink(value)) {
+                                    return false;
                                 }
 
                                 setReturnToURLsErrorLabel(label);
