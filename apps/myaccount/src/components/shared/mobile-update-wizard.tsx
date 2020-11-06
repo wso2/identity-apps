@@ -93,7 +93,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                     value: mobileNumber
                 }
             ],
-            [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {"verifyMobile": true}
+            [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: { "verifyMobile": true }
         };
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
