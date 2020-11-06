@@ -306,14 +306,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         };
 
         // If the app is newly created do not add `clientId` & `clientSecret`.
-        if (!initialValues?.clientId || !values.get("clientSecret")) {
+        if (!initialValues?.clientId || !initialValues?.clientSecret) {
             return formValues;
         }
 
         return {
             ...formValues,
             clientId: initialValues?.clientId,
-            clientSecret: values.get("clientSecret")
+            clientSecret: initialValues?.clientSecret
         };
     };
 
