@@ -134,6 +134,37 @@ export const console: ConsoleNS = {
                                 "Please make sure to copy and save it somewhere safe."
                         }
                     }
+                },
+                forms: {
+                    inboundOIDC: {
+                        messages: {
+                            revokeDisclaimer: {
+                                content: "The application has been revoked. Please regenrate the secret if you wish " +
+                                    "to reactivate the application.",
+                                heading: "Application is Revoked"
+                            }
+                        }
+                    }
+                },
+                popups: {
+                    appStatus: {
+                        active: {
+                            content: "The application is active.",
+                            header: "Active",
+                            subHeader: ""
+                        },
+                        notConfigured: {
+                            content: "The application is not configured. Please configure access configurations.",
+                            header: "Not Configured",
+                            subHeader: ""
+                        },
+                        revoked: {
+                            content: "The application is revoked. Please reactivate the application in access " +
+                                "configurations.",
+                            header: "Revoked",
+                            subHeader: ""
+                        }
+                    }
                 }
             }
         }

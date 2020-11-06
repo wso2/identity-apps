@@ -415,7 +415,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 scopeValidator.current.scrollIntoView(options);
                 break;
         }
-    }
+    };
 
     /**
      * submitURL function.
@@ -426,6 +426,830 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * submitOrigin function.
      */
     let submitOrigin: (callback: (origin?: string) => void) => void;
+
+    /**
+     * Renders the list of main OIDC config fields.
+     * @return {ReactElement}
+     */
+    const renderOIDCConfigFields = (): ReactElement => (
+        <>
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        ref={ grant }
+                        name="grant"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.grant.label")
+                        }
+                        type="checkbox"
+                        required={ true }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.grant" +
+                                ".validations.empty")
+                        }
+                        children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
+                        value={ initialValues.grantTypes }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-grant-type-checkbox-group` }
+                    />
+                    <Hint>
+                        {
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.grant.hint")
+                        }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <div ref={ url }></div>
+            <URLInput
+                isAllowEnabled={ false }
+                tenantDomain={ tenantDomain }
+                allowedOrigins={ allowedOriginList }
+                labelEnabled={ true }
+                urlState={ callBackUrls }
+                setURLState={ setCallBackUrls }
+                labelName={
+                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
+                }
+                required={ true }
+                value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
+                placeholder={
+                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                        ".placeholder")
+                }
+                validationErrorMsg={
+                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                        ".validations.empty")
+                }
+                validation={ (value: string) => {
+                    let label: ReactElement = null;
+
+                    const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
+
+                    if (isHttpUrl) {
+                        label = (
+                            <Label basic color="orange" className="mt-2">
+                                { t("console:common.validations.inSecureURL.description") }
+                            </Label>
+                        );
+                    }
+
+                    if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                        label = (
+                            <Label basic color="orange" className="mt-2">
+                                { t("console:common.validations.unrecognizedURL.description") }
+                            </Label>
+                        );
+                    }
+
+                    if (!URLUtils.isMobileDeepLink(value)) {
+                        return false;
+                    }
+
+                    setCallbackURLsErrorLabel(label);
+
+                    return true;
+                } }
+                showError={ showURLError }
+                setShowError={ setShowURLError }
+                hint={
+                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                }
+                readOnly={ readOnly }
+                addURLTooltip={ t("common:addURL") }
+                duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                data-testid={ `${ testId }-callback-url-input` }
+                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                    submitUrl = submitFunction;
+                } }
+                showPredictions={ false }
+                customLabel={ callbackURLsErrorLabel }
+            />
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <div ref={ allowedOrigin }></div>
+                    <URLInput
+                        required
+                        handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                        urlState={ allowedOrigins }
+                        setURLState={ setAllowedOrigins }
+                        labelName={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                ".label")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                ".placeholder")
+                        }
+                        value={ initialValues?.allowedOrigins?.toString() }
+                        validationErrorMsg={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                ".validations.empty")
+                        }
+                        validation={ (value: string) => {
+
+                            let label: ReactElement = null;
+
+                            if (URLUtils.isHttpUrl(value)) {
+                                label = (
+                                    <Label basic color="orange" className="mt-2">
+                                        { t("console:common.validations.inSecureURL.description") }
+                                    </Label>
+                                );
+                            }
+
+                            if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                                label = (
+                                    <Label basic color="orange" className="mt-2">
+                                        { t("console:common.validations.unrecognizedURL.description") }
+                                    </Label>
+                                );
+                            }
+
+                            setAllowedOriginsErrorLabel(label);
+
+                            return true;
+                        } }
+                        computerWidth={ 10 }
+                        setShowError={ setShowOriginError }
+                        showError={ showOriginError }
+                        hint={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                ".hint")
+                        }
+                        addURLTooltip={ t("common:addURL") }
+                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                        data-testid={ `${ testId }-allowed-origin-url-input` }
+                        getSubmit={ (submitOriginFunction: (callback: (origin?: string) => void) => void
+                        ) => {
+                            submitOrigin = submitOriginFunction;
+                        } }
+                        showPredictions={ false }
+                        customLabel={ allowedOriginsErrorLabel }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        ref={ supportPublicClients }
+                        name="supportPublicClients"
+                        label=""
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.fields.public" +
+                                ".validations.empty")
+                        }
+                        type="checkbox"
+                        value={
+                            initialValues.publicClient
+                                ? [ "supportPublicClients" ]
+                                : []
+                        }
+                        children={ [
+                            {
+                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                    ".fields.public.label"),
+                                value: "supportPublicClients"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-public-client-checkbox` }
+                    />
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+
+            { /* PKCE */ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Heading as="h5">
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                            ".heading") }
+                    </Heading>
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                            ".hint") }
+                    </Hint>
+                    <Divider hidden />
+                    <Field
+                        ref={ pkce }
+                        name="PKCE"
+                        label=""
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
+                                ".fields.pkce.validations.empty")
+                        }
+                        type="checkbox"
+                        value={ findPKCE(initialValues.pkce) }
+                        children={ [
+                            {
+                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                    ".sections.pkce.fields.pkce.children.mandatory.label"),
+                                value: "mandatory"
+                            },
+                            {
+                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                    ".sections.pkce.fields.pkce.children.plainAlg.label"),
+                                value: "supportPlainTransformAlgorithm"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-pkce-checkbox-group` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+
+            { /* Access Token */ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Heading as="h5">
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            ".accessToken.heading") }
+                    </Heading>
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.accessToken" +
+                            ".hint") }
+                    </Hint>
+                    <Divider hidden />
+                    <Field
+                        ref={ type }
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.type.label")
+                        }
+                        name="type"
+                        default={
+                            initialValues.accessToken
+                                ? initialValues.accessToken.type
+                                : metadata.accessTokenType.defaultValue
+                        }
+                        type="radio"
+                        children={ getAllowedList(metadata.accessTokenType, true) }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-access-token-type-radio-group` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                    <Field
+                        ref={ bindingType }
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.bindingType.label")
+                        }
+                        name="bindingType"
+                        default={
+                            initialValues
+                                ? initialValues.accessToken.bindingType
+                                : metadata.accessTokenBindingType.defaultValue
+                        }
+                        type="radio"
+                        children={ getAllowedList(metadata.accessTokenBindingType, true) }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-access-token-type-radio-group` }
+                        listen={ (values) => {
+                            setIsTokenBindingTypeSelected(values.get("bindingType") !== "None")
+                        } }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            {
+                isTokenBindingTypeSelected && (
+                    <>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                                <Field
+                                    ref={ validateTokenBinding }
+                                    name="ValidateTokenBinding"
+                                    label=""
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    type="checkbox"
+                                    value={
+                                        initialValues.accessToken?.validateTokenBinding
+                                            ? [ "validateTokenBinding" ]
+                                            : []
+                                    }
+                                    children={ [
+                                        {
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".sections.accessToken.fields.validateBinding.label"),
+                                            value: "validateTokenBinding"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
+                                />
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.validateBinding.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                                <Field
+                                    ref={ revokeAccessToken }
+                                    name="RevokeAccessToken"
+                                    label=""
+                                    required={ false }
+                                    requiredErrorMessage=""
+                                    type="checkbox"
+                                    value={
+                                        initialValues.accessToken?.revokeTokensWhenIDPSessionTerminated
+                                            ? [ "revokeAccessToken" ]
+                                            : []
+                                    }
+                                    children={ [
+                                        {
+                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                ".sections.accessToken.fields.revokeToken.label"),
+                                            value: "revokeAccessToken"
+                                        }
+                                    ] }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-access-token-revoke-token-checkbox` }
+                                />
+                                <Hint>
+                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".accessToken.fields.revokeToken.hint") }
+                                </Hint>
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                    <Field
+                        ref={ userAccessTokenExpiryInSeconds }
+                        name="userAccessTokenExpiryInSeconds"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.expiry.label")
+                        }
+                        required={ true }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.expiry.validations.empty")
+                        }
+                        value={
+                            initialValues.accessToken
+                                ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
+                                : metadata.defaultUserAccessTokenExpiryTime
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".accessToken.fields.expiry.placeholder")
+                        }
+                        type="number"
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-access-token-expiry-time-input` }
+                    />
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            ".accessToken.fields.expiry.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            {/* TODO  Enable this option in future*/ }
+            {/*<Grid.Row columns={ 1 }>*/ }
+            {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>*/ }
+            {/*        <Field*/ }
+            {/*            name="applicationAccessTokenExpiryInSeconds"*/ }
+            {/*            label="Application access token expiry time"*/ }
+            {/*            required={ true }*/ }
+            {/*            requiredErrorMessage="Please fill the application access token expiry time"*/ }
+            {/*            value={ initialValues.accessToken ?*/ }
+            {/*                initialValues.accessToken.
+                        applicationAccessTokenExpiryInSeconds.toString() :*/ }
+            {/*                metadata.defaultApplicationAccessTokenExpiryTime }*/ }
+            {/*            placeholder="Enter the application access token expiry time "*/ }
+            {/*            type="number"*/ }
+            {/*        />*/ }
+            {/*        <Hint>Configure the application access token expiry time (in seconds).</Hint>*/ }
+            {/*    </Grid.Column>*/ }
+            {/*</Grid.Row>*/ }
+
+            { /* Refresh Token */ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Heading as="h5">
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            ".refreshToken.heading") }
+                    </Heading>
+                    <Divider hidden />
+                    <Field
+                        ref={ refreshToken }
+                        name="RefreshToken"
+                        label=""
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".refreshToken.fields.renew.validations.empty")
+                        }
+                        type="checkbox"
+                        value={
+                            initialValues.refreshToken?.renewRefreshToken
+                                ? [ "refreshToken" ]
+                                : []
+                        }
+                        children={ [
+                            {
+                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                    ".sections.refreshToken.fields.renew.label"),
+                                value: "refreshToken"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-renew-refresh-token-checkbox` }
+                    />
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            ".refreshToken.fields.renew.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                    <Field
+                        ref={ expiryInSeconds }
+                        name="expiryInSeconds"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".refreshToken.fields.expiry.label")
+                        }
+                        required={ true }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".refreshToken.fields.expiry.validations.empty")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".refreshToken.fields.expiry.placeholder")
+                        }
+                        value={ initialValues.refreshToken
+                            ? initialValues.refreshToken.expiryInSeconds.toString()
+                            : metadata.defaultRefreshTokenExpiryTime }
+                        type="number"
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-refresh-token-expiry-time-input` }
+                    />
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            ".refreshToken.fields.expiry.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+
+            { /* ID Token */ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Heading as="h5">
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            ".idToken.heading") }
+                    </Heading>
+                    <Divider hidden />
+                    <Field
+                        ref={ audience }
+                        name="audience"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".idToken.fields.audience.label")
+                        }
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.audience.validations.empty")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.audience.placeholder")
+                        }
+                        value={ initialValues.idToken?.audience.toString() }
+                        type="textarea"
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-audience-textarea` }
+                    />
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.audience.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        ref={ encryption }
+                        name="encryption"
+                        label=""
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.encryption.validations.empty")
+                        }
+                        type="checkbox"
+                        listen={
+                            (values) => {
+                                setEncryptionEnable(
+                                    !!values.get("encryption").includes("enableEncryption")
+                                );
+                            }
+                        }
+                        value={
+                            initialValues.idToken?.encryption.enabled
+                                ? [ "enableEncryption" ]
+                                : []
+                        }
+                        children={ [
+                            {
+                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                    ".sections.idToken.fields.encryption.label"),
+                                value: "enableEncryption"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-encryption-checkbox` }
+                    />
+                    <Hint>Enable ID token encryption.</Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        ref={ algorithm }
+                        name="algorithm"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.algorithm.label")
+                        }
+                        required={ isEncryptionEnabled }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.algorithm.validations.empty")
+                        }
+                        type="dropdown"
+                        default={
+                            initialValues.idToken
+                                ? initialValues.idToken.encryption.algorithm
+                                : metadata.idTokenEncryptionAlgorithm.defaultValue
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".idToken.fields.algorithm.placeholder")
+                        }
+                        children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
+                        disabled={ !isEncryptionEnabled }
+                        data-testid={ `${ testId }-encryption-algorithm-dropdown` }
+                    />
+                    <Hint disabled={ !isEncryptionEnabled }>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.algorithm.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        ref={ method }
+                        name="method"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".idToken.fields.method.label")
+                        }
+                        required={ isEncryptionEnabled }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.method.validations.empty")
+                        }
+                        type="dropdown"
+                        default={
+                            initialValues.idToken
+                                ? initialValues.idToken.encryption.method
+                                : metadata.idTokenEncryptionMethod.defaultValue
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.method.placeholder")
+                        }
+                        children={ getAllowedList(metadata.idTokenEncryptionMethod) }
+                        disabled={ !isEncryptionEnabled }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-encryption-method-dropdown` }
+                    />
+                    <Hint disabled={ !isEncryptionEnabled }>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.method.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
+                    <Field
+                        ref={ idExpiryInSeconds }
+                        name="idExpiryInSeconds"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.expiry.label")
+                        }
+                        required={ true }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.expiry.validations.empty")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                                ".fields.expiry.placeholder")
+                        }
+                        value={
+                            initialValues.idToken
+                                ? initialValues.idToken.expiryInSeconds.toString()
+                                : metadata.defaultIdTokenExpiryTime
+                        }
+                        type="number"
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-id-token-expiry-time-input` }
+                    />
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.expiry.hint") }
+                    </Hint>
+                </Grid.Column>
+            </Grid.Row>
+
+            { /* Logout */ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Heading as="h5">Logout URLs</Heading>
+                    <Divider hidden />
+                    <Field
+                        ref={ backChannelLogoutUrl }
+                        name="backChannelLogoutUrl"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".logoutURLs.fields.back.label")
+                        }
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".logoutURLs.fields.back.validations.empty")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".logoutURLs.fields.back.placeholder")
+                        }
+                        type="text"
+                        validation={ (value: string, validation: Validation) => {
+                            if (!FormValidation.url(value)) {
+                                validation.isValid = false;
+                                validation.errorMessages.push((
+                                    t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.back.validations.invalid")
+                                ))
+                            }
+                        } }
+                        value={ initialValues.logout?.backChannelLogoutUrl }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-back-channel-logout-url-input` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        ref={ frontChannelLogoutUrl }
+                        name="frontChannelLogoutUrl"
+                        label={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".logoutURLs.fields.front.label")
+                        }
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".logoutURLs.fields.front.validations.empty")
+                        }
+                        placeholder={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".logoutURLs.fields.front.placeholder")
+                        }
+                        type="text"
+                        validation={ (value: string, validation: Validation) => {
+                            if (!FormValidation.url(value)) {
+                                validation.isValid = false;
+                                validation.errorMessages.push((
+                                    t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                        ".logoutURLs.fields.front.validations.invalid")
+                                ));
+                            }
+                        } }
+                        value={ initialValues.logout?.frontChannelLogoutUrl }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-front-channel-logout-url-input` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Field
+                        ref={ enableRequestObjectSignatureValidation }
+                        name="enableRequestObjectSignatureValidation"
+                        label=""
+                        required={ false }
+                        requiredErrorMessage="this is needed"
+                        type="checkbox"
+                        value={
+                            initialValues.validateRequestObjectSignature
+                                ? [ "EnableRequestObjectSignatureValidation" ]
+                                : []
+                        }
+                        children={ [
+                            {
+                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                    ".sections.logoutURLs.fields.signatureValidation.label"),
+                                value: "EnableRequestObjectSignatureValidation"
+                            }
+                        ] }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            { /* Scope Validators */ }
+            <Grid.Row columns={ 2 }>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
+                    <Divider />
+                    <Divider hidden />
+                </Grid.Column>
+                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                    <Heading as="h5">
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                            ".scopeValidators.heading") }
+                    </Heading>
+                    <Divider hidden />
+                    <Field
+                        ref={ scopeValidator }
+                        name="scopeValidator"
+                        label=""
+                        required={ false }
+                        requiredErrorMessage={
+                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                ".scopeValidators.fields.validator.validations.empty")
+                        }
+                        type="checkbox"
+                        value={ initialValues.scopeValidators }
+                        children={ getAllowedList(metadata.scopeValidators, true) }
+                        readOnly={ readOnly }
+                        data-testid={ `${ testId }-scope-validator-checkbox` }
+                    />
+                </Grid.Column>
+            </Grid.Row>
+            {
+                !readOnly && (
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Button
+                                primary
+                                type="submit"
+                                size="small"
+                                className="form-button"
+                                data-testid={ `${ testId }-submit-button` }
+                            >
+                                { t("common:update") }
+                            </Button>
+                        </Grid.Column>
+                    </Grid.Row>
+                )
+            }
+        </>
+    );
 
     return (
         metadata ?
@@ -465,6 +1289,28 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 >
                     <Grid>
                         {
+                            (initialValues?.state === State.REVOKED) && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Message warning visible>
+                                            <Message.Header>
+                                                {
+                                                    t("console:develop.features.applications.forms.inboundOIDC." +
+                                                        "messages.revokeDisclaimer.heading")
+                                                }
+                                            </Message.Header>
+                                            <p>
+                                                {
+                                                    t("console:develop.features.applications.forms.inboundOIDC." +
+                                                        "messages.revokeDisclaimer.content")
+                                                }
+                                            </p>
+                                        </Message>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+                        {
                             initialValues.clientId && (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
@@ -483,7 +1329,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            initialValues.clientSecret && (
+                            (initialValues.clientSecret && (initialValues?.state !== State.REVOKED)) && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                         <Form.Field>
@@ -532,24 +1378,34 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             !readOnly && (
                                                 <>
                                                     <Button
-                                                        color="red"
+                                                        color={
+                                                            (initialValues?.state === State.REVOKED)
+                                                                ? "green"
+                                                                : "red"
+                                                        }
                                                         className="oidc-regenerate-button"
                                                         onClick={ handleRegenerateButton }
                                                         data-testid={ `${ testId }-oidc-regenerate-button` }
                                                     >
-                                                        { t("common:regenerate") }
+                                                        {
+                                                            (initialValues?.state === State.REVOKED)
+                                                                ? t("common:activate")
+                                                                : t("common:regenerate")
+                                                        }
                                                     </Button>
-                                                    <Button
-                                                        color="red"
-                                                        className="oidc-revoke-button"
-                                                        onClick={ handleRevokeButton }
-                                                        disabled={ (initialValues?.state === State.REVOKED) }
-                                                        data-testid={ `${ testId }-oidc-revoke-button` }
-                                                    >
-                                                        { t("common:revoke") }
-                                                    </Button>
+                                                    {
+                                                        (initialValues?.state !== State.REVOKED) && (
+                                                            <Button
+                                                                color="red"
+                                                                className="oidc-revoke-button"
+                                                                onClick={ handleRevokeButton }
+                                                                data-testid={ `${ testId }-oidc-revoke-button` }
+                                                            >
+                                                                { t("common:revoke") }
+                                                            </Button>
+                                                        )
+                                                    }
                                                 </>
-
                                             )
                                         }
                                     </Grid.Column>
@@ -658,817 +1514,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 </Grid.Row>
                             )
                         }
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ grant }
-                                    name="grant"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.grant.label")
-                                    }
-                                    type="checkbox"
-                                    required={ true }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.grant" +
-                                            ".validations.empty")
-                                    }
-                                    children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
-                                    value={ initialValues.grantTypes }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-grant-type-checkbox-group` }
-                                />
-                                <Hint>This will determine how the application communicates with the token service</Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <div ref={ url }></div>
-                        <URLInput
-                            isAllowEnabled={ false }
-                            tenantDomain={ tenantDomain }
-                            allowedOrigins={ allowedOriginList }
-                            labelEnabled={ true }
-                            urlState={ callBackUrls }
-                            setURLState={ setCallBackUrls }
-                            labelName={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
-                            }
-                            required={ true }
-                            value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
-                            placeholder={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                    ".placeholder")
-                            }
-                            validationErrorMsg={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                                    ".validations.empty")
-                            }
-                            validation={ (value: string) => {
-                                let label: ReactElement = null;
-
-                                const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
-
-                                if (isHttpUrl) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.inSecureURL.description") }
-                                        </Label>
-                                    );
-                                }
-
-                                if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                    label = (
-                                        <Label basic color="orange" className="mt-2">
-                                            { t("console:common.validations.unrecognizedURL.description") }
-                                        </Label>
-                                    );
-                                }
-
-                                if (!URLUtils.isMobileDeepLink(value)) {
-                                    return false;
-                                }
-
-                                setCallbackURLsErrorLabel(label);
-
-                                return true;
-                            } }
-                            showError={ showURLError }
-                            setShowError={ setShowURLError }
-                            hint={
-                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
-                            }
-                            readOnly={ readOnly }
-                            addURLTooltip={ t("common:addURL") }
-                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                            data-testid={ `${ testId }-callback-url-input` }
-                            getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                                submitUrl = submitFunction;
-                            } }
-                            showPredictions={ false }
-                            customLabel={ callbackURLsErrorLabel }
-                        />
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <div ref={ allowedOrigin }></div>
-                                <URLInput
-                                    required
-                                    handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
-                                    urlState={ allowedOrigins }
-                                    setURLState={ setAllowedOrigins }
-                                    labelName={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".label")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".placeholder")
-                                    }
-                                    value={ initialValues?.allowedOrigins?.toString() }
-                                    validationErrorMsg={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".validations.empty")
-                                    }
-                                    validation={ (value: string) => {
-
-                                        let label: ReactElement = null;
-
-                                        if (URLUtils.isHttpUrl(value)) {
-                                            label = (
-                                                <Label basic color="orange" className="mt-2">
-                                                    { t("console:common.validations.inSecureURL.description") }
-                                                </Label>
-                                            );
-                                        }
-
-                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                            label = (
-                                                <Label basic color="orange" className="mt-2">
-                                                    { t("console:common.validations.unrecognizedURL.description") }
-                                                </Label>
-                                            );
-                                        }
-
-                                        setAllowedOriginsErrorLabel(label);
-
-                                        return true;
-                                    } }
-                                    computerWidth={ 10 }
-                                    setShowError={ setShowOriginError }
-                                    showError={ showOriginError }
-                                    hint={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                            ".hint")
-                                    }
-                                    addURLTooltip={ t("common:addURL") }
-                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                                    data-testid={ `${ testId }-allowed-origin-url-input` }
-                                    getSubmit={ (submitOriginFunction: (callback: (origin?: string) => void) => void
-                                    ) => {
-                                        submitOrigin = submitOriginFunction;
-                                    } }
-                                    showPredictions={ false }
-                                    customLabel={ allowedOriginsErrorLabel }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ supportPublicClients }
-                                    name="supportPublicClients"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.fields.public" +
-                                            ".validations.empty")
-                                    }
-                                    type="checkbox"
-                                    value={
-                                        initialValues.publicClient
-                                            ? [ "supportPublicClients" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                ".fields.public.label"),
-                                            value: "supportPublicClients"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-public-client-checkbox` }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.fields.public.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        { /* PKCE */ }
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
-                                        ".heading") }
-                                </Heading>
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
-                                        ".hint") }
-                                </Hint>
-                                <Divider hidden />
-                                <Field
-                                    ref={ pkce }
-                                    name="PKCE"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.pkce" +
-                                            ".fields.pkce.validations.empty")
-                                    }
-                                    type="checkbox"
-                                    value={ findPKCE(initialValues.pkce) }
-                                    children={ [
-                                        {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                ".sections.pkce.fields.pkce.children.mandatory.label"),
-                                            value: "mandatory"
-                                        },
-                                        {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                ".sections.pkce.fields.pkce.children.plainAlg.label"),
-                                            value: "supportPlainTransformAlgorithm"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-pkce-checkbox-group` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        { /* Access Token */ }
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                        ".accessToken.heading") }
-                                </Heading>
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.accessToken" +
-                                        ".hint") }
-                                </Hint>
-                                <Divider hidden />
-                                <Field
-                                    ref={ type }
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".accessToken.fields.type.label")
-                                    }
-                                    name="type"
-                                    default={
-                                        initialValues.accessToken
-                                            ? initialValues.accessToken.type
-                                            : metadata.accessTokenType.defaultValue
-                                    }
-                                    type="radio"
-                                    children={ getAllowedList(metadata.accessTokenType, true) }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-access-token-type-radio-group` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
-                                <Field
-                                    ref={ bindingType }
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".accessToken.fields.bindingType.label")
-                                    }
-                                    name="bindingType"
-                                    default={
-                                        initialValues
-                                            ? initialValues.accessToken.bindingType
-                                            : metadata.accessTokenBindingType.defaultValue
-                                    }
-                                    type="radio"
-                                    children={ getAllowedList(metadata.accessTokenBindingType, true) }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-access-token-type-radio-group` }
-                                    listen={ (values) => {
-                                        setIsTokenBindingTypeSelected(values.get("bindingType") !== "None")
-                                    } }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        {
-                            isTokenBindingTypeSelected && (
-                                <>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
-                                            <Field
-                                                ref={ validateTokenBinding }
-                                                name="ValidateTokenBinding"
-                                                label=""
-                                                required={ false }
-                                                requiredErrorMessage=""
-                                                type="checkbox"
-                                                value={
-                                                    initialValues.accessToken?.validateTokenBinding
-                                                        ? [ "validateTokenBinding" ]
-                                                        : []
-                                                }
-                                                children={ [
-                                                    {
-                                                        label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                            ".sections.accessToken.fields.validateBinding.label"),
-                                                        value: "validateTokenBinding"
-                                                    }
-                                                ] }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ testId }-access-token-validate-binding-checkbox` }
-                                            />
-                                            <Hint>
-                                                { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                                    ".accessToken.fields.validateBinding.hint") }
-                                            </Hint>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
-                                            <Field
-                                                ref={ revokeAccessToken }
-                                                name="RevokeAccessToken"
-                                                label=""
-                                                required={ false }
-                                                requiredErrorMessage=""
-                                                type="checkbox"
-                                                value={
-                                                    initialValues.accessToken?.revokeTokensWhenIDPSessionTerminated
-                                                        ? [ "revokeAccessToken" ]
-                                                        : []
-                                                }
-                                                children={ [
-                                                    {
-                                                        label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                            ".sections.accessToken.fields.revokeToken.label"),
-                                                        value: "revokeAccessToken"
-                                                    }
-                                                ] }
-                                                readOnly={ readOnly }
-                                                data-testid={ `${ testId }-access-token-revoke-token-checkbox` }
-                                            />
-                                            <Hint>
-                                                { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                                    ".accessToken.fields.revokeToken.hint") }
-                                            </Hint>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </>
-                            )
-                        }
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
-                                <Field
-                                    ref={ userAccessTokenExpiryInSeconds }
-                                    name="userAccessTokenExpiryInSeconds"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".accessToken.fields.expiry.label")
-                                    }
-                                    required={ true }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".accessToken.fields.expiry.validations.empty")
-                                    }
-                                    value={
-                                        initialValues.accessToken
-                                            ? initialValues.accessToken.userAccessTokenExpiryInSeconds.toString()
-                                            : metadata.defaultUserAccessTokenExpiryTime
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".accessToken.fields.expiry.placeholder")
-                                    }
-                                    type="number"
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-access-token-expiry-time-input` }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                        ".accessToken.fields.expiry.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        {/* TODO  Enable this option in future*/ }
-                        {/*<Grid.Row columns={ 1 }>*/ }
-                        {/*    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>*/ }
-                        {/*        <Field*/ }
-                        {/*            name="applicationAccessTokenExpiryInSeconds"*/ }
-                        {/*            label="Application access token expiry time"*/ }
-                        {/*            required={ true }*/ }
-                        {/*            requiredErrorMessage="Please fill the application access token expiry time"*/ }
-                        {/*            value={ initialValues.accessToken ?*/ }
-                        {/*                initialValues.accessToken.
-                        applicationAccessTokenExpiryInSeconds.toString() :*/ }
-                        {/*                metadata.defaultApplicationAccessTokenExpiryTime }*/ }
-                        {/*            placeholder="Enter the application access token expiry time "*/ }
-                        {/*            type="number"*/ }
-                        {/*        />*/ }
-                        {/*        <Hint>Configure the application access token expiry time (in seconds).</Hint>*/ }
-                        {/*    </Grid.Column>*/ }
-                        {/*</Grid.Row>*/ }
-
-                        { /* Refresh Token */ }
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                        ".refreshToken.heading") }
-                                </Heading>
-                                <Divider hidden />
-                                <Field
-                                    ref={ refreshToken }
-                                    name="RefreshToken"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.renew.validations.empty")
-                                    }
-                                    type="checkbox"
-                                    value={
-                                        initialValues.refreshToken?.renewRefreshToken
-                                            ? [ "refreshToken" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                ".sections.refreshToken.fields.renew.label"),
-                                            value: "refreshToken"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-renew-refresh-token-checkbox` }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                        ".refreshToken.fields.renew.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
-                                <Field
-                                    ref={ expiryInSeconds }
-                                    name="expiryInSeconds"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.expiry.label")
-                                    }
-                                    required={ true }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.expiry.validations.empty")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".refreshToken.fields.expiry.placeholder")
-                                    }
-                                    value={ initialValues.refreshToken
-                                        ? initialValues.refreshToken.expiryInSeconds.toString()
-                                        : metadata.defaultRefreshTokenExpiryTime }
-                                    type="number"
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-refresh-token-expiry-time-input` }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                        ".refreshToken.fields.expiry.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        { /* ID Token */ }
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                        ".idToken.heading") }
-                                </Heading>
-                                <Divider hidden />
-                                <Field
-                                    ref={ audience }
-                                    name="audience"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".idToken.fields.audience.label")
-                                    }
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.audience.validations.empty")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.audience.placeholder")
-                                    }
-                                    value={ initialValues.idToken?.audience.toString() }
-                                    type="textarea"
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-audience-textarea` }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                        ".fields.audience.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ encryption }
-                                    name="encryption"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.encryption.validations.empty")
-                                    }
-                                    type="checkbox"
-                                    listen={
-                                        (values) => {
-                                            setEncryptionEnable(
-                                                !!values.get("encryption").includes("enableEncryption")
-                                            );
-                                        }
-                                    }
-                                    value={
-                                        initialValues.idToken?.encryption.enabled
-                                            ? [ "enableEncryption" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                ".sections.idToken.fields.encryption.label"),
-                                            value: "enableEncryption"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-encryption-checkbox` }
-                                />
-                                <Hint>Enable ID token encryption.</Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ algorithm }
-                                    name="algorithm"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.algorithm.label")
-                                    }
-                                    required={ isEncryptionEnabled }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.algorithm.validations.empty")
-                                    }
-                                    type="dropdown"
-                                    default={
-                                        initialValues.idToken
-                                            ? initialValues.idToken.encryption.algorithm
-                                            : metadata.idTokenEncryptionAlgorithm.defaultValue
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".idToken.fields.algorithm.placeholder")
-                                    }
-                                    children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
-                                    disabled={ !isEncryptionEnabled }
-                                    data-testid={ `${ testId }-encryption-algorithm-dropdown` }
-                                />
-                                <Hint disabled={ !isEncryptionEnabled }>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                        ".fields.algorithm.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ method }
-                                    name="method"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".idToken.fields.method.label")
-                                    }
-                                    required={ isEncryptionEnabled }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.method.validations.empty")
-                                    }
-                                    type="dropdown"
-                                    default={
-                                        initialValues.idToken
-                                            ? initialValues.idToken.encryption.method
-                                            : metadata.idTokenEncryptionMethod.defaultValue
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.method.placeholder")
-                                    }
-                                    children={ getAllowedList(metadata.idTokenEncryptionMethod) }
-                                    disabled={ !isEncryptionEnabled }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-encryption-method-dropdown` }
-                                />
-                                <Hint disabled={ !isEncryptionEnabled }>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                        ".fields.method.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 5 }>
-                                <Field
-                                    ref={ idExpiryInSeconds }
-                                    name="idExpiryInSeconds"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.expiry.label")
-                                    }
-                                    required={ true }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.expiry.validations.empty")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                            ".fields.expiry.placeholder")
-                                    }
-                                    value={
-                                        initialValues.idToken
-                                            ? initialValues.idToken.expiryInSeconds.toString()
-                                            : metadata.defaultIdTokenExpiryTime
-                                    }
-                                    type="number"
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-id-token-expiry-time-input` }
-                                />
-                                <Hint>
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
-                                        ".fields.expiry.hint") }
-                                </Hint>
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        { /* Logout */ }
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">Logout URLs</Heading>
-                                <Divider hidden />
-                                <Field
-                                    ref={ backChannelLogoutUrl }
-                                    name="backChannelLogoutUrl"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.label")
-                                    }
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.validations.empty")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.back.placeholder")
-                                    }
-                                    type="text"
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!FormValidation.url(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push((
-                                                t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                                    ".logoutURLs.fields.back.validations.invalid")
-                                            ))
-                                        }
-                                    } }
-                                    value={ initialValues.logout?.backChannelLogoutUrl }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-back-channel-logout-url-input` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ frontChannelLogoutUrl }
-                                    name="frontChannelLogoutUrl"
-                                    label={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.front.label")
-                                    }
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.front.validations.empty")
-                                    }
-                                    placeholder={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".logoutURLs.fields.front.placeholder")
-                                    }
-                                    type="text"
-                                    validation={ (value: string, validation: Validation) => {
-                                        if (!FormValidation.url(value)) {
-                                            validation.isValid = false;
-                                            validation.errorMessages.push((
-                                                t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                                    ".logoutURLs.fields.front.validations.invalid")
-                                            ));
-                                        }
-                                    } }
-                                    value={ initialValues.logout?.frontChannelLogoutUrl }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-front-channel-logout-url-input` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        <Grid.Row columns={ 1 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Field
-                                    ref={ enableRequestObjectSignatureValidation }
-                                    name="enableRequestObjectSignatureValidation"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage="this is needed"
-                                    type="checkbox"
-                                    value={
-                                        initialValues.validateRequestObjectSignature
-                                            ? [ "EnableRequestObjectSignatureValidation" ]
-                                            : []
-                                    }
-                                    children={ [
-                                        {
-                                            label: t("devPortal:components.applications.forms.inboundOIDC" +
-                                                ".sections.logoutURLs.fields.signatureValidation.label"),
-                                            value: "EnableRequestObjectSignatureValidation"
-                                        }
-                                    ] }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-request-object-signature-validation-checkbox` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        { /* Scope Validators */ }
-                        <Grid.Row columns={ 2 }>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                                <Divider />
-                                <Divider hidden />
-                            </Grid.Column>
-                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                        ".scopeValidators.heading") }
-                                </Heading>
-                                <Divider hidden />
-                                <Field
-                                    ref={ scopeValidator }
-                                    name="scopeValidator"
-                                    label=""
-                                    required={ false }
-                                    requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundOIDC.sections" +
-                                            ".scopeValidators.fields.validator.validations.empty")
-                                    }
-                                    type="checkbox"
-                                    value={ initialValues.scopeValidators }
-                                    children={ getAllowedList(metadata.scopeValidators, true) }
-                                    readOnly={ readOnly }
-                                    data-testid={ `${ testId }-scope-validator-checkbox` }
-                                />
-                            </Grid.Column>
-                        </Grid.Row>
-                        {
-                            !readOnly && (
-                                <Grid.Row columns={ 1 }>
-                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                                        <Button
-                                            primary
-                                            type="submit"
-                                            size="small"
-                                            className="form-button"
-                                            data-testid={ `${ testId }-submit-button` }
-                                        >
-                                            { t("common:update") }
-                                        </Button>
-                                    </Grid.Column>
-                                </Grid.Row>
-                            )
-                        }
+                        { (initialValues?.state !== State.REVOKED) && renderOIDCConfigFields() }
                     </Grid>
                 </Forms>
             )

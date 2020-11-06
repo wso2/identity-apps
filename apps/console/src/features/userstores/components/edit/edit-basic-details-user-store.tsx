@@ -27,7 +27,7 @@ import { useDispatch } from "react-redux";
 import { CheckboxProps, Divider, Grid, Icon } from "semantic-ui-react";
 import { SqlEditor } from "..";
 import { AppConstants, history } from "../../../core";
-import { deleteUserStore, patchUserStore, updateUserStore } from "../../api";
+import { deleteUserStore, patchUserStore } from "../../api";
 import { DISABLED } from "../../constants";
 import { RequiredBinary, TypeProperty, UserStore } from "../../models";
 /**
@@ -182,11 +182,12 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
     );
 
     const onSubmitHandler = (values: Map<string, FormValue>): void => {
-        const data = { ...userStore };
-        data.description = values.get("description").toString();
-        data.name = values.get("name").toString();
-        delete data.typeName;
-        delete data.className;
+
+        const description = {
+            operation: "REPLACE",
+            path: "/description",
+            value: values.get("description").toString()
+        };
 
         const requiredData = properties?.required.map((property: TypeProperty) => {
             if (property.name !== DISABLED) {
@@ -196,16 +197,17 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                     value: values.get(property.name).toString()
                 };
             }
-        }).filter(Boolean);
+        }).filter(Boolean)
 
+        requiredData.push(description);
 
         const optionalNonSqlData = showMore
             ? properties?.optional.nonSql.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
-                    path: `/properties/${property.name}`,
+                    path: `/properties/${ property.name }`,
                     value: values.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -213,9 +215,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             ? properties?.optional.sql.insert.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
-                    path: `/properties/${property.name}`,
+                    path: `/properties/${ property.name }`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -223,9 +225,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             ? properties?.optional.sql.update.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
-                    path: `/properties/${property.name}`,
+                    path: `/properties/${ property.name }`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -233,9 +235,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             ? properties?.optional.sql.delete.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
-                    path: `/properties/${property.name}`,
+                    path: `/properties/${ property.name }`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -243,9 +245,9 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             ? properties?.optional.sql.select.map((property: TypeProperty) => {
                 return {
                     operation: "REPLACE",
-                    path: `/properties/${property.name}`,
+                    path: `/properties/${ property.name }`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -260,51 +262,37 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
             ]
             : requiredData;
 
-        updateUserStore(id, data)
-            .then(() => {
-                patchUserStore(id, patchData)
-                    .then(() => {
-                        dispatch(addAlert<AlertInterface>({
-                            description: t("adminPortal:components.userstores.notifications." +
-                                "updateUserstore.success.description"),
-                            level: AlertLevels.SUCCESS,
-                            message: t("adminPortal:components.userstores.notifications." +
-                                "updateUserstore.success.message")
-                        }));
+        patchUserStore(id, patchData).then(() => {
+            dispatch(addAlert({
+                description: t("adminPortal:components.userstores.notifications." +
+                    "updateUserstore.success.description"),
+                level: AlertLevels.SUCCESS,
+                message: t("adminPortal:components.userstores.notifications." +
+                    "updateUserstore.success.message")
+            }));
 
-                        // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
-                        // applied at once. As a temp solution, a notification informing the delay is shown here.
-                        // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
-                        // TODO: Remove delay notification once backend is fixed.
-                        dispatch(addAlert<AlertInterface>({
-                            description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
-                            level: AlertLevels.WARNING,
-                            message: t("adminPortal:components.userstores.notifications.updateDelay.message")
-                        }));
+            // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't
+            // applied at once. As a temp solution, a notification informing the delay is shown here.
+            // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
+            // TODO: Remove delay notification once backend is fixed.
+            dispatch(addAlert<AlertInterface>({
+                description: t("adminPortal:components.userstores.notifications.updateDelay.description"),
+                level: AlertLevels.WARNING,
+                message: t("adminPortal:components.userstores.notifications.updateDelay.message")
+            }));
 
-                        // Re-fetch the userstore details
-                        update();
-                    })
-                    .catch((error) => {
-                        dispatch(addAlert<AlertInterface>({
-                            description: error?.description
-                                || t("adminPortal:components.userstores.notifications." +
-                                    "updateUserstore.genericError.description"),
-                            level: AlertLevels.ERROR,
-                            message: error?.message || t("adminPortal:components.userstores.notifications." +
-                                "updateUserstore.genericError.message")
-                        }));
-                    });
-            })
-            .catch((error) => {
-                dispatch(addAlert<AlertInterface>({
-                    description: error?.description ?? t("adminPortal:components.userstores.notifications." +
+            // Re-fetch the userstore details
+            update();
+        }).catch(error => {
+            dispatch(addAlert({
+                description: error?.description
+                    || t("adminPortal:components.userstores.notifications." +
                         "updateUserstore.genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: error?.message ?? t("adminPortal:components.userstores.notifications." +
-                        "updateUserstore.genericError.message")
-                }));
-            });
+                level: AlertLevels.ERROR,
+                message: error?.message || t("adminPortal:components.userstores.notifications." +
+                    "updateUserstore.genericError.message")
+            }));
+        });
     };
 
     /**
@@ -336,7 +324,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                         "updateUserstore.success.message")
                 }));
 
-                // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't 
+                // ATM, userstore operations run as an async task in the backend. Hence, The changes aren't
                 // applied at once. As a temp solution, a notification informing the delay is shown here.
                 // See https://github.com/wso2/product-is/issues/9767 for updates on the backend improvement.
                 // TODO: Remove delay notification once backend is fixed.

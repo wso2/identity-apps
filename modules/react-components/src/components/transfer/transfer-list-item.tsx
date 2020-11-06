@@ -23,7 +23,7 @@ import { Checkbox, Icon, Label, LabelProps, Popup, SemanticCOLORS, Table, TableR
 /**
  * Proptypes for the transfer list item label.
  */
-interface ItemTypeLabelPropsInterface extends LabelProps {
+export interface ItemTypeLabelPropsInterface extends LabelProps {
     labelText: string;
     labelColor: SemanticCOLORS;
     name?: string;

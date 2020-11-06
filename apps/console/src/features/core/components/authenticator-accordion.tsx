@@ -30,6 +30,7 @@ import React, {
     FunctionComponent,
     ReactElement,
     SyntheticEvent,
+    useEffect,
     useState
 } from "react";
 
@@ -45,6 +46,10 @@ export interface AuthenticatorAccordionPropsInterface extends TestableComponentI
      * Initial activeIndexes value.
      */
     defaultActiveIndexes?: number[];
+    /**
+     * Expand the accordion if only single item is present.
+     */
+    defaultExpandSingleItemAccordion?: boolean;
     /**
      * Accordion actions.
      */
@@ -103,12 +108,28 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
         globalActions,
         authenticators,
         defaultActiveIndexes,
+        defaultExpandSingleItemAccordion,
         hideChevron,
         orderBy,
         [ "data-testid" ]: testId
     } = props;
 
     const [ accordionActiveIndexes, setAccordionActiveIndexes ] = useState<number[]>(defaultActiveIndexes);
+
+    /**
+     * If the authenticator count is 1, always open the authenticator panel.
+     */
+    useEffect(() => {
+        if (!defaultExpandSingleItemAccordion) {
+            return;
+        }
+
+        if (!(authenticators && Array.isArray(authenticators) && authenticators.length === 1)) {
+            return;
+        }
+
+        setAccordionActiveIndexes([ 0 ]);
+    }, [ authenticators ]);
 
     /**
      * Handles accordion title click.
@@ -188,6 +209,7 @@ export const AuthenticatorAccordion: FunctionComponent<AuthenticatorAccordionPro
 AuthenticatorAccordion.defaultProps = {
     "data-testid": "authenticator-accordion",
     defaultActiveIndexes: [ -1 ],
+    defaultExpandSingleItemAccordion: true,
     hideChevron: false,
     orderBy: undefined
 };

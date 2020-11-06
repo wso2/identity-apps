@@ -135,6 +135,38 @@ export const console: ConsoleNS = {
                                 "endroit sûr."
                         }
                     }
+                },
+                forms: {
+                    inboundOIDC: {
+                        messages: {
+                            revokeDisclaimer: {
+                                content: "விண்ணப்பம் ரத்து செய்யப்பட்டது. நீங்கள் பயன்பாட்டை மீண்டும் இயக்க விரும்பினால் " +
+                                    "ரகசியத்தை மீண்டும் உருவாக்கவும்.",
+                                heading: "La demande est révoquée"
+                            }
+                        }
+                    }
+                },
+                popups: {
+                    appStatus: {
+                        active: {
+                            content: "L'application est active.",
+                            header: "Actif",
+                            subHeader: ""
+                        },
+                        notConfigured: {
+                            content: "L'application n'est pas configurée. Veuillez configurer les configurations " +
+                                "d'accès.",
+                            header: "Pas configuré",
+                            subHeader: ""
+                        },
+                        revoked: {
+                            content: "La demande est révoquée. Veuillez réactiver l'application dans les " +
+                                "configurations d'accès.",
+                            header: "Révoqué",
+                            subHeader: ""
+                        }
+                    }
                 }
             }
         }

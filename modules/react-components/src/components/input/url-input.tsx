@@ -158,9 +158,14 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
 
             return url;
         } else {
-            const availableURls = urlState.split(",");
-            const duplicate = availableURls.includes(url);
+            const availableURls: string[] = !urlState
+                ? []
+                : urlState.split(",");
+
+            const duplicate: boolean = availableURls.includes(url);
+
             urlValid && setDuplicateURL(duplicate);
+
             if (urlValid && !duplicate) {
                 setURLState((url + "," + urlState));
                 setChangeUrl("");
@@ -322,6 +327,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         if (allowedOrigins?.includes(origin) || allowOrigin) {
             return (
                 <LabelWithPopup
+                    className="cors-details-popup"
                     popupHeader={ t("devPortal:components.URLInput.withLabel.positive.header") }
                     popupSubHeader={
                         <>
@@ -366,12 +372,17 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             { origin }
                         </>
                     }
+                    popupOptions={ {
+                        basic: true,
+                        on: "click"
+                    } }
                     labelColor="green"
                 />
             );
         } else {
             return (
                 <LabelWithPopup
+                    className="cors-details-popup"
                     popupHeader={ t("devPortal:components.URLInput.withLabel.negative.header") }
                     popupSubHeader={
                         <>
@@ -428,6 +439,10 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                             { origin }
                         </>
                     }
+                    popupOptions={ {
+                        basic: true,
+                        on: "click"
+                    } }
                     labelColor="red"
                 />
             );

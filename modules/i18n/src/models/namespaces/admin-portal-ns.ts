@@ -1424,6 +1424,7 @@ export interface AdminPortalNS {
                     };
                     viewPermissionModal: {
                         backButton: string;
+                        editButton: string;
                         heading: string;
                     };
                 };

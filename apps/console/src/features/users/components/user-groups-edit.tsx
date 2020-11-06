@@ -26,6 +26,7 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
+    ItemTypeLabelPropsInterface,
     LinkButton,
     PrimaryButton,
     TransferComponent,
@@ -47,6 +48,7 @@ import {
 } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations, updateResources } from "../../core";
 import { getGroupList } from "../../groups/api";
+import { APPLICATION_DOMAIN, INTERNAL_DOMAIN, PRIMARY_DOMAIN } from "../../roles/constants";
 
 interface UserGroupsPropsInterface {
     /**
@@ -149,7 +151,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             _.forEachRight (user.groups, (group) => {
                 const groupName = group?.display?.split("/");
 
-                if (groupName.length === 1) {
+                if (groupName[0] !== APPLICATION_DOMAIN && groupName[0] !== INTERNAL_DOMAIN) {
                     groupsMap.set(group.display, group.value);
                 }
             });
@@ -491,6 +493,37 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         }
     };
 
+    const resolveListItemLabel = (displayName: string): ItemTypeLabelPropsInterface => {
+        const userGroup = displayName?.split("/");
+
+        let item: ItemTypeLabelPropsInterface = {
+            labelColor: "olive",
+            labelText: PRIMARY_DOMAIN
+        };
+
+        if (userGroup[0] !== APPLICATION_DOMAIN &&
+            userGroup[0] !== INTERNAL_DOMAIN) {
+            if (userGroup?.length > 1) {
+                item = {
+                    ...item,
+                    labelText: userGroup[0]
+                };
+            }
+        }
+
+        return item;
+    };
+
+    const resolveListItem = (displayName: string): string => {
+        const userGroup = displayName?.split("/");
+
+        if (userGroup?.length !== 1) {
+            displayName = userGroup[1];
+        }
+
+        return displayName;
+    };
+
     const addNewGroupModal = () => (
         <Modal
             data-testid="user-mgt-update-groups-modal"
@@ -528,30 +561,22 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             data-testid="user-mgt-update-groups-modal-unselected-groups-select-all-checkbox"
                         >
                             {
-                                groupList?.map((role, index)=> {
-                                    const roleName = role?.displayName?.split("/");
-                                    if (roleName.length === 1) {
-                                        return (
-                                            <TransferListItem
-                                                handleItemChange={
-                                                    () => handleUnassignedItemCheckboxChange(role)
-                                                }
-                                                key={ index }
-                                                listItem={ role.displayName }
-                                                listItemId={ role.id }
-                                                listItemIndex={ index }
-                                                listItemTypeLabel={
-                                                    {
-                                                        labelColor: "olive",
-                                                        labelText: "Primary"
-                                                    }
-                                                }
-                                                isItemChecked={ checkedUnassignedListItems.includes(role) }
-                                                showSecondaryActions={ false }
-                                                data-testid="user-mgt-update-groups-modal-unselected-groups"
-                                            />
-                                        )
-                                    }
+                                groupList?.map((group, index)=> {
+                                    return (
+                                        <TransferListItem
+                                            handleItemChange={
+                                                () => handleUnassignedItemCheckboxChange(group)
+                                            }
+                                            key={ index }
+                                            listItem={ resolveListItem(group?.displayName) }
+                                            listItemId={ group?.id }
+                                            listItemIndex={ index }
+                                            listItemTypeLabel={ resolveListItemLabel(group?.displayName) }
+                                            isItemChecked={ checkedUnassignedListItems.includes(group) }
+                                            showSecondaryActions={ false }
+                                            data-testid="user-mgt-update-groups-modal-unselected-groups"
+                                        />
+                                    )
                                 })
                             }
                         </TransferList>
@@ -569,30 +594,22 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                             data-testid="user-mgt-update-groups-modal-selected-groups-select-all-checkbox"
                         >
                             {
-                                tempGroupList?.map((role, index)=> {
-                                    const userGroup = role?.displayName?.split("/");
-                                    if (userGroup.length === 1) {
-                                        return (
-                                            <TransferListItem
-                                                handleItemChange={
-                                                    () => handleAssignedItemCheckboxChange(role)
-                                                }
-                                                key={ index }
-                                                listItem={ role.displayName }
-                                                listItemId={ role.id }
-                                                listItemIndex={ index }
-                                                listItemTypeLabel={
-                                                    {
-                                                        labelColor: "olive",
-                                                        labelText: "Primary"
-                                                    }
-                                                }
-                                                isItemChecked={ checkedAssignedListItems.includes(role) }
-                                                showSecondaryActions={ false }
-                                                data-testid="user-mgt-update-groups-modal-selected-groups"
-                                            />
-                                        )
-                                    }
+                                tempGroupList?.map((group, index)=> {
+                                    return (
+                                        <TransferListItem
+                                            handleItemChange={
+                                                () => handleAssignedItemCheckboxChange(group)
+                                            }
+                                            key={ index }
+                                            listItem={ resolveListItem(group?.displayName) }
+                                            listItemId={ group?.id }
+                                            listItemIndex={ index }
+                                            listItemTypeLabel={ resolveListItemLabel(group?.displayName) }
+                                            isItemChecked={ checkedAssignedListItems.includes(group) }
+                                            showSecondaryActions={ false }
+                                            data-testid="user-mgt-update-groups-modal-selected-groups"
+                                        />
+                                    )
                                 })
                             }
                         </TransferList>
@@ -645,6 +662,44 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         } else {
             setAssignedGroups(user.groups);
         }
+    };
+
+    const resolveTableContent = (): ReactElement => {
+        return (
+            <Table.Body>
+                {
+                    assignedGroups?.map((group, index: number) => {
+                        const userGroup = group?.display?.split("/");
+
+                        if (userGroup[0] !== APPLICATION_DOMAIN &&
+                            userGroup[0] !== INTERNAL_DOMAIN) {
+                            return (
+                                <Table.Row key={ index }>
+                                    <Table.Cell>
+                                        {
+                                            userGroup?.length === 1
+                                                ? <Label color="olive">
+                                                    { PRIMARY_DOMAIN }
+                                                </Label>
+                                                : <Label color="olive">
+                                                    { userGroup[0] }
+                                                </Label>
+                                        }
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        {
+                                            userGroup?.length === 1
+                                                ? group?.display
+                                                : userGroup[1]
+                                        }
+                                    </Table.Cell>
+                                </Table.Row>
+                            )
+                        }
+                    })
+                }
+            </Table.Body>
+        );
     };
 
     return (
@@ -707,23 +762,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                                     </Table.HeaderCell>
                                                 </Table.Row>
                                             </Table.Header>
-                                            <Table.Body>
-                                                {
-                                                    assignedGroups?.map((group, index: number) => {
-                                                        const userGroup = group?.display?.split("/");
-                                                        if (userGroup.length === 1) {
-                                                            return (
-                                                                <Table.Row key={ index }>
-                                                                    <Table.Cell>
-                                                                        <Label color="olive">Primary</Label>
-                                                                    </Table.Cell>
-                                                                    <Table.Cell>{ group.display }</Table.Cell>
-                                                                </Table.Row>
-                                                            )
-                                                        }
-                                                    })
-                                                }
-                                            </Table.Body>
+                                            { resolveTableContent() }
                                         </Table>
                                     </Grid.Row>
                                 </EmphasizedSegment>
