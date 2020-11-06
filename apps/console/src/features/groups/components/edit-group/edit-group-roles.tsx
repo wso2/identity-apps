@@ -678,7 +678,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                 floated="left"
                                 onClick={ handleCloseAddNewGroupModal }
                             >
-                                Cancel
+                                { t("common:cancel") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -687,7 +687,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                 floated="right"
                                 onClick={ () => updateUserRole(group, tempRoleList) }
                             >
-                                Save
+                                { t("common:save") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
