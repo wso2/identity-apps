@@ -311,6 +311,13 @@
                                     </label>
                                     <input type="email" name="http://wso2.org/claims/emailaddress" class="form-control"
                                            data-validate="email"
+                                        <% if (emailNamePII.getValidationRegex() != null) {
+                                                String pattern = Encode.forHtmlContent(emailNamePII.getValidationRegex());
+                                                String[] patterns = pattern.split("\\\\@");
+                                                String regex = StringUtils.join(patterns, "@");
+                                        %>
+                                        pattern="<%= regex %>"
+                                        <% } %>
                                         <% if (emailNamePII.getRequired() || !piisConfigured) {%> required <%}%>
                                         <% if
                                             (skipSignUpEnableCheck && StringUtils.isNotEmpty(emailValue)) {%>
