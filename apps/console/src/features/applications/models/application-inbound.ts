@@ -35,7 +35,7 @@ export interface MetadataPropertyInterface {
     defaultValue?: string;
 }
 
-interface GrantTypeInterface {
+export interface GrantTypeInterface {
     name?: string;
     displayName?: string;
 }
