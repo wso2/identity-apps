@@ -60,8 +60,8 @@ describe("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
                     <RemoteRepoConfig data-testid="remote-fetch" />
                 </Provider>
             );
-            await waitFor(() => expect(configList).toHaveBeenCalledTimes(2));
-            await waitFor(() => expect(configDetail).toHaveBeenCalledTimes(2));
+            await waitFor(() => expect(configList).toHaveBeenCalledTimes(1));
+            await waitFor(() => expect(configDetail).toHaveBeenCalledTimes(1));
             expect(screen.getByTestId("remote-fetch-form-git-url")).toBeInTheDocument();
 
             configList.mockClear();
@@ -77,9 +77,9 @@ describe("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
                     <RemoteRepoConfig data-testid="remote-fetch" />
                 </Provider>
             );
-            await waitFor(() => expect(configList).toHaveBeenCalledTimes(2));
-            await waitFor(() => expect(configDetail).toHaveBeenCalledTimes(2));
-            fireEvent.click(screen.getByTestId("remote-fetch-config-state").firstChild)
+            await waitFor(() => expect(configList).toHaveBeenCalledTimes(1));
+            await waitFor(() => expect(configDetail).toHaveBeenCalledTimes(1));
+            fireEvent.click(screen.getByTestId("remote-fetch-config-state").firstChild);
             await waitFor(() => expect(configUpdate).toHaveBeenCalledTimes(1));
         });
     });
