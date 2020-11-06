@@ -36,7 +36,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Image, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Image, Popup, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -309,6 +309,21 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                         >
                             <DatabaseAvatarGraphic />
                         </Image>
+                        <Header.Content>
+                            {
+                                userstore.enabled
+                                    ? <Popup
+                                        trigger={ <Icon size="small" name="circle" color="green" /> }
+                                        content={ t("common:enabled") }
+                                        inverted
+                                    />
+                                    : <Popup
+                                        trigger={ <Icon size="small" name="circle" color="orange" /> }
+                                        content={ t("common:disabled") }
+                                        inverted
+                                    />
+                            }
+                        </Header.Content>
                         <Header.Content>
                             { userstore.name }
                             <Header.Subheader>
