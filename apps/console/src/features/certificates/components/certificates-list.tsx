@@ -41,7 +41,7 @@ import {
     TableColumnInterface
 } from "@wso2is/react-components";
 import { saveAs } from "file-saver";
-import * as forge from "node-forge";
+import { X509, zulutodate } from "jsrsasign";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -54,7 +54,6 @@ import {
     retrievePublicCertificate
 } from "../api";
 import { CertificateIllustrations } from "../configs";
-import { X509, hexToArrayBuffer } from "jsrsasign";
 
 /**
  * @constant
@@ -321,36 +320,21 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
 
     /**
      * This converts a PEM-encoded certificate to a
-     * DER encoded ASN.1 certificate and saves it to the disk.
-     *
-     * ```
-     * const intArray = der.data.split("").map(char => {
-            return char.charCodeAt(0);
-        });
-     * ```
-     * The `ByteStringBuffer` that holds the DER encoded
-     * string actually has `UTF-16` encoded string values.
-     *
-     * The above code snippet is used to decode the `UTF-16` string.
+     * binary file and saves it to the disk.
      *
      * @param {string} name The alias of the certificate.
      * @param {string} pem The PEM encoded certificate content.
      */
     const exportCertificate = (name: string, pem: string): void => {
-
         const certificate = decodeCertificate(pem);
+        const hex = certificate.hex;
 
-        const der = forge.asn1.toDer(
-            forge.pki.certificateToAsn1(certificate)
-        );
+        const byteArray = new Uint8Array(hex.length / 2);
+        for (let x = 0; x < byteArray.length; x++) {
+            byteArray[ x ] = parseInt(hex.substr(x * 2, 2), 16);
+        }
 
-        const intArray = der.data.split("").map(char => {
-            return char.charCodeAt(0);
-        });
-
-        const buffer = new Uint8Array(intArray).buffer;
-
-        const blob = new Blob([ buffer ], {
+        const blob = new Blob([ byteArray ], {
             type: "application/x-x509-ca-cert"
         });
 
@@ -364,13 +348,13 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
     };
 
     /**
-     * Converts a PEM encoded string to a Forge certificate object.
+     * Converts a PEM encoded string to a X509 certificate object.
      *
      * @param {string} pem The PEM encoded certificate content.
      *
-     * @returns {forge.pki.Certificate} The Forge Certificate object.
+     * @returns {X509} The X509 Certificate object.
      */
-    const decodeCertificate = (pem: string): forge.pki.Certificate => {
+    const decodeCertificate = (pem: string): X509 => {
         const pemValue = pem?.split("\n");
 
         // appends -----END CERTIFICATE-----.
@@ -384,7 +368,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
 
         const pemCert = pemValue?.join("\n");
 
-        const cert = new X509();
+        const cert: X509 = new X509();
 
         cert.readCertPEM(pemCert);
 
@@ -415,8 +399,8 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                         [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
                     };
                 }),
-            validFrom: cert.getNotBefore(),
-            validTill: cert.getNotAfter(),
+            validFrom: new Date(zulutodate(cert.getNotBefore()).toUTCString()),
+            validTill: new Date(zulutodate(cert.getNotAfter()).toUTCString()),
             version: cert.getVersion()
         };
 
