@@ -349,7 +349,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
      *
      * @param {File} file The File object.
      *
-     * @returns {Promise<string>} A promise that resolves to teh content of the file.
+     * @returns {Promise<string>} A promise that resolves to the content of the file.
      */
     const checkCertType = (file: File): Promise<string> => {
         const extension = file.name.split(".").pop();
