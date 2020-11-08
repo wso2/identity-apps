@@ -125,6 +125,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
      */
     transparent?: boolean;
     /**
+     * Width of the inner image.
+     */
+    width?: "auto" | "full";
+    /**
      * Adjust styling to enable background images.
      */
     withBackgroundImage?: boolean;
@@ -174,6 +178,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         size,
         spaced,
         transparent,
+        width,
         withBackgroundImage,
         [ "data-testid" ]: testId,
         ...rest
@@ -209,6 +214,12 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
             [ `${ relaxLevel }` ]: relaxLevel,
             "with-background-image": withBackgroundImage,
             [ `overflow-${ overflow }` ]: overflow
+        }
+    );
+
+    const innerImageClasses = classNames("inner-image",
+        {
+            [ `width-${ width }` ]: width
         }
     );
 
@@ -340,7 +351,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                     >
                         <div className="inner-content" data-testid={ `${ testId }-inner-content` }>
                             { children }
-                            <img className="inner-image" alt="avatar" src={ image as string }/>
+                            <img className={ innerImageClasses } alt="avatar" src={ image as string }/>
                         </div>
                     </Image>
                     { renderEditBubble() }
@@ -390,7 +401,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                     <div className="content-wrapper" data-testid={ `${ testId }-image-content-wrapper` }>
                         { children }
                         <img
-                            className="inner-image"
+                            className={ innerImageClasses }
                             alt="avatar"
                             src={ defaultIcon }
                             data-testid={ `${ testId }-image` }
