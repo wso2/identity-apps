@@ -43,11 +43,12 @@ import {
 import { EmptyPlaceholderIllustrations } from "../configs";
 import { RemoteFetchConstants } from "../constants";
 import {
-    InterfaceRemoteConfigDetails, 
-    InterfaceRemoteConfigForm, 
-    InterfaceRemoteRepoConfig, 
-    InterfaceRemoteRepoConfigDetails, 
-    InterfaceRemoteRepoListResponse 
+    InterfaceRemoteConfigDetails,
+    InterfaceRemoteConfigForm,
+    InterfaceRemoteRepoConfig,
+    InterfaceRemoteRepoConfigDetails,
+    InterfaceRemoteRepoListResponse,
+    RemoteFetchActionListenerTypes
 } from "../models";
 
 /**
@@ -91,26 +92,43 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
      * Util method to load configurations if available.
      */
     const getRemoteConfigList = (): void => {
-        getRemoteRepoConfigList().then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
-            if (response.status === 200) {
-                if (response.data.remotefetchConfigurations.length > 0) {
-                    setRemoteRepoConfig(response.data.remotefetchConfigurations[0]);
-                    setConnectivity(
-                        response.data.remotefetchConfigurations[0]
-                            .actionListenerType === RemoteFetchConstants.REMOTE_FETCH_POLLING ? 
-                                RemoteFetchConstants.REMOTE_FETCH_POLLING : RemoteFetchConstants.REMOTE_FETCH_WEBHOOK
-                    );
-                    getRemoteRepoConfig(response.data.remotefetchConfigurations[0].id).then((
-                        response: AxiosResponse<InterfaceRemoteConfigDetails>
-                    )  => {
-                        if (response.status === 200) {
-                            setRemoteRepoConfigDetail(response.data);
-                            setIsEnabled(response.data.isEnabled);
-                        }
-                    });
+        getRemoteRepoConfigList()
+            .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+                if (response.status === 200) {
+                    if (response.data.remotefetchConfigurations.length > 0) {
+                        const config: InterfaceRemoteRepoConfig = response.data.remotefetchConfigurations[ 0 ];
+                        const listener: string = response.data.remotefetchConfigurations[ 0 ].actionListenerType;
+
+                        setRemoteRepoConfig(config);
+                        setConnectivity(
+                            listener === RemoteFetchActionListenerTypes.Polling
+                                ? RemoteFetchActionListenerTypes.Polling
+                                : RemoteFetchActionListenerTypes.WebHook
+                        );
+
+                        // Fetch the available repo config.
+                        getRemoteRepoConfig(config.id)
+                            .then((response: AxiosResponse<InterfaceRemoteConfigDetails>) => {
+                                setRemoteRepoConfigDetail(response.data);
+                                setIsEnabled(response.data.isEnabled);
+                            })
+                            .catch(() => {
+                                handleAlerts({
+                                    description: "An error occurred while fetching repo config.",
+                                    level: AlertLevels.ERROR,
+                                    message: "Fetch Error"
+                                });
+                            });
+                    }
                 }
-            }
-        });
+            })
+            .catch(() => {
+                handleAlerts({
+                    description: "An error occurred while fetching the list of repo configs.",
+                    level: AlertLevels.ERROR,
+                    message: "Fetch Error"
+                });
+            });
     };
 
     /**
@@ -161,7 +179,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
         };
 
         // `frequency` is only required when the listener type is `POLLING`.
-        if (connectivity === RemoteFetchConstants.REMOTE_FETCH_POLLING) {
+        if (connectivity === RemoteFetchActionListenerTypes.Polling) {
             configs = {
                 ...configs,
                 actionListener: {
@@ -227,19 +245,27 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
      * @param {InterfaceRemoteRepoConfig} config - Repo Config.
      */
     const handleOnDelete = (config: InterfaceRemoteRepoConfig): void => {
-        deleteRemoteRepoConfig(config.id).then(() => {
-            setRemoteRepoConfig(undefined);
-            setRemoteRepoConfigDetail(undefined);
-            handleAlerts({
-                description: t(
-                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.description"
-                ),
-                level: AlertLevels.SUCCESS,
-                message: t(
-                    "devPortal:components.remoteConfig.notifications.deleteConfig.success.message"
-                )
+        deleteRemoteRepoConfig(config.id)
+            .then(() => {
+                setRemoteRepoConfig(undefined);
+                setRemoteRepoConfigDetail(undefined);
+                handleAlerts({
+                    description: t(
+                        "devPortal:components.remoteConfig.notifications.deleteConfig.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "devPortal:components.remoteConfig.notifications.deleteConfig.success.message"
+                    )
+                });
+            })
+            .catch(() => {
+                handleAlerts({
+                    description: "An error occurred while deleting repo config.",
+                    level: AlertLevels.ERROR,
+                    message: "Delete Error"
+                });
             });
-        });
     };
 
     /**

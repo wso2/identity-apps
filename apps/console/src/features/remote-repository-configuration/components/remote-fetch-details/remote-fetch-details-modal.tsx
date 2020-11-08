@@ -55,17 +55,17 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
     const [ deploymentStatus, setDeploymentStatus ] = useState<InterfaceConfigDetails>(undefined);
 
     useEffect(() => {
-        getConfigDeploymentDetails(remoteDeployment.id).then((response: AxiosResponse<InterfaceConfigDetails>) => {
-            if (response.status === 200) {
+        getConfigDeploymentDetails(remoteDeployment.id)
+            .then((response: AxiosResponse<InterfaceConfigDetails>) => {
                 setDeploymentStatus(response.data);
-            }
-        }).catch(() => {
-            dispatch(addAlert({
-                description: "Error while retrieving remote configuration details",
-                level: AlertLevels.ERROR,
-                message: "There was an error while fetching the remote configuration details."
-            }));
-        });
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: "Error while retrieving remote configuration details",
+                    level: AlertLevels.ERROR,
+                    message: "There was an error while fetching the remote configuration details."
+                }));
+            });
     }, []);
 
     const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
@@ -182,15 +182,14 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                 data-testid={ `${ testId }-import-button` }
                                 onClick={ ()=> {
                                     triggerConfigDeployment(remoteDeployment.id)
-                                        .then((response: AxiosResponse<any>) => {
-                                            if (response.status === 202) {
-                                                dispatch(addAlert({
-                                                    description: "The applications were successfully refetched.",
-                                                    level: AlertLevels.SUCCESS,
-                                                    message: "Successfully fetched applications."
-                                                }));
-                                            }
-                                        }).catch(() => {
+                                        .then(() => {
+                                            dispatch(addAlert({
+                                                description: "The applications were successfully refetched.",
+                                                level: AlertLevels.SUCCESS,
+                                                message: "Successfully fetched applications."
+                                            }));
+                                        })
+                                        .catch(() => {
                                             dispatch(addAlert({
                                                 description: "There was an error while fetching the applications",
                                                 level: AlertLevels.ERROR,

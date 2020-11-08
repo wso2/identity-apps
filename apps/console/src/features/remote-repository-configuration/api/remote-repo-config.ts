@@ -37,7 +37,14 @@ import {
  */
 const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
 
+/**
+ * Fetch repo config list.
+ *
+ * @return {Promise<AxiosResponse<InterfaceRemoteRepoListResponse>>}
+ * @throws {IdentityAppsApiException}
+ */
 export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemoteRepoListResponse>> => {
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -47,16 +54,41 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteFetchConfig
     };
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    RemoteFetchConstants.GET_REPO_CONFIG_LIST_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.GET_REPO_CONFIG_LIST_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
+/**
+ * Fetch repo config details.
+ *
+ * @param {string} id - Repo config ID
+ * @return {Promise<AxiosResponse<InterfaceRemoteConfigDetails>>}
+ * @throws {IdentityAppsApiException}
+ */
 export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse<InterfaceRemoteConfigDetails>> => {
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -68,14 +100,38 @@ export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse<Interface
     };
     return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    RemoteFetchConstants.GET_REPO_CONFIG_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.GET_REPO_CONFIG_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
+/**
+ * Triggers a repo config deployment.
+ *
+ * @param {string} id - Repo config id.
+ * @return {Promise<AxiosResponse>}
+ * @throws {IdentityAppsApiException}
+ */
 export const triggerConfigDeployment = (id: string): Promise<AxiosResponse> => {
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -85,16 +141,41 @@ export const triggerConfigDeployment = (id: string): Promise<AxiosResponse> => {
         method: HttpMethods.POST,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id + "/trigger"
     };
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
+            if (response.status !== 202) {
+                throw new IdentityAppsApiException(
+                    RemoteFetchConstants.TRIGGER_CONFIG_DEPLOYMENT_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.TRIGGER_CONFIG_DEPLOYMENT_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
+/**
+ * Get remote repo deployment details.
+ *
+ * @param {string} id - Repo config id.
+ * @return {Promise<AxiosResponse<InterfaceConfigDetails>>}
+ * @throws {IdentityAppsApiException}
+ */
 export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<InterfaceConfigDetails>> => {
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -104,12 +185,28 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id + "/status"
     };
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceConfigDetails>) => {
+            if (response.status !== 200) {
+                throw new IdentityAppsApiException(
+                    RemoteFetchConstants.GET_CONFIG_DEPLOYMENT_DETAILS_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
+            }
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.GET_CONFIG_DEPLOYMENT_DETAILS_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
@@ -158,7 +255,16 @@ export const createRemoteRepoConfig = (configObj: InterfaceRemoteRepoConfigDetai
         });
 };
 
+/**
+ * Update remote repo config.
+ *
+ * @param {string} id - Repo config id.
+ * @param {InterfaceEditDetails} configObj
+ * @return {Promise<AxiosResponse>}
+ * @throws {IdentityAppsApiException}
+ */
 export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetails): Promise<AxiosResponse> => {
+
     const requestConfig: AxiosRequestConfig = {
         data: configObj,
         headers: {
@@ -169,16 +275,37 @@ export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetai
         method: HttpMethods.PATCH,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            return Promise.resolve(response);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.UPDATE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR,
+                null,
+                response.status,
+                response.request,
+                response,
+                response.config);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.UPDATE_REPO_CONFIG_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };
 
+/**
+ * Delete remote repo config.
+ *
+ * @param {string} id - Repo config id.
+ * @return {Promise<AxiosResponse>}
+ * @throws {IdentityAppsApiException}
+ */
 export const deleteRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
+
     const requestConfig: AxiosRequestConfig = {
         headers: {
             "Accept": "application/json",
@@ -191,9 +318,21 @@ export const deleteRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            return Promise.resolve(response);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.DELETE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR,
+                null,
+                response.status,
+                response.request,
+                response,
+                response.config);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                RemoteFetchConstants.DELETE_REPO_CONFIG_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         });
 };

@@ -190,26 +190,27 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                             icon 
                             labelPosition="left"
                             data-testid={ `${ testId }-trigger-config` }
-                            onClick={ ()=> {
-                                triggerConfigDeployment(remoteConfigDetails.id).then((response: AxiosResponse<any>) => {
-                                    if (response.status === 202) {
+                            onClick={ () => {
+                                triggerConfigDeployment(remoteConfigDetails.id)
+                                    .then(() => {
                                         dispatch(addAlert({
                                             description: "The applications were successfully re-fetched.",
                                             level: AlertLevels.SUCCESS,
                                             message: "Successfully fetched applications."
                                         }));
-    
-                                        setTimeout(()=> {
+
+                                        // TODO: Check if needed.
+                                        setTimeout(() => {
                                             getRemoteConfigList();
                                         }, 3000);
-                                    }
-                                }).catch(() => {
-                                    dispatch(addAlert({
-                                        description: "There was an error while fetching the applications",
-                                        level: AlertLevels.ERROR,
-                                        message: "Error while refetching applications"
-                                    }));
-                                });
+                                    })
+                                    .catch(() => {
+                                        dispatch(addAlert({
+                                            description: "There was an error while fetching the applications",
+                                            level: AlertLevels.ERROR,
+                                            message: "Error while refetching applications"
+                                        }));
+                                    });
                             } }
                         >
                             <Icon name="retweet" />
