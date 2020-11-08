@@ -19,6 +19,9 @@
 import { ReactComponent as DatabaseAvatar } from "../../../themes/default/assets/images/icons/database-avatar.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 import {
+    ReactComponent as DatabaseOutlineIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/database-outline.svg";
+import {
     ReactComponent as ActiveDirectoryUserstoreIllustration
 } from "../../../themes/default/assets/images/illustrations/ad-illustration.svg";
 import {
@@ -42,4 +45,10 @@ export const UserstoreTemplateIllustrations = {
     default: CustomApplicationTemplateIllustration,
     jdbc: JDBCUserstoreIllustration,
     ldap: LDAPUserstoreIllustration
+};
+
+export const TableIcons = {
+    header: {
+        default: DatabaseOutlineIcon
+    }
 };
