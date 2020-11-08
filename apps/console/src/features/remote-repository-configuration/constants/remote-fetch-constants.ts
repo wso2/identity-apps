@@ -30,10 +30,6 @@ export class RemoteFetchConstants {
 
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
-        
-    public static readonly REMOTE_FETCH_WEBHOOK = "WEB_HOOK";
-
-    public static readonly REMOTE_FETCH_POLLING = "POLLING";
 
     public static readonly REMOTE_DEPLOYER_TYPE = "SP";
 

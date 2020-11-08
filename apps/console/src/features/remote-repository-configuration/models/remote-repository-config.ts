@@ -129,3 +129,14 @@ export interface InterfaceRemoteConfigForm {
     userName: string;
     pollingfreq: number;
 }
+
+/**
+ * Enum for supported remote fetch action listener types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum RemoteFetchActionListenerTypes {
+    WebHook = "WEB_HOOK",
+    Polling = "POLLING"
+}
