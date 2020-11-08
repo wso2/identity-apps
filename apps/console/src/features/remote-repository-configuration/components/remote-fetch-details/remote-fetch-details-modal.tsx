@@ -66,7 +66,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                 message: "There was an error while fetching the remote configuration details."
             }));
         })
-    }, [])
+    }, []);
 
     const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
         const newIndexes = [ ...activeIndex ];
@@ -85,7 +85,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
         const now = moment(new Date());
         const receivedDate = moment(date);
         return "Last deployed " +   moment.duration(now.diff(receivedDate)).humanize() + " ago";
-    }
+    };
 
     return (
         <Modal
@@ -207,4 +207,4 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
             </Modal.Actions>
         </Modal>
     )
-}
+};

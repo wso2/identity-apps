@@ -27,7 +27,8 @@ import {
     InterfaceEditDetails,
     InterfaceRemoteConfigDetails,
     InterfaceRemoteRepoConfigDetails,
-    InterfaceRemoteRepoListResponse } from "../models";
+    InterfaceRemoteRepoListResponse
+} from "../models";
 
 /**
  * Get an axios instance.
@@ -53,7 +54,7 @@ export const getRemoteRepoConfigList = (): Promise<AxiosResponse<InterfaceRemote
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse<InterfaceRemoteConfigDetails>> => {
     const requestConfig: AxiosRequestConfig = {
@@ -72,7 +73,7 @@ export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse<Interface
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 export const triggerConfigDeployment = (id: string): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
@@ -91,7 +92,7 @@ export const triggerConfigDeployment = (id: string): Promise<AxiosResponse> => {
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<InterfaceConfigDetails>> => {
     const requestConfig: AxiosRequestConfig = {
@@ -110,7 +111,7 @@ export const getConfigDeploymentDetails = (id: string): Promise<AxiosResponse<In
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 /**
  * Creates a repo config using the REST API.
@@ -175,7 +176,7 @@ export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetai
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 export const deleteRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
     const requestConfig: AxiosRequestConfig = {
@@ -195,4 +196,4 @@ export const deleteRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};

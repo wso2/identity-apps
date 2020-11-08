@@ -45,13 +45,13 @@ describe("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
     const configDetail = jest.spyOn(api, "getRemoteRepoConfig");
     configDetail.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsRequestResponse);
-    })
+    });
 
     // Mock api call to update remote config
     const configUpdate = jest.spyOn(api, "updateRemoteRepoConfig");
     configUpdate.mockImplementation(() => {
         return Promise.resolve(NoConfigResponse);
-    })
+    });
 
     test("UTC-5.1 - Test proper rendering of Remote Fetch Management Component", async () => {
         await act(async () => {

@@ -58,7 +58,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
         const now = moment(new Date());
         const receivedDate = moment(date);
         return "Last deployed " +   moment.duration(now.diff(receivedDate)).humanize() + " ago";
-    }
+    };
 
     /**
      * Util method to get remote configuration list 
@@ -77,7 +77,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                         level: AlertLevels.ERROR,
                         message: "There was an error while fetching the remote configuration details."
                     }));
-                })
+                });
             }
         }).catch(() => {
             dispatch(addAlert({
@@ -85,8 +85,8 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                 level: AlertLevels.ERROR,
                 message: "There was an error while fetching the remote configuration details."
             }));
-        })
-    }
+        });
+    };
 
     return (
         <>
@@ -201,7 +201,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
     
                                         setTimeout(()=> {
                                             getRemoteConfigList();
-                                        }, 3000)
+                                        }, 3000);
                                     }
                                 }).catch(() => {
                                     dispatch(addAlert({
@@ -209,7 +209,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                         level: AlertLevels.ERROR,
                                         message: "Error while refetching applications"
                                     }));
-                                })
+                                });
                             } }
                         >
                             <Icon name="retweet" />
@@ -219,8 +219,8 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                 </Menu>
             }
         </>
-    )
+    );
 
-}
+};
 
 

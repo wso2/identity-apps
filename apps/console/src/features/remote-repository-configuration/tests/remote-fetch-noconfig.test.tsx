@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { fireEvent, render, screen, waitFor, } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import "@testing-library/jest-dom/extend-expect";
 import { Provider } from "react-redux";
@@ -35,16 +35,16 @@ describe("UTC-1.0 - [Remote Fetch Configuration] - Without Configuration )", () 
     const store = mockStore({});
 
     // Mock api call to get remote config list
-    const addMock =jest.spyOn(api, "getRemoteRepoConfigList")
+    const addMock =jest.spyOn(api, "getRemoteRepoConfigList");
     addMock.mockImplementation(() => {
         return Promise.resolve(MockEmptyAxiosResponse);
-    })
+    });
     
     // Mock api call to save remote config
-    const saveMock =jest.spyOn(api, "createRemoteRepoConfig")
+    const saveMock =jest.spyOn(api, "createRemoteRepoConfig");
     saveMock.mockImplementation(() => {
         return Promise.resolve(MockSaveConfigResponse);
-    })
+    });
 
     test("UTC-1.1 - Test proper rendering of Remote Fetch Management Component", () => {
         render(

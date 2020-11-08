@@ -107,10 +107,10 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                             setRemoteRepoConfigDetail(response.data);
                             setIsEnabled(response.data.isEnabled);
                         }
-                    })
+                    });
                 }
             }
-        })
+        });
     };
 
     /**
@@ -171,7 +171,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                         frequency: values.pollingfreq
                     }
                 }
-            }
+            };
         }
 
         createConfiguration(configs);
@@ -209,7 +209,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                         "devPortal:components.remoteConfig.notifications.createConfig.genericError.message"
                     )
                 });
-            })
+            });
     };
 
     /**
@@ -276,7 +276,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 updateRemoteRepoConfig(remoteRepoConfigDetail?.id, {
                                                     isEnabled: !isEnabled,
                                                     remoteFetchName: remoteRepoConfigDetail?.remoteFetchName
-                                                })
+                                                });
                                             } }
                                             label={
                                                 isEnabled ? "Enabled" : "Disabled"
@@ -355,7 +355,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     disabled={ remoteRepoConfig ? true : false }
                                     data-testid={ `${ testId }-form-connection-polling` }
                                     onChange={ () => {
-                                        setConnectivity("POLLING")
+                                        setConnectivity("POLLING");
                                     } }
                                 />
                             </Form.Field>
@@ -367,7 +367,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     checked={ connectivity === "WEB_HOOK" }
                                     data-testid={ `${ testId }-form-connection-webhook` }
                                     onChange={ () => {
-                                        setConnectivity("WEB_HOOK")
+                                        setConnectivity("WEB_HOOK");
                                     } }
                                 />
                             </Form.Field>
@@ -462,7 +462,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     attached
                                     data-testid={ `${ testId }-remove-configuration` }
                                     onClick={ () => {
-                                        setShowDeleteConfirmationModal(true)
+                                        setShowDeleteConfirmationModal(true);
                                     } }
                                 >
                                     Remove Configuration
@@ -473,7 +473,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     floated="left"
                                     data-testid={ `${ testId }-cancel-configuration` }
                                     onClick={ () => {
-                                        setShowFetchForm(false)
+                                        setShowFetchForm(false);
                                     } }
                                 >   
                                     Cancel
@@ -483,7 +483,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                     </Grid.Row>
                 </Grid>
             </Forms>
-        )
+        );
     };
 
     return (
@@ -525,7 +525,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 action={
                                                     <PrimaryButton 
                                                         data-testid={ `${ testId }-add-configuration` }
-                                                        onClick={ () => { setShowFetchForm(true) } }
+                                                        onClick={ () => { setShowFetchForm(true); } }
                                                     >
                                                         <Icon name="add"/>
                                                         { "Configure Repository" }
@@ -589,7 +589,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                 </ConfirmationModal>
             }
         </PageLayout>
-    )
+    );
 };
 
 /**

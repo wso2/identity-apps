@@ -40,7 +40,7 @@ describe("UTC-4.0 - [Remote Fetch Configuration] - Configuration Status", () => 
     const configDetail = jest.spyOn(api, "getRemoteRepoConfig");
     configDetail.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsRequestResponse);
-    })
+    });
 
     // Mock api call to trigger remote config
     const configTrigger = jest.spyOn(api, "triggerConfigDeployment");
