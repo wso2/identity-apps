@@ -41,14 +41,15 @@ import {
     updateRemoteRepoConfig 
 } from "../api";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { RemoteFetchConstants } from "../constants";
 import {
     InterfaceRemoteConfigDetails,
     InterfaceRemoteConfigForm,
     InterfaceRemoteRepoConfig,
     InterfaceRemoteRepoConfigDetails,
     InterfaceRemoteRepoListResponse,
-    RemoteFetchActionListenerTypes
+    RemoteFetchActionListenerTypes,
+    RemoteFetchDeployerTypes,
+    RemoteFetchRepositoryManagerTypes
 } from "../models";
 
 /**
@@ -162,7 +163,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
             },
             configurationDeployer: {
                 attributes: {},
-                type: RemoteFetchConstants.REMOTE_DEPLOYER_TYPE
+                type: RemoteFetchDeployerTypes.SP
             },
             isEnabled: true,
             remoteFetchName: values.configName,
@@ -174,7 +175,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                     uri: values.gitUrl,
                     username: values.userName
                 },
-                type: RemoteFetchConstants.REMOTE_REPOSITORY_TYPE
+                type: RemoteFetchRepositoryManagerTypes.GIT
             }
         };
 

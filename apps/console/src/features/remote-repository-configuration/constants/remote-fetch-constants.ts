@@ -27,22 +27,17 @@ export class RemoteFetchConstants {
      *
      * @hideconstructor
      */
-
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
-
-    public static readonly REMOTE_DEPLOYER_TYPE = "SP";
-
-    public static readonly REMOTE_REPOSITORY_TYPE = "GIT";
 
     // API errors
     public static readonly GET_REPO_CONFIG_LIST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
         "code while fetching remote repo config list.";
     public static readonly GET_REPO_CONFIG_LIST_ERROR: string = "Error occurred while fetching the repo config list.";
-    public static readonly TRIGGER_CONFIG_DEPLOYMENT_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
-        "code while deploying the remote repo config.";
-    public static readonly TRIGGER_CONFIG_DEPLOYMENT_ERROR: string = "Error occurred while deploying the remote repo " +
-        "config.";
+    public static readonly TRIGGER_CONFIG_DEPLOYMENT_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while deploying the remote repo config.";
+    public static readonly TRIGGER_CONFIG_DEPLOYMENT_ERROR: string = "Error occurred while deploying the remote " +
+        "repo config.";
     public static readonly GET_CONFIG_DEPLOYMENT_DETAILS_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
         "status code while fetching remote repo config deployment details.";
     public static readonly GET_CONFIG_DEPLOYMENT_DETAILS_ERROR: string = "Error occurred while fetching the remote " +
