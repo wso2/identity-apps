@@ -16,6 +16,21 @@
  * under the License.
  */
 
+import {
+    AlertLevels,
+    LoadableComponentInterface,
+    SBACInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
+import {
+    DataTable,
+    EmptyPlaceholder,
+    GenericIcon,
+    LinkButton,
+    TableActionsInterface,
+    TableColumnInterface
+} from "@wso2is/react-components";
 import React, {
     FunctionComponent,
     ReactElement,
@@ -25,30 +40,15 @@ import React, {
     useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import {Header, Icon, Label, Popup, SemanticCOLORS, SemanticICONS} from "semantic-ui-react";
-import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } from "../models";
-import { UIConstants } from "../../core/constants";
-import {
-    DataTable,
-    EmptyPlaceholder,
-    TableActionsInterface,
-    TableColumnInterface,
-    LinkButton,
-    GenericIcon
-} from "@wso2is/react-components";
-import { FeatureConfigInterface } from "../../core/models";
-import {
-    AlertLevels,
-    LoadableComponentInterface,
-    SBACInterface,
-    TestableComponentInterface
-} from "@wso2is/core/models";
-import { EmptyPlaceholderIllustrations } from "../../core/configs";
-import { fetchPendingApprovalDetails } from "../api";
 import { useDispatch } from "react-redux";
-import { addAlert } from "@wso2is/core/store";
+import { Header, Label, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
 import { ApprovalTaskComponent } from "./approval-task";
-import { ApprovalsListIcons } from "../configs";
+import { EmptyPlaceholderIllustrations } from "../../core/configs";
+import { UIConstants } from "../../core/constants";
+import { FeatureConfigInterface } from "../../core/models";
+import { fetchPendingApprovalDetails } from "../api";
+import { TableIcons } from "../configs";
+import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface } from "../models";
 
 /**
  * Prop types for the approvals list component.
@@ -319,7 +319,22 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                 key: "name",
                 render: (approval: ApprovalTaskListItemInterface): ReactNode => {
                     return (
-                        <Header as="h6" image data-testid={ `${ testId }-item-heading` }>
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-testid={ `${ testId }-item-heading` }
+                        >
+                            <GenericIcon
+                                bordered
+                                defaultIcon
+                                relaxed="very"
+                                size="micro"
+                                shape="rounded"
+                                spaced="right"
+                                hoverable={ false }
+                                icon={ TableIcons.header.default }
+                            />
                             <Header.Content>
                                 { approval.id + " " + approval.presentationSubject + " " }
                                 <Label circular size="tiny">
