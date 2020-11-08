@@ -122,7 +122,7 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
         setFilterTempAvailableClaims(removedRoles);
         setTempSelectedClaims(tempSelectedClaims?.filter(x => !removedRoles?.includes(x)));
         setFilterTempSelectedClaims(filterTempSelectedClaims?.filter(x => !removedRoles?.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
+        setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllClaimsChecked(false);
     };
 
