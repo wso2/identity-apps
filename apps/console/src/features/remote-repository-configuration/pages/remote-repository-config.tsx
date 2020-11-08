@@ -95,7 +95,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
     const getRemoteConfigList = (): void => {
         getRemoteRepoConfigList()
             .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
-                if (response.data.remotefetchConfigurations.length > 0) {
+                if (response.data?.count > 0) {
                     const config: InterfaceRemoteRepoConfig = response.data.remotefetchConfigurations[ 0 ];
                     const listener: string = response.data.remotefetchConfigurations[ 0 ].actionListenerType;
 
@@ -343,7 +343,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
                                         "gitURL.validations.required")
                                 }
-                                disabled={ remoteRepoConfig ? true : false }
+                                disabled={ !!remoteRepoConfig }
                                 data-testid={ `${ testId }-form-git-url` }
                                 value={ 
                                     remoteRepoConfigDetail ? 
@@ -369,7 +369,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
                                         "gitBranch.validations.required")
                                 }
-                                disabled={ remoteRepoConfig ? true : false }
+                                disabled={ !!remoteRepoConfig }
                                 data-testid={ `${ testId }-form-git-branch` }
                                 value={ 
                                     remoteRepoConfigDetail ? 
@@ -397,7 +397,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     t("console:manage.features.remoteFetch.forms.getRemoteFetchForm.fields." +
                                         "gitFolder.validations.required")
                                 }
-                                disabled={ remoteRepoConfig ? true : false }
+                                disabled={ !!remoteRepoConfig }
                                 data-testid={ `${ testId }-form-git-directory` }
                                 value={ 
                                     remoteRepoConfigDetail ? 
@@ -423,7 +423,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     }
                                     name="radioGroup"
                                     checked={ connectivity === "POLLING" }
-                                    disabled={ remoteRepoConfig ? true : false }
+                                    disabled={ !!remoteRepoConfig }
                                     data-testid={ `${ testId }-form-connection-polling` }
                                     onChange={ () => {
                                         setConnectivity("POLLING");
@@ -437,7 +437,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                             "fields.connectivity.children.webhook.label")
                                     }
                                     name="radioGroup"
-                                    disabled={ remoteRepoConfig ? true : false }
+                                    disabled={ !!remoteRepoConfig }
                                     checked={ connectivity === "WEB_HOOK" }
                                     data-testid={ `${ testId }-form-connection-webhook` }
                                     onChange={ () => {
@@ -464,7 +464,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 "fields.username.placeholder")
                                         }
                                         required={ false }
-                                        disabled={ remoteRepoConfig ? true : false }
+                                        disabled={ !!remoteRepoConfig }
                                         requiredErrorMessage={ "" }
                                         data-testid={ `${ testId }-form-git-username` }
                                         value={ 
@@ -487,7 +487,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                 "fields.accessToken.placeholder")
                                         }
                                         required={ false }
-                                        disabled={ remoteRepoConfig ? true : false }
+                                        disabled={ !!remoteRepoConfig }
                                         requiredErrorMessage={ "" }
                                         data-testid={ `${ testId }-form-git-accesstoken` }
                                         value={ 
@@ -503,7 +503,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                     <Field
                                         type="number"
                                         name="pollingFreq"
-                                        disabled={ remoteRepoConfig ? true : false }
+                                        disabled={ !!remoteRepoConfig }
                                         label={
                                             t("console:manage.features.remoteFetch.forms.getRemoteFetchForm." +
                                                 "fields.pollingFrequency.label")
@@ -528,7 +528,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                             "fields.sharedKey.label")
                                     }
                                     required={ false }
-                                    disabled={ remoteRepoConfig ? true : false }
+                                    disabled={ !!remoteRepoConfig }
                                     requiredErrorMessage={ "" }
                                     data-testid={ `${ testId }-form-git-shared-key` }
                                 />
@@ -541,7 +541,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             { !remoteRepoConfig &&
                                 <PrimaryButton
-                                    disabled={ remoteRepoConfig ? true : false }
+                                    disabled={ !!remoteRepoConfig }
                                     floated="left"
                                     data-testid={ `${ testId }-save-configuration` }
                                 >

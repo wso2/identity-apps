@@ -279,13 +279,7 @@ export const updateRemoteRepoConfig = (id: string, configObj: InterfaceEditDetai
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            throw new IdentityAppsApiException(
-                RemoteFetchConstants.UPDATE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR,
-                null,
-                response.status,
-                response.request,
-                response,
-                response.config);
+            return Promise.resolve(response);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
@@ -319,13 +313,7 @@ export const deleteRemoteRepoConfig = (id: string): Promise<AxiosResponse> => {
 
     return httpClient(requestConfig)
         .then((response: AxiosResponse) => {
-            throw new IdentityAppsApiException(
-                RemoteFetchConstants.DELETE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR,
-                null,
-                response.status,
-                response.request,
-                response,
-                response.config);
+            return Promise.resolve(response);
         })
         .catch((error) => {
             throw new IdentityAppsApiException(
