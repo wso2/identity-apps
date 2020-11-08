@@ -19,6 +19,7 @@
 import { LoadableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import {
     AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
@@ -173,10 +174,23 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 id: "name",
                 key: "name",
                 render: (templateType: EmailTemplateType): ReactNode => (
-                    <Header as="h6" image>
-                        <AnimatedAvatar
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <AppAvatar
                             name={ templateType.displayName }
+                            image={ (
+                                <AnimatedAvatar
+                                    name={ templateType.displayName }
+                                    size="mini"
+                                    data-testid={ `${ testId }-item-image` }
+                                />
+                            ) }
                             size="mini"
+                            spaced="right"
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content data-testid={ `${ testId }-item-heading` }>

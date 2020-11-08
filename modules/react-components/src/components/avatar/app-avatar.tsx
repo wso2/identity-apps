@@ -100,5 +100,6 @@ AppAvatar.defaultProps = {
     onCard: false,
     overflow: "hidden",
     rounded: true,
-    shape: "square"
+    shape: "square",
+    width: "full"
 };

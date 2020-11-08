@@ -30,6 +30,7 @@ import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
+    AppAvatar,
     Certificate as CertificateDisplay,
     ConfirmationModal,
     DataTable,
@@ -629,10 +630,22 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 id: "name",
                 key: "name",
                 render: (certificate: Certificate): ReactNode => (
-                    <Header as="h6" image>
-                        <AnimatedAvatar
-                            name={ certificate.alias }
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <AppAvatar
+                            image={ (
+                                <AnimatedAvatar
+                                    name={ certificate.alias }
+                                    size="mini"
+                                    data-testid={ `${ testId }-item-image-inner` }
+                                />
+                            ) }
                             size="mini"
+                            spaced="right"
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>

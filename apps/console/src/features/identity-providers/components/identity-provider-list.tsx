@@ -237,21 +237,34 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                 id: "name",
                 key: "name",
                 render: (idp: IdentityProviderInterface): ReactNode => (
-                    <Header as="h6" image data-testid={ `${ testId }-item-heading` }>
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
                         {
                             idp.image
                                 ? (
                                     <AppAvatar
+                                        size="mini"
                                         name={ idp.name }
                                         image={ idp.image }
-                                        size="mini"
+                                        spaced="right"
                                         data-testid={ `${ testId }-item-image` }
                                     />
                                 )
                                 : (
-                                    <AnimatedAvatar
-                                        name={ idp.name }
+                                    <AppAvatar
+                                        image={ (
+                                            <AnimatedAvatar
+                                                name={ idp.name }
+                                                size="mini"
+                                                data-testid={ `${ testId }-item-image-inner` }
+                                            />
+                                        ) }
                                         size="mini"
+                                        spaced="right"
                                         data-testid={ `${ testId }-item-image` }
                                     />
                                 )
