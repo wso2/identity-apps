@@ -96,6 +96,7 @@ export interface StrictFormAttributes {
         empty?: string;
         duplicate?: string;
         invalid?: string;
+        required?: string;
     };
 }
 

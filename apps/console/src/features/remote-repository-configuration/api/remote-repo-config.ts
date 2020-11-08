@@ -98,6 +98,7 @@ export const getRemoteRepoConfig = (id: string): Promise<AxiosResponse<Interface
         method: HttpMethods.GET,
         url: store.getState().config.endpoints.remoteFetchConfig + "/" + id
     };
+
     return httpClient(requestConfig)
         .then((response: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
             if (response.status !== 200) {

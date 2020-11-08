@@ -22,6 +22,7 @@ import { Hint, LinkButton } from "@wso2is/react-components/src";
 import { AxiosResponse } from "axios";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Icon, Menu, Popup } from "semantic-ui-react";
 import { RemoteFetchDetails } from "./remote-fetch-details";
@@ -34,8 +35,17 @@ import {
     triggerConfigDeployment 
 } from "..";
 
+/**
+ * Remote fetch status props interface.
+ */
 type RemoteFetchStatusProps = TestableComponentInterface;
 
+/**
+ * Remote fetch details component.
+ *
+ * @param {RemoteFetchStatusProps} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
 export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
     props: RemoteFetchStatusProps
 ): ReactElement => {
@@ -49,6 +59,8 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
     const [ remoteConfig, setRemoteConfig ] = useState<InterfaceRemoteRepoConfig>(undefined);
 
     const dispatch = useDispatch();
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         getRemoteConfigList();
@@ -64,28 +76,37 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
      * Util method to get remote configuration list 
      */
     const getRemoteConfigList = () => {
-        getRemoteRepoConfigList().then((remoteRepoList: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
-            if (remoteRepoList.status == 200 && remoteRepoList.data.count > 0 ) {
-                setRemoteConfig(remoteRepoList.data.remotefetchConfigurations[0]);
-                getRemoteRepoConfig(remoteRepoList.data.remotefetchConfigurations[0].id).then((
-                    response: AxiosResponse<InterfaceRemoteConfigDetails>
-                ) => {
-                    setRemoteConfigDetails(response.data);
-                }).catch(() => {
-                    dispatch(addAlert({
-                        description: "Error while retrieving remote configuration details",
-                        level: AlertLevels.ERROR,
-                        message: "There was an error while fetching the remote configuration details."
-                    }));
-                });
-            }
-        }).catch(() => {
-            dispatch(addAlert({
-                description: "Error while retrieving remote configuration details",
-                level: AlertLevels.ERROR,
-                message: "There was an error while fetching the remote configuration details."
-            }));
-        });
+
+        getRemoteRepoConfigList()
+            .then((remoteRepoList: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+                const config: InterfaceRemoteRepoConfig = remoteRepoList.data.remotefetchConfigurations[ 0 ];
+
+                if (remoteRepoList.data.count > 0) {
+                    setRemoteConfig(config);
+                    getRemoteRepoConfig(config.id)
+                        .then((response: AxiosResponse<InterfaceRemoteConfigDetails>) => {
+                            setRemoteConfigDetails(response.data);
+                        })
+                        .catch(() => {
+                            dispatch(addAlert({
+                                description: t("console:manage.features.remoteFetch.notifications." +
+                                    "getConfigDeploymentDetails.genericError.description"),
+                                level: AlertLevels.ERROR,
+                                message: t("console:manage.features.remoteFetch.notifications." +
+                                    "getConfigDeploymentDetails.genericError.message")
+                            }));
+                        });
+                }
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t("console:manage.features.remoteFetch.notifications." +
+                        "getConfigList.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.remoteFetch.notifications." +
+                        "getConfigList.genericError.message")
+                }));
+            });
     };
 
     return (
@@ -103,12 +124,14 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
             {
                 remoteConfig &&
                 <Menu data-testid={ `${ testId }-status` } size="small" borderless className="mb-6">
-                    <Menu.Item  active header>Remote Configurations</Menu.Item>
+                    <Menu.Item  active header>
+                        { t("console:manage.features.remoteFetch.components.status.header") }
+                    </Menu.Item>
                     {
                         remoteConfigDetails?.status?.count === 0 &&
                         <Menu.Item>
                             <Hint icon="info circle" className="mt-1 mb-1">
-                                No applications deployed currently.
+                                { t("console:manage.features.remoteFetch.components.status.hint") }
                             </Hint>
                         </Menu.Item>
                     }
@@ -125,12 +148,13 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                     />
                                 </Icon.Group>
                                 {
-                                    remoteConfigDetails?.status?.successfulDeployments > 0 ?
-                                    <strong className="mr-1">{ 
-                                        remoteConfigDetails?.status?.successfulDeployments 
-                                    }</strong>
-                                    :
-                                    remoteConfigDetails?.status?.successfulDeployments
+                                    (remoteConfigDetails?.status?.successfulDeployments > 0)
+                                        ? (
+                                            <strong className="mr-1">
+                                                { remoteConfigDetails?.status?.successfulDeployments }
+                                            </strong>
+                                        )
+                                        : remoteConfigDetails?.status?.successfulDeployments
                                 } Successful
                             </Menu.Item>
                             <Menu.Item data-testid={ `${ testId }-failed` } className="pl-1 pr-3">
@@ -143,12 +167,13 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                     />
                                 </Icon.Group>
                                 {
-                                    remoteConfigDetails?.status?.failedDeployments > 0 ?
-                                    <strong className="mr-1">{ 
-                                        remoteConfigDetails?.status?.failedDeployments 
-                                    }</strong>
-                                    :
-                                    remoteConfigDetails?.status?.failedDeployments
+                                    (remoteConfigDetails?.status?.failedDeployments > 0)
+                                        ? (
+                                            <strong className="mr-1">{
+                                                remoteConfigDetails?.status?.failedDeployments
+                                            }</strong>
+                                        )
+                                        : remoteConfigDetails?.status?.failedDeployments
                                 } Failed
                                 {
                                     remoteConfigDetails?.status?.lastSynchronizedTime  &&
@@ -159,7 +184,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                             setOpenRemoteFetchDetails(true);
                                         } }
                                     >
-                                        Details
+                                        { t("console:manage.features.remoteFetch.components.status.details") }
                                     </LinkButton>
                                 }
                             </Menu.Item>
@@ -174,7 +199,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                     <Menu.Item compact position="right">
                         <Popup
                             content={ remoteConfigDetails?.repositoryManagerAttributes?.uri }
-                            header="Github Repository URL"
+                            header={ t("console:manage.features.remoteFetch.components.status.linkPopup.header") }
                             on="click"
                             pinned
                             offset={ "35%" }
@@ -194,34 +219,34 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                 triggerConfigDeployment(remoteConfigDetails.id)
                                     .then(() => {
                                         dispatch(addAlert({
-                                            description: "The applications were successfully re-fetched.",
+                                            description: t("console:manage.features.remoteFetch.notifications" +
+                                                ".triggerConfigDeployment.success.description"),
                                             level: AlertLevels.SUCCESS,
-                                            message: "Successfully fetched applications."
+                                            message: t("console:manage.features.remoteFetch.notifications" +
+                                                ".triggerConfigDeployment.success.message")
                                         }));
 
-                                        // TODO: Check if needed.
                                         setTimeout(() => {
                                             getRemoteConfigList();
                                         }, 3000);
                                     })
                                     .catch(() => {
                                         dispatch(addAlert({
-                                            description: "There was an error while fetching the applications",
+                                            description: t("console:manage.features.remoteFetch.notifications" +
+                                                ".triggerConfigDeployment.genericError.description"),
                                             level: AlertLevels.ERROR,
-                                            message: "Error while refetching applications"
+                                            message: t("console:manage.features.remoteFetch.notifications" +
+                                                ".triggerConfigDeployment.genericError.message")
                                         }));
                                     });
                             } }
                         >
                             <Icon name="retweet" />
-                            Refetch
+                            { t("console:manage.features.remoteFetch.components.status.refetch") }
                         </Button>
                     </Menu.Item>
                 </Menu>
             }
         </>
     );
-
 };
-
-
