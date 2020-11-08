@@ -65,7 +65,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                 level: AlertLevels.ERROR,
                 message: "There was an error while fetching the remote configuration details."
             }));
-        })
+        });
     }, []);
 
     const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
@@ -196,7 +196,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                                 level: AlertLevels.ERROR,
                                                 message: "Error while refetching applications"
                                             }));
-                                        })
+                                        });
                                 } }
                             >
                                 Refetch Applications
@@ -206,5 +206,5 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                 </Grid>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };

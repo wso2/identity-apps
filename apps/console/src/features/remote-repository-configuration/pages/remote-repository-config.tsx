@@ -41,7 +41,7 @@ import {
     updateRemoteRepoConfig 
 } from "../api";
 import { EmptyPlaceholderIllustrations } from "../configs";
-import { RemoteFetchConstants } from "../constants/remote-fetch-constants";
+import { RemoteFetchConstants } from "../constants";
 import {
     InterfaceRemoteConfigDetails, 
     InterfaceRemoteConfigForm, 

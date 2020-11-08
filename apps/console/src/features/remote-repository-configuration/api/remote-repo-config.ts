@@ -21,7 +21,7 @@ import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import { HttpMethods } from "@wso2is/core/models";
 import { AxiosRequestConfig, AxiosResponse } from "axios";
 import { store } from "../../core";
-import { RemoteFetchConstants } from "../constants/remote-fetch-constants";
+import { RemoteFetchConstants } from "../constants";
 import {
     InterfaceConfigDetails,
     InterfaceEditDetails,

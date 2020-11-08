@@ -181,7 +181,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                             position="top right"
                             trigger={
                                 <Icon.Group className="mr-3 p-1 link">
-                                    <Icon name="linkify"></Icon>
+                                    <Icon name="linkify" />
                                 </Icon.Group>
                             }
                         />
@@ -194,7 +194,7 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
                                 triggerConfigDeployment(remoteConfigDetails.id).then((response: AxiosResponse<any>) => {
                                     if (response.status === 202) {
                                         dispatch(addAlert({
-                                            description: "The applications were successfully refetched.",
+                                            description: "The applications were successfully re-fetched.",
                                             level: AlertLevels.SUCCESS,
                                             message: "Successfully fetched applications."
                                         }));
