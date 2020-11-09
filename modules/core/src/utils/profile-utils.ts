@@ -90,6 +90,13 @@ export class ProfileUtils {
             if (schema.subAttributes && schema.subAttributes.length > 0) {
 
                 /**
+                 * Add the email schema.
+                 */
+                if (schema.multiValued && schema.name !== "roles" && schema.name !== "phoneNumbers") {
+                    tempSchemas.push(schema);
+                }
+
+                /**
                  * If the schema has sub attributes, then this function will be recursively called.
                  * The returned attributes are pushed into the `tempSchemas` array.
                  */
@@ -107,4 +114,19 @@ export class ProfileUtils {
 
         return tempSchemas;
     }
+
+
+    /**
+     * This function checks if the passed schema  is of type `MultiValue`.
+     *
+     * @param {ProfileSchemaInterface[]} schemas - Array of schemas
+     * @param {string} schemaName - Name of the parent schema.
+     *
+     * @return {boolean} attribute is MultiValue
+     */
+    public static isMultiValuedSchemaAttribute = (schemas: ProfileSchemaInterface[], schemaName?: string): boolean => {
+        const parentSchema = schemas?.find((schema) => schema?.name === schemaName);
+
+        return parentSchema?.multiValued;
+    };
 }
