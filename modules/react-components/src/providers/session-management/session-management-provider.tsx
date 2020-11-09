@@ -181,6 +181,7 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
     const performCleanupTasks = () => {
         setTimerDisplay(undefined);
         window.clearInterval(timerIntervalID.current);
+        timerIntervalID.current = null;
     };
 
     /**
@@ -192,20 +193,22 @@ export const SessionManagementProvider: FunctionComponent<PropsWithChildren<
         let minutes: number = 0;
         let seconds: number = 0;
 
-        timerIntervalID.current = window.setInterval(() => {
-            minutes = Math.floor(timer / 60);
-            seconds = Math.floor(timer % 60);
+        if (!timerIntervalID.current) {
+            timerIntervalID.current = window.setInterval(() => {
+                minutes = Math.floor(timer / 60);
+                seconds = Math.floor(timer % 60);
 
-            setTimerDisplay(
-                (minutes < 10 ? "0" + minutes : minutes)
-                + ":"
-                + (seconds < 10 ? "0" + seconds : seconds)
-            );
+                setTimerDisplay(
+                    (minutes < 10 ? "0" + minutes : minutes)
+                    + ":"
+                    + (seconds < 10 ? "0" + seconds : seconds)
+                );
 
-            if (--timer < 0) {
-                timer = duration;
-            }
-        }, 1000);
+                if (--timer < 0) {
+                    handleSessionLogout();
+                }
+            }, 1000);
+        }
     };
 
     return (
