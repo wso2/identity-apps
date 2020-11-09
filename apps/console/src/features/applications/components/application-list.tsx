@@ -414,9 +414,25 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
                 data={
-                    list?.applications?.filter((app: ApplicationListItemInterface) =>
-                        app.name !== ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP &&
-                        app.name !== UIConfig.selfAppIdentifier)
+                    list?.applications?.filter((app: ApplicationListItemInterface) => {
+
+                        if (app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP ||
+                            app.name === UIConfig.selfAppIdentifier) {
+
+                            return false;
+                        }
+
+                        if (UIConfig.systemAppsIdentifiers.includes(app.name) &&
+                            featureConfig?.systemApplications?.enabled &&
+                            !hasRequiredScopes(featureConfig?.systemApplications,
+                                featureConfig?.systemApplications?.scopes?.update, allowedScopes)) {
+
+                            return false;
+                        }
+
+                        return true;
+
+                    })
                 }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
                     handleApplicationEdit(app.id, app.access);
