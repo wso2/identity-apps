@@ -38,10 +38,10 @@ i.icon {
     &.notification-icon {
         position: absolute;
         z-index: 1;
-        top: -1px;
-        left: 21px;
-        display: inline-block !important;
-        font-size: .74em !important;
+        top: -3px;
+        left: 28px;
+        display: inline-block!important;
+        font-size: .74em!important;
     }
 
     &.map-icon {

@@ -26,6 +26,7 @@
 --------------------------------*/
 
 @avatarWrapperDisplayInline: inline-block;
+@avatarWrapperRounded: @defaultBorderRadius;
 
 /*-------------------------------
         Avatar Container
@@ -61,5 +62,5 @@
         Square Avatar
 --------------------------------*/
 
-@squareAvatarSpacingRight: 0.4em;
-@squareAvatarSpacingLeft: 0.4em;
+@squareAvatarSpacingRight: 1em;
+@squareAvatarSpacingLeft: 1em;
