@@ -145,26 +145,21 @@
                         %>
 
                         <div class="ui divider hidden"></div>
-
-                        <div style="text-align: left;">
-                            <div class="ui form">
-                                <div class="grouped fields">
-                                    <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" class="hidden" name="scope-approval" id="approveCb"
-                                                   value="approve" checked>
-                                            <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <div class="ui radio checkbox">
-                                            <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
-                                            <label for="approveAlwaysCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.always")%></label>
-                                        </div>
-                                    </div>
-                                </div>
+                    
+                        <div class="field">
+                            <div class="ui checkbox">
+                                <input
+                                    tabindex="3"
+                                    type="checkbox"
+                                    id="rememberApproval"
+                                    name="rememberApproval"
+                                    data-testid="oauth2-consent-page-remember-approval-checkbox"
+                                />
+                                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.my.approval")%></label>
                             </div>
                         </div>
+                    
+                        <div class="ui divider hidden"></div>
 
                     </div>
                     <div class="align-right buttons">
@@ -174,10 +169,10 @@
 
                         <input class="ui large button link-button" type="reset"
                                onclick="deny(); return false;"
-                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>"/>
+                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"/>
                         <input type="button" class="ui primary large button" id="approve" name="approve"
                                onclick="approved(); return false;"
-                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%> "/>
+                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"approve")%> "/>
                     </div>
                 </form>
             </div>
@@ -221,17 +216,14 @@
     <script type="text/javascript">
 
         function approved() {
-            var scopeApproval = $("input[name='scope-approval']");
-
-            // If scope approval radio button is rendered then we need to validate that it's checked
-            if (scopeApproval.length > 0) {
-                if (scopeApproval.is(":checked")) {
-                    var checkScopeConsent = $("input[name='scope-approval']:checked");
-                    $('#consent').val(checkScopeConsent.val());
-                } else {
-                    $("#modal_scope_validation").modal('show');
-                    return;
-                }
+            var isApproveAlwaysChecked = $("#rememberApproval").is(':checked');
+        
+            // Check if the remember approval checkbox is selected, if so set the consent
+            // input value to `approveAlways` else set it to `approve`.
+            if (isApproveAlwaysChecked) {
+                document.getElementById('consent').value = "approveAlways";
+            } else {
+                document.getElementById('consent').value = "approve";
             }
 
             document.getElementById("profile").submit();
