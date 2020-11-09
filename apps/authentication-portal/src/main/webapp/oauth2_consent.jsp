@@ -243,12 +243,12 @@
                                         <div class="field">
                                             <div class="ui checkbox">
                                                 <input
-                                                tabindex="3"
-                                                type="checkbox"
-                                                id="rememberApproval"
-                                                name="rememberApproval"
-                                                data-testid="consent-page-remember-approval-checkbox"
-                                            >
+                                                    tabindex="3"
+                                                    type="checkbox"
+                                                    id="rememberApproval"
+                                                    name="rememberApproval"
+                                                    data-testid="consent-page-remember-approval-checkbox"
+                                                />
                                                 <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.my.approval")%></label>
                                             </div>
                                         </div>
