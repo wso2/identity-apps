@@ -30,8 +30,9 @@ import RemoteRepoConfig from "../pages/remote-repository-config";
 /**
  * This will test the remote fetch configuration management
  * feature with a configuration.
+ * TODO: Enable once https://github.com/wso2/product-is/issues/10393 is fixed.
  */
-describe("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
+describe.skip("UTC-5.0 - [Remote Fetch Configuration] - With Configuration", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
