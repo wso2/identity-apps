@@ -84,7 +84,7 @@ const UserEditPage = (): ReactElement => {
 
         getGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
             .then((response: GovernanceConnectorInterface[]) => {
-                const properties: ConnectorPropertyInterface[] = [ ...connectorProperties ];
+                const properties: ConnectorPropertyInterface[] = connectorProperties ? [ ...connectorProperties ] : [];
 
                 response.map((connector) => {
                     if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
