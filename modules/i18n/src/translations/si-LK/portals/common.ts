@@ -50,7 +50,7 @@ export const common: CommonNS = {
     delete: "මකන්න",
     description: "විස්තරය",
     deviceModel: "උපාංග ආකෘතිය",
-    disabled: "ආබාධිතයි",
+    disabled: "අක්‍රීයයි",
     docs: "ලියකියවිලි",
     documentation: "ප්‍රලේඛනය",
     done: "සම්පූර්ණයි",
