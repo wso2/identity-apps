@@ -302,10 +302,10 @@
 
                             <input class="ui large button link-button" type="reset"
                                 onclick="deny(); return false;"
-                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"cancel")%>" />
+                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>" />
                             <input type="button" class="ui primary large button" id="approve" name="approve"
                                     onclick="approved(); return false;"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"continue")%> "/>
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"approve")%> "/>
                         </div>
                     </div>
                 </form>
