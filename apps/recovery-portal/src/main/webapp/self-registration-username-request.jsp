@@ -35,7 +35,7 @@
     boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
     boolean skipSignUpEnableCheck = Boolean.parseBoolean(request.getParameter("skipsignupenablecheck"));
     String username = request.getParameter("username");
-    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, false);
+    User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
     Object errorCodeObj = request.getAttribute("errorCode");
     Object errorMsgObj = request.getAttribute("errorMsg");
     String callback = Encode.forHtmlAttribute(request.getParameter("callback"));
