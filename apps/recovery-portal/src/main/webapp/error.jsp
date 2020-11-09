@@ -89,7 +89,7 @@
 
     <script>
         $(document).ready(function () {
-            // Checks if the `callback` URL param is preset, and if not, hides the `Go Back` button.
+            // Checks if the `callback` URL param is present, and if not, hides the `Go Back` button.
             if ("<%=StringUtils.isEmpty(callback)%>" === "true") {
                 $("#action-buttons").hide();
             }
