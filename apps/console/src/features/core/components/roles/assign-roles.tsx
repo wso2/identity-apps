@@ -159,7 +159,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         handleInitialRoleListChange(removedRoles);
         handleTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
         handleInitialTempListChange(initialValues?.tempRoleList?.filter(x => !removedRoles?.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
+        setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
 

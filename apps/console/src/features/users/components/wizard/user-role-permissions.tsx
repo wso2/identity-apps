@@ -104,7 +104,7 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                 <Divider hidden/>
                 <Segment data-testid={ testId }>
                     <div className="permissions-edit-container">
-                        <PermissionList isEdit={ false } isRole roleObject={ role }/>
+                        <PermissionList emphasize={ false } isReadOnly isEdit={ false } isRole roleObject={ role }/>
                     </div>
                 </Segment>
              </>

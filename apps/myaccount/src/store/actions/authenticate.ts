@@ -314,6 +314,12 @@ export const initializeAuthentication = () =>(dispatch)=> {
                 ?? storageFallback
         });
 
+        // Register HTTP interceptor callbacks.
+        auth.on(Hooks.HttpRequestError, onHttpRequestError);
+        auth.on(Hooks.HttpRequestFinish, onHttpRequestFinish);
+        auth.on(Hooks.HttpRequestStart, onHttpRequestStart);
+        auth.on(Hooks.HttpRequestSuccess, onHttpRequestSuccess);
+
         dispatch(setInitialized(true));
     };
 
@@ -325,10 +331,6 @@ export const initializeAuthentication = () =>(dispatch)=> {
         initialize();
     }
 
-    auth.on(Hooks.HttpRequestError, onHttpRequestError);
-    auth.on(Hooks.HttpRequestFinish, onHttpRequestFinish);
-    auth.on(Hooks.HttpRequestStart, onHttpRequestStart);
-    auth.on(Hooks.HttpRequestSuccess, onHttpRequestSuccess);
     auth.on(Hooks.SignIn, (response: UserInfo) => {
 
         // Update the app base name with the newly resolved tenant.

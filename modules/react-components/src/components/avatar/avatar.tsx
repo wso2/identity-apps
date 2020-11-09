@@ -97,6 +97,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
      */
     onMouseOver?: (e: MouseEvent) => void;
     /**
+     * Set overflow attribute to the wrapper.
+     */
+    overflow?: "auto" | "hidden";
+    /**
      * Adds padding to the avatar content.
      */
     relaxed?: boolean | "very";
@@ -120,6 +124,10 @@ export interface AvatarPropsInterface extends TestableComponentInterface, Omit<I
      * Makes the avatar transparent.
      */
     transparent?: boolean;
+    /**
+     * Width of the inner image.
+     */
+    width?: "auto" | "full";
     /**
      * Adjust styling to enable background images.
      */
@@ -163,11 +171,14 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
         onClick,
         onMouseOver,
         onMouseOut,
+        overflow,
         relaxed,
+        rounded,
         shape,
         size,
         spaced,
         transparent,
+        width,
         withBackgroundImage,
         [ "data-testid" ]: testId,
         ...rest
@@ -195,12 +206,20 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
             "hoverable": onClick,
             [ `initials-color-${ initialsColor }` ]: initialsColor,
             relaxed,
+            rounded,
             [ `${ size }` ]: size, // Size is used as a class to support the custom size "little"
             [ `spaced-${ spaced }` ]: spaced,
             [ shape ]: shape,
             transparent,
             [ `${ relaxLevel }` ]: relaxLevel,
-            "with-background-image": withBackgroundImage
+            "with-background-image": withBackgroundImage,
+            [ `overflow-${ overflow }` ]: overflow
+        }
+    );
+
+    const innerImageClasses = classNames("inner-image",
+        {
+            [ `width-${ width }` ]: width
         }
     );
 
@@ -332,7 +351,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                     >
                         <div className="inner-content" data-testid={ `${ testId }-inner-content` }>
                             { children }
-                            <img className="inner-image" alt="avatar" src={ image as string }/>
+                            <img className={ innerImageClasses } alt="avatar" src={ image as string }/>
                         </div>
                     </Image>
                     { renderEditBubble() }
@@ -382,7 +401,7 @@ export const Avatar: FunctionComponent<PropsWithChildren<AvatarPropsInterface>> 
                     <div className="content-wrapper" data-testid={ `${ testId }-image-content-wrapper` }>
                         { children }
                         <img
-                            className="inner-image"
+                            className={ innerImageClasses }
                             alt="avatar"
                             src={ defaultIcon }
                             data-testid={ `${ testId }-image` }
@@ -413,7 +432,6 @@ Avatar.defaultProps = {
     onMouseOut: null,
     onMouseOver: null,
     relaxed: false,
-    rounded: true,
     shape: "circular",
     size: "mini",
     spaced: null,

@@ -53,6 +53,25 @@
         .data-table-column-selector {
             // Check popup.overrides for column selector popup styles.
         }
+        
+        .data-table-cell {
+            .header-with-icon {
+                display: @dataTableRowHeaderDisplay;
+
+                .content {
+                    vertical-align: @dataTableRowHeaderContentVerticalAlignment;
+                }
+
+                .theme-icon {
+                    display: @dataTableRowHeaderIconDisplay;
+                }
+
+                // Semantic UI header components adds a ` margin-right: .75rem;` to `.icon` class.
+                .icon {
+                    margin-right: 0;
+                }
+            }
+        }
     }
 }
 

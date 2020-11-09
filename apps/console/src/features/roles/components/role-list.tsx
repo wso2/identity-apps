@@ -25,6 +25,7 @@ import {
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
@@ -231,10 +232,22 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 id: "name",
                 key: "name",
                 render: (role: RolesInterface): ReactNode => (
-                    <Header as="h6" image>
-                        <AnimatedAvatar
-                            name={ role?.displayName[ 0 ] }
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <AppAvatar
+                            image={ (
+                                <AnimatedAvatar
+                                    name={ role?.displayName[ 0 ] }
+                                    size="mini"
+                                    data-testid={ `${ testId }-item-image-inner` }
+                                />
+                            ) }
                             size="mini"
+                            spaced="right"
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>
