@@ -142,7 +142,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         (state: AppState) => state.application.templates);
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
-    
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
