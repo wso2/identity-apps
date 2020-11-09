@@ -84,3 +84,12 @@
         }
     }
 }
+
+/*******************************
+    Approval Task Claims List
+*******************************/
+.ui.table {
+    .values-list {
+        overflow-wrap: anywhere;
+    }
+}

@@ -155,6 +155,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         setFilterTempSelectedClaims(addedClaims);
         setUnselectedClaims(tempUnselectedClaims.filter(x => !addedClaims?.includes(x)));
         setFilterTempUnselectedClaims(filterTempUnselectedClaims.filter(x => !addedClaims?.includes(x)));
+        setCheckedUnassignedListItems(checkedUnassignedListItems.filter(x => !addedClaims?.includes(x)));
         setSelectUnassignedClaimsAllClaimsChecked(false);
     };
 
