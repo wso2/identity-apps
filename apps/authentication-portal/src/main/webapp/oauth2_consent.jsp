@@ -267,27 +267,6 @@
                                     }
                                 %>
 
-                                <div class="ui divider hidden"></div>
-
-                                <div style="text-align: left;">
-                                    <div class="ui form">
-                                        <div class="grouped fields">
-                                            <div class="field">
-                                                <div class="ui radio checkbox">
-                                                    <input type="radio" class="hidden" name="scope-approval" id="approveCb" value="approve" checked>
-                                                    <label for="approveCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.once")%></label>
-                                                </div>
-                                            </div>
-                                            <div class="field">
-                                                <div class="ui radio checkbox">
-                                                    <input type="radio" class="hidden" name="scope-approval" id="approveAlwaysCb" value="approveAlways">
-                                                    <label for="approveAlwaysCb"><%=AuthenticationEndpointUtil.i18n(resourceBundle, "approve.always")%></label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                             <%
                                 }
                             %>
