@@ -83,9 +83,12 @@
             org.wso2.identity.apps.common.*
         </export.package>
         <import.package>
+            org.apache.axiom.om,
+
             org.osgi.framework; version="${osgi.framework.imp.pkg.version.range}",
             org.osgi.service.component; version="${osgi.service.component.imp.pkg.version.range}",
 
+            org.apache.commons.lang; version="${commons-lang.version.range}",
             org.apache.commons.logging; version="${commons-logging.imp.pkg.version.range}",
 
             org.wso2.carbon.base; version="${carbon.base.imp.pkg.version.range}",

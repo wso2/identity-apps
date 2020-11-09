@@ -16,6 +16,8 @@
 
 package org.wso2.identity.apps.common.internal;
 
+import org.apache.axiom.om.OMElement;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osgi.framework.BundleContext;
@@ -25,16 +27,28 @@ import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
+import org.wso2.carbon.identity.application.mgt.listener.ApplicationMgtListener;
+import org.wso2.carbon.identity.core.util.IdentityConfigParser;
 import org.wso2.carbon.identity.core.util.IdentityCoreInitializedEvent;
 import org.wso2.carbon.identity.core.util.IdentityUtil;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
+import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
 import org.wso2.carbon.registry.core.service.RegistryService;
 import org.wso2.carbon.ui.CarbonSSOSessionManager;
+import org.wso2.identity.apps.common.listner.AppPortalApplicationMgtListener;
+import org.wso2.identity.apps.common.listner.AppPortalOAuthAppMgtListener;
 import org.wso2.identity.apps.common.util.AppPortalConstants;
 import org.wso2.identity.apps.common.util.AppPortalUtils;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_DOMAIN_NAME;
 import static org.wso2.carbon.utils.multitenancy.MultitenantConstants.SUPER_TENANT_ID;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.APPLICATION_IDENTIFIER_CONFIG_ELEMENT;
+import static org.wso2.identity.apps.common.util.AppPortalConstants.SYSTEM_APPLICATIONS_CONFIG_ELEMENT;
 import static org.wso2.identity.apps.common.util.AppPortalConstants.SYSTEM_PROP_SKIP_SERVER_INITIALIZATION;
 
 /***
@@ -55,10 +69,28 @@ public class AppsCommonServiceComponent {
         try {
             // Initialize portal applications.
             if (skipPortalInitialization()) {
-                log.debug("Portal application initialization is skipped.");
+                if (log.isDebugEnabled()) {
+                    log.debug("Portal application initialization is skipped.");
+                }
             } else {
                 // Initialize portal applications.
                 AppPortalUtils.initiatePortals(SUPER_TENANT_DOMAIN_NAME, SUPER_TENANT_ID);
+            }
+
+            Set<String> systemApplications = getSystemApplications();
+
+            if (!systemApplications.isEmpty()) {
+                AppsCommonDataHolder.getInstance().setSystemAppConsumerKeys(systemApplications);
+                OAuthApplicationMgtListener oAuthApplicationMgtListener = new AppPortalOAuthAppMgtListener(true);
+                bundleContext.registerService(OAuthApplicationMgtListener.class.getName(), oAuthApplicationMgtListener,
+                        null);
+
+                ApplicationMgtListener applicationMgtListener = new AppPortalApplicationMgtListener(true);
+                bundleContext.registerService(ApplicationMgtListener.class.getName(), applicationMgtListener, null);
+
+                if (log.isDebugEnabled()) {
+                    log.debug("AppPortalOAuthAppMgtListener registered successfully.");
+                }
             }
 
             for (AppPortalConstants.AppPortal appPortal : AppPortalConstants.AppPortal.values()) {
@@ -165,8 +197,41 @@ public class AppsCommonServiceComponent {
 
     }
 
-    private static boolean skipPortalInitialization() {
+    private boolean skipPortalInitialization() {
 
         return System.getProperty(SYSTEM_PROP_SKIP_SERVER_INITIALIZATION) != null;
+    }
+
+    private Set<String> getSystemApplications() {
+
+        IdentityConfigParser configParser = IdentityConfigParser.getInstance();
+        OMElement systemApplicationsConfig = configParser.getConfigElement(SYSTEM_APPLICATIONS_CONFIG_ELEMENT);
+        if (systemApplicationsConfig == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("'" + SYSTEM_APPLICATIONS_CONFIG_ELEMENT + "' config not found.");
+            }
+            return Collections.emptySet();
+        }
+
+        Iterator applicationIdentifierIterator = systemApplicationsConfig
+                .getChildrenWithLocalName(APPLICATION_IDENTIFIER_CONFIG_ELEMENT);
+        if (applicationIdentifierIterator == null) {
+            if (log.isDebugEnabled()) {
+                log.debug("'" + APPLICATION_IDENTIFIER_CONFIG_ELEMENT + "' config not found.");
+            }
+            return Collections.emptySet();
+        }
+
+        Set<String> systemApplications = new HashSet<>();
+
+        while (applicationIdentifierIterator.hasNext()) {
+            OMElement applicationIdentifierConfig = (OMElement) applicationIdentifierIterator.next();
+            String applicationIdentifier = applicationIdentifierConfig.getText();
+            if (StringUtils.isNotBlank(applicationIdentifier)) {
+                systemApplications.add(applicationIdentifier.trim());
+            }
+        }
+
+        return systemApplications;
     }
 }

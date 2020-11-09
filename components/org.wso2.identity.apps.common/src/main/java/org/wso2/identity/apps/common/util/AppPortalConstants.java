@@ -36,6 +36,10 @@ public class AppPortalConstants {
 
     public static final String SYSTEM_PROP_SKIP_SERVER_INITIALIZATION = "skipServerInitialization";
 
+    public static final String SYSTEM_APPLICATIONS_CONFIG_ELEMENT = "SystemApplications";
+
+    public static final String APPLICATION_IDENTIFIER_CONFIG_ELEMENT = "ApplicationIdentifier";
+
     private AppPortalConstants() {
 
     }
