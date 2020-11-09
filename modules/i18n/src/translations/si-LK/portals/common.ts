@@ -58,7 +58,7 @@ export const common: CommonNS = {
     drag: "අදින්න",
     duplicateURLError: "මෙම URL දැනටමත් එකතු කර ඇත",
     edit: "සංස්කරණය කරන්න",
-    enabled: "සක්‍රීය කර ඇත",
+    enabled: "සක්‍රීයයි",
     endsWith: "සමඟ අවසන් වේ",
     equals: "සමාන",
     explore: "ගවේෂණය කරන්න",
