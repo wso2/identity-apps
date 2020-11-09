@@ -238,6 +238,23 @@
                                     <div class="cookie-policy-message">
                                         <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
 
+                                        <div class="ui divider hidden"></div>
+                                    
+                                        <div class="field">
+                                            <div class="ui checkbox">
+                                                <input
+                                                tabindex="3"
+                                                type="checkbox"
+                                                id="rememberApproval"
+                                                name="rememberApproval"
+                                                data-testid="consent-page-remember-approval-checkbox"
+                                            >
+                                                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.my.approval")%></label>
+                                            </div>
+                                        </div>
+
+                                        <div class="ui divider hidden"></div>
+
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
                                         <%=Encode.forHtml(request.getParameter("application"))%>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
@@ -350,19 +367,13 @@
         function approved() {
             var mandatoryClaimCBs = $(".mandatory-claim");
             var checkedMandatoryClaimCBs = $(".mandatory-claim:checked");
-            var scopeApproval = $("input[name='scope-approval']");
+            var isApproveAlwaysChecked = $("#rememberApproval").is(':checked');
 
-            // If scope approval radio button is rendered then we need to validate that it's checked
-            if (scopeApproval.length > 0) {
-                if (scopeApproval.is(":checked")) {
-                    var checkScopeConsent = $("input[name='scope-approval']:checked");
-                    $('#consent').val(checkScopeConsent.val());
-                } else {
-                    $("#modal_scope_validation").modal("show");
-                    return;
-                }
+            // Check if the remember approval checkbox is selected, if so set the consent
+            // input value to `approveAlways` else set it to `approve`.
+            if (isApproveAlwaysChecked) {
+                document.getElementById('consent').value = "approveAlways";
             } else {
-                // Scope radio button was not rendered therefore set the consent to 'approve'
                 document.getElementById('consent').value = "approve";
             }
 
