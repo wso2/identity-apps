@@ -28,8 +28,9 @@ import { RemoteFetchStatus } from "../components";
 
 /**
  * This will test the remote configuration status view.
+ * TODO: Enable once https://github.com/wso2/product-is/issues/10393 is fixed.
  */
-describe("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status", () => {
+describe.skip("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
@@ -43,7 +44,7 @@ describe("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status
     const configDetail = jest.spyOn(api, "getRemoteRepoConfig");
     configDetail.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsRequestResponse);
-    })
+    });
 
     // Mock api call to trigger remote config
     const configTrigger = jest.spyOn(api, "triggerConfigDeployment");
@@ -61,7 +62,7 @@ describe("UTC-2.0 - [Remote Fetch Configuration] - Deployed Configuration Status
         expect(screen.getByTestId("remote-fetch-details-status")).toBeInTheDocument();
     });
 
-    test("UTC-2.2 - Test trigger confirguration button click event", async () => {
+    test("UTC-2.2 - Test trigger configuration button click event", async () => {
         render(
             <Provider store={ store }>
                 <RemoteFetchStatus data-testid="remote-fetch-details" />

@@ -173,6 +173,201 @@ export const console: ConsoleNS = {
     },
     manage: {
         features: {
+            remoteFetch: {
+                components: {
+                    status: {
+                        details: "Détails",
+                        header: "Configurations à distance",
+                        hint: "Aucune application déployée actuellement.",
+                        linkPopup: {
+                            content: "",
+                            header: "URL du référentiel Github",
+                            subHeader: ""
+                        },
+                        refetch: "Récupérer"
+                    }
+                },
+                forms: {
+                    getRemoteFetchForm: {
+                        actions: {
+                            remove: "Supprimer la configuration",
+                            save: "enregistrer la configuration"
+                        },
+                        fields: {
+                            accessToken: {
+                                label: "Jeton d'accès personnel Github",
+                                placeholder: "Jeton d'accès personnel"
+                            },
+                            connectivity: {
+                                children: {
+                                    polling: {
+                                        label: "Polling"
+                                    },
+                                    webhook: {
+                                        label: "Webhook"
+                                    }
+                                },
+                                label: "Mécanisme de connectivité"
+                            },
+                            enable: {
+                                hint: "Activer la configuration pour récupérer les applications",
+                                label: "Activer la configuration de récupération"
+                            },
+                            gitBranch: {
+                                hint: "Activer la configuration pour récupérer les applications",
+                                label: "Branche Github",
+                                placeholder: "Ex : Main",
+                                validations: {
+                                    required: "La branche Github est requise."
+                                }
+                            },
+                            gitFolder: {
+                                hint: "Activer la configuration pour récupérer les applications",
+                                label: "Répertoire GitHub",
+                                placeholder: "Ex : SampleConfigFolder/",
+                                validations: {
+                                    required: "Le répertoire de configuration Github est requis."
+                                }
+                            },
+                            gitURL: {
+                                label: "URL du référentiel GitHub",
+                                placeholder: "Ex : https://github.com/samplerepo/sample-project",
+                                validations: {
+                                    required: "L'URL du référentiel Github est requise."
+                                }
+                            },
+                            pollingFrequency: {
+                                label: "Fréquence d'interrogation"
+                            },
+                            sharedKey: {
+                                label: "Clé partagée GitHub"
+                            },
+                            username: {
+                                label: "Nom d'utilisateur Github",
+                                placeholder: "Ex: John Doe"
+                            }
+                        },
+                        heading: {
+                            subTitle: "Configurer le référentiel pour récupérer les applications",
+                            title: "Référentiel de configuration d'application"
+                        }
+                    }
+                },
+                modal: {
+                    appStatusModal: {
+                        description: "",
+                        heading: "Statut de récupération de l'application",
+                        primaryButton: "Récupérer les applications",
+                        secondaryButton: ""
+                    }
+                },
+                notifications: {
+                    createRepoConfig: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Créer une erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la création de la configuration " +
+                                "du dépôt distant.",
+                            message: "Créer une erreur"
+                        },
+                        success: {
+                            description: "Config de dépôt distant créé avec succès.",
+                            message: "Créer avec succès"
+                        }
+                    },
+                    deleteRepoConfig: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Supprimer l'erreur"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la suppression de la " +
+                                "configuration du dépôt distant.",
+                            message: "Supprimer l'erreur"
+                        },
+                        success: {
+                            description: "La configuration du dépôt distant a bien été supprimée.",
+                            message: "Suppression réussie"
+                        }
+                    },
+                    getConfigDeploymentDetails: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération des détails du " +
+                                "déploiement.",
+                            message: "Erreur de récupération"
+                        },
+                        success: {
+                            description: "Les détails du déploiement ont bien été récupérés.",
+                            message: "Récupération réussie"
+                        }
+                    },
+                    getConfigList: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération de la liste de " +
+                                "configuration du déploiement.",
+                            message: "Erreur de récupération"
+                        },
+                        success: {
+                            description: "Liste de configuration de déploiement récupérée avec succès.",
+                            message: "Récupération réussie"
+                        }
+                    },
+                    getRemoteRepoConfig: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de récupération"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors de la récupération de la configuration " +
+                                "du dépôt.",
+                            message: "Erreur de récupération"
+                        },
+                        success: {
+                            description: "Récupération réussie de la configuration du dépôt.",
+                            message: "Récupération réussie"
+                        }
+                    },
+                    triggerConfigDeployment: {
+                        error: {
+                            description: "{{ description }}",
+                            message: "Erreur de déploiement"
+                        },
+                        genericError: {
+                            description: "Une erreur s'est produite lors du déploiement des configurations de dépôt.",
+                            message: "Erreur de déploiement"
+                        },
+                        success: {
+                            description: "Configurations de dépôt déployées avec succès.",
+                            message: "Déploiement réussi"
+                        }
+                    }
+                },
+                pages: {
+                    listing: {
+                        subTitle: "Configurez le référentiel github pour qu'il fonctionne de manière " +
+                            "transparente avec le serveur d'identité.",
+                        title: "Configurations à distance"
+                    }
+                },
+                placeholders: {
+                    emptyListPlaceholder: {
+                        action: "Configurer le référentiel",
+                        subtitles: "Actuellement, aucun référentiel n'est configuré. Vous pouvez ajouter une " +
+                            "nouvelle configuration.",
+                        title: "Ajouter une configuration"
+                    }
+                }
+            },
             users: {
                 confirmations: {
                     terminateAllSessions: {

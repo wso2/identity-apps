@@ -27,8 +27,9 @@ import { RemoteFetchDetails } from "../components/remote-fetch-details";
 
 /**
  * This will test the remote fetch status detail modal.
+ * TODO: Enable once https://github.com/wso2/product-is/issues/10393 is fixed.
  */
-describe("UTC-3.0 - [Remote Fetch Configuration] - Configuration Status Modal", () => {
+describe.skip("UTC-3.0 - [Remote Fetch Configuration] - Configuration Status Modal", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 

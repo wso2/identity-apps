@@ -27,16 +27,33 @@ export class RemoteFetchConstants {
      *
      * @hideconstructor
      */
-
     /* eslint-disable @typescript-eslint/no-empty-function */
     private constructor() { }
-        
-    public static readonly REMOTE_FETCH_WEBHOOK = "WEB_HOOK";
 
-    public static readonly REMOTE_FETCH_POLLING = "POLLING";
-
-    public static readonly REMOTE_DEPLOYER_TYPE = "SP";
-
-    public static readonly REMOTE_REPOSITORY_TYPE = "GIT";
-
+    // API errors
+    public static readonly GET_REPO_CONFIG_LIST_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while fetching remote repo config list.";
+    public static readonly GET_REPO_CONFIG_LIST_ERROR: string = "Error occurred while fetching the repo config list.";
+    public static readonly TRIGGER_CONFIG_DEPLOYMENT_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while deploying the remote repo config.";
+    public static readonly TRIGGER_CONFIG_DEPLOYMENT_ERROR: string = "Error occurred while deploying the remote " +
+        "repo config.";
+    public static readonly GET_CONFIG_DEPLOYMENT_DETAILS_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while fetching remote repo config deployment details.";
+    public static readonly GET_CONFIG_DEPLOYMENT_DETAILS_ERROR: string = "Error occurred while fetching the remote " +
+        "repo config deployment details.";
+    public static readonly UPDATE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while updating remote repo config.";
+    public static readonly UPDATE_REPO_CONFIG_ERROR: string = "Error occurred while updating the remote " +
+        "repo config.";
+    public static readonly DELETE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR: string = "Received an invalid " +
+        "status code while deleting remote repo config.";
+    public static readonly DELETE_REPO_CONFIG_ERROR: string = "Error occurred while deleting the remote " +
+        "repo config.";
+    public static readonly CREATE_REPO_CONFIG_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while creating a remote repo config.";
+    public static readonly CREATE_REPO_CONFIG_CREATE_ERROR: string = "Error occurred while creating a repo config.";
+    public static readonly GET_REPO_CONFIG_INVALID_STATUS_CODE_ERROR: string = "Received an invalid status " +
+        "code while fetching remote repo config details.";
+    public static readonly GET_REPO_CONFIG_ERROR: string = "Error occurred while fetching the repo config.";
 }
