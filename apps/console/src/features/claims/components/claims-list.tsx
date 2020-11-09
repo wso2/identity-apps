@@ -30,6 +30,7 @@ import { addAlert } from "@wso2is/core/store";
 import { FormValue, useTrigger } from "@wso2is/forms";
 import {
     AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     CopyInputField,
     DataTable,
@@ -585,9 +586,16 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                             inverted
                                         />
                                     ) }
-                                    <AnimatedAvatar
-                                        name={ claim.claimURI }
+                                    <AppAvatar
+                                        image={ (
+                                            <AnimatedAvatar
+                                                name={ claim.claimURI }
+                                                size="mini"
+                                                data-testid={ `${ testId }-item-image-inner` }
+                                            />
+                                        ) }
                                         size="mini"
+                                        spaced="right"
                                         data-testid={ `${ testId }-item-image` }
                                     />
                                 </>
@@ -634,10 +642,22 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     key: "dialectURI",
                     render: (dialect: ClaimDialect) => {
                         return (
-                            <Header as="h6" image>
-                                <AnimatedAvatar
-                                    name={ dialect.dialectURI }
+                            <Header
+                                image
+                                as="h6"
+                                className="header-with-icon"
+                                data-testid={ `${ testId }-item-heading` }
+                            >
+                                <AppAvatar
+                                    image={ (
+                                        <AnimatedAvatar
+                                            name={ dialect.dialectURI }
+                                            size="mini"
+                                            data-testid={ `${ testId }-item-image-inner` }
+                                        />
+                                    ) }
                                     size="mini"
+                                    spaced="right"
                                     data-testid={ `${ testId }-item-image` }
                                 />
                                 <Header.Content>
@@ -669,10 +689,22 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     key: "claimURI",
                     render: (claim: ExternalClaim) => {
                         return (
-                            <Header as="h6" image>
-                                <AnimatedAvatar
-                                    name={ claim.claimURI }
+                            <Header
+                                image
+                                as="h6"
+                                className="header-with-icon"
+                                data-testid={ `${ testId }-item-heading` }
+                            >
+                                <AppAvatar
+                                    image={ (
+                                        <AnimatedAvatar
+                                            name={ claim.claimURI }
+                                            size="mini"
+                                            data-testid={ `${ testId }-item-image-inner` }
+                                        />
+                                    ) }
                                     size="mini"
+                                    spaced="right"
                                     data-testid={ `${ testId }-item-image` }
                                 />
                                 <Header.Content>
@@ -753,10 +785,23 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     }
 
                     return (
-                        <Header as="h6" image>
-                            <AnimatedAvatar
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-testid={ `${ testId }-item-heading` }
+                        >
+                            <AppAvatar
                                 name={ claim.claimURI }
+                                image={ (
+                                    <AnimatedAvatar
+                                        name={ claim.claimURI }
+                                        size="mini"
+                                        data-testid={ `${ testId }-item-image-inner` }
+                                    />
+                                ) }
                                 size="mini"
+                                spaced="right"
                                 data-testid={ `${ testId }-item-image` }
                             />
                             <Header.Content>

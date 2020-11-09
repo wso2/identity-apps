@@ -21,6 +21,7 @@ import { LoadableComponentInterface, SBACInterface, TestableComponentInterface }
 import { CommonUtils } from "@wso2is/core/utils";
 import {
     AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
@@ -248,10 +249,22 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 id: "name",
                 key: "name",
                 render: (group: GroupsInterface): ReactNode => (
-                    <Header as="h6" image>
-                        <AnimatedAvatar
-                            name={ group.displayName }
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <AppAvatar
+                            image={ (
+                                <AnimatedAvatar
+                                    name={ group.displayName }
+                                    size="mini"
+                                    data-testid={ `${ testId }-item-image-inner` }
+                                />
+                            ) }
                             size="mini"
+                            spaced="right"
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>

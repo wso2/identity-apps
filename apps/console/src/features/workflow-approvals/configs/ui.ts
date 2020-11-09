@@ -16,12 +16,12 @@
  * under the License.
  */
 
-import { ReactComponent as ReleaseApprovalIcon
-} from "../../../themes/default/assets/images/icons/solid-icons/release-solid.svg";
-import { ReactComponent as ClaimApprovalIcon
-} from "../../../themes/default/assets/images/icons/solid-icons/claim-gesture-solid.svg";
+import {
+    ReactComponent as PendingApprovalOutlineIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
 
-export const ApprovalsListIcons = {
-    claim: ClaimApprovalIcon,
-    release: ReleaseApprovalIcon
+export const TableIcons = {
+    header: {
+        default: PendingApprovalOutlineIcon
+    }
 };

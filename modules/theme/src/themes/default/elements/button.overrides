@@ -270,6 +270,7 @@
     &.oidc-regenerate-button {
         margin-right: @OIDCButtonMarginRight;
         width: @OIDCButtonWidth;
+        margin-bottom: @OIDCButtonMarginBottom;
     }
     &.oidc-revoke-button {
         width: @OIDCButtonWidth;

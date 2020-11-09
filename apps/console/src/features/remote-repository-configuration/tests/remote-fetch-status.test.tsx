@@ -26,7 +26,11 @@ import MockConfigTriggerResponse from "./__mocks__/mock.config-trigger-response"
 import * as api from "../api/remote-repo-config";
 import { RemoteFetchStatus } from "../components";
 
-describe("UTC-4.0 - [Remote Fetch Configuration] - Configuration Status", () => {
+/**
+ * This will test the remote configuration status component.
+ * TODO: Enable once https://github.com/wso2/product-is/issues/10393 is fixed.
+ */
+describe.skip("UTC-4.0 - [Remote Fetch Configuration] - Configuration Status", () => {
     const mockStore = configureStore();
     const store = mockStore({});
 
@@ -40,7 +44,7 @@ describe("UTC-4.0 - [Remote Fetch Configuration] - Configuration Status", () => 
     const configDetail = jest.spyOn(api, "getRemoteRepoConfig");
     configDetail.mockImplementation(() => {
         return Promise.resolve(MockConfigDetailsRequestResponse);
-    })
+    });
 
     // Mock api call to trigger remote config
     const configTrigger = jest.spyOn(api, "triggerConfigDeployment");

@@ -22,9 +22,10 @@ import { CodeEditor, Hint, LinkButton, PrimaryButton, SegmentedAccordion } from 
 import { AxiosResponse } from "axios";
 import moment from "moment";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Modal } from "semantic-ui-react";
-import { 
+import {
     InterfaceConfigDetails, 
     InterfaceRemoteConfigDetails, 
     InterfaceRemoteFetchStatus, 
@@ -32,12 +33,21 @@ import {
     triggerConfigDeployment
 } from "../../../remote-repository-configuration";
 
+/**
+ * Remote fetch details props interface.
+ */
 interface RemoteFetchDetailsPropsInterface extends TestableComponentInterface {
     isOpen?: boolean;
     onClose?: () => void;
     remoteDeployment: InterfaceRemoteConfigDetails;
 }
 
+/**
+ * Remote fetch details modal.
+ *
+ * @param {RemoteFetchDetailsPropsInterface} props - Props injected to the component.
+ * @return {React.ReactElement}
+ */
 export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterface> = (
     props: RemoteFetchDetailsPropsInterface
 ): ReactElement => {
@@ -50,23 +60,27 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
     } = props;
 
     const dispatch = useDispatch();
+    
+    const { t } = useTranslation();
 
     const [ activeIndex, setActiveIndex ] = useState<number[]>([]);
     const [ deploymentStatus, setDeploymentStatus ] = useState<InterfaceConfigDetails>(undefined);
 
     useEffect(() => {
-        getConfigDeploymentDetails(remoteDeployment.id).then((response: AxiosResponse<InterfaceConfigDetails>) => {
-            if (response.status === 200) {
+        getConfigDeploymentDetails(remoteDeployment.id)
+            .then((response: AxiosResponse<InterfaceConfigDetails>) => {
                 setDeploymentStatus(response.data);
-            }
-        }).catch(() => {
-            dispatch(addAlert({
-                description: "Error while retrieving remote configuration details",
-                level: AlertLevels.ERROR,
-                message: "There was an error while fetching the remote configuration details."
-            }));
-        })
-    }, [])
+            })
+            .catch(() => {
+                dispatch(addAlert({
+                    description: t("console:manage.features.remoteFetch.notifications." +
+                        "getConfigDeploymentDetails.genericError.description"),
+                    level: AlertLevels.ERROR,
+                    message: t("console:manage.features.remoteFetch.notifications." +
+                        "getConfigDeploymentDetails.genericError.message")
+                }));
+            });
+    }, []);
 
     const handleAccordionOnClick = (e: SyntheticEvent, { index }: { index: number }): void => {
         const newIndexes = [ ...activeIndex ];
@@ -85,7 +99,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
         const now = moment(new Date());
         const receivedDate = moment(date);
         return "Last deployed " +   moment.duration(now.diff(receivedDate)).humanize() + " ago";
-    }
+    };
 
     return (
         <Modal
@@ -97,7 +111,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
             data-testid={ `${ testId }-modal` }
         >
             <Modal.Header className="wizard-header">
-                Application Fetch Status
+                { t("console:manage.features.remoteFetch.modal.appStatusModal.heading") }
                 <Hint icon="linkify" className="mt-0 mb-1">
                     { remoteDeployment?.repositoryManagerAttributes?.uri }
                 </Hint>
@@ -173,7 +187,7 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                     <Grid.Row column={ 1 }>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton floated="left" onClick={ () => onClose() }>
-                                close
+                                { t("common:close") }
                             </LinkButton>
                         </Grid.Column>
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
@@ -182,29 +196,32 @@ export const RemoteFetchDetails: FunctionComponent<RemoteFetchDetailsPropsInterf
                                 data-testid={ `${ testId }-import-button` }
                                 onClick={ ()=> {
                                     triggerConfigDeployment(remoteDeployment.id)
-                                        .then((response: AxiosResponse<any>) => {
-                                            if (response.status === 202) {
-                                                dispatch(addAlert({
-                                                    description: "The applications were successfully refetched.",
-                                                    level: AlertLevels.SUCCESS,
-                                                    message: "Successfully fetched applications."
-                                                }));
-                                            }
-                                        }).catch(() => {
+                                        .then(() => {
                                             dispatch(addAlert({
-                                                description: "There was an error while fetching the applications",
-                                                level: AlertLevels.ERROR,
-                                                message: "Error while refetching applications"
+                                                description: t("console:manage.features.remoteFetch.notifications" +
+                                                    ".triggerConfigDeployment.success.description"),
+                                                level: AlertLevels.SUCCESS,
+                                                message: t("console:manage.features.remoteFetch.notifications" +
+                                                    ".triggerConfigDeployment.success.message")
                                             }));
                                         })
+                                        .catch(() => {
+                                            dispatch(addAlert({
+                                                description: t("console:manage.features.remoteFetch.notifications" +
+                                                    ".triggerConfigDeployment.genericError.description"),
+                                                level: AlertLevels.ERROR,
+                                                message: t("console:manage.features.remoteFetch.notifications" +
+                                                    ".triggerConfigDeployment.genericError.message")
+                                            }));
+                                        });
                                 } }
                             >
-                                Refetch Applications
+                                { t("console:manage.features.remoteFetch.modal.appStatusModal.primaryButton") }
                             </PrimaryButton>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
             </Modal.Actions>
         </Modal>
-    )
-}
+    );
+};

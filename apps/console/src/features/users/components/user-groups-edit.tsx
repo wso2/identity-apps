@@ -257,7 +257,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         setInitialGroupList(removedRoles);
         setTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
         setInitialTempGroupList(tempGroupList?.filter(x => !removedRoles?.includes(x)));
-        setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
+        setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
 

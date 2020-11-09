@@ -1,5 +1,5 @@
 /*******************************
-        Table Varibles
+        Table Variables
 *******************************/
 
 /*-------------------------------
@@ -12,6 +12,11 @@
 @dataTableColumnSelectorFloat: right;
 
 @dataTableHeaderFontWeight: 500;
+
+// Overrides for the semantic header component used inside rows.
+@dataTableRowHeaderDisplay: inline-block;
+@dataTableRowHeaderContentVerticalAlignment: middle;
+@dataTableRowHeaderIconDisplay: inline-flex;
 
 // Mobile Variables
 @mobileDataTableSearchMarginBottom: 10px;

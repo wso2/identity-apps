@@ -22,7 +22,8 @@ import {
     Message,
     ModalInterface,
     Notification,
-    Placeholder, 
+    Page,
+    Placeholder,
     Popup,
     ValidationInterface
 } from "../common";
@@ -77,6 +78,57 @@ export interface ConsoleNS {
     };
     manage: {
         features: {
+            remoteFetch: {
+                components: {
+                    status: {
+                        details: string;
+                        header: string;
+                        hint: string;
+                        linkPopup: Popup;
+                        refetch: string;
+                    };
+                };
+                forms: {
+                    getRemoteFetchForm: {
+                        actions: {
+                            remove: string;
+                            save: string;
+                        };
+                        fields: {
+                            accessToken: FormAttributes;
+                            enable: FormAttributes;
+                            connectivity: FormAttributes;
+                            gitBranch: FormAttributes;
+                            gitFolder: FormAttributes;
+                            gitURL: FormAttributes;
+                            pollingFrequency: FormAttributes;
+                            sharedKey: FormAttributes;
+                            username: FormAttributes;
+                        };
+                        heading: {
+                            subTitle: string;
+                            title: string;
+                        };
+                    };
+                };
+                modal: {
+                    appStatusModal: ModalInterface;
+                };
+                notifications: {
+                    createRepoConfig: Notification;
+                    deleteRepoConfig: Notification;
+                    getConfigDeploymentDetails: Notification;
+                    getConfigList: Notification;
+                    getRemoteRepoConfig: Notification;
+                    triggerConfigDeployment: Notification;
+                };
+                pages: {
+                    listing: Page;
+                };
+                placeholders: {
+                    emptyListPlaceholder: Placeholder;
+                };
+            };
             users: {
                 confirmations: {
                     terminateAllSessions: Confirmation;

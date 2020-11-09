@@ -68,6 +68,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
         const userstore: UserStoreListItem[] = [];
         userstore.push({
             description: "",
+            enabled: true,
             id: "PRIMARY",
             name: "PRIMARY",
             self: ""
@@ -79,7 +80,7 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
             setUserStore(userstore);
         });
     }, []);
-    
+
     return (
         <Grid data-testid={ testId }>
             <Grid.Row columns={ 1 }>

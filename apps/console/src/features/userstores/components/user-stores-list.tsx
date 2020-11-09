@@ -28,6 +28,7 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    GenericIcon,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -36,7 +37,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Icon, Image, SemanticICONS } from "semantic-ui-react";
+import { Header, Icon, Popup, SemanticICONS } from "semantic-ui-react";
 import {
     AppConstants,
     AppState,
@@ -46,7 +47,7 @@ import {
     history
 } from "../../core";
 import { deleteUserStore } from "../api";
-import { DatabaseAvatarGraphic } from "../configs";
+import { TableIcons } from "../configs";
 import { UserStoreListItem } from "../models";
 
 /**
@@ -298,17 +299,37 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 id: "name",
                 key: "name",
                 render: (userstore: UserStoreListItem) => (
-                    <Header as="h6" image>
-                        <Image
-                            floated="left"
-                            verticalAlign="middle"
-                            rounded
-                            centered
-                            size="mini"
-                            data-testid={ `${ testId }-item-image` }
-                        >
-                            <DatabaseAvatarGraphic />
-                        </Image>
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <GenericIcon
+                            bordered
+                            defaultIcon
+                            relaxed="very"
+                            size="micro"
+                            shape="rounded"
+                            spaced="right"
+                            hoverable={ false }
+                            icon={ TableIcons.header.default }
+                        />
+                        <Header.Content>
+                            {
+                                userstore.enabled
+                                    ? <Popup
+                                        trigger={ <Icon size="small" name="circle" color="green" /> }
+                                        content={ t("common:enabled") }
+                                        inverted
+                                    />
+                                    : <Popup
+                                        trigger={ <Icon size="small" name="circle" color="orange" /> }
+                                        content={ t("common:disabled") }
+                                        inverted
+                                    />
+                            }
+                        </Header.Content>
                         <Header.Content>
                             { userstore.name }
                             <Header.Subheader>

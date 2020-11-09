@@ -232,21 +232,34 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         && applicationTemplates.find((template) => template.id === app.templateId);
 
                     return (
-                        <Header as="h6" image data-testid={ `${ testId }-item-heading` }>
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-testid={ `${ testId }-item-heading` }
+                        >
                             {
                                 app.image
                                     ? (
                                         <AppAvatar
+                                            size="mini"
                                             name={ app.name }
                                             image={ app.image }
-                                            size="mini"
+                                            spaced="right"
                                             data-testid={ `${ testId }-item-image` }
                                         />
                                     )
                                     : (
-                                        <AnimatedAvatar
-                                            name={ app.name }
+                                        <AppAvatar
+                                            image={ (
+                                                <AnimatedAvatar
+                                                    name={ app.name }
+                                                    size="mini"
+                                                    data-testid={ `${ testId }-item-image-inner` }
+                                                />
+                                            ) }
                                             size="mini"
+                                            spaced="right"
                                             data-testid={ `${ testId }-item-image` }
                                         />
                                     )

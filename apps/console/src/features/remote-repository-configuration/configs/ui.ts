@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
 
 export const CreateRemoteRepoWizardStepIcons = {
@@ -24,4 +25,8 @@ export const CreateRemoteRepoWizardStepIcons = {
 
 export const RemoteRepoDetailsWizardStepIcons = {
     general: DocumentIcon
+};
+
+export const EmptyPlaceholderIllustrations = {
+    add: CodeForkIcon
 };

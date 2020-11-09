@@ -26,13 +26,14 @@ import {
 import { addAlert } from "@wso2is/core/store";
 import {
     AnimatedAvatar,
+    AppAvatar,
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    LinkButton,
     PrimaryButton,
     TableActionsInterface,
-    TableColumnInterface,
-    LinkButton
+    TableColumnInterface
 } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -208,11 +209,22 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                 id: "name",
                 key: "name",
                 render: (scope: OIDCScopesListInterface): ReactNode => (
-                    <Header as="h6" image>
-                        <AnimatedAvatar
-                            name={ scope.name }
+                    <Header
+                        image
+                        as="h6"
+                        className="header-with-icon"
+                        data-testid={ `${ testId }-item-heading` }
+                    >
+                        <AppAvatar
+                            image={ (
+                                <AnimatedAvatar
+                                    name={ scope.name }
+                                    size="mini"
+                                    data-testid={ `${ testId }-item-image-inner` }
+                                />
+                            ) }
                             size="mini"
-                            floated="left"
+                            spaced="right"
                             data-testid={ `${ testId }-item-image` }
                         />
                         <Header.Content>
