@@ -144,24 +144,6 @@
     <% } %>
 </head>
 <body>
-    <div class="ui tiny modal notify">
-        <div class="header">
-            <h4>
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Information")%>
-            </h4>
-        </div>
-        <div class="content">
-            <p class="ui success message">
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Updated.the.password.successfully")%>
-            </p>
-        </div>
-        <div class="actions">
-            <div id="closeButton" class="ui primary button cancel">
-                <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Close")%>
-            </div>
-        </div>
-    </div>
-
     <form id="callbackForm" name="callbackForm" method="post" action="/commonauth">
         <%
             if (username != null) {
@@ -198,17 +180,15 @@
     <script type="application/javascript">
         $(document).ready(function () {
 
-            $('.notify').modal({
-                onHide: function () {
-                    <%
-                       try {
-                           if(isAutoLoginEnable) {
-                %>
+            <%
+                try {
+                    if(isAutoLoginEnable) {
+            %>
                     document.callbackForm.submit();
                     <%
                            } else {
                     %>
-                    location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>";
+                    location.href = "<%= IdentityManagementEndpointUtil.getURLEncodedCallback(callback)%>&passwordReset=true";
                     <%
                     }
                     } catch (URISyntaxException e) {
@@ -217,13 +197,7 @@
                         request.getRequestDispatcher("error.jsp").forward(request, response);
                         return;
                     }
-                    %>
-                },
-                blurring: true,
-                detachable:true,
-                closable: false,
-                centered: true,
-            }).modal("show");
+            %>
 
         });
     </script>
