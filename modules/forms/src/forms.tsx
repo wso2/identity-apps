@@ -188,10 +188,10 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             if (isInputField(inputField) && !isRadioField(inputField) && inputField.required) {
                 if (!isCheckBoxField(inputField) && !isToggleField(inputField)) {
                     const tempForm: Map<string, FormValue> = new Map(form);
-                    tempForm.set(name, tempForm.get(name).toString().trim());
+                    tempForm.set(name, tempForm.get(name)?.toString()?.trim());
                     setForm(tempForm);
 
-                    value !== null && value.toString().trim() !== ""
+                    value !== null && value?.toString()?.trim() !== ""
                         ? requiredFieldsParam.set(name, true)
                         : requiredFieldsParam.set(name, false);
                 } else if (isToggleField(inputField)) {
