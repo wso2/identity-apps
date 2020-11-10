@@ -19,7 +19,7 @@
 
 import { CryptoUtils } from "./crypto-utils";
 import { UIConstants } from "../constants";
-import { GravatarFallbackTypes, ProfileSchemaInterface } from "../models";
+import {GravatarFallbackTypes, MultiValueAttributeInterface, ProfileSchemaInterface} from "../models";
 
 /**
  * Utility class for profile related operations.
@@ -128,5 +128,16 @@ export class ProfileUtils {
         const parentSchema = schemas?.find((schema) => schema?.name === schemaName);
 
         return parentSchema?.multiValued;
+    };
+
+
+    /**
+     * Type Guard to check if the passed in attribute is of type `String Array`.
+     *
+     * @param attribute - Profile attribute.
+     * @return {attribute is string[]}
+     */
+     public static isStringArray = (attribute: string[] | MultiValueAttributeInterface[]): attribute is string[] => {
+        return attribute.length !== undefined;
     };
 }

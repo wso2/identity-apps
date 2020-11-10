@@ -198,12 +198,13 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
-                        const primaryEmail = userInfo[schemaNames[0]] &&
-                            userInfo[schemaNames[0]]
-                                .find((subAttribute) => typeof subAttribute ==  "string");
+                        if(ProfileUtils.isStringArray(userInfo[schemaNames[0]])) {
+                            const emails: any[] = userInfo[schemaNames[0]];
+                            const primaryEmail = emails.find((subAttribute) => typeof subAttribute ==  "string");
 
-                        // Set the primary email value.
-                        tempProfileInfo.set(schema.name, primaryEmail);
+                            // Set the primary email value.
+                            tempProfileInfo.set(schema.name, primaryEmail);
+                        }
                     } else {
                         if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
                             tempProfileInfo.set(
