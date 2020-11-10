@@ -16,7 +16,9 @@
  * under the License.
  */
 
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { ProfileConstants } from "../constants";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
@@ -68,13 +70,25 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
     return axios.request(requestConfig)
         .then((response: AxiosResponse) => {
             if (response.status !== 200) {
-                return Promise.reject("Failed to update password.");
+                throw new IdentityAppsApiException(
+                    ProfileConstants.CHANGE_PASSWORD_INVALID_STATUS_CODE_ERROR,
+                    null,
+                    response.status,
+                    response.request,
+                    response,
+                    response.config);
             }
 
             return Promise.resolve(response);
         })
         .catch((error) => {
-            return Promise.reject(error);
+            throw new IdentityAppsApiException(
+                ProfileConstants.CHANGE_PASSWORD_ERROR,
+                error.stack,
+                error.code,
+                error.request,
+                error.response,
+                error.config);
         })
         .finally(() => {
             // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
