@@ -270,7 +270,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      *
      * @param values - Form values.
      */
-    const HandleApplicationProtocolsUpdate = (values: any): void => {
+    const handleApplicationProtocolsUpdate = (values: any): void => {
+        console.log("Values", values);
         updateAuthProtocolConfig(appId, values, selectedTemplate.authenticationProtocol)
             .then(() => {
                 dispatch(addAlert({
@@ -512,6 +513,8 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
 
                         return (
                             <OauthProtocolSettingsWizardForm
+                                isProtocolConfig={ true }
+                                selectedTemplate={ selectedTemplate }
                                 triggerSubmit={ submitOAuth }
                                 fields={ [ "callbackURLs" ] }
                                 initialValues={ wizardState && wizardState[WizardStepsFormTypes.PROTOCOL_SETTINGS] }
@@ -587,7 +590,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         <ProtocolWizardSummary
                             triggerSubmit={ finishSubmit }
                             summary={ generateWizardSummary() }
-                            onSubmit={ HandleApplicationProtocolsUpdate }
+                            onSubmit={ handleApplicationProtocolsUpdate }
                             image={ selectedTemplate.authenticationProtocol }
                             customProtocol={ selectedCustomInboundProtocol }
                             samlMetaFileSelected={ selectedSAMLMetaFile }
