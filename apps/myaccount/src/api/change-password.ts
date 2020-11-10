@@ -16,30 +16,33 @@
  * under the License.
  */
 
-import { IdentityClient } from "@asgardio/oidc-js";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { HttpMethods } from "../models";
 import { store } from "../store";
 
-
-const httpRequest = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
-
 /**
  * Updates the user's password.
+ * 
+ * @remarks
+ * We're currently using basic auth to validate the current password. If the password is
+ * different, the server responds with a status code `401`. The callbacks handle 401 errors and
+ * terminates the session. To bypass the callbacks disable the handler when the client is initialized.
+ * TODO: Remove this once the API supports current password validation.
  *
  * @param {string} currentPassword currently registered password.
  * @param {string} newPassword newly assigned password.
- * @return {Promise<any>} a promise containing the response.
+ * @return {Promise<AxiosResponse>} a promise containing the response.
  */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const updatePassword = (currentPassword: string, newPassword: string): Promise<any> => {
-    // We're currently using basic auth to validate the current password. If the password is
-    // different, the server responds with a status code `401`. The callbacks handle 401 errors and
-    // terminates the session. To bypass the callbacks disable the handler when the client is initialized.
-    // TODO: Remove this once the API supports current password validation.
-    // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
-    // httpClient.disableHandler();
+export const updatePassword = (currentPassword: string, newPassword: string): Promise<AxiosResponse> => {
 
-    const requestConfig = {
+    // If the `httpRequest` method from SDK is used for the request, it causes the 401 to be handled by
+    // the callbacks set fot the application which will log the user out. Hence, axios will be used
+    // for now to send the request since bearer token is not used for authorization we can get away with axios.
+    // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
+    // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
+    // httpRequest.disableHandler();
+
+    const requestConfig: AxiosRequestConfig = {
         auth: {
             password: currentPassword,
             username: store.getState().authenticationInformation.username
@@ -62,11 +65,12 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
         url: store.getState().config.endpoints.me
     };
 
-    return httpRequest(requestConfig)
-        .then((response) => {
+    return axios.request(requestConfig)
+        .then((response: AxiosResponse) => {
             if (response.status !== 200) {
                 return Promise.reject("Failed to update password.");
             }
+
             return Promise.resolve(response);
         })
         .catch((error) => {
@@ -74,7 +78,7 @@ export const updatePassword = (currentPassword: string, newPassword: string): Pr
         })
         .finally(() => {
             // TODO: Implement a method in `IdentityClient` http module to disable/enable the handler.
-            // TODO: Remove this once the API supports current password validation.
-            // httpClient.enableHandler();
+            // See https://github.com/asgardio/asgardio-js-oidc-sdk/issues/45 for progress.
+            // httpRequest.enableHandler();
         });
 };
