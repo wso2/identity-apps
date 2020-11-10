@@ -89,9 +89,7 @@ export class ProfileUtils {
         schemas.forEach((schema: ProfileSchemaInterface) => {
             if (schema.subAttributes && schema.subAttributes.length > 0) {
 
-                /**
-                 * Add the email schema.
-                 */
+                // Add the email schema.
                 if (schema.multiValued && schema.name !== "roles" && schema.name !== "phoneNumbers") {
                     tempSchemas.push(schema);
                 }
@@ -115,7 +113,6 @@ export class ProfileUtils {
         return tempSchemas;
     }
 
-
     /**
      * This function checks if the passed schema  is of type `MultiValue`.
      *
@@ -129,7 +126,6 @@ export class ProfileUtils {
 
         return parentSchema?.multiValued;
     };
-
 
     /**
      * Type Guard to check if the passed in attribute is of type `String Array`.
