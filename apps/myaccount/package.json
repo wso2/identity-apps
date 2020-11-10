@@ -33,7 +33,8 @@
         "qrcode.react": "^1.0.0"
     },
     "devDependencies": {
-        "run-script-os": "^1.0.7"
+        "run-script-os": "^1.0.7",
+        "rimraf": "^3.0.2"
     },
     "peerDependencies": {
         "axios": "*",
@@ -49,10 +50,8 @@
         "react-notification-system": "*",
         "react-redux": "*",
         "react-router-dom": "*",
-        "redux": "*",
         "redux-devtools-extension": "*",
         "redux-thunk": "*",
-        "rimraf": "*",
         "thread-loader": "*",
         "ua-parser-js": "*"
     },
