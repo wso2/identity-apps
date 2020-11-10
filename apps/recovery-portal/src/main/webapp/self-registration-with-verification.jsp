@@ -225,7 +225,8 @@
 
                                 <div class="ui negative message" id="error-msg" hidden="hidden">
                                 </div>
-
+                                <input id="isSaaSApp" name="isSaaSApp" type="hidden"
+                                       value="<%=isSaaSApp%>">
                                 <% if (isPasswordProvisionEnabled || !skipSignUpEnableCheck) { %>
                                 <p>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.fields.to.cmplete.reg")%>
