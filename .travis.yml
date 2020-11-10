@@ -1,8 +1,8 @@
 language: java
-cache:
-  directories:
-    - .autoconf
-    - $HOME/.m2
+#cache:
+#  directories:
+#    - .autoconf
+#    - $HOME/.m2
 script: mvn clean install -q
 sudo: true
 language: node_js
