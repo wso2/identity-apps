@@ -2,14 +2,13 @@ language: generic
 
 jobs:
   include:
-    - name: Maven Build
-    language: java
-    cache:
-      directories:
-        - .autoconf
-        - $HOME/.m2
-    script: mvn clean install -q
-    - name: Node JS
-      language: node_js
+    - language: java
+      cache:
+        directories:
+          - .autoconf
+          - $HOME/.m2
+      script:
+        - mvn clean install -q
+    - language: node_js
       node_js: 12
       cache: npm
