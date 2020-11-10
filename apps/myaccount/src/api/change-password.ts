@@ -30,6 +30,7 @@ import { store } from "../store";
  * different, the server responds with a status code `401`. The callbacks handle 401 errors and
  * terminates the session. To bypass the callbacks disable the handler when the client is initialized.
  * TODO: Remove this once the API supports current password validation.
+ * See https://github.com/wso2/product-is/issues/10014 for progress.
  *
  * @param {string} currentPassword currently registered password.
  * @param {string} newPassword newly assigned password.
