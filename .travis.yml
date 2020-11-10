@@ -11,3 +11,5 @@ cache:
   directories:
     - .autoconf
     - $HOME/.m2
+install: true
+script: mvn clean install -DskipTests=true
