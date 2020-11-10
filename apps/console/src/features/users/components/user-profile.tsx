@@ -584,54 +584,54 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
         return (
             <>
-                <DangerZoneGroup
-                    sectionHeader={ t("adminPortal:components.user.editUser.dangerZoneGroup.header") }
-                >
-                    {
-                        configSettings?.accountDisable === "true" && (
-                            <DangerZone
-                                data-testid={ `${ testId }-danger-zone` }
-                                actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
-                                    "disableUserZone.actionTitle") }
-                                header={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
-                                    "disableUserZone.header") }
-                                subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
-                                    "disableUserZone.subheader") }
-                                onActionClick={ undefined }
-                                toggle={ {
-                                    checked: accountDisable
-                                        ? accountDisable
-                                        : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled,
-                                    id: "accountDisabled",
-                                    onChange: handleDangerZoneToggles
-                                } }
-                            />
-                        )
-                    }
-                    {
-                        configSettings?.accountLock === "true" && (
-                            <DangerZone
-                                data-testid={ `${ testId }-danger-zone` }
-                                actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
-                                    "lockUserZone.actionTitle") }
-                                header={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
-                                    "header") }
-                                subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
-                                    "subheader") }
-                                onActionClick={ undefined }
-                                toggle={ {
-                                    checked: accountLock
-                                        ? accountLock
-                                        : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked,
-                                    id: "accountLocked",
-                                    onChange: handleDangerZoneToggles
-                                } }
-                            />
-                        )
-                    }
-                    {
-                        (hasRequiredScopes(featureConfig?.users, featureConfig?.applications?.scopes?.delete,
-                            allowedScopes) && !isReadOnly && user.userName !== "admin") && (
+                {
+                    (hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete,
+                        allowedScopes) && !isReadOnly && user.userName !== "admin") && (
+                        <DangerZoneGroup
+                            sectionHeader={ t("adminPortal:components.user.editUser.dangerZoneGroup.header") }
+                        >
+                            {
+                                configSettings?.accountDisable === "true" && (
+                                    <DangerZone
+                                        data-testid={ `${ testId }-danger-zone` }
+                                        actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                            "disableUserZone.actionTitle") }
+                                        header={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                            "disableUserZone.header") }
+                                        subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                            "disableUserZone.subheader") }
+                                        onActionClick={ undefined }
+                                        toggle={ {
+                                            checked: accountDisable
+                                                ? accountDisable
+                                                : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountDisabled,
+                                            id: "accountDisabled",
+                                            onChange: handleDangerZoneToggles
+                                        } }
+                                    />
+                                )
+                            }
+                            {
+                                configSettings?.accountLock === "true" && (
+                                    <DangerZone
+                                        data-testid={ `${ testId }-danger-zone` }
+                                        actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
+                                            "lockUserZone.actionTitle") }
+                                        header={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
+                                            "header") }
+                                        subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
+                                            "subheader") }
+                                        onActionClick={ undefined }
+                                        toggle={ {
+                                            checked: accountLock
+                                                ? accountLock
+                                                : user[ProfileConstants.SCIM2_ENT_USER_SCHEMA]?.accountLocked,
+                                            id: "accountLocked",
+                                            onChange: handleDangerZoneToggles
+                                        } }
+                                    />
+                                )
+                            }
                             <DangerZone
                                 data-testid={ `${ testId }-danger-zone` }
                                 actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
@@ -645,9 +645,10 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     setDeletingUser(user);
                                 } }
                             />
-                        )
-                    }
-                </DangerZoneGroup>
+                            )
+                        </DangerZoneGroup>
+                    )
+                }
             </>
         )
     };
@@ -748,50 +749,58 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     <Grid.Row>
                         <Grid.Column>
                             {
-                                connectorProperties && (
-                                    <Popup
-                                        trigger={
-                                            <Button
-                                                onClick={ handleForcePasswordReset }
-                                                basic
-                                                color="grey"
-                                                floated="right"
-                                            >
-                                                <Icon name="redo"/>
-                                                Reset Password
-                                            </Button>
-                                        }
-                                        position="bottom center"
-                                        hoverable
-                                        inverted
-                                        size="huge"
-                                        className="list-options-popup"
-                                    >
-                                       <Popup.Header>
-                                           Password Reset Options
-                                        </Popup.Header>
-                                        <Divider/>
-                                        <Popup.Content>
+                                (hasRequiredScopes(featureConfig?.users,
+                                    featureConfig?.users?.scopes?.update, allowedScopes) &&
+                                    !isReadOnly && user.userName !== "admin") && (
+                                        <>
                                             {
-                                                connectorProperties?.length > 1 && (
-                                                    <List>
-                                                        { resolveConfigurationList(connectorProperties) }
-                                                    </List>
+                                                connectorProperties && (
+                                                    <Popup
+                                                        trigger={
+                                                            <Button
+                                                                onClick={ handleForcePasswordReset }
+                                                                basic
+                                                                color="grey"
+                                                                floated="right"
+                                                            >
+                                                                <Icon name="redo"/>
+                                                                Reset Password
+                                                            </Button>
+                                                        }
+                                                        position="bottom center"
+                                                        hoverable
+                                                        inverted
+                                                        size="huge"
+                                                        className="list-options-popup"
+                                                    >
+                                                        <Popup.Header>
+                                                            Password Reset Options
+                                                        </Popup.Header>
+                                                        <Divider/>
+                                                        <Popup.Content>
+                                                            {
+                                                                connectorProperties?.length > 1 && (
+                                                                    <List>
+                                                                        { resolveConfigurationList(connectorProperties) }
+                                                                    </List>
+                                                                )
+                                                            }
+                                                        </Popup.Content>
+                                                    </Popup>
                                                 )
                                             }
-                                        </Popup.Content>
-                                    </Popup>
+                                            <Button
+                                                basic
+                                                color="orange"
+                                                onClick={ () => setOpenChangePasswordModal(true) }
+                                                floated="right"
+                                            >
+                                                <Icon name="edit outline" />
+                                                Change Password
+                                            </Button>
+                                        </>
                                 )
                             }
-                            <Button
-                                basic
-                                color="orange"
-                                onClick={ () => setOpenChangePasswordModal(true) }
-                                floated="right"
-                            >
-                                <Icon name="edit outline" />
-                                Change Password
-                            </Button>
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
