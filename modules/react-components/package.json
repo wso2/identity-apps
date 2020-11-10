@@ -19,7 +19,7 @@
         "build": "npm run clean && npm run compile",
         "clean": "rimraf ./dist",
         "clean:assets": "rimraf ./dist/assets",
-        "compile": "run-script-os",
+        "compile": "npx run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "copy:assets": "node scripts/copy-assets.js",

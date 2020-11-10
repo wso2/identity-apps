@@ -23,7 +23,7 @@
         "compile": "tsc -p tsconfig.json",
         "lint": "eslint --ext .js,.ts .",
         "test": "npm run jest --passWithNoTests",
-        "jest": "run-script-os",
+        "jest": "npx run-script-os",
         "jest:win32": ".\\node_modules\\.bin\\jest",
         "jest:default": "./node_modules/.bin/jest"
     },
