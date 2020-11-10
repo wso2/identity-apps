@@ -577,45 +577,45 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
 
                                 setCallbackURLsErrorLabel(label);
 
-                    return true;
-                } }
-                showError={ showURLError }
-                setShowError={ setShowURLError }
-                hint={
-                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
-                }
-                readOnly={ readOnly }
-                addURLTooltip={ t("common:addURL") }
-                duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                data-testid={ `${ testId }-callback-url-input` }
-                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                    submitUrl = submitFunction;
-                } }
-                showPredictions={ false }
-                customLabel={ callbackURLsErrorLabel }
-            />
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
-                    <div ref={ allowedOrigin }></div>
-                    <URLInput
-                        required
-                        handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
-                        urlState={ allowedOrigins }
-                        setURLState={ setAllowedOrigins }
-                        labelName={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                ".label")
-                        }
-                        placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                ".placeholder")
-                        }
-                        value={ initialValues?.allowedOrigins?.toString() }
-                        validationErrorMsg={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                ".validations.empty")
-                        }
-                        validation={ (value: string) => {
+                                return true;
+                            } }
+                            showError={ showURLError }
+                            setShowError={ setShowURLError }
+                            hint={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                            }
+                            readOnly={ readOnly }
+                            addURLTooltip={ t("common:addURL") }
+                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                            data-testid={ `${ testId }-callback-url-input` }
+                            getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                submitUrl = submitFunction;
+                            } }
+                            showPredictions={ false }
+                            customLabel={ callbackURLsErrorLabel }
+                        />
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                                <div ref={ allowedOrigin }></div>
+                                <URLInput
+                                    required
+                                    handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                                    urlState={ allowedOrigins }
+                                    setURLState={ setAllowedOrigins }
+                                    labelName={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".label")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".placeholder")
+                                    }
+                                    value={ initialValues?.allowedOrigins?.toString() }
+                                    validationErrorMsg={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".validations.empty")
+                                    }
+                                    validation={ (value: string) => {
 
                                         let label: ReactElement = null;
 
@@ -635,11 +635,11 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                             );
                                         }
 
-                            if (!URLUtils.isMobileDeepLink(value)) {
-                                return false;
-                            }
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
 
-                            setAllowedOriginsErrorLabel(label);
+                                        setAllowedOriginsErrorLabel(label);
 
                                         return true;
                                     } }
