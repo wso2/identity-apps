@@ -19,7 +19,7 @@
 
 import { CryptoUtils } from "./crypto-utils";
 import { UIConstants } from "../constants";
-import {GravatarFallbackTypes, MultiValueAttributeInterface, ProfileSchemaInterface} from "../models";
+import { GravatarFallbackTypes, MultiValueAttributeInterface, ProfileSchemaInterface } from "../models";
 
 /**
  * Utility class for profile related operations.
