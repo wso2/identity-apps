@@ -1,6 +1,6 @@
 {
     "accountApp": {
-        {% if console.applications.account_app.configs is defined %}
+        {% if console.c.account_app.configs is defined %}
         {% for key, value in console.applications.account_app.configs.items() %}
             "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
         {% endfor %}
@@ -128,6 +128,32 @@
                 "scopes": {
                     {% if console.applications.scopes is defined %}
                     {% for operation, scopes in console.applications.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
+            "approvals": {
+                "disabledFeatures": [
+                    {% if console.approvals.disabled_features is defined %}
+                    {% for feature in console.approvals.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.approvals.enabled }},
+                "scopes": {
+                    {% if console.approvals.scopes is defined %}
+                    {% for operation, scopes in console.approvals.scopes.items() %}
                     "{{ operation }}": [
                         {% for scope in scopes %}
                             "{{ scope }}"{{ "," if not loop.last }}
