@@ -32,11 +32,17 @@ import {
     default as AnalyticsEngineConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/analytics-engine-illustration.svg";
 import {
+    default as AskPasswordConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/ask-password-illustration.svg";
+import {
     default as reCaptchaConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/captcha-sso-illustration.svg";
 import {
     default as ConsentInfoConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/consent-management-illustration.svg";
+import {
+    default as DefaultConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/default-connector-illustration.svg";
 import {
     default as LiteUserRegistrationConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/lite-user-registration.svg";
@@ -53,17 +59,11 @@ import {
     default as PasswordResetConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/password-reset-illustration.svg";
 import {
-    default as AskPasswordConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/password-reset-illustration.svg";
-import {
     default as SelfRegConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/self-registration-illustration.svg";
 import {
     default as UserClaimUpdateConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
-import {
-    default as DefaultConnectorIllustration
-} from "../../../themes/default/assets/images/illustrations/governance-connectors/default-connector-illustration.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
 export const GovernanceConnectorIllustrations = {
