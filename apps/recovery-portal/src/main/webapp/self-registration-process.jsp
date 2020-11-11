@@ -88,6 +88,7 @@
             String password = request.getParameter("password");
             String callback = request.getParameter("callback");
             String consent = request.getParameter("consent");
+            boolean isSaaSApp = Boolean.parseBoolean(request.getParameter("isSaaSApp"));
             String policyURL = IdentityManagementServiceUtil.getInstance().getServiceContextURL().replace("/services",
                     "/authenticationendpoint/privacy_policy.do");
             if (StringUtils.isNotEmpty(consent)) {
@@ -127,7 +128,7 @@
             session.setAttribute("username", username);
 
 
-            User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, false);
+            User user = IdentityManagementServiceUtil.getInstance().resolveUser(username, tenantDomain, isSaaSApp);
 
 
             Claim[] claims = new Claim[0];

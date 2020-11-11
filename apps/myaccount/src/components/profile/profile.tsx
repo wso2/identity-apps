@@ -194,7 +194,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 }
             } else {
                 value = schemaNames[0] === "emails"
-                    ? { emails: [values.get(formName)] }
+                    ? {
+                    emails: [values.get(formName)],
+                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                        "verifyEmail": true
+                    }
+                }
                     : { [schemaNames[0]]: values.get(formName) };
             }
         } else {
@@ -213,7 +218,6 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 };
             }
         }
-
         data.Operations[0].value = value;
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
