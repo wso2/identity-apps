@@ -198,11 +198,12 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
                 if (schemaNames.length === 1) {
                     if (schemaNames[0] === "emails") {
-                        if (userInfo?.hasOwnProperty(schemaNames[0]) && userInfo[schemaNames[0]][0]) {
-                            userInfo[[schemaNames[0]][0]][0].value &&
-                                userInfo[[schemaNames[0]][0]][0].value !== "" ? tempProfileInfo.set(schema.name,
-                                    userInfo[[schemaNames[0]][0]][0].value as string)
-                                : tempProfileInfo.set(schema.name, userInfo[schemaNames[0]][0] as string);
+                        if(ProfileUtils.isStringArray(userInfo[schemaNames[0]])) {
+                            const emails: any[] = userInfo[schemaNames[0]];
+                            const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
+
+                            // Set the primary email value.
+                            tempProfileInfo.set(schema.name, primaryEmail);
                         }
                     } else {
                         if (schema.extended && userInfo[ProfileConstants.SCIM2_ENT_USER_SCHEMA]) {
@@ -324,34 +325,75 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             if (schema.name !== "roles.default") {
                 if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
-                    if (schemaNames.length === 1) {
-                        if (schema.extended) {
-                            opValue = {
-                                [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
-                                    [schemaNames[0]]: values.get(schemaNames[0])
+
+                    if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
+                        schemaNames[0] === "phoneNumbers") {
+
+                        const attributeValues = [];
+                        const attValues: Map<string, string | string []> = new Map();
+
+                        if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
+
+                            // Extract the sub attributes from the form values.
+                            for (const value of values.keys()) {
+                                const subAttribute = value.split(".");
+
+                                if (subAttribute[0] === schemaNames[0]) {
+                                    attValues.set(value, values.get(value));
                                 }
                             }
-                        } else {
-                            opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
-                                ? { emails: [values.get(schema.name)] }
-                                : { [schemaNames[0]]: values.get(schemaNames[0]) };
+
+                            for (const [key, value] of attValues) {
+                                const attribute = key.split(".");
+
+                                if (value && value !== "") {
+                                    if (attribute.length === 1) {
+                                        attributeValues.push(value);
+                                    } else {
+                                        attributeValues.push({
+                                            type: attribute[1],
+                                            value: value
+                                        })
+                                    }
+                                }
+                            }
+
+                            opValue = {
+                                [schemaNames[0]]: attributeValues
+                            };
                         }
                     } else {
-                        if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("NAME")) {
-                            const name = values.get(schema.name) && (
+                        if (schemaNames.length === 1) {
+                            if (schema.extended) {
                                 opValue = {
-                                    name: { [schemaNames[1]]: values.get(schema.name) }
-                                }
-                            );
-                        } else {
-                            opValue = {
-                                [schemaNames[0]]: [
-                                    {
-                                        type: schemaNames[1],
-                                        value: values.get(schema.name)
+                                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                                        [schemaNames[0]]: values.get(schemaNames[0])
                                     }
-                                ]
-                            };
+                                }
+                            } else {
+                                opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
+                                    ? { emails: [values.get(schema.name)] }
+                                    : { [schemaNames[0]]: values.get(schemaNames[0]) };
+                            }
+                        } else {
+                            if (schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("NAME")) {
+                                const name = values.get(schema.name) && (
+                                    opValue = {
+                                        name: { [schemaNames[1]]: values.get(schema.name) }
+                                    }
+                                );
+                            } else {
+                                if (schemaNames[0] !== "emails" && schemaNames[0] !== "phoneNumbers") {
+                                    opValue = {
+                                        [schemaNames[0]]: [
+                                            {
+                                                type: schemaNames[1],
+                                                value: values.get(schema.name)
+                                            }
+                                        ]
+                                    };
+                                }
+                            }
                         }
                     }
                 }
@@ -507,7 +549,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             .then(() => {
                 onAlertFired({
                     description:
-                        attributeName == "accountLocked"
+                        attributeName === "accountLocked"
                             ? (
                                 attributeValue
                                     ? t("adminPortal:components.user.profile.notifications.lockUserAccount." +
@@ -523,7 +565,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             ),
                     level: AlertLevels.SUCCESS,
                     message:
-                        attributeName == "accountLocked"
+                        attributeName === "accountLocked"
                             ? (
                                 attributeValue
                                     ? t("adminPortal:components.user.profile.notifications.lockUserAccount." +
@@ -548,7 +590,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
                     message:
-                        attributeName == "accountLocked"
+                        attributeName === "accountLocked"
                             ? t("adminPortal:components.user.profile.notifications.lockUserAccount.error." +
                             "message")
                             : t("adminPortal:components.user.profile.notifications.disableUserAccount.error." +
@@ -560,14 +602,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             onAlertFired({
                 description:
-                    editingAttribute?.name == "accountLocked"
+                    editingAttribute?.name === "accountLocked"
                         ? t("adminPortal:components.user.profile.notifications.lockUserAccount.genericError." +
                         "description")
                         : t("adminPortal:components.user.profile.notifications.disableUserAccount.genericError." +
                         "description"),
                 level: AlertLevels.ERROR,
                 message:
-                    editingAttribute?.name == "accountLocked"
+                    editingAttribute?.name === "accountLocked"
                         ? t("adminPortal:components.user.profile.notifications.lockUserAccount.genericError." +
                         "message")
                         : t("adminPortal:components.user.profile.notifications.disableUserAccount.genericError." +

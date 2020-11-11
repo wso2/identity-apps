@@ -21,7 +21,8 @@ import {
     AlertInterface,
     AlertLevels,
     ProfileInfoInterface,
-    emptyProfileInfo
+    emptyProfileInfo,
+    MultiValueAttributeInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-components";
@@ -204,11 +205,25 @@ const UserEditPage = (): ReactElement => {
             });
     };
 
+    /**
+     * This function resolves the primary email of the user.
+     *
+     * @param {string | MultiValueAttributeInterface)[]} emails - User emails.
+     */
+    const resolvePrimaryEmail = (emails: (string | MultiValueAttributeInterface)[]): string => {
+        let primaryEmail: string | MultiValueAttributeInterface = "";
+        if (emails && Array.isArray(emails) && emails.length > 0) {
+            primaryEmail = emails.find((value) => typeof value === "string");
+        }
+
+        return primaryEmail as string;
+    };
+
     return (
         <PageLayout
             isLoading={ isUserDetailsRequestLoading }
             title={ resolveUserDisplayName(user, null, "Administrator") }
-            description={ t("" + user.emails && user.emails !== undefined ? user.emails[0]?.toString() :
+            description={ t("" + user.emails && user.emails !== undefined ? resolvePrimaryEmail(user?.emails) :
                 user.userName) }
             image={ (
                 <UserAvatar

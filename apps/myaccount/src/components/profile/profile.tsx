@@ -20,6 +20,7 @@ import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
+import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -34,7 +35,6 @@ import * as UIConstants from "../../constants/ui-constants";
 import { AlertInterface, AlertLevels, AuthStateInterface, FeatureConfigInterface, ProfileSchema } from "../../models";
 import { AppState } from "../../store";
 import { getProfileInformation, setActiveForm } from "../../store/actions";
-import { flattenSchemas } from "../../utils";
 import { EditSection, SettingsSection } from "../shared";
 import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 
@@ -93,7 +93,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      * Sort the elements of the profileSchema state according by the displayOrder attribute in the ascending order.
      */
     useEffect(() => {
-        const sortedSchemas = flattenSchemas([...profileDetails.profileSchemas])
+        const sortedSchemas = ProfileUtils.flattenSchemas([...profileDetails.profileSchemas])
             .sort((a: ProfileSchema, b: ProfileSchema) => {
                 if (!a.displayOrder) {
                     return -1;
@@ -124,13 +124,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                             tempProfileInfo.set(schema.name,
                                 profileDetails.profileInfo.pendingEmails[0].value as string)
                         } else {
-                            profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] &&
-                            profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value &&
-                            profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value !== ""
-                                ? tempProfileInfo.set(schema.name,
-                                profileDetails.profileInfo[ [ schemaNames[ 0 ] ][ 0 ] ][ 0 ].value as string)
-                                : tempProfileInfo.set(
-                                    schema.name, profileDetails.profileInfo[ schemaNames[ 0 ] ][ 0 ] as string);
+                            const primaryEmail = profileDetails.profileInfo[schemaNames[0]] &&
+                                profileDetails.profileInfo[schemaNames[0]]
+                                .find((subAttribute) => typeof subAttribute === "string");
+
+                            // Set the primary email value.
+                            tempProfileInfo.set(schema.name, primaryEmail);
                         }
                     } else {
                         if (schema.extended) {
@@ -185,39 +184,93 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
         const schemaNames = formName.split(".");
 
-        if (schemaNames.length === 1) {
-            if (isExtended) {
-                value = {
-                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
-                        [schemaNames[0]]: values.get(formName)
-                    }
+        if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
+            schemaNames[0] === "phoneNumbers") {
+            const attributeValues = [];
+
+            if (schemaNames.length === 1) {
+                // List of sub attributes.
+                const subValue = profileDetails.profileInfo[schemaNames[0]]
+                    && profileDetails.profileInfo[schemaNames[0]]
+                        .filter((subAttribute) => typeof subAttribute === "object");
+
+                if (subValue && subValue.length > 0) {
+                    subValue.map((value) => {
+                        attributeValues.push(value);
+                    });
                 }
-            } else {
-                value = schemaNames[0] === "emails"
-                    ? {
-                    emails: [values.get(formName)],
-                    [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
-                        "verifyEmail": true
-                    }
-                }
-                    : { [schemaNames[0]]: values.get(formName) };
-            }
-        } else {
-            if (schemaNames[0] === "name") {
-                value = {
-                    name: { [schemaNames[1]]: values.get(formName) }
-                };
-            } else {
+
+                // This is required as the api doesn't support
+                // patching the attribute at the sub attribute level.
                 value = {
                     [schemaNames[0]]: [
+                        ...attributeValues,
+                        values.get(formName)
+                    ]
+                };
+            } else {
+                let primaryValue = "";
+
+                // The primary value of the email attribute.
+                if (schemaNames[0] === "emails" && profileDetails?.profileInfo[schemaNames[0]]) {
+                    primaryValue = profileDetails.profileInfo[schemaNames[0]]
+                        && profileDetails.profileInfo[schemaNames[0]]
+                            .find((subAttribute) => typeof subAttribute === "string");
+                }
+
+                // List of sub attributes.
+                const subValues = profileDetails.profileInfo[schemaNames[0]]
+                    && profileDetails.profileInfo[schemaNames[0]]
+                        .filter((subAttribute) => typeof subAttribute ===  "object");
+
+                if (subValues && subValues.length > 0) {
+                    subValues.map((value) => {
+                        attributeValues.push(value);
+                    });
+                }
+
+                // This is required as the api doesn't support
+                // patching the attribute at the sub attribute level.
+                value = {
+                    [schemaNames[0]]: [
+                        ...attributeValues,
+                        primaryValue,
                         {
                             type: schemaNames[1],
                             value: values.get(formName)
                         }
-                    ]
+                ]
                 };
             }
+        } else {
+            if (schemaNames.length === 1) {
+                if (isExtended) {
+                    value = {
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            [schemaNames[0]]: values.get(formName)
+                        }
+                    }
+                } else {
+                    value = { [schemaNames[0]]: values.get(formName) };
+                }
+            } else {
+                if (schemaNames[0] === "name") {
+                    value = {
+                        name: { [schemaNames[1]]: values.get(formName) }
+                    };
+                } else {
+                    value = {
+                        [schemaNames[0]]: [
+                            {
+                                type: schemaNames[1],
+                                value: values.get(formName)
+                            }
+                        ]
+                    };
+                }
+            }
         }
+
         data.Operations[0].value = value;
         updateProfileInfo(data).then((response) => {
             if (response.status === 200) {
