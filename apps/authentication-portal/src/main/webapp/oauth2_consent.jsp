@@ -238,23 +238,6 @@
                                     <div class="cookie-policy-message">
                                         <h5><%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving.head")%> <%=Encode.forHtml(request.getParameter("application"))%></h5>
 
-                                        <div class="ui divider hidden"></div>
-                                    
-                                        <div class="field">
-                                            <div class="ui checkbox">
-                                                <input
-                                                    tabindex="3"
-                                                    type="checkbox"
-                                                    id="rememberApproval"
-                                                    name="rememberApproval"
-                                                    data-testid="consent-page-remember-approval-checkbox"
-                                                />
-                                                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.my.approval")%></label>
-                                            </div>
-                                        </div>
-
-                                        <div class="ui divider hidden"></div>
-
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving")%>
                                         <%=Encode.forHtml(request.getParameter("application"))%>
                                         <%=AuthenticationEndpointUtil.i18n(resourceBundle, "privacy.policy.privacy.short.description.approving2")%>
@@ -267,6 +250,20 @@
                                     }
                                 %>
 
+                                <div class="ui divider hidden"></div>
+                            
+                                <div class="field">
+                                    <div class="ui checkbox">
+                                        <input
+                                            tabindex="3"
+                                            type="checkbox"
+                                            id="rememberApproval"
+                                            name="rememberApproval"
+                                            data-testid="consent-page-remember-approval-checkbox"
+                                        />
+                                        <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.my.approval")%></label>
+                                    </div>
+                                </div>
                             <%
                                 }
                             %>
@@ -284,7 +281,7 @@
                                 value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>" />
                             <input type="button" class="ui primary large button" id="approve" name="approve"
                                     onclick="approved(); return false;"
-                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"approve")%> "/>
+                                    value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"allow")%> "/>
                         </div>
                     </div>
                 </form>

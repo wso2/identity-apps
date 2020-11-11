@@ -172,7 +172,7 @@
                                value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"deny")%>"/>
                         <input type="button" class="ui primary large button" id="approve" name="approve"
                                onclick="approved(); return false;"
-                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"approve")%> "/>
+                               value="<%=AuthenticationEndpointUtil.i18n(resourceBundle,"allow")%> "/>
                     </div>
                 </form>
             </div>
