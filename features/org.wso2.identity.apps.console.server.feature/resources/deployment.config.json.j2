@@ -324,6 +324,32 @@
                     {% endif %}
                 }
             },
+            "oidcScopes": {
+                "disabledFeatures": [
+                    {% if console.oidc_scopes.disabled_features is defined %}
+                    {% for feature in console.oidc_scopes.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": {{ console.oidc_scopes.enabled }},
+                "scopes": {
+                    {% if console.oidc_scopes.scopes is defined %}
+                    {% for operation, scopes in console.oidc_scopes.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
             "roles": {
                 "disabledFeatures": [
                     {% if console.roles.disabled_features is defined %}
