@@ -520,6 +520,15 @@ export const getErrorLayoutRoutes = (): RouteInterface[] => {
             path: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
             protected: true,
             showOnSidePanel: false
+        },
+        {
+            component: lazy(() => import("../pages/errors/storage-disabled")),
+            icon: null,
+            id: "storingDataDisabled",
+            name: "storingDataDisabled",
+            path: AppConstants.getPaths().get("STORING_DATA_DISABLED"),
+            protected: false,
+            showOnSidePanel: false
         }
     ];
 };
@@ -606,6 +615,16 @@ export const getAppLayoutRoutes = (): RouteInterface[] => {
             name: "Error",
             path: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
             protected: true,
+            showOnSidePanel: false
+        },
+        {
+            component: ErrorLayout,
+            exact: true,
+            icon: null,
+            id: "storageDisabled",
+            name: "storageDisabled",
+            path: AppConstants.getPaths().get("STORING_DATA_DISABLED"),
+            protected: false,
             showOnSidePanel: false
         },
         {
