@@ -21,6 +21,7 @@ import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { Heading, LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
 import _ from "lodash";
+import get from "lodash/get";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +40,7 @@ import {
     CommonPluggableComponentPropertyInterface,
     FederatedAuthenticatorMetaInterface,
     IdentityProviderInterface,
+    OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorMetaInterface,
     ProvisioningInterface
 } from "../../models";
@@ -263,16 +265,21 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
      * @param identityProvider - Identity provider data.
      */
     const handleWizardFormFinish = (identityProvider: IdentityProviderInterface): void => {
-        // Remove displayName from Google provisioning connector.
-        if (
-            identityProvider?.provisioning?.outboundConnectors?.connectors[0][
-                IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
-            ] === IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_GOOGLE
-        ) {
-            delete identityProvider?.provisioning?.outboundConnectors?.connectors[0][
+        
+        const connector: OutboundProvisioningConnectorInterface = 
+            identityProvider?.provisioning?.outboundConnectors?.connectors[0];
+
+        const isGoogleConnector: boolean = get(connector,
+            IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME) ===
+            IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_GOOGLE;
+
+        // If the outbound connector is Google, remove the displayName from the connector.
+        if (connector && isGoogleConnector) {
+            delete connector[
                 IdentityProviderManagementConstants.PROVISIONING_CONNECTOR_DISPLAY_NAME
             ];
         }
+
         createNewIdentityProvider(identityProvider);
     };
 
