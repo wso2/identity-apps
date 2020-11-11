@@ -253,7 +253,6 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                                 name={ identityProvider.name }
                                 image={ identityProvider.image }
                                 size="tiny"
-                                spaced="right"
                             />
                         )
                         : (
