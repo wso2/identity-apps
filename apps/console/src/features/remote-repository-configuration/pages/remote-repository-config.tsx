@@ -32,7 +32,6 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Checkbox, Divider, Form, Grid, GridColumn, GridRow, Header, Icon, Radio, Segment } from "semantic-ui-react";
-import { GovernanceConnectorsIllustration } from "../../server-configurations/configs";
 import { 
     createRemoteRepoConfig, 
     deleteRemoteRepoConfig, 
@@ -40,7 +39,7 @@ import {
     getRemoteRepoConfigList,
     updateRemoteRepoConfig 
 } from "../api";
-import { EmptyPlaceholderIllustrations } from "../configs";
+import { EmptyPlaceholderIllustrations, SectionIllustrations } from "../configs";
 import {
     InterfaceRemoteConfigDetails,
     InterfaceRemoteConfigForm,
@@ -596,8 +595,13 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                 <Grid.Row columns={ 1 }>
                                     <Grid.Column>
                                         <Grid padded>
-                                            <Grid.Row columns={ 2 }>
-                                                <Grid.Column width={ 10 }>
+                                            <Grid.Column width={ 16 }>
+                                                <div
+                                                    className="connector-section-with-image-bg"
+                                                    style={ {
+                                                        background: `url(${ SectionIllustrations.appConfigRepo })`
+                                                    } }
+                                                >
                                                     <Header>
                                                         {
                                                             t("console:manage.features.remoteFetch.forms." +
@@ -610,11 +614,8 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                                                             }
                                                         </Header.Subheader>
                                                     </Header>
-                                                </Grid.Column>
-                                                <Grid.Column width={ 6 } textAlign="right">
-                                                    <GovernanceConnectorsIllustration />
-                                                </Grid.Column>
-                                            </Grid.Row>
+                                                </div>
+                                            </Grid.Column>
                                         </Grid>
                                         <Divider />
                                         { 

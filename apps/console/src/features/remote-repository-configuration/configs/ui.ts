@@ -18,6 +18,9 @@
 
 import { ReactComponent as CodeForkIcon } from "../../../themes/default/assets/images/icons/code-fork.svg";
 import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
+import {
+    default as RemoteFetchIllustration
+} from "../../../themes/default/assets/images/illustrations/remote-repository-illustration.svg";
 
 export const CreateRemoteRepoWizardStepIcons = {
     general: DocumentIcon
@@ -29,4 +32,8 @@ export const RemoteRepoDetailsWizardStepIcons = {
 
 export const EmptyPlaceholderIllustrations = {
     add: CodeForkIcon
+};
+
+export const SectionIllustrations = {
+    appConfigRepo: RemoteFetchIllustration
 };
