@@ -1298,6 +1298,13 @@ export const userPortal: UserPortalNS = {
                 1: "Faça login com uma conta diferente."
             },
             title: "Você não está autorizado"
+        },
+        sessionStorageDisabled: {
+            subtitles: {
+                0: "Parece que as configurações do seu navegador não permitem o armazenamento de dados.",
+                1: "Ative o armazenamento de dados em seu navegador para que este aplicativo funcione corretamente."
+            },
+            title: "Seu navegador não permite o armazenamento de dados"
         }
     },
     sections: {

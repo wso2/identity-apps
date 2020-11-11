@@ -1315,6 +1315,13 @@ export const userPortal: UserPortalNS = {
                 1: "Please sign in with a different account."
             },
             title: "You are not authorized"
+        },
+        sessionStorageDisabled: {
+            subtitles: {
+                0: "It looks like your browser's settings don't allow data to be stored.",
+                1: "Please enable storing data on your browser for this app to function properly."
+            },
+            title: "Your browser doesn't allow storing data"
         }
     },
     sections: {

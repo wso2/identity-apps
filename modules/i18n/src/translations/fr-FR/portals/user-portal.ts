@@ -1318,6 +1318,14 @@ export const userPortal: UserPortalNS = {
                 1: "Veuillez vous connecter en utilisant un autre compte."
             },
             title: "Accès interdit"
+        },
+        sessionStorageDisabled: {
+            subtitles: {
+                0: "Il semble que les paramètres de votre navigateur ne permettent pas le stockage des données.",
+                1: "Veuillez activer le stockage des données sur votre navigateur pour que cette " +
+                    "application fonctionne correctement."
+            },
+            title: "Votre navigateur ne permet pas de stocker des données"
         }
     },
     sections: {
