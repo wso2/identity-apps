@@ -114,9 +114,9 @@ module.exports = (env) => {
                                         prefixIds: false,
                                         cleanupIDs: {
                                             prefix: {
-                                              toString() {
-                                                return `${Math.random().toString(36).substr(2, 9)}`;
-                                              }
+                                                toString() {
+                                                    return `${Math.random().toString(36).substr(2, 9)}`;
+                                                }
                                             }
                                           }
                                     }]

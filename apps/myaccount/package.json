@@ -50,6 +50,7 @@
         "react-notification-system": "*",
         "react-redux": "*",
         "react-router-dom": "*",
+        "redux": "*",
         "redux-devtools-extension": "*",
         "redux-thunk": "*",
         "thread-loader": "*",
