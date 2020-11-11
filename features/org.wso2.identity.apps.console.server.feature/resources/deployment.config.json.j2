@@ -1,6 +1,6 @@
 {
     "accountApp": {
-        {% if console.account_app.configs is defined %}
+        {% if console.applications.account_app.configs is defined %}
         {% for key, value in console.applications.account_app.configs.items() %}
             "{{ key }}": "{{ value }}"{{ "," if not loop.last }}
         {% endfor %}
