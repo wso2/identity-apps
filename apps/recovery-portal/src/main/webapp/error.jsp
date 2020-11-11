@@ -20,6 +20,7 @@
 <%@ page isErrorPage="true" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="org.wso2.carbon.identity.mgt.endpoint.util.IdentityManagementEndpointUtil" %>
+<%@ page import="org.wso2.carbon.identity.recovery.IdentityRecoveryConstants" %>
 <%@ page import="org.owasp.encoder.Encode" %>
 <%@ page import="java.io.File" %>
 <jsp:directive.include file="includes/localize.jsp"/>
@@ -27,6 +28,7 @@
 <%
     String errorMsg = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorMsg"));
     String errorCode = IdentityManagementEndpointUtil.getStringValue(request.getAttribute("errorCode"));
+    String callback = request.getParameter("callback");
     if (StringUtils.isBlank(errorMsg)) {
         errorMsg = IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Server.failed.to.respond");
     }
@@ -64,7 +66,7 @@
                         <p><%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, errorMsg)%></p>
                     </div>
 
-                    <div class="buttons">
+                    <div id="action-buttons" class="buttons">
                         <a href="javascript:goBack()" class="ui button primary button">
                             <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Go back")%>
                         </a>
@@ -86,7 +88,26 @@
     <% } %>
 
     <script>
+        $(document).ready(function () {
+            // Checks if the `callback` URL param is present, and if not, hides the `Go Back` button.
+            if ("<%=StringUtils.isEmpty(callback)%>" === "true") {
+                $("#action-buttons").hide();
+            }
+        });
+
         function goBack() {
+
+            var errorCodeFromParams = "<%=errorCode%>";
+            var invalidConfirmationErrorCode = "<%=IdentityRecoveryConstants.ErrorMessages.ERROR_CODE_INVALID_CODE.getCode()%>";
+
+            // Check if the error is related to the confirmation code being invalid.
+            // If so, navigate the users to the URL defined in `callback` URL param.
+            if (errorCodeFromParams === invalidConfirmationErrorCode) {
+                window.location.href = "<%=callback%>";
+
+                return;
+            }
+    
             window.history.back();
         }
     </script>
