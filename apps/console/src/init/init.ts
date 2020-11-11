@@ -20,6 +20,14 @@ import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+const getItemFromSessionStorage = (key: string): string => {
+    try {
+        return sessionStorage.getItem(key);
+    } catch {
+        return "";
+    }
+};
+
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
         accountAppOrigin: process.env.NODE_ENV === "production" ? undefined : "https://localhost:9000",
@@ -49,7 +57,7 @@ function sendPromptNoneRequest() {
     ) as HTMLIFrameElement;
     const config = window.parent["AppUtils"].getConfig();
     promptNoneIFrame.src =
-        sessionStorage.getItem("authorization_endpoint") +
+        getItemFromSessionStorage("authorization_endpoint") +
         "?response_type=code" +
         "&client_id=" +
         config.clientID +
@@ -81,14 +89,14 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
             window.stop();
         }
     } else {
-        
+
         let logoutPath = config.clientOrigin + config.appBaseWithTenant + config.routes.logout;
 
         // SaaS app paths already contains the tenant and basename.
         if (config.isSaas) {
             logoutPath = config.clientOrigin + config.routes.logout;
         }
-        
+
         window.top.location.href = logoutPath;
     }
 } else {
