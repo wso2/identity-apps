@@ -153,8 +153,11 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
 
     /**
      * Default illustration for connector illustrations.
+     *
+     * @param {string} id - Connector id
+     * @return {ReactElement | string} Resolved connector illustration
      */
-    const resolveConnectorIllustration = (id: string): ReactElement => {
+    const resolveConnectorIllustration = (id: string): ReactElement | string => {
 
         const illustration = get(GovernanceConnectorIllustrations, id);
 
@@ -163,7 +166,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         }
 
         return illustration;
-    }
+    };
 
     return (
         <Grid>

@@ -110,16 +110,7 @@ module.exports = (env) => {
                             loader: "@svgr/webpack",
                             options: {
                                 svgoConfig: {
-                                    plugins: [{
-                                        prefixIds: false,
-                                        cleanupIDs: {
-                                            prefix: {
-                                                toString() {
-                                                    return `${Math.random().toString(36).substr(2, 9)}`;
-                                                }
-                                            }
-                                          }
-                                    }]
+                                    plugins: [{ prefixIds: false }]
                                 }
                             }
                         },
