@@ -373,9 +373,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             );
         }
 
-        if (list?.totalResults === 0
-            || (list?.applications?.find(app => app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP)
-                && list?.totalResults === 1)) {
+        if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     action={ onEmptyListPlaceholderActionClick && (
@@ -414,12 +412,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 columns={ resolveTableColumns() }
                 data={
                     list?.applications?.filter((app: ApplicationListItemInterface) => {
-
-                        if (app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP ||
-                            app.name === UIConfig.selfAppIdentifier) {
-
-                            return false;
-                        }
 
                         if (UIConfig.systemAppsIdentifiers.includes(app.name) &&
                             featureConfig?.systemApplications?.enabled &&
