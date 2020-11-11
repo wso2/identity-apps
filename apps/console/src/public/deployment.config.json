@@ -144,18 +144,14 @@
                 "enabled": true,
                 "disabledFeatures": [],
                 "scopes": {
-                    "create": [
-                        "internal_identity_mgt_create"
-                    ],
+                    "create": [],
                     "read": [
-                        "internal_identity_mgt_view"
+                        "internal_idp_view"
                     ],
                     "update": [
-                        "internal_identity_mgt_update"
+                        "internal_idp_update"
                     ],
-                    "delete": [
-                        "internal_identity_mgt_delete"
-                    ]
+                    "delete": []
                 }
             },
             "groups": {
@@ -217,16 +213,28 @@
                 "disabledFeatures": [],
                 "scopes": {
                     "create": [
-                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                        "internal_identity_mgt_view",
+                        "internal_identity_mgt_update",
+                        "internal_identity_mgt_create",
+                        "internal_identity_mgt_delete"
                     ],
                     "read": [
-                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                        "internal_identity_mgt_view",
+                        "internal_identity_mgt_update",
+                        "internal_identity_mgt_create",
+                        "internal_identity_mgt_delete"
                     ],
                     "update": [
-                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                        "internal_identity_mgt_view",
+                        "internal_identity_mgt_update",
+                        "internal_identity_mgt_create",
+                        "internal_identity_mgt_delete"
                     ],
                     "delete": [
-                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                        "internal_identity_mgt_view",
+                        "internal_identity_mgt_update",
+                        "internal_identity_mgt_create",
+                        "internal_identity_mgt_delete"
                     ]
                 }
             },
@@ -274,7 +282,8 @@
                         "internal_user_mgt_create"
                     ],
                     "read": [
-                        "internal_user_mgt_list"
+                        "internal_user_mgt_list",
+                        "internal_userstore_view"
                     ],
                     "update": [
                         "internal_user_mgt_update"
