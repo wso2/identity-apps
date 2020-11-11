@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/console",
-    "version": "1.0.533",
+    "version": "1.0.534",
     "description": "WSO2 Identity Server Console",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -24,12 +24,12 @@
         "test": "npx jest --passWithNoTests"
     },
     "dependencies": {
-        "@wso2is/core": "^1.0.533",
-        "@wso2is/forms": "^1.0.533",
-        "@wso2is/i18n": "^1.0.533",
-        "@wso2is/react-components": "^1.0.533",
-        "@wso2is/theme": "^1.0.533",
-        "@wso2is/validation": "^1.0.533",
+        "@wso2is/core": "^1.0.534",
+        "@wso2is/forms": "^1.0.534",
+        "@wso2is/i18n": "^1.0.534",
+        "@wso2is/react-components": "^1.0.534",
+        "@wso2is/theme": "^1.0.534",
+        "@wso2is/validation": "^1.0.534",
         "country-language": "^0.1.7",
         "redux-mock-store": "^1.5.4"
     },
@@ -41,8 +41,8 @@
         "jest": "^26.4.2",
         "jest-environment-jsdom": "^26.3.0",
         "jest-environment-jsdom-global": "^2.0.4",
-        "run-script-os": "^1.0.7",
         "rimraf": "^3.0.2",
+        "run-script-os": "^1.0.7",
         "ts-jest": "^26.4.0"
     },
     "peerDependencies": {
