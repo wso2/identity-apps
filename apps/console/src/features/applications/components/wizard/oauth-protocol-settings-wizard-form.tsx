@@ -27,6 +27,7 @@ import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
 import {
     ApplicationTemplateListItemInterface,
+    DefaultProtocolTemplate,
     GrantTypeMetaDataInterface,
     MainApplicationInterface,
     OIDCMetadataInterface
@@ -119,7 +120,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
     const [ showURLError, setShowURLError ] = useState(false);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
-    const [ showCallbackURLField, setShowCallbackURLField ] = useState(true);
+    const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(true);
     const [ OIDCMeta, setOIDCMeta ] = useState<OIDCMetadataInterface>(undefined);
     const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
     const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
@@ -133,7 +134,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * Show the grant types only for the custom protocol template.
      */
     useEffect(() => {
-        if (selectedTemplate?.id === "default-oidc") {
+        if (selectedTemplate?.id === DefaultProtocolTemplate.OIDC) {
             setShowGrantTypes(true)
         }
     }, [ selectedTemplate ]);
