@@ -20,6 +20,14 @@ import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+const getItemFromSessionStorage = (key: string): string => {
+    try {
+        return getItemFromSessionStorage(key);
+    } catch {
+        return "";
+    }
+};
+
 if (!window["AppUtils"] || !window["AppUtils"]?.getConfig()) {
     AppUtils.init({
         serverOrigin: serverOriginGlobal,
@@ -48,7 +56,7 @@ function sendPromptNoneRequest() {
     ) as HTMLIFrameElement;
     const config = window.parent["AppUtils"].getConfig();
     promptNoneIFrame.src =
-        sessionStorage.getItem("authorization_endpoint") +
+        getItemFromSessionStorage("authorization_endpoint") +
         "?response_type=code" +
         "&client_id=" +
         config.clientID +
