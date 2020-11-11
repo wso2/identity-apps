@@ -3004,6 +3004,13 @@ export const adminPortal: AdminPortalNS = {
             },
             title: "You are not authorized"
         },
+        sessionStorageDisabled: {
+            subtitles: {
+                0: "It looks like your browser's settings don't allow data to be stored.",
+                1: "Please enable storing data on your browser for this app to function properly."
+            },
+            title: "Your browser doesn't allow storing data"
+        },
         unauthorized: {
             action: "Continue logout",
             subtitles: {
