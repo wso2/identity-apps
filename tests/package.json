@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/integration-tests",
-    "version": "1.0.525",
+    "version": "1.0.532",
     "description": "Cypress integration tests for WSO2 Identity Apps.",
     "author": "WSO2",
     "license": "Apache-2.0",
@@ -10,7 +10,7 @@
         "clean": "npm run clean:node-modules && npm run clean:package-lock",
         "clean:package-lock": "rimraf ./package-lock.json",
         "clean:node-modules": "rimraf ./node_modules",
-        "cypress": "run-script-os",
+        "cypress": "npx run-script-os",
         "cypress:win32": ".\\node_modules\\.bin\\cypress",
         "cypress:default": "./node_modules/.bin/cypress",
         "cy:clean:results": "rimraf output/results",
@@ -27,7 +27,7 @@
         "test:headless": "npm run cy:headless",
         "test:headless:smoke": "npm run cy:headless:smoke",
         "test:interactive": "npm run cy:interactive",
-        "tsc": "run-script-os",
+        "tsc": "npx run-script-os",
         "tsc:win32": ".\\node_modules\\.bin\\tsc",
         "tsc:default": "./node_modules/.bin/tsc"
     },

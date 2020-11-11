@@ -16,8 +16,10 @@
  * under the License.
  */
 
-import React, { FunctionComponent, ReactElement } from "react";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { LinkButton } from "@wso2is/react-components";
+import moment from "moment";
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import {
     Button,
@@ -31,9 +33,7 @@ import {
     SemanticCOLORS,
     Table
 } from "semantic-ui-react";
-import moment from "moment";
 import { ApprovalStatus, ApprovalTaskDetails } from "../models";
-import { LinkButton } from "@wso2is/react-components";
 
 /**
  * Proptypes for the approvals edit page component.

@@ -1,6 +1,6 @@
 {
     "name": "@wso2is/validation",
-    "version": "1.0.525",
+    "version": "1.0.532",
     "description": "Validator module for WSO2 Identity Server web-apps.",
     "keywords": [
         "WSO2",
@@ -16,7 +16,7 @@
         "prebuild": "npm run clean",
         "build": "npm run compile",
         "clean": "rimraf ./dist",
-        "compile": "run-script-os",
+        "compile": "npx run-script-os",
         "compile:win32": "..\\..\\node_modules\\.bin\\tsc -p tsconfig.json",
         "compile:default": "../../node_modules/.bin/tsc -p tsconfig.json",
         "lint": "tslint -t stylish --project ."
