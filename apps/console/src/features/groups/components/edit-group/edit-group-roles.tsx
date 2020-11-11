@@ -103,7 +103,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
 
     // The following constant are used to persist the state of the unassigned roles permissions.
     const [ viewRolePermissions, setViewRolePermissions ] = useState(false);
-    const [ roleId,  setRoleId ] = useState();
+    const [ roleId, setRoleId ] = useState();
     const [ isSelected, setSelection ] = useState(false);
 
     const [ assignedRoles, setAssignedRoles ] = useState([]);
@@ -200,10 +200,10 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
      * object differs from Users endpoint to Groups endpoint.
      */
     const mapUserRoles = () => {
-        const rolesMap = new Map<string, string> ();
+        const rolesMap = new Map<string, string>();
 
         if (group.roles && group.roles instanceof Array) {
-            _.forEachRight (group.roles, (roles) => {
+            _.forEachRight(group.roles, (roles) => {
                 const role = roles.display.split("/");
 
                 if (role.length >= 1) {
@@ -228,34 +228,21 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
             roleIds.push(role.id);
         });
 
-        const bulkRemoveData: any = {
+        const bulkData: any = {
             Operations: [],
             failOnErrors: 1,
             schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
-        const bulkAddData: any = {
-            Operations: [],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
-        };
-
-        const removeOperation = {
-            data: {
-                "Operations": []
-            },
-            method: "PATCH",
-            path: "/Groups/" + group.id
-        };
-
         let addOperation = {
             data: {
-                "Operations": [{
+                "Operations": [ {
                     "op": "add",
                     "path": "groups",
-                    "value": [{
+                    "value": [ {
                         "value": group.id
-                    }]
-                }]
+                    } ]
+                } ]
             },
             method: "PATCH"
         };
@@ -263,15 +250,18 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         const removeOperations = [];
         const addOperations = [];
         let removedIds = [];
+        const addedIds = [];
 
         if (primaryRolesList) {
-            removedIds = [...primaryRolesList.values()];
+            removedIds = [ ...primaryRolesList.values() ];
         }
 
         if (roleIds?.length > 0) {
             roleIds.map((roleId) => {
                 if (removedIds?.includes(roleId)) {
                     removedIds.splice(removedIds.indexOf(roleId), 1);
+                } else {
+                    addedIds.push(roleId);
                 }
             });
         }
@@ -293,53 +283,11 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 removeOperations.push(operation);
             });
 
-            bulkRemoveData.Operations.push(...removeOperations);
+            bulkData.Operations.push(...removeOperations);
+        }
 
-            updateResources(bulkRemoveData)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "adminPortal:components.groups.notifications.updateGroup." +
-                            "success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "adminPortal:components.groups.notifications.updateGroup.success.message"
-                        )
-                    }));
-                    handelAddNewRoleModalClose();
-                    onGroupUpdate(group.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        setAlert({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "adminPortal:components.groups.notifications.updateGroup.error.message"
-                            )
-                        });
-
-                        return;
-                    }
-
-                    setAlert({
-                        description: t(
-                            "adminPortal:components.components.groups.notifications.updateGroup.genericError." +
-                            "description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "components.groups.notifications.updateGroup.genericError.message"
-                        )
-                    });
-                });
-        } else {
-            roleIds.map((id) => {
+        if (addedIds && addedIds?.length > 0) {
+            addedIds.map((id) => {
                 addOperation = {
                     ...addOperation,
                     ...{ path: "/Roles/" + id }
@@ -348,51 +296,52 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
             });
 
             addOperations.map((operation) => {
-                bulkAddData.Operations.push(operation);
+                bulkData.Operations.push(operation);
             });
+        }
+        updateResources(bulkData)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "adminPortal:components.groups.notifications.updateGroup." +
+                        "success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "adminPortal:components.groups.notifications.updateGroup.success.message"
+                    )
+                }));
+                handelAddNewRoleModalClose();
+                onGroupUpdate(group.id);
+            })
+            .catch((error) => {
+                if (error?.response?.status === 404) {
+                    return;
+                }
 
-            updateResources(bulkAddData)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "adminPortal:components.groups.notifications.updateGroup.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "adminPortal:components.groups.notifications.updateGroup.success.message"
-                        )
-                    }));
-                    handelAddNewRoleModalClose();
-                    onGroupUpdate(group.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        setAlert({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "adminPortal:components.groups.notifications.updateGroup.error.message"
-                            )
-                        });
-
-                        return;
-                    }
-
+                if (error?.response && error?.response?.data && error?.response?.data?.description) {
                     setAlert({
-                        description: t(
-                            "adminPortal:components.groups.notifications.updateGroup.genericError.description"
-                        ),
+                        description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "components.groups.notifications.updateGroup.genericError.message"
+                            "adminPortal:components.groups.notifications.updateGroup.error.message"
                         )
                     });
+
+                    return;
+                }
+
+                setAlert({
+                    description: t(
+                        "adminPortal:components.components.groups.notifications.updateGroup.genericError." +
+                        "description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "components.groups.notifications.updateGroup.genericError.message"
+                    )
                 });
-        }
+            });
     };
 
     const handleUnselectedListSearch = (e, { value }) => {
