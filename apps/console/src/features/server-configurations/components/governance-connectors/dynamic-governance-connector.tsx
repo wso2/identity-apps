@@ -41,7 +41,7 @@ interface DynamicGovernanceConnectorProps extends TestableComponentInterface {
 /**
  * Height of the connector illustration wrapper.
  */
-const CONNECTOR_ILLUSTRATION_WRAPPER_HEIGHT: string = "180px";
+const CONNECTOR_ILLUSTRATION_WRAPPER_HEIGHT: string = "120px";
 
 /**
  * Dynamic governance connector component.
@@ -151,6 +151,23 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         />
     );
 
+    /**
+     * Default illustration for connector illustrations.
+     *
+     * @param {string} id - Connector id
+     * @return {ReactElement | string} Resolved connector illustration
+     */
+    const resolveConnectorIllustration = (id: string): ReactElement | string => {
+
+        const illustration = get(GovernanceConnectorIllustrations, id);
+
+        if (!illustration) {
+            return GovernanceConnectorIllustrations.default;
+        }
+
+        return illustration;
+    };
+
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
@@ -161,7 +178,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                                 <div
                                     style={ {
                                         height: CONNECTOR_ILLUSTRATION_WRAPPER_HEIGHT,
-                                        background: `url(${ get(GovernanceConnectorIllustrations, connector?.id) })`,
+                                        background: `url(${ resolveConnectorIllustration(connector?.id) })`,
                                         backgroundRepeat: "no-repeat",
                                         backgroundSize: "contain",
                                         backgroundPosition: "right",

@@ -61,6 +61,9 @@ import {
 import {
     default as UserClaimUpdateConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg";
+import {
+    default as DefaultConnectorIllustration
+} from "../../../themes/default/assets/images/illustrations/governance-connectors/default-connector-illustration.svg";
 import { ServerConfigurationsConstants } from "../constants";
 
 export const GovernanceConnectorIllustrations = {
@@ -77,7 +80,8 @@ export const GovernanceConnectorIllustrations = {
     [ ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID ]: PasswordResetConnectorIllustration,
     [ ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID ]: ConsentInfoConnectorIllustration,
     [ ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID ]: AnalyticsEngineConnectorIllustration,
-    [ ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID ]: UserClaimUpdateConnectorIllustration
+    [ ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID ]: UserClaimUpdateConnectorIllustration,
+    default: DefaultConnectorIllustration
 };
 
 export const GovernanceConnectorsIllustration = GovernanceConnectors;

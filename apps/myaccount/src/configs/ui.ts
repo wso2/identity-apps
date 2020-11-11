@@ -33,7 +33,7 @@ import {
 import { ReactComponent as BoxIcon } from "../themes/default/assets/images/icons/box-icon.svg";
 import { ReactComponent as CloseIcon } from "../themes/default/assets/images/icons/close-icon.svg";
 import { ReactComponent as CodeIcon } from "../themes/default/assets/images/icons/code-icon.svg";
-import { ReactComponent as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
+import { default as ConsentIcon } from "../themes/default/assets/images/icons/consent-icon.svg";
 import { ReactComponent as ControlsIcon } from "../themes/default/assets/images/icons/controls-icon.svg";
 import { ReactComponent as CrossIcon } from "../themes/default/assets/images/icons/cross-icon.svg";
 import { ReactComponent as DashboardIcon } from "../themes/default/assets/images/icons/dashboard-icon.svg";
@@ -45,7 +45,7 @@ import { ReactComponent as InfoIcon } from "../themes/default/assets/images/icon
 import { ReactComponent as LockIcon } from "../themes/default/assets/images/icons/lock-icon.svg";
 import { ReactComponent as MonitorIcon } from "../themes/default/assets/images/icons/monitor-icon.svg";
 import { ReactComponent as PackageIcon } from "../themes/default/assets/images/icons/package.svg";
-import { ReactComponent as PadlockIcon } from "../themes/default/assets/images/icons/padlock-icon.svg";
+import { default as PadlockIcon } from "../themes/default/assets/images/icons/padlock-icon.svg";
 import {
     ReactComponent as SecurityQuestionsIcon
 } from "../themes/default/assets/images/icons/security-questions-icon.svg";
@@ -56,31 +56,31 @@ import { ReactComponent as ToolsIcon } from "../themes/default/assets/images/ico
 import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as WarningIcon } from "../themes/default/assets/images/icons/warning-icon.svg";
 import {
-    ReactComponent as AssociatedAccountsMini
+    default as AssociatedAccountsMini
 } from "../themes/default/assets/images/illustrations/associated-accounts-mini.svg";
 import {
-    ReactComponent as AssociatedAccounts
+    default as AssociatedAccounts
 } from "../themes/default/assets/images/illustrations/associated-accounts.svg";
 import {
-    ReactComponent as ChangePasswordMini
+    default as ChangePasswordMini
 } from "../themes/default/assets/images/illustrations/change-password-mini.svg";
-import { ReactComponent as ChangePassword } from "../themes/default/assets/images/illustrations/change-password.svg";
+import { default as ChangePassword } from "../themes/default/assets/images/illustrations/change-password.svg";
 import {
     ReactComponent as EnterVerificationCode
 } from "../themes/default/assets/images/illustrations/enter-verification-code.svg";
 import {
-    ReactComponent as FederatedAssociationsMini
+    default as FederatedAssociationsMini
 } from "../themes/default/assets/images/illustrations/federated-associations-mini.svg";
 import {
-    ReactComponent as FederatedAssociations
+    default as FederatedAssociations
 } from "../themes/default/assets/images/illustrations/federated-associations.svg";
 import {
     ReactComponent as EmptySearchResultsIllustration
 } from "../themes/default/assets/images/illustrations/no-search-results.svg";
 import {
-    ReactComponent as ProfileExportMini
+    default as ProfileExportMini
 } from "../themes/default/assets/images/illustrations/profile-export-mini.svg";
-import { ReactComponent as ProfileExport } from "../themes/default/assets/images/illustrations/profile-export.svg";
+import { default as ProfileExport } from "../themes/default/assets/images/illustrations/profile-export.svg";
 import {
     ReactComponent as QRCodeScanIllustration
 } from "../themes/default/assets/images/illustrations/qrcode-scan.svg";
