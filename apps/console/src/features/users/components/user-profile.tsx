@@ -200,7 +200,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     if (schemaNames[0] === "emails") {
                         if(ProfileUtils.isStringArray(userInfo[schemaNames[0]])) {
                             const emails: any[] = userInfo[schemaNames[0]];
-                            const primaryEmail = emails.find((subAttribute) => typeof subAttribute ==  "string");
+                            const primaryEmail = emails.find((subAttribute) => typeof subAttribute === "string");
 
                             // Set the primary email value.
                             tempProfileInfo.set(schema.name, primaryEmail);
@@ -327,18 +327,18 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                 if (values.get(schema.name) !== undefined && values.get(schema.name).toString() !== undefined) {
 
                     if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-                        schemaNames[0] == "phoneNumbers") {
+                        schemaNames[0] === "phoneNumbers") {
 
                         const attributeValues = [];
                         const attValues: Map<string, string | string []> = new Map();
 
-                        if (schemaNames.length === 1 || schema.name == "phoneNumbers.mobile") {
+                        if (schemaNames.length === 1 || schema.name === "phoneNumbers.mobile") {
 
                             // Extract the sub attributes from the form values.
                             for (const value of values.keys()) {
                                 const subAttribute = value.split(".");
 
-                                if (subAttribute[0] == schemaNames[0]) {
+                                if (subAttribute[0] === schemaNames[0]) {
                                     attValues.set(value, values.get(value));
                                 }
                             }
@@ -549,7 +549,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
             .then(() => {
                 onAlertFired({
                     description:
-                        attributeName == "accountLocked"
+                        attributeName === "accountLocked"
                             ? (
                                 attributeValue
                                     ? t("adminPortal:components.user.profile.notifications.lockUserAccount." +
@@ -565,7 +565,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                             ),
                     level: AlertLevels.SUCCESS,
                     message:
-                        attributeName == "accountLocked"
+                        attributeName === "accountLocked"
                             ? (
                                 attributeValue
                                     ? t("adminPortal:components.user.profile.notifications.lockUserAccount." +
@@ -590,7 +590,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
                     message:
-                        attributeName == "accountLocked"
+                        attributeName === "accountLocked"
                             ? t("adminPortal:components.user.profile.notifications.lockUserAccount.error." +
                             "message")
                             : t("adminPortal:components.user.profile.notifications.disableUserAccount.error." +
@@ -602,14 +602,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
 
             onAlertFired({
                 description:
-                    editingAttribute?.name == "accountLocked"
+                    editingAttribute?.name === "accountLocked"
                         ? t("adminPortal:components.user.profile.notifications.lockUserAccount.genericError." +
                         "description")
                         : t("adminPortal:components.user.profile.notifications.disableUserAccount.genericError." +
                         "description"),
                 level: AlertLevels.ERROR,
                 message:
-                    editingAttribute?.name == "accountLocked"
+                    editingAttribute?.name === "accountLocked"
                         ? t("adminPortal:components.user.profile.notifications.lockUserAccount.genericError." +
                         "message")
                         : t("adminPortal:components.user.profile.notifications.disableUserAccount.genericError." +

@@ -126,7 +126,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         } else {
                             const primaryEmail = profileDetails.profileInfo[schemaNames[0]] &&
                                 profileDetails.profileInfo[schemaNames[0]]
-                                .find((subAttribute) => typeof subAttribute ==  "string");
+                                .find((subAttribute) => typeof subAttribute === "string");
 
                             // Set the primary email value.
                             tempProfileInfo.set(schema.name, primaryEmail);
@@ -185,14 +185,14 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         const schemaNames = formName.split(".");
 
         if (ProfileUtils.isMultiValuedSchemaAttribute(profileSchema, schemaNames[0]) ||
-            schemaNames[0] == "phoneNumbers") {
+            schemaNames[0] === "phoneNumbers") {
             const attributeValues = [];
 
             if (schemaNames.length === 1) {
                 // List of sub attributes.
                 const subValue = profileDetails.profileInfo[schemaNames[0]]
                     && profileDetails.profileInfo[schemaNames[0]]
-                        .filter((subAttribute) => typeof subAttribute ==  "object");
+                        .filter((subAttribute) => typeof subAttribute === "object");
 
                 if (subValue && subValue.length > 0) {
                     subValue.map((value) => {
@@ -212,16 +212,16 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 let primaryValue = "";
 
                 // The primary value of the email attribute.
-                if (schemaNames[0] == "emails") {
+                if (schemaNames[0] === "emails" && profileDetails?.profileInfo[schemaNames[0]]) {
                     primaryValue = profileDetails.profileInfo[schemaNames[0]]
                         && profileDetails.profileInfo[schemaNames[0]]
-                            .find((subAttribute) => typeof subAttribute ==  "string");
+                            .find((subAttribute) => typeof subAttribute === "string");
                 }
 
                 // List of sub attributes.
                 const subValues = profileDetails.profileInfo[schemaNames[0]]
                     && profileDetails.profileInfo[schemaNames[0]]
-                        .filter((subAttribute) => typeof subAttribute ==  "object");
+                        .filter((subAttribute) => typeof subAttribute ===  "object");
 
                 if (subValues && subValues.length > 0) {
                     subValues.map((value) => {

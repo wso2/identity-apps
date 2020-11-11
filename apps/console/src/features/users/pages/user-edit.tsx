@@ -213,7 +213,7 @@ const UserEditPage = (): ReactElement => {
     const resolvePrimaryEmail = (emails: (string | MultiValueAttributeInterface)[]): string => {
         let primaryEmail: string | MultiValueAttributeInterface = "";
         if (emails && Array.isArray(emails) && emails.length > 0) {
-            primaryEmail = emails.find((value) => typeof value ==  "string");
+            primaryEmail = emails.find((value) => typeof value === "string");
         }
 
         return primaryEmail as string;
