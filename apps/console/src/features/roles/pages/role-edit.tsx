@@ -48,7 +48,7 @@ const RoleEditPage: FunctionComponent<any> = (): ReactElement => {
             })
             .finally(() => {
                 setIsRoleDetailsRequestLoading(false);
-            })
+            });
     };
 
     const onRoleUpdate = (): void => {
