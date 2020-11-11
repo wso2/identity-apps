@@ -209,26 +209,27 @@ const RolesPage = (): ReactElement => {
 
         setSearchQuery(searchQuery);
 
-        searchRoleList(searchData).then(response => {
-            if (response.status === 200) {
-                const results = response.data.Resources;
-                let updatedResults = [];
-                if (results) {
-                    updatedResults = results.filter((role: RolesInterface) => {
-                        return role.displayName.includes(APPLICATION_DOMAIN) ||
-                            role.displayName.includes(INTERNAL_DOMAIN);
-                    })
-                }
+        searchRoleList(searchData)
+            .then((response) => {
 
-                const updatedData = {
-                    ...results,
-                    ...results.data.Resources,
-                    Resources: updatedResults
-                };
-                setInitialRoleList(updatedData);
-                setPaginatedRoles(updatedData);
-            }
-        })
+                if (response.status === 200) {
+                    const results = response?.data?.Resources;
+
+                    let updatedResults = [];
+                    if (results) {
+                        updatedResults = results;
+                    }
+
+                    const updatedData = {
+                        ...results,
+                        ...results?.data?.Resources,
+                        Resources: updatedResults
+                    };
+
+                    setInitialRoleList(updatedData);
+                    setPaginatedRoles(updatedData);
+                }
+        });
     };
 
     /**
@@ -362,7 +363,7 @@ const RolesPage = (): ReactElement => {
                             }
                             placeholder={ t("adminPortal:components.roles.advancedSearch.placeholder") }
                             defaultSearchAttribute="displayName"
-                            defaultSearchOperator="sw"
+                            defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
                         />
                     ) }

@@ -24,7 +24,9 @@ import { CreateRoleInterface, PatchRoleDataInterface, SearchRoleInterface } from
 /**
  * Initialize an axios Http client.
  */
-const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClient = IdentityClient.getInstance()
+    .httpRequest.bind(IdentityClient.getInstance())
+    .bind(IdentityClient.getInstance());
 
 /**
  * Retrieve Role details for a give role id.
@@ -41,11 +43,12 @@ export const getRoleById = (roleId: string): Promise<any> => {
         url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -65,11 +68,12 @@ export const updateRoleDetails = (roleId: string, roleData: PatchRoleDataInterfa
         url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -88,11 +92,12 @@ export const searchRoleList = (searchData: SearchRoleInterface): Promise<any> =>
         url: store.getState().config.endpoints.roles + "/.search"
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error)
-    })
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -111,11 +116,12 @@ export const deleteRoleById = (roleId: string): Promise<any> => {
         url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error)
-    })
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -134,11 +140,12 @@ export const createRole = (data: CreateRoleInterface): Promise<any> => {
         url: store.getState().config.endpoints.roles
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error)
-    });
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -158,11 +165,12 @@ export const updateRolePermissions = (roleId: string, data: any): Promise<any> =
         url: store.getState().config.endpoints.groups + "/" + roleId
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error)
-    });
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -180,11 +188,12 @@ export const getPermissionList = (): Promise<any> => {
         url: store.getState().config.endpoints.permission
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -202,11 +211,12 @@ export const getPermissionsForRole = (roleId: string): Promise<any> => {
         url: store.getState().config.endpoints.groups + "/" + roleId + "/permissions"
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };
 
 /**
@@ -226,9 +236,10 @@ export const updateRole = (roleId: string, roleData: PatchRoleDataInterface): Pr
         url: store.getState().config.endpoints.roles + "/" + roleId
     };
 
-    return httpClient(requestConfig).then((response) => {
-        return Promise.resolve(response);
-    }).catch((error) => {
-        return Promise.reject(error);
-    });
+    return httpClient(requestConfig)
+        .then((response) => {
+            return Promise.resolve(response);
+        }).catch((error) => {
+            return Promise.reject(error);
+        });
 };

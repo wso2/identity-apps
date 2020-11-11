@@ -249,12 +249,12 @@ const GroupsPage: FunctionComponent<any> = (): ReactElement => {
                 if (results) {
                     updatedResults = results.filter((role: RolesInterface) => {
                         return !role.displayName.includes("Application/") && !role.displayName.includes("Internal/");
-                    })
+                    });
                 }
                 setGroupsList(updatedResults);
                 setPaginatedGroups(updatedResults);
             }
-        })
+        });
     };
 
     /**
