@@ -271,7 +271,6 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
      * @param values - Form values.
      */
     const handleApplicationProtocolsUpdate = (values: any): void => {
-        console.log("Values", values);
         updateAuthProtocolConfig(appId, values, selectedTemplate.authenticationProtocol)
             .then(() => {
                 dispatch(addAlert({

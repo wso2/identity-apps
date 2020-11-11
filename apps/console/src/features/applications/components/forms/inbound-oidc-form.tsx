@@ -1337,6 +1337,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                 } else {
                                     submitOrigin((origin) => {
                                         // TODO: Remove the empty check when the backend is fixed.
+                                        // Issue reported: https://github.com/wso2/product-is/issues/9933
                                         if (isEmpty(allowedOrigins) && isEmpty(origin)) {
                                             setShowOriginError(true);
                                             scrollToInValidField("allowedOrigin");
