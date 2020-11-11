@@ -172,13 +172,13 @@ export const ListLayout: FunctionComponent<PropsWithChildren<ListLayoutPropsInte
                         <div className="top-action-panel" data-testid={ `${ testId }-top-action-panel` }>
                             <Grid>
                                 <Grid.Row>
-                                    <Grid.Column width={ 8 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
                                         <div className="left-aligned actions">
                                             { advancedSearchPosition === "left" && advancedSearch }
                                             { leftActionPanel }
                                         </div>
                                     </Grid.Column>
-                                    <Grid.Column width={ 8 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 8 } computer={ 8 }>
                                         <div className="actions right-aligned">
                                             { advancedSearchPosition === "right" && advancedSearch }
                                             { rightActionPanel }
