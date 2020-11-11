@@ -27,13 +27,13 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
+    ItemTypeLabelPropsInterface,
     LinkButton,
     PrimaryButton,
     TransferComponent,
     TransferList,
     TransferListItem,
-    useWizardAlert,
-    ItemTypeLabelPropsInterface
+    useWizardAlert
 } from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -108,7 +108,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         if (isSelectAssignedAllRolesChecked) {
             setCheckedAssignedListItems(tempGroupList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAssignedAllRolesChecked ]);
 
@@ -116,7 +116,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         if (isSelectUnassignedRolesAllRolesChecked) {
             setCheckedUnassignedListItems(groupList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
@@ -331,14 +331,12 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
-        let removeOperation = {
+        const removeOperation = {
             data: {
-                "Operations": [{
-                    "op": "remove",
-                    "path": "roles"
-                }]
+                "Operations": []
             },
-            method: "PATCH"
+            method: "PATCH",
+            path: "/Roles/" + role.id
         };
 
         const addOperation = {
@@ -367,16 +365,15 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
 
         if (removedIds && removedIds?.length > 0) {
             removedIds.map((id) => {
-                removeOperation = {
-                    ...removeOperation,
-                    ...{ path: "/Groups/" + id }
+                const operation = {
+                    op: "remove",
+                    path: `groups[value eq ${id}]`
                 };
-                removeOperations.push(removeOperation);
+                removeOperations.push(operation);
             });
 
-            removeOperations.map((operation) => {
-                bulkRemoveData.Operations.push(operation);
-            });
+            removeOperation.data.Operations.push(...removeOperations);
+            bulkRemoveData.Operations.push(removeOperation);
 
             updateResources(bulkRemoveData)
                 .then(() => {
@@ -562,7 +559,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                             showSecondaryActions={ false }
                                             data-testid="role-mgt-update-groups-modal-unselected-groups"
                                         />
-                                    )
+                                    );
                                 })
                             }
                         </TransferList>
@@ -595,7 +592,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                             showSecondaryActions={ false }
                                             data-testid="role-mgt-update-groups-modal-selected-groups"
                                         />
-                                    )
+                                    );
                                 })
                             }
                         </TransferList>
@@ -668,7 +665,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                                     { PRIMARY_DOMAIN }
                                                 </Label>
                                                 : <Label color="olive">
-                                                    { userGroup[0] }
+                                                    { userGroup[ 0 ] }
                                                 </Label>
                                         }
                                     </Table.Cell>
@@ -676,11 +673,11 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         {
                                             userGroup?.length === 1
                                                 ? group?.display
-                                                : userGroup[1]
+                                                : userGroup[ 1 ]
                                         }
                                     </Table.Cell>
                                 </Table.Row>
-                            )
+                            );
                         }
                     })
                 }
@@ -696,7 +693,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                     { t("adminPortal:components.roles.edit.groups.subHeading") }
                 </Heading>
             </Heading>
-            <Divider hidden/>
+            <Divider hidden />
             <Grid>
                 <Grid.Row>
                     <Grid.Column computer={ 8 }>
@@ -710,7 +707,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                         <Grid.Column>
                                             <Input
                                                 data-testid="role-mgt-groups-list-search-input"
-                                                icon={ <Icon name="search"/> }
+                                                icon={ <Icon name="search" /> }
                                                 onChange={ handleAssignedGroupListSearch }
                                                 placeholder={ t("adminPortal:components.user.updateUser.groups." +
                                                     "editGroups.searchPlaceholder") }
@@ -753,37 +750,37 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                                     </Grid.Row>
                                 </EmphasizedSegment>
                             ) : (
-                                <EmphasizedSegment>
-                                    <EmptyPlaceholder
-                                        data-testid="role-mgt-empty-groups-list"
-                                        title={ t("adminPortal:components.roles.edit.groups." +
-                                            "emptyPlaceholder.title") }
-                                        subtitle={ [
-                                            t("adminPortal:components.roles.edit.groups." +
-                                                "emptyPlaceholder.subtitles")
-                                        ] }
-                                        action={
-                                            !isReadOnly && (
-                                                <PrimaryButton
-                                                    data-testid="role-mgt-empty-groups-list-assign-group-button"
-                                                    icon="plus"
-                                                    onClick={ handleOpenAddNewGroupModal }
-                                                >
-                                                    {t("adminPortal:components.roles.edit.groups." +
-                                                    "emptyPlaceholder.action")}
-                                                </PrimaryButton>
-                                            )
-                                        }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
-                                        imageSize="tiny"
-                                    />
-                                </EmphasizedSegment>
-                            )
+                                    <EmphasizedSegment>
+                                        <EmptyPlaceholder
+                                            data-testid="role-mgt-empty-groups-list"
+                                            title={ t("adminPortal:components.roles.edit.groups." +
+                                                "emptyPlaceholder.title") }
+                                            subtitle={ [
+                                                t("adminPortal:components.roles.edit.groups." +
+                                                    "emptyPlaceholder.subtitles")
+                                            ] }
+                                            action={
+                                                !isReadOnly && (
+                                                    <PrimaryButton
+                                                        data-testid="role-mgt-empty-groups-list-assign-group-button"
+                                                        icon="plus"
+                                                        onClick={ handleOpenAddNewGroupModal }
+                                                    >
+                                                        { t("adminPortal:components.roles.edit.groups." +
+                                                            "emptyPlaceholder.action") }
+                                                    </PrimaryButton>
+                                                )
+                                            }
+                                            image={ EmptyPlaceholderIllustrations.emptyList }
+                                            imageSize="tiny"
+                                        />
+                                    </EmphasizedSegment>
+                                )
                         }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
             { addNewGroupModal() }
         </>
-    )
+    );
 };
