@@ -22,9 +22,9 @@ import { Field, Forms, Validation } from "@wso2is/forms";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, GridColumn, GridRow } from "semantic-ui-react";
+import { searchRoleList } from "../..";
 import { SharedUserStoreConstants } from "../../../core/constants";
 import { SharedUserStoreUtils } from "../../../core/utils";
-import { searchGroupList } from "../../../groups/api";
 import {
     PRIMARY_DOMAIN
 } from "../../constants";
@@ -171,7 +171,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                                     ],
                                     startIndex: 1
                                 };
-                                const response = await searchGroupList(searchData);
+                                const response = await searchRoleList(searchData);
 
                                 if (response?.data?.totalResults > 0) {
                                     validation.isValid = false;
