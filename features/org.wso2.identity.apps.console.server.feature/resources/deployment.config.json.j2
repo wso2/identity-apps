@@ -350,6 +350,32 @@
                     {% endif %}
                 }
             },
+            "remoteFetchConfig": {
+                "disabledFeatures": [
+                    {% if console.remote_fetch.disabled_features is defined %}
+                    {% for feature in console.remote_fetch.disabled_features %}
+                    "{{ feature }}"{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% endif %}
+                ],
+                "enabled": true,
+                "scopes": {
+                    {% if console.remote_fetch.scopes is defined %}
+                    {% for operation, scopes in console.remote_fetch.scopes.items() %}
+                    "{{ operation }}": [
+                        {% for scope in scopes %}
+                            "{{ scope }}"{{ "," if not loop.last }}
+                        {% endfor %}
+                    ]{{ "," if not loop.last }}
+                    {% endfor %}
+                    {% else %}
+                        "create": [],
+                        "read": [],
+                        "update": [],
+                        "delete": []
+                    {% endif %}
+                }
+            },
             "roles": {
                 "disabledFeatures": [
                     {% if console.roles.disabled_features is defined %}
