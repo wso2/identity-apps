@@ -20,10 +20,10 @@ import { resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers"
 import {
     AlertInterface,
     AlertLevels,
+    MultiValueAttributeInterface,
     ProfileInfoInterface,
-    emptyProfileInfo,
-    MultiValueAttributeInterface
-} from "@wso2is/core/models";
+    emptyProfileInfo
+}from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { EditAvatarModal, PageLayout, UserAvatar } from "@wso2is/react-components";
 import React, { MouseEvent, ReactElement, useEffect, useState } from "react";
@@ -68,7 +68,7 @@ const UserEditPage = (): ReactElement => {
                         || connector.id === ServerConfigurationsConstants.ADMIN_FORCE_PASSWORD_RESET_CONNECTOR_ID) {
                         connector.properties.map((property) => {
                             properties.push(property);
-                        })
+                        });
                     }
                 });
 
@@ -84,15 +84,16 @@ const UserEditPage = (): ReactElement => {
 
         getGovernanceConnectors(ServerConfigurationsConstants.USER_ONBOARDING_CONNECTOR_ID)
             .then((response: GovernanceConnectorInterface[]) => {
-                const properties: ConnectorPropertyInterface[] = [ ...connectorProperties ];
+                const properties: ConnectorPropertyInterface[] = connectorProperties
+                    && Array.isArray(connectorProperties) ? [ ...connectorProperties ] : [];
 
                 response.map((connector) => {
                     if (connector.id === ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID) {
                         connector.properties.map((property) => {
-                            if(property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
+                            if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
                                 properties.push(property);
                             }
-                        })
+                        });
                     }
                 });
 
