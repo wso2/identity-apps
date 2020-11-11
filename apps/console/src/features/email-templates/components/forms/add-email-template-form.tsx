@@ -97,7 +97,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 key: index,
                 text: country ? language + " (" + country + ")" : language,
                 value: locale
-            })
+            });
         });
 
         setLocaleList(localeDropDown);
@@ -122,7 +122,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     setHtmlFooterContent(templateDetails.footer);
                 }
             })
-            .catch((error) => {
+            .catch(() => {
                 // Handle errors.
             });
     }, [ templateId, mode ]);
@@ -166,7 +166,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         "adminPortal:components.emailTemplates.notifications.createTemplate.genericError.message"
                     )
                 }));
-            })
+            });
     };
 
     /**
@@ -263,7 +263,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                                 key: list.key as string,
                                                 text: list.text as string,
                                                 value: list.value as string
-                                            }
+                                            };
                                         }) : [] }
                                         listen={ (values: Map<string, FormValue>) => {
                                             setLocale(values.get("locale").toString());
@@ -312,7 +312,10 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                 isReadOnly={ false }
                                 isSignature
                                 isAddFlow={ templateId === "" }
-                                updateHtmlContent={ setHtmlBodyContent }
+                                updateHtmlContent={ (value: string) => {
+                                    setHtmlBodyContent(value);
+                                    setBodyError(!value);
+                                } }
                                 data-testid={ `${ testId }-email-template-body-editor` }
                             />
                             {
@@ -339,7 +342,10 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                 isSignature={ false }
                                 isAddFlow={ templateId === "" }
                                 customClass="mail-signature"
-                                updateHtmlContent={ setHtmlFooterContent }
+                                updateHtmlContent={ (value: string) => {
+                                    setHtmlFooterContent(value);
+                                    setFooterError(!value);
+                                } }
                                 data-testid={ `${ testId }-email-template-footer-editor` }
                             />
                             {
@@ -372,7 +378,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 </Grid.Row>
             </Grid>
         </Forms>
-    )
+    );
 };
 
 /**

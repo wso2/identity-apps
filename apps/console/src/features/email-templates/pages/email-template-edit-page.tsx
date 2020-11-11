@@ -33,7 +33,7 @@ import { EmailTemplateDetails, EmailTemplateFormModes } from "../models";
 /**
  * Props for the add Templates Locale page.
  */
-type EmailTemplateEditPagePropsInterface = TestableComponentInterface
+type EmailTemplateEditPagePropsInterface = TestableComponentInterface;
 
 /**
  * Route parameters interface.
@@ -76,12 +76,12 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
         if (!templateTypeId || !templateId) {
             return;
         }
-        
+
         // If only template type id is there in the path, then the component should
         // behave as a template adding component.
         if (templateTypeId && (!templateId || templateId === AppConstants.EMAIL_TEMPLATE_ADD_URL_PARAM)) {
             setFormMode(EmailTemplateFormModes.ADD);
-            
+
             return;
         }
 
@@ -107,7 +107,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                 if (response.status === 200) {
                     setEmailTemplateTypeDetails(response.data);
                     setEmailTemplateName(response.data.displayName);
-                    
+
                     return;
                 }
 
@@ -153,7 +153,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
             title={
                 formMode === EmailTemplateFormModes.EDIT
                     ? t("adminPortal:pages.editTemplate.title",
-                    { template: emailTemplateTypeDetails?.displayName })
+                        { template: emailTemplateTypeDetails?.displayName })
                     : t("adminPortal:pages.addEmailTemplate.title")
             }
             backButton={ {
@@ -177,7 +177,7 @@ const EmailTemplateEditPage: FunctionComponent<EmailTemplateEditPagePropsInterfa
                 data-testid={ `${ testId }-form` }
             />
         </PageLayout>
-    )
+    );
 };
 
 /**
