@@ -25,7 +25,7 @@ import { AppConstants } from "../../constants";
 import { history } from "../../helpers";
 
 /**
- * Unauthorized error page.
+ * Storage disabled error page.
  *
  * @param {RouteComponentProps} props - Props injected to the component.
  * @return {React.ReactElement}

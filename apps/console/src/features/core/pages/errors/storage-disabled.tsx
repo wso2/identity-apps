@@ -25,7 +25,7 @@ import { history } from "../../../core/helpers";
 import { EmptyPlaceholderIllustrations } from "../../configs";
 
 /**
- * Unauthorized error page.
+ * Storage disabled error page.
  *
  * @param {RouteComponentProps} props - Props injected to the component.
  * @return {React.ReactElement}
