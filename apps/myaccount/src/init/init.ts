@@ -93,8 +93,8 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
 } else {
     // Tracking user interactions
     let IDLE_TIMEOUT = 600;
-    if (config?.session != null && config.session.userIdconstimeOut != null && config.session.userIdconstimeOut > 1) {
-        IDLE_TIMEOUT = config.session.userIdconstimeOut;
+    if (config?.session != null && config.session.userIdleTimeOut != null && config.session.userIdleTimeOut > 1) {
+        IDLE_TIMEOUT = config.session.userIdleTimeOut;
     }
     let IDLE_WARNING_TIMEOUT = 580;
     if (
