@@ -115,7 +115,8 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
     };
 
     const getList = () => {
-        getUsersList(null, null, null, null, null)
+        const userstore = group?.displayName?.indexOf("/") === -1 ? "primary" : group?.displayName?.split("/")[ 0 ];
+        getUsersList(null, null, null, null, userstore)
             .then((response) => {
                 const responseUsers = response.Resources;
                 responseUsers.sort((userObject, comparedUserObject) =>
