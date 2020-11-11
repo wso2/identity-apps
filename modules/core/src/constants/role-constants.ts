@@ -35,4 +35,8 @@ export class RoleConstants {
         "status code while retrieving user roles.";
     public static readonly ROLES_FETCH_REQUEST_ERROR: string = "An error occurred while fetching the " +
         "user roles.";
+
+    // Admin role display names.
+    public static readonly ADMIN_ROLE: string = "admin";
+    public static readonly ADMIN_GROUP: string = "Internal/admin";
 }
