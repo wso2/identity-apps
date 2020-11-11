@@ -598,7 +598,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                                 <div ref={ allowedOrigin }></div>
                                 <URLInput
-                                    required
                                     handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
                                     urlState={ allowedOrigins }
                                     setURLState={ setAllowedOrigins }
@@ -1336,14 +1335,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                     scrollToInValidField("url");
                                 } else {
                                     submitOrigin((origin) => {
-                                        // TODO: Remove the empty check when the backend is fixed.
-                                        // Issue reported: https://github.com/wso2/product-is/issues/9933
-                                        if (isEmpty(allowedOrigins) && isEmpty(origin)) {
-                                            setShowOriginError(true);
-                                            scrollToInValidField("allowedOrigin");
-                                        } else {
-                                            onSubmit(updateConfiguration(values, url, origin));
-                                        }
+                                        onSubmit(updateConfiguration(values, url, origin));
                                     });
                                 }
                             });
