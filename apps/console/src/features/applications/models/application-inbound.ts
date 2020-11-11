@@ -76,7 +76,7 @@ interface AccessTokenConfigurationInterface {
     type?: string;
     userAccessTokenExpiryInSeconds?: number;
     applicationAccessTokenExpiryInSeconds?: number;
-    bindingType?: string;
+    bindingType?: SupportedAccessTokenBindingTypes | string;
     revokeTokensWhenIDPSessionTerminated?: boolean;
     validateTokenBinding?: boolean;
 }
@@ -425,4 +425,14 @@ export interface OIDCEndpointsInterface {
      * WellKnown endpoint.
      */
     wellKnown?: string;
+}
+
+/**
+ * Enum for the access token binding types.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum SupportedAccessTokenBindingTypes {
+    NONE = "None"
 }

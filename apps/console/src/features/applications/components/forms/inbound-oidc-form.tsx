@@ -36,6 +36,7 @@ import {
     OIDCDataInterface,
     OIDCMetadataInterface,
     State,
+    SupportedAccessTokenBindingTypes,
     emptyOIDCConfig
 } from "../../models";
 
@@ -158,10 +159,23 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * Sets if a valid token binding type is selected.
      */
     useEffect(() => {
-        if (initialValues.accessToken.bindingType !== "None") {
+        // If access token object is empty, return.
+        if (!initialValues?.accessToken || isEmpty(initialValues.accessToken)) {
+            return;
+        }
+
+        // When bindingType is set to none, back-end doesn't send the `bindingType` attr. So default to `None`.
+        if (!initialValues.accessToken.bindingType) {
+            setIsTokenBindingTypeSelected(false);
+            
+            return;
+        }
+
+        // Show the validate options when the bindingType is set to a value other than `None`.
+        if (initialValues.accessToken.bindingType !== SupportedAccessTokenBindingTypes.NONE) {
             setIsTokenBindingTypeSelected(true);
         }
-    }, [ initialValues?.accessToken?.bindingType ]);
+    }, [ initialValues?.accessToken ]);
 
     /**
      * Handle grant type change.
@@ -787,16 +801,19 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         name="bindingType"
                         default={
-                            initialValues
+                            initialValues?.accessToken?.bindingType
                                 ? initialValues.accessToken.bindingType
-                                : metadata.accessTokenBindingType.defaultValue
+                                : metadata?.accessTokenBindingType?.defaultValue
+                                    ?? SupportedAccessTokenBindingTypes.NONE
                         }
                         type="radio"
                         children={ getAllowedList(metadata.accessTokenBindingType, true) }
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-access-token-type-radio-group` }
                         listen={ (values) => {
-                            setIsTokenBindingTypeSelected(values.get("bindingType") !== "None");
+                            setIsTokenBindingTypeSelected(
+                                values.get("bindingType") !== SupportedAccessTokenBindingTypes.NONE
+                            );
                         } }
                     />
                 </Grid.Column>
