@@ -18,7 +18,7 @@
 
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { CommonUtils, RouteUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -47,14 +47,15 @@ import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { Responsive } from "semantic-ui-react";
 import { getProfileInformation } from "../features/authentication/store";
 import {
+    AppConstants,
     AppState,
     AppUtils,
-    ConfigReducerStateInterface,
     EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     Footer,
     Header,
     ProtectedRoute,
+    RouteUtils,
     SidePanelMiscIcons,
     UIConstants,
     getDeveloperViewRoutes,
@@ -93,7 +94,6 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
 
     const dispatch = useDispatch();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
@@ -110,17 +110,21 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        setSelectedRoute(RouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
     }, [ filteredRoutes ]);
 
     useEffect(() => {
+
+        const routes: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            getDeveloperViewRoutes(),
+            featureConfig,
+            allowedScopes);
+
+        // Try to handle any un-expected routing issues. Returns a void if no issues are found.
+        RouteUtils.gracefullyHandleRouting(routes, AppConstants.getDeveloperViewBasePath(), location.pathname);
+
         // Filter the routes and get only the enabled routes defined in the app config.
-        setFilteredRoutes(
-            RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
-                getDeveloperViewRoutes(),
-                featureConfig,
-                allowedScopes)
-        );
+        setFilteredRoutes(routes);
 
         if (!isEmpty(profileInfo)) {
             return;
@@ -226,13 +230,13 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
                 if (route.path) {
-                    resolvedRoutes.push(renderRoute(route, key))
+                    resolvedRoutes.push(renderRoute(route, key));
                 }
 
                 if (route.children && route.children instanceof Array && route.children.length > 0) {
                     recurse(route.children);
                 }
-            })
+            });
         };
 
         recurse([ ...filteredRoutes ]);
@@ -288,7 +292,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
+                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes), AppUtils.getHiddenRoutes()) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }

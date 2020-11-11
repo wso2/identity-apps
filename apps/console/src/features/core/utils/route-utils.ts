@@ -42,29 +42,35 @@ export class RouteUtils {
      * @param {RouteInterface[]} routes - Set of app routes.
      * @param {string} view - Current view ex: Admin or Develop. 
      * @param {string} pathname - Current path from location.
+     * @param {boolean} navigateToUnAuthorized - Should navigate to un-authorized page.
      */
-    public static gracefullyHandleRouting(routes: RouteInterface[], view: string, pathname: string): void {
+    public static gracefullyHandleRouting(routes: RouteInterface[],
+                                          view: string,
+                                          pathname: string,
+                                          navigateToUnAuthorized: boolean = true): void {
 
-        if (routes && Array.isArray(routes) && routes.length === 1) {
-            if (routes[0].redirectTo === AppConstants.getPaths().get("PAGE_NOT_FOUND")) {
-                if (RouteUtils.isHomePath(view)) {
-                    if (view === AppConstants.getDeveloperViewBasePath()) {
-                        history.push(AppConstants.getAdminViewBasePath());
+        if (RouteUtils.isOnlyPageNotFoundPresent(routes)) {
+            if (RouteUtils.isHomePath(view)) {
+                if (view === AppConstants.getDeveloperViewBasePath()) {
+                    history.push(AppConstants.getAdminViewBasePath());
 
-                        return;
-                    }
-
-                    if (view === AppConstants.getAdminViewBasePath()) {
-                        history.push(AppConstants.getDeveloperViewBasePath());
-
-                        return;
-                    }
+                    return;
                 }
 
+                if (view === AppConstants.getAdminViewBasePath()) {
+                    history.push(AppConstants.getDeveloperViewBasePath());
+
+                    return;
+                }
+            }
+
+            if (navigateToUnAuthorized) {
                 history.push({
                     pathname: AppConstants.getPaths().get("UNAUTHORIZED"),
                     search: "?error=" + AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")
                 });
+                
+                return;
             }
         }
 
@@ -90,5 +96,57 @@ export class RouteUtils {
         }
 
         return path?.split("/")[0] === AppConstants.getAppHomePath()?.split("/")[0];
+    }
+
+    /**
+     * Checks if only the `404` is available.
+     *
+     * @param {RouteInterface[]} routes - Set of routes.
+     * @return {boolean} Is only `404` available.
+     */
+    public static isOnlyPageNotFoundPresent(routes: RouteInterface[]): boolean {
+        if (routes && Array.isArray(routes) && routes.length === 1) {
+            if (routes[ 0 ].redirectTo === AppConstants.getPaths().get("PAGE_NOT_FOUND")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks if the view is presentable.
+     *
+     * @param {RouteInterface[]} routes - Set of routes.
+     * @param {string[]} pathsToSkip - Set of paths to skip.
+     * @return {boolean}
+     */
+    public static isViewPresentable(routes: RouteInterface[], pathsToSkip?: string[]) {
+
+        const presentableRoutes: RouteInterface[] = RouteUtils.filterPresentableRoutes(routes, pathsToSkip);
+
+        return !(((presentableRoutes && Array.isArray(presentableRoutes)) && presentableRoutes.length === 0)
+            || RouteUtils.isOnlyPageNotFoundPresent(presentableRoutes)
+        );
+    }
+
+    /**
+     * Filters the list of presentable routes.
+     *
+     * @param {RouteInterface[]} routes - Set of routes.
+     * @param {string[]} pathsToSkip - Set of paths to skip.
+     * @return {RouteInterface[]}
+     */
+    public static filterPresentableRoutes(routes: RouteInterface[], pathsToSkip?: string[]) {
+
+        return routes.filter((route: RouteInterface) => {
+            if (!route.showOnSidePanel) {
+                return false;
+            }
+
+            if (pathsToSkip && Array.isArray(pathsToSkip)) {
+                return pathsToSkip.some((path: string) => route.path === path);
+            }
+        });
     }
 }

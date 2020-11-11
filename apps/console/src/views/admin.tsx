@@ -19,7 +19,7 @@
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { CommonUtils, RouteUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -56,6 +56,7 @@ import {
     Footer,
     Header,
     ProtectedRoute,
+    RouteUtils,
     SidePanelIcons,
     SidePanelMiscIcons,
     UIConstants,
@@ -108,6 +109,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
+    const [ governanceConnectorsEvaluated, setGovernanceConnectorsEvaluated ] = useState<boolean>(false);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
@@ -119,13 +121,27 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        setSelectedRoute(RouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-    }, [ filteredRoutes ]);
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
+        
+        if (governanceConnectorsEvaluated === true) {
+            RouteUtils.gracefullyHandleRouting(filteredRoutes,
+                AppConstants.getAdminViewBasePath(),
+                location.pathname);
+
+            return;
+        }
+
+        RouteUtils.gracefullyHandleRouting(filteredRoutes,
+            AppConstants.getAdminViewBasePath(),
+            location.pathname,
+            false);
+    }, [ filteredRoutes, governanceConnectorsEvaluated ]);
 
     useEffect(() => {
+
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(
-            RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
                 getAdminViewRoutes(),
                 featureConfig,
                 allowedScopes)
@@ -136,7 +152,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         }
 
         dispatch(getProfileInformation());
-    }, []);
+    }, [ allowedScopes, featureConfig, getAdminViewRoutes ]);
 
     useEffect(() => {
 
@@ -144,6 +160,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
             featureConfig?.generalConfigurations?.scopes?.read,
             allowedScopes)) {
 
+            setGovernanceConnectorsEvaluated(true);
             return;
         }
 
@@ -155,7 +172,10 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
         if (!governanceConnectorRoutesAdded) {
 
-            const filteredRoutesClone = [ ...filteredRoutes ];
+            const filteredRoutesClone: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+                getAdminViewRoutes(),
+                featureConfig,
+                allowedScopes);
 
             governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
                 let subCategoryExists = false;
@@ -189,6 +209,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
             setFilteredRoutes(filteredRoutesClone);
             setGovernanceConnectorRoutesAdded(true);
+            setGovernanceConnectorsEvaluated(true);
         }
     }, [ allowedScopes, governanceConnectorCategories, featureConfig ]);
 
@@ -289,13 +310,13 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
                 if (route.path) {
-                    resolvedRoutes.push(renderRoute(route, key))
+                    resolvedRoutes.push(renderRoute(route, key));
                 }
 
                 if (route.children && route.children instanceof Array && route.children.length > 0) {
                     recurse(route.children);
                 }
-            })
+            });
         };
 
         recurse([ ...filteredRoutes ]);
@@ -345,7 +366,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
+                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }
