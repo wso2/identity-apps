@@ -133,25 +133,29 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
      */
     const generateHeaderContent = (displayName: string): ReactElement | string => {
         if (displayName.includes(APPLICATION_DOMAIN)) {
-            return  <>
-                <Label
-                    data-testid={ `${ testId }-role-${ displayName.split("/")[1] }-label` }
-                    content={ "Application" }
-                    size="mini"
-                    className={ "application-label" }
-                />
-                { "/ " + displayName.split("/")[1] }
-            </>
+            return (
+                <>
+                    <Label
+                        data-testid={ `${ testId }-role-${ displayName.split("/")[1] }-label` }
+                        content={ "Application" }
+                        size="mini"
+                        className={ "application-label" }
+                    />
+                    { "/ " + displayName.split("/")[1] }
+                </>
+            );
         } else {
-            return <>
-                <Label
-                    data-testid={ `${ testId }-role-${ displayName }-label` }
-                    content={ "Internal" }
-                    size="mini"
-                    className={ "internal-label" }
-                />
-                { "/ " + displayName }
-            </>
+            return (
+                <>
+                    <Label
+                        data-testid={ `${ testId }-role-${ displayName }-label` }
+                        content={ "Internal" }
+                        size="mini"
+                        className={ "internal-label" }
+                    />
+                    { "/ " + displayName }
+                </>
+            );
         }
     };
 
