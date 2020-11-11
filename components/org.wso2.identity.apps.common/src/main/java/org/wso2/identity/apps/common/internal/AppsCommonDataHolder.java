@@ -20,6 +20,9 @@ import org.wso2.carbon.identity.application.mgt.ApplicationManagementService;
 import org.wso2.carbon.identity.oauth.OAuthAdminServiceImpl;
 import org.wso2.carbon.registry.core.service.RegistryService;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This class holds the service instances consumed by the common component.
  */
@@ -32,6 +35,10 @@ public class AppsCommonDataHolder {
     private OAuthAdminServiceImpl oAuthAdminService;
 
     private RegistryService registryService;
+
+    private Set<String> systemAppConsumerKeys = new HashSet<>();
+
+    private Set<String> systemApplications = new HashSet<>();
 
     private AppsCommonDataHolder() {
 
@@ -70,5 +77,29 @@ public class AppsCommonDataHolder {
     public void setOAuthAdminService(OAuthAdminServiceImpl oAuthAdminService) {
 
         this.oAuthAdminService = oAuthAdminService;
+    }
+
+    public Set<String> getSystemAppConsumerKeys() {
+
+        return systemAppConsumerKeys;
+    }
+
+    public void setSystemAppConsumerKeys(Set<String> systemAppConsumerKeys) {
+
+        if (systemAppConsumerKeys != null && !systemAppConsumerKeys.isEmpty()) {
+            this.systemAppConsumerKeys.addAll(systemAppConsumerKeys);
+        }
+    }
+
+    public Set<String> getSystemApplications() {
+
+        return systemApplications;
+    }
+
+    public void setSystemApplications(Set<String> systemApplications) {
+
+        if (systemApplications != null && !systemApplications.isEmpty()) {
+            this.systemApplications.addAll(systemApplications);
+        }
     }
 }

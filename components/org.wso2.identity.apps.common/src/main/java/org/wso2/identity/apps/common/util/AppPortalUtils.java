@@ -19,6 +19,7 @@
 package org.wso2.identity.apps.common.util;
 
 import org.wso2.carbon.context.PrivilegedCarbonContext;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkConstants;
 import org.wso2.carbon.identity.application.common.IdentityApplicationManagementException;
 import org.wso2.carbon.identity.application.common.model.Claim;
 import org.wso2.carbon.identity.application.common.model.ClaimConfig;
@@ -225,5 +226,32 @@ public class AppPortalUtils {
                         consumerKey, consumerSecret, tenantDomain);
             }
         }
+    }
+
+    /**
+     * Get OAuth InboundAuthenticationRequestConfig of the application.
+     *
+     * @param application application.
+     * @return OAuth InboundAuthenticationRequestConfig if exists.
+     */
+    public static InboundAuthenticationRequestConfig getOAuthInboundAuthenticationRequestConfig(
+            ServiceProvider application) {
+
+        if (application == null || application.getInboundAuthenticationConfig() == null
+                || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs() == null
+                || application.getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs().length == 0) {
+
+            return null;
+        }
+
+        for (InboundAuthenticationRequestConfig inboundAuthenticationRequestConfig : application
+                .getInboundAuthenticationConfig().getInboundAuthenticationRequestConfigs()) {
+            if (FrameworkConstants.OAUTH2.equals(inboundAuthenticationRequestConfig.getInboundAuthType())) {
+
+                return inboundAuthenticationRequestConfig;
+            }
+        }
+
+        return null;
     }
 }
