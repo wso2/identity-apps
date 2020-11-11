@@ -160,7 +160,8 @@ export class AppConstants {
             .set("SECURITY", `${ this.getMainViewBasePath() }/security`)
             .set("PRIVACY", `${ this.getMainViewBasePath() }/privacy`)
             .set("ROOT", "/")
-            .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/unauthorized`);
+            .set("UNAUTHORIZED", `${ this.getMainViewBasePath() }/unauthorized`)
+            .set("STORING_DATA_DISABLED",`${ this.getMainViewBasePath() }/storing_data_disabled`);
     }
 
     /**
