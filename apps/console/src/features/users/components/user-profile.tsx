@@ -130,7 +130,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                     configurationStatuses = {
                         ...configurationStatuses,
                         accountDisable: property.value
-                    }
+                    };
                 } else if (property.name === ServerConfigurationsConstants.RECOVERY_LINK_PASSWORD_RESET
                     || property.name === ServerConfigurationsConstants.OTP_PASSWORD_RESET
                     || property.name === ServerConfigurationsConstants.OFFLINE_PASSWORD_RESET) {
@@ -139,7 +139,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                         configurationStatuses = {
                             ...configurationStatuses,
                             forcePasswordReset: property.value
-                        }
+                        };
                     }
                 } else if (property.name === ServerConfigurationsConstants.ACCOUNT_LOCK_ON_CREATION) {
                     configurationStatuses = {
@@ -353,7 +353,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         attributeValues.push({
                                             type: attribute[1],
                                             value: value
-                                        })
+                                        });
                                     }
                                 }
                             }
@@ -369,7 +369,7 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                                         [schemaNames[0]]: values.get(schemaNames[0])
                                     }
-                                }
+                                };
                             } else {
                                 opValue = schemaNames[0] === UserManagementConstants.SCIM2_SCHEMA_DICTIONARY.get("EMAILS")
                                     ? { emails: [values.get(schema.name)] }
@@ -659,10 +659,14 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                         data-testid={ `${ testId }-danger-zone` }
                                         actionTitle={ t("adminPortal:components.user.editUser.dangerZoneGroup." +
                                             "lockUserZone.actionTitle") }
-                                        header={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
-                                            "header") }
-                                        subheader={ t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
-                                            "subheader") }
+                                        header={
+                                            t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
+                                                "header")
+                                        }
+                                        subheader={
+                                            t("adminPortal:components.user.editUser.dangerZoneGroup.lockUserZone." +
+                                                "subheader")
+                                        }
                                         onActionClick={ undefined }
                                         toggle={ {
                                             checked: accountLock
@@ -687,12 +691,11 @@ export const UserProfile: FunctionComponent<UserProfilePropsInterface> = (
                                     setDeletingUser(user);
                                 } }
                             />
-                            )
                         </DangerZoneGroup>
                     )
                 }
             </>
-        )
+        );
     };
 
     const resolveConfigurationList = (connectorProperties: ConnectorPropertyInterface[]): ReactNode => {
