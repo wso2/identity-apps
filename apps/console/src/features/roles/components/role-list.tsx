@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { RoleConstants } from "@wso2is/core/constants";
 import {
     LoadableComponentInterface,
     RoleListInterface,
@@ -297,6 +298,8 @@ export const RoleList: React.FunctionComponent<RoleListProps> = (props: RoleList
                 renderer: "semantic-icon"
             },
             {
+                hidden: (role: RolesInterface) => (role?.displayName === RoleConstants.ADMIN_ROLE ||
+                    role?.displayName === RoleConstants.ADMIN_GROUP),
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, role: RolesInterface): void => {
                     setCurrentDeletedRole(role);
