@@ -38,6 +38,8 @@ public class AppsCommonDataHolder {
 
     private Set<String> systemAppConsumerKeys = new HashSet<>();
 
+    private Set<String> systemApplications = new HashSet<>();
+
     private AppsCommonDataHolder() {
 
     }
@@ -86,6 +88,18 @@ public class AppsCommonDataHolder {
 
         if (systemAppConsumerKeys != null && !systemAppConsumerKeys.isEmpty()) {
             this.systemAppConsumerKeys.addAll(systemAppConsumerKeys);
+        }
+    }
+
+    public Set<String> getSystemApplications() {
+
+        return systemApplications;
+    }
+
+    public void setSystemApplications(Set<String> systemApplications) {
+
+        if (systemApplications != null && !systemApplications.isEmpty()) {
+            this.systemApplications.addAll(systemApplications);
         }
     }
 }

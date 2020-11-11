@@ -18,21 +18,13 @@
 
 package org.wso2.identity.apps.common.listner;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.wso2.carbon.identity.oauth.Error;
 import org.wso2.carbon.identity.oauth.IdentityOAuthAdminException;
 import org.wso2.carbon.identity.oauth.IdentityOAuthClientException;
-import org.wso2.carbon.identity.oauth.IdentityOAuthServerException;
-import org.wso2.carbon.identity.oauth.common.exception.InvalidOAuthClientException;
-import org.wso2.carbon.identity.oauth.dao.OAuthAppDO;
 import org.wso2.carbon.identity.oauth.dto.OAuthConsumerAppDTO;
 import org.wso2.carbon.identity.oauth.listener.OAuthApplicationMgtListener;
-import org.wso2.carbon.identity.oauth2.IdentityOAuth2Exception;
-import org.wso2.carbon.identity.oauth2.util.OAuth2Util;
 import org.wso2.identity.apps.common.internal.AppsCommonDataHolder;
 
-import java.util.Arrays;
 import java.util.Set;
 
 /**
@@ -66,79 +58,35 @@ public class AppPortalOAuthAppMgtListener implements OAuthApplicationMgtListener
     public void doPreUpdateConsumerApplication(OAuthConsumerAppDTO oAuthConsumerAppDTO)
             throws IdentityOAuthAdminException {
 
-        if (!isEnabled() || !this.systemAppConsumerKeys.contains(oAuthConsumerAppDTO.getOauthConsumerKey())) {
+        if (!isEnabled() || systemAppConsumerKeys.stream()
+                .noneMatch(oAuthConsumerAppDTO.getApplicationName()::equalsIgnoreCase)) {
             return;
         }
 
-        OAuthAppDO systemApplication;
-        try {
-            systemApplication = OAuth2Util.getAppInformationByClientId(oAuthConsumerAppDTO.getOauthConsumerKey());
-        } catch (IdentityOAuth2Exception e) {
-            throw new IdentityOAuthServerException(
-                    "Failed to retrieve the application with client id: " + oAuthConsumerAppDTO.getOauthConsumerKey(),
-                    e);
-        } catch (InvalidOAuthClientException e) {
-            throw new IdentityOAuthClientException(
-                    "Failed to retrieve the application with client id: " + oAuthConsumerAppDTO.getOauthConsumerKey(),
-                    e);
-        }
-
-        if (systemApplication == null) {
-            return;
-        }
-
-        // Changing the grant types not allowed.
-        if (!isSameGrantTypes(systemApplication.getGrantTypes(), oAuthConsumerAppDTO.getGrantTypes())) {
-            throw new IdentityOAuthClientException(Error.INVALID_UPDATE.getErrorCode(),
-                    "Changing the grant types not allowed for application with client id: " + oAuthConsumerAppDTO
-                            .getOauthConsumerKey());
-        }
+        throw new IdentityOAuthClientException(Error.INVALID_UPDATE.getErrorCode(),
+                "System application update is not allowed. Client id: " + oAuthConsumerAppDTO.getOauthConsumerKey());
     }
 
     @Override
     public void doPreUpdateConsumerApplicationState(String consumerKey, String newState)
             throws IdentityOAuthAdminException {
 
-        if (!isEnabled() || !this.systemAppConsumerKeys.contains(consumerKey)) {
+        if (!isEnabled() || systemAppConsumerKeys.stream().noneMatch(consumerKey::equalsIgnoreCase)) {
             return;
         }
 
         throw new IdentityOAuthClientException(Error.INVALID_UPDATE.getErrorCode(),
-                "Changing the state is not allowed for application with client id: " + consumerKey);
-
+                "Changing state of system application is not allowed. Client id: " + consumerKey);
     }
 
     @Override
     public void doPreRemoveOAuthApplicationData(String consumerKey) throws IdentityOAuthAdminException {
 
-        if (!isEnabled() || !this.systemAppConsumerKeys.contains(consumerKey)) {
+        if (!isEnabled() || systemAppConsumerKeys.stream().noneMatch(consumerKey::equalsIgnoreCase)) {
             return;
         }
 
         throw new IdentityOAuthClientException(Error.INVALID_DELETE.getErrorCode(),
-                "Application deletion is not allowed for the application with client id: " + consumerKey);
-    }
-
-    private boolean isSameGrantTypes(String currentGrantTypesStr, String newGrantTypesStr) {
-
-        String[] currentGrantTypes = getGrantTypes(currentGrantTypesStr);
-        String[] newGrantTypes = getGrantTypes(newGrantTypesStr);
-
-        if (currentGrantTypes.length != newGrantTypes.length) {
-            return false;
-        }
-
-        Arrays.sort(currentGrantTypes);
-        Arrays.sort(newGrantTypes);
-        return Arrays.equals(currentGrantTypes, newGrantTypes);
-    }
-
-    private String[] getGrantTypes(String grantTypes) {
-
-        if (StringUtils.isBlank(grantTypes)) {
-            return ArrayUtils.EMPTY_STRING_ARRAY;
-        }
-
-        return grantTypes.trim().split(" ");
+                "System application deletion is not allowed. Client id: " + consumerKey);
     }
 }
