@@ -212,6 +212,24 @@
                     ]
                 }
             },
+            "remoteFetchConfig": {
+                "enabled": true,
+                "disabledFeatures": [],
+                "scopes": {
+                    "create": [
+                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                    ],
+                    "read": [
+                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                    ],
+                    "update": [
+                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                    ],
+                    "delete": [
+                        "internal_identity_mgt_view internal_identity_mgt_update internal_identity_mgt_create internal_identity_mgt_delete"
+                    ]
+                }
+            },
             "roles": {
                 "enabled": true,
                 "disabledFeatures": [],
