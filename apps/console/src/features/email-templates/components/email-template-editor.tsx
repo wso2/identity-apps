@@ -60,8 +60,8 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     const { t } = useTranslation();
 
     const [ content, setContent ] = useState<string>("");
-    const [ updatedContent, setUpdatedContent ] = useState<string>("");
 
+    const updatedContent = useRef<string>("");
     const iframe = useRef<HTMLIFrameElement>();
 
     useEffect(() => {
@@ -71,10 +71,10 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     useEffect(() => {
         if (isAddFlow && isSignature) {
             setContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
-            setUpdatedContent(EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE);
+            updatedContent.current = EmailTemplateManagementConstants.EMAIL_STARTER_TEMPLATE;
         } else {
             setContent(htmlContent);
-            setUpdatedContent(htmlContent);
+            updatedContent.current = htmlContent;
         }
     }, [ htmlContent ]);
 
@@ -83,8 +83,10 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
      */
     const writeToIframe = (): void => {
         const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
-        iframeDoc.body.innerHTML = content;
-    }
+        if (iframeDoc) {
+            iframeDoc.body.innerHTML = content;
+        }
+    };
 
     return (
         <div className={ "email-code-editor " + customClass } data-testid={ testId }>
@@ -105,7 +107,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                     <ResourceTab
                         onTabChange={ () => {
                             if (updateHtmlContent) {
-                                updateHtmlContent(updatedContent);
+                                updateHtmlContent(updatedContent.current);
                             }
                         } }
                         defaultActiveTab={ isAddFlow ? 1 : 0 }
@@ -145,11 +147,11 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                                 lineWrapping: true
                                             } }
                                             onChange={ (editor, data, value) => {
-                                                setUpdatedContent(value);
+                                                updatedContent.current = value;
                                             } }
                                             onBlur={ () => {
                                                 if (updateHtmlContent) {
-                                                    updateHtmlContent(updatedContent);
+                                                    updateHtmlContent(updatedContent.current);
                                                 }
                                             } }
                                             readOnly={ isReadOnly }
@@ -164,7 +166,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                     />
             }
         </div>
-    )
+    );
 };
 
 /**
