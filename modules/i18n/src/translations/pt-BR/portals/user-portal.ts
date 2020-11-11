@@ -1301,10 +1301,11 @@ export const userPortal: UserPortalNS = {
         },
         sessionStorageDisabled: {
             subtitles: {
-                0: "Parece que as configurações do seu navegador não permitem o armazenamento de dados.",
-                1: "Ative o armazenamento de dados em seu navegador para que este aplicativo funcione corretamente."
+                0: "Para usar este aplicativo, você deve habilitar os cookies nas configurações do seu navegador.",
+                1: "Para obter mais informações sobre como habilitar cookies, consulte a seção de ajuda " +
+                    "do seu navegador."
             },
-            title: "Seu navegador não permite o armazenamento de dados"
+            title: "Os cookies estão desabilitados em seu navegador."
         }
     },
     sections: {

@@ -1318,10 +1318,10 @@ export const userPortal: UserPortalNS = {
         },
         sessionStorageDisabled: {
             subtitles: {
-                0: "It looks like your browser's settings don't allow data to be stored.",
-                1: "Please enable storing data on your browser for this app to function properly."
+                0: "To use this application, you have to enable cookies in your web browser settings.",
+                1: "For more information on how to enable cookies, see the help section of your web browser."
             },
-            title: "Your browser doesn't allow storing data"
+            title: "Cookies are disabled in your browser."
         }
     },
     sections: {

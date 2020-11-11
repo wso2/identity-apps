@@ -1321,11 +1321,12 @@ export const userPortal: UserPortalNS = {
         },
         sessionStorageDisabled: {
             subtitles: {
-                0: "Il semble que les paramètres de votre navigateur ne permettent pas le stockage des données.",
-                1: "Veuillez activer le stockage des données sur votre navigateur pour que cette " +
-                    "application fonctionne correctement."
+                0: "Pour utiliser cette application, vous devez activer les cookies dans les " +
+                    "paramètres de votre navigateur Web.",
+                1: "Pour plus d'informations sur l'activation des cookies, consultez la section d'aide " +
+                    "de votre navigateur Web."
             },
-            title: "Votre navigateur ne permet pas de stocker des données"
+            title: "Les cookies sont désactivés dans votre navigateur."
         }
     },
     sections: {
