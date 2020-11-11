@@ -16,8 +16,16 @@
 * under the License.
 */
 
-import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
-import { addAlert } from "@wso2is/core/store";
+import { getProfileSchemas } from "@wso2is/core/api";
+import { IdentityAppsApiException } from "@wso2is/core/exceptions";
+import {
+    AlertInterface,
+    AlertLevels,
+    Claim,
+    ProfileSchemaInterface,
+    TestableComponentInterface
+} from "@wso2is/core/models";
+import { addAlert, setProfileSchemaRequestLoadingStatus, setSCIMSchemas } from "@wso2is/core/store";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import {
     ConfirmationModal,
@@ -145,7 +153,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                         || t("adminPortal:components.claims.local.notifications.deleteClaim.genericError.message")
                 }
             ));
-        })
+        });
     };
 
     /**
@@ -173,6 +181,43 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
     ): void => {
         clearTimeout(ref.current);
         callback(false);
+    };
+
+    /**
+     * Fetch the updated SCIM2 schema list.
+     */
+    const fetchUpdatedSchemaList = (): void => {
+        dispatch(setProfileSchemaRequestLoadingStatus(true));
+
+        getProfileSchemas()
+            .then((response: ProfileSchemaInterface[]) => {
+                dispatch(setSCIMSchemas<ProfileSchemaInterface[]>(response));
+            })
+            .catch((error: IdentityAppsApiException) => {
+                if (error?.response?.data?.description) {
+                    dispatch(addAlert({
+                            description: error.response.data.description,
+                            level: AlertLevels.ERROR,
+                            message: t("adminPortal:notifications.getProfileSchema.error.message")
+                        })
+                    );
+                }
+
+                dispatch(
+                    addAlert<AlertInterface>({
+                        description: t(
+                            "adminPortal:notifications.getProfileSchema.genericError.description"
+                        ),
+                        level: AlertLevels.ERROR,
+                        message: t(
+                            "adminPortal:notifications.getProfileSchema.genericError.message"
+                        )
+                    })
+                );
+            })
+            .finally(() => {
+                dispatch(setProfileSchemaRequestLoadingStatus(false));
+            });
     };
 
     return (
@@ -220,6 +265,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                 }
                             ));
                             update();
+                            fetchUpdatedSchemaList();
                         }).catch(error => {
                             dispatch(addAlert(
                                 {
@@ -420,7 +466,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                 />
             </DangerZoneGroup>
         </>
-    )
+    );
 };
 
 /**
