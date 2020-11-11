@@ -212,24 +212,6 @@
                     ]
                 }
             },
-            "users": {
-                "enabled": true,
-                "disabledFeatures": [],
-                "scopes": {
-                    "create": [
-                        "internal_user_mgt_create"
-                    ],
-                    "read": [
-                        "internal_user_mgt_list"
-                    ],
-                    "update": [
-                        "internal_user_mgt_update"
-                    ],
-                    "delete": [
-                        "internal_user_mgt_delete"
-                    ]
-                }
-            },
             "roles": {
                 "enabled": true,
                 "disabledFeatures": [],
@@ -263,6 +245,24 @@
                     ],
                     "delete": [
                         "internal_userstore_delete"
+                    ]
+                }
+            },
+            "users": {
+                "enabled": true,
+                "disabledFeatures": [],
+                "scopes": {
+                    "create": [
+                        "internal_user_mgt_create"
+                    ],
+                    "read": [
+                        "internal_user_mgt_list"
+                    ],
+                    "update": [
+                        "internal_user_mgt_update"
+                    ],
+                    "delete": [
+                        "internal_user_mgt_delete"
                     ]
                 }
             }
