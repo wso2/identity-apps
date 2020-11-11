@@ -134,7 +134,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         if (isSelectAssignedAllRolesChecked) {
             setCheckedAssignedListItems(tempRoleList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAssignedAllRolesChecked ]);
 
@@ -142,7 +142,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         if (isSelectUnassignedRolesAllRolesChecked) {
             setCheckedUnassignedListItems(roleList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
@@ -230,7 +230,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
 
         const bulkRemoveData: any = {
             Operations: [],
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
+            failOnErrors: 1,
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
         const bulkAddData: any = {
@@ -238,17 +239,12 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
-        let removeOperation = {
+        const removeOperation = {
             data: {
-                "Operations": [{
-                    "op": "remove",
-                    "path": "groups",
-                    "value": [{
-                        "value": group.id
-                    }]
-                }]
+                "Operations": []
             },
-            method: "PATCH"
+            method: "PATCH",
+            path: "/Groups/" + group.id
         };
 
         let addOperation = {
@@ -282,16 +278,22 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
 
         if (removedIds && removedIds.length > 0) {
             removedIds.map((id) => {
-                removeOperation = {
-                    ...removeOperation,
-                    ...{ path: "/Roles/" + id }
+                const operation = {
+                    data: {
+                        "Operations": [
+                            {
+                                op: "remove",
+                                path: `groups[value eq ${ group.id }]`
+                            }
+                        ]
+                    },
+                    method: "PATCH",
+                    path: "/Roles/" + id
                 };
-                removeOperations.push(removeOperation);
+                removeOperations.push(operation);
             });
 
-            removeOperations.map((operation) => {
-                bulkRemoveData.Operations.push(operation);
-            });
+            bulkRemoveData.Operations.push(...removeOperations);
 
             updateResources(bulkRemoveData)
                 .then(() => {
@@ -615,7 +617,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                             () => handleUnassignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={
+                                                            roleName.length == 1 ? roleName[ 0 ] : roleName[ 1 ] }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -624,7 +627,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                         handleOpenPermissionModal={ () => handleRoleIdSet(role.id) }
                                                         data-testid="group-mgt-update-roles-modal-unselected-roles"
                                                     />
-                                                )
+                                                );
                                             }
                                         })
                                     }
@@ -652,7 +655,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                             () => handleAssignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={
+                                                            roleName.length == 1 ? roleName[ 0 ] : roleName[ 1 ] }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -660,7 +664,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                         showSecondaryActions={ false }
                                                         data-testid="group-mgt-update-roles-modal-selected-roles"
                                                     />
-                                                )
+                                                );
                                             }
                                         })
                                     }
@@ -740,7 +744,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                 roleId={ selectedRoleId }
             />
-        )
+        );
     };
 
     return (
@@ -816,24 +820,24 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                             return (
                                                                 <Table.Row>
                                                                     {
-                                                                        groupRole[0] == APPLICATION_DOMAIN ? (
+                                                                        groupRole[ 0 ] == APPLICATION_DOMAIN ? (
                                                                             <Table.Cell>
                                                                                 <Label className="application-label">
                                                                                     { APPLICATION_DOMAIN }
                                                                                 </Label>
                                                                             </Table.Cell>
                                                                         ) : (
-                                                                            <Table.Cell>
-                                                                                <Label className="internal-label">
-                                                                                    { INTERNAL_DOMAIN }
-                                                                                </Label>
-                                                                            </Table.Cell>
-                                                                        )
+                                                                                <Table.Cell>
+                                                                                    <Label className="internal-label">
+                                                                                        { INTERNAL_DOMAIN }
+                                                                                    </Label>
+                                                                                </Table.Cell>
+                                                                            )
                                                                     }
                                                                     <Table.Cell width={ 8 }>
                                                                         {
                                                                             groupRole.length == 1
-                                                                                ? groupRole[0] : groupRole[1]
+                                                                                ? groupRole[ 0 ] : groupRole[ 1 ]
                                                                         }
                                                                     </Table.Cell>
                                                                     <Table.Cell textAlign="center">
@@ -843,7 +847,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                                                 <Icon
                                                                                     data-testid={
                                                                                         `group-mgt-roles-list-
-                                                                                        ${ groupRole[1] }-
+                                                                                        ${ groupRole[ 1 ] }-
                                                                                         permissions-button` }
                                                                                     color="grey"
                                                                                     name="key"
@@ -857,7 +861,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                                                                         />
                                                                     </Table.Cell>
                                                                 </Table.Row>
-                                                            )
+                                                            );
                                                         }
                                                     })
                                                 }
