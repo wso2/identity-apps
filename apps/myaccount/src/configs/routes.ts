@@ -110,6 +110,15 @@ export const getAppRoutes = (): RouteInterface[] => {
             showOnSidePanel: false
         },
         {
+            component: lazy(() => import("../pages/errors/storage-disabled")),
+            icon: null,
+            id: "storingDataDisabled",
+            name: "storingDataDisabled",
+            path: AppConstants.getPaths().get("STORING_DATA_DISABLED"),
+            protected: false,
+            showOnSidePanel: false
+        },
+        {
             component: lazy(() => import("../pages/errors/404")),
             id: "404",
             name: "404",
