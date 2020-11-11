@@ -1186,6 +1186,10 @@ export const adminPortal: AdminPortalNS = {
                     }
                 },
                 roles: {
+                    addRolesModal: {
+                        heading: "Update Group Roles",
+                        subHeading: "Add new roles or remove existing roles assigned to the group."
+                    },
                     subHeading: "Add or remove the roles this group is assigned with and note that this " +
                         "will affect performing certain tasks."
                 }
@@ -1671,6 +1675,10 @@ export const adminPortal: AdminPortalNS = {
                     }
                 },
                 groups: {
+                    addGroupsModal: {
+                        heading: "Update Role Groups",
+                        subHeading: "Add new groups or remove existing groups assigned to the role."
+                    },
                     emptyPlaceholder: {
                         action: "Assign Group",
                         subtitles: "There are no groups assigned to this role at the moment.",

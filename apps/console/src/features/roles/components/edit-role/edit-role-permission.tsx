@@ -29,9 +29,21 @@ import { PermissionList } from "../wizard";
  * Interface to capture permission edit props.
  */
 interface RolePermissionDetailProps {
+    /**
+     * Role details
+     */
     roleObject: RolesInterface;
+    /**
+     * Show if it is role.
+     */
     isGroup: boolean;
+    /**
+     * Handle role update callback.
+     */
     onRoleUpdate: () => void;
+    /**
+     * Show if the user is read only.
+     */
     isReadOnly?: boolean;
 }
 
@@ -46,6 +58,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
     const dispatch = useDispatch();
 
     const {
+        isReadOnly,
         roleObject,
         onRoleUpdate,
         isGroup
@@ -124,7 +137,13 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
 
     return (
         <div className="permissions-edit-container">
-            <PermissionList isEdit isRole onSubmit={ onPermissionUpdate } roleObject={ roleObject } />
+            <PermissionList
+                isReadOnly={ isReadOnly }
+                isEdit={ !isReadOnly }
+                isRole
+                onSubmit={ onPermissionUpdate }
+                roleObject={ roleObject }
+            />
         </div>
     )
 };

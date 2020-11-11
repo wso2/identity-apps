@@ -618,6 +618,10 @@ export interface AdminPortalNS {
                     };
                 };
                 roles: {
+                    addRolesModal: {
+                        heading: string;
+                        subHeading: string;
+                    }
                     subHeading: string;
                 };
             };
@@ -976,6 +980,10 @@ export interface AdminPortalNS {
                     };
                 };
                 groups: {
+                    addGroupsModal: {
+                        heading: string;
+                        subHeading: string;
+                    };
                     emptyPlaceholder: Placeholder;
                     heading: string;
                     subHeading: string;

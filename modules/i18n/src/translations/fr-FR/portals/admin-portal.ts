@@ -1184,6 +1184,10 @@ export const adminPortal: AdminPortalNS = {
                     }
                 },
                  roles: {
+                     addRolesModal: {
+                         heading: "Mettre à jour les rôles de groupe",
+                         subHeading: "Ajoutez de nouveaux rôles ou supprimez les rôles existants attribués au groupe."
+                     },
                      subHeading: "Ajoutez ou supprimez les rôles auxquels ce groupe est affecté et " +
                          "notez que cela affectera l'exécution de certaines tâches."
                 }
@@ -1671,6 +1675,10 @@ export const adminPortal: AdminPortalNS = {
                     }
                 },
                 groups: {
+                    addGroupsModal: {
+                        heading: "Mettre à jour les groupes de rôles",
+                        subHeading: "Ajoutez de nouveaux groupes ou supprimez les groupes existants affectés au rôle."
+                    },
                     emptyPlaceholder: {
                         action: "Attribuer un groupe",
                         subtitles: "Aucun groupe n'est affecté à ce rôle pour le moment.",

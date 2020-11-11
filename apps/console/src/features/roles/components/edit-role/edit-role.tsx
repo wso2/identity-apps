@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { RoleConstants } from "@wso2is/core/constants";
 import { RolesInterface, SBACInterface } from "@wso2is/core/models";
 import { ResourceTab } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -55,6 +56,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
         (state: AppState) => state?.config?.ui?.isGroupAndRoleSeparationEnabled);
 
     const [ isGroup, setIsGroup ] = useState<boolean>(false);
+    const [ isAdminRole, setIsAdminRole ] = useState<boolean>(false);
 
     /**
      * Get is groups url to proceed as groups
@@ -68,6 +70,19 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
 
     }, [ roleObject ]);
 
+    /**
+     * Set the if the role is `Internal/admin`.
+     */
+    useEffect(() => {
+        if(!roleObject) {
+            return;
+        }
+
+        setIsAdminRole(roleObject.displayName === RoleConstants.ADMIN_ROLE ||
+            roleObject.displayName === RoleConstants.ADMIN_GROUP);
+
+    }, [ roleObject ]);
+
     const resolveResourcePanes = () => {
         const panes = [
             {
@@ -75,6 +90,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
+                            isReadOnly={ isAdminRole }
                             data-testid="role-mgt-edit-role-basic"
                             isGroup={ isGroup }
                             roleObject={ roleObject }
@@ -87,6 +103,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RolePermissionDetails
+                            isReadOnly={ isAdminRole }
                             data-testid="role-mgt-edit-role-permissions"
                             isGroup={ false }
                             roleObject={ roleObject }

@@ -517,9 +517,9 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             className="user-roles"
         >
             <Modal.Header>
-                { t("adminPortal:components.user.updateUser.groups.addGroupsModal.heading") }
+                { t("adminPortal:components.roles.edit.groups.addGroupsModal.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.groups.addGroupsModal.subHeading") }
+                    { t("adminPortal:components.roles.edit.groups.addGroupsModal.subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
