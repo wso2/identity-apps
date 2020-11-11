@@ -186,7 +186,8 @@ export class AppConstants {
             .set("USER_EDIT", `${ AppConstants.getAdminViewBasePath() }/users/:id`)
             .set("USERSTORES", `${ AppConstants.getAdminViewBasePath() }/user-stores`)
             .set("USERSTORES_EDIT", `${ AppConstants.getAdminViewBasePath() }/edit-user-store/:id`)
-            .set("USERSTORE_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/userstore-templates`);
+            .set("USERSTORE_TEMPLATES", `${ AppConstants.getAdminViewBasePath() }/userstore-templates`)
+            .set("STORING_DATA_DISABLED",`${ AppConstants.getMainViewBasePath() }/storing_data_disabled`);
     }
 
     /**
