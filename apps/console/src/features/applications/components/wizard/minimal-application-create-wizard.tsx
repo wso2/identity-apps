@@ -303,6 +303,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         if (selectedTemplate.authenticationProtocol === SupportedAuthProtocolTypes.OIDC) {
             return (
                 <OauthProtocolSettingsWizardForm
+                    isProtocolConfig={ false }
                     tenantDomain={ tenantName }
                     allowedOrigins={ allowedOrigins }
                     fields={ [ "callbackURLs" ] }

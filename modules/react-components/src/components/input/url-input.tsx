@@ -160,9 +160,9 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         } else {
             const availableURls: string[] = !urlState
                 ? []
-                : urlState.split(",");
+                : urlState?.split(",");
 
-            const duplicate: boolean = availableURls.includes(url);
+            const duplicate: boolean = availableURls?.includes(url);
 
             urlValid && setDuplicateURL(duplicate);
 

@@ -18,14 +18,21 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms } from "@wso2is/forms";
+import { Field, Forms, FormValue } from "@wso2is/forms";
 import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
-import { MainApplicationInterface } from "../../models";
+import {
+    ApplicationTemplateListItemInterface,
+    DefaultProtocolTemplate,
+    GrantTypeMetaDataInterface,
+    MainApplicationInterface,
+    OIDCMetadataInterface
+} from "../../models";
+import { getAuthProtocolMetadata } from "../../api";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -68,6 +75,15 @@ interface OAuthProtocolSettingsWizardFormPropsInterface extends TestableComponen
      * Tenant domain
      */
     tenantDomain?: string;
+    /**
+     * Template meta data.
+     */
+    selectedTemplate?: ApplicationTemplateListItemInterface;
+    /**
+     * Flag to identify whether the form is used in protocol
+     * creation modal.
+     */
+    isProtocolConfig?: boolean;
 }
 
 /**
@@ -82,6 +98,8 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 ): ReactElement => {
 
     const {
+        selectedTemplate,
+        isProtocolConfig,
         allowedOrigins,
         fields,
         hideFieldHints,
@@ -102,12 +120,65 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     const [ showRefreshToken, setShowRefreshToken ] = useState(false);
     const [ showURLError, setShowURLError ] = useState(false);
     const [ callbackURLsErrorLabel, setCallbackURLsErrorLabel ] = useState<ReactElement>(null);
-    // TODO enable after fixing callbackURL.
-    // const [showCallbackUrl, setShowCallbackUrl] = useState(false);
+    const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(true);
+    const [ OIDCMeta, setOIDCMeta ] = useState<OIDCMetadataInterface>(undefined);
+    const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
+    const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
+    const [ showGrantTypes, setShowGrantTypes ] = useState<boolean>(false);
 
     // Maintain the state if the user allowed the CORS for the
     // origin of the configured callback URL(s).
     const [ allowCORSUrls, setAllowCORSUrls ] = useState<string[]>([]);
+
+    /**
+     * Show the grant types only for the custom protocol template.
+     */
+    useEffect(() => {
+        if (selectedTemplate?.id === DefaultProtocolTemplate.OIDC) {
+            setShowGrantTypes(true)
+        }
+    }, [ selectedTemplate ]);
+
+    /**
+     * Check whether to show the callback url or not
+     */
+    useEffect(() => {
+        if (selectedGrantTypes?.includes("authorization_code") || selectedGrantTypes?.includes("implicit")) {
+            setShowCallbackURLField(true);
+        } else {
+            setShowCallbackURLField(false);
+        }
+
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        if (selectedGrantTypes !== undefined) {
+            return;
+        }
+
+        if (templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes) {
+            setSelectedGrantTypes([ ...templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes ]);
+        }
+
+    }, [ templateValues ]);
+
+    useEffect(() => {
+        if (OIDCMeta !== undefined) {
+            return;
+        }
+
+        getAuthProtocolMetadata(selectedTemplate?.authenticationProtocol)
+            .then((response) => {
+                setOIDCMeta(response)
+            });
+    }, [ OIDCMeta ]);
+
+    useEffect(() => {
+        const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
+        if (intersection(allowedGrantTypes, [ "refresh_token" ]).length > 0) {
+            setShowRefreshToken(true);
+        }
+    }, [ templateValues ]);
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -116,9 +187,9 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      * @return {string} Prepared callback URL.
      */
     const buildCallBackUrlWithRegExp = (urls: string): string => {
-        let callbackURL = urls.replace(/['"]+/g, "");
-        if (callbackURL.split(",").length > 1) {
-            callbackURL = "regexp=(" + callbackURL.split(",").join("|") + ")";
+        let callbackURL = urls?.replace(/['"]+/g, "");
+        if (callbackURL?.split(",").length > 1) {
+            callbackURL = "regexp=(" + callbackURL?.split(",").join("|") + ")";
         }
         return callbackURL;
     };
@@ -170,27 +241,6 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
         }
     }, [ initialValues ]);
 
-
-    // /**
-    //  *  check whether to show the callback url or not
-    //  *  TODO  Enable this after fixing callbackURL component.
-    //  */
-    // useEffect(() => {
-    //     const allowedGrantTypes = templateValues.inboundProtocolConfiguration.oidc.grantTypes;
-    //     if (_.intersection(allowedGrantTypes, ["authorization_code", "implicit"]).length > 0) {
-    //        setShowCallbackUrl(true);
-    //        // setCallBackUrls("");
-    //     }
-    // }, [initialValues]);
-
-    useEffect(() => {
-        const allowedGrantTypes = templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes;
-        if (intersection(allowedGrantTypes, [ "refresh_token" ]).length > 0) {
-            setShowRefreshToken(true);
-        }
-    }, [ templateValues ]);
-
-
     /**
      * Sanitizes and prepares the form values for submission.
      *
@@ -205,7 +255,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             }
         };
 
-        if (showCallbackURL || (!fields || fields.includes("callbackURLs"))) {
+        if (showCallbackURLField && (showCallbackURL || !fields || fields.includes("callbackURLs"))) {
             config.inboundProtocolConfiguration.oidc[ "callbackURLs" ]
                 = [ buildCallBackUrlWithRegExp(urls ? urls : callBackUrls) ];
         }
@@ -221,7 +271,12 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             };
         }
 
-        if (showCallbackURL || (!fields || fields.includes("callbackURLs"))) {
+        if (showCallbackURLField && (showCallbackURL || !fields || fields.includes("callbackURLs"))) {
+            config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
+        }
+
+        if (!showCallbackURLField && selectedGrantTypes) {
+            config.inboundProtocolConfiguration.oidc[ "grantTypes" ] = selectedGrantTypes;
             config.inboundProtocolConfiguration.oidc[ "allowedOrigins" ] = allowCORSUrls;
         }
 
@@ -240,6 +295,36 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     };
 
     /**
+     * Creates options for Radio GrantTypeMetaDataInterface options.
+     *
+     * @param {GrantTypeMetaDataInterface} metadataProp - Metadata.
+     *
+     * @return {any[]}
+     */
+    const getAllowedGranTypeList = (metadataProp: GrantTypeMetaDataInterface): any[] => {
+        const allowedList = [];
+        if (metadataProp) {
+            metadataProp.options.map((grant) => {
+                allowedList.push({ label: grant.displayName, value: grant.name });
+            });
+
+        }
+
+        return allowedList;
+    };
+
+    /**
+     * Handle grant type change.
+     *
+     * @param {Map<string, FormValue>} values - Form values
+     */
+    const handleGrantTypeChange = (values: Map<string, FormValue>) => {
+        const grants: string[] = values.get("grant") as string[];
+        setSelectedGrantTypes(grants);
+        setGrantChanged(!isGrantChanged);
+    };
+
+    /**
      * submitURL function.
      */
     let submitUrl: (callback: (url?: string) => void) => void;
@@ -249,18 +334,53 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
             ? (
                 <Forms
                     onSubmit={ (values) => {
-                        submitUrl((url: string) => {
-                            if (isEmpty(callBackUrls) && isEmpty(url)) {
-                                setShowURLError(true);
-                            } else {
-                                onSubmit(getFormValues(values, url));
-                            }
-                        });
+                        if (showCallbackURLField || !isProtocolConfig) {
+                            submitUrl((url: string) => {
+                                if ((callBackUrls) && isEmpty(url)) {
+                                    setShowURLError(true);
+                                } else {
+                                    onSubmit(getFormValues(values, url));
+                                }
+                            });
+                        } else {
+                            onSubmit(getFormValues(values));
+                        }
                     } }
                     submitState={ triggerSubmit }
                 >
                     <Grid>
-                        { !fields || fields.includes("callbackURLs") && (
+                        {
+                            (isProtocolConfig && showGrantTypes) && (
+                                <Grid.Row columns={ 1 }>
+                                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                                        <Field
+                                            name="grant"
+                                            label={
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields." +
+                                                    "grant.label")
+                                            }
+                                            type="checkbox"
+                                            required={ true }
+                                            requiredErrorMessage={
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields." +
+                                                    "grant.validations.empty")
+                                            }
+                                            children={ getAllowedGranTypeList(OIDCMeta?.allowedGrantTypes) }
+                                            value={ templateValues?.inboundProtocolConfiguration?.oidc?.grantTypes }
+                                            data-testid={ `${ testId }-grant-type-checkbox-group` }
+                                            listen={ (values) => handleGrantTypeChange(values) }
+                                        />
+                                        <Hint>
+                                            {
+                                                t("devPortal:components.applications.forms.inboundOIDC.fields." +
+                                                    "grant.hint")
+                                            }
+                                        </Hint>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
+                        { ((!fields || fields.includes("callbackURLs")) && showCallbackURLField ) && (
                             <Grid.Row column={ 1 }>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                     <URLInput

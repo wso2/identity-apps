@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, Validation } from "@wso2is/forms";
+import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
@@ -95,6 +95,9 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const [ callBackUrls, setCallBackUrls ] = useState("");
     const [ showURLError, setShowURLError ] = useState(false);
     const [ showOriginError, setShowOriginError ] = useState(false);
+    const [ showCallbackURLField, setShowCallbackURLField ] = useState<boolean>(undefined);
+    const [ selectedGrantTypes, setSelectedGrantTypes ] = useState<string[]>(undefined);
+    const [ isGrantChanged, setGrantChanged ] = useState<boolean>(false);
     const [ showRegenerateConfirmationModal, setShowRegenerateConfirmationModal ] = useState<boolean>(false);
     const [ showRevokeConfirmationModal, setShowRevokeConfirmationModal ] = useState<boolean>(false);
     const [ allowedOrigins, setAllowedOrigins ] = useState("");
@@ -129,6 +132,29 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
     const scopeValidator = useRef<HTMLElement>();
 
     /**
+     * Check whether to show the callback url or not
+     */
+    useEffect(() => {
+        if (selectedGrantTypes?.includes("authorization_code") || selectedGrantTypes?.includes("implicit")) {
+            setShowCallbackURLField(true);
+        } else {
+            setShowCallbackURLField(false);
+        }
+
+    }, [ selectedGrantTypes, isGrantChanged ]);
+
+    useEffect(() => {
+        if (selectedGrantTypes !== undefined) {
+            return;
+        }
+
+        if (initialValues?.grantTypes) {
+            setSelectedGrantTypes(initialValues?.grantTypes);
+        }
+
+    }, [ initialValues ]);
+
+    /**
      * Sets if a valid token binding type is selected.
      */
     useEffect(() => {
@@ -136,6 +162,17 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             setIsTokenBindingTypeSelected(true);
         }
     }, [ initialValues?.accessToken?.bindingType ]);
+
+    /**
+     * Handle grant type change.
+     *
+     * @param {Map<string, FormValue>} values - Form values
+     */
+    const handleGrantTypeChange = (values: Map<string, FormValue>) => {
+        const grants: string[] = values.get("grant") as string[];
+        setSelectedGrantTypes(grants);
+        setGrantChanged(!isGrantChanged);
+    };
 
     /**
      * Add regexp to multiple callbackUrls and update configs.
@@ -161,7 +198,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         if (origins.split(",").length > 1) {
             return origins.split(",");
         }
-        return [ origins ];
+        return origins && (origins !== "") ? [ origins ] : [];
     };
 
     /**
@@ -276,7 +313,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
      * @return {any} Sanitized form values.
      */
     const updateConfiguration = (values: any, url?: string, origin?: string): any => {
-        const formValues = {
+        let formValues: any = {
             accessToken: {
                 applicationAccessTokenExpiryInSeconds: Number(metadata.defaultApplicationAccessTokenExpiryTime),
                 bindingType: values.get("bindingType"),
@@ -285,8 +322,6 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                 userAccessTokenExpiryInSeconds: Number(values.get("userAccessTokenExpiryInSeconds")),
                 validateTokenBinding: values.get("ValidateTokenBinding")?.length > 0
             },
-            allowedOrigins: resolveAllowedOrigins(origin ? origin : allowedOrigins),
-            callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
             grantTypes: values.get("grant"),
             idToken: {
                 audience: [ values.get("audience") ],
@@ -315,6 +350,22 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             scopeValidators: values.get("scopeValidator"),
             validateRequestObjectSignature: values.get("enableRequestObjectSignatureValidation").length > 0
         };
+
+        // Add the `allowedOrigins` & `callbackURLs` only if the grant types
+        // `authorization_code` and `implicit` are selected.
+        if (showCallbackURLField) {
+            formValues = {
+                ...formValues,
+                allowedOrigins: resolveAllowedOrigins(origin ? origin : allowedOrigins),
+                callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
+            }
+        } else {
+            formValues = {
+                ...formValues,
+                allowedOrigins: [],
+                callbackURLs: [],
+            }
+        }
 
         // If the app is newly created do not add `clientId` & `clientSecret`.
         if (!initialValues?.clientId || !initialValues?.clientSecret) {
@@ -465,6 +516,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         children={ getAllowedGranTypeList(metadata.allowedGrantTypes) }
                         value={ initialValues.grantTypes }
                         readOnly={ readOnly }
+                        listen={ (values) => handleGrantTypeChange(values) }
                         data-testid={ `${ testId }-grant-type-checkbox-group` }
                     />
                     <Hint>
@@ -474,139 +526,145 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
-            <div ref={ url }></div>
-            <URLInput
-                isAllowEnabled={ false }
-                tenantDomain={ tenantDomain }
-                allowedOrigins={ allowedOriginList }
-                labelEnabled={ true }
-                urlState={ callBackUrls }
-                setURLState={ setCallBackUrls }
-                labelName={
-                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
-                }
-                required={ true }
-                value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
-                placeholder={
-                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                        ".placeholder")
-                }
-                validationErrorMsg={
-                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
-                        ".validations.empty")
-                }
-                validation={ (value: string) => {
-                    let label: ReactElement = null;
-
-                    const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
-
-                    if (isHttpUrl) {
-                        label = (
-                            <Label basic color="orange" className="mt-2">
-                                { t("console:common.validations.inSecureURL.description") }
-                            </Label>
-                        );
-                    }
-
-                    if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                        label = (
-                            <Label basic color="orange" className="mt-2">
-                                { t("console:common.validations.unrecognizedURL.description") }
-                            </Label>
-                        );
-                    }
-
-                    if (!URLUtils.isMobileDeepLink(value)) {
-                        return false;
-                    }
-
-                    setCallbackURLsErrorLabel(label);
-
-                    return true;
-                } }
-                showError={ showURLError }
-                setShowError={ setShowURLError }
-                hint={
-                    t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
-                }
-                readOnly={ readOnly }
-                addURLTooltip={ t("common:addURL") }
-                duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                data-testid={ `${ testId }-callback-url-input` }
-                getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
-                    submitUrl = submitFunction;
-                } }
-                showPredictions={ false }
-                customLabel={ callbackURLsErrorLabel }
-            />
-            <Grid.Row columns={ 1 }>
-                <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
-                    <div ref={ allowedOrigin }></div>
-                    <URLInput
-                        required
-                        handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
-                        urlState={ allowedOrigins }
-                        setURLState={ setAllowedOrigins }
-                        labelName={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                ".label")
-                        }
-                        placeholder={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                ".placeholder")
-                        }
-                        value={ initialValues?.allowedOrigins?.toString() }
-                        validationErrorMsg={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                ".validations.empty")
-                        }
-                        validation={ (value: string) => {
-
-                            let label: ReactElement = null;
-
-                            if (URLUtils.isHttpUrl(value)) {
-                                label = (
-                                    <Label basic color="orange" className="mt-2">
-                                        { t("console:common.validations.inSecureURL.description") }
-                                    </Label>
-                                );
+            {
+                showCallbackURLField && (
+                    <>
+                        <div ref={ url }></div>
+                        <URLInput
+                            isAllowEnabled={ false }
+                            tenantDomain={ tenantDomain }
+                            allowedOrigins={ allowedOriginList }
+                            labelEnabled={ true }
+                            urlState={ callBackUrls }
+                            setURLState={ setCallBackUrls }
+                            labelName={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.label")
                             }
-
-                            if (!URLUtils.isHttpsOrHttpUrl(value)) {
-                                label = (
-                                    <Label basic color="orange" className="mt-2">
-                                        { t("console:common.validations.unrecognizedURL.description") }
-                                    </Label>
-                                );
+                            required={ true }
+                            value={ buildCallBackURLWithSeparator(initialValues.callbackURLs?.toString()) }
+                            placeholder={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                    ".placeholder")
                             }
-
-                            if (!URLUtils.isMobileDeepLink(value)) {
-                                return false;
+                            validationErrorMsg={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls" +
+                                    ".validations.empty")
                             }
+                            validation={ (value: string) => {
+                                let label: ReactElement = null;
 
-                            setAllowedOriginsErrorLabel(label);
+                                const isHttpUrl: boolean = URLUtils.isHttpUrl(value);
 
-                            return true;
-                        } }
-                        computerWidth={ 10 }
-                        setShowError={ setShowOriginError }
-                        showError={ showOriginError }
-                        hint={
-                            t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
-                                ".hint")
-                        }
-                        addURLTooltip={ t("common:addURL") }
-                        duplicateURLErrorMessage={ t("common:duplicateURLError") }
-                        data-testid={ `${ testId }-allowed-origin-url-input` }
-                        getSubmit={ (submitOriginFunction: (callback: (origin?: string) => void) => void
-                        ) => {
-                            submitOrigin = submitOriginFunction;
-                        } }
-                        showPredictions={ false }
-                        customLabel={ allowedOriginsErrorLabel }
-                    />
-                </Grid.Column>
-            </Grid.Row>
+                                if (isHttpUrl) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.inSecureURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                                    label = (
+                                        <Label basic color="orange" className="mt-2">
+                                            { t("console:common.validations.unrecognizedURL.description") }
+                                        </Label>
+                                    );
+                                }
+
+                                if (!URLUtils.isMobileDeepLink(value)) {
+                                    return false;
+                                }
+
+                                setCallbackURLsErrorLabel(label);
+
+                                return true;
+                            } }
+                            showError={ showURLError }
+                            setShowError={ setShowURLError }
+                            hint={
+                                t("devPortal:components.applications.forms.inboundOIDC.fields.callBackUrls.hint")
+                            }
+                            readOnly={ readOnly }
+                            addURLTooltip={ t("common:addURL") }
+                            duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                            data-testid={ `${ testId }-callback-url-input` }
+                            getSubmit={ (submitFunction: (callback: (url?: string) => void) => void) => {
+                                submitUrl = submitFunction;
+                            } }
+                            showPredictions={ false }
+                            customLabel={ callbackURLsErrorLabel }
+                        />
+                        <Grid.Row columns={ 1 }>
+                            <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
+                                <div ref={ allowedOrigin }></div>
+                                <URLInput
+                                    required
+                                    handleAddAllowedOrigin={ (url) => handleAllowOrigin(url) }
+                                    urlState={ allowedOrigins }
+                                    setURLState={ setAllowedOrigins }
+                                    labelName={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".label")
+                                    }
+                                    placeholder={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".placeholder")
+                                    }
+                                    value={ initialValues?.allowedOrigins?.toString() }
+                                    validationErrorMsg={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".validations.empty")
+                                    }
+                                    validation={ (value: string) => {
+
+                                        let label: ReactElement = null;
+
+                                        if (URLUtils.isHttpUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.inSecureURL.description") }
+                                                </Label>
+                                            );
+                                        }
+
+                                        if (!URLUtils.isHttpsOrHttpUrl(value)) {
+                                            label = (
+                                                <Label basic color="orange" className="mt-2">
+                                                    { t("console:common.validations.unrecognizedURL.description") }
+                                                </Label>
+                                            );
+                                        }
+
+                                        if (!URLUtils.isMobileDeepLink(value)) {
+                                            return false;
+                                        }
+
+                                        setAllowedOriginsErrorLabel(label);
+
+                                        return true;
+                                    } }
+                                    computerWidth={ 10 }
+                                    setShowError={ setShowOriginError }
+                                    showError={ showOriginError }
+                                    hint={
+                                        t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
+                                            ".hint")
+                                    }
+                                    addURLTooltip={ t("common:addURL") }
+                                    duplicateURLErrorMessage={ t("common:duplicateURLError") }
+                                    data-testid={ `${ testId }-allowed-origin-url-input` }
+                                    getSubmit={ (submitOriginFunction: (callback: (origin?: string) => void) => void
+                                    ) => {
+                                        submitOrigin = submitOriginFunction;
+                                    } }
+                                    showPredictions={ false }
+                                    customLabel={ allowedOriginsErrorLabel }
+                                />
+                            </Grid.Column>
+                        </Grid.Row>
+                    </>
+                )
+            }
             <Grid.Row columns={ 1 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
                     <Field
@@ -1271,22 +1329,27 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             (
                 <Forms
                     onSubmit={ (values) => {
-                        submitUrl((url: string) => {
-                            if (isEmpty(callBackUrls) && isEmpty(url)) {
-                                setShowURLError(true);
-                                scrollToInValidField("url");
-                            } else {
-                                submitOrigin((origin) => {
-                                    // TODO: Remove the empty check when the backend is fixed.
-                                    if (isEmpty(allowedOrigins) && isEmpty(origin)) {
-                                        setShowOriginError(true);
-                                        scrollToInValidField("allowedOrigin");
-                                    } else {
-                                        onSubmit(updateConfiguration(values, url, origin));
-                                    }
-                                });
-                            }
-                        });
+                        if (showCallbackURLField) {
+                            submitUrl((url: string) => {
+                                if (isEmpty(callBackUrls) && isEmpty(url)) {
+                                    setShowURLError(true);
+                                    scrollToInValidField("url");
+                                } else {
+                                    submitOrigin((origin) => {
+                                        // TODO: Remove the empty check when the backend is fixed.
+                                        // Issue reported: https://github.com/wso2/product-is/issues/9933
+                                        if (isEmpty(allowedOrigins) && isEmpty(origin)) {
+                                            setShowOriginError(true);
+                                            scrollToInValidField("allowedOrigin");
+                                        } else {
+                                            onSubmit(updateConfiguration(values, url, origin));
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            onSubmit(updateConfiguration(values, undefined, undefined));
+                        }
                     } }
                     onSubmitError={ (requiredFields: Map<string, boolean>, validFields: Map<string, Validation>) => {
                         const iterator = requiredFields.entries();
