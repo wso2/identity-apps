@@ -70,6 +70,7 @@
         "js-beautify": "^1.10.3",
         "js-yaml": "3.13.1",
         "jshint": "^2.11.0",
+        "jsrsasign": "^10.0.5",
         "lodash": "^4.17.15",
         "moment": "2.24.0",
         "node-forge": "^0.10.0",

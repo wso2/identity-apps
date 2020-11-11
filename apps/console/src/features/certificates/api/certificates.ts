@@ -83,9 +83,9 @@ export const retrieveCertificateAlias = (alias: string, encode?: boolean): Promi
         },
         method: HttpMethods.GET,
         params: {
-            "encode-cert":encode
+            "encode-cert": encode
         },
-        url: `${store.getState().config.endpoints.certificates}/${alias}`
+        url: `${store.getState().config.endpoints.certificates}/${encodeURI(alias).replace(/#/g, "%23")}`
     };
     return httpClient(requestConfig)
         .then((response) => {

@@ -20,7 +20,7 @@ import { AlertLevels, Certificate, DisplayCertificate, TestableComponentInterfac
 import { addAlert } from "@wso2is/core/store";
 import { useTrigger } from "@wso2is/forms";
 import { LinkButton, PrimaryButton, Steps, useWizardAlert } from "@wso2is/react-components";
-import * as forge from "node-forge";
+import { X509, zulutodate } from "jsrsasign";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -77,7 +77,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
     const [ fileDecoded, setFileDecoded ] = useState("");
     const [ pem, setPem ] = useState("");
     const [ file, setFile ] = useState<File>(null);
-    const [ certificate, setCertificate ] = useState<forge.pki.Certificate>(null);
+    const [ certificate, setCertificate ] = useState<X509>(null);
 
     const [ firstStep, setFirstStep ] = useTrigger();
     const [ alert, setAlert, alertComponent ] = useWizardAlert();
@@ -130,7 +130,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
      * @param {string} pem The PEM-encoded string.
      * @param {string} fileDecoded The decoded `.cer` file content.
      * @param {File} file The File object.
-     * @param {forge.pki.Certificate} forgeCertificate The forge certificate object.
+     * @param {X509} forgeCertificate The X509 certificate object.
      */
     const onSubmitFirstStep = (
         data: Certificate,
@@ -138,7 +138,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
         pem: string,
         fileDecoded: string,
         file: File,
-        forgeCertificate: forge.pki.Certificate
+        forgeCertificate: X509
     ): void => {
         setData(data);
         setName(name);
@@ -153,27 +153,27 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
      * This serializes the certificate object.
      *
      * @param {Certificate} data The data object containing the alias and the PEM string.
-     * @param {forge.pki.Certificate} certificateForge The Forge Certificate object.
+     * @param {X509} certificateForge The X509 Certificate object.
      */
-    const decodeCertificate = (data: Certificate, certificateForge: forge.pki.Certificate): void => {
+    const decodeCertificate = (data: Certificate, cert: X509): void => {
         const displayCertificate: DisplayCertificate = {
             alias: data.alias,
-            issuerDN: certificateForge.issuer.attributes
+            issuerDN: cert.getIssuerString().split("/").slice(1)
                 .map(attribute => {
                     return {
-                        [ attribute.shortName ]: attribute.value
-                    }
+                        [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
+                    };
                 }),
-            serialNumber: certificateForge.serialNumber,
-            subjectDN: certificateForge.subject.attributes
+            serialNumber: cert.getSerialNumberHex(),
+            subjectDN: cert.getSubjectString().split("/").slice(1)
                 .map(attribute => {
                     return {
-                        [ attribute.shortName ]: attribute.value
-                    }
+                        [ attribute.split("=")[ 0 ] ]: attribute.split("=")[ 1 ]
+                    };
                 }),
-            validFrom: certificateForge.validity.notBefore,
-            validTill: certificateForge.validity.notAfter,
-            version: certificateForge.version
+            validFrom: new Date(zulutodate(cert.getNotBefore()).toUTCString()),
+            validTill: new Date(zulutodate(cert.getNotAfter()).toUTCString()),
+            version: cert.getVersion()
         };
 
         setCertificateDisplay(displayCertificate);
