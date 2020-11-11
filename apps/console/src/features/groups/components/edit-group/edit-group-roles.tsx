@@ -279,14 +279,21 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         if (removedIds && removedIds.length > 0) {
             removedIds.map((id) => {
                 const operation = {
-                    op: "remove",
-                    path: `roles[value eq ${ id }]`
+                    data: {
+                        "Operations": [
+                            {
+                                op: "remove",
+                                path: `groups[value eq ${ group.id }]`
+                            }
+                        ]
+                    },
+                    method: "PATCH",
+                    path: "/Roles/" + id
                 };
                 removeOperations.push(operation);
             });
 
-            removeOperation.data.Operations.push(...removeOperations);
-            bulkRemoveData.Operations.push(removeOperation);
+            bulkRemoveData.Operations.push(...removeOperations);
 
             updateResources(bulkRemoveData)
                 .then(() => {
