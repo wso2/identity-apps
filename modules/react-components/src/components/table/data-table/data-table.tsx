@@ -647,7 +647,7 @@ export const DataTable = <T extends object = {}>(
         }
 
         return (
-            <DataTable.Row>
+            <DataTable.Row className="no-hover">
                 <DataTable.Cell>
                     { externalPlaceholders }
                 </DataTable.Cell>
@@ -695,7 +695,7 @@ export const DataTable = <T extends object = {}>(
                         </Header>
                     </DataTable.Cell>
                 </DataTable.Row>
-            )
+            );
         }
 
         return placeholders;
