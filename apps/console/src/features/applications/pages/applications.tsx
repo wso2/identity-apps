@@ -233,6 +233,23 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
         setTriggerClearQuery(!triggerClearQuery);
     };
 
+    /**
+     * Renders the Remote Fetch status bar.
+     *
+     * @return {React.ReactElement}
+     */
+    const renderRemoteFetchStatus = (): ReactElement => {
+        
+        if (!hasRequiredScopes(featureConfig?.remoteFetchConfig,
+            featureConfig?.remoteFetchConfig?.scopes?.read,
+            allowedScopes)) {
+            
+            return null;
+        }
+        
+        return <RemoteFetchStatus data-testid={ "remote-fetch" } />;
+    };
+
     return (
         <PageLayout
             action={
@@ -255,9 +272,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
             description={ t("devPortal:pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
-
-            <RemoteFetchStatus data-testid={ "remote-fetch" } />
-            
+            { renderRemoteFetchStatus() }
             <ListLayout
                 advancedSearch={
                     <AdvancedSearchWithBasicFilters
