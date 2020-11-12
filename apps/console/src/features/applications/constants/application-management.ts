@@ -92,6 +92,13 @@ export class ApplicationManagementConstants {
     public static readonly APP_STATE_URL_SEARCH_PARAM_KEY = "state";
 
     /**
+     * Key for the URL search param for application readonly state.
+     * @constant
+     * @type {string}
+     */
+    public static readonly APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY = "readOnly";
+
+    /**
      * Key for the URL search param for client secret hashing enabled flag.
      * @constant
      * @type {string}
