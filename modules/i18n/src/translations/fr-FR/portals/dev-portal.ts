@@ -700,9 +700,9 @@ export const devPortal: DevPortalNS = {
                                     }
                                 },
                                 revokeToken: {
-                                    hint: "Permet de révoquer les jetons de cette application lorsqu'une session IDP " +
-                                        "liée est terminée",
-                                    label: "Révoquer les jetons lorsque la session IDP se termine"
+                                    hint: "Autoriser la révocation des jetons de cette application lorsqu'une " +
+                                        "session IDP liée se termine par une déconnexion utilisateur.",
+                                    label: "Révoquer les jetons lors de la déconnexion de l'utilisateur"
                                 },
                                 type: {
                                     label: "Type de token"

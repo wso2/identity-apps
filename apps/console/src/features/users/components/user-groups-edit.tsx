@@ -240,6 +240,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         setInitialTempGroupList(addedRoles);
         setGroupList(groupList.filter(x => !addedRoles?.includes(x)));
         setInitialGroupList(groupList.filter(x => !addedRoles?.includes(x)));
+        setCheckedAssignedListItems([]);
         setIsSelectUnassignedAllRolesChecked(false);
     };
 
