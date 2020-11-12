@@ -83,6 +83,10 @@ interface GeneralApplicationSettingsInterface extends SBACInterface<FeatureConfi
      */
     onUpdate: (id: string) => void;
     /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
+    /**
      * Application template.
      */
     template?: ApplicationTemplateListItemInterface;
@@ -115,6 +119,7 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
         onDelete,
         onUpdate,
         certificate,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -265,7 +270,8 @@ export const GeneralApplicationSettings: FunctionComponent<GeneralApplicationSet
                             imageUrl={ imageUrl }
                             accessUrl={ accessUrl }
                             readOnly={
-                                !hasRequiredScopes(
+                                readOnly
+                                || !hasRequiredScopes(
                                     featureConfig?.applications, featureConfig?.applications?.scopes?.update,
                                     allowedScopes
                                 )

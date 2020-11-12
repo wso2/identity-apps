@@ -43,6 +43,10 @@ interface ProvisioningSettingsPropsInterface extends SBACInterface<FeatureConfig
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -61,6 +65,7 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
         featureConfig,
         provisioningConfigurations,
         onUpdate,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -73,11 +78,10 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                 provisioningConfigurations={ provisioningConfigurations }
                 onUpdate={ onUpdate }
                 readOnly={
-                    !hasRequiredScopes(
-                        featureConfig?.applications,
+                    readOnly
+                    || !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.update,
-                        allowedScopes
-                    )
+                        allowedScopes)
                 }
                 data-testid={ `${ testId }-inbound-configuration` }
             />
@@ -85,6 +89,12 @@ export const ProvisioningSettings: FunctionComponent<ProvisioningSettingsPropsIn
                 application={ application }
                 provisioningConfigurations={ provisioningConfigurations }
                 onUpdate={ onUpdate }
+                readOnly={
+                    readOnly
+                    || !hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update,
+                        allowedScopes)
+                }
                 data-testid={ `${ testId }-outbound-configuration` }
             />
         </>

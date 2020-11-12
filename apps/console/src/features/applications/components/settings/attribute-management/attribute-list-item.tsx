@@ -37,6 +37,10 @@ interface AttributeListItemPropInterface extends TestableComponentInterface {
     initialRequested?: boolean;
     claimMappingOn?: boolean;
     claimMappingError?: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -63,6 +67,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
         initialRequested,
         claimMappingOn,
         claimMappingError,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -141,6 +146,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                     value={ mapping?.applicationClaim }
                                     onChange={ handleClaimMapping }
                                     disabled={ !mappingOn }
+                                    readOnly={ readOnly }
                                     required
                                 />
                                 { errorInClaimMapping && (
@@ -161,6 +167,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                                 defaultChecked={ initialRequested }
                                                 onClick={ handleRequestCheckChange }
                                                 disabled={ !mappingOn }
+                                                readOnly={ readOnly }
                                             />
                                         )
                                     }
@@ -173,7 +180,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                             ".selection.mappingTable.listItem.actions.makeRequested")
                                     }
                                     inverted
-                                    disabled={ !mappingOn }
+                                    disabled={ readOnly || !mappingOn }
                                 />
                             </Table.Cell>
                         </>
@@ -186,6 +193,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                         defaultChecked={ initialMandatory }
                                         onClick={ handleMandatoryCheckChange }
                                         disabled={ mappingOn ? !requested : false }
+                                        readOnly={ readOnly }
                                     />
                                 )
                             }
@@ -198,7 +206,13 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                     ".mappingTable.listItem.actions.makeMandatory")
                             }
                             inverted
-                            disabled={ mappingOn ? !requested : false }
+                            disabled={
+                                readOnly
+                                    ? false
+                                    : mappingOn
+                                        ? !requested
+                                        : false
+                            }
                         />
                     </Table.Cell>
                 </Table.Row>
@@ -215,6 +229,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                     <Checkbox
                                         defaultChecked={ initialMandatory }
                                         onClick={ handleMandatoryCheckChange }
+                                        readOnly={ readOnly }
                                     />
                                 )
                             }
@@ -226,6 +241,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                     : t("devPortal:components.applications.edit.sections.attributes.selection" +
                                     ".mappingTable.listItem.actions.makeMandatory")
                             }
+                            disabled={ readOnly }
                             inverted
                         />
                     </Table.Cell>

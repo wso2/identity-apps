@@ -50,6 +50,7 @@ import {
 import { deleteApplication } from "../api";
 import { ApplicationManagementConstants } from "../constants";
 import {
+    ApplicationAccessTypes,
     ApplicationListInterface,
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
@@ -168,9 +169,15 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
      * Redirects to the applications edit page when the edit button is clicked.
      *
      * @param {string} appId - Application id.
+     * @param {ApplicationAccessTypes} access - Access level of the application.
      */
-    const handleApplicationEdit = (appId: string): void => {
-        history.push(AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId));
+    const handleApplicationEdit = (appId: string, access: ApplicationAccessTypes): void => {
+        history.push({
+            pathname: AppConstants.getPaths().get("APPLICATION_EDIT").replace(":id", appId),
+            search: access === ApplicationAccessTypes.READ
+                ? `?${ ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY }=true`
+                : ""
+        });
     };
 
     /**
@@ -314,7 +321,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
                 icon: (): SemanticICONS => "pencil alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
-                    handleApplicationEdit(app?.id),
+                    handleApplicationEdit(app.id, app.access),
                 popupText: (): string => t("common:edit"),
                 renderer: "semantic-icon"
             },
@@ -409,7 +416,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         app.name !== ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP)
                 }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
-                    handleApplicationEdit(app?.id);
+                    handleApplicationEdit(app.id, app.access);
                     onListItemClick && onListItemClick(e, app);
                 } }
                 placeholders={ showPlaceholders() }

@@ -55,6 +55,10 @@ interface SignOnMethodsPropsInterface extends SBACInterface<FeatureConfigInterfa
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -74,6 +78,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         featureConfig,
         isLoading,
         onUpdate,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -287,6 +292,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         setSelectedRequestPathAuthenticators(values.get("requestPathAuthenticators"));
                                     }
                                 }
+                                readOnly={ readOnly }
                                 data-testid={ `${ testId }-request-path-authenticators` }
                             />
                         </Grid.Column>
@@ -304,9 +310,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 onUpdate={ handleSequenceUpdate }
                 triggerUpdate={ updateTrigger }
                 readOnly={
-                    !hasRequiredScopes(
-                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes
-                    )
+                    readOnly
+                    || !hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update,
+                        allowedScopes)
                 }
                 data-testid={ `${ testId }-step-based-flow` }
                 updateSteps={ updateSteps }
@@ -317,9 +324,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 onTemplateSelect={ handleLoadingDataFromTemplate }
                 onScriptChange={ handleAdaptiveScriptChange }
                 readOnly={
-                    !hasRequiredScopes(
-                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes
-                    )
+                    readOnly
+                    || !hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update,
+                        allowedScopes)
                 }
                 data-testid={ `${ testId }-script-based-flow` }
                 authenticationSteps={ steps }
@@ -327,11 +335,12 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             />
             { requestPathAuthenticators && showRequestPathAuthenticators }
             {
-                hasRequiredScopes(
+                !readOnly
+                && hasRequiredScopes(
                     featureConfig?.applications,
                     featureConfig?.applications?.scopes?.update,
-                    allowedScopes
-                ) && (
+                    allowedScopes)
+                && (
                     <>
                         <Divider hidden />
                         <PrimaryButton

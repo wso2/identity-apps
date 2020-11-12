@@ -95,6 +95,10 @@ interface AttributeSelectionPropsInterface extends SBACInterface<FeatureConfigIn
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 export const getLocalDialectURI = (): string => {
@@ -130,6 +134,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         claimConfigurations,
         onlyOIDCConfigured,
         onUpdate,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -580,8 +585,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         setClaimMappingOn={ setClaimMappingOn }
                         claimMappingError={ claimMappingError }
                         readOnly={
-                            !hasRequiredScopes(
-                                featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+                            readOnly
+                            || !hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update,
+                                allowedScopes)
                         }
                         data-testid={ `${ testId }-attribute-selection` }
                     />
@@ -594,8 +601,10 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         initialSubject={ claimConfigurations.subject }
                         claimMappingOn={ claimMappingOn }
                         readOnly={
-                            !hasRequiredScopes(
-                                featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+                            readOnly
+                            || !hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update,
+                                allowedScopes)
                         }
                         data-testid={ `${ testId }-advanced-attribute-settings-form` }
                     />
@@ -604,14 +613,19 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                         onSubmit={ setRoleMapping }
                         initialMappings={ claimConfigurations.role?.mappings }
                         readOnly={
-                            !hasRequiredScopes(
-                                featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+                            readOnly
+                            || !hasRequiredScopes(featureConfig?.applications,
+                                featureConfig?.applications?.scopes?.update,
+                                allowedScopes)
                         }
                         data-testid={ `${ testId }-role-mapping` }
                     />
                     {
-                        hasRequiredScopes(featureConfig?.applications, featureConfig?.applications?.scopes?.update,
-                            allowedScopes) && (
+                        !readOnly
+                        && hasRequiredScopes(featureConfig?.applications,
+                            featureConfig?.applications?.scopes?.update,
+                            allowedScopes)
+                        && (
                             <Grid.Row>
                                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 3 }>
                                     <Button

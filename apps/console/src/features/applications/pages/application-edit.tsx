@@ -855,6 +855,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     getConfiguredInboundProtocolConfigs={ (configs: object) => {
                         setInboundProtocolConfigs(configs)
                     } }
+                    readOnly={
+                        urlSearchParams.get(
+                            ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY
+                        ) === "true"
+                    }
                 />
             </PageLayout>
         </HelpPanelLayout>

@@ -210,12 +210,16 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                     data-testid={ testId }
                 >
                     <Heading className="step-header" as="h6">{ t("common:step") } { step.id }</Heading>
-                    <Icon
-                        className="delete-button"
-                        name="cancel"
-                        onClick={ (): void => onStepDelete(stepIndex) }
-                        data-testid={ `${ testId }-delete-button` }
-                    />
+                    {
+                        !readOnly && (
+                            <Icon
+                                className="delete-button"
+                                name="cancel"
+                                onClick={ (): void => onStepDelete(stepIndex) }
+                                data-testid={ `${ testId }-delete-button` }
+                            />
+                        )
+                    }
                     <div className="authentication-step">
                         {
                             (step.options && step.options instanceof Array && step.options.length > 0)

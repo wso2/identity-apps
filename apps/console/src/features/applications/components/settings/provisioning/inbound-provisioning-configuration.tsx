@@ -69,6 +69,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
         provisioningConfigurations,
         onUpdate,
         featureConfig,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -147,7 +148,8 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
                                                 onSubmit={ handleProvisioningConfigFormSubmit }
                                                 useStoreList={ userStore }
                                                 readOnly={
-                                                    !hasRequiredScopes(featureConfig?.applications,
+                                                    readOnly
+                                                    || !hasRequiredScopes(featureConfig?.applications,
                                                         featureConfig?.applications?.scopes?.update,
                                                         allowedScopes)
                                                 }
