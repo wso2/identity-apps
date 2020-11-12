@@ -28,10 +28,20 @@
 <%@ page import="org.wso2.carbon.identity.core.util.IdentityTenantUtil" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.List" %>
+<%@ page import="javax.ws.rs.HttpMethod" %>
 <jsp:directive.include file="includes/localize.jsp"/>
 <jsp:directive.include file="tenant-resolve.jsp"/>
 
 <%
+    
+    String httpMethod = request.getMethod();
+    // Some mail providers initially sends a HEAD request to
+    // check the validity of the link before redirecting users.
+    if (StringUtils.equals(httpMethod, HttpMethod.HEAD)) {
+        response.setStatus(response.SC_OK);
+        return;
+    }
+    
     String confirmationKey = request.getParameter("confirmation");
     String callback = request.getParameter("callback");
     if (StringUtils.isBlank(callback)) {
