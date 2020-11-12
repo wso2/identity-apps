@@ -29,10 +29,10 @@ const getItemFromSessionStorage = (key: string): string => {
 
 const config = window.parent["AppUtils"]?.getConfig();
 const clientId = config?.clientID;
-const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
 const redirectUri = config?.loginCallbackURL;
 
 function checkSession() {
+    const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
     const sessionState = getItemFromSessionStorage("session_state");
     const mes = clientId + " " + sessionState;
     if (isNotNull(clientId) && isNotNull(sessionState)) {
@@ -47,6 +47,8 @@ function isNotNull(value) {
 }
 
 function setTimer() {
+    const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
+
     if (!targetOrigin || !clientId || !redirectUri) {
         return;
     }
@@ -79,6 +81,13 @@ function getRandomPKCEChallenge() {
 }
 
 function receiveMessage(e) {
+    const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
+
+    if (e.data === "loadTimer" && e.origin === location.origin) {
+        setTimer();
+        return;
+    }
+
     if (!targetOrigin || targetOrigin?.indexOf(e.origin) < 0) {
         return;
     }
@@ -101,8 +110,4 @@ function receiveMessage(e) {
             "&code_challenge_method=S256&code_challenge=" +
             getRandomPKCEChallenge();
     }
-}
-
-window.onload = () => {
-    (setTimer());
 }
