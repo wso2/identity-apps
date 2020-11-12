@@ -103,7 +103,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
 
     // The following constant are used to persist the state of the unassigned roles permissions.
     const [ viewRolePermissions, setViewRolePermissions ] = useState(false);
-    const [ roleId, setRoleId ] = useState();
+    const [ roleId, setRoleId ] = useState<string>();
     const [ isSelected, setSelection ] = useState(false);
 
     const [ assignedRoles, setAssignedRoles ] = useState([]);
