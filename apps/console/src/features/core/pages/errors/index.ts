@@ -18,3 +18,4 @@
 
 export * from "./404";
 export * from "./unauthorized";
+export * from "./storage-disabled";

@@ -1298,6 +1298,14 @@ export const userPortal: UserPortalNS = {
                 1: "Faça login com uma conta diferente."
             },
             title: "Você não está autorizado"
+        },
+        sessionStorageDisabled: {
+            subtitles: {
+                0: "Para usar este aplicativo, você deve habilitar os cookies nas configurações do seu navegador.",
+                1: "Para obter mais informações sobre como habilitar cookies, consulte a seção de ajuda " +
+                    "do seu navegador."
+            },
+            title: "Os cookies estão desabilitados em seu navegador."
         }
     },
     sections: {

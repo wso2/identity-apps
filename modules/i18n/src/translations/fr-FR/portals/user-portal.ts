@@ -1318,6 +1318,15 @@ export const userPortal: UserPortalNS = {
                 1: "Veuillez vous connecter en utilisant un autre compte."
             },
             title: "Accès interdit"
+        },
+        sessionStorageDisabled: {
+            subtitles: {
+                0: "Pour utiliser cette application, vous devez activer les cookies dans les " +
+                    "paramètres de votre navigateur Web.",
+                1: "Pour plus d'informations sur l'activation des cookies, consultez la section d'aide " +
+                    "de votre navigateur Web."
+            },
+            title: "Les cookies sont désactivés dans votre navigateur."
         }
     },
     sections: {

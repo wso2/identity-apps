@@ -16,9 +16,10 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertInterface, ChildRouteInterface, ProfileInfoInterface, RouteInterface } from "@wso2is/core/models";
 import { initializeAlertSystem } from "@wso2is/core/store";
-import { CommonUtils, RouteUtils } from "@wso2is/core/utils";
+import { RouteUtils as CommonRouteUtils, CommonUtils } from "@wso2is/core/utils";
 import {
     Alert,
     ContentLoader,
@@ -50,12 +51,12 @@ import { getProfileInformation } from "../features/authentication/store";
 import {
     AppConstants,
     AppState,
-    ConfigReducerStateInterface,
     EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     Footer,
     Header,
     ProtectedRoute,
+    RouteUtils,
     SidePanelIcons,
     SidePanelMiscIcons,
     UIConstants,
@@ -100,7 +101,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     const dispatch = useDispatch();
 
-    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
     const profileInfo: ProfileInfoInterface = useSelector((state: AppState) => state.profile.profileInfo);
     const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
@@ -109,6 +109,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
     const governanceConnectorCategories: GovernanceConnectorCategoryInterface[] = useSelector(
         (state: AppState) => state.governanceConnector.categories);
+    const [ governanceConnectorsEvaluated, setGovernanceConnectorsEvaluated ] = useState<boolean>(false);
     const [ governanceConnectorRoutesAdded, setGovernanceConnectorRoutesAdded ] = useState<boolean>(false);
 
     const [ filteredRoutes, setFilteredRoutes ] = useState<RouteInterface[]>(getAdminViewRoutes());
@@ -120,13 +121,27 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     const [ isMobileViewport, setIsMobileViewport ] = useState<boolean>(false);
 
     useEffect(() => {
-        setSelectedRoute(RouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
-    }, [ filteredRoutes ]);
+        setSelectedRoute(CommonRouteUtils.getInitialActiveRoute(location.pathname, filteredRoutes));
+        
+        if (governanceConnectorsEvaluated === true) {
+            RouteUtils.gracefullyHandleRouting(filteredRoutes,
+                AppConstants.getAdminViewBasePath(),
+                location.pathname);
+
+            return;
+        }
+
+        RouteUtils.gracefullyHandleRouting(filteredRoutes,
+            AppConstants.getAdminViewBasePath(),
+            location.pathname,
+            false);
+    }, [ filteredRoutes, governanceConnectorsEvaluated ]);
 
     useEffect(() => {
+
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(
-            RouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+            CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
                 getAdminViewRoutes(),
                 featureConfig,
                 allowedScopes)
@@ -137,51 +152,66 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         }
 
         dispatch(getProfileInformation());
-    }, []);
+    }, [ allowedScopes, featureConfig, getAdminViewRoutes ]);
 
     useEffect(() => {
-        if (governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0) {
-            if (!governanceConnectorRoutesAdded) {
 
-                const filteredRoutesClone = [ ...filteredRoutes ];
+        if (!hasRequiredScopes(featureConfig?.generalConfigurations,
+            featureConfig?.generalConfigurations?.scopes?.read,
+            allowedScopes)) {
 
-                governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
-                    let subCategoryExists = false;
-                    category.connectors?.map(connector => {
-                        if (connector.subCategory !== "DEFAULT") {
-                            subCategoryExists = true;
-                            return;
-                        }
-                    });
-                    if (subCategoryExists) {
-                        // TODO: Implement sub category handling logic here.
-                    }
-
-                    filteredRoutesClone.unshift({
-                        category: "adminPortal:components.sidePanel.categories.configurations",
-                        component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
-                        exact: true,
-                        icon: {
-                            icon: SidePanelIcons.connectors[ category.id ] ?? SidePanelIcons.connectors.default
-                        },
-                        id: category.id,
-                        name: category.name,
-                        order: (category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID)
-                            ? filteredRoutes.length + governanceConnectorCategories.length
-                            : filteredRoutes.length + index,
-                        path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
-                        protected: true,
-                        showOnSidePanel: true
-                    });
-                });
-
-                setFilteredRoutes(filteredRoutesClone);
-                setGovernanceConnectorRoutesAdded(true);
-            }
-        } else {
-            GovernanceConnectorUtils.getGovernanceConnectors();
+            setGovernanceConnectorsEvaluated(true);
+            return;
         }
-    }, [ governanceConnectorCategories ]);
+
+        if (!(governanceConnectorCategories !== undefined && governanceConnectorCategories.length > 0)) {
+            GovernanceConnectorUtils.getGovernanceConnectors();
+            
+            return;
+        }
+
+        if (!governanceConnectorRoutesAdded) {
+
+            const filteredRoutesClone: RouteInterface[] = CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
+                getAdminViewRoutes(),
+                featureConfig,
+                allowedScopes);
+
+            governanceConnectorCategories.map((category: GovernanceConnectorCategoryInterface, index: number) => {
+                let subCategoryExists = false;
+                category.connectors?.map(connector => {
+                    if (connector.subCategory !== "DEFAULT") {
+                        subCategoryExists = true;
+                        return;
+                    }
+                });
+                if (subCategoryExists) {
+                    // TODO: Implement sub category handling logic here.
+                }
+
+                filteredRoutesClone.unshift({
+                    category: "adminPortal:components.sidePanel.categories.configurations",
+                    component: lazy(() => import("../features/server-configurations/pages/governance-connectors")),
+                    exact: true,
+                    icon: {
+                        icon: SidePanelIcons.connectors[ category.id ] ?? SidePanelIcons.connectors.default
+                    },
+                    id: category.id,
+                    name: category.name,
+                    order: (category.id === ServerConfigurationsConstants.OTHER_SETTINGS_CONNECTOR_CATEGORY_ID)
+                        ? filteredRoutes.length + governanceConnectorCategories.length
+                        : filteredRoutes.length + index,
+                    path: AppConstants.getPaths().get("GOVERNANCE_CONNECTORS").replace(":id", category.id),
+                    protected: true,
+                    showOnSidePanel: true
+                });
+            });
+
+            setFilteredRoutes(filteredRoutesClone);
+            setGovernanceConnectorRoutesAdded(true);
+            setGovernanceConnectorsEvaluated(true);
+        }
+    }, [ allowedScopes, governanceConnectorCategories, featureConfig ]);
 
     /**
      * Handles side panel toggle click.
@@ -280,13 +310,13 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
         const recurse = (routesArr): void => {
             routesArr.forEach((route, key) => {
                 if (route.path) {
-                    resolvedRoutes.push(renderRoute(route, key))
+                    resolvedRoutes.push(renderRoute(route, key));
                 }
 
                 if (route.children && route.children instanceof Array && route.children.length > 0) {
                     recurse(route.children);
                 }
-            })
+            });
         };
 
         recurse([ ...filteredRoutes ]);
@@ -336,7 +366,7 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
                     mobileSidePanelVisibility={ mobileSidePanelVisibility }
                     onSidePanelItemClick={ handleSidePanelItemClick }
                     onSidePanelPusherClick={ handleSidePanelPusherClick }
-                    routes={ RouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
+                    routes={ CommonRouteUtils.sanitizeForUI(cloneDeep(filteredRoutes)) }
                     selected={ selectedRoute }
                     translationHook={ t }
                     allowedScopes={ allowedScopes }

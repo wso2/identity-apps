@@ -33,6 +33,10 @@ interface OutboundProvisioningIdpWizardFormPropsInterface extends TestableCompon
     idpList: any;
     onSubmit: (values: any) => void;
     isEdit?: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 interface DropdownOptionsInterface {
@@ -58,6 +62,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
         triggerSubmit,
         onSubmit,
         isEdit,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -191,6 +196,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                         t("devPortal:components.applications.forms.outboundProvisioning.fields" +
                                             ".idp.validations.empty")
                                     }
+                                    readOnly={ readOnly }
                                     required={ false }
                                     value={ initialValues?.idp }
                                     listen={ handleIdpChange }
@@ -218,6 +224,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                 t("devPortal:components.applications.forms.outboundProvisioning.fields" +
                                     ".connector.validations.empty")
                             }
+                            readOnly={ readOnly }
                             required={ true }
                             value={ initialValues?.connector }
                             listen={
@@ -255,6 +262,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     setIsRulesChecked(values.get("rules").includes("rules"))
                                 }
                             }
+                            readOnly={ readOnly }
                             data-testid={ `${ testId }-rules-checkbox` }
                         />
                         <Hint>
@@ -276,6 +284,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     value: "blocking"
                                 }
                             ] }
+                            readOnly={ readOnly }
                             value={ initialValues?.blocking ? [ "blocking" ] : [] }
                             listen={
                                 (values) => {
@@ -310,6 +319,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                                     setIsJITChecked(values.get("jit").includes("jit"))
                                 }
                             }
+                            readOnly={ readOnly }
                             data-testid={ `${ testId }-jit-checkbox` }
                         />
                         <Hint>
@@ -318,7 +328,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    isEdit && (
+                    isEdit && !readOnly && (
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <PrimaryButton

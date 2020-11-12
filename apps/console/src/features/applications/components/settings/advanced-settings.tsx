@@ -44,6 +44,10 @@ interface AdvancedSettingsPropsInterface extends SBACInterface<FeatureConfigInte
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -62,6 +66,7 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         advancedConfigurations,
         featureConfig,
         onUpdate,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -116,8 +121,10 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                 config={ advancedConfigurations }
                 onSubmit={ handleAdvancedConfigFormSubmit }
                 readOnly={
-                    !hasRequiredScopes(
-                        featureConfig?.applications, featureConfig?.applications?.scopes?.update, allowedScopes)
+                    readOnly
+                    || !hasRequiredScopes(featureConfig?.applications,
+                        featureConfig?.applications?.scopes?.update,
+                        allowedScopes)
                 }
                 data-testid={ `${ testId }-form` }
             />

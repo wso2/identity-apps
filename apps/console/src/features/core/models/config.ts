@@ -51,6 +51,10 @@ export interface FeatureConfigInterface {
      */
     applications?: FeatureAccessConfigInterface;
     /**
+     * Workflow approvals feature.
+     */
+    approvals?: FeatureAccessConfigInterface;
+    /**
      * Attribute dialects(Claim dialects) feature.
      */
     attributeDialects?: FeatureAccessConfigInterface;
@@ -74,6 +78,14 @@ export interface FeatureConfigInterface {
      * Identity provider management feature.
      */
     identityProviders?: FeatureAccessConfigInterface;
+    /**
+     * OIDC Scope management feature.
+     */
+    oidcScopes?: FeatureAccessConfigInterface;
+    /**
+     * Remote Fetch Config management feature.
+     */
+    remoteFetchConfig?: FeatureAccessConfigInterface;
     /**
      * Role management feature.
      */

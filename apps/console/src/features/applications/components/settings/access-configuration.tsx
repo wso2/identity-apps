@@ -101,6 +101,10 @@ interface AccessConfigurationPropsInterface extends SBACInterface<FeatureConfigI
      * Specifies if the inbound protocol list is loading.
      */
     inboundProtocolsLoading?: boolean;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -126,6 +130,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         onAllowedOriginsUpdate,
         onApplicationSecretRegenerate,
         inboundProtocolsLoading,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -325,13 +330,15 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         return (inboundProtocolConfig
                 ?
                 <AuthenticatorAccordion
-                    globalActions={ [
-                        {
-                            icon: "trash alternate",
-                            onClick: handleProtocolDeleteOnClick,
-                            type: "icon"
-                        }
-                    ] }
+                    globalActions={
+                        !readOnly && [
+                            {
+                                icon: "trash alternate",
+                                onClick: handleProtocolDeleteOnClick,
+                                type: "icon"
+                            }
+                        ]
+                    }
                     authenticators={
                         Object.keys(inboundProtocolConfig).map((protocol) => {
                             if (Object.values(SupportedAuthProtocolTypes)
@@ -355,7 +362,8 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                             onApplicationRegenerate={ handleApplicationRegenerate }
                                             onApplicationRevoke={ handleApplicationRevoke }
                                             readOnly={
-                                                !hasRequiredScopes(
+                                                readOnly
+                                                || !hasRequiredScopes(
                                                     featureConfig?.applications,
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes
@@ -468,20 +476,21 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                     <Grid.Row>
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                             {
-                                inboundProtocols.length > 0
-                                    ? hasRequiredScopes(
-                                        featureConfig?.applications,
+                                (inboundProtocols.length > 0)
+                                    ? !readOnly
+                                    && hasRequiredScopes(featureConfig?.applications,
                                         featureConfig?.applications?.scopes?.update,
-                                        allowedScopes) && (
-                                    <Button
-                                        floated="right"
-                                        primary
-                                        onClick={ () => setShowWizard(true) }
-                                        data-testid={ `${ testId }-new-protocol-button` }
-                                    >
-                                        <Icon name="add"/>New Protocol
-                                    </Button>
-                                )
+                                        allowedScopes)
+                                    && (
+                                        <Button
+                                            floated="right"
+                                            primary
+                                            onClick={ () => setShowWizard(true) }
+                                            data-testid={ `${ testId }-new-protocol-button` }
+                                        >
+                                            <Icon name="add"/>New Protocol
+                                        </Button>
+                                    )
                                     : (
                                         !inboundProtocolsLoading
                                         && <EmptyPlaceholder
@@ -491,7 +500,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                                     featureConfig?.applications?.scopes?.update,
                                                     allowedScopes) && (
                                                     <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                                        <Icon name="add" />
+                                                        <Icon name="add"/>
                                                         { t("devPortal:components.applications.placeholders" +
                                                             ".emptyProtocolList.action") }
                                                     </PrimaryButton>

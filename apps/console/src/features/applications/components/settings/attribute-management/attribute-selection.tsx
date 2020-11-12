@@ -442,20 +442,25 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             ".edit.sections.attributes.selection" +
                                                                             ".mappingTable.actions.enable")
                                                                     }
+                                                                    readOnly={ readOnly }
                                                                     data-testid={ `${ testId }-cliam-mapping-toggle` }
                                                                 />
                                                             </Table.Cell>
                                                         )
                                                         }
-                                                        <Table.Cell textAlign="right">
-                                                            <Button
-                                                                size="medium"
-                                                                icon="pencil"
-                                                                floated="right"
-                                                                onClick={ handleOpenSelectionModal }
-                                                                data-testid={ `${ testId }-update-button` }
-                                                            />
-                                                        </Table.Cell>
+                                                        {
+                                                            !readOnly && (
+                                                                <Table.Cell textAlign="right">
+                                                                    <Button
+                                                                        size="medium"
+                                                                        icon="pencil"
+                                                                        floated="right"
+                                                                        onClick={ handleOpenSelectionModal }
+                                                                        data-testid={ `${ testId }-update-button` }
+                                                                    />
+                                                                </Table.Cell>
+                                                            )
+                                                        }
                                                     </Table.Row>
                                                 </Table.Body>
                                             </Table>
@@ -590,6 +595,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             selectRequested={ updateRequested }
                                                                             claimMappingOn={ claimMappingOn }
                                                                             claimMappingError={ claimMappingError }
+                                                                            readOnly={ readOnly }
                                                                             data-testid={ claim.claimURI }
                                                                         />
                                                                     )
@@ -641,6 +647,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             initialMandatory={ claim.mandatory }
                                                                             selectMandatory={ updateMandatory }
                                                                             data-testid={ claim.claimURI }
+                                                                            readOnly={ readOnly }
                                                                         />
                                                                     )
                                                                 })

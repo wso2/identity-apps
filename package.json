@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "@wso2is/webapps",
-    "version": "1.0.541",
+    "version": "1.0.546",
     "description": "WSO2 Identity Server Web Applications",
     "keywords": [
         "WSO2",
@@ -30,7 +30,7 @@
     "author": "WSO2",
     "license": "Apache-2.0",
     "dependencies": {
-        "@asgardio/oidc-js": "^0.1.12",
+        "@asgardio/oidc-js": "^0.1.21",
         "@storybook/addon-actions": "^5.3.3",
         "@storybook/addon-centered": "^5.3.6",
         "@storybook/addon-docs": "^5.3.3",

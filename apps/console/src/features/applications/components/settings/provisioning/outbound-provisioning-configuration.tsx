@@ -49,6 +49,10 @@ interface OutboundProvisioningConfigurationPropsInterface extends TestableCompon
      * Callback to update the application details.
      */
     onUpdate: (id: string) => void;
+    /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
 }
 
 /**
@@ -65,6 +69,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
     const {
         application,
         onUpdate,
+        readOnly,
         [ "data-testid" ]: testId
     } = props;
 
@@ -176,19 +181,25 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
             {
                 application?.provisioningConfigurations?.outboundProvisioningIdps?.length > 0 ? (
                     <Grid>
-                        <Grid.Row>
-                            <Grid.Column>
-                                <PrimaryButton
-                                    floated="right"
-                                    onClick={ () => setShowWizard(true) }
-                                    data-testid={ `${ testId }-new-idp-button` }
-                                >
-                                    <Icon name="add"/>
-                                    { t("devPortal:components.applications.edit.sections.provisioning.outbound" +
-                                        ".actions.addIdp") }
-                                </PrimaryButton>
-                            </Grid.Column>
-                        </Grid.Row>
+                        {
+                            !readOnly && (
+                                <Grid.Row>
+                                    <Grid.Column>
+                                        <PrimaryButton
+                                            floated="right"
+                                            onClick={ () => setShowWizard(true) }
+                                            data-testid={ `${ testId }-new-idp-button` }
+                                        >
+                                            <Icon name="add"/>
+                                            {
+                                                t("devPortal:components.applications.edit.sections." +
+                                                    "provisioning.outbound.actions.addIdp")
+                                            }
+                                        </PrimaryButton>
+                                    </Grid.Column>
+                                </Grid.Row>
+                            )
+                        }
                         <Grid.Row>
                             <Grid.Column>
                                 {
@@ -197,16 +208,18 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                         return (
                                             <AuthenticatorAccordion
                                                 key={ provisioningIdp.idp }
-                                                globalActions={ [
-                                                    {
-                                                        icon: "trash alternate",
-                                                        onClick: (): void => {
-                                                            setShowDeleteConfirmationModal(true);
-                                                            setDeletingIdp(provisioningIdp);
-                                                        },
-                                                        type: "icon"
-                                                    }
-                                                ] }
+                                                globalActions={
+                                                    !readOnly && [
+                                                        {
+                                                            icon: "trash alternate",
+                                                            onClick: (): void => {
+                                                                setShowDeleteConfirmationModal(true);
+                                                                setDeletingIdp(provisioningIdp);
+                                                            },
+                                                            type: "icon"
+                                                        }
+                                                    ]
+                                                }
                                                 authenticators={
                                                     [
                                                         {
@@ -251,13 +264,15 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                 ".emptyOutboundProvisioningIDPs.subtitles")
                                         ] }
                                         imageSize="tiny"
-                                        action={ (
-                                            <PrimaryButton onClick={ () => setShowWizard(true) }>
-                                                <Icon name="add"/>
-                                                { t("devPortal:components.applications.placeholders" +
-                                                    ".emptyOutboundProvisioningIDPs.action") }
-                                            </PrimaryButton>
-                                        ) }
+                                        action={
+                                            !readOnly && (
+                                                <PrimaryButton onClick={ () => setShowWizard(true) }>
+                                                    <Icon name="add"/>
+                                                    { t("devPortal:components.applications.placeholders" +
+                                                        ".emptyOutboundProvisioningIDPs.action") }
+                                                </PrimaryButton>
+                                            )
+                                        }
                                     />
                                 </Segment>
                             </Grid.Column>

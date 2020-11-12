@@ -19,13 +19,21 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
+const getItemFromSessionStorage = (key: string): string => {
+    try {
+        return getItemFromSessionStorage(key);
+    } catch {
+        return "";
+    }
+};
+
 const config = window.parent[ "AppUtils" ].getConfig();
 const clientId = config.clientID;
-const targetOrigin = sessionStorage.getItem("oidc_session_iframe_endpoint");
+const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
 const redirectUri = config.loginCallbackURL;
 
 function checkSession() {
-    const sessionState = sessionStorage.getItem("session_state");
+    const sessionState = getItemFromSessionStorage("session_state");
     const mes = clientId + " " + sessionState;
     if (isNotNull(clientId) && isNotNull(sessionState)) {
         const opIframe: HTMLIFrameElement = document.getElementById("opIFrame") as HTMLIFrameElement;
@@ -80,7 +88,7 @@ function receiveMessage(e) {
         // [RP] session state has changed. Sending prompt=none request...
         const promptNoneIFrame: HTMLIFrameElement = document.getElementById("promptNoneIFrame") as HTMLIFrameElement;
         promptNoneIFrame.src =
-            sessionStorage.getItem("authorization_endpoint") +
+            getItemFromSessionStorage("authorization_endpoint") +
             "?response_type=code" +
             "&client_id=" +
             clientId +

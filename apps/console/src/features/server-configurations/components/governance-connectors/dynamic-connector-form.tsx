@@ -27,7 +27,6 @@ import { AppState } from "../../../core";
 import { ServerConfigurationsConstants } from "../../constants";
 import { ConnectorPropertyInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
-import { TFunction } from "i18next";
 
 /**
  * Determine the matching Form component based on the property attributes.

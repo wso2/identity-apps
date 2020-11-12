@@ -79,6 +79,14 @@ export const RemoteFetchStatus: FunctionComponent<RemoteFetchStatusProps> = (
 
         getRemoteRepoConfigList()
             .then((remoteRepoList: AxiosResponse<InterfaceRemoteRepoListResponse>) => {
+                
+                if (!(remoteRepoList?.data?.remotefetchConfigurations
+                    && Array.isArray(remoteRepoList.data.remotefetchConfigurations)
+                    && remoteRepoList.data.remotefetchConfigurations[ 0 ])) {
+
+                    return;
+                }
+
                 const config: InterfaceRemoteRepoConfig = remoteRepoList.data.remotefetchConfigurations[ 0 ];
 
                 if (remoteRepoList.data.count > 0) {
