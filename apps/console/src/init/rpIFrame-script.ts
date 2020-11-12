@@ -25,7 +25,7 @@ const getItemFromSessionStorage = (key: string): string => {
     } catch {
         return "";
     }
-}
+};
 
 const config = window.parent["AppUtils"]?.getConfig();
 const clientId = config?.clientID;

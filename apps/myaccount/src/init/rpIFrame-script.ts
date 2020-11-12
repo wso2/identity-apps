@@ -21,7 +21,7 @@ import "regenerator-runtime/runtime";
 
 const getItemFromSessionStorage = (key: string): string => {
     try {
-        return getItemFromSessionStorage(key);
+        return sessionStorage.getItem(key);
     } catch {
         return "";
     }
