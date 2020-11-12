@@ -90,6 +90,10 @@ interface EditApplicationPropsInterface extends SBACInterface<FeatureConfigInter
      */
     isTabExtensionsAvailable: (isAvailable: boolean) => void;
     /**
+     * Make the form read only.
+     */
+    readOnly?: boolean;
+    /**
      * URL Search params received to the parent edit page component.
      */
     urlSearchParams?: URLSearchParams;
@@ -117,6 +121,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
         onUpdate,
         template,
         isTabExtensionsAvailable,
+        readOnly,
         urlSearchParams,
         [ "data-testid" ]: testId
     } = props;
@@ -356,6 +361,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
                 template={ template }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-general-settings` }
             />
         </ResourceTab.Pane>
@@ -376,6 +382,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 inboundProtocolConfig={ inboundProtocolConfig }
                 inboundProtocols={ inboundProtocolList }
                 featureConfig={ featureConfig }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-access-settings` }
             />
         </ResourceTab.Pane>
@@ -391,6 +398,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     inboundProtocolList.length === 1 && (inboundProtocolList[ 0 ] === SupportedAuthProtocolTypes.OIDC)
                 }
                 onUpdate={ onUpdate }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-attribute-settings` }
             />
         </ResourceTab.Pane>
@@ -405,6 +413,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 isLoading={ isLoading }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-sign-on-methods` }
             />
         </ResourceTab.Pane>
@@ -417,6 +426,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 advancedConfigurations={ application.advancedConfigurations }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-advanced-settings` }
             />
         </ResourceTab.Pane>
@@ -429,6 +439,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 provisioningConfigurations={ application.provisioningConfigurations }
                 onUpdate={ onUpdate }
                 featureConfig={ featureConfig }
+                readOnly={ readOnly }
                 data-testid={ `${ testId }-provisioning-settings` }
             />
         </ResourceTab.Pane>

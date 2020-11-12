@@ -98,9 +98,9 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.roles.notifications.fetchRoles.genericError.description"),
+                    description: t("adminPortal:components.roles.notifications.fetchRoles.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.roles.notifications.fetchRoles.genericError.message")
+                    message: t("adminPortal:components.roles.notifications.fetchRoles.genericError.message")
                 }));
             });
     }, [initialMappings]);
