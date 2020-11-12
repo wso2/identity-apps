@@ -319,27 +319,13 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             groupIds.push(group.id);
         });
 
-        const bulkRemoveData: any = {
+        const bulkData: any = {
             Operations: [],
             failOnErrors: 1,
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
-        const bulkAddData: any = {
-            Operations: [],
-            failOnErrors: 1,
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
-        };
-
-        const removeOperation = {
-            data: {
-                "Operations": []
-            },
-            method: "PATCH",
-            path: "/Roles/" + role.id
-        };
-
-        const addOperation = {
+        const operation = {
             data: {
                 "Operations": []
             },
@@ -350,15 +336,18 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         const removeOperations = [];
         const addOperations = [];
         let removedIds = [];
+        const addedIds = [];
 
         if (primaryGroupsList) {
-            removedIds = [...primaryGroupsList.values()];
+            removedIds = [ ...primaryGroupsList.values() ];
         }
 
         if (groupIds?.length > 0) {
             groupIds.map((groupId) => {
                 if (removedIds?.includes(groupId)) {
                     removedIds.splice(removedIds.indexOf(groupId), 1);
+                } else {
+                    addedIds.push(groupId);
                 }
             });
         }
@@ -367,112 +356,72 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
             removedIds.map((id) => {
                 const operation = {
                     op: "remove",
-                    path: `groups[value eq ${id}]`
+                    path: `groups[value eq ${ id }]`
                 };
                 removeOperations.push(operation);
             });
 
-            removeOperation.data.Operations.push(...removeOperations);
-            bulkRemoveData.Operations.push(removeOperation);
+            operation.data.Operations.push(...removeOperations);
+            bulkData.Operations.push(operation);
+        }
 
-            updateResources(bulkRemoveData)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "adminPortal:components.roles.notifications.updateRole.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "adminPortal:components.roles.notifications.updateRole.success.message"
-                        )
-                    }));
-                    handleCloseAddNewGroupModal();
-                    onRoleUpdate(role.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        dispatch(addAlert({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "adminPortal:components.roles.notifications.updateRole.error.message"
-                            )
-                        }));
-
-                        return;
-                    }
-
-                    dispatch(addAlert({
-                        description: t(
-                            "adminPortal:components.roles.notifications.updateRole.genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "adminPortal:components.roles.notifications.updateRole.genericError.message"
-                        )
-                    }));
-                });
-        } else {
-            groupIds.map((id) => {
+        if (addedIds && addedIds?.length > 0) {
+            addedIds.map((id) => {
                 addOperations.push({
                     "op": "add",
                     "value": {
-                        "groups": [{
+                        "groups": [ {
                             "value": id
-                        }]
+                        } ]
                     }
                 });
             });
 
-            addOperation.data.Operations = addOperations;
-            bulkAddData.Operations.push(addOperation);
+            operation.data.Operations.push(...addOperations);
+            bulkData.Operations.push(operation);
+        }
 
-            updateResources(bulkAddData)
-                .then(() => {
-                    dispatch(addAlert({
-                        description: t(
-                            "adminPortal:components.roles.notifications.updateRole.success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "adminPortal:components.roles.notifications.updateRole.success.message"
-                        )
-                    }));
-                    handleCloseAddNewGroupModal();
-                    onRoleUpdate(role.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
+        updateResources(bulkData)
+            .then(() => {
+                dispatch(addAlert({
+                    description: t(
+                        "adminPortal:components.roles.notifications.updateRole.success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "adminPortal:components.roles.notifications.updateRole.success.message"
+                    )
+                }));
+                handleCloseAddNewGroupModal();
+                onRoleUpdate(role.id);
+            })
+            .catch((error) => {
+                if (error?.response?.status === 404) {
+                    return;
+                }
 
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        setAlert({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "adminPortal:components.roles.notifications.updateRole.error.message"
-                            )
-                        });
-
-                        return;
-                    }
-
+                if (error?.response && error?.response?.data && error?.response?.data?.description) {
                     setAlert({
-                        description: t(
-                            "adminPortal:components.roles.notifications.updateRole.genericError.description"
-                        ),
+                        description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.roles.notifications.updateRole.genericError.message"
+                            "adminPortal:components.roles.notifications.updateRole.error.message"
                         )
                     });
+
+                    return;
+                }
+
+                setAlert({
+                    description: t(
+                        "adminPortal:components.roles.notifications.updateRole.genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "adminPortal:components.roles.notifications.updateRole.genericError.message"
+                    )
                 });
-        }
+            });
     };
 
     const resolveListItemLabel = (displayName: string): ItemTypeLabelPropsInterface => {
