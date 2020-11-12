@@ -80,3 +80,14 @@
         }
     }
 }
+
+.ui.circular.label {
+    &.status-label-with-popup {
+        cursor: pointer !important;
+        opacity: .7 !important;
+
+        &:hover {
+            opacity: 1 !important;
+        }
+    }
+}

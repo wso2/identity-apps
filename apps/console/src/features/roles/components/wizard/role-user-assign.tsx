@@ -297,7 +297,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             });
             setUsersList(usersList);
             setTempUserList(removedUsers);
-            setCheckedAssignedListItems([]);
+            setCheckedUnassignedListItems([]);
         }
 
     };

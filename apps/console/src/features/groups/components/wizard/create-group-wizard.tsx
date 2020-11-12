@@ -174,9 +174,9 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
     const addGroup = (groupDetails: any): void => {
         let groupName = "";
 
-        groupDetails?.BasicDetails?.domain !== "primary"
-            ? groupName = groupDetails?.BasicDetails?.domain + "/" + groupDetails?.BasicDetails?.groupName
-            : groupName = groupDetails?.BasicDetails?.groupName;
+        groupDetails?.domain !== "primary"
+            ? groupName = groupDetails?.domain + "/" + groupDetails?.groupName
+            : groupName = groupDetails?.groupName;
 
         const members: CreateGroupMemberInterface[] = [];
         const users = groupDetails?.UserList;
