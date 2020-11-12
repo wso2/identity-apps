@@ -336,7 +336,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                     onSubmit={ (values) => {
                         if (showCallbackURLField || !isProtocolConfig) {
                             submitUrl((url: string) => {
-                                if ((callBackUrls) && isEmpty(url)) {
+                                if (isEmpty(callBackUrls) && isEmpty(url)) {
                                     setShowURLError(true);
                                 } else {
                                     onSubmit(getFormValues(values, url));
@@ -415,7 +415,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                                 );
                                             }
 
-                                            if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                            if (!URLUtils.isHttpsOrHttpUrl(value)) {
                                                 label = (
                                                     <Label basic color="orange" className="mt-2">
                                                         { t("console:common.validations.unrecognizedURL.description") }
