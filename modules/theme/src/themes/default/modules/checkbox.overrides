@@ -1,3 +1,12 @@
 /*******************************
       Checkbox Overrides
 *******************************/
+
+.ui.checkbox {
+    &.read-only {
+        label:before {
+            background-color: @readOnlyFormFieldBgColor;
+            cursor: @readOnlyFieldCursor;
+        }
+    }
+}

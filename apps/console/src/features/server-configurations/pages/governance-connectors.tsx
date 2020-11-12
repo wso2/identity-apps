@@ -124,8 +124,10 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
             title={ connectorCategory?.name }
             description={
                 connectorCategory?.description
-                    ?? t("adminPortal:components.governanceConnectors.connectorSubHeading",
-                    { name: connectorCategory?.name })
+                    ? connectorCategory.description
+                    : connectorCategory?.name && t("adminPortal:components.governanceConnectors.connectorSubHeading", {
+                        name: connectorCategory.name
+                    })
             }
             data-testid={ `${ testId }-page-layout` }
         >
@@ -149,11 +151,16 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                     : null
                             }
 
-                            <Rail position="right" close="very">
+                            <Rail
+                                className="non-emphasized"
+                                position="right"
+                                close="very"
+                            >
                                 <Sticky
                                     context={ pageContextRef }
                                     offset={ ScrollTopPosition }
-                                    bottomOffset={ footerHeight }>
+                                    bottomOffset={ footerHeight }
+                                >
                                     {
                                         (connectors && Array.isArray(connectors) && connectors.length > 0) && (
                                             <>
