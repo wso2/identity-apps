@@ -740,6 +740,7 @@ export const devPortal: DevPortalNS = {
                                     }
                                 },
                                 encryption: {
+                                    hint: "Enable ID token encryption.",
                                     label: "Enable encryption",
                                     validations: {
                                         empty: "This is a required field."

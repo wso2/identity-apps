@@ -44,6 +44,7 @@ import {
     AppState,
     EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
+    UIConfigInterface,
     UIConstants,
     history
 } from "../../core";
@@ -139,6 +140,8 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state.application.templates);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ showDeleteConfirmationModal, setShowDeleteConfirmationModal ] = useState<boolean>(false);
     const [ deletingApplication, setDeletingApplication ] = useState<ApplicationListItemInterface>(undefined);
@@ -146,8 +149,6 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         isApplicationTemplateRequestLoading,
         setApplicationTemplateRequestLoadingStatus
     ] = useState<boolean>(false);
-
-    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
 
     /**
      * Fetch the application templates if list is not available in redux.
@@ -319,10 +320,14 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 "data-testid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (app: ApplicationListItemInterface): SemanticICONS => {
+                    return app?.access === ApplicationAccessTypes.READ && "eye" || "pencil alternate";
+                },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
-                popupText: (): string => t("common:edit"),
+                popupText: (app: ApplicationListItemInterface): string => {
+                    return app?.access === ApplicationAccessTypes.READ && t("common:view") || t("common:edit")
+                },
                 renderer: "semantic-icon"
             },
             {
@@ -331,8 +336,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
-                    return hasScopes
-                        || ApplicationManagementConstants.DELETING_FORBIDDEN_APPLICATIONS.includes(app?.name);
+                    return hasScopes ||
+                            UIConfig.systemAppsIdentifiers.includes(app?.name) ||
+                            (app?.access === ApplicationAccessTypes.READ);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
@@ -372,9 +378,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
             );
         }
 
-        if (list?.totalResults === 0
-            || (list?.applications?.find(app => app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP)
-                && list?.totalResults === 1)) {
+        if (list?.totalResults === 0) {
             return (
                 <EmptyPlaceholder
                     action={ onEmptyListPlaceholderActionClick && (
@@ -411,10 +415,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={
-                    list?.applications?.filter((app: ApplicationListItemInterface) =>
-                        app.name !== ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP)
-                }
+                data={ list?.applications }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
                     handleApplicationEdit(app.id, app.access);
                     onListItemClick && onListItemClick(e, app);

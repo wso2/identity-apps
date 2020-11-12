@@ -211,29 +211,33 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                             { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
                                 ".authenticationFlow.sections.scriptBased.heading") }
                         </Heading>
-                        <Hint>
-                            { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
-                                ".authenticationFlow.sections.scriptBased.hint") }
-                        </Hint>
+                        { !readOnly && (
+                            <Hint>
+                                { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                    ".authenticationFlow.sections.scriptBased.hint") }
+                            </Hint>
+                        )}
                     </Grid.Column>
                 </Grid.Row>
                 <Grid.Row>
                     <Grid.Column computer={ 16 }>
                         <Sidebar.Pushable className="script-editor-section">
-                            <ScriptTemplatesSidePanel
-                                title={
-                                    t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
-                                        ".authenticationFlow.sections.scriptBased.editor.templates.heading")
-                                }
-                                ref={ authTemplatesSidePanelRef }
-                                onTemplateSelect={ handleTemplateSelection }
-                                templates={
-                                    scriptTemplates?.templatesJSON && Object.values(scriptTemplates.templatesJSON)
-                                }
-                                visible={ showAuthTemplatesSidePanel }
-                                readOnly={ readOnly }
-                                data-testid={ `${ testId }-script-templates-side-panel` }
-                            />
+                            { !readOnly && (
+                                <ScriptTemplatesSidePanel
+                                    title={
+                                        t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                            ".authenticationFlow.sections.scriptBased.editor.templates.heading")
+                                    }
+                                    ref={ authTemplatesSidePanelRef }
+                                    onTemplateSelect={ handleTemplateSelection }
+                                    templates={
+                                        scriptTemplates?.templatesJSON && Object.values(scriptTemplates.templatesJSON)
+                                    }
+                                    visible={ showAuthTemplatesSidePanel }
+                                    readOnly={ readOnly }
+                                    data-testid={ `${ testId }-script-templates-side-panel` }
+                                />
+                            )}
                             <Sidebar.Pusher>
                                 <div className="script-editor-container" ref={ scriptEditorSectionRef }>
                                     <Menu attached="top" className="action-panel" secondary>
@@ -250,15 +254,17 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 slider
                                             />
                                         </Menu.Item>
-                                        <Menu.Menu position="right">
-                                            <Menu.Item
-                                                onClick={ handleScriptTemplateSidebarToggle }
-                                                className="action"
-                                                data-testid={ `${ testId }-script-template-sidebar-toggle` }
-                                            >
-                                                <Icon name="bars" />
-                                            </Menu.Item>
-                                        </Menu.Menu>
+                                        { !readOnly && (
+                                            <Menu.Menu position="right">
+                                                <Menu.Item
+                                                    onClick={ handleScriptTemplateSidebarToggle }
+                                                    className="action"
+                                                    data-testid={ `${ testId }-script-template-sidebar-toggle` }
+                                                >
+                                                    <Icon name="bars" />
+                                                </Menu.Item>
+                                            </Menu.Menu>
+                                        )}
                                     </Menu>
 
                                     <div className="code-editor-wrapper">

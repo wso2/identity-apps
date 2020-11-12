@@ -49,7 +49,6 @@ import {
 import { RemoteFetchStatus } from "../../remote-repository-configuration";
 import { getApplicationList } from "../api";
 import { ApplicationList } from "../components";
-import { ApplicationManagementConstants } from "../constants";
 import { ApplicationListInterface } from "../models";
 
 const APPLICATIONS_LIST_SORTING_OPTIONS: DropdownItemProps[] = [
@@ -108,7 +107,6 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
     );
     const [ appList, setAppList ] = useState<ApplicationListInterface>({});
     const [ listOffset, setListOffset ] = useState<number>(0);
-    const [ listOffsetAddition, setListOffsetAddition ] = useState<number>(0);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
     const [ isApplicationListRequestLoading, setApplicationListRequestLoading ] = useState<boolean>(false);
     const [ triggerClearQuery, setTriggerClearQuery ] = useState<boolean>(false);
@@ -132,22 +130,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
 
         getApplicationList(limit, offset, filter)
             .then((response) => {
-                let isLocalSPFound = false;
-                for (const app of response.applications){
-                    if (app.name === ApplicationManagementConstants.WSO2_CARBON_LOCAL_SP) {
-                        isLocalSPFound = true;
-                        break;
-                    }
-                }
-
-                if (isLocalSPFound) {
-                    getApplicationList(limit + 1, offset, filter).then((response) => {
-                        setAppList(response);
-                        setListOffsetAddition(1);
-                    })
-                } else {
-                    setAppList(response);
-                }
+                setAppList(response);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -203,7 +186,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
      * @param {PaginationProps} data - Pagination component data.
      */
     const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
-        setListOffset((data.activePage as number - 1) * listItemLimit + listOffsetAddition);
+        setListOffset((data.activePage as number - 1) * listItemLimit);
     };
 
     /**
@@ -308,7 +291,7 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                 onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
                 onPageChange={ handlePaginationChange }
                 onSortStrategyChange={ handleListSortingStrategyOnChange }
-                showPagination={ (appList?.totalResults - listOffsetAddition) !== 0 }
+                showPagination={ appList?.totalResults !== 0 }
                 showTopActionPanel={ isApplicationListRequestLoading || !(!searchQuery && appList?.totalResults <= 0) }
                 sortOptions={ APPLICATIONS_LIST_SORTING_OPTIONS }
                 sortStrategy={ listSortingStrategy }

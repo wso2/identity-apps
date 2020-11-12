@@ -313,6 +313,8 @@
             "textCase": "uppercase",
             "labelColor": "primary"
         },
+        "selfAppIdentifier": "Console",
+        "systemAppsIdentifiers": [ "Console", "My Account" ],
         "theme": {
             "name": "default"
         }

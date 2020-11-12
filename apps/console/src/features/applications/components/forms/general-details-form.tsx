@@ -25,9 +25,9 @@ import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Modal } from "semantic-ui-react";
-import { CertificateIllustrations } from "../../../core";
+import { AppState, CertificateIllustrations, UIConfigInterface } from "../../../core";
 import { CertificateInterface, CertificateTypeInterface } from "../../models";
 
 /**
@@ -97,6 +97,8 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     } = props;
 
     const { t } = useTranslation();
+
+    const UIConfig: UIConfigInterface = useSelector((state: AppState) => state?.config?.ui);
 
     const [ isDiscoverable, setDiscoverability ] = useState<boolean>(discoverability);
     const [ isPEMSelected, setPEMSelected ] = useState<boolean>(false);
@@ -239,26 +241,28 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             onChange={ handleFormValuesOnChange }
         >
             <Grid>
-                <Grid.Row columns={ 1 }>
-                    <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
-                        <Field
-                            name="name"
-                            label={ t("devPortal:components.applications.forms.generalDetails.fields.name.label") }
-                            required={ true }
-                            requiredErrorMessage={
-                                t("devPortal:components.applications.forms.generalDetails.fields.name" +
-                                    ".validations.empty")
-                            }
-                            placeholder={
-                                t("devPortal:components.applications.forms.generalDetails.fields.name.placeholder")
-                            }
-                            type="text"
-                            value={ name }
-                            readOnly={ readOnly }
-                            data-testid={ `${ testId }-application-name-input` }
-                        />
-                    </Grid.Column>
-                </Grid.Row>
+                { !UIConfig.systemAppsIdentifiers.includes(name) &&
+                    <Grid.Row columns={ 1 }>
+                        <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
+                            <Field
+                                name="name"
+                                label={ t("devPortal:components.applications.forms.generalDetails.fields.name.label") }
+                                required={ true }
+                                requiredErrorMessage={
+                                    t("devPortal:components.applications.forms.generalDetails.fields.name" +
+                                        ".validations.empty")
+                                }
+                                placeholder={
+                                    t("devPortal:components.applications.forms.generalDetails.fields.name.placeholder")
+                                }
+                                type="text"
+                                value={ name }
+                                readOnly={ readOnly }
+                                data-testid={ `${ testId }-application-name-input` }
+                            />
+                        </Grid.Column>
+                    </Grid.Row>
+                }
                 <Grid.Row columns={ 1 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
