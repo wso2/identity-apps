@@ -1315,6 +1315,13 @@ export const userPortal: UserPortalNS = {
                 1: "Please sign in with a different account."
             },
             title: "You are not authorized"
+        },
+        sessionStorageDisabled: {
+            subtitles: {
+                0: "To use this application, you have to enable cookies in your web browser settings.",
+                1: "For more information on how to enable cookies, see the help section of your web browser."
+            },
+            title: "Cookies are disabled in your browser."
         }
     },
     sections: {

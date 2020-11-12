@@ -719,6 +719,7 @@ export interface UserPortalNS {
         emptySearchResult: Placeholder;
         genericError: Placeholder;
         loginError: Placeholder;
+        sessionStorageDisabled: Placeholder;
     };
     sections: {
         accountRecovery: {

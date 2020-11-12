@@ -61,7 +61,8 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
      */
     if ((history.location.pathname !== AppConstants.getAppLoginPath())
         && (history.location.pathname !== AppConstants.getPaths().get("UNAUTHORIZED"))
-        && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND"))) {
+        && (history.location.pathname !== AppConstants.getPaths().get("PAGE_NOT_FOUND"))
+        && (history.location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED"))) {
 
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP, history.location.pathname);
     } else {

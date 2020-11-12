@@ -85,7 +85,7 @@ export interface AdminPortalNS {
                 taskDetails: {
                     header: string;
                     description: string;
-                }
+                };
             };
             notifications: {
                 fetchApprovalDetails: Notification;
@@ -1666,5 +1666,6 @@ export interface AdminPortalNS {
         loginError: Placeholder;
         unauthorized: Placeholder;
         underConstruction: Placeholder;
+        sessionStorageDisabled: Placeholder;
     };
 }

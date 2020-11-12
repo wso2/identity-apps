@@ -70,6 +70,7 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
      */
     useEffect(() => {
         dispatch(initializeAuthentication());
+        sessionStorageDisabled();
     }, []);
 
     /**
@@ -153,6 +154,19 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
     const handleSessionLogout = (): void => {
         history.push(AppConstants.getAppLogoutPath());
     };
+
+    const sessionStorageDisabled = () => {
+        try {
+            const storage = sessionStorage;
+            if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
+                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"))
+            }
+        } catch {
+            if (true && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
+                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"))
+            }
+        }
+    }
 
     return (
         <>
