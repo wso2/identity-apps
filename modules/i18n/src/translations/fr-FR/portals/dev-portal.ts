@@ -731,10 +731,11 @@ export const devPortal: DevPortalNS = {
                                     label: "Audience",
                                     placeholder: "Saisir l'audience",
                                     validations: {
-                                        empty: "Please fill the audience"
+                                        empty: "Veuillez remplir le public"
                                     }
                                 },
                                 encryption: {
+                                    hint: "Activez le cryptage des jetons d'identification.",
                                     label: "Activer le chiffrement",
                                     validations: {
                                         empty: "Ceci est un champ obligatoire."

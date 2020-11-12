@@ -1085,7 +1085,10 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         readOnly={ readOnly }
                         data-testid={ `${ testId }-encryption-checkbox` }
                     />
-                    <Hint>Enable ID token encryption.</Hint>
+                    <Hint>
+                        { t("devPortal:components.applications.forms.inboundOIDC.sections.idToken" +
+                            ".fields.encryption.hint") }
+                    </Hint>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
