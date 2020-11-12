@@ -225,8 +225,7 @@
 
                                 <div class="ui negative message" id="error-msg" hidden="hidden">
                                 </div>
-                                <input id="isSaaSApp" name="isSaaSApp" type="hidden"
-                                       value="<%=isSaaSApp%>">
+
                                 <% if (isPasswordProvisionEnabled || !skipSignUpEnableCheck) { %>
                                 <p>
                                     <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Enter.fields.to.cmplete.reg")%>
@@ -358,7 +357,6 @@
                                         missingClaims = Arrays.asList(missingClaimList);
                                     }
                                     for (Claim claim : claims) {
-
                                         if ((CollectionUtils.isEmpty(missingClaims) || !missingClaims.contains(claim.getUri())) &&
                                                 !StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.FIRST_NAME_CLAIM) &&
                                                 !StringUtils.equals(claim.getUri(), IdentityManagementEndpointConstants.ClaimURIs.LAST_NAME_CLAIM) &&
@@ -370,11 +368,19 @@
                                             String claimURI = claim.getUri();
                                             String claimValue = request.getParameter(claimURI);
                                 %>
+                                <%
+                                    String type = "text";
+                                    if(claim.getDisplayName().toLowerCase().matches(".*date.*")) {
+                                        type = "date";
+                                    } else {
+                                        type = "text";
+                                    }
+                                %>
                                 <div class="<% if (claim.getRequired()) {%> required <%}%>field">
                                     <label <% if (claim.getRequired()) {%> class="control-label" <%}%>>
                                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                     </label>
-                                    <input type="text" name="<%= Encode.forHtmlAttribute(claimURI) %>"
+                                    <input type="<%= type %>" name="<%= Encode.forHtmlAttribute(claimURI) %>"
                                            class="form-control"
                                         <% if (claim.getValidationRegex() != null) { %>
                                            pattern="<%= Encode.forHtmlContent(claim.getValidationRegex()) %>"
@@ -508,6 +514,9 @@
                                 </div>
                                 <div class="ui divider hidden"></div>
                                 <div class="align-right buttons">
+                                    <a href="javascript:goBack()" class="ui button link-button">
+                                        <%=IdentityManagementEndpointUtil.i18n(recoveryResourceBundle, "Cancel")%>
+                                    </a>
                                     <button id="registrationSubmit"
                                             class="ui primary button"
                                             type="submit">
@@ -607,7 +616,26 @@
     <script type="text/javascript" src="js/consent_template_2.js"></script>
     <script type="text/javascript">
         var registrationDataKey = "registrationData";
-        
+        var $registerForm = $("#register");
+
+        // Reloads the page if the page is loaded by going back in history.
+        // Fixes issues with Firefox.
+        window.addEventListener( "pageshow", function ( event ) {
+            var historyTraversal = event.persisted ||
+                                ( typeof window.performance != "undefined" &&
+                                    window.performance.navigation.type === 2 );
+
+            if ( historyTraversal ) {
+                if($registerForm){
+                    $registerForm.data("submitted", false);
+                }
+            }
+        });
+
+        function goBack() {
+            window.history.back();
+        }
+
         $(document).ready(function () {
             <%
                 if (error){
