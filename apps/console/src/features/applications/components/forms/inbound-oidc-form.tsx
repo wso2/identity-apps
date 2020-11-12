@@ -1113,6 +1113,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                         }
                         children={ getAllowedList(metadata.idTokenEncryptionAlgorithm) }
                         disabled={ !isEncryptionEnabled }
+                        readOnly={ readOnly }
                         data-testid={ `${ testId }-encryption-algorithm-dropdown` }
                     />
                     <Hint disabled={ !isEncryptionEnabled }>
@@ -1458,43 +1459,39 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                             )
                         }
                         {
-                            initialValues.clientSecret && (
+                            !readOnly && initialValues.clientSecret && (
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ isHelpPanelVisible ? 16 : 8 }>
-                                        {
-                                            !readOnly && (
-                                                <>
+                                        <>
+                                            <Button
+                                                color={
+                                                    (initialValues?.state === State.REVOKED)
+                                                        ? "green"
+                                                        : "red"
+                                                }
+                                                className="oidc-regenerate-button"
+                                                onClick={ handleRegenerateButton }
+                                                data-testid={ `${ testId }-oidc-regenerate-button` }
+                                            >
+                                                {
+                                                    (initialValues?.state === State.REVOKED)
+                                                        ? t("common:activate")
+                                                        : t("common:regenerate")
+                                                }
+                                            </Button>
+                                            {
+                                                (initialValues?.state !== State.REVOKED) && (
                                                     <Button
-                                                        color={
-                                                            (initialValues?.state === State.REVOKED)
-                                                                ? "green"
-                                                                : "red"
-                                                        }
-                                                        className="oidc-regenerate-button"
-                                                        onClick={ handleRegenerateButton }
-                                                        data-testid={ `${ testId }-oidc-regenerate-button` }
+                                                        color="red"
+                                                        className="oidc-revoke-button"
+                                                        onClick={ handleRevokeButton }
+                                                        data-testid={ `${ testId }-oidc-revoke-button` }
                                                     >
-                                                        {
-                                                            (initialValues?.state === State.REVOKED)
-                                                                ? t("common:activate")
-                                                                : t("common:regenerate")
-                                                        }
+                                                        { t("common:revoke") }
                                                     </Button>
-                                                    {
-                                                        (initialValues?.state !== State.REVOKED) && (
-                                                            <Button
-                                                                color="red"
-                                                                className="oidc-revoke-button"
-                                                                onClick={ handleRevokeButton }
-                                                                data-testid={ `${ testId }-oidc-revoke-button` }
-                                                            >
-                                                                { t("common:revoke") }
-                                                            </Button>
-                                                        )
-                                                    }
-                                                </>
-                                            )
-                                        }
+                                                )
+                                            }
+                                        </>
                                     </Grid.Column>
                                     <ConfirmationModal
                                         onClose={ (): void => setShowRegenerateConfirmationModal(false) }
