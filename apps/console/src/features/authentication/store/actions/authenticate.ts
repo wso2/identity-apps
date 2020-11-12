@@ -48,6 +48,7 @@ import axios from "axios";
 import _ from "lodash";
 import { UAParser } from "ua-parser-js";
 import { Config } from "../../../core/configs";
+import { CommonConstants } from "../../../core/constants";
 import { store } from "../../../core/store";
 import { HttpUtils } from "../../../core/utils";
 
@@ -230,7 +231,6 @@ export const initializeAuthentication = () => (dispatch) => {
     }
 
     auth.on(Hooks.SignIn, (response: UserInfo) => {
-
         // Update the app base name with the newly resolved tenant.
         window["AppUtils"].updateTenantQualifiedBaseName(response.tenantDomain);
 
@@ -249,18 +249,23 @@ export const initializeAuthentication = () => (dispatch) => {
             })
         );
 
+        sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
+
         auth.getServiceEndpoints()
             .then((response: ServiceResourcesType) => {
                 sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
                 sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+
+                const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
+                rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);
             })
             .catch((error) => {
                 throw error;
             });
 
         dispatch(getProfileInformation(Config.getServiceResourceEndpoints().me,
-            window["AppUtils"].getConfig().clientOriginWithTenant));
+            window[ "AppUtils" ].getConfig().clientOriginWithTenant));
     });
 };
 
@@ -281,5 +286,5 @@ export const handleSignOut = () => (dispatch) => {
         .then(() => {
             AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.CONSOLE_APP);
             dispatch(setSignOut());
-        })
+        });
 };
