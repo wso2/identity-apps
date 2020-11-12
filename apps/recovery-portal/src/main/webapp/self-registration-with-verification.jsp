@@ -368,19 +368,11 @@
                                             String claimURI = claim.getUri();
                                             String claimValue = request.getParameter(claimURI);
                                 %>
-                                <%
-                                    String type = "text";
-                                    if(claim.getDisplayName().toLowerCase().matches(".*date.*")) {
-                                        type = "date";
-                                    } else {
-                                        type = "text";
-                                    }
-                                %>
                                 <div class="<% if (claim.getRequired()) {%> required <%}%>field">
                                     <label <% if (claim.getRequired()) {%> class="control-label" <%}%>>
                                         <%=IdentityManagementEndpointUtil.i18nBase64(recoveryResourceBundle, claim.getDisplayName())%>
                                     </label>
-                                    <input type="<%= type %>" name="<%= Encode.forHtmlAttribute(claimURI) %>"
+                                    <input type="text" name="<%= Encode.forHtmlAttribute(claimURI) %>"
                                            class="form-control"
                                         <% if (claim.getValidationRegex() != null) { %>
                                            pattern="<%= Encode.forHtmlContent(claim.getValidationRegex()) %>"
