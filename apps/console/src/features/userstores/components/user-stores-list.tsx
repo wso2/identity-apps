@@ -319,12 +319,26 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                             {
                                 userstore.enabled
                                     ? <Popup
-                                        trigger={ <Icon size="small" name="circle" color="green" /> }
+                                        trigger={
+                                            <Icon
+                                                className="mr-2 ml-0 vertical-aligned-baseline"
+                                                size="small"
+                                                name="circle"
+                                                color="green"
+                                            />
+                                        }
                                         content={ t("common:enabled") }
                                         inverted
                                     />
                                     : <Popup
-                                        trigger={ <Icon size="small" name="circle" color="orange" /> }
+                                        trigger={
+                                            <Icon
+                                                className="mr-2 ml-0 vertical-aligned-baseline"
+                                                size="small"
+                                                name="circle"
+                                                color="orange"
+                                            />
+                                        }
                                         content={ t("common:disabled") }
                                         inverted
                                     />

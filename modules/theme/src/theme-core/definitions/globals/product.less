@@ -381,6 +381,21 @@ body {
     }
 }
 
+.vertical-aligned {
+    &-top {
+        vertical-align: top !important;
+    }
+    &-middle {
+        vertical-align: middle !important;
+    }
+    &-bottom {
+        vertical-align: bottom !important;
+    }
+    &-baseline {
+        vertical-align: baseline !important;
+    }
+}
+
 .ellipsis {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1070,13 +1085,16 @@ body {
     }
     &.vertical-aligned {
         &-top {
-            vertical-align: top;
+            vertical-align: top !important;
         }
         &-middle {
-            vertical-align: middle;
+            vertical-align: middle !important;
         }
         &-bottom {
-            vertical-align: bottom;
+            vertical-align: bottom !important;
+        }
+        &-baseline {
+            vertical-align: baseline !important;
         }
     }
 }
