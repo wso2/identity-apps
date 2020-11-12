@@ -151,11 +151,16 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
                                     : null
                             }
 
-                            <Rail position="right" close="very">
+                            <Rail
+                                className="non-emphasized"
+                                position="right"
+                                close="very"
+                            >
                                 <Sticky
                                     context={ pageContextRef }
                                     offset={ ScrollTopPosition }
-                                    bottomOffset={ footerHeight }>
+                                    bottomOffset={ footerHeight }
+                                >
                                     {
                                         (connectors && Array.isArray(connectors) && connectors.length > 0) && (
                                             <>
