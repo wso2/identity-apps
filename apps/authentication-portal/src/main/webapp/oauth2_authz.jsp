@@ -155,7 +155,7 @@
                                     name="rememberApproval"
                                     data-testid="oauth2-consent-page-remember-approval-checkbox"
                                 />
-                                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.my.approval")%></label>
+                                <label><%=AuthenticationEndpointUtil.i18n(resourceBundle, "remember.my.consent")%></label>
                             </div>
                         </div>
                     
