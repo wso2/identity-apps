@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import React, {FunctionComponent, ReactElement, useEffect, useState} from "react";
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
-import { useTranslation } from "react-i18next";
-import { fetchPendingApprovals, updatePendingApprovalStatus} from "../api";
 import { addAlert } from "@wso2is/core/store";
+import { ListLayout, PageLayout } from "@wso2is/react-components";
+import React, { FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { Dropdown, DropdownProps, Input, PaginationProps, SemanticCOLORS } from "semantic-ui-react";
 import { AppState, FeatureConfigInterface, UIConstants } from "../../core";
-import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
-import { ListLayout, PageLayout} from "@wso2is/react-components";
+import { fetchPendingApprovals, updatePendingApprovalStatus } from "../api";
 import { ApprovalsList } from "../components";
-import { Dropdown, DropdownProps, Input, SemanticCOLORS } from "semantic-ui-react";
+import { ApprovalStatus, ApprovalTaskListItemInterface } from "../models";
 
 /**
  * Props for the Approvals page.
@@ -58,6 +58,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const [ tempApprovals, setTempApprovals ] = useState<ApprovalTaskListItemInterface[]>([]);
     const [ isApprovalListRequestLoading, setApprovalListRequestLoading ] = useState<boolean>(false);
     const [ listItemLimit, setListItemLimit ] = useState<number>(UIConstants.DEFAULT_RESOURCE_LIST_ITEM_LIMIT);
+    const [ offset, setOffset ] = useState(0);
     const [ filterStatus, setFilterStatus ] = useState<string>(ApprovalStatus.ALL);
     const [ pagination, setPagination ] = useState({
         [ ApprovalStatus.READY ]: false,
@@ -126,7 +127,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
     const getApprovals = (shallowUpdate = false): void => {
         setApprovalListRequestLoading(true);
 
-        fetchPendingApprovals(listItemLimit, 0, filterStatus)
+        fetchPendingApprovals(null, null, filterStatus)
             .then((response) => {
                 if (!shallowUpdate) {
                     setApprovals(response);
@@ -180,8 +181,44 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                 }));
             })
             .finally(() => {
-                setApprovalListRequestLoading(false)
+                setApprovalListRequestLoading(false);
             });
+    };
+
+    /**
+     * This slices and returns a portion of the list.
+     *
+     * @param {number} list - List.
+     * @param {number} limit - List limit.
+     * @param {number} offset - List offset.
+     * @return {ApprovalTaskListItemInterface[]} Paginated list.
+     */
+    const paginate = (list: ApprovalTaskListItemInterface[], limit: number,
+                      offset: number): ApprovalTaskListItemInterface[] => {
+
+        return list?.slice(offset, offset + limit);
+    };
+
+    /**
+     * Handles the change in the number of items to display.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event - Event.
+     * @param {DropdownProps} data - Dropdown data.
+     */
+    const handleItemsPerPageDropdownChange = (event: MouseEvent<HTMLAnchorElement>, data: DropdownProps): void => {
+
+        setListItemLimit(data.value as number);
+    };
+
+    /**
+     * Handles pagination change.
+     *
+     * @param {React.MouseEvent<HTMLAnchorElement>} event - Event.
+     * @param {PaginationProps} data - Dropdown data.
+     */
+    const handlePaginationChange = (event: MouseEvent<HTMLAnchorElement>, data: PaginationProps): void => {
+
+        setOffset((data.activePage as number - 1) * listItemLimit);
     };
 
     /**
@@ -288,9 +325,10 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
-                currentListSize={ approvals.length }
+                currentListSize={ listItemLimit }
                 listItemLimit={ listItemLimit }
-                onPageChange={ null }
+                onItemsPerPageDropdownChange={ handleItemsPerPageDropdownChange }
+                onPageChange={ handlePaginationChange }
                 showPagination={ true }
                 showTopActionPanel={ isApprovalListRequestLoading || !(approvals?.length == 0) }
                 totalPages={ Math.ceil(approvals.length / listItemLimit) }
@@ -328,7 +366,7 @@ const ApprovalsPage: FunctionComponent<ApprovalsPageInterface> = (
                     updateApprovalStatus={ updateApprovalStatus }
                     featureConfig={ featureConfig }
                     isLoading={ isApprovalListRequestLoading }
-                    list={ tempApprovals }
+                    list={ paginate(tempApprovals, listItemLimit, offset) }
                     resolveApprovalTagColor={ resolveApprovalTagColor }
                     data-testid={ `${ testId }-list` }
                 />
