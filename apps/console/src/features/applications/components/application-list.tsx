@@ -410,21 +410,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 } }
                 actions={ resolveTableActions() }
                 columns={ resolveTableColumns() }
-                data={
-                    list?.applications?.filter((app: ApplicationListItemInterface) => {
-
-                        if (UIConfig.systemAppsIdentifiers.includes(app?.name) &&
-                            featureConfig?.systemApplications?.enabled &&
-                            !hasRequiredScopes(featureConfig?.systemApplications,
-                                featureConfig?.systemApplications?.scopes?.update, allowedScopes)) {
-
-                            return false;
-                        }
-
-                        return true;
-
-                    })
-                }
+                data={ list?.applications }
                 onRowClick={ (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
                     handleApplicationEdit(app.id, app.access);
                     onListItemClick && onListItemClick(e, app);

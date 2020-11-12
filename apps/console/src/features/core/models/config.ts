@@ -91,10 +91,6 @@ export interface FeatureConfigInterface {
      */
     roles?: FeatureAccessConfigInterface;
     /**
-     * System apps management feature.
-     */
-    systemApplications?: FeatureAccessConfigInterface;
-    /**
      * User store configurations feature.
      */
     userStores?: FeatureAccessConfigInterface;
