@@ -358,7 +358,7 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": true,
+                "enabled": {{ console.remote_fetch.enabled }},
                 "scopes": {
                     {% if console.remote_fetch.scopes is defined %}
                     {% for operation, scopes in console.remote_fetch.scopes.items() %}
@@ -384,7 +384,7 @@
                     {% endfor %}
                     {% endif %}
                 ],
-                "enabled": true,
+                "enabled": {{ console.roles.enabled }},
                 "scopes": {
                     {% if console.roles.scopes is defined %}
                     {% for operation, scopes in console.roles.scopes.items() %}
