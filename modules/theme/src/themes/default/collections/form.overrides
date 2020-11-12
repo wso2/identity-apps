@@ -9,10 +9,12 @@
 .ui.form {
 
     textarea[readonly] {
+        cursor: @readOnlyFieldCursor;
         background-color: @readOnlyFormFieldBgColor !important;
     }
 
     input[readonly] {
+        cursor: @readOnlyFieldCursor;
         background-color: @readOnlyFormFieldBgColor !important;
     }
 
@@ -22,10 +24,18 @@
     .ui.read-only.checkbox input:checked ~ .box:before,
     .ui.read-only.checkbox input:checked ~ label:before {
         background-color: @readOnlyFormFieldBgColor !important;
+        cursor: @readOnlyFieldCursor;
+    }
+    
+    .ui.checkbox input.hidden+label,
+    .ui.checkbox input[type=checkbox],
+    .ui.checkbox input[type=radio] {
+        cursor: @readOnlyFieldCursor;
     }
 
     .field.read-only .field {
         .ui.dropdown {
+            cursor: @readOnlyFieldCursor;
             background-color: @readOnlyFormFieldBgColor !important;
         }
     }

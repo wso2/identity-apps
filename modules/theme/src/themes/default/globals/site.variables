@@ -180,6 +180,7 @@
 --------------------------*/
 
 @readOnlyFormFieldBgColor: #e9ecef;
+@readOnlyFieldCursor: default;
 
 /*-------------------
        Layouts
