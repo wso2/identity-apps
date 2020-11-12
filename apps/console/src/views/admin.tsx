@@ -130,11 +130,6 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
             return;
         }
-
-        RouteUtils.gracefullyHandleRouting(filteredRoutes,
-            AppConstants.getAdminViewBasePath(),
-            location.pathname,
-            false);
     }, [ filteredRoutes, governanceConnectorsEvaluated ]);
 
     useEffect(() => {

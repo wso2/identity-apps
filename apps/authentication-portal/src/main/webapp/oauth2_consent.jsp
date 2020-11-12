@@ -112,6 +112,7 @@
                                     </div>
                                     <div>
                                         <div class="ui divider hidden"></div>
+                                        <% if (ArrayUtils.isNotEmpty(requestedClaimList) && requestedClaimList.length > 1) { %>
                                         <div class="select-all">
                                             <div class="ui checkbox claim-cb">
                                                 <input type="checkbox" class="hidden" name="consent_select_all" id="consent_select_all" />
@@ -119,6 +120,9 @@
                                             </div>
                                         </div>
                                         <div class="ui divider"></div>
+                                        <%
+                                            }
+                                        %>
                                         <div class="claim-list">
                                             <% for (String claim : mandatoryClaimList) {
                                                 String[] mandatoryClaimData = claim.split("_", 2);
