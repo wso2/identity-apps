@@ -28,11 +28,17 @@ import {
  *  Captures the basic details in the applications.
  */
 export interface ApplicationBasicInterface {
+    access?: ApplicationAccessTypes;
     id?: string;
     name: string;
     description?: string;
     accessUrl?: string;
     templateId?: string;
+}
+
+export enum ApplicationAccessTypes {
+    READ = "READ",
+    WRITE = "WRITE"
 }
 
 /**
