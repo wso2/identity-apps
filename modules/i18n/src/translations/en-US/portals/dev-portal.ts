@@ -705,9 +705,9 @@ export const devPortal: DevPortalNS = {
                                     }
                                 },
                                 revokeToken: {
-                                    hint: "Allow to revoke tokens of this application when a bound IDP session " +
-                                        "gets terminated",
-                                    label: "Revoke tokens when the IDP session terminates"
+                                    hint: "Allow revoking tokens of this application when a bound IDP session " +
+                                        "gets terminated through a user logout.",
+                                    label: "Revoke tokens upon user logout"
                                 },
                                 type: {
                                     label: "Token type"

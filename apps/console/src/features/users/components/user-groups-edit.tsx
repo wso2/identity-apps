@@ -99,7 +99,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (!(user)) {
             return;
         }
-        mapUserRoles();
+        mapUserGroups();
         setAssignedGroups(user.groups);
     }, []);
 
@@ -127,7 +127,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (!(user)) {
             return;
         }
-        mapUserRoles();
+        mapUserGroups();
         setAssignedGroups(user.groups);
     }, [ user ]);
 
@@ -144,7 +144,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             });
     }, []);
 
-    const mapUserRoles = () => {
+    const mapUserGroups = () => {
         const groupsMap = new Map<string, string> ();
 
         if (user.groups && user.groups instanceof Array) {
@@ -156,6 +156,8 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                 }
             });
             setPrimaryGroupsList(groupsMap);
+        } else {
+            setPrimaryGroupsList(undefined);
         }
     };
 
@@ -240,6 +242,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         setInitialTempGroupList(addedRoles);
         setGroupList(groupList.filter(x => !addedRoles?.includes(x)));
         setInitialGroupList(groupList.filter(x => !addedRoles?.includes(x)));
+        setCheckedAssignedListItems([]);
         setIsSelectUnassignedAllRolesChecked(false);
     };
 

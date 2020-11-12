@@ -284,6 +284,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             checkedUnassignedListItems.indexOf(user) === -1
         )));
         setTempUserList(addedRoles);
+        setCheckedAssignedListItems([]);
         setIsSelectAllUnAssignedUsers(false);
     };
 
@@ -297,7 +298,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
             });
             setUsersList(usersList);
             setTempUserList(removedUsers);
-            setCheckedAssignedListItems([]);
+            setCheckedUnassignedListItems([]);
         }
 
     };

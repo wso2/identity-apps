@@ -82,6 +82,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     const [ userStoreRegEx, setUserStoreRegEx ] = useState<string>("");
     const [ isGroupNamePatternValid, setIsGroupNamePatternValid ] = useState<boolean>(true);
     const [ isRegExLoading, setRegExLoading ] = useState<boolean>(false);
+    const [ newGroupName, setNewGroupName ] = useState<string>("");
 
     useEffect(() => {
         if (groupObject && groupObject.displayName.indexOf("/") !== -1) {
@@ -128,6 +129,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
      */
     const handleGroupNameChange = (event: ChangeEvent, data: InputOnChangeData): void => {
         setIsGroupNamePatternValid(SharedUserStoreUtils.validateInputAgainstRegEx(data?.value, userStoreRegEx));
+        setNewGroupName(data.value);
     };
 
     /**
@@ -164,13 +166,13 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
      *
      */
     const updateGroupName = (values: Map<string, FormValue>): void => {
-        const newGroupName = values?.get("groupName")?.toString();
+        const newName = newGroupName ? newGroupName : values?.get("groupName")?.toString();
 
         const groupData: PatchGroupDataInterface = {
             Operations: [{
                 "op": "replace",
                 "path": "displayName",
-                "value": labelText ? labelText + "/" + newGroupName : newGroupName
+                "value": labelText ? labelText + "/" + newName : newName
             }],
             schemas: ["urn:ietf:params:scim:api:messages:2.0:PatchOp"]
         };
@@ -250,19 +252,11 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                     />
                                     {
                                         !isGroupNamePatternValid && (
-                                            isGroup
-                                                ?
-                                                <Label basic color="red" pointing>
-                                                    { t("adminPortal:components.roles.addRoleWizard.forms." +
-                                                        "roleBasicDetails.groupName.validations.invalid",
-                                                        { type: "group" }) }
-                                                </Label>
-                                                :
-                                                <Label basic color="red" pointing>
-                                                    { t("adminPortal:components.roles.addRoleWizard.forms." +
-                                                        "roleBasicDetails.groupName.validations.invalid",
-                                                        { type: "group" }) }
-                                                </Label>
+                                            <Label basic color="red" pointing>
+                                                { t("adminPortal:components.roles.addRoleWizard.forms." +
+                                                    "roleBasicDetails.groupName.validations.invalid",
+                                                    { type: "group" }) }
+                                            </Label>
                                         )
                                     }
                                 </Form.Field>

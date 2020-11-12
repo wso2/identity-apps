@@ -151,6 +151,8 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
                 }
             });
             setPrimaryGroupsList(groupsMap);
+        } else {
+            setPrimaryGroupsList(undefined);
         }
     };
 
@@ -238,6 +240,7 @@ export const RoleGroupsList: FunctionComponent<RoleGroupsPropsInterface> = (
         setInitialTempGroupList(addedRoles);
         setGroupList(groupList.filter(x => !addedRoles?.includes(x)));
         setInitialGroupList(groupList.filter(x => !addedRoles?.includes(x)));
+        setCheckedAssignedListItems([]);
         setIsSelectUnassignedAllRolesChecked(false);
     };
 

@@ -90,7 +90,7 @@ export const LabelWithPopup: FunctionComponent<LabelWithPopupPropsInterface> = (
                 <Label
                     circular
                     size="mini"
-                    className="micro spaced-right"
+                    className="micro spaced-right status-label-with-popup"
                     color={ labelColor }
                     { ...rest }
                 />

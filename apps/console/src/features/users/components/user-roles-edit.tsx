@@ -545,6 +545,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         setInitialTempRoleList(addedRoles);
         setRoleList(roleList.filter(x => !addedRoles?.includes(x)));
         setInitialRoleList(roleList.filter(x => !addedRoles?.includes(x)));
+        setCheckedAssignedListItems([]);
         setIsSelectUnassignedAllRolesChecked(false);
     };
 
@@ -561,7 +562,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         setInitialRoleList(removedRoles);
         setTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
         setInitialTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
-        ([]);
+        setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
 

@@ -211,6 +211,8 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
                 }
             });
             setPrimaryRolesList(rolesMap);
+        } else {
+            setPrimaryRolesList(undefined);
         }
     };
 
@@ -458,6 +460,7 @@ export const GroupRolesList: FunctionComponent<GroupRolesPropsInterface> = (
         setTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
         setInitialTempRoleList(tempRoleList?.filter(x => !removedRoles?.includes(x)));
         setCheckedAssignedListItems(checkedAssignedListItems.filter(x => !removedRoles?.includes(x)));
+        setCheckedUnassignedListItems([]);
         setIsSelectAssignedAllRolesChecked(false);
     };
 

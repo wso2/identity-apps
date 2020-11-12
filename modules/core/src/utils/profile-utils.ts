@@ -134,6 +134,6 @@ export class ProfileUtils {
      * @return {attribute is string[]}
      */
      public static isStringArray = (attribute: string[] | MultiValueAttributeInterface[]): attribute is string[] => {
-        return attribute.length !== undefined;
+        return attribute?.length !== undefined;
     };
 }

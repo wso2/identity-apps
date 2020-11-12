@@ -80,10 +80,18 @@
                 "disabledFeatures": [],
                 "enabled": true,
                 "scopes": {
-                    "create": [],
-                    "read": [ "internal_humantask_view" ],
-                    "update": [],
-                    "delete": []
+                    "create": [
+                        "internal_humantask_view"
+                    ],
+                    "read": [
+                        "internal_humantask_view"
+                    ],
+                    "update": [
+                        "internal_humantask_view"
+                    ],
+                    "delete": [
+                        "internal_humantask_view"
+                    ]
                 }
             },
             "attributeDialects": {
