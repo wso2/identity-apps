@@ -320,7 +320,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 "data-testid": `${ testId }-item-edit-button`,
                 hidden: (): boolean => !isFeatureEnabled(featureConfig?.applications,
                     ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT")),
-                icon: (): SemanticICONS => "pencil alternate",
+                icon: (app: ApplicationListItemInterface): SemanticICONS => {
+                    return app?.access === ApplicationAccessTypes.READ && "eye" || "pencil alternate";
+                },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
                 popupText: (): string => t("common:edit"),
