@@ -179,7 +179,12 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         : user.userName;
 
                     return (
-                        <Header as="h6" image>
+                        <Header
+                            image
+                            as="h6"
+                            className="header-with-icon"
+                            data-testid={ `${ testId }-item-heading` }
+                        >
                             <UserAvatar
                                 name={ user.userName }
                                 size="mini"
@@ -188,12 +193,12 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                             />
                             <Header.Content>
                                 { resolvedUserName }
-                                <Header.Subheader>
+                                <Header.Subheader data-testid={ `${ testId }-item-sub-heading` }>
                                     { resolvedDescription }
                                 </Header.Subheader>
                             </Header.Content>
                         </Header>
-                    )
+                    );
                 },
                 title: t("adminPortal:components.users.list.columns.name")
             },

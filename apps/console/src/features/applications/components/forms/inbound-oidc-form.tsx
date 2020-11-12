@@ -165,14 +165,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         // When bindingType is set to none, back-end doesn't send the `bindingType` attr. So default to `None`.
-        if (!initialValues.accessToken.bindingType) {
+        if (!initialValues?.accessToken?.bindingType) {
             setIsTokenBindingTypeSelected(false);
             
             return;
         }
 
         // Show the validate options when the bindingType is set to a value other than `None`.
-        if (initialValues.accessToken.bindingType !== SupportedAccessTokenBindingTypes.NONE) {
+        if (initialValues?.accessToken?.bindingType !== SupportedAccessTokenBindingTypes?.NONE) {
             setIsTokenBindingTypeSelected(true);
         }
     }, [ initialValues?.accessToken ]);

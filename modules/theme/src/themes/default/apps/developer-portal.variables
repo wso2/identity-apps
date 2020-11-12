@@ -29,3 +29,9 @@
 @overviewPageJumbotronAnimatedBackgroundTransition: background-position .5s ease;
 @overviewPageJumbotronAnimatedBackgroundHoverXPositionOffset: 10px;
 @overviewPageJumbotronAnimatedBackgroundHoverYPositionOffset: 10px;
+
+/*-------------------------------
+      Connector Sections
+--------------------------------*/
+
+@connectorSectionWithImageBgHeight: 120px;

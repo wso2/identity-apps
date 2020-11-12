@@ -818,7 +818,6 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 name={ application.name }
                                 image={ application.imageUrl }
                                 size="tiny"
-                                spaced="right"
                             />
                         )
                         : (

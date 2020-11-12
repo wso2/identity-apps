@@ -54,6 +54,14 @@
             // Check popup.overrides for column selector popup styles.
         }
         
+        .data-table-row {
+            &:hover {
+                &.no-hover {
+                    background: transparent !important;
+                }
+            }
+        }
+
         .data-table-cell {
             .header-with-icon {
                 display: @dataTableRowHeaderDisplay;

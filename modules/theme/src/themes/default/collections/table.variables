@@ -14,7 +14,7 @@
 @dataTableHeaderFontWeight: 500;
 
 // Overrides for the semantic header component used inside rows.
-@dataTableRowHeaderDisplay: inline-block;
+@dataTableRowHeaderDisplay: flex;
 @dataTableRowHeaderContentVerticalAlignment: middle;
 @dataTableRowHeaderIconDisplay: inline-flex;
 
