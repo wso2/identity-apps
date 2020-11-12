@@ -30,7 +30,8 @@ import {
 import { SharedUserStoreUtils } from "../../core/utils";
 import {
     PRIMARY_USERSTORE_PROPERTY_VALUES,
-    USERSTORE_REGEX_PROPERTIES
+    USERSTORE_REGEX_PROPERTIES,
+    UserStoreListItem
 } from "../../userstores";
 import { getUsersList } from "../api";
 import { BasicUserDetailsInterface } from "../models";
@@ -134,7 +135,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         setUserStoreRegEx(domain)
             .finally(() => {
                 setUsernameRegExLoading(false);
-            })
+            });
     };
 
     /**
@@ -149,7 +150,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 .then((response) => {
                     setUsernameRegExLoading(true);
                     setUsernameRegEx(response);
-                })
+                });
         } else {
             // Set the username regEx of the primary user store.
             setUsernameRegEx(PRIMARY_USERSTORE_PROPERTY_VALUES.UsernameJavaScriptRegEx);
@@ -195,13 +196,15 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                 if (storeOptions === []) {
                     storeOptions.push(storeOption);
                 }
-                response.data.map((store, index) => {
-                    storeOption = {
-                        key: index,
-                        text: store.name,
-                        value: store.name
-                    };
-                    storeOptions.push(storeOption);
+                response.data.map((store: UserStoreListItem, index) => {
+                    if (store.enabled) {
+                        storeOption = {
+                            key: index,
+                            text: store.name,
+                            value: store.name
+                        };
+                        storeOptions.push(storeOption);
+                    }
                 }
                 );
                 setUserStoresList(storeOptions);
@@ -256,7 +259,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                         // Set the username regEx of the secondary user store.
                                         passwordRegex
                                             = await SharedUserStoreUtils.getUserStoreRegEx(
-                                                userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx)
+                                                userStore, USERSTORE_REGEX_PROPERTIES.PasswordRegEx);
                                     } else {
                                         // Set the username regEx of the primary user store.
                                         passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;
