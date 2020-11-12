@@ -663,6 +663,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
                                         t("devPortal:components.applications.forms.inboundOIDC.fields.allowedOrigins" +
                                             ".hint")
                                     }
+                                    readOnly={ readOnly }
                                     addURLTooltip={ t("common:addURL") }
                                     duplicateURLErrorMessage={ t("common:duplicateURLError") }
                                     data-testid={ `${ testId }-allowed-origin-url-input` }
