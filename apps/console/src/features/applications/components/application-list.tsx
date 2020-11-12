@@ -413,7 +413,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 data={
                     list?.applications?.filter((app: ApplicationListItemInterface) => {
 
-                        if (UIConfig.systemAppsIdentifiers.includes(app.name) &&
+                        if (UIConfig.systemAppsIdentifiers.includes(app?.name) &&
                             featureConfig?.systemApplications?.enabled &&
                             !hasRequiredScopes(featureConfig?.systemApplications,
                                 featureConfig?.systemApplications?.scopes?.update, allowedScopes)) {
