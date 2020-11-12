@@ -37,4 +37,12 @@ export class CommonConstants {
      * @default
      */
     public static readonly SEEN_ANNOUNCEMENTS_KEY: string = "identityAppsSettings.adminPortal.announcements.seen";
+
+    /**
+     * Session storage key to store session state.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SESSION_STATE: string = "session_state";
 }

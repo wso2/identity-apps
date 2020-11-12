@@ -45,6 +45,7 @@ import {
     switchAccount
 } from "../../api";
 import { Config } from "../../configs";
+import { CommonConstants } from "../../constants";
 import {
     AlertLevels,
     BasicProfileInterface,
@@ -351,12 +352,17 @@ export const initializeAuthentication = () =>(dispatch)=> {
             })
         );
 
+        sessionStorage.setItem(CommonConstants.SESSION_STATE, response?.sessionState);
+
         auth
             .getServiceEndpoints()
             .then((response: ServiceResourcesType) => {
                 sessionStorage.setItem(AUTHORIZATION_ENDPOINT, response.authorize);
                 sessionStorage.setItem(OIDC_SESSION_IFRAME_ENDPOINT, response.oidcSessionIFrame);
                 sessionStorage.setItem(TOKEN_ENDPOINT, response.token);
+
+                const rpIFrame: HTMLIFrameElement = document.getElementById("rpIFrame") as HTMLIFrameElement;
+                rpIFrame?.contentWindow.postMessage("loadTimer", location.origin);
             })
             .catch((error) => {
                 throw error;
@@ -384,7 +390,7 @@ export const handleSignOut = () => (dispatch) => {
         .then(() => {
             AuthenticateUtils.removeAuthenticationCallbackUrl(AppConstants.MY_ACCOUNT_APP);
             dispatch(setSignOut());
-        })
+        });
 };
 
 /**

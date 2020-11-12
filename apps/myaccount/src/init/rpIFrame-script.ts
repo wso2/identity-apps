@@ -21,18 +21,18 @@ import "regenerator-runtime/runtime";
 
 const getItemFromSessionStorage = (key: string): string => {
     try {
-        return getItemFromSessionStorage(key);
+        return sessionStorage.getItem(key);
     } catch {
         return "";
     }
 };
 
-const config = window.parent[ "AppUtils" ].getConfig();
-const clientId = config.clientID;
-const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
-const redirectUri = config.loginCallbackURL;
+const config = window.parent[ "AppUtils" ]?.getConfig();
+const clientId = config?.clientID;
+const redirectUri = config?.loginCallbackURL;
 
 function checkSession() {
+    const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
     const sessionState = getItemFromSessionStorage("session_state");
     const mes = clientId + " " + sessionState;
     if (isNotNull(clientId) && isNotNull(sessionState)) {
@@ -47,6 +47,8 @@ function isNotNull(value) {
 }
 
 function setTimer() {
+    const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
+
     if (!targetOrigin || !clientId || !redirectUri) {
         return;
     }
@@ -79,9 +81,17 @@ function getRandomPKCEChallenge() {
 }
 
 function receiveMessage(e) {
+    const targetOrigin = getItemFromSessionStorage("oidc_session_iframe_endpoint");
+
+    if (e.data === "loadTimer" && e.origin === location.origin) {
+        setTimer();
+        return;
+    }
+
     if (!targetOrigin || targetOrigin?.indexOf(e.origin) < 0) {
         return;
     }
+
     if (e.data === "unchanged") {
         // [RP] session state has not changed
     } else {
@@ -101,7 +111,3 @@ function receiveMessage(e) {
             getRandomPKCEChallenge();
     }
 }
-
-window.onload = () => {
-    setTimer();
-};

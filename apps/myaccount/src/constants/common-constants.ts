@@ -76,4 +76,12 @@ export class CommonConstants {
      * @default
      */
     public static readonly CONSENTS_CONTROL: string = "consents_control";
+
+    /**
+     * Session storage key to store session state.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly SESSION_STATE: string = "session_state";
 }
