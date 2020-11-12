@@ -52,6 +52,7 @@ import { EditApplication, HelpPanelOverview } from "../components";
 import { HelpPanelIcons } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import {
+    ApplicationAccessTypes,
     ApplicationInterface,
     ApplicationTemplateListItemInterface,
     State,
@@ -778,6 +779,18 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         );
     };
 
+    /**
+     * Returns if the application is readonly or not by evaluating the `readOnly` attribute in
+     * URL and the `access` attribute in application info response.
+     *
+     * @return {boolean} If an application is Read Only or not.
+     */
+    const resolveReadOnlyState = (): boolean => {
+
+        return urlSearchParams.get(ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY) === "true"
+            || application.access === ApplicationAccessTypes.READ;
+    };
+
     return (
         <HelpPanelLayout
             activeIndex={ tabsActiveIndex }
@@ -854,11 +867,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     getConfiguredInboundProtocolConfigs={ (configs: object) => {
                         setInboundProtocolConfigs(configs)
                     } }
-                    readOnly={
-                        urlSearchParams.get(
-                            ApplicationManagementConstants.APP_READ_ONLY_STATE_URL_SEARCH_PARAM_KEY
-                        ) === "true"
-                    }
+                    readOnly={ resolveReadOnlyState() }
                 />
             </PageLayout>
         </HelpPanelLayout>
