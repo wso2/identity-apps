@@ -416,10 +416,12 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                     { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
                                         ".authenticationFlow.sections.stepBased.heading") }
                                 </Heading>
-                                <Hint>
-                                    { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
-                                        ".authenticationFlow.sections.stepBased.hint") }
-                                </Hint>
+                                { !readOnly && (
+                                    <Hint>
+                                        { t("devPortal:components.applications.edit.sections.signOnMethod.sections" +
+                                            ".authenticationFlow.sections.stepBased.hint") }
+                                    </Hint>
+                                )}
                             </Grid.Column>
                             {
                                 !showAuthenticatorsSidePanel && (
@@ -587,26 +589,28 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                         </Grid.Row>
                     </Grid>
                 </div>
-                <AuthenticatorSidePanel
-                    heading={ t("common:authenticator_plural") }
-                    onSidePanelVisibilityToggle={ toggleAuthenticatorsSidePanelVisibility }
-                    readOnly={ readOnly }
-                    ref={ authenticatorsSidePanelRef }
-                    authenticatorGroup={ [
-                        {
-                            authenticators: localAuthenticators,
-                            droppableId: LOCAL_AUTHENTICATORS_DROPPABLE_ID,
-                            heading: "Local"
-                        },
-                        {
-                            authenticators: federatedAuthenticators,
-                            droppableId: EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
-                            heading: "External"
-                        }
-                    ] }
-                    visibility={ showAuthenticatorsSidePanel }
-                    data-testid={ `${ testId }-authenticator-side-panel` }
-                />
+                { !readOnly && (
+                    <AuthenticatorSidePanel
+                        heading={ t("common:authenticator_plural") }
+                        onSidePanelVisibilityToggle={ toggleAuthenticatorsSidePanelVisibility }
+                        readOnly={ readOnly }
+                        ref={ authenticatorsSidePanelRef }
+                        authenticatorGroup={ [
+                            {
+                                authenticators: localAuthenticators,
+                                droppableId: LOCAL_AUTHENTICATORS_DROPPABLE_ID,
+                                heading: "Local"
+                            },
+                            {
+                                authenticators: federatedAuthenticators,
+                                droppableId: EXTERNAL_AUTHENTICATORS_DROPPABLE_ID,
+                                heading: "External"
+                            }
+                        ] }
+                        visibility={ showAuthenticatorsSidePanel }
+                        data-testid={ `${ testId }-authenticator-side-panel` }
+                    />
+                )}
             </DragDropContext>
         </div>
     );
