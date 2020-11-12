@@ -345,7 +345,7 @@ export const ApprovalsList: FunctionComponent<ApprovalsListPropsInterface> = (
                                         <Label
                                             circular
                                             size="mini"
-                                            className="micro spaced-right"
+                                            className="micro mr-2 ml-0 vertical-aligned-baseline"
                                             color={ resolveApprovalTagColor(approval.status) }
                                         />
                                         { approval.status }

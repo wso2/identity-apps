@@ -72,11 +72,11 @@
 
                 .theme-icon {
                     display: @dataTableRowHeaderIconDisplay;
-                }
 
-                // Semantic UI header components adds a ` margin-right: .75rem;` to `.icon` class.
-                .icon {
-                    margin-right: 0;
+                    // Semantic UI header components adds a ` margin-right: .75rem;` to `.icon` class.
+                    .icon {
+                        margin-right: 0;
+                    }
                 }
             }
         }
