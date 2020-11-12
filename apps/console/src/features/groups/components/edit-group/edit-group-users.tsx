@@ -216,7 +216,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
             });
             setUsersList(usersList);
             setTempUserList(removedUsers);
-            setCheckedAssignedListItems([]);
+            setCheckedUnassignedListItems([]);
         }
 
     };
