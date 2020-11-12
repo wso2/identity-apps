@@ -172,7 +172,7 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
         }
 
         // Show the validate options when the bindingType is set to a value other than `None`.
-        if (initialValues.accessToken.bindingType !== SupportedAccessTokenBindingTypes.NONE) {
+        if (initialValues?.accessToken?.bindingType !== SupportedAccessTokenBindingTypes?.NONE) {
             setIsTokenBindingTypeSelected(true);
         }
     }, [ initialValues?.accessToken ]);
