@@ -445,7 +445,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     );
                                 }
 
-                                if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                if (!URLUtils.isHttpsOrHttpUrl(value)) {
                                     label = (
                                         <Label basic color="orange" className="mt-2">
                                             { t("console:common.validations.unrecognizedURL.description") }

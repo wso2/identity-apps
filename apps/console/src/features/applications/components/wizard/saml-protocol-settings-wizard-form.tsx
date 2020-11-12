@@ -251,7 +251,7 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
                                         );
                                     }
 
-                                    if (!URLUtils.isHttpUrl(value) && !URLUtils.isHttpsUrl(value)) {
+                                    if (!URLUtils.isHttpsOrHttpUrl(value)) {
                                         label = (
                                             <Label basic color="orange" className="mt-2">
                                                 { t("console:common.validations.unrecognizedURL.description") }
