@@ -325,7 +325,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 },
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
-                popupText: (): string => t("common:edit"),
+                popupText: (app: ApplicationListItemInterface): string => {
+                    return app?.access === ApplicationAccessTypes.READ && t("common:view") || t("common:edit")
+                },
                 renderer: "semantic-icon"
             },
             {
@@ -334,8 +336,9 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     const hasScopes: boolean = !hasRequiredScopes(featureConfig?.applications,
                         featureConfig?.applications?.scopes?.delete, allowedScopes);
 
-                    return hasScopes
-                        || UIConfig.systemAppsIdentifiers.includes(app?.name);
+                    return hasScopes ||
+                            UIConfig.systemAppsIdentifiers.includes(app?.name) ||
+                            (app?.access === ApplicationAccessTypes.READ);
                 },
                 icon: (): SemanticICONS => "trash alternate",
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void => {
