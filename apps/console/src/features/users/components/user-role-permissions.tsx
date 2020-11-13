@@ -146,5 +146,5 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                 </Modal.Actions>
             </Modal>
         )
-    )
+    );
 };

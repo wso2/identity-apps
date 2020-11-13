@@ -279,7 +279,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         let result: ExtendedClaimMappingInterface;
         claimMappingList.map((mapping) => {
             if (mapping.localClaim.uri === claimURI) {
-                result = mapping
+                result = mapping;
             }
         });
         return result;
@@ -402,7 +402,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
         createdClaimMappings.map((claimMapping) => {
             if (claimMapping.addMapping) {
                 if (_.isEmpty(claimMapping.applicationClaim)) {
-                    setClaimMappingError(true)
+                    setClaimMappingError(true);
                     returnList = false;
                 } else {
                     const claimMappedObject: ExtendedClaimMappingInterface = {
@@ -449,7 +449,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     };
                     RequestedClaims.push(requestedClaim);
                 }
-            })
+            });
         } else {
             selectedExternalClaims.map((claim: ExtendedExternalClaimInterface) => {
                 const requestedClaim = {
@@ -459,7 +459,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
                     mandatory: claim.mandatory
                 };
                 RequestedClaims.push(requestedClaim);
-            })
+            });
         }
 
         // Generate Final Submit value
@@ -523,7 +523,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
     // Set the dialects for inbound protocols
     useEffect(() => {
         if (_.isEmpty(dialect)) {
-            return
+            return;
         }
         //TODO  move this logic to backend
         setIsClaimRequestLoading(true);
@@ -554,7 +554,7 @@ export const AttributeSettings: FunctionComponent<AttributeSelectionPropsInterfa
      */
     useEffect(() => {
         if (claimConfigurations.dialect === "CUSTOM") {
-            setClaimMappingOn(true)
+            setClaimMappingOn(true);
         }
     }, [claimConfigurations]);
 

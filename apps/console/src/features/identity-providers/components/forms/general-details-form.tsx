@@ -116,7 +116,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             })
             .catch((error) => {
                 handleGetIDPListCallError(error);
-            })
+            });
     };
 
     /**
@@ -139,7 +139,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             <EmphasizedSegment>
                 <Forms
                     onSubmit={ (values): void => {
-                        onSubmit(updateConfigurations(values))
+                        onSubmit(updateConfigurations(values));
                     } }
                     submitState={ triggerSubmit }
                     onChange={ (isPure, values) => {

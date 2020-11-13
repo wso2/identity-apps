@@ -67,7 +67,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         if (isSelectAssignedAllGroupsChecked) {
             setCheckedAssignedListItems(initialValues?.tempGroupList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAssignedAllGroupsChecked ]);
 
@@ -75,7 +75,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
         if (isSelectUnassignedGroupsAllRolesChecked) {
             setCheckedUnassignedListItems(initialValues?.groupList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectUnassignedGroupsAllRolesChecked ]);
 
@@ -271,7 +271,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     handleOpenPermissionModal={ () => handleSetGroupId(group.id) }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups"
                                 />
-                            )
+                            );
                         })
                     }
                 </TransferList>
@@ -303,7 +303,7 @@ export const AddUserGroup: FunctionComponent<AddUserGroupPropsInterface> = (
                                     showSecondaryActions={ false }
                                     data-testid="user-mgt-add-user-wizard-modal-selected-groups"
                                 />
-                            )
+                            );
                         })
                     }
                 </TransferList>

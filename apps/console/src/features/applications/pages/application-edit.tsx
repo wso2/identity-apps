@@ -25,8 +25,8 @@ import {
     AppAvatar,
     HelpPanelLayout,
     HelpPanelTabInterface,
-    PageLayout,
-    LabelWithPopup
+    LabelWithPopup,
+    PageLayout
 } from "@wso2is/react-components";
 import get from "lodash/get";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
@@ -334,7 +334,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
         if (applicationTemplate && (application?.inboundProtocols?.length > 1)) {
             updateApplicationConfigurations(application.id, { templateId: "" })
                 .then(() => {
-                    handleApplicationUpdate(application.id)
+                    handleApplicationUpdate(application.id);
                 })
                 .catch((error) => {
                     if (error?.response?.status === 404) {
@@ -359,7 +359,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         message: t("devPortal:components.applications.notifications.updateApplication" +
                             ".genericError.message")
                     }));
-                })
+                });
         }
 
     }, [ applicationTemplate, application ]);
@@ -862,10 +862,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                     urlSearchParams={ urlSearchParams }
                     getConfiguredInboundProtocolsList={ (list: string[]) => {
-                        setInboundProtocolList(list)
+                        setInboundProtocolList(list);
                     } }
                     getConfiguredInboundProtocolConfigs={ (configs: object) => {
-                        setInboundProtocolConfigs(configs)
+                        setInboundProtocolConfigs(configs);
                     } }
                     readOnly={ resolveReadOnlyState() }
                 />

@@ -66,7 +66,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
     const getMetaData = (() => {
         getAuthProtocolMetadata(SupportedAuthProtocolMetaTypes.WS_TRUST)
             .then((response) => {
-                setShowWSTrustMetaData(response as WSTrustMetaDataInterface)
+                setShowWSTrustMetaData(response as WSTrustMetaDataInterface);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -200,7 +200,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                 </Grid>
             </Forms>
             : <ContentLoader/>
-    )
+    );
 };
 
 /**

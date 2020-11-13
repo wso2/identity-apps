@@ -116,7 +116,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                 image: USERSTORE_TYPE_IMAGES[ type.typeName ],
                                 name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                             }
-                        )
+                        );
                     } else {
                         userstoreTypes.push(
                             {
@@ -126,7 +126,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                                 image: USERSTORE_TYPE_IMAGES[ type.typeName ],
                                 name: USERSTORE_TYPE_DISPLAY_NAMES[ type.typeName ]
                             }
-                        )
+                        );
                     }
                 }
             });
@@ -220,7 +220,7 @@ const UserstoresTemplates: FunctionComponent<UserstoresTemplatesPageInterface> =
                 }
             </PageLayout>
         </>
-    )
+    );
 };
 
 /**

@@ -31,5 +31,5 @@ export const getUsersResourceEndpoints = (serverHost: string): UsersResourceEndp
         userSessions: `${ serverHost }/api/users/v1/{0}/sessions`,
         userStores: `${ serverHost }/api/server/v1/userstores`,
         users: `${ serverHost }/scim2/Users`
-    }
+    };
 };

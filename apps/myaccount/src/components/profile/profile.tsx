@@ -122,7 +122,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     if (schemaNames[0] === "emails") {
                         if (profileDetails?.profileInfo?.pendingEmails?.length > 0) {
                             tempProfileInfo.set(schema.name,
-                                profileDetails.profileInfo.pendingEmails[0].value as string)
+                                profileDetails.profileInfo.pendingEmails[0].value as string);
                         } else {
                             const primaryEmail = profileDetails.profileInfo[schemaNames[0]] &&
                                 profileDetails.profileInfo[schemaNames[0]]
@@ -249,7 +249,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             [schemaNames[0]]: values.get(formName)
                         }
-                    }
+                    };
                 } else {
                     value = { [schemaNames[0]]: values.get(formName) };
                 }

@@ -132,7 +132,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
             })
             .finally(() => {
                 setIsEmailTemplatesFetchRequestLoading(false);
-            })
+            });
     };
 
     /**
@@ -237,7 +237,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                     message: t("adminPortal:components.emailTemplates.notifications.deleteTemplate" +
                         ".genericError.message")
                 }));
-            })
+            });
     };
 
     return (
@@ -290,7 +290,7 @@ const EmailTemplatesPage: FunctionComponent<EmailTemplatesPagePropsInterface> = 
                 />
             </ListLayout>
         </PageLayout>
-    )
+    );
 };
 
 /**

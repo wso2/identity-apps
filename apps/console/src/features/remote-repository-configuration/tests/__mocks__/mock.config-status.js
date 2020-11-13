@@ -40,4 +40,4 @@ module.exports = {
         }
     ],
     successfulDeployments: 0
-}
+};

@@ -95,7 +95,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
 
     useEffect(() => {
         if (config?.inboundProvisioning?.proxyMode) {
-            setIsProxyModeOn(config?.inboundProvisioning?.proxyMode)
+            setIsProxyModeOn(config?.inboundProvisioning?.proxyMode);
         }
     }, [config]);
 
@@ -113,7 +113,7 @@ export const ProvisioningConfigurationsForm: FunctionComponent<ProvisioningConfi
                             type="checkbox"
                             listen={
                                 (values) => {
-                                    setIsProxyModeOn(values.get("proxyMode").includes("modeOn"))
+                                    setIsProxyModeOn(values.get("proxyMode").includes("modeOn"));
                                 }
                             }
                             children={ [

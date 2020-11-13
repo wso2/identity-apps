@@ -27,5 +27,5 @@ import { ScopesResourceEndpointsInterface } from "../models";
 export const getScopesResourceEndpoints = (serverHost: string): ScopesResourceEndpointsInterface => {
     return {
         oidcScopes: `${ serverHost }/api/server/v1/oidc/scopes`
-    }
+    };
 };

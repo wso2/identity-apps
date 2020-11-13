@@ -81,5 +81,5 @@ export const ComponentPlaceholder = (props: ExtensionInterface): ReactElement =>
                 <DynamicLoader />
             </Suspense>
         </ErrorBoundary>
-    )
+    );
 };

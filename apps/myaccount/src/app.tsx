@@ -164,7 +164,7 @@ export const App = (): ReactElement => {
                 history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
         }
-    }
+    };
 
     return (
         <>

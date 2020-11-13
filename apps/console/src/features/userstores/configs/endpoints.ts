@@ -27,5 +27,5 @@ import { UserstoreResourceEndpointsInterface } from "../models";
 export const getUserstoreResourceEndpoints = (serverHost: string): UserstoreResourceEndpointsInterface => {
     return {
         userStores: `${ serverHost }/api/server/v1/userstores`
-    }
+    };
 };

@@ -203,7 +203,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 </Grid.Row>
             </Grid>
         </>
-    )
+    );
 };
 
 /**

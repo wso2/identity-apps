@@ -80,7 +80,7 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 .then((response) => {
                     setRegExLoading(true);
                     userStoreRegEx = response;
-                })
+                });
         } else {
             userStoreRegEx = SharedUserStoreConstants.PRIMARY_USERSTORE_PROPERTY_VALUES.RolenameJavaScriptRegEx;
         }
@@ -198,5 +198,5 @@ export const RoleBasics: FunctionComponent<RoleBasicProps> = (props: RoleBasicPr
                 </GridRow>
             </Grid>
         </Forms>
-    )
+    );
 };

@@ -54,8 +54,8 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (): ReactEleme
     const handleLanguageSwitch = (language: string): void => {
         I18n.instance.changeLanguage(language)
             .catch((error) => {
-                throw new LanguageChangeException(language, error)
-            })
+                throw new LanguageChangeException(language, error);
+            });
     };
 
     return (

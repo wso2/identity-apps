@@ -107,7 +107,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (isSelectAssignedAllRolesChecked) {
             setCheckedAssignedListItems(tempGroupList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAssignedAllRolesChecked ]);
 
@@ -115,7 +115,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
         if (isSelectUnassignedRolesAllRolesChecked) {
             setCheckedUnassignedListItems(groupList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
@@ -579,7 +579,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             showSecondaryActions={ false }
                                             data-testid="user-mgt-update-groups-modal-unselected-groups"
                                         />
-                                    )
+                                    );
                                 })
                             }
                         </TransferList>
@@ -612,7 +612,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                             showSecondaryActions={ false }
                                             data-testid="user-mgt-update-groups-modal-selected-groups"
                                         />
-                                    )
+                                    );
                                 })
                             }
                         </TransferList>
@@ -697,7 +697,7 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
                                         }
                                     </Table.Cell>
                                 </Table.Row>
-                            )
+                            );
                         }
                     })
                 }
@@ -805,5 +805,5 @@ export const UserGroupsList: FunctionComponent<UserGroupsPropsInterface> = (
             </Grid>
             { addNewGroupModal() }
         </>
-    )
+    );
 };

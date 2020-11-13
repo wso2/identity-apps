@@ -193,7 +193,7 @@ export const AddUserStore: FunctionComponent<AddUserStoreProps> = (props: AddUse
             return {
                 name: property.name,
                 value: property.defaultValue
-            }
+            };
         });
 
         allProperties.push(

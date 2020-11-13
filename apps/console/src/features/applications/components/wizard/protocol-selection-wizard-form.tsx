@@ -128,7 +128,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
 
     useEffect(() => {
         if (initialSelectedTemplate) {
-            setSelectedTemplate(initialSelectedTemplate)
+            setSelectedTemplate(initialSelectedTemplate);
         }
     }, [initialSelectedTemplate]);
 
@@ -179,9 +179,9 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
     ): ApplicationTemplateListItemInterface[] => {
         if (templates) {
             return templates.filter(
-                (temp) => !selectedProtocols.includes(temp.authenticationProtocol))
+                (temp) => !selectedProtocols.includes(temp.authenticationProtocol));
         } else {
-            return null
+            return null;
         }
     };
 
@@ -201,7 +201,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
                 customTemplates.push(customTemplate);
             });
             return customTemplates.filter(
-                (temp) => !selectedProtocols.includes(temp.authenticationProtocol))
+                (temp) => !selectedProtocols.includes(temp.authenticationProtocol));
         }
     };
 

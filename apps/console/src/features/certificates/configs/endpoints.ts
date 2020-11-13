@@ -29,5 +29,5 @@ export const getCertificatesResourceEndpoints = (serverHost: string): Certificat
         certificates: `${ serverHost }/api/server/v1/keystores/certs`,
         clientCertificates: `${ serverHost }/api/server/v1/keystores/client-certs`,
         publicCertificates: `${ serverHost }/api/server/v1/keystores/certs/public`
-    }
+    };
 };

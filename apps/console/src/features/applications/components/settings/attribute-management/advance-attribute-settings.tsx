@@ -70,7 +70,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
         let claimURI = "";
         dropDownOptions.map((option) => {
             if (option.value === checkValue) {
-                claimURI = checkValue
+                claimURI = checkValue;
             }
         });
         return claimURI;
@@ -288,7 +288,7 @@ export const AdvanceAttributeSettings: FunctionComponent<AdvanceAttributeSetting
                 </Grid>
             </Forms>
         )
-    )
+    );
 };
 
 /**

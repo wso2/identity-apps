@@ -55,7 +55,7 @@ export const AddIDPJWKSUriFormComponent: FunctionComponent<AddIDPJWKSUriFormProp
         <>
             <Forms
                 onSubmit={ (values) => {
-                    onSubmit(values.get("jwksUrl").toString())
+                    onSubmit(values.get("jwksUrl").toString());
                 } }
             >
                 <Grid>

@@ -74,7 +74,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.placeHolder") }
                             onChange={
                                 (event, data) => {
-                                    updateSubject(data.value.toString())
+                                    updateSubject(data.value.toString());
                                 }
                             }
                             search
@@ -111,7 +111,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                     "role.placeHolder") }
                                 onChange={
                                     (event, data) => {
-                                        updateRole(data.value.toString())
+                                        updateRole(data.value.toString());
                                     }
                                 }
                                 search
@@ -132,7 +132,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                 </Grid.Row>
             }
         </>
-    )
+    );
 };
 
 /**

@@ -22,9 +22,9 @@ import { DynamicField, Heading, Hint } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid } from "semantic-ui-react";
+import { getGroupList } from "../../../../groups/api";
 import { IdentityProviderRoleMappingInterface } from "../../../models";
 import { handleGetRoleListError } from "../../utils";
-import { getGroupList } from "../../../../groups/api";
 
 /**
  * Proptypes for the identity providers settings component.
@@ -74,14 +74,14 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
     const getFilteredRoles = () => {
         const filterRole: RolesInterface[] = roleList.filter(
             (role) => {
-                return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"))
+                return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
 
         return filterRole.map(role => {
             return {
                 id: role.displayName,
                 value: role.displayName
-            }
+            };
         });
     };
 
@@ -111,7 +111,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                                     return {
                                         key: mapping.localRole,
                                         value: mapping.idpRole
-                                    }
+                                    };
                                 }) : []
                         }
                         keyType="dropdown"
@@ -131,7 +131,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                                     return {
                                         idpRole: mapping.value,
                                         localRole: mapping.key
-                                    }
+                                    };
                                 });
                                 onSubmit(finalData);
                             } else {

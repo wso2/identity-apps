@@ -236,7 +236,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     ...dynamicColumn,
                     render: (user: UserBasicInterface): ReactNode =>
                         CommonUtils.humanizeDateDifference(user?.meta?.lastModified)
-                }
+                };
             }
 
             dynamicColumns.push(dynamicColumn);
@@ -272,7 +272,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
                         ? "eye"
-                        : "pencil alternate"
+                        : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, user: UserBasicInterface): void =>
                     handleUserEdit(user?.id),
@@ -286,7 +286,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                         UserManagementConstants.FEATURE_DICTIONARY.get("USER_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
                         ? t("common:view")
-                        : t("common:edit")
+                        : t("common:edit");
                 },
                 renderer: "semantic-icon"
             }
@@ -302,7 +302,7 @@ export const UsersList: React.FunctionComponent<UsersListProps> = (props: UsersL
                     UserManagementConstants.FEATURE_DICTIONARY.get("USER_DELETE"))
                     || !hasRequiredScopes(featureConfig?.users, featureConfig?.users?.scopes?.delete, allowedScopes)
                     || readOnlyUserStores?.includes(userStore.toString())
-                    || user.userName === "admin"
+                    || user.userName === "admin";
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, user: UserBasicInterface): void => {

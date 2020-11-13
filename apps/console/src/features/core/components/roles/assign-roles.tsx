@@ -66,7 +66,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         if (isSelectAssignedAllRolesChecked) {
             setCheckedAssignedListItems(initialValues?.tempRoleList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAssignedAllRolesChecked ]);
 
@@ -74,7 +74,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
         if (isSelectUnassignedRolesAllRolesChecked) {
             setCheckedUnassignedListItems(initialValues?.roleList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
@@ -249,7 +249,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                                         handleOpenPermissionModal={ () => handleSetRoleId(role.id) }
                                         data-testid="user-mgt-add-user-wizard-modal-unselected-roles"
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -281,7 +281,7 @@ export const AssignRoles: FunctionComponent<AssignRoleProps> = (props: AssignRol
                                         showSecondaryActions={ false }
                                         data-testid="user-mgt-add-user-wizard-modal-selected-roles"
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>

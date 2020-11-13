@@ -18,7 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue, Validation } from "@wso2is/forms";
+import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
 import { ConfirmationModal, CopyInputField, Heading, Hint, URLInput } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
@@ -371,14 +371,14 @@ export const InboundOIDCForm: FunctionComponent<InboundOIDCFormPropsInterface> =
             formValues = {
                 ...formValues,
                 allowedOrigins: resolveAllowedOrigins(origin ? origin : allowedOrigins),
-                callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ],
-            }
+                callbackURLs: [ buildCallBackUrlWithRegExp(url ? url : callBackUrls) ]
+            };
         } else {
             formValues = {
                 ...formValues,
                 allowedOrigins: [],
-                callbackURLs: [],
-            }
+                callbackURLs: []
+            };
         }
 
         // If the app is newly created do not add `clientId` & `clientSecret`.

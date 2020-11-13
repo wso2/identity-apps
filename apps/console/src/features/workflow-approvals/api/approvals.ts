@@ -17,9 +17,9 @@
  */
 
 import { IdentityClient } from "@asgardio/oidc-js";
-import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface, ApprovalTaskSummary } from "../models";
 import { HttpMethods } from "@wso2is/core/models";
 import { store } from "../../core";
+import { ApprovalStatus, ApprovalTaskDetails, ApprovalTaskListItemInterface, ApprovalTaskSummary } from "../models";
 
 /**
  * Get an axios instance.

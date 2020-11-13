@@ -115,7 +115,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     || t("adminPortal:components.certificates.keystore.notifications." +
                         "addCertificate.genericError.message")
             });
-        })
+        });
     };
 
     /**
@@ -306,7 +306,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                 </Grid>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };
 
 /**

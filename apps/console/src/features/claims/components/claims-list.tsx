@@ -193,7 +193,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
 
     list?.forEach((element, index) => {
         claimURIText.current.push(claimURIText.current[ index ] || React.createRef());
-        copyButton.current.push(copyButton.current[ index ] || React.createRef())
+        copyButton.current.push(copyButton.current[ index ] || React.createRef());
     });
 
     useEffect(() => {
@@ -208,8 +208,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     level: AlertLevels.ERROR,
                     message: error?.message
                         ?? t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.message")
-                }))
-            })
+                }));
+            });
         }
     }, [ JSON.stringify(list) ]);
 
@@ -263,7 +263,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
             | Claim | ExternalClaim | ClaimDialect
     ): toBeDetermined is ClaimDialect[] | ClaimDialect => {
-        return localClaim === ListType.DIALECT
+        return localClaim === ListType.DIALECT;
     };
 
     /**
@@ -278,7 +278,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
         toBeDetermined: Claim[] | ExternalClaim[] | ClaimDialect[] | AddExternalClaim[]
             | Claim | ExternalClaim | ClaimDialect
     ): toBeDetermined is ExternalClaim[] | ExternalClaim => {
-        return localClaim === ListType.EXTERNAL
+        return localClaim === ListType.EXTERNAL;
     };
 
     /**
@@ -315,7 +315,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                         || t("adminPortal:components.claims.local.notifications.deleteClaim.genericError.message")
                 }
             ));
-        })
+        });
     };
 
     /**
@@ -348,7 +348,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             "deleteExternalClaim.genericError.message")
                 }
             ));
-        })
+        });
     };
 
     /**
@@ -380,7 +380,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                             "deleteDialect.genericError.message")
                 }
             ));
-        })
+        });
     };
 
     /**
@@ -395,21 +395,21 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 delete: deleteLocalClaim,
                 message:t("adminPortal:components.claims.list.confirmation.local.message"),
                 name: t("adminPortal:components.claims.list.confirmation.local.name")
-            }
+            };
         } else if (isDialect(deleteItem)) {
             listItem = {
                 assertion: deleteItem.dialectURI,
                 delete: deleteDialect,
                 message: t("adminPortal:components.claims.list.confirmation.dialect.message"),
                 name: t("adminPortal:components.claims.list.confirmation.dialect.name")
-            }
+            };
         } else {
             listItem = {
                 assertion: deleteItem.claimURI,
                 delete: deleteExternalClaim,
                 message: t("adminPortal:components.claims.list.confirmation.external.message"),
                 name: t("adminPortal:components.claims.list.confirmation.external.name")
-            }
+            };
         }
 
         return (
@@ -432,7 +432,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 onPrimaryActionClick={ () => {
                     deleteType === ListType.EXTERNAL
                         ? listItem.delete(dialectID, deleteItem.id)
-                        : listItem.delete(deleteItem.id)
+                        : listItem.delete(deleteItem.id);
                 } }
                 data-testid={ `${ testId }-delete-confirmation-modal` }
                 closeOnDimmerClick={ false }
@@ -577,7 +577,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                                                     <li key={ index }>
                                                                         { store }
                                                                     </li>
-                                                                )
+                                                                );
                                                             })
                                                         }
                                                     </ul>
@@ -630,7 +630,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     textAlign: "right",
                     title: t("adminPortal:components.claims.list.columns.actions")
                 }
-            ]
+            ];
         }
 
         if (isDialect(list)) {
@@ -677,7 +677,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     textAlign: "right",
                     title: t("adminPortal:components.claims.list.columns.actions")
                 }
-            ]
+            ];
         }
 
         if (isExternalClaim(list)) {
@@ -750,7 +750,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     textAlign: "right",
                     title: t("adminPortal:components.claims.list.columns.actions")
                 }
-            ]
+            ];
         }
 
         return [
@@ -781,7 +781,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                                 addedClaim={ claim }
                                 externalClaims={ list }
                             />
-                        )
+                        );
                     }
 
                     return (
@@ -842,7 +842,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 {
                     icon: (): SemanticICONS => "pencil alternate",
                     onClick: (e: SyntheticEvent, claim: Claim | ExternalClaim | ClaimDialect): void => {
-                        history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id))
+                        history.push(AppConstants.getPaths().get("LOCAL_CLAIMS_EDIT").replace(":id", claim?.id));
                     },
                     popupText: (): string => t("common:edit"),
                     renderer: "semantic-icon"
@@ -856,7 +856,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:delete"),
                     renderer: "semantic-icon"
                 }
-            ]
+            ];
         }
 
         if (isDialect(list)) {
@@ -877,7 +877,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:delete"),
                     renderer: "semantic-icon"
                 }
-            ]
+            ];
         }
 
         if (isExternalClaim(list)) {
@@ -909,7 +909,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                     popupText: (): string => t("common:delete"),
                     renderer: "semantic-icon"
                 }
-            ]
+            ];
         }
 
         return [
@@ -982,7 +982,7 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
                 data-testid={ testId }
             />
         </>
-    )
+    );
 };
 
 /**

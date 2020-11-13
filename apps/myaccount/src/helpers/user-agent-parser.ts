@@ -17,7 +17,7 @@
  */
 
 import { UAParser } from "ua-parser-js";
-import { IBrowser, IDevice, IOS, IEngine } from "../models";
+import { IBrowser, IDevice, IEngine, IOS } from "../models";
 
 export class UserAgentParser {
     private static parser: UAParser;
@@ -104,7 +104,7 @@ export class UserAgentParser {
             model: null,
             type,
             vendor: null
-        }
+        };
     }
 
     /**

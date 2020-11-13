@@ -106,7 +106,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                             level: AlertLevels.SUCCESS,
                             message: t("adminPortal:components.claims.dialects.notifications.addDialect" +
                                 ".success.message")
-                        }))
+                        }));
                     }).catch(() => {
                         dispatch(addAlert({
                             description: t("adminPortal:components.claims.dialects.notifications." +
@@ -114,7 +114,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                             level: AlertLevels.WARNING,
                             message: t("adminPortal:components.claims.dialects.notifications." +
                                 "addDialect.genericError.message")
-                        }))
+                        }));
                     }).finally(() => {
                         // The created resource's id is sent as a location header.
                         // If that's available, navigate to the edit page.
@@ -150,7 +150,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 message: error?.message
                     || t("adminPortal:components.claims.dialects.notifications.addDialect.error.message")
             });
-        })
+        });
     };
 
     /**
@@ -313,7 +313,7 @@ export const AddDialect: FunctionComponent<AddDialectPropsInterface> = (
                 </Grid>
             </Modal.Actions>
         </Modal >
-    )
+    );
 };
 
 /**

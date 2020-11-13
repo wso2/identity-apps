@@ -119,7 +119,7 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                             setDisabled(
                                                                 values.get(selectedTypeDetail.name)
                                                                     .toString() === "false"
-                                                            )
+                                                            );
                                                         } }
                                                         data-testid={ `${ testId }-form-master-toggle-${
                                                             selectedTypeDetail.name }` }
@@ -187,14 +187,14 @@ export const GroupDetails: FunctionComponent<GroupDetailsPropsInterface> = (
                                                 />
 
                                             )
-                                    )
+                                    );
                                 })
                         }
                     </Forms>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

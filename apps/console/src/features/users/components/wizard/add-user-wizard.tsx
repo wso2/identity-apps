@@ -423,7 +423,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 }));
 
                 if (wizardState?.RoleList?.roles && wizardState?.GroupList?.groups) {
-                    assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups)
+                    assignUserRole(response.data, wizardState.RoleList.roles, wizardState.GroupList.groups);
                 }
 
                 closeWizard();
@@ -523,7 +523,7 @@ export const AddUserWizard: FunctionComponent<AddUserWizardPropsInterface> = (
                 ...wizardState[ WizardStepsFormTypes.BASIC_DETAILS ],
                 profileUrl: url
             }
-        })
+        });
     };
 
     const STEPS = [

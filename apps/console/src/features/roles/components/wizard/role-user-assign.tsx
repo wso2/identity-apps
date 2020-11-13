@@ -103,7 +103,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         if (isSelectAllUnAssignedUsers) {
             setCheckedUnassignedListItems(usersList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectAllUnAssignedUsers ]);
 
@@ -111,7 +111,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         if (isSelectAllAssignedUsers) {
             setCheckedAssignedListItems(tempUserList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAllAssignedUsers ]);
 
@@ -294,7 +294,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map(user => {
                 removedUsers.splice(removedUsers.indexOf(user), 1);
-                usersList.push(user)
+                usersList.push(user);
             });
             setUsersList(usersList);
             setTempUserList(removedUsers);
@@ -395,7 +395,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-unselected-users` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -426,7 +426,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-selected-users` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -524,7 +524,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                                         { user.userName }
                                                                     </Table.Cell>
                                                                 </Table.Row>
-                                                            )
+                                                            );
                                                         })
                                                     }
                                                 </Table.Body>
@@ -610,7 +610,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     showSecondaryActions={ false }
                                                     data-testid={ `${ testId }-update-unselected-users` }
                                                 />
-                                            )
+                                            );
                                         })
                                     }
                                 </TransferList>
@@ -642,7 +642,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     showSecondaryActions={ false }
                                                     data-testid={ `${ testId }-update-selected-users` }
                                                 />
-                                            )
+                                            );
                                         })
                                     }
                                 </TransferList>
@@ -667,5 +667,5 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                 </Forms>
             }
         </>
-    )
+    );
 };

@@ -70,11 +70,17 @@ module.exports = (env) => {
 
     return {
         devServer: {
+            before: function (app) {
+                app.get("/", function (req, res) {
+                    res.redirect(publicPath);
+                });
+            },
             contentBase: distFolder,
             historyApiFallback: true,
             host: "localhost",
             https: true,
             inline: true,
+            openPage: basename,
             port: devServerPort
         },
         devtool: isProduction
@@ -264,11 +270,6 @@ module.exports = (env) => {
                     context: path.join(__dirname, "node_modules", "@wso2is", "theme", "dist"),
                     from: "lib",
                     to: "libs"
-                },
-                {
-                    context: path.resolve(__dirname, "node_modules", "@wso2is", "theme"),
-                    from: "src",
-                    to: "themes-less"
                 },
                 {
                     context: path.join(__dirname, "node_modules", "@wso2is", "i18n"),

@@ -168,7 +168,7 @@ export const InboundProvisioningConfigurations: FunctionComponent<InboundProvisi
             </Grid>
 
         </>
-    )
+    );
 };
 
 /**

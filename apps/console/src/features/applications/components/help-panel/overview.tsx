@@ -77,7 +77,7 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                 } else if (protocol.type == "samlsso") {
                     setIsSAML(true);
                 }
-            })
+            });
         }
 
     }, [ inboundProtocols ]);

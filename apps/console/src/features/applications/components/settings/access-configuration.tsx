@@ -375,7 +375,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     icon: { icon: InboundProtocolLogos[protocol], size: "micro" } as GenericIconProps,
                                     id: protocol,
                                     title: _.upperCase(protocol)
-                                }
+                                };
                             } else {
                                 return {
                                     actions: [],
@@ -413,13 +413,13 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                                     } as GenericIconProps,
                                     id: protocol,
                                     title: _.upperCase(protocol)
-                                }
+                                };
                             }
                         })
                     }
                     data-testid={ `${ testId }-protocol-accordion` }
                 /> : <ContentLoader/>
-        )
+        );
     };
 
     /**
@@ -433,7 +433,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
         inboundProtocols.map((selected) => {
 
             if (selected === SupportedAuthProtocolTypes.WS_FEDERATION) {
-                return
+                return;
             }
 
             const selectedProtocol = selected as SupportedAuthProtocolMetaTypes;
@@ -466,7 +466,7 @@ export const AccessConfiguration: FunctionComponent<AccessConfigurationPropsInte
                         }));
                     });
             }
-        })
+        });
     }, [ inboundProtocols ]);
 
     return (

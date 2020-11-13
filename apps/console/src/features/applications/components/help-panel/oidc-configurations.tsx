@@ -16,21 +16,21 @@
  * under the License.
  */
 
+import { IdentityClient } from "@asgardio/oidc-js";
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels } from "@wso2is/core/models";
+import { addAlert } from "@wso2is/core/store";
 import { CopyInputField, GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "semantic-ui-react";
+import { AppState } from "../../../core/store";
 import { HelpPanelIcons } from "../../configs";
 import {
     OIDCApplicationConfigurationInterface,
     OIDCEndpointsInterface
 } from "../../models";
-import { IdentityClient } from "@asgardio/oidc-js";
-import { addAlert } from "@wso2is/core/store";
-import { AlertLevels } from "@wso2is/core/models";
-import { useDispatch, useSelector } from "react-redux";
-import { AppState } from "../../../core/store";
 
 /**
  * Get an identity client instance.
@@ -244,7 +244,7 @@ export const OIDCConfigurations: FunctionComponent<OIDCConfigurationsPropsInterf
                 </Grid.Row>
             </Grid>
         </>
-    )
+    );
 };
 
 /**

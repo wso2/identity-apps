@@ -58,7 +58,7 @@ document.createRange = () => {
 
     range.getClientRects = jest.fn(() => ({
         item: () => null,
-        length: 0,
+        length: 0
     }));
 
     return range;
@@ -71,6 +71,6 @@ window.AppUtils = {
     getConfig: function () {
         return configObject;
     }
-}
+};
 
 window.Worker = Worker;

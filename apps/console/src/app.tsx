@@ -159,14 +159,14 @@ export const App: FunctionComponent<{}> = (): ReactElement => {
         try {
             const storage = sessionStorage;
             if (!storage && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
-                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"))
+                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
         } catch {
             if (true && location.pathname !== AppConstants.getPaths().get("STORING_DATA_DISABLED")) {
-                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"))
+                history.push(AppConstants.getPaths().get("STORING_DATA_DISABLED"));
             }
         }
-    }
+    };
 
     return (
         <>

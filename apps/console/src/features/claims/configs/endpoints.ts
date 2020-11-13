@@ -29,5 +29,5 @@ export const getClaimResourceEndpoints = (serverHost: string): ClaimResourceEndp
         claims: `${ serverHost }/api/server/v1/claim-dialects`,
         externalClaims:`${ serverHost }/api/server/v1/claim-dialects/{}/claims`,
         localClaims: `${ serverHost }/api/server/v1/claim-dialects/local/claims`
-    }
+    };
 };

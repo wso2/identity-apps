@@ -16,7 +16,10 @@
  * under the License.
  */
 
+import { isFeatureEnabled } from "@wso2is/core/helpers";
+import { SBACInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
+import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
 import React, { useEffect, useState } from "react";
@@ -30,10 +33,7 @@ import { AlertInterface, AlertLevels, BasicProfileInterface, FeatureConfigInterf
 import { AppState } from "../../../store";
 import { getProfileInformation, setActiveForm } from "../../../store/actions";
 import { EditSection, ThemeIcon } from "../../shared";
-import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { MobileUpdateWizard } from "../../shared/mobile-update-wizard";
-import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
 
 
 /**

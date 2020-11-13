@@ -48,7 +48,7 @@ export const getEmailTemplateTypes = (): Promise<AxiosResponse<EmailTemplateType
             return Promise.reject(error);
         });
 
-}
+};
 
 /**
  * Create new email template type.
@@ -75,7 +75,7 @@ export const createNewTemplateType = (templateType: string): Promise<AxiosRespon
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 /**
  * Delete selected email template type for a given template type id.
@@ -99,7 +99,7 @@ export const deleteEmailTemplateType = (templateTypeId: string): Promise<AxiosRe
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 /**
  * Get details for the given email template ID.
@@ -123,7 +123,7 @@ export const getEmailTemplate = (templateId: string): Promise<AxiosResponse<Emai
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 /**
  * Get template details for given template type id and template id.
@@ -152,7 +152,7 @@ export const getTemplateDetails = (
             return Promise.reject(error);
         });
 
-}
+};
 
 /**
  * Create email template for selected locale.
@@ -182,7 +182,7 @@ export const createLocaleTemplate = (
             return Promise.reject(error);
         });
 
-}
+};
 
 /**
  * Delete a given locale template using the template type id and template id.
@@ -207,7 +207,7 @@ export const deleteLocaleTemplate = (templateTypeId: string, templateId: string)
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};
 
 /**
  * Replace given content for the selected locale template id and template type id.
@@ -236,4 +236,4 @@ export const replaceLocaleTemplateContent = (
         .catch((error) => {
             return Promise.reject(error);
         });
-}
+};

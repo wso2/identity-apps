@@ -120,7 +120,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     level: AlertLevels.SUCCESS,
                     message: t("devPortal:components.idp.notifications.updateFederatedAuthenticator.success.message")
                 }));
-                onUpdate(identityProvider.id)
+                onUpdate(identityProvider.id);
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -178,10 +178,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                 data: data,
                                 id: authenticatorId,
                                 meta: meta
-                            })
+                            });
                         })
                         .catch(error => {
-                            handleGetFederatedAuthenticatorMetadataAPICallError(error)
+                            handleGetFederatedAuthenticatorMetadataAPICallError(error);
                         });
                 })
                 .catch(error => {
@@ -215,11 +215,11 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                     identityProvider.federatedAuthenticators.authenticators.length > 0) {
                     const authenticator = res[0].data;
                     authenticator.isDefault = true;
-                    handleAuthenticatorConfigFormSubmit(authenticator)
+                    handleAuthenticatorConfigFormSubmit(authenticator);
                 }
                 setAvailableAuthenticators(res);
                 setIsPageLoading(false);
-            })
+            });
     }, [identityProvider?.federatedAuthenticators]);
 
     /**
@@ -416,7 +416,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         return new Promise(resolve => {
             getIdentityProviderTemplate(templateId)
                 .then(response => {
-                    resolve(response)
+                    resolve(response);
                 })
                 .catch(error => {
                     handleGetIDPTemplateAPICallError(error);
@@ -443,7 +443,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                 ] }
                 data-testid={ `${ testId }-empty-placeholder` }
             />
-        )
+        );
     };
 
     const showAuthenticatorList = (): ReactElement => {
@@ -523,13 +523,13 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                         }
                                         data-testid={ `${ testId }-accordion` }
                                     />
-                                )
+                                );
                             })
                         }
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
-        )
+        );
     };
 
     return (
@@ -591,7 +591,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                  closeWizard={ () => {
                                      setShowAddAuthenticatorWizard(false);
                                      setAvailableAuthenticators([]);
-                                     onUpdate(identityProvider.id)
+                                     onUpdate(identityProvider.id);
                                  } }
                                  manualModeOptions={ availableManualModeOptions }
                                  availableTemplates={ availableTemplates }

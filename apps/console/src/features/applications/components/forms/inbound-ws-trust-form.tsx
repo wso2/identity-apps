@@ -85,7 +85,7 @@ export const InboundWSTrustForm: FunctionComponent<InboundWSTrustFormPropsInterf
         return {
             audience: values.get("audience"),
             certificateAlias: values.get("certificateAlias")
-        }
+        };
     };
 
     return (

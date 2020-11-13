@@ -23,13 +23,13 @@ import {
     TestableComponentInterface
 } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { Field, FormValue, Forms } from "@wso2is/forms"
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ConfirmationModal, DangerZone, DangerZoneGroup, EmphasizedSegment } from "@wso2is/react-components";
-import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react"
+import React, { ChangeEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react"
-import { AppConstants, history, SharedUserStoreUtils } from "../../../core";
+import { Button, Divider, Form, Grid, InputOnChangeData, Label } from "semantic-ui-react";
+import { AppConstants, SharedUserStoreUtils, history } from "../../../core";
 import { PRIMARY_USERSTORE_PROPERTY_VALUES } from "../../../userstores";
 import { deleteRoleById, updateRoleDetails } from "../../api";
 import { PatchRoleDataInterface } from "../../models";
@@ -195,7 +195,7 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
             <EmphasizedSegment>
                 <Forms
                     onSubmit={ (values) => {
-                        updateRoleName(values)
+                        updateRoleName(values);
                     } }
                 >
                     <Grid>
@@ -374,5 +374,5 @@ export const BasicRoleDetails: FunctionComponent<BasicRoleProps> = (props: Basic
                     </ConfirmationModal>
             }
         </>
-    )
+    );
 };

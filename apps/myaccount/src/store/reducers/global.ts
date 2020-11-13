@@ -24,11 +24,11 @@ import { GlobalActionTypes, GlobalActions } from "../actions/types";
  * Initial state.
  */
 const initialState: GlobalInterface = {
+    activeForm: null,
     alert: null,
     alertSystem: null,
     isApplicationsPageVisible: undefined,
     isGlobalLoaderVisible: false,
-    activeForm: null,
     supportedI18nLanguages: null
 };
 

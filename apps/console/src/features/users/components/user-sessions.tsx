@@ -627,7 +627,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     { renderSessionDetails(session) }
                                 </SegmentedAccordion.Content>
                             </Fragment>
-                        )
+                        );
                     })
                 }
             </SegmentedAccordion>

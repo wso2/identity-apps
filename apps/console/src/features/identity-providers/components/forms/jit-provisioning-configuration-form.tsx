@@ -102,7 +102,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
 
     useEffect(() => {
         if (initialValues?.isEnabled) {
-            setIsJITProvisioningEnabled(initialValues?.isEnabled)
+            setIsJITProvisioningEnabled(initialValues?.isEnabled);
         }
     }, [initialValues]);
 
@@ -126,7 +126,7 @@ export const JITProvisioningConfigurationsForm: FunctionComponent<JITProvisionin
                                     setIsJITProvisioningEnabled(
                                         values.get(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
                                             .includes(JITProvisioningConstants.ENABLE_JIT_PROVISIONING_KEY)
-                                    )
+                                    );
                                 }
                             }
                             children={ [

@@ -177,5 +177,5 @@ export const CreateGroupSummary: FunctionComponent<AddUserWizardSummaryProps> = 
                     : null
             }
         </Grid>
-    )
+    );
 };

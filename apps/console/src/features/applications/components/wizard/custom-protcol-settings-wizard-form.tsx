@@ -85,7 +85,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             } else if (config?.isConfidential) {
                 return (
                     <Grid.Row columns={ 1 }>
@@ -113,7 +113,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             } else if (config?.type === CustomTypeEnum.BOOLEAN) {
                 return (
                     <Grid.Row columns={ 1 }>
@@ -139,7 +139,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             } else {
                 return (
                     <Grid.Row columns={ 1 }>
@@ -164,7 +164,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             }
         });
 
@@ -184,7 +184,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                 } else {
                     return (createInputComponent(config));
                 }
-            })
+            });
         }
     });
 
@@ -236,7 +236,7 @@ export const InboundCustomProtocolWizardForm: FunctionComponent<InboundCustomPro
                     ]
                 }
             }
-        }
+        };
     };
 
     useEffect(() => {

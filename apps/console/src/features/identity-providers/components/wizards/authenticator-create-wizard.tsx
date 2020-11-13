@@ -165,7 +165,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         if (wizardSteps[currentWizardStep]?.name === WizardSteps.AUTHENTICATOR_SETTINGS) {
             setSelectedAuthenticatorMetadata(undefined);
             setSelectedTemplateId(undefined);
-            setSelectedManualModeOptionId(undefined)
+            setSelectedManualModeOptionId(undefined);
         }
         setPartiallyCompletedStep(currentWizardStep);
     };
@@ -183,7 +183,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
         } else {
             setWizardState({
                 [ WizardConstants.AUTHENTICATOR ]: values
-            })
+            });
         }
         setCurrentWizardStep(currentWizardStep + 1);
     };
@@ -290,7 +290,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         triggerSubmit={ submitAuthenticator }
                         data-testid={ `${ testId }-authenticator-settings` }
                     />
-                )
+                );
             }
             case WizardSteps.SUMMARY: {
                 return (
@@ -303,7 +303,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                         isAddAuthenticatorWizard={ true }
                         data-testid={ `${ testId }-summary` }
                     />
-                )
+                );
             }
         }
     };
@@ -314,7 +314,7 @@ export const AuthenticatorCreateWizard: FunctionComponent<AddAuthenticatorWizard
                 setSelectedAuthenticatorMetadata(response);
             })
             .catch((error) => {
-                handleGetFederatedAuthenticatorMetadataAPICallError(error)
+                handleGetFederatedAuthenticatorMetadataAPICallError(error);
             });
     };
 

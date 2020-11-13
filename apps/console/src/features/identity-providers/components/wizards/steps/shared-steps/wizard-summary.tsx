@@ -103,7 +103,7 @@ export const WizardSummary: FunctionComponent<WizardSummaryProps> = (
                             </div>
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             }
         });
     };

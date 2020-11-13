@@ -114,7 +114,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         fetchConnectors()
             .then((res) => {
                 setAvailableConnectors(res);
-            })
+            });
     }, [ identityProvider ]);
 
     /**
@@ -132,7 +132,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 data: data,
                                 id: connectorId,
                                 meta: meta
-                            })
+                            });
                         })
                         .catch(error => {
                             handleGetOutboundProvisioningConnectorMetadataError(error);
@@ -405,7 +405,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                         }
                                                         data-testid={ `${testId}-accordion` }
                                                     />
-                                                )
+                                                );
                                             })
                                         }
                                     </Grid.Column>

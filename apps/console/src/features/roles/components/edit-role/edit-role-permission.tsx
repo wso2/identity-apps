@@ -18,10 +18,10 @@
 
 import { AlertLevels, RolesInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import React, { FunctionComponent, ReactElement } from "react"
+import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { updateRolePermissions, updateRole } from "../../api";
+import { updateRole, updateRolePermissions } from "../../api";
 import { Permission } from "../../models";
 import { PermissionList } from "../wizard";
 
@@ -132,7 +132,7 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                         })
                     );
                 }
-            })
+            });
     };
 
     return (
@@ -145,5 +145,5 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                 roleObject={ roleObject }
             />
         </div>
-    )
+    );
 };

@@ -105,13 +105,13 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
      */
     const findTestButtonIcon = (): TestButtonIcon => {
         if (isTesting) {
-            return TestButtonIcon.TESTING
+            return TestButtonIcon.TESTING;
         } else if (connectionSuccessful) {
-            return TestButtonIcon.SUCCESSFUL
+            return TestButtonIcon.SUCCESSFUL;
         } else if (connectionFailed) {
-            return TestButtonIcon.FAILED
+            return TestButtonIcon.FAILED;
         } else {
-            return TestButtonIcon.INITIAL
+            return TestButtonIcon.INITIAL;
         }
     };
 
@@ -132,13 +132,13 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
      */
     const findTestButtonColor = (): TestButtonColor => {
         if (isTesting) {
-            return TestButtonColor.TESTING
+            return TestButtonColor.TESTING;
         } else if (connectionSuccessful) {
-            return TestButtonColor.SUCCESSFUL
+            return TestButtonColor.SUCCESSFUL;
         } else if (connectionFailed) {
-            return TestButtonColor.FAILED
+            return TestButtonColor.FAILED;
         } else {
-            return TestButtonColor.INITIAL
+            return TestButtonColor.INITIAL;
         }
     };
 
@@ -483,7 +483,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                                             setIsTesting(false);
                                             setConnectionSuccessful(false);
                                             setConnectionFailed(true);
-                                        })
+                                        });
                                     }
                                 }
                                 color={
@@ -521,7 +521,7 @@ export const GeneralDetailsUserstore: FunctionComponent<GeneralDetailsUserstoreP
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

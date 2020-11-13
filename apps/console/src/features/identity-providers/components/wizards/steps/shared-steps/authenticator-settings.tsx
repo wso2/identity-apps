@@ -98,5 +98,5 @@ export const AuthenticatorSettings: FunctionComponent<AuthenticatorSettingsWizar
                 data-testid={ testId }
             /> : null
         )
-    )
+    );
 };

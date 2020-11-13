@@ -60,7 +60,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
                 return value?.includes(key);
             }
             default: {
-                return value
+                return value;
             }
         }
     };
@@ -206,7 +206,7 @@ export const CommonPluggableComponentForm: FunctionComponent<CommonPluggableComp
         });
 
         return values.join(", ");
-    }
+    };
 
     const handleParentPropertyChange = (key: string, values: Map<string, FormValue>) => {
         setDynamicValues({

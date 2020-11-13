@@ -18,13 +18,14 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { URLUtils } from "@wso2is/core/utils";
-import { Field, Forms, FormValue } from "@wso2is/forms";
+import { Field, FormValue, Forms } from "@wso2is/forms";
 import { ContentLoader, Hint, URLInput } from "@wso2is/react-components";
 import intersection from "lodash/intersection";
 import isEmpty from "lodash/isEmpty";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
+import { getAuthProtocolMetadata } from "../../api";
 import {
     ApplicationTemplateListItemInterface,
     DefaultProtocolTemplate,
@@ -32,7 +33,6 @@ import {
     MainApplicationInterface,
     OIDCMetadataInterface
 } from "../../models";
-import { getAuthProtocolMetadata } from "../../api";
 
 /**
  * Proptypes for the oauth protocol settings wizard form component.
@@ -135,7 +135,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     useEffect(() => {
         if (selectedTemplate?.id === DefaultProtocolTemplate.OIDC) {
-            setShowGrantTypes(true)
+            setShowGrantTypes(true);
         }
     }, [ selectedTemplate ]);
 
@@ -169,7 +169,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
         getAuthProtocolMetadata(selectedTemplate?.authenticationProtocol)
             .then((response) => {
-                setOIDCMeta(response)
+                setOIDCMeta(response);
             });
     }, [ OIDCMeta ]);
 

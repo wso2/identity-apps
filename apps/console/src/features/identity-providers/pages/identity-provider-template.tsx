@@ -193,7 +193,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         displayName: t("devPortal:pages.idpTemplate.supportServices.provisioningDisplayName"),
                         logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
                         name: SupportedServices.PROVISIONING
-                    }
+                    };
             }
         });
     };
@@ -263,7 +263,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             })
             .catch((error) => {
                 handleGetIDPTemplateAPICallError(error);
-            })
+            });
     };
 
     /**
@@ -291,7 +291,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
      */
     const handleTemplateSelection = (e: SyntheticEvent, { id }: { id: string }): void => {
         if (id === "expert-mode") {
-            setSelectedTemplate(ExpertModeTemplate)
+            setSelectedTemplate(ExpertModeTemplate);
             setSelectedTemplateWithUniqueName({
                 ...ExpertModeTemplate,
                 idp: {
@@ -311,7 +311,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             (response: IdentityProviderListResponseInterface) => {
             setPossibleListOfDuplicateIdps( response?.totalResults ? response?.identityProviders?.map(
                 eachIdp => eachIdp.name) : []);
-        })
+        });
     };
 
     /**

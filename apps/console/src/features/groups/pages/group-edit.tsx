@@ -69,7 +69,7 @@ const GroupEditPage: FunctionComponent<any> = (): ReactElement => {
         })
             .finally(() => {
                 setIsGroupDetailsRequestLoading(false);
-            })
+            });
     };
 
     const onGroupUpdate = (): void => {

@@ -28,5 +28,5 @@ export const getRolesResourceEndpoints = (serverHost: string): RolesResourceEndp
     return {
         permission: `${serverHost}/api/server/v1/permission-management/permissions`,
         roles: `${serverHost}/scim2/Roles`
-    }
+    };
 };

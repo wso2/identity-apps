@@ -79,7 +79,7 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
             onSubmit={ (): void => {
                 onSubmit({
                     connectorId: selectedConnector?.connectorId
-                })
+                });
             } }
             submitState={ triggerSubmit }
         >
@@ -112,7 +112,7 @@ export const OutboundProvisioningConnectors: FunctionComponent<OutboundProvision
                                                 size="small"
                                                 data-testid={ `${ testId }-connector-${ index }` }
                                             />
-                                        )
+                                        );
                                     })
                                 ) : null
                             }

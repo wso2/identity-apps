@@ -318,7 +318,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                 )
             }
         </>
-    )
+    );
 };
 
 /**

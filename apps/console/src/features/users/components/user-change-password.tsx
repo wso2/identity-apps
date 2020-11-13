@@ -147,7 +147,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 .then((response) => {
                     setPasswordRegExLoading(true);
                     passwordRegex = response;
-                })
+                });
         } else {
             // Set the username regEx of the primary user store.
             passwordRegex = PRIMARY_USERSTORE_PROPERTY_VALUES.PasswordJavaScriptRegEx;

@@ -361,7 +361,7 @@ export const AppUtils = (function() {
                         ? _config.serverOrigin
                         : _config.serverOrigin + this.getTenantPath(true),
                 ..._config.idpConfigs
-            }
+            };
         },
 
         /**

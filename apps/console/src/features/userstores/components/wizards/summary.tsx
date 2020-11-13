@@ -94,7 +94,7 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                     <div className="value">{ description }</div>
                 </Grid.Column>
             </Grid.Row>
-        )
+        );
     };
 
     return (
@@ -118,11 +118,11 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.find((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
+                                    return userStoreProperty.name === property.name;
                                 })?.value,
                                 index
                             )
-                        )
+                        );
                     }
                 })
             }
@@ -133,11 +133,11 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.find((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
+                                    return userStoreProperty.name === property.name;
                                 })?.value,
                                 index
                             )
-                        )
+                        );
                     }
                 })
             }
@@ -151,11 +151,11 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.find((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
+                                    return userStoreProperty.name === property.name;
                                 })?.value,
                                 index
                             )
-                        )
+                        );
                     }
                 })
             }
@@ -169,16 +169,16 @@ export const SummaryUserStores: FunctionComponent<SummaryUserStoresPropsInterfac
                             generateSummaryLine(
                                 property.description.split("#")[ 0 ],
                                 data?.properties?.find((userStoreProperty: UserStoreProperty) => {
-                                    return userStoreProperty.name === property.name
+                                    return userStoreProperty.name === property.name;
                                 })?.value,
                                 index
                             )
-                        )
+                        );
                     }
                 })
             }
         </Grid>
-    )
+    );
 };
 
 /**

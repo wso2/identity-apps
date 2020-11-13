@@ -109,7 +109,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <LinkButton
                                 floated="left"
-                                onClick={ () => { onCloseHandler() } }
+                                onClick={ () => { onCloseHandler(); } }
                                 data-testid={ `${ testId }-modal-cancel-button` }
                             >
                                 { t("common:cancel") }
@@ -118,7 +118,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                         <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 8 }>
                             <PrimaryButton
                                 floated="right"
-                                onClick={ () => { onEditHandler() } }
+                                onClick={ () => { onEditHandler(); } }
                                 data-testid={ `${ testId }-modal-edit-button` }
                             >
                                 { t("adminPortal:components.emailTemplates.buttons.editTemplate") }
@@ -128,7 +128,7 @@ export const ViewLocaleTemplate: FunctionComponent<ViewLocaleTemplatePropsInterf
                 </Grid>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };
 
 /**

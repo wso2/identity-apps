@@ -150,7 +150,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
             provisioningConfigurations: {
                 outboundProvisioningIdps: outboundConfigs
             }
-        }
+        };
     };
 
     /**
@@ -181,7 +181,7 @@ export const OutboundProvisioningIdpCreateWizard: FunctionComponent<
                     initialValues={ null }
                     triggerSubmit={ finishSubmit }
                     onSubmit={ (values): void => {
-                        handleWizardFormFinish(values)
+                        handleWizardFormFinish(values);
                     } }
                     idpList={ idpList }
                     data-testid={ `${ testId }-form` }

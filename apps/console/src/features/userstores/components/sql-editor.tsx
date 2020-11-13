@@ -304,7 +304,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                                     <Checkbox
                                         label={ t("adminPortal:components.userstores.sqlEditor.darkMode") }
                                         checked={ isEditorDarkMode }
-                                        onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode) } }
+                                        onChange={ () => { setIsEditorDarkMode(!isEditorDarkMode); } }
                                         slider
                                         data-testid={ `${ testId }-code-editor-theme-toggle` }
                                     />
@@ -358,7 +358,7 @@ export const SqlEditor: FunctionComponent<SqlEditorPropsInterface> = (
                 </Sidebar.Pushable >
             </div>
         </div>
-    )
+    );
 };
 
 /**

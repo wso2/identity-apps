@@ -140,7 +140,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
         getUserStores(params)
             .then(response => {
                 if (response && response instanceof Array) {
-                    setUserstoresCount(response.length)
+                    setUserstoresCount(response.length);
                 }
             })
             .catch(error => {
@@ -172,7 +172,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".heading"),
                             image: OverviewPageIllustrations.quickLinks.groups,
                             onClick: () => {
-                                history.push(AppConstants.getPaths().get("GROUPS"))
+                                history.push(AppConstants.getPaths().get("GROUPS"));
                             }
                         },
                         {
@@ -182,7 +182,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".heading"),
                             image: OverviewPageIllustrations.quickLinks.roles,
                             onClick: () => {
-                                history.push(AppConstants.getPaths().get("ROLES"))
+                                history.push(AppConstants.getPaths().get("ROLES"));
                             }
                         },
                         {
@@ -192,7 +192,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".dialects.heading"),
                             image: OverviewPageIllustrations.quickLinks.dialects,
                             onClick: () => {
-                                history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"))
+                                history.push(AppConstants.getPaths().get("CLAIM_DIALECTS"));
                             }
                         },
                         {
@@ -202,7 +202,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".certificates.heading"),
                             image: OverviewPageIllustrations.quickLinks.certificates,
                             onClick: () => {
-                                history.push(AppConstants.getPaths().get("CERTIFICATES"))
+                                history.push(AppConstants.getPaths().get("CERTIFICATES"));
                             }
                         },
                         {
@@ -212,7 +212,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".generalConfigs.heading"),
                             image: OverviewPageIllustrations.quickLinks.generalConfigs,
                             onClick: () => {
-                                history.push(AppConstants.getPaths().get("SERVER_CONFIGS"))
+                                history.push(AppConstants.getPaths().get("SERVER_CONFIGS"));
                             }
                         },
                         {
@@ -222,7 +222,7 @@ const OverviewPage: FunctionComponent<OverviewPageInterface> = (
                                 ".emailTemplates.heading"),
                             image: OverviewPageIllustrations.quickLinks.emailTemplates,
                             onClick: () => {
-                                history.push(AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"))
+                                history.push(AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"));
                             }
                         }
                     ] }

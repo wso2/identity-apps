@@ -155,7 +155,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     />
                     { " / " + displayName.split("/")[1] }
                 </>
-            )
+            );
         } else {
             return (
                 <>
@@ -317,7 +317,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
                         ? "eye"
-                        : "pencil alternate"
+                        : "pencil alternate";
                 },
                 onClick: (e: SyntheticEvent, group: GroupsInterface): void =>
                     handleGroupEdit(group.id),
@@ -330,7 +330,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         GroupConstants.FEATURE_DICTIONARY.get("GROUP_UPDATE"))
                     || readOnlyUserStores?.includes(userStore.toString())
                         ? t("common:view")
-                        : t("common:edit")
+                        : t("common:edit");
                 },
                 renderer: "semantic-icon"
             }
@@ -343,7 +343,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     : "PRIMARY";
 
                 return !hasRequiredScopes(featureConfig?.groups, featureConfig?.groups?.scopes?.delete, allowedScopes)
-                    || readOnlyUserStores?.includes(userStore.toString())
+                    || readOnlyUserStores?.includes(userStore.toString());
             },
             icon: (): SemanticICONS => "trash alternate",
             onClick: (e: SyntheticEvent, group: GroupsInterface): void => {

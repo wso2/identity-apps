@@ -43,6 +43,8 @@ import {
 } from "../../../themes/default/assets/images/icons/magnifier-colored-icon.svg";
 import { ReactComponent as IDPMetadataIcon } from "../../../themes/default/assets/images/icons/metadata.svg";
 import { ReactComponent as OpenBookIcon } from "../../../themes/default/assets/images/icons/open-book-icon.svg";
+import { ReactComponent as WellKnownIcon
+} from "../../../themes/default/assets/images/icons/outline-icons/discovery-endpoint.svg";
 import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
 import { ReactComponent as ShuttleIcon } from "../../../themes/default/assets/images/icons/shuttle-icon.svg";
 import { ReactComponent as SLOIcon } from "../../../themes/default/assets/images/icons/slo.svg";
@@ -50,8 +52,6 @@ import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/
 import { ReactComponent as SSOIcon } from "../../../themes/default/assets/images/icons/sso.svg";
 import { ReactComponent as TokenIcon } from "../../../themes/default/assets/images/icons/token.svg";
 import { ReactComponent as UserInfoIcon } from "../../../themes/default/assets/images/icons/userInfo.svg";
-import { ReactComponent as WellKnownIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/discovery-endpoint.svg";
 import {
     ReactComponent as BoxTemplateIllustration
 } from "../../../themes/default/assets/images/illustrations/box-template-illustration.svg";

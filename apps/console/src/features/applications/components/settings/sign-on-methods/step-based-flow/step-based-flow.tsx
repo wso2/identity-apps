@@ -138,7 +138,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             .then(([ localAuthenticators, federatedAuthenticators ]) => {
                 setLocalAuthenticators(localAuthenticators);
                 setFederatedAuthenticators(federatedAuthenticators);
-            })
+            });
     }, []);
 
     /**
@@ -188,7 +188,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
             steps: authenticationSteps,
             subjectStepId,
             type: AuthenticationSequenceType.USER_DEFINED
-        })
+        });
     }, [ triggerUpdate ]);
 
     /**
@@ -489,7 +489,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                                 key: step.id,
                                                                 text: `${ t("common:step") } ${ index + 1 }`,
                                                                 value: index + 1
-                                                            }
+                                                            };
                                                         })
                                                         :[]
                                                     }
@@ -529,7 +529,7 @@ export const StepBasedFlow: FunctionComponent<AuthenticationFlowPropsInterface> 
                                                                 key: step.id,
                                                                 text: `${ t("common:step") } ${ index + 1 }`,
                                                                 value: index + 1
-                                                            }
+                                                            };
                                                         })
                                                         :[]
                                                     }
