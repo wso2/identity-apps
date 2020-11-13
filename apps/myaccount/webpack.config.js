@@ -125,7 +125,6 @@ module.exports = (env) => {
                             /joi/,
                             /react-notification-system/,
                             /less-plugin-rewrite-variable/,
-                            /@wso2is(\\|\/)authentication/,
                             /@wso2is(\\|\/)forms/,
                             /@wso2is(\\|\/)react-components/,
                             /@wso2is(\\|\/)theme/,
