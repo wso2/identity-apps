@@ -234,14 +234,14 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
             const tempRequiredFields: Map<string, boolean> = new Map(requiredFieldsRef.current);
             const tempValidFields: Map<string, Validation> = new Map(validFieldsRef.current);
 
-            setIsValidating(true);
             isValidatingRef.current = true;
+            setIsValidating(true);
             await validate(name, tempRequiredFields, tempValidFields);
 
             validFieldsRef.current = new Map(tempValidFields);
             requiredFieldsRef.current = new Map(tempRequiredFields);
-            setIsValidating(false);
             isValidatingRef.current = false;
+            setIsValidating(false);
 
             setValidFields(tempValidFields);
             setRequiredFields(tempRequiredFields);
@@ -356,7 +356,7 @@ export const Forms: React.FunctionComponent<React.PropsWithChildren<FormPropsInt
                 });
 
                 return tempIterable;
-            }
+            };
 
             /**
              * In case an existing form field is dynamically removed, remove all its data.
