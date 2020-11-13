@@ -183,7 +183,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
     const handleTemplateSearch = (e: SyntheticEvent, { value }: { value: string }): void => {
         if (value.length > 0) {
             setFilteredTemplateList(applicationTemplates.filter((item) =>
-                item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1))
+                item.name.toLowerCase().indexOf(value.toLowerCase()) !== -1));
         } else {
             setFilteredTemplateList(applicationTemplates);
         }

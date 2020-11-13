@@ -37,7 +37,7 @@ import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizar
 import { PassiveStsProtocolSettingsWizardForm } from "./passive-sts-protocol-settings-wizard-form";
 import { ProtocolSelectionWizardForm } from "./protocol-selection-wizard-form";
 import { ProtocolWizardSummary } from "./protocol-wizard-summary";
-import { SAMLProtocolAllSettingsWizardForm } from "./saml-protcol-settings-all-option-wizard-form";
+import { SAMLProtocolAllSettingsWizardForm } from "./saml-protocol-settings-all-option-wizard-form";
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import { WizardSummary } from "./wizard-summary";
 import { WSTrustProtocolSettingsWizardForm } from "./ws-trust-protocol-settings-wizard-form";

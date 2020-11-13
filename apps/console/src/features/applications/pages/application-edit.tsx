@@ -862,10 +862,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     isTabExtensionsAvailable={ (isAvailable) => setIsExtensionsAvailable(isAvailable) }
                     urlSearchParams={ urlSearchParams }
                     getConfiguredInboundProtocolsList={ (list: string[]) => {
-                        setInboundProtocolList(list)
+                        setInboundProtocolList(list);
                     } }
                     getConfiguredInboundProtocolConfigs={ (configs: object) => {
-                        setInboundProtocolConfigs(configs)
+                        setInboundProtocolConfigs(configs);
                     } }
                     readOnly={ resolveReadOnlyState() }
                 />

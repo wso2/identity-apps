@@ -88,15 +88,15 @@ export const SAMLProtocolSettingsWizardForm: FunctionComponent<SAMLProtocolSetti
             const tempAssertionConsumerUrls = templateValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                 .assertionConsumerUrls;
             if (!isEmpty(tempAssertionConsumerUrls)) {
-                setAssertionConsumerUrls(tempAssertionConsumerUrls.toString())
+                setAssertionConsumerUrls(tempAssertionConsumerUrls.toString());
             } else {
-                setAssertionConsumerUrls("")
+                setAssertionConsumerUrls("");
             }
         } else {
             setAssertionConsumerUrls(
                 initialValues?.inboundProtocolConfiguration?.saml?.manualConfiguration
                     .assertionConsumerUrls?.toString()
-            )
+            );
         }
     }, [initialValues]);
 

@@ -135,7 +135,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
      */
     useEffect(() => {
         if (selectedTemplate?.id === DefaultProtocolTemplate.OIDC) {
-            setShowGrantTypes(true)
+            setShowGrantTypes(true);
         }
     }, [ selectedTemplate ]);
 
@@ -169,7 +169,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
 
         getAuthProtocolMetadata(selectedTemplate?.authenticationProtocol)
             .then((response) => {
-                setOIDCMeta(response)
+                setOIDCMeta(response);
             });
     }, [ OIDCMeta ]);
 

@@ -108,7 +108,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
     useEffect(() => {
         if (configureMode === SAMLConfigModes.META_FILE) {
             updateSelectedSAMLMetaFile(true);
-            return
+            return;
         }
         updateSelectedSAMLMetaFile(false);
     }, [configureMode]);
@@ -133,7 +133,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         }
                     }
                 }
-            }
+            };
         } else if (configureMode === SAMLConfigModes.META_URL) {
             result = {
                 inboundProtocolConfiguration: {
@@ -141,7 +141,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         metadataURL: values.get("url")
                     }
                 }
-            }
+            };
         } else if (configureMode === SAMLConfigModes.META_FILE) {
             result = {
                 inboundProtocolConfiguration: {
@@ -152,7 +152,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                         pasteValue: filePasteContent
                     }
                 }
-            }
+            };
         }
         return result;
     };
@@ -165,7 +165,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                     if (configureMode === SAMLConfigModes.MANUAL && _.isEmpty(assertionConsumerUrls)) {
                         setAssertionConsumerUrlError(true);
                     } else if (configureMode === SAMLConfigModes.META_FILE && _.isEmpty(fileContent)) {
-                        setEmptyFileError(true)
+                        setEmptyFileError(true);
                     } else {
                         onSubmit(getFormValues(values));
                     }
@@ -203,7 +203,7 @@ export const SAMLProtocolAllSettingsWizardForm: FunctionComponent<SAMLProtocolAl
                                 }
                                 listen={
                                     (values) => {
-                                        setConfigureMode(values.get("mode") as string)
+                                        setConfigureMode(values.get("mode") as string);
                                     }
                                 }
                                 data-testid={ `${ testId }-mode-radio-group` }

@@ -139,7 +139,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
             const assertionUrlArray = assertionConsumerUrls.split(",");
             assertionUrlArray.map((url) => {
                 allowedOptions.push({ key: assertionUrlArray.indexOf(url), text: url, value: url });
-            })
+            });
         }
         return allowedOptions;
     };
@@ -199,7 +199,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             .includes("enableSignatureValidationForArtifactBinding")
                 }
             }
-        }
+        };
     };
 
     useEffect(
@@ -210,7 +210,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                     initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.enabled);
                 setIsAttributeProfileEnabled(initialValues?.attributeProfile.enabled);
                 setIsRequestSignatureValidationEnabled(initialValues?.requestValidation.enableSignatureValidation);
-                setAssertionEncryptionEnabled(initialValues?.singleSignOnProfile.assertion.encryption.enabled)
+                setAssertionEncryptionEnabled(initialValues?.singleSignOnProfile.assertion.encryption.enabled);
             }
         }, [initialValues]
     );
@@ -561,7 +561,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             setIsRequestSignatureValidationEnabled(
                                                 values.get("requestSignatureValidation")
                                                     .includes("enableSignatureValidation")
-                                            )
+                                            );
                                         }
                                     }
                                     value={
@@ -980,7 +980,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         (values) => {
                                             setAssertionEncryptionEnabled(
                                                 values.get("assertionEncryption").includes("enableAssertionEncryption")
-                                            )
+                                            );
                                         }
                                     }
                                     children={ [
