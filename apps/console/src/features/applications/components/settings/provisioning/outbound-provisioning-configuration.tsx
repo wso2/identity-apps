@@ -130,7 +130,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                     message: t("devPortal:components.applications.notifications.updateApplication.genericError" +
                         ".message")
                 }));
-            })
+            });
     };
 
     const updateConfiguration = (values: any) => {
@@ -145,7 +145,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
             provisioningConfigurations: {
                 outboundProvisioningIdps: outboundConfigs
             }
-        }
+        };
     };
 
     /**
@@ -228,7 +228,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                                     initialValues={ provisioningIdp }
                                                                     triggerSubmit={ null }
                                                                     onSubmit={ (values): void => {
-                                                                        updateIdentityProvider(values)
+                                                                        updateIdentityProvider(values);
                                                                     } }
                                                                     idpList={ idpList }
                                                                     isEdit={ true }
@@ -242,7 +242,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                                                 }
                                                 data-testid={ `${ testId }-outbound-connector-accordion` }
                                             />
-                                        )
+                                        );
                                     })
                                 }
                             </Grid.Column>
@@ -344,7 +344,7 @@ export const OutboundProvisioningConfiguration: FunctionComponent<OutboundProvis
                 )
             }
         </>
-    )
+    );
 };
 
 /**

@@ -102,7 +102,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                     message: t("adminPortal:components.emailTemplateTypes.notifications.createTemplateType" +
                         ".genericError.message")
                 });
-            })
+            });
     };
 
     return (
@@ -133,7 +133,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                             <LinkButton
                                 floated="left"
                                 onClick={ () => {
-                                    onCloseHandler()
+                                    onCloseHandler();
                                 } }
                                 data-testid={ `${ testId }-cancel-button` }
                             >
@@ -153,7 +153,7 @@ export const AddEmailTemplateTypeWizard: FunctionComponent<AddEmailTemplateTypeW
                 </Grid>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };
 
 /**

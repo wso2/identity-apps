@@ -138,7 +138,7 @@ export const CertificateSummary: FunctionComponent<CertificateSummaryPropsInterf
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

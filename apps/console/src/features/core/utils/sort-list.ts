@@ -21,7 +21,7 @@ export const sortList = <T extends unknown>(list: T[], sortBy: string, isAscendi
     const sortedList: T[] = tempList?.sort((a: T, b: T) => {
         return isAscending
             ? a[sortBy]?.localeCompare(b[sortBy])
-            : b[sortBy]?.localeCompare(a[sortBy])
+            : b[sortBy]?.localeCompare(a[sortBy]);
     });
 
     return sortedList;

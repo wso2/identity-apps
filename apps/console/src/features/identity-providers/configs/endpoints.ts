@@ -28,5 +28,5 @@ export const getIDPResourceEndpoints = (serverHost: string): IDPResourceEndpoint
     return {
         identityProviders: `${ serverHost }/api/server/v1/identity-providers`,
         localAuthenticators: `${ serverHost }/api/server/v1/configs/authenticators`
-    }
+    };
 };

@@ -397,7 +397,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         setUserMetaColumns(metaColumns);
 
         metaColumns.map((column) => {
-            tempColumns.set(column, column)
+            tempColumns.set(column, column);
         });
         setUserListMetaContent(tempColumns);
         setListUpdated(true);

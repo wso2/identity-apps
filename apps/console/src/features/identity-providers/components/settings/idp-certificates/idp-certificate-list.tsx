@@ -108,7 +108,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                 size="tiny"
                 open={ certificateModal }
                 onClose={ () => {
-                    setCertificateModal(false)
+                    setCertificateModal(false);
                 } }
                 data-testid={ `${ testId }-view-certificate-modal` }
             >
@@ -140,7 +140,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                     />
                 </Modal.Content>
             </Modal>
-        )
+        );
     };
 
     /**

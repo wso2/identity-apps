@@ -276,7 +276,7 @@ export const ScriptBasedFlow: FunctionComponent<AdaptiveScriptsPropsInterface> =
                                                 lineWrapping: true
                                             } }
                                             onChange={ (editor, data, value) => {
-                                                onScriptChange(value)
+                                                onScriptChange(value);
                                             } }
                                             theme={ isEditorDarkMode ? "dark" : "light" }
                                             readOnly={ readOnly }

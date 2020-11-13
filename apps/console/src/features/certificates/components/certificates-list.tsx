@@ -182,7 +182,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     || t("adminPortal:components.certificates.keystore.notifications." +
                         "getAlias.genericError.message")
             }));
-        })
+        });
     };
 
     /**
@@ -229,7 +229,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     ?? t("adminPortal:components.certificates.keystore.notifications." +
                         "getPublicCertificate.genericError.description")
             }));
-        })
+        });
     }, []);
 
     /**
@@ -315,7 +315,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     )
                 }
             </ConfirmationModal>
-        )
+        );
     };
 
     /**
@@ -419,7 +419,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 dimmer="blurring"
                 size="tiny"
                 open={ certificateModal }
-                onClose={ () => { setCertificateModal(false) } }
+                onClose={ () => { setCertificateModal(false); } }
                 data-testid={ `${ testId }-certificate-display-modal` }
             >
                 <Modal.Header>
@@ -451,7 +451,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                     />
                 </Modal.Content>
             </Modal>
-        )
+        );
     };
 
     /**
@@ -559,7 +559,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                         ?? t("adminPortal:components.certificates.keystore.notifications.getCertificate." +
                             "genericError.message")
                 }));
-            })
+            });
     };
 
     /**
@@ -599,7 +599,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                         ?? t("adminPortal:components.certificates.keystore.notifications.getCertificate." +
                             "genericError.message")
                 }));
-            })
+            });
     };
 
     /**
@@ -648,7 +648,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 textAlign: "right",
                 title: t("adminPortal:components.certificates.keystore.list.columns.actions")
             }
-        ]
+        ];
     };
 
     /**
@@ -717,7 +717,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                 data-testid={ testId }
             />
         </>
-    )
+    );
 };
 
 /**

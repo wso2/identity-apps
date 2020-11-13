@@ -152,8 +152,8 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         const requestURI: string[] = [];
         if (claimConfigurations.dialect === "CUSTOM") {
             claimConfigurations.claimMappings?.map((element: ClaimMappingInterface) => {
-                requestURI.push(element.localClaim.uri)
-            })
+                requestURI.push(element.localClaim.uri);
+            });
         } else if (claimConfigurations.dialect === "LOCAL") {
             claimConfigurations.requestedClaims.map((element: RequestedClaimConfigurationInterface) => {
                 requestURI.push(element.claim.uri);
@@ -219,10 +219,10 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
 
         if (selectedDialect.localDialect) {
             setFilterSelectedClaims(selectedClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterSelectedExternalClaims(selectedExternalClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         }
     };
 
@@ -239,9 +239,9 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
         } else {
             // setSearchOn(false);
             if (selectedDialect.localDialect) {
-                setFilterSelectedClaims(selectedClaims)
+                setFilterSelectedClaims(selectedClaims);
             } else {
-                setFilterSelectedExternalClaims(selectedExternalClaims)
+                setFilterSelectedExternalClaims(selectedExternalClaims);
             }
         }
     };
@@ -376,7 +376,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                         removeMapping={ removeMapping }
                         data-testid={ `${ testId }-wizard` }
                     />
-                )
+                );
             }
             return (
 
@@ -390,7 +390,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                     setAvailableExternalClaims={ setExternalClaims }
                     data-testid={ `${ testId }-wizard-other-dialects` }
                 />
-            )
+            );
         }
     );
 
@@ -598,7 +598,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             readOnly={ readOnly }
                                                                             data-testid={ claim.claimURI }
                                                                         />
-                                                                    )
+                                                                    );
 
                                                                 })
                                                             }
@@ -649,7 +649,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                                             data-testid={ claim.claimURI }
                                                                             readOnly={ readOnly }
                                                                         />
-                                                                    )
+                                                                    );
                                                                 })
                                                             }
                                                         </Table.Body>

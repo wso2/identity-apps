@@ -81,7 +81,7 @@ export const DialectDetails: FunctionComponent<DialectDetailsPropsInterface> = (
                 data-testid={ `${ testId }-form-dialect-uri-input` }
             />
         </Forms >
-    )
+    );
 };
 
 /**

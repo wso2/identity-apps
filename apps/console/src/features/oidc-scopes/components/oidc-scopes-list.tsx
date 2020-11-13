@@ -307,7 +307,7 @@ export const OIDCScopeList: FunctionComponent<OIDCScopesListPropsInterface> = (
                     title={ t("devPortal:components.oidcScopes.placeholders.emptySearch.title") }
                     subtitle={ [
                         t("devPortal:components.oidcScopes.placeholders.emptySearch.subtitles.0"),
-                        t("devPortal:components.oidcScopes.placeholders.emptySearch.subtitles.1"),
+                        t("devPortal:components.oidcScopes.placeholders.emptySearch.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />

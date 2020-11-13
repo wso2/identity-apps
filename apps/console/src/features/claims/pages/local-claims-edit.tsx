@@ -19,7 +19,7 @@
 import { AlertLevels, Claim, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { AnimatedAvatar, PageLayout, ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -181,7 +181,7 @@ const LocalClaimsEditPage: FunctionComponent<LocalClaimsEditPageInterface> = (
         >
             <ResourceTab panes={ panes } data-testid={ `${ testId }-tabs` } />
         </PageLayout>
-    )
+    );
 };
 
 /**

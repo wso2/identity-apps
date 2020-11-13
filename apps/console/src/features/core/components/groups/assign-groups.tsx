@@ -65,7 +65,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
         if (isSelectAssignedAllGroupsChecked) {
             setCheckedAssignedListItems(initialValues?.tempGroupList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAssignedAllGroupsChecked ]);
 
@@ -73,7 +73,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
         if (isSelectUnassignedGroupsAllRolesChecked) {
             setCheckedUnassignedListItems(initialValues?.groupList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectUnassignedGroupsAllRolesChecked ]);
 
@@ -269,7 +269,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                                     showSecondaryActions={ false }
                                     data-testid="user-mgt-add-user-wizard-modal-unselected-groups"
                                 />
-                            )
+                            );
                         })
                     }
                 </TransferList>
@@ -301,7 +301,7 @@ export const AssignGroups: FunctionComponent<AssignGroupsPropsInterface> = (
                                     showSecondaryActions={ false }
                                     data-testid="user-mgt-add-user-wizard-modal-selected-groups"
                                 />
-                            )
+                            );
                         })
                     }
                 </TransferList>

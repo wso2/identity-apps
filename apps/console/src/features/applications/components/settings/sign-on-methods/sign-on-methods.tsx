@@ -121,7 +121,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
      */
     const updateSteps = (add: boolean): void => {
         setSteps(add ? steps + 1 : steps - 1);
-    }
+    };
 
     /**
      * Handles the data loading from a adaptive auth template when it is selected
@@ -142,7 +142,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 ...newSequence,
                 requestPathAuthenticators: selectedRequestPathAuthenticators,
                 script: JSON.stringify(template.code)
-            }
+            };
         }
 
         if (template.defaultAuthenticators) {
@@ -155,9 +155,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                         return {
                             authenticator,
                             idp: "LOCAL"
-                        }
+                        };
                     })
-                })
+                });
             }
 
             newSequence = {
@@ -165,7 +165,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 attributeStepId: 1,
                 steps,
                 subjectStepId: 1
-            }
+            };
         }
 
         setSequence(newSequence);
@@ -284,7 +284,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                                         return {
                                             label: authenticator.displayName,
                                             value: authenticator.name
-                                        }
+                                        };
                                     })
                                 }
                                 listen={

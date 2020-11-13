@@ -98,13 +98,13 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
      */
     const findTestButtonIcon = (): TestButtonIcon => {
         if (isTesting) {
-            return TestButtonIcon.TESTING
+            return TestButtonIcon.TESTING;
         } else if (connectionSuccessful) {
-            return TestButtonIcon.SUCCESSFUL
+            return TestButtonIcon.SUCCESSFUL;
         } else if (connectionFailed) {
-            return TestButtonIcon.FAILED
+            return TestButtonIcon.FAILED;
         } else {
-            return TestButtonIcon.INITIAL
+            return TestButtonIcon.INITIAL;
         }
     };
 
@@ -125,13 +125,13 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
      */
     const findTestButtonColor = (): TestButtonColor => {
         if (isTesting) {
-            return TestButtonColor.TESTING
+            return TestButtonColor.TESTING;
         } else if (connectionSuccessful) {
-            return TestButtonColor.SUCCESSFUL
+            return TestButtonColor.SUCCESSFUL;
         } else if (connectionFailed) {
-            return TestButtonColor.FAILED
+            return TestButtonColor.FAILED;
         } else {
-            return TestButtonColor.INITIAL
+            return TestButtonColor.INITIAL;
         }
     };
 
@@ -165,7 +165,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                 operation: "REPLACE",
                 path: `/properties/${property.name}`,
                 value: values.get(property.name).toString()
-            }
+            };
         });
 
         const optionalNonSqlData = showMore
@@ -174,7 +174,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: values.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -184,7 +184,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -194,7 +194,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -204,7 +204,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -214,7 +214,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -435,7 +435,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                                                     setIsTesting(false);
                                                     setConnectionSuccessful(false);
                                                     setConnectionFailed(true);
-                                                })
+                                                });
                                             }
                                         }
                                     }
@@ -471,7 +471,7 @@ export const EditConnectionDetails: FunctionComponent<EditConnectionDetailsProps
                             <Grid.Column width={ 8 } textAlign="center">
                                 <LinkButton
                                     type="button"
-                                    onClick={ () => { setShowMore(!showMore) } }
+                                    onClick={ () => { setShowMore(!showMore); } }
                                     data-testid={ `${ testId }-show-more-button` }
                                 >
                                     <Icon name={ showMore ? "chevron up" : "chevron down" } />

@@ -185,8 +185,8 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 members?.push({
                     display: user.userName,
                     value: user.id
-                })
-            })
+                });
+            });
         }
 
         const groupData: CreateGroupInterface = {
@@ -210,7 +210,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 if (groupDetails?.RoleList?.roles) {
                     groupDetails?.RoleList?.roles.forEach(role => {
                         rolesList?.push(role.id);
-                    })
+                    });
                 }
 
                 const roleData = {
@@ -313,7 +313,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
      *
      */
     const handleGroupWizardFinish = () => {
-        addGroup(wizardState)
+        addGroup(wizardState);
     };
 
     /**

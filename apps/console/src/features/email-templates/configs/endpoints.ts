@@ -27,5 +27,5 @@ import { EmailTemplatesResourceEndpointsInterface } from "../models";
 export const getEmailTemplatesResourceEndpoints = (serverHost: string): EmailTemplatesResourceEndpointsInterface => {
     return {
         emailTemplateType: `${ serverHost }/api/server/v1/email/template-types`
-    }
+    };
 };

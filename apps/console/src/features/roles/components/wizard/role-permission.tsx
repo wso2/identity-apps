@@ -100,7 +100,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         const collapsedTree = _.cloneDeep(permissionTree);
         removeIndeterminateState(collapsedTree);
         checkedPermissions.forEach((node: Permission) => {
-            markParentAsPartiallyChecked(collapsedTree, node, 0)
+            markParentAsPartiallyChecked(collapsedTree, node, 0);
         });
         setPermissionTree(collapsedTree);
     }, [checkedPermissions.length]);
@@ -126,7 +126,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     if (availablePermissionsInRole.length !== 0) {
                         setCheckedPermissions(availablePermissionsInRole);
                         availablePermissionsInRole.forEach((node: Permission) => {
-                            markParentAsPartiallyChecked(permissionTree, node, 0)
+                            markParentAsPartiallyChecked(permissionTree, node, 0);
                         });
                         setCheckedStateForNodesInPermissionTree(availablePermissionsInRole, permissionTree, false);
                     }
@@ -135,7 +135,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     if (initialValues && initialValues.length !== 0) {
                         setCheckedPermissions(initialValues);
                         initialValues.forEach((node: Permission) => {
-                            markParentAsPartiallyChecked(permissionTree, node, 0)
+                            markParentAsPartiallyChecked(permissionTree, node, 0);
                         });
                         setCheckedStateForNodesInPermissionTree(initialValues, permissionTree, false);
                     }
@@ -147,7 +147,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             })
             .catch(() => {
                 //Handle Permission Retrieval Properly
-            })
+            });
     };
 
     /**
@@ -158,7 +158,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     const setTopNodesCollapsed = (permissionNodes: Permission[]): void => {
         permissionNodes[0].children?.forEach((permissionNode: Permission) => {
             permissionNode.isExpanded = false;
-        })
+        });
     };
 
     /**
@@ -172,7 +172,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             if (permission.children) {
                 removeIndeterminateState(permission.children);
             }
-        })
+        });
     };
 
     /**
@@ -188,7 +188,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             if (permissionNode.children) {
                 setNodeCollapseState(permissionNode.children, parentCollapseState);
             }
-        })
+        });
     };
 
     /**
@@ -217,7 +217,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         setCheckedStateForNodesInPermissionTree(selectedPermissions, treeNode.children, false);
                     }
                 }
-            })
+            });
     };
 
     /**
@@ -232,7 +232,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
             if(node.children){
                 markChildrenAsChecked(node.children, checked);
             }
-        })
+        });
     };
 
     /**
@@ -266,7 +266,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
         markChildrenAsChecked(nodeData, checkState);
 
         if (nodeData[0].isChecked) {
-            setCheckedPermissions([...checkedPermissions, nodeData[0]])
+            setCheckedPermissions([...checkedPermissions, nodeData[0]]);
         } else {
             setCheckedPermissions(checkedPermissions.filter(item => item.fullPath !== nodeData[0].fullPath));
         }
@@ -329,7 +329,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                                 data-testid={ `${ testId }-tree` }
                                 data={ permissionTree }
                                 keywordLabel= "label"
-                                isDeletable= { () => { return false } }
+                                isDeletable= { () => { return false; } }
                                 noChildrenAvailableMessage= ""
                                 onUpdateCb={ updatedData => setPermissionTree(updatedData) }
                                 onCheckToggleCb={ handlePermssionCheck }
@@ -373,7 +373,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                     { renderChildren() }
                 </div>
             )
-    )
+    );
 };
 
 /**

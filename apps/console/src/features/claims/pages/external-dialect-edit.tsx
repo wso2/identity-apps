@@ -27,7 +27,7 @@ import {
     EmphasizedSegment,
     PageLayout
 } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -134,7 +134,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             "fetchADialect.genericError.message")
                 }
             ));
-        })
+        });
     };
 
     useEffect(() => {
@@ -217,7 +217,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
                             "deleteDialect.genericError.message")
                 }
             ));
-        })
+        });
     };
 
     return (
@@ -311,7 +311,7 @@ const ExternalDialectEditPage: FunctionComponent<ExternalDialectEditPageInterfac
             </Grid>
             { confirmDelete && deleteConfirmation() }
         </PageLayout>
-    )
+    );
 };
 
 /**

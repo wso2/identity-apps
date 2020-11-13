@@ -100,9 +100,9 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                                     return {
                                         mappedAttribute: attribute,
                                         userstore: userstore
-                                    }
+                                    };
                                 })
-                            }
+                            };
                             onSubmit(submitData, values);
                         } }
                     >
@@ -127,14 +127,14 @@ export const MappedAttributes: FunctionComponent<MappedAttributesPropsInterface>
                                             />
                                         </Grid.Column>
                                     </Grid.Row>
-                                )
+                                );
                             }) }
                         </Grid>
                     </Forms>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

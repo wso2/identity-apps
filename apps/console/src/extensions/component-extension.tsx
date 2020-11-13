@@ -56,12 +56,12 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
         }
 
         const config = componentExtensionConfig.reduce(config => {
-            return config.component === component && config.subComponent === subComponent && config.type === type
-        })
+            return config.component === component && config.subComponent === subComponent && config.type === type;
+        });
 
         if (config && config.panes && config.panes.length > 0) {
             config.panes.map(pane => {
-                const DynamicLoader = lazy(() => import(`${pane.path}`))
+                const DynamicLoader = lazy(() => import(`${pane.path}`));
                 tabPanes.push({
                     menuItem: I18n.instance.t(pane.title),
                     render: () => (
@@ -92,8 +92,8 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
                             </Suspense>
                         </ErrorBoundary>
                     )
-                })
-            })
+                });
+            });
         }
 
         return tabPanes;
@@ -101,5 +101,5 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
 
     return [];
 
-}
+};
 

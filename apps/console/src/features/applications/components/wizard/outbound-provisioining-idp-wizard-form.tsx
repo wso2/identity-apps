@@ -229,7 +229,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             value={ initialValues?.connector }
                             listen={
                                 (values) => {
-                                    setConnector(values.get("connector").toString())
+                                    setConnector(values.get("connector").toString());
                                 }
                             }
                             data-testid={ `${ testId }-provisioning-connector-dropdown` }
@@ -259,7 +259,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             value={ initialValues?.rules ? [ "rules" ] : [] }
                             listen={
                                 (values) => {
-                                    setIsRulesChecked(values.get("rules").includes("rules"))
+                                    setIsRulesChecked(values.get("rules").includes("rules"));
                                 }
                             }
                             readOnly={ readOnly }
@@ -288,7 +288,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             value={ initialValues?.blocking ? [ "blocking" ] : [] }
                             listen={
                                 (values) => {
-                                    setIsBlockingChecked(values.get("blocking").includes("blocking"))
+                                    setIsBlockingChecked(values.get("blocking").includes("blocking"));
                                 }
                             }
                             data-testid={ `${ testId }-blocking-checkbox` }
@@ -316,7 +316,7 @@ export const OutboundProvisioningWizardIdpForm: FunctionComponent<OutboundProvis
                             value={ initialValues?.jit ? [ "jit" ] : [] }
                             listen={
                                 (values) => {
-                                    setIsJITChecked(values.get("jit").includes("jit"))
+                                    setIsJITChecked(values.get("jit").includes("jit"));
                                 }
                             }
                             readOnly={ readOnly }

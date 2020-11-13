@@ -142,7 +142,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             setTempSelectedAttributes(selectedAttributes.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setTempSelectedAttributes(selectedAttributes);
         }
@@ -198,8 +198,8 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                 setShowAddModal={ setShowSelectionModal }
                 data-testid={ `${ testId }-wizard` }
             />
-        )}
-    );
+        );
+    });
 
     const handleOpenSelectionModal = () => {
         setShowSelectionModal(true);
@@ -277,7 +277,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                                         />
                                                                     </Table.Cell>
                                                                 </Table.Row>
-                                                            )
+                                                            );
                                                         })
                                                     }
                                                 </Table.Body>

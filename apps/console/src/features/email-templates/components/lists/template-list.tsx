@@ -231,7 +231,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 popupText: (): string => t("adminPortal:components.emailTemplates.buttons.deleteTemplate"),
                 renderer: "semantic-icon"
             }
-        ]
+        ];
     };
 
     return (
@@ -317,7 +317,7 @@ export const EmailTemplateList: FunctionComponent<EmailTemplateListPropsInterfac
                 )
             }
         </>
-    )
+    );
 };
 
 /**

@@ -131,7 +131,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                 "getExternalAttribute.genericError.message")
                     }
                 ));
-            })
+            });
         }
     }, []);
 
@@ -174,8 +174,8 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
         return localClaims.find((localClaim: Claim) => {
             return wizard
                 ? localClaim?.claimURI === addedClaim?.mappedLocalClaimURI
-                : localClaim?.claimURI === claim?.mappedLocalClaimURI
-        })
+                : localClaim?.claimURI === claim?.mappedLocalClaimURI;
+        });
     };
 
     return (
@@ -208,7 +208,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                         "updateExternalAttribute.genericError.message")
                             }
                         ));
-                    })
+                    });
                 } else {
                     onSubmit(values);
                     update();
@@ -253,7 +253,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                         key: index,
                                         text: claim?.displayName,
                                         value: claim?.claimURI
-                                    }
+                                    };
                                 })
                                 ?? []
                             }
@@ -263,7 +263,7 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                 </Grid.Row>
             </Grid>
         </Forms>
-    )
+    );
 };
 
 /**

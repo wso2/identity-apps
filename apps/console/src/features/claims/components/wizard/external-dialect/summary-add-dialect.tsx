@@ -115,7 +115,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                                             { claim.mappedLocalClaimURI }
                                         </Table.Cell>
                                     </Table.Row>
-                                )
+                                );
                             }) }
                             {
                                 claims.length === 0 && (
@@ -133,7 +133,7 @@ export const SummaryAddDialect: FunctionComponent<SummaryAddDialectPropsInterfac
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

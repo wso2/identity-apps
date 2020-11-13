@@ -84,7 +84,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         if (isSelectAllUnAssignedUsers) {
             setCheckedUnassignedListItems(usersList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectAllUnAssignedUsers ]);
 
@@ -92,7 +92,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         if (isSelectAllAssignedUsers) {
             setCheckedAssignedListItems(tempUserList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAllAssignedUsers ]);
 
@@ -271,7 +271,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
         if (checkedAssignedListItems?.length > 0) {
             checkedAssignedListItems.map(user => {
                 removedUsers.splice(removedUsers.indexOf(user), 1);
-                usersList.push(user)
+                usersList.push(user);
             });
             setUsersList(usersList);
             setTempUserList(removedUsers);
@@ -372,7 +372,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-unselected-users` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -403,7 +403,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-selected-users` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -419,7 +419,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                 <PrimaryButton
                     data-testid={ `${ testId }-assign-user-wizard-modal-save-button` }
                     onClick={ () => {
-                        handleAddUserSubmit()
+                        handleAddUserSubmit();
                     } }
                 >
                     { t("common:save") }
@@ -487,7 +487,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                                         { user.userName }
                                                                     </Table.Cell>
                                                                 </Table.Row>
-                                                            )
+                                                            );
                                                         })
                                                     }
                                                 </Table.Body>
@@ -570,7 +570,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                     showSecondaryActions={ false }
                                                     data-testid={ `${ testId }-update-unselected-users` }
                                                 />
-                                            )
+                                            );
                                         })
                                     }
                                 </TransferList>
@@ -602,7 +602,7 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                                                     showSecondaryActions={ false }
                                                     data-testid={ `${ testId }-update-selected-users` }
                                                 />
-                                            )
+                                            );
                                         })
                                     }
                                 </TransferList>
@@ -627,5 +627,5 @@ export const AddGroupUsers: FunctionComponent<AddGroupUserProps> = (props: AddGr
                 </Forms>
             }
         </>
-    )
+    );
 };

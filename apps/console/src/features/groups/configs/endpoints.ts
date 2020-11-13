@@ -27,5 +27,5 @@ import { GroupsResourceEndpointsInterface } from "../models";
 export const getGroupsResourceEndpoints = (serverHost: string): GroupsResourceEndpointsInterface => {
     return {
         groups: `${ serverHost }/scim2/Groups`
-    }
+    };
 };

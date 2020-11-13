@@ -125,7 +125,7 @@ export class ApplicationManagementUtils {
                         "name")
                     )
                 );
-                store.dispatch(checkAvailableCustomInboundAuthProtocolMeta(true))
+                store.dispatch(checkAvailableCustomInboundAuthProtocolMeta(true));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -238,7 +238,7 @@ export class ApplicationManagementUtils {
                     message: I18n.instance.t("devPortal:components.applications.notifications.fetchTemplates" +
                         ".genericError.message")
                 }));
-            })
+            });
     };
 
     /**
@@ -263,7 +263,7 @@ export class ApplicationManagementUtils {
                 displayName: startCase(technology),
                 logo,
                 name: technology
-            }
+            };
         });
     }
 
@@ -309,7 +309,7 @@ export class ApplicationManagementUtils {
                     message: I18n.instance.t("devPortal:components.applications.notifications." +
                         "fetchOIDCIDPConfigs.genericError.message")
                 }));
-            })
+            });
     };
 
     /**
@@ -339,7 +339,7 @@ export class ApplicationManagementUtils {
                     message: I18n.instance.t("devPortal:components.applications.notifications." +
                         "fetchSAMLIDPConfigs.genericError.message")
                 }));
-            })
+            });
     };
 
     /**
@@ -391,7 +391,7 @@ export class ApplicationManagementUtils {
                 docs: value.toString(),
                 image: camelCase(key).toLowerCase(),
                 name: camelCase(key).toLowerCase()
-            })
+            });
         }
 
         return samples;

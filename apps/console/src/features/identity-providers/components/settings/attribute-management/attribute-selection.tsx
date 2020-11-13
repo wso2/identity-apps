@@ -174,7 +174,7 @@ export const AttributeSelection: FunctionComponent<AttributeSelectionPropsInterf
                                                         mapping?.claim.id }`
                                                 }
                                             />
-                                        )
+                                        );
                                     }
                                 )
                             }

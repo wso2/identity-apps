@@ -198,5 +198,5 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                     : null
             }
         </Grid>
-    )
+    );
 };

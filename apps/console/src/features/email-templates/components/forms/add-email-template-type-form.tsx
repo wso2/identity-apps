@@ -90,7 +90,7 @@ export const AddEmailTemplateTypeForm: FunctionComponent<AddEmailTemplateTypeFor
                 </GridRow>
             </Grid>
         </Forms>
-    )
+    );
 };
 
 /**

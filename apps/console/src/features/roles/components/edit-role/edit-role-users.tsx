@@ -44,7 +44,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
     const {
         roleObject,
         onRoleUpdate,
-        isReadOnly,
+        isReadOnly
     } = props;
 
     const [ currentUserStore, setCurrentUserStore ] = useState<string>(undefined);
@@ -73,7 +73,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
         for (const selectedUser of userList) {
             newUsers.push({
                 value: selectedUser.id
-            })
+            });
         }
 
         const roleData: PatchRoleDataInterface = {
@@ -99,7 +99,7 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
                 level: AlertLevels.ERROR,
                 message: t("adminPortal:components.roles.notifications.updateRole.error.message")
             });
-        })
+        });
     };
 
     return (
@@ -112,5 +112,5 @@ export const RoleUserDetails: FunctionComponent<RoleUserDetailsProps> = (
             assignedUsers={ roleObject.users }
             onSubmit={ onUserUpdate }
         />
-    )
+    );
 };

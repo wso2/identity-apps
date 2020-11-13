@@ -648,7 +648,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     </Form>
                 </ConfirmationModal.Content>
             </ConfirmationModal>
-        )
+        );
     };
 
     return (

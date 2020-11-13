@@ -87,7 +87,7 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                 const submitData = {
                                     ...claimData,
                                     properties: [ ...data ]
-                                }
+                                };
     
                                 updateAClaim(claim.id, submitData).then(() => {
                                     dispatch(addAlert(
@@ -112,7 +112,7 @@ export const EditAdditionalPropertiesLocalClaims: FunctionComponent<
                                                     "updateClaim.genericError.message")
                                         }
                                     ));
-                                })
+                                });
                             } }
                             data-testid={ `${ testId }-form-properties-dynamic-field` }
                         />

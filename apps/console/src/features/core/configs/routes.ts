@@ -136,7 +136,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             redirectTo: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
             showOnSidePanel: false
         }
-    ]
+    ];
 };
 
 /**
@@ -473,7 +473,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
             redirectTo: AppConstants.getPaths().get("PAGE_NOT_FOUND"),
             showOnSidePanel: false
         }
-    ]
+    ];
 };
 /**
  * Get default page layout routes.

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { Permission, PermissionObject } from "../models"
+import { Permission, PermissionObject } from "../models";
 
 /**
  * A Util method to create an array of permission object with heirarchy.
@@ -30,8 +30,8 @@ import { Permission, PermissionObject } from "../models"
 export const addPath = (permObj: PermissionObject, pathcomponents: string[],
         permissionTreeArray: Permission[]): Permission[] => {
 
-    const component = pathcomponents.shift()
-    let comp = permissionTreeArray.find(item => item.name === component)
+    const component = pathcomponents.shift();
+    let comp = permissionTreeArray.find(item => item.name === component);
 
     if (!comp) {
         comp = {
@@ -42,12 +42,12 @@ export const addPath = (permObj: PermissionObject, pathcomponents: string[],
             isPartiallyChecked: false,
             label: permObj.displayName,
             name: component
-        }
-        permissionTreeArray.push(comp)
+        };
+        permissionTreeArray.push(comp);
     }
 
     if (pathcomponents.length) {
-        addPath(permObj, pathcomponents, comp.children || (comp.children = []))
+        addPath(permObj, pathcomponents, comp.children || (comp.children = []));
     }
     
     return permissionTreeArray;

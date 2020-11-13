@@ -137,7 +137,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                             || t("adminPortal:components.claims.local.notifications.addLocalClaim.genericError.message")
                     }
                 );
-            })
+            });
     };
 
     /**
@@ -304,7 +304,7 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                 </Grid>
             </Modal.Actions>
         </Modal >
-    )
+    );
 };
 
 /**

@@ -145,7 +145,7 @@ export const getTextField = (eachProp: CommonPluggableComponentPropertyInterface
                         validation.errorMessages.push(I18n.instance.t("adminPortal:components.users.forms." +
                             "validation.formatError", {
                             field: propertyMetadata?.displayName
-                        }))
+                        }));
                     }
                 } }
             />
@@ -251,7 +251,7 @@ const getDropDownChildren = (key: string, options: string[]) => {
             text: option,
             value: option
         });
-    })
+    });
 };
 
 /**

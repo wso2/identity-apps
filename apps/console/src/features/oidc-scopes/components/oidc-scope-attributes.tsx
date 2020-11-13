@@ -77,7 +77,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         if (isSelectAssignedAllClaimsChecked) {
             setCheckedAssignedListItems(tempSelectedClaims);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [isSelectAssignedAllClaimsChecked]);
 
@@ -88,7 +88,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         if (isSelectUnassignedClaimsAllClaimsChecked) {
             setCheckedUnassignedListItems(tempUnselectedClaims);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [isSelectUnassignedClaimsAllClaimsChecked]);
 
@@ -125,7 +125,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             setFilterTempUnselectedClaims(tempUnselectedClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterTempUnselectedClaims(tempUnselectedClaims);
         }
@@ -136,7 +136,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             setFilterTempSelectedClaims(tempSelectedClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterTempSelectedClaims(tempSelectedClaims);
         }
@@ -285,7 +285,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                                         listSubItem={ claim?.claimURI }
                                         data-testid={ `${ testId }-unselected-transfer-list-item-${ 1 }` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -316,7 +316,7 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                                         listSubItem={ claim?.claimURI }
                                         data-testid={ `${ testId }-selected-transfer-list-item-${ 1 }` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -337,5 +337,5 @@ export const OIDCScopeAttributes: FunctionComponent<OIDCScopeAttributesPropsInte
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };

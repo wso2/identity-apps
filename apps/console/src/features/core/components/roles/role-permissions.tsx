@@ -110,5 +110,5 @@ export const RolePermissions: FunctionComponent<RolePermissionsInterface> = (
                 </Segment>
             </>
         )
-    )
+    );
 };

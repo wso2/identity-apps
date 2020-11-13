@@ -242,7 +242,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             wizardSteps[currentWizardStep]?.name === WizardSteps.OUTBOUND_PROVISIONING_SETTINGS) {
             setWizardState({
                 [ WizardConstants.IDENTITY_PROVIDER ]: values
-            })
+            });
         } else {
             setWizardState(_.merge(wizardState, { [formType]: values }));
         }
@@ -327,7 +327,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                             handleWizardFormSubmit(values,
                                 WizardConstants.IDENTITY_PROVIDER);
 
-                            isExpertMode() && handleWizardFormFinish(generateWizardSummary())
+                            isExpertMode() && handleWizardFormFinish(generateWizardSummary());
 
                         }
                         }
@@ -345,7 +345,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         triggerSubmit={ submitAuthenticator }
                         data-testid={ `${ testId }-authenticator-settings` }
                     />
-                )
+                );
             }
             case WizardSteps.OUTBOUND_PROVISIONING_SETTINGS: {
                 return (
@@ -357,7 +357,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         triggerSubmit={ submitOutboundProvisioningSettings }
                         data-testid={ `${ testId }-outbound-provisioning-settings` }
                     />
-                )
+                );
             }
             case WizardSteps.SUMMARY: {
                 return (
@@ -369,7 +369,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                         onSubmit={ handleWizardFormFinish }
                         data-testid={ `${ testId }-summary` }
                     />
-                )
+                );
             }
         }
     };
@@ -463,7 +463,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 return {
                     key: eachProp?.key,
                     value: eachProp?.defaultValue
-                }
+                };
             });
 
         // For the default authenticator, update values of it's properties with the corresponding value from the
@@ -493,7 +493,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 return {
                     key: eachProp?.key,
                     value: eachProp?.defaultValue
-                }
+                };
             });
 
         // For the default connector, update values of it's properties with the corresponding value from the

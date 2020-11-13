@@ -256,7 +256,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 showAddExternalClaim && (
                     <Modal
                         open={ showAddExternalClaim }
-                        onClose={ () => { setShowAddExternalClaim(false) } }
+                        onClose={ () => { setShowAddExternalClaim(false); } }
                         dimmer="blurring"
                         size="small"
                         data-testid={ `${ testId }-add-external-claim-modal` }
@@ -271,13 +271,13 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                                 update={ update }
                                 externalClaims={ claims }
                                 triggerSubmit={ triggerAddExternalClaim }
-                                cancel={ () => { setShowAddExternalClaim(false) } }
+                                cancel={ () => { setShowAddExternalClaim(false); } }
                                 data-testid={ `${ testId }-add-external-claims` }
                             />
                         </Modal.Content>
                         <Modal.Actions>
                             <LinkButton
-                                onClick={ () => { setShowAddExternalClaim(false) } }
+                                onClick={ () => { setShowAddExternalClaim(false); } }
                                 data-testid={ `${ testId }-add-external-claim-modal-cancel-button` }
                             >
                                 { t("common:cancel") }
@@ -345,7 +345,7 @@ export const EditExternalClaims: FunctionComponent<EditExternalClaimsPropsInterf
                 </Grid.Column>
             </Grid>
         </ListLayout>
-    )
+    );
 };
 
 /**

@@ -87,7 +87,7 @@ export const AddIDPCertificateFormComponent: React.FunctionComponent<AddIDPCerti
         setFileDecoded(fileDecoded);
         setFile(file);
         setCertificate(forgeCertificate);
-        setCertString(data.certificate)
+        setCertString(data.certificate);
     };
 
     const addIDPCertificateForm = (): ReactElement => (

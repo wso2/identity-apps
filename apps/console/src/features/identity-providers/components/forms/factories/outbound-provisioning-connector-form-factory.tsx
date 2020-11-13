@@ -68,7 +68,7 @@ export const OutboundProvisioningConnectorFormFactory: FunctionComponent<
         <>
             { generateConnector() }
         </>
-    )
+    );
 };
 
 OutboundProvisioningConnectorFormFactory.defaultProps = {

@@ -130,7 +130,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
             ));
         }).finally(() => {
             setIsLoading(false);
-        })
+        });
     };
 
     useEffect(() => {

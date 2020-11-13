@@ -242,7 +242,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             if (window.matchMedia("(prefers-color-scheme:dark)")?.addEventListener) {
                 window.matchMedia("(prefers-color-scheme:dark)").removeEventListener("change", callback);
             }
-        }
+        };
     }, []);
 
     /**
@@ -545,7 +545,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             setFileDecoded(value);
         }).catch(() => {
             setFileError(true);
-        })
+        });
     };
 
     return (
@@ -617,7 +617,7 @@ export const UploadCertificate: FunctionComponent<UploadCertificatePropsInterfac
             }
         </>
 
-    )
+    );
 };
 
 /**

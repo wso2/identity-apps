@@ -88,11 +88,11 @@ export const AuthenticatorTemplateSelection:
                 if (selectedTemplate) {
                     onSubmit({
                         templateId: selectedTemplate.id
-                    })
+                    });
                 } else if (selectedManualModeOption) {
                     onSubmit({
                         manualModeOptionId: selectedManualModeOption.authenticatorId
-                    })
+                    });
                 }
             } }
             submitState={ triggerSubmit }

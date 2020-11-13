@@ -430,7 +430,7 @@ const CustomizePage = (): ReactElement => {
  */
 ColorPicker.defaultProps = {
     inputColor: "#000000",
-    inputOnChangeHandler: () => { return },
+    inputOnChangeHandler: () => { return; },
     name: "",
     placeholder: ""
 };

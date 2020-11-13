@@ -143,7 +143,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                 "delay.message")
                         }));
 
-                        history.push(AppConstants.getPaths().get("USERSTORES"))
+                        history.push(AppConstants.getPaths().get("USERSTORES"));
                     })
                     .catch(error => {
                         dispatch(addAlert({
@@ -197,7 +197,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                     value: values.get(property.name).toString()
                 };
             }
-        }).filter(Boolean)
+        }).filter(Boolean);
 
         requiredData.push(description);
 
@@ -510,7 +510,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                                     <Grid.Column width={ 8 } textAlign="center">
                                         <LinkButton
                                             type="button"
-                                            onClick={ () => { setShowMore(!showMore) } }
+                                            onClick={ () => { setShowMore(!showMore); } }
                                             data-testid={ `${ testId }-show-more-button` }
                                         >
                                             <Icon name={ showMore ? "chevron up" : "chevron down" } />
@@ -702,7 +702,7 @@ export const EditBasicDetailsUserStore: FunctionComponent<EditBasicDetailsUserSt
                 </Grid.Column>
             </Grid>
         </>
-    )
+    );
 };
 
 /**

@@ -77,14 +77,14 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
     const getFilteredRoles = () => {
         const filterRole: RolesInterface[] = roleList.filter(
             (role) => {
-                return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"))
+                return !(role.displayName.includes("Application/") || role.displayName.includes("Internal/"));
             });
 
         return filterRole.map(role => {
             return {
                 id: role.displayName,
                 value: role.displayName
-            }
+            };
         });
     };
 
@@ -119,7 +119,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                     return {
                                         key: mapping.localRole,
                                         value: mapping.applicationRole
-                                    }
+                                    };
                                 }) : []
                         }
                         keyType="dropdown"
@@ -151,7 +151,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                                     return {
                                         applicationRole: mapping.value,
                                         localRole: mapping.key.includes("/") ? mapping.key : "Internal/" + mapping.key
-                                    }
+                                    };
                                 });
                                 onSubmit(finalData);
                             } else {
@@ -164,7 +164,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                 </Grid.Column>
             </Grid.Row>
         </>
-    )
+    );
 };
 
 /**

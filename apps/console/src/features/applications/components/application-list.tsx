@@ -326,7 +326,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 onClick: (e: SyntheticEvent, app: ApplicationListItemInterface): void =>
                     handleApplicationEdit(app.id, app.access),
                 popupText: (app: ApplicationListItemInterface): string => {
-                    return app?.access === ApplicationAccessTypes.READ && t("common:view") || t("common:edit")
+                    return app?.access === ApplicationAccessTypes.READ && t("common:view") || t("common:edit");
                 },
                 renderer: "semantic-icon"
             },

@@ -81,7 +81,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             } else if (config?.isConfidential) {
                 return (
                     <Grid.Row columns={ 1 }>
@@ -109,7 +109,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             } else if (config?.type === CustomTypeEnum.BOOLEAN) {
                 return (
                     <Grid.Row columns={ 1 }>
@@ -135,7 +135,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             } else {
                 return (
                     <Grid.Row columns={ 1 }>
@@ -160,7 +160,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                             />
                         </Grid.Column>
                     </Grid.Row>
-                )
+                );
             }
         });
 
@@ -176,7 +176,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                     (prop) => prop.key === config.name
                 );
                 return createInputComponent(config, initialValue);
-            })
+            });
         }
     });
 
@@ -224,7 +224,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
             properties: [
                 ...valueProperties
             ]
-        }
+        };
     };
 
     useEffect(() => {

@@ -152,8 +152,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 users?.push({
                     display: user?.userName,
                     value: user?.id
-                })
-            })
+                });
+            });
         }
 
         if (basicData?.GroupList?.length > 0) {
@@ -161,14 +161,14 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
                 groups?.push({
                     display: group.displayName,
                     value: group.id
-                })
-            })
+                });
+            });
         }
 
         if (basicData?.PermissionList?.length > 0) {
             basicData?.PermissionList?.forEach(permission => {
                 permissions?.push(permission?.fullPath);
-            })
+            });
         }
 
         const roleData: CreateRoleInterface = {
@@ -232,7 +232,7 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
      *
      */
     const handleRoleWizardFinish = () => {
-        addRole(wizardState)
+        addRole(wizardState);
     };
 
     /**

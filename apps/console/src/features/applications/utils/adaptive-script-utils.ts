@@ -50,7 +50,7 @@ export class AdaptiveScriptUtils {
         const steps: string[] = [];
 
         for (let i = 0; i < stepCount; i++) {
-            steps.push(newStepIdentifier.replace(":index", i.toString()))
+            steps.push(newStepIdentifier.replace(":index", i.toString()));
         }
 
         const script = [ ...ApplicationManagementConstants.DEFAULT_ADAPTIVE_AUTH_SCRIPT ];

@@ -19,7 +19,7 @@
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { PageLayout, ResourceTab } from "@wso2is/react-components";
-import React, { FunctionComponent, ReactElement, useEffect, useState } from "react"
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { RouteComponentProps } from "react-router";
@@ -91,7 +91,7 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                         || t("adminPortal:components.userstores.notifications.fetchUserstores.genericError.message")
                 }
             ));
-        })
+        });
     };
 
     useEffect(() => {
@@ -215,12 +215,12 @@ const UserStoresEditPage: FunctionComponent<UserStoresEditPageInterface> = (
                     // Re-fetch userstore details on every tab change to try to get the latest available updated
                     // userstore properties due to the asynchronous nature of userstore operations.
                     // TODO: Remove once the userstore operations are made synchronous.
-                    getUserStore()
+                    getUserStore();
                 } }
                 data-testid={ `${ testId }-tabs` }
             />
         </PageLayout>
-    )
+    );
 };
 
 /**

@@ -129,8 +129,8 @@ export const searchGroupList = (searchData: SearchGroupInterface): Promise<any> 
     return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
-        return Promise.reject(error)
-    })
+        return Promise.reject(error);
+    });
 };
 
 /**
@@ -152,8 +152,8 @@ export const deleteGroupById = (groupId: string): Promise<any> => {
     return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
-        return Promise.reject(error)
-    })
+        return Promise.reject(error);
+    });
 };
 
 /**
@@ -175,6 +175,6 @@ export const createGroup = (data: CreateGroupInterface): Promise<any> => {
     return httpClient(requestConfig).then((response) => {
         return Promise.resolve(response);
     }).catch((error) => {
-        return Promise.reject(error)
+        return Promise.reject(error);
     });
 };

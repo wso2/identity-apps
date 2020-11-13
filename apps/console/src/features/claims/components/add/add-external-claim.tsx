@@ -101,7 +101,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
         getAllLocalClaims(null).then(response => {
             const sortedClaims = response.sort((a: Claim, b: Claim) => {
                 return a.displayName > b.displayName ? 1 : -1;
-            })
+            });
 
             setLocalClaims(sortedClaims);
             setFilteredLocalClaims(sortedClaims);
@@ -189,7 +189,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                         "addExternalAttribute.genericError.message")
                             }
                         ));
-                    })
+                    });
                 }
             } }
             resetState={ reset }
@@ -228,7 +228,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                                         key: index,
                                         text: claim.displayName,
                                         value: claim.claimURI
-                                    }
+                                    };
                                 })
                                 ?? []
                             }
@@ -249,7 +249,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                 }
             </Grid>
         </Forms>
-    )
+    );
 };
 
 /**

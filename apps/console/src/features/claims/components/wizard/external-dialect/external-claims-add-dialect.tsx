@@ -155,7 +155,7 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

@@ -418,7 +418,7 @@ export const UserStoresList: FunctionComponent<UserStoresListPropsInterface> = (
                 data-testid={ testId }
             />
         </>
-    )
+    );
 };
 
 /**

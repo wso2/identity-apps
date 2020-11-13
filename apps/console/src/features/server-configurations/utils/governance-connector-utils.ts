@@ -51,7 +51,7 @@ export class GovernanceConnectorUtils {
                     connectorCategories.categories.push({
                         id: category.id,
                         name: category.name
-                    })
+                    });
                 });
                 store.dispatch(SetGovernanceConnectorCategory(connectorCategories));
             })

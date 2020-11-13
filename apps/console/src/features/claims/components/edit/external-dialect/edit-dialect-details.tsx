@@ -84,7 +84,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                                         message: error?.message
                                             || t("adminPortal:components.claims.dialects.notifications" +
                                                 ".updateDialect.genericError.message")
-                                    }))
+                                    }));
                                 });
                         } }
                     >
@@ -107,7 +107,7 @@ export const EditDialectDetails: FunctionComponent<EditDialectDetailsPropsInterf
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

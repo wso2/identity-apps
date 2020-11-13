@@ -115,7 +115,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
         if (CertificateTypeInterface.PEM === certificate?.type) {
             setPEMSelected(true);
             if (certificate?.value) {
-                setPEMValue(certificate.value)
+                setPEMValue(certificate.value);
             }
         }
     }, [ certificate ]);
@@ -154,7 +154,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                 size="tiny"
                 open={ certificateModal }
                 onClose={ () => {
-                    setCertificateModal(false)
+                    setCertificateModal(false);
                 } }
                 data-testid={ `${ testId }-view-certificate-modal` }
             >
@@ -186,7 +186,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
                     />
                 </Modal.Content>
             </Modal>
-        )
+        );
     };
 
     /**
@@ -199,7 +199,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
 
             if (displayCertificate) {
                 setCertificateDisplay(displayCertificate);
-                setCertificateModal(true)
+                setCertificateModal(true);
             } else {
                 dispatch(addAlert({
                     description: "Provided pem is malformed",
@@ -217,7 +217,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
      */
     const handleCertificateView = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
-        viewCertificate()
+        viewCertificate();
     };
 
     /**
@@ -236,7 +236,7 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
     return (
         <Forms
             onSubmit={ (values): void => {
-                onSubmit(updateConfigurations(values))
+                onSubmit(updateConfigurations(values));
             } }
             onChange={ handleFormValuesOnChange }
         >

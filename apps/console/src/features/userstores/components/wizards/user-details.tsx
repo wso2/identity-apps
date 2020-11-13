@@ -144,14 +144,14 @@ export const UserDetails: FunctionComponent<UserDetailsPropsInterface> = (
                                                 />
 
                                             )
-                                    )
+                                    );
                                 })
                         }
                     </Forms>
                 </Grid.Column>
             </Grid.Row>
         </Grid>
-    )
+    );
 };
 
 /**

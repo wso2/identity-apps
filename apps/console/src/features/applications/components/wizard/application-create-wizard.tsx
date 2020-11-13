@@ -199,7 +199,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                         message: t("devPortal:components.applications.notifications.fetchTemplate.genericError" +
                             ".message")
                     });
-                })
+                });
         }
     };
 
@@ -316,7 +316,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
             customApplication = {
                 ...customApplication,
                 [ key ]: value
-            }
+            };
         }
 
         createNewApplication(customApplication);
@@ -474,7 +474,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             triggerSubmit={ submitGeneralSettings }
                             initialValues={ wizardState && wizardState[WizardStepsFormTypes.GENERAL_SETTINGS] }
                             onSubmit={ (values): void => {
-                                handleCustomAppWizardFinish(values)
+                                handleCustomAppWizardFinish(values);
                             } }
                             templateValues={ templateSettings }
                             data-testid={ `${ testId }-general-settings-form` }
@@ -506,7 +506,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 data-testid={ `${ testId }-custom-protocol-settings-form` }
                             />
-                        )
+                        );
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.OIDC) {
 
@@ -524,7 +524,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                 showCallbackURL={ true }
                                 data-testid={ `${ testId }-oauth-protocol-settings-form` }
                             />
-                        )
+                        );
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.SAML) {
 
@@ -554,7 +554,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                         data-testid={ `${ testId }-saml-protocol-settings-form` }
                                     />
                                 )
-                        )
+                        );
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.WS_TRUST) {
                         return (
@@ -566,7 +566,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 data-testid={ `${ testId }-ws-trust-protocol-settings-form` }
                             />
-                        )
+                        );
                     } else if (wizardState[WizardStepsFormTypes.PROTOCOL_SELECTION] ===
                         SupportedAuthProtocolTypes.WS_FEDERATION) {
                         return (
@@ -578,7 +578,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                                     WizardStepsFormTypes.PROTOCOL_SETTINGS) }
                                 data-testid={ `${ testId }-passive-sts-protocol-settings-form` }
                             />
-                        )
+                        );
                     }
                 }
 
@@ -595,7 +595,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             samlMetaFileSelected={ selectedSAMLMetaFile }
                             data-testid={ `${ testId }-protocol-summary` }
                         />
-                    )
+                    );
                 } else {
                     return (
                         <WizardSummary
@@ -604,7 +604,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
                             onSubmit={ handleWizardFormFinish }
                             data-testid={ `${ testId }-summary` }
                         />
-                    )
+                    );
                 }
         }
     };
@@ -643,7 +643,7 @@ export const ApplicationCreateWizard: FunctionComponent<ApplicationCreateWizardP
     useEffect(() => {
 
         if (!selectedTemplate) {
-            return
+            return;
         }
 
         if (!Object.prototype.hasOwnProperty.call(authProtocolMeta, selectedTemplate.authenticationProtocol)) {

@@ -278,7 +278,7 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
                                             "updateClaim.genericError.description")
                                 }
                             ));
-                        })
+                        });
                     } }
                 >
                     <Grid>

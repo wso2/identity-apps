@@ -75,7 +75,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             setFilterTempAvailableClaims(filterTempAvailableClaims.filter((item) =>
-                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterTempAvailableClaims(tempAvailableClaims);
         }
@@ -86,7 +86,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             setFilterTempSelectedClaims(filterTempSelectedClaims.filter((item) =>
-                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.uri.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterTempSelectedClaims(tempSelectedAttributes);
         }
@@ -180,7 +180,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         if (isSelectAssignedAllClaimsChecked) {
             setCheckedAssignedListItems(tempSelectedAttributes);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [isSelectAssignedAllClaimsChecked]);
 
@@ -191,7 +191,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
         if (isSelectUnassignedClaimsAllClaimsChecked) {
             setCheckedUnassignedListItems(tempAvailableClaims);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [isSelectUnassignedClaimsAllClaimsChecked]);
 
@@ -278,7 +278,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         listSubItem={ claim.uri === claim.displayName ? "" : claim.uri }
                                         data-testid={ `${ testId }-modal-content-unselected-list-item-${ claim.id }` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -305,7 +305,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                                         listSubItem={ mapping.uri === mapping.displayName ? "" : mapping.uri }
                                         data-testid={ `${ testId }-modal-content-selected-list-item-${ mapping.id }` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -326,7 +326,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };
 
 /**

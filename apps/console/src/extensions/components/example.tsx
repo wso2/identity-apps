@@ -25,5 +25,5 @@ export default (): ReactElement => {
             description={ "Loaded dynamically from extension configuration." }
             header={ "Dynamic Component" }
         />
-    )
+    );
 };

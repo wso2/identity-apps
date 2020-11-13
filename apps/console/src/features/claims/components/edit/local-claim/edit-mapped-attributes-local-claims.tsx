@@ -106,7 +106,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                         return {
                                             mappedAttribute: attribute.toString(),
                                             userstore: userstore.toString()
-                                        }
+                                        };
                                     })
                                 };
                                 updateAClaim(claim.id, submitData).then(() => {
@@ -132,7 +132,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                     "updateClaim.genericError.message")
                                         }
                                     ));
-                                })
+                                });
                             } }
                         >
                             <Grid>
@@ -155,13 +155,13 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                     }
                                                     value={ claim?.attributeMapping?.find((attribute) => {
                                                         return attribute.userstore
-                                                            .toLowerCase() === store.name.toLowerCase()
+                                                            .toLowerCase() === store.name.toLowerCase();
                                                     })?.mappedAttribute }
                                                     data-testid={ `${ testId }-form-store-name-input` }
                                                 />
                                             </Grid.Column>
                                         </Grid.Row>
-                                    )
+                                    );
                                 }) }
                             </Grid>
                         </Forms>
@@ -182,7 +182,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                 </Grid.Row>
             </Grid>
         </EmphasizedSegment>
-    )
+    );
 };
 
 /**

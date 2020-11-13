@@ -122,7 +122,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
             let authenticator: GenericAuthenticatorInterface = null;
 
             if (option.idp === IdentityProviderManagementConstants.LOCAL_IDP_IDENTIFIER) {
-                authenticator = authenticators.find((item) => item.defaultAuthenticator.name === option.authenticator)
+                authenticator = authenticators.find((item) => item.defaultAuthenticator.name === option.authenticator);
             } else {
                 authenticator = authenticators.find((item) => item.idp === option.idp);
             }
@@ -184,7 +184,7 @@ export const AuthenticationStep: FunctionComponent<AuthenticationStepPropsInterf
                                                         ) }
                                                     />
                                                 </Form.Field>
-                                            )
+                                            );
                                         })
                                     }
                                 </Form>

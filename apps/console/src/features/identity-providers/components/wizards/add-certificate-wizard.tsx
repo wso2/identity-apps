@@ -115,7 +115,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     "path": "/certificate/jwksUri",
                     "value": null
                 }
-            ]
+            ];
         } else {
             data = [
                 {
@@ -123,7 +123,7 @@ export const AddIDPCertificateWizard: FunctionComponent<AddIDPCertificateWizardP
                     "path": "/certificate/certificates/" + certificateIndex,
                     "value": values["certificate"]
                 }
-            ]
+            ];
         }
 
         updateIDPCertificate(idp.id, data)

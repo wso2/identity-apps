@@ -52,7 +52,7 @@ export class SharedUserStoreUtils {
                         .then((resp) => {
                             usernameRegEx = resp.properties.find(property => property.name === regExName);
                             return usernameRegEx?.value;
-                        })
+                        });
                 }
             });
     }
@@ -98,7 +98,7 @@ export class SharedUserStoreUtils {
                             && property.value === "true") {
                             readOnlyUserStores.push(res.name.toUpperCase());
                         }
-                    })
+                    });
                 });
         }
 

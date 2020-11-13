@@ -80,7 +80,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
     const [ resetPagination, setResetPagination ] = useTrigger();
 
     useEffect(() => {
-        getTemplateTypes()
+        getTemplateTypes();
     }, []);
 
     useEffect(() => {
@@ -176,7 +176,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
         setSearchQuery(query);
         setListOffset(0);
         setResetPagination();
-    }
+    };
 
     /**
      * Handles the `onSearchQueryClear` callback action.
@@ -255,7 +255,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                     message: t("adminPortal:components.emailTemplateTypes.notifications" +
                         ".deleteTemplateType.genericError.message")
                 }));
-            })
+            });
     };
 
     return (
@@ -347,7 +347,7 @@ const EmailTemplateTypesPage: FunctionComponent<EmailTemplateTypesPagePropsInter
                 }
             </ListLayout>
         </PageLayout>
-    )
+    );
 };
 
 /**

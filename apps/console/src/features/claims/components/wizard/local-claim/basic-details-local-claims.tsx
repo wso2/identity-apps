@@ -177,7 +177,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             placeholder={ t("adminPortal:components.claims.local.forms.attributeID.placeholder") }
                             value={ values?.get("claimURI")?.toString() }
                             listen={ (values: Map<string, FormValue>) => {
-                                setClaimID(values.get("claimURI").toString())
+                                setClaimID(values.get("claimURI").toString());
                             } }
                             onMouseOver={ () => {
                                 delayPopup(setIsShowClaimIDHint, claimTimer);
@@ -348,7 +348,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                 </Grid.Row>
             </Grid >
         </Forms >
-    )
+    );
 };
 
 /**

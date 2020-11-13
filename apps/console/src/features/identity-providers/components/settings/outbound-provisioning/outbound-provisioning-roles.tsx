@@ -76,7 +76,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                     const allRole: RoleListInterface = response.data;
                     setRoleList(allRole?.Resources?.filter((role) => {
                         return !(role.displayName
-                            .includes("Application/") || role.displayName.includes("Internal/"))
+                            .includes("Application/") || role.displayName.includes("Internal/"));
                     }));
                 }
             })
@@ -102,7 +102,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
             ));
         }).catch(error => {
             handleUpdateIDPRoleMappingsError(error);
-        })
+        });
     };
 
     return (
@@ -122,7 +122,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                     key: role.id,
                                     text: role.displayName,
                                     value: role.displayName
-                                } as DropdownItemProps
+                                } as DropdownItemProps;
                             }) }
                             value={ selectedRole }
                             placeholder={ t("devPortal:components.idp.forms.outboundProvisioningRoles.placeHolder") }
@@ -131,7 +131,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                     if (_.isEmpty(data?.value?.toString())) {
                                         return;
                                     }
-                                    setSelectedRole(data.value.toString())
+                                    setSelectedRole(data.value.toString());
                                 }
                             }
                             search

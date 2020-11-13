@@ -81,7 +81,7 @@ export const createDropdownOption = (selectedClaimsWithMapping: IdentityProvider
                     } as DropdownOptionsInterface;
                 }
             }
-        )
+        );
 };
 
 export const buildProvisioningClaimList = (claimMappings: IdentityProviderCommonClaimMappingInterface[],
@@ -200,7 +200,7 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
         onUpdate(idpId);
     }).catch(error => {
         handleUpdateIDPRoleMappingsError(error);
-    })
+    });
 };
 
 export const handleGetAllLocalClaimsError = (error) => {

@@ -176,7 +176,7 @@ export class IdentityProviderManagementUtils {
 
                 }
 
-                return Promise.resolve([ localAuthenticators, federatedAuthenticators ])
+                return Promise.resolve([ localAuthenticators, federatedAuthenticators ]);
             }))
             .catch((error) => {
                 throw new IdentityAppsApiException(
@@ -186,7 +186,7 @@ export class IdentityProviderManagementUtils {
                     error.request,
                     error.response,
                     error.config);
-            })
+            });
     }
 
     /**
@@ -241,7 +241,7 @@ export class IdentityProviderManagementUtils {
                 docs: value.toString(),
                 image: _.camelCase(key).toLowerCase(),
                 name: _.camelCase(key).toLowerCase()
-            })
+            });
         }
 
         return templates;

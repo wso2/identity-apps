@@ -69,7 +69,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
         return {
             realm: values.get("realm"),
             replyTo: values.get("replyTo")
-        }
+        };
     };
 
     return (

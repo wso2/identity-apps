@@ -319,7 +319,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     }
                     triggerSubmit={ submitConnectorSelection }
                     onSubmit={ (values): void => {
-                        handleWizardFormSubmit(values, WizardStepsFormTypes.CONNECTOR_SELECTION)
+                        handleWizardFormSubmit(values, WizardStepsFormTypes.CONNECTOR_SELECTION);
                     } }
                     connectorList={ connectorList }
                     data-testid={ `${ testId }-connector-selection` }

@@ -113,7 +113,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                 operation: "REPLACE",
                 path: `/properties/${property.name}`,
                 value: values.get(property.name).toString()
-            }
+            };
         });
 
         const optionalNonSqlData = showMore
@@ -122,7 +122,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: values.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -132,7 +132,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -142,7 +142,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -152,7 +152,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -162,7 +162,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                     operation: "REPLACE",
                     path: `/properties/${property.name}`,
                     value: sql.get(property.name).toString()
-                }
+                };
             })
             : null;
 
@@ -274,7 +274,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                                                                 setDisabled(
                                                                     values.get(property.name)
                                                                         .toString() === "false"
-                                                                )
+                                                                );
                                                             } }
                                                             toggle
                                                             placeholder={
@@ -360,7 +360,7 @@ export const EditGroupDetails: FunctionComponent<EditGroupDetailsPropsInterface>
                             <Grid.Column width={ 8 } textAlign="center">
                                 <LinkButton
                                     type="button"
-                                    onClick={ () => { setShowMore(!showMore) } }
+                                    onClick={ () => { setShowMore(!showMore); } }
                                     data-testid={ `${ testId }-show-more-button` }
                                 >
                                     <Icon name={ showMore ? "chevron up" : "chevron down" } />

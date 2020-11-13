@@ -83,7 +83,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             setFilterTempAvailableClaims(filterTempAvailableClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterTempAvailableClaims(tempAvailableClaims);
         }
@@ -94,7 +94,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
         const changeValue = event.target.value;
         if (changeValue.length > 0) {
             setFilterTempSelectedClaims(filterTempSelectedClaims.filter((item) =>
-                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1))
+                item.claimURI.toLowerCase().indexOf(changeValue.toLowerCase()) !== -1));
         } else {
             setFilterTempSelectedClaims(tempSelectedClaims);
         }
@@ -187,7 +187,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
         if (isSelectAssignedAllClaimsChecked) {
             setCheckedAssignedListItems(tempSelectedClaims);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [isSelectAssignedAllClaimsChecked]);
 
@@ -198,7 +198,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
         if (isSelectUnassignedClaimsAllClaimsChecked) {
             setCheckedUnassignedListItems(tempAvailableClaims);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [isSelectUnassignedClaimsAllClaimsChecked]);
 
@@ -273,7 +273,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-unselected-transfer-list-item-${ index }` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -302,7 +302,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                                         showSecondaryActions={ false }
                                         data-testid={ `${ testId }-selected-transfer-list-item-${ index }` }
                                     />
-                                )
+                                );
                             })
                         }
                     </TransferList>
@@ -323,7 +323,7 @@ export const AttributeSelectionWizardOtherDialect: FunctionComponent<
                 </PrimaryButton>
             </Modal.Actions>
         </Modal>
-    )
+    );
 };
 
 /**

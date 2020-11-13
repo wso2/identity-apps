@@ -27,5 +27,5 @@ import { ApprovalsResourceEndpointsInterface } from "../models";
 export const getApprovalsResourceEndpoints = (serverHost: string): ApprovalsResourceEndpointsInterface => {
     return {
         approvals: `${ serverHost }/api/users/v1/me/approval-tasks`
-    }
+    };
 };

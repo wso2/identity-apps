@@ -69,7 +69,7 @@ export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterf
                     <div className="value">{ description }</div>
                 </Grid.Column>
             </Grid.Row>
-        )
+        );
     };
 
     /**
@@ -84,7 +84,7 @@ export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterf
                     { name }
                 </Label>
             </List.Item>
-        )
+        );
     };
 
     /**
@@ -96,7 +96,7 @@ export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterf
             <Form.Field>
                 <CopyInputField value={ data ? data?.claimURI : "" } />
             </Form.Field>
-        )
+        );
     };
 
     return (
@@ -157,7 +157,7 @@ export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterf
                                                 { attribute.mappedAttribute }
                                             </Table.Cell>
                                         </Table.Row>
-                                    )
+                                    );
                                 }) }
                             </Table.Body>
                         </Table>
@@ -165,7 +165,7 @@ export const SummaryLocalClaims: FunctionComponent<SummaryLocalClaimsPropsInterf
                 ) : null
             }
         </Grid>
-    )
+    );
 };
 
 /**
