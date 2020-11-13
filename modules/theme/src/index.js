@@ -23,4 +23,4 @@
 export * from "./theme";
 export const ThemeLessIndex = (theme) => { return `themes-less/themes/${theme}/index.less`; };
 export const defaultThemeVariables = require("../dist/theme-variables.json");
-export const Themes = [ "dark", "default" ];
+export const Themes = [ "default" ];
