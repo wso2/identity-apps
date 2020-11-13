@@ -18,6 +18,7 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { ContentLoader, EmptyPlaceholder, PageLayout, TemplateGrid } from "@wso2is/react-components";
+import isEmpty from "lodash/isEmpty";
 import isEqual from "lodash/isEqual";
 import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -212,12 +213,24 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
      * @param {object} additionalProps - Additional props for the `TemplateGrid` component.
      * @param {React.ReactElement} placeholder - Empty placeholder for the grid.
      * @param {ApplicationTemplateListItemInterface[]} templates - Template array which will get precedence.
+     * @param {boolean} isSearchView - Is the requested view search ro not.
      * @return {React.ReactElement}
      */
     const renderTemplateGrid = (categories: ApplicationTemplateCategories[],
                                 additionalProps: object,
                                 placeholder?: ReactElement,
-                                templates?: ApplicationTemplateListItemInterface[]): ReactElement => {
+                                templates?: ApplicationTemplateListItemInterface[],
+                                isSearchView?: boolean): ReactElement => {
+
+        const filteredTemplates: ApplicationTemplateListItemInterface[] = applicationTemplates.filter((template) => {
+            return categories.includes(template.category as ApplicationTemplateCategories);
+        });
+
+        // Don't show the grid if there are no templates unless the view requested is search.
+        if (!isSearchView && isEmpty(templates) && isEmpty(filteredTemplates)) {
+
+            return null;
+        }
 
         return (
             <TemplateGrid<ApplicationTemplateListItemInterface>
@@ -225,12 +238,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                 templates={
                     templates
                         ? templates
-                        : applicationTemplates
-                            && applicationTemplates instanceof Array
-                            && applicationTemplates.length > 0
-                                ? applicationTemplates.filter((template) =>
-                                    categories.includes(template.category as ApplicationTemplateCategories))
-                                : []
+                        : filteredTemplates
                 }
                 templateIcons={ ApplicationTemplateIllustrations }
                 templateIconOptions={ {
@@ -316,7 +324,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                         }
                     </div>
                 </>
-            )
+            );
         }
 
         if (view === "SEARCH_RESULTS") {
@@ -348,7 +356,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                         <div>
                                             {
                                                 renderTemplateGrid(
-                                                    [ ApplicationTemplateCategories.DEFAULT ],
+                                                    [
+                                                        ApplicationTemplateCategories.DEFAULT,
+                                                        ApplicationTemplateCategories.DEFAULT_GROUP
+                                                    ],
                                                     {
                                                        "data-testid": `${ testId }-search-result-fallback-templates`
                                                     },
@@ -369,11 +380,12 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                     </Grid.Column>
                                 </Grid.Row>
                             </Grid>,
-                            filteredTemplateList
+                            filteredTemplateList,
+                            true
                         )
                     }
                 </div>
-            )
+            );
         }
 
         return null;
