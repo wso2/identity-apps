@@ -161,6 +161,11 @@
     </servlet>
 
     <servlet>
+        <servlet-name>resend-confirmation-captcha.do</servlet-name>
+        <jsp-file>/resend-confirmation-captcha.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
         <servlet-name>idf-confirm.do</servlet-name>
         <jsp-file>/identifier-logout-confirm.jsp</jsp-file>
     </servlet>
@@ -304,6 +309,11 @@
     <servlet-mapping>
         <servlet-name>wait.do</servlet-name>
         <url-pattern>/wait.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>resend-confirmation-captcha.do</servlet-name>
+        <url-pattern>/resend-confirmation-captcha.do</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

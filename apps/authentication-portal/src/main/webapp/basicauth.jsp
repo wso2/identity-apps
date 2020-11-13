@@ -88,6 +88,14 @@
         };
         $('#loginForm').preventDoubleSubmission();
     });
+
+    function showResendReCaptcha() {
+        <% if (reCaptchaResendEnabled) { %>
+            window.location.href="resend-confirmation-captcha.jsp?<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+        <% } else { %>
+            window.location.href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>";
+        <% } %>
+    }
 </script>
 
 <%!
@@ -137,11 +145,13 @@
 
         SelfUserRegistrationResource selfUserRegistrationResource = JAXRSClientFactory
                 .create(url, SelfUserRegistrationResource.class, providers);
+        String reCaptchaResponse = request.getParameter("g-recaptcha-response");
+        WebClient.client(selfUserRegistrationResource).header("g-recaptcha-response", reCaptchaResponse);
         WebClient.client(selfUserRegistrationResource).header("Authorization", header);
         Response selfRegistrationResponse = selfUserRegistrationResource.regenerateCode(selfRegistrationRequest);
         if (selfRegistrationResponse != null &&  selfRegistrationResponse.getStatus() == HttpStatus.SC_CREATED) {
 %>
-<div class="ui visible info message">
+<div class="ui visible positive message">
     <%=AuthenticationEndpointUtil.i18n(resourceBundle,Constants.ACCOUNT_RESEND_SUCCESS_RESOURCE)%>
 </div>
 <%
@@ -155,6 +165,36 @@
     }
 %>
 
+<% if (Boolean.parseBoolean(loginFailed) && !errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE)) { %>
+<div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
+    <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
+</div>
+<% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
+<div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
+    <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
+</div>
+<% } else { %>
+    <div class="ui visible negative message" style="display: none;" id="error-msg" data-testid="login-page-error-message"></div>
+<% } %>
+
+<% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
+    <div class="ui visible warning message" id="error-msg" data-testid="login-page-error-message">
+        <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
+
+        <div class="ui divider hidden"></div>
+
+        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
+
+        <a id="registerLink"
+            href="javascript:showResendReCaptcha();"
+            data-testid="login-page-resend-confirmation-email-link"
+        >
+            <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
+        </a>
+    </div>
+    <div class="ui divider hidden"></div>
+<% } %>
+
 <form class="ui large form" action="<%=loginFormActionURL%>" method="post" id="loginForm">
     <%
         if (loginFormActionURL.equals(samlssoURL) || loginFormActionURL.equals(oauth2AuthorizeURL)) {
@@ -164,17 +204,6 @@
         }
     %>
 
-    <% if (Boolean.parseBoolean(loginFailed)) { %>
-    <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-        <%= AuthenticationEndpointUtil.i18n(resourceBundle, errorMessage) %>
-    </div>
-    <% } else if ((Boolean.TRUE.toString()).equals(request.getParameter("authz_failure"))){%>
-    <div class="ui visible negative message" id="error-msg" data-testid="login-page-error-message">
-        <%=AuthenticationEndpointUtil.i18n(resourceBundle, "unauthorized.to.login")%>
-    </div>
-    <% } else { %>
-        <div class="ui visible negative message" style="display: none;" id="error-msg" data-testid="login-page-error-message"></div>
-    <% } %>
     <% if(Boolean.parseBoolean(request.getParameter("passwordReset"))) {
     %>
         <div class="ui visible positive message" data-testid="password-reset-success-message">
@@ -375,20 +404,6 @@
         </div>
     </div>
 
-    <% if (Boolean.parseBoolean(loginFailed) && errorCode.equals(IdentityCoreConstants.USER_ACCOUNT_NOT_CONFIRMED_ERROR_CODE) && request.getParameter("resend_username") == null) { %>
-    <div class="ui divider hidden"></div>
-    <div class="field">
-        <div class="form-actions">
-            <%=AuthenticationEndpointUtil.i18n(resourceBundle, "no.confirmation.mail")%>
-            <a id="registerLink"
-                href="login.do?resend_username=<%=Encode.forHtml(request.getParameter("failedUsername"))%>&<%=AuthenticationEndpointUtil.cleanErrorMessages(Encode.forJava(request.getQueryString()))%>"
-                data-testid="login-page-resend-confirmation-email-link"
-            >
-                <%=StringEscapeUtils.escapeHtml4(AuthenticationEndpointUtil.i18n(resourceBundle, "resend.mail"))%>
-            </a>
-        </div>
-    </div>
-    <% } %>
     <%!
         private String getRecoverAccountUrl(String identityMgtEndpointContext, String urlEncodedURL,
                 boolean isUsernameRecovery, String urlParameters) {
