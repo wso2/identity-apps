@@ -84,8 +84,13 @@
 %>
 <%
     boolean reCaptchaEnabled = false;
-    if (request.getParameter("reCaptcha") != null && "TRUE".equalsIgnoreCase(request.getParameter("reCaptcha"))) {
+    if (request.getParameter("reCaptcha") != null && Boolean.parseBoolean(request.getParameter("reCaptcha"))) {
         reCaptchaEnabled = true;
+    }
+
+    boolean reCaptchaResendEnabled = false;
+    if (request.getParameter("reCaptchaResend") != null && Boolean.parseBoolean(request.getParameter("reCaptchaResend"))) {
+        reCaptchaResendEnabled = true;
     }
 %>
 <%
@@ -138,7 +143,7 @@
     <% } %>
 
     <%
-        if (reCaptchaEnabled) {
+        if (reCaptchaEnabled || reCaptchaResendEnabled) {
     %>
         <script src='<%=(Encode.forJavaScriptSource(request.getParameter("reCaptchaAPI")))%>'></script>
     <%
