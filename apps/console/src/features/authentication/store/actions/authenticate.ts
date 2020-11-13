@@ -160,6 +160,19 @@ export const initializeAuthentication = () => (dispatch) => {
         ? Storage.SessionStorage
         : Storage.WebWorker;
 
+    const resolveStorage = (): Storage => {
+        if (window[ "AppUtils" ].getConfig().idpConfigs?.storage) {
+            if (window[ "AppUtils" ].getConfig().idpConfigs?.storage === Storage.WebWorker
+                && new UAParser().getBrowser().name === "IE") {
+                return Storage.SessionStorage;
+            }
+
+            return window[ "AppUtils" ].getConfig().idpConfigs?.storage;
+        }
+
+        return storageFallback;
+    };
+
     /**
      * By specifying the base URL, we are restricting the endpoints to which the requests could be sent.
      * So, an attacker can't obtain the token by sending a request to their endpoint. This is mandatory
@@ -209,8 +222,7 @@ export const initializeAuthentication = () => (dispatch) => {
             sessionState: response?.data?.sessionState,
             signInRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
             signOutRedirectURL: window["AppUtils"].getConfig().loginCallbackURL,
-            storage: window["AppUtils"].getConfig().idpConfigs?.storage
-                ?? storageFallback
+            storage: resolveStorage()
         });
 
         // Register HTTP interceptor callbacks.
