@@ -247,7 +247,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             _.forEachRight (user.roles, (roles) => {
                 const role = roles?.display?.split("/");
 
-                if (role?.length >= 1) {
+                if (role?.length >= 1 && roles?.value) {
                     rolesMap.set(roles?.display, roles?.value);
                 }
             });
@@ -269,40 +269,34 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             roleIds.push(role.id);
         });
 
-        const bulkRemoveData: any = {
+        const bulkData: any = {
             Operations: [],
             failOnErrors: 1,
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
-        };
-
-        const bulkAddData: any = {
-            Operations: [],
-            failOnErrors: 1,
-            schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
+            schemas: [ "urn:ietf:params:scim:api:messages:2.0:BulkRequest" ]
         };
 
         let removeOperation = {
             data: {
-                "Operations": [{
+                "Operations": [ {
                     "op": "remove",
                     "path": "users[value eq " + user.id + "]"
-                }],
-                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Role"]
+                } ],
+                "schemas": [ "urn:ietf:params:scim:schemas:core:2.0:Role" ]
             },
             method: "PATCH"
         };
 
         let addOperation = {
             data: {
-                "Operations": [{
+                "Operations": [ {
                     "op": "add",
                     "value": {
-                        "users": [{
+                        "users": [ {
                             "value": user.id
-                        }]
+                        } ]
                     }
-                }],
-                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Role"]
+                } ],
+                "schemas": [ "urn:ietf:params:scim:schemas:core:2.0:Role" ]
             },
             method: "PATCH"
         };
@@ -310,15 +304,18 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         const removeOperations = [];
         const addOperations = [];
         let removedIds = [];
+        const addedIds = [];
 
         if (primaryRolesList) {
-            removedIds = [...primaryRolesList.values()];
+            removedIds = [ ...primaryRolesList.values() ];
         }
 
         if (roleIds?.length > 0) {
             roleIds.map((roleId) => {
                 if (removedIds?.includes(roleId)) {
                     removedIds.splice(removedIds.indexOf(roleId), 1);
+                } else {
+                    addedIds.push(roleId);
                 }
             });
         }
@@ -333,57 +330,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             });
 
             removeOperations.map((operation) => {
-                bulkRemoveData.Operations.push(operation);
+                bulkData.Operations.push(operation);
             });
+        }
 
-            updateResources(bulkRemoveData)
-                .then(() => {
-                    onAlertFired({
-                        description: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
-                            "success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
-                            "success.message"
-                        )
-                    });
-                    handelAddNewRoleModalClose();
-                    handleUserUpdate(user.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        onAlertFired({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
-                                "error.message"
-                            )
-                        });
-
-                        return;
-                    }
-
-                    onAlertFired({
-                        description: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
-                            "genericError.description"
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
-                            "genericError.message"
-                        )
-                    });
-                });
-        } else {
-            roleIds.map((id) => {
+        if (addedIds && addedIds?.length > 0) {
+            addedIds.map((id) => {
                 addOperation = {
                     ...addOperation,
                     ...{ path: "/Roles/" + id }
@@ -392,56 +344,56 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             });
 
             addOperations.map((operation) => {
-                bulkAddData.Operations.push(operation);
+                bulkData.Operations.push(operation);
             });
+        }
 
-            updateResources(bulkAddData)
-                .then(() => {
+        updateResources(bulkData)
+            .then(() => {
+                onAlertFired({
+                    description: t(
+                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "success.description"
+                    ),
+                    level: AlertLevels.SUCCESS,
+                    message: t(
+                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "success.message"
+                    )
+                });
+                handelAddNewRoleModalClose();
+                handleUserUpdate(user.id);
+            })
+            .catch((error) => {
+                if (error?.response?.status === 404) {
+                    return;
+                }
+
+                if (error?.response && error?.response?.data && error?.response?.data?.description) {
                     onAlertFired({
-                        description: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.addUserRoles." +
-                            "success.description"
-                        ),
-                        level: AlertLevels.SUCCESS,
-                        message: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.addUserRoles." +
-                            "success.message"
-                        )
-                    });
-                    handelAddNewRoleModalClose();
-                    handleUserUpdate(user.id);
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        return;
-                    }
-
-                    if (error?.response && error?.response?.data && error?.response?.data?.description) {
-                        onAlertFired({
-                            description: error.response?.data?.description,
-                            level: AlertLevels.ERROR,
-                            message: t(
-                                "adminPortal:components.user.updateUser.roles.notifications.addUserRoles." +
-                                "error.message"
-                            )
-                        });
-
-                        return;
-                    }
-
-                    onAlertFired({
-                        description: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.addUserRoles." +
-                            "genericError.description"
-                        ),
+                        description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.addUserRoles." +
-                            "genericError.message"
+                            "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                            "error.message"
                         )
                     });
+
+                    return;
+                }
+
+                onAlertFired({
+                    description: t(
+                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "genericError.description"
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "genericError.message"
+                    )
                 });
-        }
+            });
     };
 
     const handleUnselectedListSearch = (e, { value }) => {
@@ -866,7 +818,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 {
                                                     assignedRoles?.map((group) => {
                                                         const userRole = group?.display?.split("/");
-                                                        if (userRole?.length >= 1) {
+                                                        if (userRole?.length >= 1 && group?.value) {
                                                             return (
                                                                 <Table.Row>
                                                                     {
