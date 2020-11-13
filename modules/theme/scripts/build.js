@@ -41,6 +41,8 @@ const SAMPLE_THEME_NAME = "sample";
 const DEFAULT_THEME_NAME = "default";
 const MANIFEST_FILE_NAME = "assets-manifest.json";
 
+const skipSample = process.argv.indexOf('--skipSample') > -1;
+
 /*
  * Generate Default Site Variables JSON files
  */
@@ -240,61 +242,63 @@ const titleCase = (string, spliter) => {
  * Create example sub theme folder
  */
 const createSampleTheme = () => {
-    const sampleThemePath = path.join(themesDir, SAMPLE_THEME_NAME);
-    const defaultThemePath = path.join(themesDir, DEFAULT_THEME_NAME);
+    if (!skipSample) {
+        const sampleThemePath = path.join(themesDir, SAMPLE_THEME_NAME);
+        const defaultThemePath = path.join(themesDir, DEFAULT_THEME_NAME);
 
-    fs.ensureDirSync(sampleThemePath);
-    fs.emptyDirSync(sampleThemePath);
+        fs.ensureDirSync(sampleThemePath);
+        fs.emptyDirSync(sampleThemePath);
 
-    /*
-     * Remove empty definition folders from the copied
-     */
-    const defaultThemeContent = fs.readdirSync(defaultThemePath);
-    
-    defaultThemeContent.map((contentItem) => {
-        const contentItemPath = path.join(defaultThemePath, contentItem);
-    
-        if (fs.lstatSync(contentItemPath).isDirectory()) {
-            const folder = contentItem;
-            const folderPath = path.join(sampleThemePath, folder);
+        /*
+        * Remove empty definition folders from the copied
+        */
+        const defaultThemeContent = fs.readdirSync(defaultThemePath);
+        
+        defaultThemeContent.map((contentItem) => {
+            const contentItemPath = path.join(defaultThemePath, contentItem);
+        
+            if (fs.lstatSync(contentItemPath).isDirectory()) {
+                const folder = contentItem;
+                const folderPath = path.join(sampleThemePath, folder);
 
-            if (folder === "assets") {
-                const assetsFolderPath = path.join(defaultThemePath, folder);
+                if (folder === "assets") {
+                    const assetsFolderPath = path.join(defaultThemePath, folder);
 
-                fs.copySync(path.join(assetsFolderPath), folderPath);
+                    fs.copySync(path.join(assetsFolderPath), folderPath);
+                }
+                else {
+                    fs.ensureDirSync(folderPath);
+
+                    const files = fs.readdirSync(path.join(defaultThemePath, folder));
+
+                    files.map((file) => {
+                        const fileNameSplit = file.split(".");
+
+                        if (fileNameSplit.length > 0 &&
+                            (fileNameSplit[1] === "variables" || fileNameSplit[1] === "overrides")) {
+
+                            const content = "/*******************************\n" +
+                                `     ${titleCase(fileNameSplit[0], "-")} ${titleCase(fileNameSplit[1], " ")}\n` +
+                                "********************************\n";
+
+                            fs.writeFileSync(path.join(folderPath, file), content, (error) => {
+                                console.error(error);
+                            });
+                        }
+                    });
+                }
             }
-            else {
-                fs.ensureDirSync(folderPath);
+        });
 
-                const files = fs.readdirSync(path.join(defaultThemePath, folder));
+        console.log("themes/sample/assets created.");
+        console.log("themes/sample .variables & .overrides files created.");
 
-                files.map((file) => {
-                    const fileNameSplit = file.split(".");
-
-                    if (fileNameSplit.length > 0 &&
-                        (fileNameSplit[1] === "variables" || fileNameSplit[1] === "overrides")) {
-
-                        const content = "/*******************************\n" +
-                            `     ${titleCase(fileNameSplit[0], "-")} ${titleCase(fileNameSplit[1], " ")}\n` +
-                            "********************************\n";
-
-                        fs.writeFileSync(path.join(folderPath, file), content, (error) => {
-                            console.error(error);
-                        });
-                    }
-                });
-            }
-        }
-    });
-
-    console.log("themes/sample/assets created.");
-    console.log("themes/sample .variables & .overrides files created.");
-
-    /*
-     * Copy index.less to sample theme
-     */
-    fs.copySync(path.join(srcDir, "templates", "index.less"), path.join(sampleThemePath, "index.less"));
-    console.log("themes/sample/index.less copied.");
+        /*
+        * Copy index.less to sample theme
+        */
+        fs.copySync(path.join(srcDir, "templates", "index.less"), path.join(sampleThemePath, "index.less"));
+        console.log("themes/sample/index.less copied.");
+    }
 
     /*
      * Start compile themes
