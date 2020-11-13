@@ -70,11 +70,17 @@ module.exports = (env) => {
 
     return {
         devServer: {
+            before: function (app) {
+                app.get("/", function (req, res) {
+                    res.redirect(publicPath);
+                });
+            },
             contentBase: distFolder,
             historyApiFallback: true,
             host: "localhost",
             https: true,
             inline: true,
+            openPage: basename,
             port: devServerPort
         },
         devtool: isProduction
