@@ -137,7 +137,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         if (isSelectAssignedAllRolesChecked) {
             setCheckedAssignedListItems(tempRoleList);
         } else {
-            setCheckedAssignedListItems([])
+            setCheckedAssignedListItems([]);
         }
     }, [ isSelectAssignedAllRolesChecked ]);
 
@@ -145,7 +145,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         if (isSelectUnassignedRolesAllRolesChecked) {
             setCheckedUnassignedListItems(roleList);
         } else {
-            setCheckedUnassignedListItems([])
+            setCheckedUnassignedListItems([]);
         }
     }, [ isSelectUnassignedRolesAllRolesChecked ]);
 
@@ -270,35 +270,30 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
         });
 
         const bulkRemoveData: any = {
-            failOnErrors: 1,
             Operations: [],
+            failOnErrors: 1,
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         const bulkAddData: any = {
-            failOnErrors: 1,
             Operations: [],
+            failOnErrors: 1,
             schemas: ["urn:ietf:params:scim:api:messages:2.0:BulkRequest"]
         };
 
         let removeOperation = {
             data: {
-                "schemas": [
-                    "urn:ietf:params:scim:schemas:core:2.0:Role"
-                ],
                 "Operations": [{
                     "op": "remove",
                     "path": "users[value eq " + user.id + "]"
-                }]
+                }],
+                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Role"]
             },
             method: "PATCH"
         };
 
         let addOperation = {
             data: {
-                "schemas": [
-                    "urn:ietf:params:scim:schemas:core:2.0:Role"
-                ],
                 "Operations": [{
                     "op": "add",
                     "value": {
@@ -306,7 +301,8 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                             "value": user.id
                         }]
                     }
-                }]
+                }],
+                "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Role"]
             },
             method: "PATCH"
         };
@@ -669,7 +665,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                             () => handleUnassignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName?.length > 1 ? roleName[1] : roleName[0] }
+                                                        listItem={
+                                                            roleName?.length > 1 ? roleName[ 1 ] : roleName[ 0 ]
+                                                        }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -678,7 +676,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         handleOpenPermissionModal={ () => handleRoleIdSet(role.id) }
                                                         data-testid="user-mgt-update-roles-modal-unselected-roles"
                                                     />
-                                                )
+                                                );
                                             }
                                         })
                                     }
@@ -706,7 +704,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                             () => handleAssignedItemCheckboxChange(role)
                                                         }
                                                         key={ index }
-                                                        listItem={ roleName?.length == 1 ? roleName[0] : roleName[1] }
+                                                        listItem={
+                                                            roleName?.length == 1 ? roleName[ 0 ] : roleName[ 1 ]
+                                                        }
                                                         listItemId={ role.id }
                                                         listItemIndex={ index }
                                                         listItemTypeLabel={ createItemLabel(role?.displayName) }
@@ -714,7 +714,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                         showSecondaryActions={ false }
                                                         data-testid="user-mgt-update-roles-modal-selected-roles"
                                                     />
-                                                )
+                                                );
                                             }
                                         })
                                     }
@@ -794,7 +794,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                 handleCloseRolePermissionModal={ handleCloseRolePermissionModal }
                 roleId={ selectedRoleId }
             />
-        )
+        );
     };
 
     return (
@@ -870,24 +870,24 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                             return (
                                                                 <Table.Row>
                                                                     {
-                                                                        userRole[0] == APPLICATION_DOMAIN ? (
+                                                                        userRole[ 0 ] == APPLICATION_DOMAIN ? (
                                                                             <Table.Cell>
                                                                                 <Label className="application-label">
                                                                                     { APPLICATION_DOMAIN }
                                                                                 </Label>
                                                                             </Table.Cell>
                                                                         ) : (
-                                                                            <Table.Cell>
-                                                                                <Label className="internal-label">
-                                                                                    { INTERNAL_DOMAIN }
-                                                                                </Label>
-                                                                            </Table.Cell>
-                                                                        )
+                                                                                <Table.Cell>
+                                                                                    <Label className="internal-label">
+                                                                                        { INTERNAL_DOMAIN }
+                                                                                    </Label>
+                                                                                </Table.Cell>
+                                                                            )
                                                                     }
                                                                     <Table.Cell width={ 8 }>
                                                                         {
                                                                             userRole?.length == 1
-                                                                            ? userRole[0] : userRole[1]
+                                                                                ? userRole[ 0 ] : userRole[ 1 ]
                                                                         }
                                                                     </Table.Cell>
                                                                     <Table.Cell textAlign="center">
@@ -897,7 +897,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                                 <Icon
                                                                                     data-testid={
                                                                                         `user-mgt-roles-list-
-                                                                                        ${ userRole[1] }-
+                                                                                        ${ userRole[ 1 ] }-
                                                                                         permissions-button` }
                                                                                     color="grey"
                                                                                     name="key"
@@ -911,7 +911,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                                         />
                                                                     </Table.Cell>
                                                                 </Table.Row>
-                                                            )
+                                                            );
                                                         }
                                                     })
                                                 }
