@@ -22,8 +22,8 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholderIllustrations } from "../../configs";
-import { ErrorPageLayout } from "../../layouts";
 import { AppConstants } from "../../constants";
+import { ErrorPageLayout } from "../../layouts";
 
 /**
  * Access denied error page.

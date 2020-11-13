@@ -77,10 +77,10 @@ I18n.init({
                 if (!isSupported) {
                     I18n.instance.changeLanguage(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE)
                         .catch((error) => {
-                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error)
-                        })
+                            throw new LanguageChangeException(I18nModuleConstants.DEFAULT_FALLBACK_LANGUAGE, error);
+                        });
                 }
-            })
+            });
     })
     .catch((error) => {
         throw new I18nInstanceInitException(error);

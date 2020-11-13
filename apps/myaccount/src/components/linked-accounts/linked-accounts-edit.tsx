@@ -62,7 +62,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
      * @param {InputOnChangeData} data - Input field data.
      */
     const handleUsernameChange = (event: React.ChangeEvent<HTMLInputElement>, data: InputOnChangeData) => {
-        setUserName(data.value)
+        setUserName(data.value);
     };
 
     /**
@@ -75,7 +75,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
             username: userName
         };
 
-        onFormSubmit(formValues, UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER)
+        onFormSubmit(formValues, UIConstants.ADD_LOCAL_LINKED_ACCOUNT_FORM_IDENTIFIER);
     };
 
     return (

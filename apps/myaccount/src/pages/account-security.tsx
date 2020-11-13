@@ -77,7 +77,7 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
                 });
                 break;
         }
-        }, 100)
+        }, 100);
 
     }, [ props.location ]);
 

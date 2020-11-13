@@ -16,17 +16,17 @@
  * under the License.
  */
 
-import { Field, Forms, useTrigger, Validation } from "@wso2is/forms";
+import { ProfileConstants } from "@wso2is/core/constants";
+import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Button, Divider, Message, Modal, Segment } from "semantic-ui-react";
 import { resendSMSOTPCode, updateProfileInfo, validateSMSOTPCode } from "../../api";
 import { EnterCode, QRCodeScan } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { getProfileInformation } from "../../store/actions";
-import { useDispatch } from "react-redux";
-import { ProfileConstants } from "@wso2is/core/constants";
 
 /**
  * Prop types for the SMS OTP component.

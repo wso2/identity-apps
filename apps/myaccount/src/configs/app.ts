@@ -97,7 +97,7 @@ export class Config {
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
             user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
             wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
-        }
+        };
     }
 
     /**
