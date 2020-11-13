@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { UAParser } from "ua-parser-js";
 import { AppUtils } from "./app-utils";
 import "core-js/stable";
 import "regenerator-runtime/runtime";
@@ -83,7 +84,7 @@ if (state !== null && state === "Y2hlY2tTZXNzaW9u") {
         sessionStorage.setItem("session_state", newSessionState);
 
         // Stop loading rest of the page inside the iFrame
-        if (navigator.appName === "Microsoft Internet Explorer") {
+        if (new UAParser().getBrowser().name === "IE") {
             document.execCommand("Stop");
         } else {
             window.stop();
