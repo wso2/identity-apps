@@ -205,9 +205,18 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 value = {
                     [schemaNames[0]]: [
                         ...attributeValues,
-                        values.get(formName)
+                        values?.get(formName)
                     ]
                 };
+
+                if (values.get(formName)) {
+                    value = {
+                        ...value,
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            "verifyEmail": true
+                        }
+                    }
+                }
             } else {
                 let primaryValue = "";
 
@@ -241,6 +250,15 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         }
                 ]
                 };
+
+                if (primaryValue) {
+                    value = {
+                        ...value,
+                        [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
+                            "verifyEmail": true
+                        }
+                    }
+                }
             }
         } else {
             if (schemaNames.length === 1) {
