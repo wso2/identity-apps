@@ -120,14 +120,14 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                     <Divider hidden />
                     <p className="link" onClick={ refreshCode }>{t(translateKey + "modals.scan.generate")}</p>
                 </Segment>
-                {totpConfig?.apps?.length > 0
+                {totpConfig?.length > 0
                     ? (
                         <Message info>
                             <Message.Header>{t(translateKey + "modals.scan.messageHeading")}</Message.Header>
                             <Message.Content>
                                 {t(translateKey + "modals.scan.messageBody") + " "}
                                 <List bulleted>
-                                    {totpConfig?.apps?.map((app, index) => (
+                                    {totpConfig?.map((app, index) => (
                                         <List.Item key={ index } >
                                             <a
                                                 target="_blank"
