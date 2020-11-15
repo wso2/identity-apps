@@ -100,13 +100,6 @@ export interface AuthenticatorAppInterface {
 }
 
 /**
- * Authenticator app list interface.
- */
-export interface AuthenticatorAppListInterface {
-    apps: AuthenticatorAppInterface[];
-}
-
-/**
  * Dev portal UI config interface.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface {
@@ -122,7 +115,7 @@ export interface UIConfigInterface extends CommonUIConfigInterface {
     /**
      * TOTP authenticator apps.
      */
-    authenticatorApp?: AuthenticatorAppListInterface;
+    authenticatorApp?: AuthenticatorAppInterface[];
 }
 
 /**
