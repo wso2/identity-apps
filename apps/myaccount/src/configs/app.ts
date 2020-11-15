@@ -109,8 +109,8 @@ export class Config {
         return {
             announcements: window["AppUtils"].getConfig().ui.announcements,
             appName: window["AppUtils"].getConfig().ui.appName,
-            authenticatorApp: { apps: [ { link: "", name: "" } ] },
-            copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
+            authenticatorApp: window["AppUtils"].getConfig().ui.authenticatorApp,
+            copyrightText: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${new Date().getFullYear()}`,
             features: window["AppUtils"].getConfig().ui.features,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
