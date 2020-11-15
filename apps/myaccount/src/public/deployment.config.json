@@ -33,9 +33,7 @@
         "appTitle": "My Account | WSO2 Identity Server",
         "appName": "My Account",
         "appLogoPath": "/assets/images/logo.svg",
-        "authenticatorApp": {
-            "enabled": true
-        },
+        "authenticatorApp": [],
         "features": {
             "applications": {
                 "disabledFeatures": [],
