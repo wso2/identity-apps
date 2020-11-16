@@ -409,7 +409,7 @@ const ClaimDialectsPage: FunctionComponent<ClaimDialectsPageInterface> = (
  * Default props for the component.
  */
 ClaimDialectsPage.defaultProps = {
-    "data-testid": "claim-dialects"
+    "data-testid": "attribute-dialects"
 };
 
 /**
