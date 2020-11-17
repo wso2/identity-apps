@@ -83,7 +83,6 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
      */
     const writeToIframe = (): void => {
         // This interval will wait till the iframe is initialized to show content.
-        
         const inter = window.setInterval(function() {
             const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
 
