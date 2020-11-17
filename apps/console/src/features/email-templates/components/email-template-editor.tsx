@@ -66,7 +66,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
 
     useEffect(() => {
         writeToIframe();
-    }, [ content ]);
+    }, [ updatedContent.current ]);
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
@@ -82,10 +82,17 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
      * Write content to iFrame.
      */
     const writeToIframe = (): void => {
-        const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
-        if (iframeDoc) {
-            iframeDoc.body.innerHTML = content;
-        }
+        // This interval will wait till the iframe is initialized to show content.
+        
+        const inter = window.setInterval(function() {
+            const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
+
+            if(iframeDoc.readyState == "complete") {
+
+                window.clearInterval(inter);
+                iframeDoc.body.innerHTML = updatedContent.current;
+            }
+        },100);
     };
 
     return (
