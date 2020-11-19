@@ -17,9 +17,6 @@
  */
 
 import {
-    ReactComponent as GovernanceConnectors
-} from "../../../themes/default/assets/images/illustrations/governance-connectors.svg";
-import {
     default as AccountDisableConnectorIllustration
 } from "../../../themes/default/assets/images/illustrations/governance-connectors/account-disable-illustration.svg";
 import {
@@ -83,5 +80,3 @@ export const GovernanceConnectorIllustrations = {
     [ ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID ]: UserClaimUpdateConnectorIllustration,
     default: DefaultConnectorIllustration
 };
-
-export const GovernanceConnectorsIllustration = GovernanceConnectors;
