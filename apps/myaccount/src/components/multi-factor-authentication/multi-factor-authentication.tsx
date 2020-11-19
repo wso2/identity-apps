@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import React from "react";
@@ -31,23 +32,29 @@ import { SettingsSection } from "../shared";
 /**
  * Prop types for the basic details component.
  */
-interface MfaProps extends SBACInterface<FeatureConfigInterface> {
+interface MfaProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
     const { t } = useTranslation();
-    const { onAlertFired, featureConfig } = props;
+    const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
 
     return (
         <SettingsSection
+            data-testid={ `${testId}-settings-section` }
             description={ t("userPortal:sections.mfa.description") }
             header={ t("userPortal:sections.mfa.heading") }
         >
-            <List divided={ true } verticalAlign="middle" className="main-content-inner">
+            <List
+                divided={ true }
+                verticalAlign="middle"
+                className="main-content-inner"
+                data-testid={ `${testId}-list` }
+            >
                 { !isReadOnlyUser
                     && hasRequiredScopes(featureConfig?.security, featureConfig?.security?.scopes?.read, allowedScopes)
                     && isFeatureEnabled(
@@ -85,3 +92,11 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
         </SettingsSection>
     );
 };
+
+/**
+ * Default properties of {@link MultiFactorAuthentication}
+ * Also see {@link MfaProps}
+ */
+MultiFactorAuthentication.defaultProps = {
+    "data-testid": "multi-factor-authentication"
+}

@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import React, { FunctionComponent } from "react";
 import { Header } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
- * Proptypes for the placeholder component.
+ * Proptypes for the placeholder component. Also see
+ * {@link EmptyPlaceholder.defaultProps}
  */
-interface PlaceholderProps {
+interface PlaceholderProps extends TestableComponentInterface { // FIXME: Rename to EmptyPlaceholderProps?
     action?: React.ReactNode;
     image?: any;
     imageSize?: ThemeIconSizes;
@@ -38,10 +40,10 @@ interface PlaceholderProps {
  * @return {JSX.Element}
  */
 export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: PlaceholderProps): JSX.Element => {
-    const { action, image, imageSize, subtitle, title } = props;
+    const { action, image, imageSize, subtitle, title, ['data-testid']: testId } = props;
 
     return (
-        <div className="empty-placeholder">
+        <div className="empty-placeholder" data-testid={ testId }>
             {
                 image
                     ? (
@@ -70,9 +72,11 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
 
 /**
  * Default proptypes for the empty placeholder component.
+ * Also see {@link PlaceholderProps}
  */
 EmptyPlaceholder.defaultProps = {
     action: null,
     image: null,
-    imageSize: "auto"
+    imageSize: "auto",
+    "data-testid": 'empty-placeholder',
 };

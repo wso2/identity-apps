@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
 import { SBACInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
@@ -48,7 +49,7 @@ const SMS = "sms";
 /**
  * Prop types for the SMS OTP component.
  */
-interface SMSOTPProps extends SBACInterface<FeatureConfigInterface> {
+interface SMSOTPProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -60,7 +61,7 @@ interface SMSOTPProps extends SBACInterface<FeatureConfigInterface> {
 export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
     const [mobile, setMobile] = useState("");
     const { t } = useTranslation();
-    const { onAlertFired, featureConfig } = props;
+    const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
     const dispatch = useDispatch();
     const profileInfo: BasicProfileInterface = useSelector(
         (state: any) => state.authenticationInformation.profileInfo
@@ -163,6 +164,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                     showMobileUpdateWizard
                         ? (
                             < MobileUpdateWizard
+                                data-testid={ `${testId}-mobile-update-wizard` }
                                 onAlertFired={ onAlertFired }
                                 closeWizard={ () =>
                                     handleCloseMobileUpdateWizard()
@@ -174,7 +176,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                         )
                         : null
                 }
-                <EditSection>
+                <EditSection data-testid={ `${testId}-mobile-verification-edit-section` }>
                     <p>
                         { t("userPortal:components.profile.messages.mobileVerification.content") }
                     </p>
@@ -300,7 +302,7 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
                 AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
             )
             ? generateUpdateFormForMobileVerification() :
-            <EditSection>
+            <EditSection data-testid={ `${testId}-edit-section` }>
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
@@ -376,5 +378,13 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
         );
     };
 
-    return <div>{ showEditView() }</div>;
+    return <div data-testid={ testId }>{ showEditView() }</div>;
 };
+
+/**
+ * Default properties of {@link SMSOTPAuthenticator}
+ * Also see {@link SMSOTPProps}
+ */
+SMSOTPAuthenticator.defaultProps = {
+    "data-testid": "sms-otp-authenticator"
+}

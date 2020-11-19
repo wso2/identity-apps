@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import { Field, Forms } from "@wso2is/forms";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
@@ -44,7 +45,7 @@ const FIDO = "fido-";
 /**
  * Prop types for the associated accounts component.
  */
-interface FIDOAuthenticatorProps {
+interface FIDOAuthenticatorProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -63,7 +64,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [recentFIDONameError, setRecentFIDONameError] = useState(false);
     const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
-    const { onAlertFired } = props;
+    const { onAlertFired, ["data-testid"]: testId } = props;
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const dispatch = useDispatch();
@@ -299,6 +300,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const deviceErrorModal = (): JSX.Element => {
         return (
             <ModalComponent
+                data-testid={ `${testId}-error-modal-component` }
                 primaryAction={ t("common:retry") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleDeviceErrorModalClose }
@@ -327,6 +329,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const deviceRegistrationSuccessModal = (): JSX.Element => {
         return (
             <ModalComponent
+                data-testid={ `${testId}-success-modal-component` }
                 primaryAction={ t("common:save") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleDeviceSuccessModalClose }
@@ -408,6 +411,7 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                 {
                     deviceList ? (
                         <List
+                            data-testid={ `${testId}-devices-list` }
                             divided={ true }
                             verticalAlign="middle"
                             className="main-content-inner settings-section-inner-list"
@@ -417,7 +421,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                     editFIDO?.get(device.credential.credentialId)
                                         && activeForm?.startsWith(CommonConstants.SECURITY+FIDO)
                                         ? (
-                                            <EditSection key={ device.credential.credentialId }>
+                                            <EditSection key={ device.credential.credentialId }
+                                                         data-testid={ `${testId}-device-${index}-edit-section` }>
                                                 <Grid>
                                                     <Grid.Row columns={ 2 }>
                                                         <Grid.Column width={ 4 }>
@@ -491,7 +496,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
                                             </EditSection>
                                         )
                                         : (
-                                            <List.Item className="inner-list-item" key={ index }>
+                                            <List.Item className="inner-list-item" key={ index }
+                                                       data-testid={ `${testId}-devices-list-item` }>
                                                 <Grid padded={ true }>
                                                     <Grid.Row columns={ 2 } className="first-column">
                                                         <Grid.Column width={ 11 }>
@@ -578,3 +584,11 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
         </>
     );
 };
+
+/**
+ * Default properties of {@link FIDOAuthenticator}
+ * Also see {@link FIDOAuthenticatorProps}
+ */
+FIDOAuthenticator.defaultProps = {
+    "data-testid": "fido-authenticator"
+}

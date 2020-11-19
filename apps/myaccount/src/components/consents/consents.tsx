@@ -40,11 +40,13 @@ import {
 import { AppState } from "../../store";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
+import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
- * Proptypes for the user sessions component.
+ * Proptypes for the user sessions component. Also
+ * see {@link Consents.defaultProps}
  */
-interface ConsentComponentProps {
+interface ConsentComponentProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -62,7 +64,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
     const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
 
-    const { onAlertFired } = props;
+    const { onAlertFired, ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     /**
@@ -407,6 +409,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
         return (
             <ModalComponent
+                data-testid={ `${testId}-revoke-modal` }
                 primaryAction={ t("common:revoke") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleConsentRevokeModalClose }
@@ -420,7 +423,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 }
                 content={ t("userPortal:components.consentManagement.modals.consentRevokeModal.message") }
             >
-                <Modal.Content>
+                <Modal.Content data-testid={ `${testId}-revoke-modal-content` }>
                     {
                         (self === 0)
                             ? (
@@ -439,6 +442,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     return (
         <>
             <SettingsSection
+                data-testid={ `${testId}-settings-section` }
                 description={ t("userPortal:sections.consentManagement.description") }
                 header={ t("userPortal:sections.consentManagement.heading") }
                 placeholder={
@@ -449,6 +453,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
                 <AppConsentList
+                    data-testid={ `${testId}-list` }
                     consentedApps={ consentedApps }
                     onClaimUpdate={ handleClaimUpdate }
                     onAppConsentRevoke={ handleAppConsentRevoke }
@@ -462,3 +467,11 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         </>
     );
 };
+
+/**
+ * Default properties of {@link Consents} Also
+ * see {@link ConsentComponentProps}
+ */
+Consents.defaultProps = {
+    "data-testid": 'consents'
+}

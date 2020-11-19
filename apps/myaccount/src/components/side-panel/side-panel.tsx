@@ -16,13 +16,14 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import * as React from "react";
 import { SidePanelItems } from "./side-panel-items";
 
 /**
  * Side panel base component Prop types.
  */
-export interface SidePanelProps {
+export interface SidePanelProps extends TestableComponentInterface {
     headerHeight: number;
     onSidePanelItemClick: () => void;
 }
@@ -37,6 +38,16 @@ export const SidePanel: React.FunctionComponent<SidePanelProps> = (
 ): JSX.Element => {
     const { headerHeight, onSidePanelItemClick } = props;
     return (
-        <SidePanelItems type="desktop" onSidePanelItemClick={ onSidePanelItemClick } headerHeight={ headerHeight } />
+        <SidePanelItems type="desktop"
+                        onSidePanelItemClick={ onSidePanelItemClick }
+                        headerHeight={ headerHeight } />
     );
 };
+
+/**
+ * Default props of {@link SidePanel} Also see
+ * {@link SidePanelProps}
+ */
+SidePanel.defaultProps = {
+    "data-testid": "side-panel"
+}

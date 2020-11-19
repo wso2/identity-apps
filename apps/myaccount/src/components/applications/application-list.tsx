@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
@@ -27,7 +28,7 @@ import { EmptyPlaceholder } from "../shared";
 /**
  * Proptypes for the application list component.
  */
-interface ApplicationListProps {
+interface ApplicationListProps extends TestableComponentInterface {
     apps: Application[];
     loading: boolean;
     onAppNavigate: (id: string, url: string) => void;
@@ -45,7 +46,16 @@ interface ApplicationListProps {
 export const ApplicationList: FunctionComponent<ApplicationListProps> = (
     props: ApplicationListProps
 ): JSX.Element => {
-    const { apps, onAppNavigate, onListRefresh, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
+    const {
+        apps,
+        onAppNavigate,
+        onListRefresh,
+        onSearchQueryClear,
+        loading,
+        searchQuery,
+        showFavourites,
+        ["data-testid"]: testId
+    } = props;
     const { t } = useTranslation();
 
     /**
@@ -57,6 +67,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
         if (searchQuery) {
             return (
                 <EmptyPlaceholder
+                    data-testid={ `${testId}-empty-search-result-placeholder` }
                     action={ (
                         <Button
                             className="link-button"
@@ -78,6 +89,7 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
 
         return (
             <EmptyPlaceholder
+                data-testid={ `${testId}-empty-list-placeholder` }
                 action={ (
                     <Button
                         className="link-button"
@@ -130,5 +142,6 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
  * Default proptypes for the application list component.
  */
 ApplicationList.defaultProps = {
-    showFavourites: true
+    showFavourites: true,
+    "data-testid": 'application-list'
 };

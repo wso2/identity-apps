@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
 import { RouteUtils } from "@wso2is/core/utils";
@@ -38,7 +39,7 @@ import { ThemeIcon } from "../shared";
 /**
  * Side panel items component Prop types.
  */
-interface SidePanelItemsProps {
+interface SidePanelItemsProps extends TestableComponentInterface {
     headerHeight: number;
     onSidePanelItemClick: () => void;
     type: "desktop" | "mobile";
@@ -54,7 +55,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     props: SidePanelItemsProps
 ): ReactElement => {
 
-    const { headerHeight, type, onSidePanelItemClick } = props;
+    const { headerHeight, type, onSidePanelItemClick, ["data-testid"]: testId } = props;
 
     const { t } = useTranslation();
 
@@ -127,7 +128,9 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     };
 
     return (
-        <Menu className={ `side-panel ${ type }` } style={ style } vertical fluid>
+        <Menu className={ `side-panel ${ type }` }
+              data-testid={ `${testId}-menu` }
+              style={ style } vertical fluid>
             {
                 appConfig && (
                     filteredRoutes.map((route, index) => (
@@ -136,6 +139,7 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
                             && validateSidePanelVisibility(route.path))
                             ? (
                                 <Menu.Item
+                                    data-testid={ `${testId}-menu-item` }
                                     as={ NavLink }
                                     to={ route.path }
                                     name={ route.name }
@@ -163,3 +167,11 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
         </Menu>
     );
 };
+
+/**
+ * Default props of {@link SidePanelItems} Also see
+ * {@link SidePanelItemsProps}
+ */
+SidePanelItems.defaultProps = {
+    "data-testid": "side-panel"
+}

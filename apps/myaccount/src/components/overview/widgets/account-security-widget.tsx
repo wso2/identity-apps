@@ -22,13 +22,15 @@ import { WidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
+import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
  * Account security widget.
  *
  * @return {JSX.Element}
  */
-export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
+export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface> = (props): JSX.Element => {
+    const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     const navigate = () => {
@@ -36,8 +38,9 @@ export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
     };
 
     return (
-        <div className="widget account-security">
+        <div className="widget account-security" data-testid={ testId }>
             <SettingsSection
+                data-testid={ `${testId}-settings-section` }
                 header={ t("userPortal:components.overview.widgets.accountSecurity.header") }
                 description={ t("userPortal:components.overview.widgets.accountSecurity.description") }
                 primaryAction={ t("userPortal:components.overview.widgets.accountSecurity.actionTitles.update") }
@@ -50,3 +53,7 @@ export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
         </div>
     );
 };
+
+AccountSecurityWidget.defaultProps = {
+    "data-testid": "account-security-overview-widget"
+}

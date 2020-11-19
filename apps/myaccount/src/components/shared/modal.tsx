@@ -16,10 +16,11 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import React, { MouseEvent } from "react";
 import { Button, Icon, Modal, ModalProps } from "semantic-ui-react";
 
-interface ModalComponentProps extends ModalProps {
+interface ModalComponentProps extends ModalProps, TestableComponentInterface {
     type: "positive" | "negative" | "warning" | "info";
     primaryAction?: string;
     secondaryAction?: string;
@@ -39,6 +40,7 @@ export const ModalComponent = (props: ModalComponentProps) => {
         secondaryAction,
         onPrimaryActionClick,
         onSecondaryActionClick,
+        ["data-testid"]: testId,
         ...rest
     } = props;
 
@@ -167,8 +169,10 @@ export const ModalComponent = (props: ModalComponentProps) => {
 
 /**
  * Default proptypes for the settings section component.
+ * Also see {@link ModalComponentProps}
  */
 ModalComponent.defaultProps = {
     dimmer: "blurring",
-    size: "tiny"
+    size: "tiny",
+    "data-testid": 'modal-component'
 };

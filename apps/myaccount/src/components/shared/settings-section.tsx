@@ -16,15 +16,17 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { Fragment, FunctionComponent, MouseEvent, PropsWithChildren } from "react";
 import { Card, Grid, Header, Icon, List, Menu, Message, Responsive, SemanticICONS } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
 
 /**
- * Proptypes for the settings section component.
+ * Proptypes for the settings section component. See also
+ * {@link SettingsSection.defaultProps}
  */
-interface SettingsSectionProps {
+interface SettingsSectionProps extends TestableComponentInterface {
     className?: string;
     contentPadding?: boolean;
     description?: string;
@@ -77,6 +79,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
         secondaryActionDisabled,
         secondaryActionIcon,
         showActionBar,
+        ["data-testid"]: testId,
         topActionBar
     } = props;
 
@@ -136,10 +139,10 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
     };
 
     return (
-        <Card className={ `settings-card ${ classes }` } fluid padded="very">
-            <Card.Content>
+        <Card className={ `settings-card ${ classes }` } fluid padded="very" data-testid={ `${testId}-card` }>
+            <Card.Content data-testid={ `${testId}-card-content` }>
                 <Grid>
-                    <Grid.Row className="header-section" columns={ 2 }>
+                    <Grid.Row className="header-section" columns={ 2 } data-testid={ `${testId}-card-content-header` }>
                         <Grid.Column width={ (icon || iconMini) ? 10 : 16 } className="no-padding">
                             <Header as="h2">{ header }</Header>
                             <Card.Meta>{ description }</Card.Meta>
@@ -184,7 +187,11 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
                                 : null
                         }
                     </Grid.Row>
-                    <Grid.Row className={ `main-content ${ contentPadding ? "" : "no-padding" }` } columns={ 1 }>
+                    <Grid.Row
+                        className={ `main-content ${ contentPadding ? "" : "no-padding" }` }
+                        columns={ 1 }
+                        data-testid={ `${testId}-card-content-items` }
+                    >
                         <Grid.Column className="no-padding" width={ 16 }>
                             {
                                 topActionBar
@@ -272,6 +279,7 @@ export const SettingsSection: FunctionComponent<PropsWithChildren<SettingsSectio
 SettingsSection.defaultProps = {
     className: "",
     contentPadding: false,
+    "data-testid": "settings-section",
     description: "",
     header: "",
     iconFloated: "right",
@@ -279,5 +287,5 @@ SettingsSection.defaultProps = {
     primaryAction: "",
     primaryActionDisabled: false,
     showActionBar: true,
-    topActionBar: null
+    topActionBar: null,
 };

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
@@ -27,7 +28,7 @@ import { UserAvatar } from "../shared";
 /**
  * Prop types for the liked accounts list component.
  */
-interface LinkedAccountsListProps {
+interface LinkedAccountsListProps extends TestableComponentInterface {
     linkedAccounts: LinkedAccountInterface[];
     onLinkedAccountRemove: (id: string) => void;
     onLinkedAccountSwitch: (account: LinkedAccountInterface) => void;
@@ -42,7 +43,7 @@ interface LinkedAccountsListProps {
 export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
     props: LinkedAccountsListProps
 ): React.ReactElement => {
-    const { linkedAccounts, onLinkedAccountRemove, onLinkedAccountSwitch } = props;
+    const { linkedAccounts, onLinkedAccountRemove, onLinkedAccountSwitch, ["data-testid"]: testId } = props;
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [userID, setUserID] = useState(null);
 
@@ -54,6 +55,7 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
     const requestConfirmation = (): React.ReactElement => {
         return (
             <Modal
+                data-testid={ `${testId}-account-item-delete-confirmation-modal` }
                 size="mini"
                 dimmer="blurring"
                 open={ confirmDelete }
@@ -93,7 +95,7 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
             <List divided verticalAlign="middle" className="main-content-inner">
                 {
                     linkedAccounts.map((account, index) => (
-                        <List.Item className="inner-list-item" key={ index }>
+                        <List.Item className="inner-list-item" key={ index } data-testid={ testId }>
                             <Grid padded>
                                 <Grid.Row columns={ 2 }>
                                     <Grid.Column width={ 11 } className="first-column">
@@ -160,3 +162,11 @@ export const LinkedAccountsList: FunctionComponent<LinkedAccountsListProps> = (
         </>
     );
 };
+
+/**
+ * Default properties of {@link LinkedAccountsList}
+ * Also see {@link LinkedAccountsListProps}
+ */
+LinkedAccountsList.defaultProps = {
+    "data-testid": "linked-account-list"
+}

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms, Validation, useTrigger } from "@wso2is/forms";
 import React, { FunctionComponent, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -43,8 +44,9 @@ const CHANGE_PASSWORD_FORM_IDENTIFIER = "changePasswordForm";
 
 /**
  * Prop types for the change password component.
+ * @see {@link ChangePassword.defaultProps}
  */
-interface ChangePasswordProps {
+interface ChangePasswordProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -55,6 +57,9 @@ interface ChangePasswordProps {
  * @return {JSX.Element}
  */
 export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: ChangePasswordProps): JSX.Element => {
+
+    const { ["data-testid"]: testId, onAlertFired } = props;
+
     const [ currentPassword, setCurrentPassword ] = useState("");
     const [ newPassword, setNewPassword ] = useState("");
     const [ errors, setErrors ] = useState({
@@ -86,7 +91,6 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
      * Calls the API and updates the user password.
      */
     const changePassword = () => {
-        const { onAlertFired } = props;
 
         updatePassword(currentPassword, newPassword)
             .then((response) => {
@@ -187,21 +191,32 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         setShowConfirmationModal(false);
     };
 
-
     const confirmationModal = (
-        <Modal size="mini" open={ showConfirmationModal } onClose={ handleConfirmationModalClose } dimmer="blurring">
-            <Modal.Content>
+        <Modal
+            size="mini"
+            open={ showConfirmationModal }
+            onClose={ handleConfirmationModalClose }
+            dimmer="blurring"
+            data-testid={ `${testId}-confirmation-modal` }
+        >
+            <Modal.Content data-testid={ `${testId}-confirmation-modal-content` }>
                 <Container>
                     <h3>{ t("userPortal:components.changePassword.modals.confirmationModal.heading") }</h3>
                 </Container>
                 <Divider hidden={ true } />
                 <p>{ t("userPortal:components.changePassword.modals.confirmationModal.message") }</p>
             </Modal.Content>
-            <Modal.Actions>
-                <Button className="link-button" onClick={ handleConfirmationModalClose }>
+            <Modal.Actions data-testid={ `${testId}-confirmation-modal-actions` }>
+                <Button
+                    className="link-button" onClick={ handleConfirmationModalClose }
+                    data-testid={ `${testId}-confirmation-modal-actions-cancel-button` }
+                >
                     { t("common:cancel") }
                 </Button>
-                <Button primary={ true } onClick={ changePassword }>
+                <Button
+                    primary={ true } onClick={ changePassword }
+                    data-testid={ `${testId}-confirmation-modal-actions-continue-button` }
+                >
                     { t("common:continue") }
                 </Button>
             </Modal.Actions>
@@ -210,7 +225,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     const showChangePasswordView = activeForm === CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER
         ? (
-            <EditSection>
+            <EditSection data-testid={ `${testId}-edit-section` } >
                 <Forms
                     onSubmit={ (value) => {
                         setCurrentPassword(value.get("currentPassword").toString());
@@ -338,6 +353,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
     return (
         <SettingsSection
+            data-testid={ `${testId}-settings-section` }
             description={ t("userPortal:sections.changePassword.description") }
             header={ t("userPortal:sections.changePassword.heading") }
             icon={ SettingsSectionIcons.changePassword }
@@ -356,4 +372,11 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             { confirmationModal }
         </SettingsSection>
     );
+};
+
+/**
+ * Default props for the #ChangePassword component.
+ */
+ChangePassword.defaultProps = {
+    "data-testid": "change-password",
 };

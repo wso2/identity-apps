@@ -31,11 +31,12 @@ import {
     emptyUserSessions
 } from "../../models";
 import { SettingsSection } from "../shared";
+import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
  * Proptypes for the user sessions component.
  */
-interface UserSessionsComponentProps {
+interface UserSessionsComponentProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -52,7 +53,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
     const [ isRevokeAllUserSessionsModalVisible, setRevokeAllUserSessionsModalVisibility ] = useState(false);
     const [ isRevokeUserSessionModalVisible, setRevokeUserSessionModalVisibility ] = useState(false);
     const [ sessionsListActiveIndexes, setSessionsListActiveIndexes ] = useState([]);
-    const { onAlertFired } = props;
+    const { onAlertFired, ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     /**
@@ -262,19 +263,20 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
     const terminateAllUserSessionsModal = (
         <Modal
+            data-testid={ `${testId}-terminate-all-modal` }
             size="mini"
             open={ isRevokeAllUserSessionsModalVisible }
             onClose={ handleTerminateAllUserSessionsModalClose }
             dimmer="blurring"
         >
-            <Modal.Content>
+            <Modal.Content data-testid={ `${testId}-terminate-all-modal-content` }>
                 <Container>
                     <h3>{ t("userPortal:components.userSessions.modals.terminateAllUserSessionsModal.heading") }</h3>
                 </Container>
                 <br/>
                 <p>{ t("userPortal:components.userSessions.modals.terminateAllUserSessionsModal.message") }</p>
             </Modal.Content>
-            <Modal.Actions>
+            <Modal.Actions data-testid={ `${testId}-terminate-all-modal-actions` }>
                 <Button className="link-button" onClick={ handleTerminateAllUserSessionsModalClose }>
                     { t("common:cancel") }
                 </Button>
@@ -287,19 +289,20 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
     const terminateUserSessionModal = (
         <Modal
+            data-testid={ `${testId}-termination-modal` }
             size="mini"
             open={ isRevokeUserSessionModalVisible }
             onClose={ handleTerminateUserSessionModalClose }
             dimmer="blurring"
         >
-            <Modal.Content>
+            <Modal.Content data-testid={ `${testId}-termination-modal-content` }>
                 <Container>
                     <h3>{ t("userPortal:components.userSessions.modals.terminateUserSessionModal.heading") }</h3>
                 </Container>
                 <br/>
                 <p>{ t("userPortal:components.userSessions.modals.terminateUserSessionModal.message") }</p>
             </Modal.Content>
-            <Modal.Actions>
+            <Modal.Actions data-testid={ `${testId}-termination-modal-actions` }>
                 <Button className="link-button" onClick={ handleTerminateUserSessionModalClose }>
                     { t("common:cancel") }
                 </Button>
@@ -312,6 +315,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
     return (
         <SettingsSection
+            data-testid={ `${testId}-settings-section` }
             description={ t("userPortal:sections.userSessions.description") }
             header={ t("userPortal:sections.userSessions.heading") }
             placeholder={
@@ -335,6 +339,7 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
             }
         >
             <UserSessionsList
+                data-testid={ `${testId}-list` }
                 onTerminateUserSessionClick={ handleTerminateUserSessionClick }
                 onUserSessionDetailClick={ handleSessionDetailClick }
                 userSessions={ userSessions && userSessions.sessions ? userSessions.sessions : null }
@@ -345,3 +350,11 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
         </SettingsSection>
     );
 };
+
+/**
+ * Default props of {@link UserSessionsComponent}
+ * Also see {@link UserSessionsComponentProps}
+ */
+UserSessionsComponent.defaultProps = {
+    "data-testid": "user-sessions-component"
+}

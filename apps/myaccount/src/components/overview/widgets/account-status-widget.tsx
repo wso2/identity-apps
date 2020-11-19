@@ -25,13 +25,15 @@ import * as UIConstants from "../../../constants/ui-constants";
 import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
 import { ThemeIcon } from "../../shared";
+import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
  * Account status widget.
  *
  * @return {JSX.Element}
  */
-export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
+export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> = (props): JSX.Element => {
+    const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
     const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
 
@@ -121,6 +123,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
                 && attributes.incompleteAttributes.length > 0))
             ? (
                 <Popup
+                    data-testid={ `${testId}-progress-items-popup` }
                     trigger={ <Icon color="grey" name="info circle" /> }
                     position="bottom center"
                     className="list-content-popup"
@@ -256,7 +259,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
     );
 
     return (
-        <div className="widget account-status">
+        <div className="widget account-status" data-testid={ testId }>
             <Grid>
                 <Grid.Row>
                     <Grid.Column largeScreen={ 6 } computer={ 5 } tablet={ 5 } mobile={ 16 }>
@@ -307,3 +310,7 @@ export const AccountStatusWidget: FunctionComponent<{}> = (): JSX.Element => {
         </div>
     );
 };
+
+AccountStatusWidget.defaultProps = {
+    "data-testid": "account-status-overview-widget"
+}

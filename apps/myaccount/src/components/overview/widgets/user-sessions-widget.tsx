@@ -27,14 +27,16 @@ import { AlertLevels, UserSessions, emptyUserSessions } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
+import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
  * User sessions widget.
  *
  * @return {ReactElement}
  */
-export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
+export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> = (props): ReactElement => {
 
+    const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
@@ -107,8 +109,9 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
     };
 
     return (
-        <div className="widget account-status">
+        <div className="widget account-status" data-testid={ testId }>
             <SettingsSection
+                data-testid={ `${testId}-settings-section` }
                 description={ t("userPortal:components.overview.widgets.accountActivity.description") }
                 header={ t("userPortal:components.overview.widgets.accountActivity.header") }
                 placeholder={
@@ -130,3 +133,7 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
         </div>
     );
 };
+
+UserSessionsWidget.defaultProps = {
+    "data-testid": "user-sessions-overview-widget"
+}

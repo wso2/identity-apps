@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from '@wso2is/core/models';
 import classNames from "classnames";
 import * as React from "react";
 import { Segment } from "semantic-ui-react";
+import {PropsWithChildren} from "react";
 
 /**
  * Proptypes for the edit section component.
  */
-interface EditSectionProps {
+interface EditSectionProps extends TestableComponentInterface {
     marginTop?: boolean;
 }
 
@@ -33,16 +35,24 @@ interface EditSectionProps {
  * @param {React.PropsWithChildren<any>} props
  * @return {JSX.Element}
  */
-export const EditSection: React.FunctionComponent<EditSectionProps> = (props): JSX.Element => {
-    const { marginTop } = props;
+export const EditSection: React.FunctionComponent<EditSectionProps> = (props: PropsWithChildren<EditSectionProps>): JSX.Element => {
+    const { marginTop, ["data-testid"]: testId } = props;
 
     const classes = classNames({
         "top-margin": marginTop
     });
 
     return (
-        <Segment padded className={ `edit-segment ${classes}` }>
+        <Segment padded className={ `edit-segment ${classes}` } data-testid={ testId }>
             { props.children }
         </Segment>
     );
+};
+
+/**
+ * Default props of {@link EditSection} Also see
+ * {@link EditSectionProps}
+ */
+EditSection.defaultProps = {
+    "data-testid": "edit-section",
 };

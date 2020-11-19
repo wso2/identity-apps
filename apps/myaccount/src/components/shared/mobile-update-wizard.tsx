@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
@@ -31,7 +32,7 @@ import { getProfileInformation } from "../../store/actions";
 /**
  * Prop types for the SMS OTP component.
  */
-interface MobileUpdateWizardProps {
+interface MobileUpdateWizardProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
     closeWizard: () => void;
     wizardOpen;
@@ -44,9 +45,14 @@ interface MobileUpdateWizardProps {
  *
  * @return {JSX.Element}
  */
-export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps> =
-    (props: MobileUpdateWizardProps): JSX.Element => {
-    const { onAlertFired, closeWizard, wizardOpen, currentMobileNumber, isMobileRequired } = props;
+export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps> = (
+    props: MobileUpdateWizardProps
+): JSX.Element => {
+
+    const {
+        onAlertFired, closeWizard, wizardOpen,
+        currentMobileNumber, isMobileRequired, ["data-testid"]: testId
+    } = props;
     const [ step, setStep ] = useState<number>(0);
     const [ verificationError, setVerificationError ] = useState<boolean>(false);
     const [ resendSuccess, setResendSuccess ] = useState<boolean>(false);
@@ -379,6 +385,7 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
     const mobileUpdateWizard = (): JSX.Element => {
         return (
             <Modal
+                data-testid={ `${testId}-modal` }
                 dimmer="blurring"
                 size="mini"
                 open={ wizardOpen }
@@ -394,12 +401,12 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
                         )
                         : null
                 }
-                <Modal.Content>
+                <Modal.Content data-testid={ `${testId}-modal-content` }>
                     <h3>{stepHeader(step)}</h3>
                     <Divider hidden />
                     { stepContent(step) }
                 </Modal.Content>
-                <Modal.Actions>
+                <Modal.Actions data-testid={ `${testId}-modal-actions` }>
                     {
                         step !== 2
                             ? (
@@ -417,5 +424,13 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
         );
     };
 
-    return <div>{ mobileUpdateWizard() }</div>;
+    return <div data-testid={ testId }>{ mobileUpdateWizard() }</div>;
 };
+
+/**
+ * Default properties of {@link MobileUpdateWizard}
+ * Also see {@link MobileUpdateWizardProps}
+ */
+MobileUpdateWizard.defaultProps = {
+    "data-testid": "mobile-update-wizard"
+}

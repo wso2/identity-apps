@@ -15,6 +15,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+import { TestableComponentInterface } from '@wso2is/core/models';
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import { isEmpty } from "lodash";
@@ -42,7 +43,7 @@ const EMAIL = "email";
 /**
  * Prop types for the EmailRecoveryComponent component.
  */
-interface EmailRecoveryProps {
+interface EmailRecoveryProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -55,7 +56,7 @@ interface EmailRecoveryProps {
 export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props: EmailRecoveryProps): JSX.Element => {
 
     const { t } = useTranslation();
-    const { onAlertFired } = props;
+    const { onAlertFired, ['data-testid']: testId } = props;
     const dispatch = useDispatch();
 
     const profileInfo: BasicProfileInterface = useSelector(
@@ -310,7 +311,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             );
         }
         return (
-            <EditSection>
+            <EditSection data-testid={ `${testId}-edit-section` }>
                 <Grid>
                     <Grid.Row>
                         <Grid.Column>
@@ -321,8 +322,10 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             onSubmit={ (values) => {
                                                 handleUpdate(values.get("email").toString());
                                             } }
+                                            data-testid={ `${testId}-edit-section-form` }
                                         >
                                             <Field
+                                                data-testid={ `${testId}-edit-section-form-email-field` }
                                                 autoFocus={ true }
                                                 label={ t(
                                                     "userPortal:components.accountRecovery.emailRecovery.forms" +
@@ -393,4 +396,12 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
     };
 
     return showEditView();
+};
+
+/**
+ * Default props of {@link EmailRecovery} component.
+ * Also see {@link EmailRecoveryProps}
+ */
+EmailRecovery.defaultProps = {
+    "data-testid": "email-recovery",
 };

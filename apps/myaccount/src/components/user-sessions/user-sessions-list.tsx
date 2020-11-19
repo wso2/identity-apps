@@ -31,11 +31,12 @@ import { UserSessionsEdit } from "./user-sessions-edit";
 import { UserAgentParser } from "../../helpers";
 import { UserSession } from "../../models";
 import { ThemeIcon } from "../shared";
+import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
  * Proptypes for the user sessions list component.
  */
-interface UserSessionsListProps {
+interface UserSessionsListProps extends TestableComponentInterface {
     onTerminateUserSessionClick?: (userSession: UserSession) => void;
     onUserSessionDetailClick?: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
     userSessions: UserSession[];
@@ -56,7 +57,8 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
         onTerminateUserSessionClick,
         onUserSessionDetailClick,
         userSessions,
-        userSessionsListActiveIndexes
+        userSessionsListActiveIndexes,
+        ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
 
@@ -94,7 +96,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
     };
 
     return (
-        <List divided verticalAlign="middle" className="main-content-inner">
+        <List divided verticalAlign="middle" className="main-content-inner" data-testid={ testId }>
             {
                 userSessions
                 && userSessions.length
@@ -102,7 +104,8 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                     ? userSessions.map((userSession, index) => {
                         userAgentParser.uaString = userSession.userAgent;
                         return (
-                            <List.Item className="inner-list-item" key={ userSession.id }>
+                            <List.Item className="inner-list-item" key={ userSession.id }
+                                       data-testid={ `${testId}-item` }>
                                 <Grid padded>
                                     <Grid.Row columns={ 2 }>
                                         <Grid.Column
@@ -208,6 +211,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                         userSessionsListActiveIndexes && userSessionsListActiveIndexes.includes(index)
                                             ? (
                                                 <UserSessionsEdit
+                                                    data-testid={ `${testId}-edit` }
                                                     browser={ userAgentParser.browser }
                                                     device={ userAgentParser.device }
                                                     os={ userAgentParser.os }
@@ -232,5 +236,6 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
 UserSessionsList.defaultProps = {
     onTerminateUserSessionClick: () => null,
     onUserSessionDetailClick: () => null,
-    userSessionsListActiveIndexes: null
+    userSessionsListActiveIndexes: null,
+    "data-testid": "user-sessions-list"
 };
