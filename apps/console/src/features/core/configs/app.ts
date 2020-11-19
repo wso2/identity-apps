@@ -160,7 +160,8 @@ export class Config {
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
             selfAppIdentifier: window["AppUtils"].getConfig().ui.selfAppIdentifier,
-            systemAppsIdentifiers: window["AppUtils"].getConfig().ui.systemAppsIdentifiers
+            systemAppsIdentifiers: window["AppUtils"].getConfig().ui.systemAppsIdentifiers,
+            theme: window["AppUtils"].getConfig().ui.theme
         };
     }
 }

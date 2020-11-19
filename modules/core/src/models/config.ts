@@ -166,6 +166,31 @@ export interface CommonUIConfigInterface<T = {}> {
      * ex: allowSnapshot, override etc.
      */
     productVersionConfig?: ProductVersionConfigInterface;
+    /**
+     * Theme configs.
+     */
+    theme: AppThemeConfigInterface;
+}
+
+/**
+ * App theme configs interface.
+ */
+export interface AppThemeConfigInterface {
+    /**
+     * App theme.
+     * ex: "default", "dark" etc.
+     */
+    name: string;
+    /**
+     * App theme path. Used to override the default theme path defined in the source. 
+     * ex: "https://cdn.wso2.com/is/assets/theme.min.css".
+     */
+    path?: string;
+    /**
+     * Set of override stylesheets.
+     * ex: [ "https://cdn.wso2.com/is/assets/override.theme.min.css", "/libs/themes/overrides/color.css" ].
+     */
+    styleSheets?: string[];
 }
 
 /**
