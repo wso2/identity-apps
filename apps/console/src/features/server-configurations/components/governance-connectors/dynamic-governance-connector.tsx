@@ -20,7 +20,7 @@ import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import get from "lodash/get";
 import kebabCase from "lodash/kebabCase";
-import React, { FunctionComponent, ReactElement } from "react";
+import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Header } from "semantic-ui-react";
@@ -53,6 +53,27 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
     const dispatch = useDispatch();
 
     const { t } = useTranslation();
+
+    const [ connectorIllustration, setConnectorIllustration ]  = useState<string>(undefined);
+
+    /**
+     * Set the connector illustration.
+     */
+    useEffect(() => {
+        if (!connector || !connector.id) {
+            return;
+        }
+
+        const illustration: Promise<any>  = get(GovernanceConnectorIllustrations, connector.id,
+            GovernanceConnectorIllustrations.default);
+        
+        if (illustration) {
+            illustration
+                .then((image: object & { default: string }) => {
+                    setConnectorIllustration(image.default);
+                });
+        }
+    }, [ connector, GovernanceConnectorIllustrations ]);
 
     const handleUpdateError = (error) => {
         if (error.response && error.response.data && error.response.data.detail) {
@@ -146,23 +167,6 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
         />
     );
 
-    /**
-     * Default illustration for connector illustrations.
-     *
-     * @param {string} id - Connector id
-     * @return {ReactElement | string} Resolved connector illustration
-     */
-    const resolveConnectorIllustration = (id: string): ReactElement | string => {
-
-        const illustration = get(GovernanceConnectorIllustrations, id);
-
-        if (!illustration) {
-            return GovernanceConnectorIllustrations.default;
-        }
-
-        return illustration;
-    };
-
     return (
         <Grid>
             <Grid.Row columns={ 1 }>
@@ -173,7 +177,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                                 <div
                                     className="connector-section-with-image-bg"
                                     style={ {
-                                        background: `url(${ resolveConnectorIllustration(connector?.id) })`
+                                        background: `url(${ connectorIllustration })`
                                     } }
                                 >
                                     <Header>
