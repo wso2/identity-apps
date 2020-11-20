@@ -524,5 +524,5 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
  * Also see {@link SecurityQuestionsProps}
  */
 SecurityQuestionsComponent.defaultProps = {
-  "data-testid": "security-questions-component",
+  "data-testid": "security-questions-component"
 };
