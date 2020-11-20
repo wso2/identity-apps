@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { ApplicationList } from "./application-list";
 import { Application } from "../../models";
