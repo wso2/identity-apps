@@ -100,7 +100,6 @@ describe("ITC-2.0.0 - [identity-providers] - Identity Providers Listing Integrat
             identityProviderTemplatesPage.getCreationWizardIDPNameInput().type(idpName);
             identityProviderTemplatesPage.getCreationWizardIDPDescriptionInput().type(idpDescription);
             identityProviderTemplatesPage.getCreationWizardIDPImageInput().type(idpImage);
-            identityProviderTemplatesPage.clickOnCreationWizardNextButton();
 
             cy.wait(1000);
 

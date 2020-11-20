@@ -105,11 +105,9 @@ describe("ITC-3.0.0 - [remote-configuration] - Remote configuration.", () => {
 
             remoteFetchConfigurationPage.clickRemoteFetchTrigger();
 
-            cy.wait(5000);
-
             remoteFetchConfigurationPage.getApplicationRemoteFetchSuccess().should("be.visible");
         });
-    })
+    });
 
     context("ITC-3.4.0 - [remote-configuration] - Remove remote configuration.", () => {
 

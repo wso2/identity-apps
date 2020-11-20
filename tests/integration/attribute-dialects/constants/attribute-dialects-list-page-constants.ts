@@ -56,23 +56,23 @@ export class AttributeDialectsListPageConstants {
     public static readonly LOCAL_DIALECT_CONTAINER_DATA_ATTR: string = "attribute-dialects-local-dialect-container";
     
     // Add dialect wizard
-    public static readonly ADD_DIALECT_WIZARD_DATA_ATTR: string = "attribute-dialects-add-wizard";
-    public static readonly ADD_DIALECT_WIZARD_DIALECT_URI_INPUT_DATA_ATTR: string = "attribute-dialects-add-" +
+    public static readonly ADD_DIALECT_WIZARD_DATA_ATTR: string = "attribute-dialects-add-dialect-wizard";
+    public static readonly ADD_DIALECT_WIZARD_DIALECT_URI_INPUT_DATA_ATTR: string = "attribute-dialects-add-dialect-" +
         "wizard-dialect-details-form-dialect-uri-input";
-    public static readonly ADD_DIALECT_WIZARD_ATTRIBUTE_URI_INPUT_DATA_ATTR: string = "attribute-dialects-add-" +
+    public static readonly ADD_DIALECT_WIZARD_ATTRIBUTE_URI_INPUT_DATA_ATTR: string = "attribute-dialects-add-dialect-" +
         "wizard-external-claims-add-external-claims-form-claim-uri-input";
     public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTR_DROPDOWN_DATA_ATTR: string = "attribute-dialects-" +
-        "add-wizard-external-claims-add-external-claims-form-local-claim-dropdown";
+        "add-dialect-wizard-external-claims-add-external-claims-form-local-claim-dropdown";
     public static readonly ADD_DIALECT_WIZARD_LOCAL_ATTR_DROPDOWN_OPTIONS_DATA_ATTR: string = "div" +
         "[role=\"listbox\"]";
     public static readonly ADD_DIALECT_WIZARD_ADD_EXTERNAL_ATTR_BUTTON_DATA_ATTR: string = "attribute-dialects-" +
-        "add-wizard-external-claims-add-external-claims-form-submit-button";
-    public static readonly ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
+        "add-dialect-wizard-external-claims-add-external-claims-form-submit-button";
+    public static readonly ADD_DIALECT_WIZARD_CANCEL_BUTTON_DATA_ATTR: string = "attribute-dialects-add-dialect-wizard-" +
         "cancel-button";
-    public static readonly ADD_DIALECT_WIZARD_NEXT_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
-        "next-button";
-    public static readonly ADD_DIALECT_WIZARD_PREVIOUS_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
-        "previous-button";
-    public static readonly ADD_DIALECT_WIZARD_FINISH_BUTTON_DATA_ATTR: string = "attribute-dialects-add-wizard-" +
+    public static readonly ADD_DIALECT_WIZARD_NEXT_BUTTON_DATA_ATTR: string = "attribute-dialects-add-dialect-" +
+        "wizard-next-button";
+    public static readonly ADD_DIALECT_WIZARD_PREVIOUS_BUTTON_DATA_ATTR: string = "attribute-dialects-add-dialect-" +
+        "wizard-previous-button";
+    public static readonly ADD_DIALECT_WIZARD_FINISH_BUTTON_DATA_ATTR: string = "attribute-dialects-add-dialect-wizard-" +
         "finish-button";
 }
