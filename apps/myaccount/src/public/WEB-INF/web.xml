@@ -41,7 +41,6 @@
         <servlet-name>auth</servlet-name>
         <jsp-file>/auth.jsp</jsp-file>
     </servlet>
-
     
     <servlet-mapping>
         <servlet-name>default</servlet-name>
