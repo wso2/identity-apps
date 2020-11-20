@@ -403,5 +403,5 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
  * Also see {@link EmailRecoveryProps}
  */
 EmailRecovery.defaultProps = {
-    "data-testid": "email-recovery",
+    "data-testid": "email-recovery"
 };
