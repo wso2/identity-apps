@@ -22,7 +22,7 @@ import React, { FunctionComponent } from "react";
 import { Card, Icon } from "semantic-ui-react";
 import { Application } from "../../models";
 import { AppAvatar } from "../shared";
-import {RecentApplications} from "./recent-applications";
+import { RecentApplications } from "./recent-applications";
 
 /**
  * Proptypes for the recent application card component.
