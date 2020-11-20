@@ -18,13 +18,17 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
-import React, { PropsWithChildren, ReactElement } from "react";
+import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Icon, SemanticICONS, SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
  * Proptypes for the Generic Icon component.
  */
 export interface GenericIconProps extends TestableComponentInterface {
+    /**
+     * Render as.
+     */
+    as?: "data-url" | "svg";
     /**
      * Background fill color.
      */
@@ -126,7 +130,7 @@ export interface GenericIconProps extends TestableComponentInterface {
      */
     twoTone?: boolean;
     /**
-     * Vertical allignment.
+     * Vertical alignment.
      */
     verticalAlign?: SemanticVERTICALALIGNMENTS;
 }
@@ -162,6 +166,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 ): ReactElement => {
 
     const {
+        as,
         background,
         bordered,
         className,
@@ -189,6 +194,8 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         verticalAlign,
         [ "data-testid" ]: testId
     } = props;
+    
+    const [ renderedIcon, setRenderedIcon ] = useState<HTMLElement | SVGElement | ReactElement | JSX.Element>(null);
 
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -218,6 +225,13 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     }, className);
 
     /**
+     * Construct the content as soon as the Icon prop is available.
+     */
+    useEffect(() => {
+        constructContent();
+    }, [ Icon ]);
+
+    /**
      * A default icon if the {@code icon:Icon} null
      * or empty. For usage {@see constructContent}
      */
@@ -237,10 +251,11 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      * @param event React.MouseEvent<HTMLDivElement>
      */
     const onIconClickHandler = (event: React.MouseEvent<HTMLDivElement>): void => {
-        if (!disabled) {
-            onClick(event);
+        if (disabled) {
+            return;
         }
-        // No Operations
+
+        onClick(event);
     };
 
     /**
@@ -252,65 +267,121 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      * 3. {@link React.FunctionComponent}
      * 4. {@link React.Component}
      * 5. {@link string} URL or BASE-64 encoded.
-     *
-     * @return {HTMLElement | SVGElement | React.ReactElement}
      */
-    const constructContent = (): HTMLElement | SVGElement | ReactElement | JSX.Element => {
+    const constructContent = (): void => {
 
         // If there's no icon passed to this via the parent
         // then it will return a default icon.
-        if (!Icon) return defaultIconPlaceholder();
+        if (!Icon) {
+            setRenderedIcon(defaultIconPlaceholder());
+
+            return;
+        }
 
         try {
+            if (Icon instanceof Promise) {
+                Icon
+                    .then((response) => {
+                        if (!as) {
+                            if (response.ReactComponent) {
+                                setRenderedIcon(<response.ReactComponent />);
+                                
+                                return;
+                            } else if (response.default) {
+                                setRenderedIcon(<img src={ response.default } className="icon" alt="icon"/>);
+                                
+                                return;
+                            }
+
+                            setRenderedIcon(null);
+                            
+                            return;
+                        }
+
+                        if (as === "svg" && response.ReactComponent) {
+                            setRenderedIcon(<response.ReactComponent />);
+                            
+                            return;
+                        } else if (as === "data-url" && response.default) {
+                            setRenderedIcon(<img src={ response.default } className="icon" alt="icon"/>);
+                            
+                            return;
+                        }
+
+                        setRenderedIcon(null);
+                    })
+                    .catch(() => {
+                        setRenderedIcon(null);
+                    });
+                
+                return;
+            }
+
             // Check if the icon is an SVG element
             if (Icon instanceof SVGElement) {
-                return Icon;
+                setRenderedIcon(Icon);
+                
+                return;
             }
+
             // Check if the icon is a module and has `ReactComponent` property.
             // Important when used with SVG's imported with `@svgr/webpack`.
             if (Object.prototype.hasOwnProperty.call(Icon,"ReactComponent")
                 && typeof Icon.ReactComponent === "function") {
-                return <Icon.ReactComponent/>;
+
+                setRenderedIcon(<Icon.ReactComponent/>);
+
+                return;
             }
+
             // Check is icon is a component.
             if (typeof Icon === "function") {
-                return <Icon />;
+                setRenderedIcon(<Icon />);
+
+                return;
             }
+
             // Check is icon is a component.
             if (typeof Icon === "object") {
-                return Icon;
+                setRenderedIcon(Icon);
+
+                return;
             }
+
             // Check if icon passed in is a string. Can be a URL or a base64 encoded.
             if (typeof Icon === "string") {
-                return <img src={ Icon } className="icon" alt="icon"/>;
+                setRenderedIcon(<img src={ Icon } className="icon" alt="icon"/>);
+
+                return;
             }
         } catch (e) {
-            return defaultIconPlaceholder();
+            return setRenderedIcon(defaultIconPlaceholder());
         }
-
     };
 
     return (
-        <div className={ `theme-icon ${classes}` }
-             style={ style }
-             onClick={ onIconClickHandler }
-             data-testid={ testId }>
-            { constructContent() }
+        <div
+            className={ `theme-icon ${classes}` }
+            style={ style }
+            onClick={ onIconClickHandler }
+            data-testid={ testId }
+        >
+            { renderedIcon }
         </div>
     );
-
 };
 
 /**
  * Default proptypes for the Generic Icon component.
  */
 GenericIcon.defaultProps = {
+    as: "svg",
     background: false,
     bordered: false,
     className: "",
     "data-testid": "generic-icon",
-    disabled: false,
     defaultIcon: false,
+    disabled: false,
     floated: null,
     hoverType: "rounded",
     inline: false,
