@@ -22,8 +22,8 @@ import { ApplicationList } from "./application-list";
 import { Application } from "../../models";
 
 /**
- * Proptypes for the all applications component. Also see
- * {@link AllApplications.defaultProps}
+ * Proptypes for the all applications component.
+ * Also see {@link AllApplications.defaultProps}
  */
 interface AllApplicationsProps extends TestableComponentInterface {
     allApps: Application[];
