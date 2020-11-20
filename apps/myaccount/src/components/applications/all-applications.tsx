@@ -74,5 +74,5 @@ export const AllApplications: FunctionComponent<AllApplicationsProps> = (
  */
 AllApplications.defaultProps = {
     showFavourites: true,
-    "data-testid": 'all-applications',
+    "data-testid": "all-applications"
 };
