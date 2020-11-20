@@ -48,8 +48,8 @@ import { EditSection, ThemeIcon } from "../../shared";
 const QUESTION = "question-";
 
 /**
- * Prop types for SecurityQuestionsComponent. Also see
- * {@link SecurityQuestionsComponent.defaultProps}
+ * Prop types for SecurityQuestionsComponent.
+ * Also see {@link SecurityQuestionsComponent.defaultProps}
  */
 interface SecurityQuestionsProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
