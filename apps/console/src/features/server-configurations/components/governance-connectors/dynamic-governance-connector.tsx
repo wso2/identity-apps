@@ -26,7 +26,7 @@ import { useDispatch } from "react-redux";
 import { Divider, Grid, Header } from "semantic-ui-react";
 import DynamicConnectorForm from "./dynamic-connector-form";
 import { updateGovernanceConnector } from "../../api";
-import { GovernanceConnectorIllustrations } from "../../configs";
+import { getGovernanceConnectorIllustrations } from "../../configs";
 import { GovernanceConnectorInterface } from "../../models";
 import { GovernanceConnectorUtils } from "../../utils";
 
@@ -64,8 +64,8 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return;
         }
 
-        const illustration: Promise<any>  = get(GovernanceConnectorIllustrations, connector.id,
-            GovernanceConnectorIllustrations.default);
+        const illustration: Promise<any>  = get(getGovernanceConnectorIllustrations(), connector.id,
+            getGovernanceConnectorIllustrations()?.default);
         
         if (illustration) {
             illustration
@@ -73,7 +73,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                     setConnectorIllustration(image.default);
                 });
         }
-    }, [ connector, GovernanceConnectorIllustrations ]);
+    }, [ connector, getGovernanceConnectorIllustrations ]);
 
     const handleUpdateError = (error) => {
         if (error.response && error.response.data && error.response.data.detail) {
