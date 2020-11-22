@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { AppThemeConfigInterface } from "@wso2is/core/models";
 import { StringUtils } from "@wso2is/core/utils";
 
 /**
@@ -111,6 +112,15 @@ export class AppConstants {
      */
     public static getClientID(): string {
         return window["AppUtils"].getConfig().clientID;
+    }
+
+    /**
+     * Get app theme configs.
+     *
+     * @return {AppThemeConfigInterface}
+     */
+    public static getAppTheme(): AppThemeConfigInterface {
+        return window["AppUtils"].getConfig().ui?.theme;
     }
 
     /**
