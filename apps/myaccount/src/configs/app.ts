@@ -124,6 +124,7 @@ export class Config {
             features: window["AppUtils"].getConfig().ui.features,
             productName: window["AppUtils"].getConfig().ui.productName,
             productVersionConfig: window["AppUtils"].getConfig().ui.productVersionConfig,
+            theme: window["AppUtils"].getConfig().ui.theme,
             titleText: window["AppUtils"].getConfig().appTitle
         };
     }
