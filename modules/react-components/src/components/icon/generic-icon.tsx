@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
+import { SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
 import { Icon, SemanticICONS, SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
@@ -278,33 +278,38 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
             return;
         }
 
+        const setIcon = (icon: SVGRLoadedInterface): void => {
+
+            if (icon.ReactComponent) {
+                setRenderedIcon(<icon.ReactComponent />);
+
+                return;
+            } else if (icon.default) {
+                setRenderedIcon(renderDefaultIcon(icon.default));
+
+                return;
+            }
+
+            setRenderedIcon(null);
+        };
+
         try {
             if (Icon instanceof Promise) {
                 Icon
-                    .then((response) => {
+                    .then((response: SVGRLoadedInterface) => {
                         if (!as) {
-                            if (response.ReactComponent) {
-                                setRenderedIcon(<response.ReactComponent />);
-                                
-                                return;
-                            } else if (response.default) {
-                                setRenderedIcon(<img src={ response.default } className="icon" alt="icon"/>);
-                                
-                                return;
-                            }
+                            setIcon(response);
 
-                            setRenderedIcon(null);
-                            
                             return;
                         }
 
-                        if (as === "svg" && response.ReactComponent) {
-                            setRenderedIcon(<response.ReactComponent />);
-                            
+                        if (as === "svg") {
+                            setIcon(response);
+
                             return;
                         } else if (as === "data-url" && response.default) {
-                            setRenderedIcon(<img src={ response.default } className="icon" alt="icon"/>);
-                            
+                            setRenderedIcon(renderDefaultIcon(response.default));
+
                             return;
                         }
 
@@ -313,7 +318,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
                     .catch(() => {
                         setRenderedIcon(null);
                     });
-                
+
                 return;
             }
 
@@ -350,7 +355,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 
             // Check if icon passed in is a string. Can be a URL or a base64 encoded.
             if (typeof Icon === "string") {
-                setRenderedIcon(<img src={ Icon } className="icon" alt="icon"/>);
+                setRenderedIcon(renderDefaultIcon(Icon));
 
                 return;
             }
@@ -358,6 +363,16 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
             return setRenderedIcon(defaultIconPlaceholder());
         }
     };
+
+    /**
+     * Renders the default icon element.
+     *
+     * @param {string} icon - Data URL.
+     * @return {React.ReactElement}
+     */
+    const renderDefaultIcon = (icon: string): ReactElement => (
+        <img src={ icon } className="icon" alt="icon"/>
+    );
 
     return (
         <div
