@@ -41,10 +41,10 @@ import {
     AppState,
     ConfigReducerStateInterface,
     DocPanelUICardInterface,
-    EmptyPlaceholderIllustrations,
-    HelpPanelActionIcons,
     HelpPanelUtils,
     PortalDocumentationStructureInterface,
+    getEmptyPlaceholderIllustrations,
+    getHelpPanelActionIcons,
     history
 } from "../../core";
 import {
@@ -59,10 +59,10 @@ import {
     handleGetIDPTemplateListError
 } from "../components";
 import {
-    HelpPanelIcons,
-    IdPCapabilityIcons,
-    IdPIcons,
-    IdPTemplateDocsIcons
+    getHelpPanelIcons,
+    getIdPCapabilityIcons,
+    getIdPIcons,
+    getIdPTemplateDocsIcons
 } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
@@ -185,13 +185,13 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                 case SupportedServices.AUTHENTICATION:
                     return {
                         displayName: t("devPortal:pages.idpTemplate.supportServices.authenticationDisplayName"),
-                        logo: IdPCapabilityIcons[SupportedServices.AUTHENTICATION],
+                        logo: getIdPCapabilityIcons()[SupportedServices.AUTHENTICATION],
                         name: SupportedServices.AUTHENTICATION
                     };
                 case SupportedServices.PROVISIONING:
                     return {
                         displayName: t("devPortal:pages.idpTemplate.supportServices.provisioningDisplayName"),
-                        logo: IdPCapabilityIcons[SupportedServices.PROVISIONING],
+                        logo: getIdPCapabilityIcons()[SupportedServices.PROVISIONING],
                         name: SupportedServices.PROVISIONING
                     };
             }
@@ -419,7 +419,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                                 <SelectionCard
                                                     size="auto"
                                                     header={ sample.displayName }
-                                                    image={ IdPTemplateDocsIcons[ sample.image ] }
+                                                    image={ getIdPTemplateDocsIcons()[ sample.image ] }
                                                     imageSize="mini"
                                                     spaced="bottom"
                                                     onClick={ () => handleHelpPanelSelectedTemplate(sample) }
@@ -436,7 +436,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             heading: t("common:docs"),
             hidden: !templateDocs || (templateDocs instanceof Array && templateDocs.length < 1),
             icon: {
-                icon: HelpPanelIcons.tabs.docs
+                icon: getHelpPanelIcons().tabs.docs
             }
         }
     ];
@@ -449,8 +449,8 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
             onHelpPanelPinToggle={ () => HelpPanelUtils.togglePanelPin() }
             isPinned={ HelpPanelUtils.isPanelPinned() }
             icons={ {
-                close: HelpPanelActionIcons.close,
-                pin: HelpPanelActionIcons.pin
+                close: getHelpPanelActionIcons().close,
+                pin: getHelpPanelActionIcons().pin
             } }
             sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
             pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
@@ -477,7 +477,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                 <TemplateGrid<IdentityProviderTemplateListItemInterface>
                                     type="idp"
                                     templates={ availableTemplates.filter((template) => template.id !== "expert-mode") }
-                                    templateIcons={ IdPIcons }
+                                    templateIcons={ getIdPIcons() }
                                     templateIconOptions={ {
                                         fill: "primary"
                                     } }
@@ -496,7 +496,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                                     } }
                                     emptyPlaceholder={ (
                                         <EmptyPlaceholder
-                                            image={ EmptyPlaceholderIllustrations.newList }
+                                            image={ getEmptyPlaceholderIllustrations().newList }
                                             imageSize="tiny"
                                             title={ t("devPortal:components.templates.emptyPlaceholder.title") }
                                             subtitle={
@@ -516,7 +516,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                     <TemplateGrid<IdentityProviderTemplateListItemInterface>
                         type="idp"
                         templates={ [ ExpertModeTemplate ] }
-                        templateIcons={ IdPIcons }
+                        templateIcons={ getIdPIcons() }
                         templateIconOptions={ {
                             fill: "primary"
                         } }
@@ -532,7 +532,7 @@ const IdentityProviderTemplateSelectPage: FunctionComponent<IdentityProviderTemp
                         } }
                         emptyPlaceholder={ (
                             <EmptyPlaceholder
-                                image={ EmptyPlaceholderIllustrations.newList }
+                                image={ getEmptyPlaceholderIllustrations().newList }
                                 imageSize="tiny"
                                 title={ t("devPortal:components.templates.emptyPlaceholder.title") }
                                 subtitle={ [ t("devPortal:components.templates.emptyPlaceholder.subtitles") ] }

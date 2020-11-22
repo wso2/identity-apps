@@ -23,7 +23,7 @@ import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon } from "semantic-ui-react";
 import { store } from "../../../core";
-import { HelpPanelIcons } from "../../configs";
+import { getHelpPanelIcons } from "../../configs";
 import { SAMLApplicationConfigurationInterface } from "../../models";
 
 /**
@@ -65,7 +65,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.issuer }
+                            icon={ getHelpPanelIcons().endpoints.issuer }
                             size="micro"
                             square
                             transparent
@@ -90,7 +90,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.samlSSO }
+                            icon={ getHelpPanelIcons().endpoints.samlSSO }
                             size="micro"
                             square
                             transparent
@@ -115,7 +115,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.samlSLO }
+                            icon={ getHelpPanelIcons().endpoints.samlSLO }
                             size="micro"
                             square
                             transparent
@@ -140,7 +140,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.certificate }
+                            icon={ getHelpPanelIcons().endpoints.certificate }
                             size="micro"
                             square
                             transparent
@@ -173,7 +173,7 @@ export const SAMLConfigurations: FunctionComponent<SAMLConfigurationsPropsInterf
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 8 } tablet={ 8 } computer={ 5 }>
                         <GenericIcon
-                            icon={ HelpPanelIcons.endpoints.metadata }
+                            icon={ getHelpPanelIcons().endpoints.metadata }
                             size="micro"
                             square
                             transparent

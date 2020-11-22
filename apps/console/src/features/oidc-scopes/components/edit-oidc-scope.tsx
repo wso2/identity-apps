@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Divider, Grid, Icon, Input, Popup, Segment, Table } from "semantic-ui-react";
 import { OIDCScopeAttributes } from "./oidc-scope-attributes";
-import { EmptyPlaceholderIllustrations, FeatureConfigInterface } from "../../core";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
 import { updateOIDCScopeDetails } from "../api";
 import { OIDCScopesManagementConstants } from "../constants";
 import { OIDCScopesListInterface } from "../models";
@@ -308,7 +308,7 @@ export const EditOIDCScope: FunctionComponent<EditScopePropsInterface> = (
                                                     "emptyPlaceholder.action") }
                                             </PrimaryButton>
                                         }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         imageSize="tiny"
                                     />
                                 </Segment>

@@ -16,31 +16,46 @@
  * under the License.
  */
 
-import { ReactComponent as BriefcaseIcon } from "../../../themes/default/assets/images/icons/briefcase-icon.svg";
-import { ReactComponent as CertificateIcon } from "../../../themes/default/assets/images/icons/certificate-icon.svg";
-import { ReactComponent as ClaimsIcon } from "../../../themes/default/assets/images/icons/claims-icon.svg";
-import { ReactComponent as CogwheelIcon } from "../../../themes/default/assets/images/icons/cog-wheel-icon.svg";
-import { ReactComponent as DatabaseIcon } from "../../../themes/default/assets/images/icons/database-icon.svg";
-import { ReactComponent as PaperRocketIcon } from "../../../themes/default/assets/images/icons/paper-rocket-icon.svg";
-import { ReactComponent as UserGroupIcon } from "../../../themes/default/assets/images/icons/user-group-icon.svg";
-import { ReactComponent as UserIcon } from "../../../themes/default/assets/images/icons/user-icon.svg";
-import {
-    ReactComponent as SecurityIllustration
-} from "../../../themes/default/assets/images/illustrations/security-illustration.svg";
+import { AppConstants } from "../../core/constants";
 
-export const OverviewPageIllustrations = {
-    jumbotronIllustration: SecurityIllustration,
-    quickLinks: {
-        certificates: CertificateIcon,
-        dialects: ClaimsIcon,
-        emailTemplates: PaperRocketIcon,
-        generalConfigs: CogwheelIcon,
-        groups: UserGroupIcon,
-        roles: BriefcaseIcon
-    },
-    statsOverview: {
-        groups: UserGroupIcon,
-        users: UserIcon,
-        userstores: DatabaseIcon
-    }
+export const getOverviewPageIllustrations = () => {
+
+    const name: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        jumbotronIllustration: import(`../../../themes/${
+                name
+            }/assets/images/illustrations/security-illustration.svg`),
+        quickLinks: {
+            certificates: import(`../../../themes/${
+                name
+            }/assets/images/icons/certificate-icon.svg`),
+            dialects: import(`../../../themes/${
+                name
+            }/assets/images/icons/claims-icon.svg`),
+            emailTemplates: import(`../../../themes/${
+                name
+            }/assets/images/icons/paper-rocket-icon.svg`),
+            generalConfigs: import(`../../../themes/${
+                name
+            }/assets/images/icons/cog-wheel-icon.svg`),
+            groups: import(`../../../themes/${
+                name
+            }/assets/images/icons/user-group-icon.svg`),
+            roles: import(`../../../themes/${
+                name
+            }/assets/images/icons/briefcase-icon.svg`)
+        },
+        statsOverview: {
+            groups: import(`../../../themes/${
+                name
+            }/assets/images/icons/user-group-icon.svg`),
+            users: import(`../../../themes/${
+                name
+            }/assets/images/icons/user-icon.svg`),
+            userstores: import(`../../../themes/${
+                name
+            }/assets/images/icons/database-icon.svg`)
+        }
+    };
 };

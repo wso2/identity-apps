@@ -34,7 +34,7 @@ import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, UIConstants } from "../../../core";
+import { UIConstants, getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface, getUsersList } from "../../../users";
 
 /**
@@ -553,7 +553,7 @@ export const AddRoleUsers: FunctionComponent<AddRoleUserProps> = (props: AddRole
                                                     </PrimaryButton>
                                                 )
                                             }
-                                            image={ EmptyPlaceholderIllustrations.emptyList }
+                                            image={ getEmptyPlaceholderIllustrations().emptyList }
                                             imageSize="tiny"
                                         />
                                     </EmphasizedSegment>

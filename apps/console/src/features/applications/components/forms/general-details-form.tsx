@@ -20,14 +20,14 @@ import { AlertLevels, DisplayCertificate, TestableComponentInterface } from "@ws
 import { addAlert } from "@wso2is/core/store";
 import { CertificateManagementUtils } from "@wso2is/core/utils";
 import { Field, FormValue, Forms, Validation } from "@wso2is/forms";
-import { Certificate as CertificateDisplay, Heading, Hint, LinkButton } from "@wso2is/react-components";
+import { Certificate as CertificateDisplay, GenericIcon, Heading, Hint, LinkButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Grid, Modal } from "semantic-ui-react";
-import { AppState, CertificateIllustrations, UIConfigInterface } from "../../../core";
+import { AppState, UIConfigInterface, getCertificateIllustrations } from "../../../core";
 import { CertificateInterface, CertificateTypeInterface } from "../../models";
 
 /**
@@ -160,7 +160,12 @@ export const GeneralDetailsForm: FunctionComponent<GeneralDetailsFormPopsInterfa
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon />
+                        <GenericIcon
+                            inline
+                            transparent
+                            size="auto"
+                            icon={ getCertificateIllustrations().ribbon }
+                        />
                         <div className="certificate-alias">
                             View Certificate - {
                             certificateDisplay?.alias

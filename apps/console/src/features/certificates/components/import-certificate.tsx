@@ -28,7 +28,7 @@ import { Grid, Icon, Modal } from "semantic-ui-react";
 import { CertificateSummary } from "./wizard";
 import { UploadCertificate } from "../../core";
 import { createKeystoreCertificate } from "../api";
-import { ImportCertificateWizardStepIcons } from "../configs";
+import { getImportCertificateWizardStepIcons } from "../configs";
 
 /**
  * Prop types of the `ImportCertificate` component.
@@ -196,7 +196,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     data-testid={ `${ testId }-upload` }
                 />
             ),
-            icon: ImportCertificateWizardStepIcons.general,
+            icon: getImportCertificateWizardStepIcons().general,
             title: t("adminPortal:components.certificates.keystore.wizard.steps.upload")
         },
         {
@@ -207,7 +207,7 @@ export const ImportCertificate: FunctionComponent<ImportCertificatePropsInterfac
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: ImportCertificateWizardStepIcons.general,
+            icon: getImportCertificateWizardStepIcons().general,
             title: t("adminPortal:components.certificates.keystore.wizard.steps.summary")
 
         }

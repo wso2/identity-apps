@@ -35,6 +35,7 @@ import {
     ConfirmationModal,
     DataTable,
     EmptyPlaceholder,
+    GenericIcon,
     LinkButton,
     PrimaryButton,
     TableActionsInterface,
@@ -46,14 +47,14 @@ import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useE
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Header, Icon, Modal, SemanticICONS } from "semantic-ui-react";
-import { AppState, EmptyPlaceholderIllustrations, FeatureConfigInterface, UIConstants } from "../../core";
+import { AppState, FeatureConfigInterface, UIConstants, getEmptyPlaceholderIllustrations } from "../../core";
 import {
     deleteKeystoreCertificate,
     retrieveCertificateAlias,
     retrieveClientCertificate,
     retrievePublicCertificate
 } from "../api";
-import { CertificateIllustrations } from "../configs";
+import { getCertificateIllustrations } from "../configs";
 
 /**
  * @constant
@@ -424,7 +425,12 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon />
+                        <GenericIcon
+                            inline
+                            transparent
+                            size="auto"
+                            icon={ getCertificateIllustrations().ribbon }
+                        />
                         <div className="certificate-alias">
                             View Certificate - {
                             certificateDisplay?.alias
@@ -469,7 +475,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                             { t("devPortal:placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("devPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
@@ -490,7 +496,7 @@ export const CertificatesList: FunctionComponent<CertificatesListPropsInterface>
                             { t("adminPortal:components.certificates.keystore.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("adminPortal:components.certificates.keystore.placeholders.emptyList.title") }
                     subtitle={ [

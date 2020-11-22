@@ -16,14 +16,25 @@
  * under the License.
  */
 
-import { ReactComponent as DocumentIcon } from "../../../themes/default/assets/images/icons/document-icon.svg";
-import { ReactComponent as GearsIcon } from "../../../themes/default/assets/images/icons/gears-icon.svg";
-import { ReactComponent as ReportIcon } from "../../../themes/default/assets/images/icons/report-icon.svg";
-import { ReactComponent as SpinWheelIcon } from "../../../themes/default/assets/images/icons/spin-wheel-icon.svg";
+import { AppConstants } from "../../core/constants";
 
-export const UserWizardStepIcons = {
-    general: DocumentIcon,
-    groups: GearsIcon,
-    roles: SpinWheelIcon,
-    summary: ReportIcon
+export const getUserWizardStepIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        general: import(`../../../themes/${ theme }/assets/images/icons/document-icon.svg`),
+        groups: import(`../../../themes/${ theme }/assets/images/icons/gears-icon.svg`),
+        roles: import(`../../../themes/${ theme }/assets/images/icons/spin-wheel-icon.svg`),
+        summary: import(`../../../themes/${ theme }/assets/images/icons/report-icon.svg`)
+    };
+};
+
+export const getUserSessionAccordionIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        terminate: import(`../../../themes/${ theme }/assets/images/icons/forbidden-icon.svg`)
+    };
 };

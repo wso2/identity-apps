@@ -36,7 +36,7 @@ import React, { FunctionComponent, ReactElement, useEffect, useState } from "rea
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Input, Modal, Table } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../../core";
+import { getEmptyPlaceholderIllustrations } from "../../../core";
 import { UserBasicInterface, getUsersList } from "../../../users";
 import { updateGroupDetails } from "../../api";
 import { CreateGroupMemberInterface, GroupsInterface, PatchGroupDataInterface } from "../../models";
@@ -508,7 +508,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                 </PrimaryButton>
                                             )
                                         }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         imageSize="tiny"
                                     />
                                 </EmphasizedSegment>

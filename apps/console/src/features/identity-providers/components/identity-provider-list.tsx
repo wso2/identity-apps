@@ -36,8 +36,8 @@ import { Header, Icon, SemanticICONS } from "semantic-ui-react";
 import { handleIDPDeleteError } from "./utils";
 import {
     AppConstants,
-    EmptyPlaceholderIllustrations,
     UIConstants,
+    getEmptyPlaceholderIllustrations,
     history
 } from "../../core";
 import { deleteIdentityProvider } from "../api";
@@ -184,7 +184,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>Clear search query</LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("devPortal:components.idp.placeHolders.emptyIDPSearchResults.title") }
                     subtitle={ [
@@ -208,7 +208,7 @@ export const IdentityProviderList: FunctionComponent<IdentityProviderListPropsIn
                             { t("devPortal:components.idp.buttons.addIDP") }
                         </PrimaryButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     title={ t("devPortal:components.idp.placeHolders.emptyIDPList.title") }
                     subtitle={ [

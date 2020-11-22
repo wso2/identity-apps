@@ -34,7 +34,7 @@ import {
     getOutboundProvisioningConnectorsList,
     updateOutboundProvisioningConnector
 } from "../../api";
-import { OutboundProvisioningConnectorWizard } from "../../configs";
+import { getOutboundProvisioningConnectorWizard } from "../../configs";
 import {
     IdentityProviderInterface, OutboundProvisioningConnectorInterface,
     OutboundProvisioningConnectorListItemInterface,
@@ -325,7 +325,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     data-testid={ `${ testId }-connector-selection` }
                 />
             ),
-            icon: OutboundProvisioningConnectorWizard.connectorSelection,
+            icon: getOutboundProvisioningConnectorWizard().connectorSelection,
             title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.connectorSelection.title")
         },
         {
@@ -342,7 +342,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     data-testid={ `${ testId }-provisioning-settings` }
                 />
             ),
-            icon: OutboundProvisioningConnectorWizard.connectorDetails,
+            icon: getOutboundProvisioningConnectorWizard().connectorDetails,
             title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.connectorConfiguration.title")
         },
         {
@@ -356,7 +356,7 @@ export const OutboundProvisioningConnectorCreateWizard:
                     data-testid={ `${ testId }-summary` }
                 />
             ),
-            icon: OutboundProvisioningConnectorWizard.summary,
+            icon: getOutboundProvisioningConnectorWizard().summary,
             title: t("devPortal:components.idp.wizards.addProvisioningConnector.steps.summary.title")
         }
     ];

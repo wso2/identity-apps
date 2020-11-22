@@ -33,7 +33,7 @@ import {
     getFederatedAuthenticatorMetadata,
     getOutboundProvisioningConnectorMetadata
 } from "../../api";
-import { IdentityProviderWizardStepIcons } from "../../configs";
+import { getIdentityProviderWizardStepIcons } from "../../configs";
 import { IdentityProviderManagementConstants } from "../../constants";
 import {
     AuthenticatorPropertyInterface,
@@ -524,7 +524,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
     const getWizardSteps = () => {
         let STEPS: WizardStepInterface[] = [
             {
-                icon: IdentityProviderWizardStepIcons.general,
+                icon: getIdentityProviderWizardStepIcons().general,
                 name: WizardSteps.GENERAL_DETAILS,
                 submitCallback: setSubmitGeneralSettings,
                 title: t("devPortal:components.idp.wizards.addIDP.steps.generalSettings.title")
@@ -535,7 +535,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             STEPS = [
                 ...STEPS,
                 {
-                    icon: IdentityProviderWizardStepIcons.authenticatorSettings,
+                    icon: getIdentityProviderWizardStepIcons().authenticatorSettings,
                     name: WizardSteps.AUTHENTICATOR_SETTINGS,
                     submitCallback: setSubmitAuthenticator,
                     title: t("devPortal:components.idp.wizards.addIDP.steps.authenticatorConfiguration.title")
@@ -547,7 +547,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             STEPS = [
                 ...STEPS,
                 {
-                    icon: IdentityProviderWizardStepIcons.outboundProvisioningSettings,
+                    icon: getIdentityProviderWizardStepIcons().outboundProvisioningSettings,
                     name: WizardSteps.OUTBOUND_PROVISIONING_SETTINGS,
                     submitCallback: setSubmitOutboundProvisioningSettings(),
                     title: t("devPortal:components.idp.wizards.addIDP.steps.provisioningConfiguration.title")
@@ -560,7 +560,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             STEPS = [
                 ...STEPS,
                 {
-                    icon: IdentityProviderWizardStepIcons.summary,
+                    icon: getIdentityProviderWizardStepIcons().summary,
                     name: WizardSteps.SUMMARY,
                     submitCallback: setFinishSubmit,
                     title: t("devPortal:components.idp.wizards.addIDP.steps.summary.title")

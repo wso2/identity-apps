@@ -50,15 +50,15 @@ import {
     AppConstants,
     AppState,
     AppUtils,
-    EmptyPlaceholderIllustrations,
     FeatureConfigInterface,
     Footer,
     Header,
     ProtectedRoute,
     RouteUtils,
-    SidePanelMiscIcons,
     UIConstants,
     getDeveloperViewRoutes,
+    getEmptyPlaceholderIllustrations,
+    getSidePanelMiscIcons,
     history,
     useUIElementSizes
 } from "../features/core";
@@ -288,7 +288,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                 <SidePanel
                     ordered
                     categorized
-                    caretIcon={ SidePanelMiscIcons.caretRight }
+                    caretIcon={ getSidePanelMiscIcons().caretRight }
                     desktopContentTopSpacing={ UIConstants.DASHBOARD_LAYOUT_DESKTOP_CONTENT_TOP_SPACING }
                     fluid={ !isMobileViewport ? fluid : false }
                     footerHeight={ footerHeight }
@@ -318,7 +318,7 @@ export const DeveloperView: FunctionComponent<DeveloperViewPropsInterface> = (
                                 { t("console:common.placeholders.brokenPage.action") }
                             </LinkButton>
                         ) }
-                        image={ EmptyPlaceholderIllustrations.brokenPage }
+                        image={ getEmptyPlaceholderIllustrations().brokenPage }
                         imageSize="tiny"
                         subtitle={ [
                             t("console:common.placeholders.brokenPage.subtitles.0"),

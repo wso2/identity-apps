@@ -31,7 +31,7 @@ import {
 import React, { FunctionComponent, ReactElement, ReactNode, SyntheticEvent, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
 import { Header, Icon, SemanticICONS } from "semantic-ui-react";
-import { AppConstants, EmptyPlaceholderIllustrations, UIConstants, history } from "../../../core";
+import { AppConstants, UIConstants, getEmptyPlaceholderIllustrations, history } from "../../../core";
 import { EmailTemplateType } from "../../models";
 
 /**
@@ -125,7 +125,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                             { t("devPortal:placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
-                    image={ EmptyPlaceholderIllustrations.emptySearch }
+                    image={ getEmptyPlaceholderIllustrations().emptySearch }
                     imageSize="tiny"
                     title={ t("devPortal:placeholders.emptySearchResult.title") }
                     subtitle={ [
@@ -151,7 +151,7 @@ export const EmailTemplateTypeList: FunctionComponent<EmailTemplateListPropsInte
                         t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.subtitles.1"),
                         t("adminPortal:components.emailTemplateTypes.placeholders.emptyList.subtitles.2")
                     ] }
-                    image={ EmptyPlaceholderIllustrations.newList }
+                    image={ getEmptyPlaceholderIllustrations().newList }
                     imageSize="tiny"
                     data-testid={ `${ testId }-empty-placeholder` }
                 />

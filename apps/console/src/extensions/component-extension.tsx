@@ -21,7 +21,7 @@ import { EmptyPlaceholder, ErrorBoundary } from "@wso2is/react-components";
 import React, { Suspense, lazy } from "react";
 import { Placeholder } from "semantic-ui-react";
 import * as getConfig from "./config";
-import { EmptyPlaceholderIllustrations } from "../features/core";
+import { getEmptyPlaceholderIllustrations } from "../features/core";
 
 interface ComponentExtensionInterface {
     component?: string;
@@ -68,7 +68,7 @@ export const ComponentExtensionPlaceholder = ( args: ComponentExtensionInterface
                         <ErrorBoundary
                             fallback={ (
                                 <EmptyPlaceholder
-                                    image={ EmptyPlaceholderIllustrations.genericError }
+                                    image={ getEmptyPlaceholderIllustrations().genericError }
                                     imageSize="tiny"
                                     subtitle={ [
                                         I18n.instance.t("devPortal:placeholders.genericError.subtitles.0"),

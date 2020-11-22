@@ -20,9 +20,9 @@ import { EmptyPlaceholder } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { RouteComponentProps } from "react-router-dom";
-import { AppConstants } from "../../../core/constants";
-import { history } from "../../../core/helpers";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
+import { AppConstants } from "../../constants";
+import { history } from "../../helpers";
 
 /**
  * Storage disabled error page.
@@ -47,7 +47,7 @@ const SessionStorageDisabled: FunctionComponent<RouteComponentProps> = (): React
 
     return (
         <EmptyPlaceholder
-            image={ EmptyPlaceholderIllustrations.loginError }
+            image={ getEmptyPlaceholderIllustrations().loginError }
             imageSize="tiny"
             subtitle={ [
                 t("adminPortal:placeholders.sessionStorageDisabled.subtitles.0"),

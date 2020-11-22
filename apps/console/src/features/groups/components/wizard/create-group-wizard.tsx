@@ -31,7 +31,7 @@ import { CreateGroupSummary } from "./group-summary";
 import { AppConstants, AssignRoles, RolePermissions, history } from "../../../core";
 import { updateRole } from "../../../roles/api";
 import { createGroup } from "../../api";
-import { GroupsWizardStepIcons } from "../../configs";
+import { getGroupsWizardStepIcons } from "../../configs";
 import {
     CreateGroupInterface,
     CreateGroupMemberInterface
@@ -364,7 +364,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.BASIC_DETAILS) }
             />
         ),
-        icon: GroupsWizardStepIcons.general,
+        icon: getGroupsWizardStepIcons().general,
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.0")
     },{
         content: (
@@ -377,7 +377,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 onSubmit={ (values) => handleWizardSubmit(values, WizardStepsFormTypes.USER_LIST) }
             />
         ),
-        icon: GroupsWizardStepIcons.users,
+        icon: getGroupsWizardStepIcons().users,
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.2")
     },{
         content: (
@@ -405,7 +405,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                     handleSetRoleId={ (roleId) => handleRoleIdSet(roleId) }
                 />
         ),
-        icon: GroupsWizardStepIcons.roles,
+        icon: getGroupsWizardStepIcons().roles,
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.5")
     },{
         content: (
@@ -416,7 +416,7 @@ export const CreateGroupWizard: FunctionComponent<CreateGroupProps> = (props: Cr
                 summary={ generateWizardSummary() }
             />
         ),
-        icon: GroupsWizardStepIcons.summary,
+        icon: getGroupsWizardStepIcons().summary,
         title: t("adminPortal:components.roles.addRoleWizard.wizardSteps.3")
     }];
 

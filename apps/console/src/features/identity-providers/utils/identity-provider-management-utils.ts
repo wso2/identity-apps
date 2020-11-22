@@ -26,7 +26,7 @@ import _ from "lodash";
 import { DocPanelUICardInterface, store } from "../../core";
 import { getFederatedAuthenticatorsList, getIdentityProviderList, getLocalAuthenticators } from "../api";
 import { getSelectedFederatedAuthenticators, getSelectedLocalAuthenticators } from "../components";
-import { AuthenticatorIcons } from "../configs";
+import { getAuthenticatorIcons } from "../configs";
 import { IdentityProviderManagementConstants } from "../constants";
 import {
     GenericAuthenticatorInterface,
@@ -201,7 +201,7 @@ export class IdentityProviderManagementUtils {
     public static findAuthenticatorIcon(meta: StrictGenericAuthenticatorInterface[], id: string, name: string): any {
 
         if (!(id || name)) {
-            return AuthenticatorIcons.default;
+            return getAuthenticatorIcons().default;
         }
 
         const found: StrictGenericAuthenticatorInterface = meta.find((item) => {
@@ -218,7 +218,7 @@ export class IdentityProviderManagementUtils {
             return found.image;
         }
 
-        return AuthenticatorIcons.default;
+        return getAuthenticatorIcons().default;
     }
 
     /**

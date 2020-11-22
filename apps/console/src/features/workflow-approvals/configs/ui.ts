@@ -16,12 +16,15 @@
  * under the License.
  */
 
-import {
-    ReactComponent as PendingApprovalOutlineIcon
-} from "../../../themes/default/assets/images/icons/outline-icons/pending-approval-outline.svg";
+import { AppConstants } from "../../core/constants";
 
-export const TableIcons = {
-    header: {
-        default: PendingApprovalOutlineIcon
-    }
+export const getTableIcons = () => {
+
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+
+    return {
+        header: {
+            default: import(`../../../themes/${ theme }/assets/images/icons/outline-icons/pending-approval-outline.svg`)
+        }
+    };
 };

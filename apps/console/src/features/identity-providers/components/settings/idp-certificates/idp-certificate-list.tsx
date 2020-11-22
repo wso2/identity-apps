@@ -22,6 +22,7 @@ import { Forms } from "@wso2is/forms";
 import {
     Certificate as CertificateDisplay,
     EmptyPlaceholder,
+    GenericIcon,
     PrimaryButton,
     ResourceList,
     ResourceListItem,
@@ -31,7 +32,7 @@ import moment from "moment";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Divider, Grid, Icon, Modal, Popup, Segment, SemanticCOLORS, SemanticICONS } from "semantic-ui-react";
-import { CertificateIllustrations, EmptyPlaceholderIllustrations, UIConstants } from "../../../../core";
+import { UIConstants, getCertificateIllustrations, getEmptyPlaceholderIllustrations } from "../../../../core";
 import { IdentityProviderInterface } from "../../../models";
 import { AddIDPCertificateWizard } from "../../wizards";
 
@@ -114,7 +115,12 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
             >
                 <Modal.Header>
                     <div className="certificate-ribbon">
-                        <CertificateIllustrations.ribbon />
+                        <GenericIcon
+                            inline
+                            transparent
+                            size="auto"
+                            icon={ getCertificateIllustrations().ribbon }
+                        />
                         <div className="certificate-alias">
                                 View Certificate - {
                                 certificateDisplay?.alias
@@ -299,7 +305,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                     <EmptyPlaceholder
                                         title={ t("devPortal:components.idp.placeHolders." +
                                             "emptyCertificateList.title") }
-                                        image={ EmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations.emptyList }
                                         subtitle={ [
                                             t("devPortal:components.idp.placeHolders." +
                                                 "emptyCertificateList.subtitles.0"),

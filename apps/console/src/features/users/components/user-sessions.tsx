@@ -45,8 +45,9 @@ import React, {
 import { Trans, useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Grid, Icon, Label, List, SemanticICONS } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations, FeatureConfigInterface, UserSessionAccordionIcons } from "../../core";
+import { FeatureConfigInterface, getEmptyPlaceholderIllustrations } from "../../core";
 import { getUserSessions, terminateAllUserSessions, terminateUserSession } from "../api";
+import { getUserSessionAccordionIcons } from "../configs";
 import { ApplicationSessionInterface, UserSessionInterface, UserSessionsInterface } from "../models";
 
 /**
@@ -608,7 +609,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                                     actions={ [
                                         {
                                             icon: {
-                                                icon: UserSessionAccordionIcons.terminate
+                                                icon: getUserSessionAccordionIcons().terminate
                                             },
                                             onClick: () => {
                                                 setTerminatingSession(session);
@@ -780,7 +781,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 :
                 (
                     <EmptyPlaceholder
-                        image={ EmptyPlaceholderIllustrations.emptyList }
+                        image={ getEmptyPlaceholderIllustrations.emptyList }
                         imageSize="tiny"
                         title={
                             t("console:manage.features.users.userSessions.placeholders.emptyListPlaceholder.title")
