@@ -66,7 +66,10 @@ export const ProtectedRoute: FunctionComponent<ProtectedRoutePropsInterface> = (
 
         AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP, history.location.pathname);
     } else {
-        AuthenticateUtils.updateAuthenticationCallbackUrl(AppConstantsCore.MY_ACCOUNT_APP, AppConstants.getAppHomePath());
+        AuthenticateUtils.updateAuthenticationCallbackUrl(
+            AppConstantsCore.MY_ACCOUNT_APP,
+            AppConstants.getAppHomePath()
+        );
     }
 
     /**

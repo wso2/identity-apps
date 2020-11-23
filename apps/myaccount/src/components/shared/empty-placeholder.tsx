@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { Header } from "semantic-ui-react";
 import { ThemeIcon, ThemeIconSizes } from "./icon";
@@ -25,7 +25,7 @@ import { ThemeIcon, ThemeIconSizes } from "./icon";
  * Proptypes for the placeholder component. Also see
  * {@link EmptyPlaceholder.defaultProps}
  */
-interface PlaceholderProps extends TestableComponentInterface { // FIXME: Rename to EmptyPlaceholderProps?
+interface EmptyPlaceholderProps extends TestableComponentInterface {
     action?: React.ReactNode;
     image?: any;
     imageSize?: ThemeIconSizes;
@@ -36,11 +36,19 @@ interface PlaceholderProps extends TestableComponentInterface { // FIXME: Rename
 /**
  * Placeholder component.
  *
- * @param {PlaceholderProps} props - Props injected in to the placeholder component.
+ * @param {EmptyPlaceholderProps} props - Props injected in to the placeholder component.
  * @return {JSX.Element}
  */
-export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: PlaceholderProps): JSX.Element => {
-    const { action, image, imageSize, subtitle, title, ['data-testid']: testId } = props;
+export const EmptyPlaceholder: FunctionComponent<EmptyPlaceholderProps> = (props: EmptyPlaceholderProps): JSX.Element => {
+
+    const {
+        action,
+        image,
+        imageSize,
+        subtitle,
+        title,
+        ["data-testid"]: testId
+    } = props;
 
     return (
         <div className="empty-placeholder" data-testid={ testId }>
@@ -72,11 +80,11 @@ export const EmptyPlaceholder: FunctionComponent<PlaceholderProps> = (props: Pla
 
 /**
  * Default proptypes for the empty placeholder component.
- * Also see {@link PlaceholderProps}
+ * Also see {@link EmptyPlaceholderProps}
  */
 EmptyPlaceholder.defaultProps = {
     action: null,
+    "data-testid": "empty-placeholder",
     image: null,
-    imageSize: "auto",
-    "data-testid": 'empty-placeholder',
+    imageSize: "auto"
 };

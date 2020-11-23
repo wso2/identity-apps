@@ -16,8 +16,8 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileConstants } from "@wso2is/core/constants";
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation, useTrigger } from "@wso2is/forms";
 import { FormValidation } from "@wso2is/validation";
 import React, { useState } from "react";
@@ -25,7 +25,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Button, Divider, Message, Modal, Segment } from "semantic-ui-react";
 import { resendSMSOTPCode, updateProfileInfo, validateSMSOTPCode } from "../../api";
-import { EnterCode, QRCodeScan } from "../../configs";
+import { EnterCode } from "../../configs";
 import { AlertInterface, AlertLevels } from "../../models";
 import { getProfileInformation } from "../../store/actions";
 
@@ -50,9 +50,14 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
 ): JSX.Element => {
 
     const {
-        onAlertFired, closeWizard, wizardOpen,
-        currentMobileNumber, isMobileRequired, ["data-testid"]: testId
+        onAlertFired,
+        closeWizard,
+        wizardOpen,
+        currentMobileNumber,
+        isMobileRequired,
+        ["data-testid"]: testId
     } = props;
+
     const [ step, setStep ] = useState<number>(0);
     const [ verificationError, setVerificationError ] = useState<boolean>(false);
     const [ resendSuccess, setResendSuccess ] = useState<boolean>(false);
@@ -429,8 +434,8 @@ export const MobileUpdateWizard: React.FunctionComponent<MobileUpdateWizardProps
 
 /**
  * Default properties of {@link MobileUpdateWizard}
- * Also see {@link MobileUpdateWizardProps}
+ * See type definitions in {@link MobileUpdateWizardProps}
  */
 MobileUpdateWizard.defaultProps = {
     "data-testid": "mobile-update-wizard"
-}
+};

@@ -287,5 +287,5 @@ SettingsSection.defaultProps = {
     primaryAction: "",
     primaryActionDisabled: false,
     showActionBar: true,
-    topActionBar: null,
+    topActionBar: null
 };
