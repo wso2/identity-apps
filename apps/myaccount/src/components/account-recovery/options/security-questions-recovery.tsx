@@ -64,14 +64,14 @@ interface SecurityQuestionsProps extends TestableComponentInterface {
 export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestionsProps> = (
     props: SecurityQuestionsProps
 ) => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
     const [challengeQuestions, setChallengeQuestions] = useState<ChallengesQuestionsInterface[]>();
     const [challenges, setChallenges] = useState(createEmptyChallenge());
     const [isEdit, setIsEdit] = useState<number | string>(-1);
     const [isInit, setIsInit] = useState(false);
-    const { onAlertFired, ["data-testid"]: testId } = props;
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -521,7 +521,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
 
 /**
  * Default props for {@link SecurityQuestionsComponent}.
- * Also see {@link SecurityQuestionsProps}
+ * See type definitions in {@link SecurityQuestionsProps}
  */
 SecurityQuestionsComponent.defaultProps = {
   "data-testid": "security-questions-component"

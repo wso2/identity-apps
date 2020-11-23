@@ -42,6 +42,7 @@ const EMAIL = "email";
 
 /**
  * Prop types for the EmailRecoveryComponent component.
+ * Also see {@link EmailRecovery.defaultProps}
  */
 interface EmailRecoveryProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -55,8 +56,12 @@ interface EmailRecoveryProps extends TestableComponentInterface {
  */
 export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props: EmailRecoveryProps): JSX.Element => {
 
+    const {
+        onAlertFired,
+        ["data-testid"]: testId
+    } = props;
+
     const { t } = useTranslation();
-    const { onAlertFired, ['data-testid']: testId } = props;
     const dispatch = useDispatch();
 
     const profileInfo: BasicProfileInterface = useSelector(
@@ -400,7 +405,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
 
 /**
  * Default props of {@link EmailRecovery} component.
- * Also see {@link EmailRecoveryProps}
+ * See type definitions in {@link EmailRecoveryProps}
  */
 EmailRecovery.defaultProps = {
     "data-testid": "email-recovery"

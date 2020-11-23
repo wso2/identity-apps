@@ -30,6 +30,7 @@ import { SettingsSection } from "../shared";
 
 /**
  * Prop types for AccountRecoveryComponent component.
+ * Also see {@link AccountRecoveryComponent.defaultProps}
  */
 interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -44,9 +45,14 @@ interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface>, Te
 export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryProps> = (
     props: AccountRecoveryProps
 ): JSX.Element => {
-    const { t } = useTranslation();
-    const { onAlertFired, featureConfig, ['data-testid']: testId } = props;
 
+    const {
+        onAlertFired,
+        featureConfig,
+        ["data-testid"]: testId
+    } = props;
+
+    const { t } = useTranslation();
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     return (
@@ -107,4 +113,4 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
  */
 AccountRecoveryComponent.defaultProps = {
     "data-testid": "account-recovery-component"
-}
+};
