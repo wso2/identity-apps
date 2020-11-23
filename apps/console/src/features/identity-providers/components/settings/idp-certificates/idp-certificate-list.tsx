@@ -305,7 +305,7 @@ export const IdpCertificatesListComponent: FunctionComponent<IdpCertificatesProp
                                     <EmptyPlaceholder
                                         title={ t("devPortal:components.idp.placeHolders." +
                                             "emptyCertificateList.title") }
-                                        image={ getEmptyPlaceholderIllustrations.emptyList }
+                                        image={ getEmptyPlaceholderIllustrations().emptyList }
                                         subtitle={ [
                                             t("devPortal:components.idp.placeHolders." +
                                                 "emptyCertificateList.subtitles.0"),

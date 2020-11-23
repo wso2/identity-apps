@@ -781,7 +781,7 @@ export const UserSessions: FunctionComponent<UserSessionsPropsInterface> = (
                 :
                 (
                     <EmptyPlaceholder
-                        image={ getEmptyPlaceholderIllustrations.emptyList }
+                        image={ getEmptyPlaceholderIllustrations().emptyList }
                         imageSize="tiny"
                         title={
                             t("console:manage.features.users.userSessions.placeholders.emptyListPlaceholder.title")
