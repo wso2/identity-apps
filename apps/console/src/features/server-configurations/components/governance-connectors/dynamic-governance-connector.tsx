@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
+import { AlertLevels, SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import get from "lodash/get";
 import kebabCase from "lodash/kebabCase";
@@ -64,12 +64,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             return;
         }
 
-        const illustration: Promise<any>  = get(getGovernanceConnectorIllustrations(), connector.id,
+        const illustration: Promise<SVGRLoadedInterface>  = get(getGovernanceConnectorIllustrations(), connector.id,
             getGovernanceConnectorIllustrations()?.default);
         
         if (illustration) {
             illustration
-                .then((image: object & { default: string }) => {
+                .then((image: SVGRLoadedInterface) => {
                     setConnectorIllustration(image.default);
                 });
         }
