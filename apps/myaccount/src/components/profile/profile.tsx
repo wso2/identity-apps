@@ -16,11 +16,10 @@
  * under the License
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
@@ -41,6 +40,7 @@ import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 
 /**
  * Prop types for the basic details component.
+ * Also see {@link Profile.defaultProps}
  */
 interface ProfileProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -54,7 +54,11 @@ interface ProfileProps extends SBACInterface<FeatureConfigInterface>, TestableCo
  */
 export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
 
-    const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
+    const {
+        onAlertFired,
+        featureConfig,
+        ["data-testid"]: testId
+    } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -216,7 +220,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
-                    }
+                    };
                 }
             } else {
                 let primaryValue = "";
@@ -258,7 +262,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
-                    }
+                    };
                 }
             }
         } else {
@@ -824,8 +828,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
 /**
  * Default properties for the {@link Profile} component.
- * Also see {@link ProfileProps}
+ * See type definitions in {@link ProfileProps}
  */
 Profile.defaultProps = {
     "data-testid": "profile"
-}
+};

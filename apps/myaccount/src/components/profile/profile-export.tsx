@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { getUserInfo } from "../../api";
@@ -26,6 +26,7 @@ import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the profile export component.
+ * Also see {@link ProfileExport.defaultProps}
  */
 interface ProfileExportProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -40,6 +41,7 @@ interface ProfileExportProps extends TestableComponentInterface {
 export const ProfileExport: FunctionComponent<ProfileExportProps> = (
     props: ProfileExportProps
 ): JSX.Element => {
+
     const { onAlertFired, ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
@@ -134,8 +136,8 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
 
 /**
  * Default properties for the {@link ProfileExport} component.
- * Also see {@link ProfileExportProps}
+ * See type definitions in {@link ProfileExportProps}
  */
 ProfileExport.defaultProps = {
     "data-testid": "profile"
-}
+};
