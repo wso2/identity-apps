@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
@@ -28,6 +28,7 @@ import { ThemeIcon } from "../shared";
 
 /**
  * Proptypes for the application consents list component.
+ * Also see {@link AppConsentList.defaultProps}
  */
 interface ConsentsListProps extends TestableComponentInterface {
     consentedApps: ConsentInterface[];
@@ -57,7 +58,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
         onClaimRevokeToggle,
         revokedClaimList,
         onConsentDetailClick,
-        ["data-testid"]: testId,
+        ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
 
@@ -195,8 +196,8 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
 
 /**
  * Default properties for the {@link AppConsentList}
- * Also see {@link ConsentsListProps}
+ * See type definitions in {@link ConsentsListProps}
  */
 AppConsentList.defaultProps = {
-    "data-testid": 'app-consent-list'
-}
+    "data-testid": "app-consent-list"
+};

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -40,11 +41,10 @@ import {
 import { AppState } from "../../store";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
-import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
- * Proptypes for the user sessions component. Also
- * see {@link Consents.defaultProps}
+ * Proptypes for the user sessions component.
+ * Also see {@link Consents.defaultProps}
  */
 interface ConsentComponentProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -56,6 +56,9 @@ interface ConsentComponentProps extends TestableComponentInterface {
  * @return {JSX.Element}
  */
 export const Consents: FunctionComponent<ConsentComponentProps> = (props: ConsentComponentProps): JSX.Element => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
+
     const [ consentedApps, setConsentedApps ] = useState<ConsentInterface[]>([]);
     const [ revokingConsent, setRevokingConsent ] = useState<ConsentInterface>();
     const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
@@ -63,8 +66,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
 
     const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
-
-    const { onAlertFired, ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     /**
@@ -469,9 +470,9 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 };
 
 /**
- * Default properties of {@link Consents} Also
- * see {@link ConsentComponentProps}
+ * Default properties of {@link Consents}
+ * See type definitions in {@link ConsentComponentProps}
  */
 Consents.defaultProps = {
-    "data-testid": 'consents'
-}
+    "data-testid": "consents"
+};

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
@@ -26,7 +26,7 @@ import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
 /**
  * Proptypes for the application consent edit component.
- * Also see ${@link AppConsentEdit.defaultProps}
+ * Also see {@link AppConsentEdit.defaultProps}
  */
 interface EditConsentProps extends TestableComponentInterface {
     editingConsent: ConsentInterface;
@@ -202,4 +202,4 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
  */
 AppConsentEdit.defaultProps = {
     "data-testid": "app-consent-edit"
-}
+};
