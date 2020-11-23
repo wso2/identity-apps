@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -36,6 +36,7 @@ interface UserAccountInterface {
 
 /**
  * Proptypes for the linked accounts edit component.
+ * Also see {@link LinkedAccountsEdit.defaultProps}
  */
 interface LinkedAccountsEditProps extends TestableComponentInterface {
     onFormEditViewHide: (formName: string) => void;
@@ -51,7 +52,12 @@ interface LinkedAccountsEditProps extends TestableComponentInterface {
 export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
     props: LinkedAccountsEditProps
 ): JSX.Element => {
-    const { onFormEditViewHide, onFormSubmit, ["data-testid"]: testId } = props;
+
+    const {
+        onFormEditViewHide,
+        onFormSubmit,
+        ["data-testid"]: testId
+    } = props;
     const { t } = useTranslation();
 
     const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
@@ -166,8 +172,8 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
 
 /**
  * Default properties of {@link LinkedAccountsEdit}
- * Also see {@link LinkedAccountsEditProps}
+ * See type definitions in {@link LinkedAccountsEditProps}
  */
 LinkedAccountsEdit.defaultProps = {
     "data-testid": "linked-account-edit"
-}
+};

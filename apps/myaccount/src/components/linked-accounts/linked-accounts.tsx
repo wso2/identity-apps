@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -38,10 +39,10 @@ import { AppState } from "../../store";
 import { getProfileLinkedAccounts, handleAccountSwitching, setActiveForm } from "../../store/actions";
 import { refreshPage } from "../../utils";
 import { SettingsSection } from "../shared";
-import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
  * Prop types for the liked accounts component.
+ * Also see {@link LinkedAccounts.defaultProps}
  */
 interface LinkedAccountsProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -248,6 +249,10 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
     );
 };
 
+/**
+ * Default props of {@link LinkedAccounts}
+ * See type definitions in {@link LinkedAccountsProps}
+ */
 LinkedAccounts.defaultProps = {
     "data-testid": "linked-accounts"
-}
+};
