@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import * as React from "react";
 import { SidePanelItems } from "./side-panel-items";
 
@@ -33,21 +33,29 @@ export interface SidePanelProps extends TestableComponentInterface {
  *
  * @return {JSX.Element}
  */
-export const SidePanel: React.FunctionComponent<SidePanelProps> = (
-    props: SidePanelProps
-): JSX.Element => {
-    const { headerHeight, onSidePanelItemClick } = props;
+export const SidePanel: React.FunctionComponent<SidePanelProps> = (props: SidePanelProps): JSX.Element => {
+
+    const {
+        headerHeight,
+        onSidePanelItemClick,
+        ["data-testid"]: testId
+    } = props;
+
     return (
-        <SidePanelItems type="desktop"
-                        onSidePanelItemClick={ onSidePanelItemClick }
-                        headerHeight={ headerHeight } />
+        <SidePanelItems
+            data-testid={ testId }
+            type="desktop"
+            onSidePanelItemClick={ onSidePanelItemClick }
+            headerHeight={ headerHeight }
+        />
     );
+
 };
 
 /**
- * Default props of {@link SidePanel} Also see
- * {@link SidePanelProps}
+ * Default props of {@link SidePanel}
+ * See type definitions in {@link SidePanelProps}
  */
 SidePanel.defaultProps = {
     "data-testid": "side-panel"
-}
+};

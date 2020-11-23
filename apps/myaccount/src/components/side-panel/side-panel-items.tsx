@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
 import { hasRequiredScopes } from "@wso2is/core/helpers";
-import { ChildRouteInterface, RouteInterface } from "@wso2is/core/models";
+import { ChildRouteInterface, RouteInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { RouteUtils } from "@wso2is/core/utils";
 import _ from "lodash";
 import React, { ReactElement, useEffect, useState } from "react";
@@ -38,6 +37,7 @@ import { ThemeIcon } from "../shared";
 
 /**
  * Side panel items component Prop types.
+ * Also see {@link SidePanelItems.defaultProps}
  */
 interface SidePanelItemsProps extends TestableComponentInterface {
     headerHeight: number;
@@ -55,7 +55,12 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
     props: SidePanelItemsProps
 ): ReactElement => {
 
-    const { headerHeight, type, onSidePanelItemClick, ["data-testid"]: testId } = props;
+    const {
+        headerHeight,
+        type,
+        onSidePanelItemClick,
+        ["data-testid"]: testId
+    } = props;
 
     const { t } = useTranslation();
 
@@ -169,9 +174,9 @@ export const SidePanelItems: React.FunctionComponent<SidePanelItemsProps> = (
 };
 
 /**
- * Default props of {@link SidePanelItems} Also see
- * {@link SidePanelItemsProps}
+ * Default props of {@link SidePanelItems}
+ * See type definitions in {@link SidePanelItemsProps}
  */
 SidePanelItems.defaultProps = {
     "data-testid": "side-panel"
-}
+};
