@@ -21,68 +21,68 @@ import { ServerConfigurationsConstants } from "../constants";
 
 export const getGovernanceConnectorIllustrations = () => {
 
-    const name: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
 
     return {
         [ ServerConfigurationsConstants.PASSWORD_HISTORY_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/password-history.svg`),
         [ ServerConfigurationsConstants.PASSWORD_POLICY_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/password-pattern-illustration.svg`),
         [ ServerConfigurationsConstants.SELF_SIGN_UP_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/self-registration-illustration.svg`),
         [ ServerConfigurationsConstants.LITE_USER_REGISTRATION_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/lite-user-registration.svg`),
         [ ServerConfigurationsConstants.USER_EMAIL_VERIFICATION_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/ask-password-illustration.svg`),
         [ ServerConfigurationsConstants.ACCOUNT_LOCKING_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/account-lock.svg`),
         [ ServerConfigurationsConstants.CAPTCHA_FOR_SSO_LOGIN_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/captcha-sso-illustration.svg`),
         [ ServerConfigurationsConstants.IDLE_ACCOUNT_SUSPEND_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/lock-idle-accounts-illustration.svg`),
         [ ServerConfigurationsConstants.ACCOUNT_DISABLE_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/account-disable-illustration.svg`),
         [ ServerConfigurationsConstants.ACCOUNT_RECOVERY_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/account-recovery-illustration.svg`),
         [ ServerConfigurationsConstants.PASSWORD_RESET_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/password-reset-illustration.svg`),
         [ ServerConfigurationsConstants.CONSENT_INFO_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/consent-management-illustration.svg`),
         [ ServerConfigurationsConstants.ANALYTICS_ENGINE_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/analytics-engine-illustration.svg`),
         [ ServerConfigurationsConstants.USER_CLAIM_UPDATE_CONNECTOR_ID ]:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/user-claim-update-illustration.svg`),
         default:
             import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/governance-connectors/default-connector-illustration.svg`)
     };
 };

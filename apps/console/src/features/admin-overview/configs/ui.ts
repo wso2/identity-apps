@@ -20,41 +20,41 @@ import { AppConstants } from "../../core/constants";
 
 export const getOverviewPageIllustrations = () => {
 
-    const name: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
+    const theme: string = AppConstants && AppConstants.getAppTheme() && AppConstants.getAppTheme().name;
 
     return {
         jumbotronIllustration: import(`../../../themes/${
-                name
+                theme
             }/assets/images/illustrations/security-illustration.svg`),
         quickLinks: {
             certificates: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/certificate-icon.svg`),
             dialects: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/claims-icon.svg`),
             emailTemplates: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/paper-rocket-icon.svg`),
             generalConfigs: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/cog-wheel-icon.svg`),
             groups: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/user-group-icon.svg`),
             roles: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/briefcase-icon.svg`)
         },
         statsOverview: {
             groups: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/user-group-icon.svg`),
             users: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/user-icon.svg`),
             userstores: import(`../../../themes/${
-                name
+                theme
             }/assets/images/icons/database-icon.svg`)
         }
     };
