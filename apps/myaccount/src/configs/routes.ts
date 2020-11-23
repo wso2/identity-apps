@@ -20,7 +20,6 @@ import { RouteInterface } from "@wso2is/core/models";
 import { AppLayout } from "@wso2is/react-components";
 import { lazy } from "react";
 import { AppConstants } from "../constants";
-import * as TokenConstants from "../constants/token-constants";
 
 /**
  * Get app layout routes.
