@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import _ from "lodash";
 import React, { useEffect, useState } from "react";
@@ -44,6 +44,7 @@ const FIDO = "fido-";
 
 /**
  * Prop types for the associated accounts component.
+ * Also see {@link FIDOAuthenticator.defaultProps}
  */
 interface FIDOAuthenticatorProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -54,8 +55,11 @@ interface FIDOAuthenticatorProps extends TestableComponentInterface {
  *
  * @return {JSX.Element}
  */
-export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (props: FIDOAuthenticatorProps):
-    JSX.Element => {
+export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> = (
+    props: FIDOAuthenticatorProps
+): JSX.Element => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
     const { t } = useTranslation();
     const [deviceList, setDeviceList] = useState<FIDODevice[]>([]);
     const [isDeviceErrorModalVisible, setDeviceErrorModalVisibility] = useState(false);
@@ -64,7 +68,6 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
     const [recentFIDONameError, setRecentFIDONameError] = useState(false);
     const [recentlyAddedDevice, setRecentlyAddedDevice] = useState<string>();
     const [editFIDO, setEditFido] = useState<Map<string, boolean>>();
-    const { onAlertFired, ["data-testid"]: testId } = props;
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const dispatch = useDispatch();
@@ -587,8 +590,8 @@ export const FIDOAuthenticator: React.FunctionComponent<FIDOAuthenticatorProps> 
 
 /**
  * Default properties of {@link FIDOAuthenticator}
- * Also see {@link FIDOAuthenticatorProps}
+ * See type definitions in {@link FIDOAuthenticatorProps}
  */
 FIDOAuthenticator.defaultProps = {
     "data-testid": "fido-authenticator"
-}
+};

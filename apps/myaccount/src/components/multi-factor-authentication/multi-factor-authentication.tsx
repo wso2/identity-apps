@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -31,14 +30,20 @@ import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the basic details component.
+ * Also see {@link MultiFactorAuthentication.defaultProps}
  */
 interface MfaProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
 export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (props: MfaProps): JSX.Element => {
+
+    const {
+        onAlertFired,
+        featureConfig,
+        ["data-testid"]: testId
+    } = props;
     const { t } = useTranslation();
-    const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
 
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
     const isReadOnlyUser = useSelector((state: AppState) => state.authenticationInformation.profileInfo.isReadOnly);
@@ -95,8 +100,8 @@ export const MultiFactorAuthentication: React.FunctionComponent<MfaProps> = (pro
 
 /**
  * Default properties of {@link MultiFactorAuthentication}
- * Also see {@link MfaProps}
+ * See type definitions in {@link MfaProps}
  */
 MultiFactorAuthentication.defaultProps = {
     "data-testid": "multi-factor-authentication"
-}
+};

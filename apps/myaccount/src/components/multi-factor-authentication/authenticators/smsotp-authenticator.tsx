@@ -16,9 +16,8 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from "@wso2is/core/models";
 import { isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { LinkButton, PrimaryButton } from "@wso2is/react-components";
 import { FormValidation } from "@wso2is/validation";
@@ -48,6 +47,7 @@ const SMS = "sms";
 
 /**
  * Prop types for the SMS OTP component.
+ * Also see {@link SMSOTPAuthenticator.defaultProps}
  */
 interface SMSOTPProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -59,9 +59,15 @@ interface SMSOTPProps extends SBACInterface<FeatureConfigInterface>, TestableCom
  * @return {JSX.Element}
  */
 export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props: SMSOTPProps): JSX.Element => {
+
+    const {
+        onAlertFired,
+        featureConfig,
+        ["data-testid"]: testId
+    } = props;
+
     const [mobile, setMobile] = useState("");
     const { t } = useTranslation();
-    const { onAlertFired, featureConfig, ["data-testid"]: testId } = props;
     const dispatch = useDispatch();
     const profileInfo: BasicProfileInterface = useSelector(
         (state: any) => state.authenticationInformation.profileInfo
@@ -383,8 +389,8 @@ export const SMSOTPAuthenticator: React.FunctionComponent<SMSOTPProps> = (props:
 
 /**
  * Default properties of {@link SMSOTPAuthenticator}
- * Also see {@link SMSOTPProps}
+ * See type definitions in {@link SMSOTPProps}
  */
 SMSOTPAuthenticator.defaultProps = {
     "data-testid": "sms-otp-authenticator"
-}
+};

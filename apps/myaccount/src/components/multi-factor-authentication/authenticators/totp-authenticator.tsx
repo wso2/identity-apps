@@ -16,22 +16,22 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import QRCode from "qrcode.react";
-import React, {PropsWithChildren, useEffect, useState} from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
 import { EnterCode, MFAIcons, QRCodeScan } from "../../../configs";
-import {AlertInterface, AlertLevels, FeatureConfigInterface} from "../../../models";
+import { AlertInterface, AlertLevels } from "../../../models";
 import { AppState } from "../../../store";
 import { ThemeIcon } from "../../shared";
 
 /**
- * Property types for the TOTP component. Also see
- * {@link TOTPAuthenticator.defaultProps}
+ * Property types for the TOTP component.
+ * Also see {@link TOTPAuthenticator.defaultProps}
  */
 interface TOTPProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -414,8 +414,8 @@ export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
 
 /**
  * Default properties for {@link TOTPAuthenticator}
- * Also see {@link TOTPProps}
+ * See type definitions in {@link TOTPProps}
  */
 TOTPAuthenticator.defaultProps = {
     "data-testid": "totp-authenticator"
-}
+};
