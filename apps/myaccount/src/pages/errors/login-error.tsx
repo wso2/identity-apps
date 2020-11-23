@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
 import { EmptyPlaceholder } from "../../components/shared";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { ErrorPageLayout } from "../../layouts";
 
@@ -44,7 +44,7 @@ const LoginErrorPage = (): ReactElement => {
                         { t("userPortal:placeholders.loginError.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.loginError }
+                image={ getEmptyPlaceholderIllustrations().loginError }
                 imageSize="tiny"
                 subtitle={ [
                     t("userPortal:placeholders.loginError.subtitles.0"),

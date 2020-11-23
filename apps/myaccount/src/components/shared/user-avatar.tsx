@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { useSVGPromise } from "@wso2is/core/hooks";
 import { FormValidation } from "@wso2is/validation";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
@@ -24,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { Button, Dimmer, Form, Icon, Modal, Popup } from "semantic-ui-react";
 import { Avatar, AvatarProps } from "./avatar";
 import { updateProfileInfo } from "../../api";
-import { ThirdPartyLogos } from "../../configs";
+import { getThirdPartyLogos } from "../../configs";
 import * as UIConstants from "../../constants/ui-constants";
 import { resolveUserDisplayName } from "../../helpers";
 import { AlertInterface, AlertLevels, AuthStateInterface, ProfileSchema } from "../../models";
@@ -78,6 +79,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
     const [ showEditModal, setShowEditModal ] = useState(false);
     const [ url, setUrl ] = useState("");
     const [ urlError, setUrlError ] = useState(Error.NONE);
+    const [ gravatarLogoAsDataURL ] = useSVGPromise(getThirdPartyLogos().gravatar);
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -118,7 +120,7 @@ export const UserAvatar: FunctionComponent<UserAvatarProps> = (props: UserAvatar
      */
     const resolveTopLabel = (): string => {
         if (isGravatarURL()) {
-            return ThirdPartyLogos.gravatar;
+            return gravatarLogoAsDataURL;
         }
 
         return null;

@@ -18,12 +18,13 @@
 
 import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Form, Grid, Icon, List } from "semantic-ui-react";
 import { addSecurityQs, getSecurityQs, updateSecurityQs } from "../../../api";
-import { AccountRecoveryIcons } from "../../../configs";
+import { getAccountRecoveryIcons } from "../../../configs";
 import { CommonConstants } from "../../../constants";
 import {
     AlertInterface,
@@ -36,7 +37,7 @@ import {
 } from "../../../models";
 import { AppState } from "../../../store";
 import { setActiveForm } from "../../../store/actions";
-import { EditSection, ThemeIcon } from "../../shared";
+import { EditSection } from "../../shared";
 
 /**
  * Question key.
@@ -409,8 +410,8 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
-                                <ThemeIcon
-                                    icon={ AccountRecoveryIcons.securityQuestions }
+                                <GenericIcon
+                                    icon={ getAccountRecoveryIcons().securityQuestions }
                                     size="mini"
                                     twoTone={ true }
                                     transparent={ true }

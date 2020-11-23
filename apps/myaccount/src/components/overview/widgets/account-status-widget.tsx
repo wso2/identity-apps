@@ -17,24 +17,29 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import { GenericIcon } from "@wso2is/react-components";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Grid, Header, Icon, Popup, Progress } from "semantic-ui-react";
-import { AccountStatusShields } from "../../../configs";
+import { getAccountStatusShields } from "../../../configs";
 import * as UIConstants from "../../../constants/ui-constants";
 import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
-import { ThemeIcon } from "../../shared";
 
 /**
  * Account status widget.
  *
- * @return {JSX.Element}
+ * @return {React.ReactElement}
  */
-export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> = (props): JSX.Element => {
+export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> = (
+    props: TestableComponentInterface
+): React.ReactElement => {
+
     const { ["data-testid"]: testId } = props;
+
     const { t } = useTranslation();
+
     const profileCompletion: ProfileCompletion = useSelector((state: AppState) => state.profile.completion);
 
     /**
@@ -98,14 +103,14 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
         const status = getProfileStatus();
 
         if (status === ProfileCompletionStatus.SUCCESS) {
-            return AccountStatusShields.good;
+            return getAccountStatusShields().good;
         } else if (status === ProfileCompletionStatus.ERROR) {
-            return AccountStatusShields.danger;
+            return getAccountStatusShields().danger;
         } else if (status === ProfileCompletionStatus.WARNING) {
-            return AccountStatusShields.warning;
+            return getAccountStatusShields().warning;
         }
 
-        return AccountStatusShields.good;
+        return getAccountStatusShields().good;
     };
 
     /**
@@ -264,7 +269,7 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
                 <Grid.Row>
                     <Grid.Column largeScreen={ 6 } computer={ 5 } tablet={ 5 } mobile={ 16 }>
                         <div className="status-shield-container">
-                            <ThemeIcon icon={ resolveStatusShield() } size="auto" transparent />
+                            <GenericIcon icon={ resolveStatusShield() } size="auto" transparent />
                         </div>
                     </Grid.Column>
                     <Grid.Column largeScreen={ 10 } computer={ 11 } tablet={ 11 } mobile={ 16 }>

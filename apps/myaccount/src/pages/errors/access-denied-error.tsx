@@ -21,7 +21,7 @@ import React, { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Button } from "semantic-ui-react";
-import { EmptyPlaceholderIllustrations } from "../../configs";
+import { getEmptyPlaceholderIllustrations } from "../../configs";
 import { AppConstants } from "../../constants";
 import { ErrorPageLayout } from "../../layouts";
 
@@ -46,7 +46,7 @@ const AccessDeniedErrorPage = (): ReactElement => {
                         { t("userPortal:placeholders.accessDeniedError.action") }
                     </Button>
                 ) }
-                image={ EmptyPlaceholderIllustrations.accessDeniedError }
+                image={ getEmptyPlaceholderIllustrations().accessDeniedError }
                 imageSize="tiny"
                 subtitle={ [
                     t("userPortal:placeholders.accessDeniedError.subtitles.0"),
