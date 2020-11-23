@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { Grid } from "semantic-ui-react";
 import { RecentApplicationCard } from "./recent-application-card";
@@ -24,6 +24,7 @@ import { Application } from "../../models";
 
 /**
  * Proptypes for the recent applications component.
+ * Also see {@link RecentApplications.defaultProps}
  */
 interface RecentApplicationsProps extends TestableComponentInterface {
     onAppNavigate: (id: string, url: string) => void;
@@ -39,7 +40,13 @@ interface RecentApplicationsProps extends TestableComponentInterface {
 export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
     props: RecentApplicationsProps
 ): JSX.Element => {
-    const { onAppNavigate, recentApps, showFavourites, ["data-testid"]: testId } = props;
+
+    const {
+        onAppNavigate,
+        recentApps,
+        showFavourites,
+        ["data-testid"]: testId
+    } = props;
 
     return (
         <Grid>
@@ -64,10 +71,10 @@ export const RecentApplications: FunctionComponent<RecentApplicationsProps> = (
 };
 
 /**
- * Recent applications component default props. See
- * also {@link RecentApplicationsProps}
+ * Recent applications component default props.
+ * See type definitions in {@link RecentApplicationsProps}
  */
 RecentApplications.defaultProps = {
-    showFavourites: true,
-    "data-testid": "recent-applications"
+    "data-testid": "recent-applications",
+    showFavourites: true
 };

@@ -51,7 +51,7 @@ export const AllApplications: FunctionComponent<AllApplicationsProps> = (
         loading,
         searchQuery,
         showFavourites,
-        ['data-testid']: testId
+        ["data-testid"]: testId
     } = props;
 
     return (
@@ -70,9 +70,9 @@ export const AllApplications: FunctionComponent<AllApplicationsProps> = (
 
 /**
  * All applications component default props.
- * Also see {@link AllApplicationsProps}
+ * See type definitions in {@link AllApplicationsProps}
  */
 AllApplications.defaultProps = {
-    showFavourites: true,
-    "data-testid": "all-applications"
+    "data-testid": "all-applications",
+    showFavourites: true
 };

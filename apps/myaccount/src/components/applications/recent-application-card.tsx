@@ -22,10 +22,10 @@ import React, { FunctionComponent } from "react";
 import { Card, Icon } from "semantic-ui-react";
 import { Application } from "../../models";
 import { AppAvatar } from "../shared";
-import { RecentApplications } from "./recent-applications";
 
 /**
  * Proptypes for the recent application card component.
+ * Also see {@link RecentApplicationCardProps.defaultProps}
  */
 interface RecentApplicationCardProps extends TestableComponentInterface {
     app: Application;
@@ -41,6 +41,7 @@ interface RecentApplicationCardProps extends TestableComponentInterface {
 export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps> = (
     props: RecentApplicationCardProps
 ): JSX.Element => {
+
     const { app, onAppNavigate, showFavouriteIcon } = props;
     const { ["data-testid"]: testId } = props;
 
@@ -111,8 +112,8 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
 
 /**
  * Default properties of {@link RecentApplicationCard}
- * See also {@link RecentApplicationCardProps}
+ * See type definitions in {@link RecentApplicationCardProps}
  */
 RecentApplicationCard.defaultProps = {
     "data-testid": "recent-application-card"
-}
+};

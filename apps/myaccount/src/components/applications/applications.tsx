@@ -39,6 +39,7 @@ import { AdvancedSearchWithBasicFilters } from "../shared";
 
 /**
  * Proptypes for the applications component.
+ * Also see {@link Applications.defaultProps}
  */
 interface ApplicationsProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -54,9 +55,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
     props: ApplicationsProps
 ): ReactElement => {
 
-    const {
-        [ "data-testid" ]: testId
-    } = props;
+    const { [ "data-testid" ]: testId } = props;
 
     const { onAlertFired } = props;
     const [ applications, setApplications ] = useState<Application[]>([]);
@@ -343,6 +342,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
 /**
  * Default props for the component.
+ * See type definitions in {@link ApplicationsProps}
  */
 Applications.defaultProps = {
     "data-testid": "applications"

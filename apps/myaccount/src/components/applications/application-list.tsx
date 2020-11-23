@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import { TestableComponentInterface } from '@wso2is/core/models';
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { Fragment, FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid } from "semantic-ui-react";
@@ -27,6 +27,7 @@ import { EmptyPlaceholder } from "../shared";
 
 /**
  * Proptypes for the application list component.
+ * Also see {@link ApplicationList.defaultProps}
  */
 interface ApplicationListProps extends TestableComponentInterface {
     apps: Application[];
@@ -140,8 +141,9 @@ export const ApplicationList: FunctionComponent<ApplicationListProps> = (
 
 /**
  * Default proptypes for the application list component.
+ * See type definitions in {@link ApplicationListProps}
  */
 ApplicationList.defaultProps = {
-    showFavourites: true,
-    "data-testid": 'application-list'
+    "data-testid": "application-list",
+    showFavourites: true
 };
