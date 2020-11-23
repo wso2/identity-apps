@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,10 +32,10 @@ import {
     emptyUserSessions
 } from "../../models";
 import { SettingsSection } from "../shared";
-import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
  * Proptypes for the user sessions component.
+ * Also see {@link UserSessionsComponent}
  */
 interface UserSessionsComponentProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -48,6 +49,7 @@ interface UserSessionsComponentProps extends TestableComponentInterface {
 export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps> = (
     props: UserSessionsComponentProps
 ): JSX.Element => {
+
     const [ userSessions, setUserSessions ] = useState<UserSessions>(emptyUserSessions);
     const [ editingUserSession, setEditingUserSession ] = useState<UserSession>(emptyUserSession);
     const [ isRevokeAllUserSessionsModalVisible, setRevokeAllUserSessionsModalVisibility ] = useState(false);
@@ -353,8 +355,8 @@ export const UserSessionsComponent: FunctionComponent<UserSessionsComponentProps
 
 /**
  * Default props of {@link UserSessionsComponent}
- * Also see {@link UserSessionsComponentProps}
+ * See type definitions in {@link UserSessionsComponentProps}
  */
 UserSessionsComponent.defaultProps = {
     "data-testid": "user-sessions-component"
-}
+};

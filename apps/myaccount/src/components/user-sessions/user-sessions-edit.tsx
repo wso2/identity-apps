@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import moment from "moment";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,10 +28,10 @@ import {
     UserSession
 } from "../../models";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
-import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
  * Proptypes for the user sessions edit component.
+ * Also see {@link UserSessionsEdit.defaultProps}
  */
 interface UserSessionsEditProps extends TestableComponentInterface {
     browser: IBrowser;
@@ -49,7 +50,15 @@ interface UserSessionsEditProps extends TestableComponentInterface {
 export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
     props: UserSessionsEditProps
 ): JSX.Element => {
-    const { browser, device, os, onTerminateUserSessionClick, userSession, ["data-testid"]: testId } = props;
+
+    const {
+        browser,
+        device,
+        os,
+        onTerminateUserSessionClick,
+        userSession,
+        ["data-testid"]: testId
+    } = props;
     const { t } = useTranslation();
 
     /**
@@ -280,9 +289,9 @@ export const UserSessionsEdit: FunctionComponent<UserSessionsEditProps> = (
 };
 
 /**
- * Default props of {@link UserSessionsEdit} Also
- * see {@link UserSessionsEditProps}
+ * Default props of {@link UserSessionsEdit}
+ * See type definitions in {@link UserSessionsEditProps}
  */
 UserSessionsEdit.defaultProps = {
     "data-testid": "user-sessions-edit"
-}
+};

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -31,10 +32,10 @@ import { UserSessionsEdit } from "./user-sessions-edit";
 import { UserAgentParser } from "../../helpers";
 import { UserSession } from "../../models";
 import { ThemeIcon } from "../shared";
-import { TestableComponentInterface } from '@wso2is/core/models';
 
 /**
  * Proptypes for the user sessions list component.
+ * Also see {@link UserSessionsList.defaultProps}
  */
 interface UserSessionsListProps extends TestableComponentInterface {
     onTerminateUserSessionClick?: (userSession: UserSession) => void;
@@ -53,6 +54,7 @@ const userAgentParser = new UserAgentParser();
 export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
     props: UserSessionsListProps
 ): JSX.Element => {
+
     const {
         onTerminateUserSessionClick,
         onUserSessionDetailClick,
@@ -232,10 +234,11 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
 
 /**
  * Default proptypes for the user sessions list component.
+ * See type definitions in {@link UserSessionsListProps}
  */
 UserSessionsList.defaultProps = {
+    "data-testid": "user-sessions-list",
     onTerminateUserSessionClick: () => null,
     onUserSessionDetailClick: () => null,
-    userSessionsListActiveIndexes: null,
-    "data-testid": "user-sessions-list"
+    userSessionsListActiveIndexes: null
 };
