@@ -124,15 +124,6 @@ describe("ITC-1.0.0 - [applications] - Applications Smoke Test.", () => {
                     applicationTemplatesPage.getQuickStartTemplate("DESKTOP_APP").should("be.visible");
                     applicationTemplatesPage.getQuickStartTemplate("MOBILE_APP").should("be.visible");
                 });
-
-            applicationTemplatesPage.getVendorGrid().should("be.visible");
-            applicationTemplatesPage.getVendorGrid()
-                .within(() => {
-                    applicationTemplatesPage.getVendorTemplate("BOX").should("be.visible");
-                    applicationTemplatesPage.getVendorTemplate("SLACK").should("be.visible");
-                    applicationTemplatesPage.getVendorTemplate("ZOOM").should("be.visible");
-                    applicationTemplatesPage.getVendorTemplate("WORKDAY").should("be.visible");
-                })
         });
     });
 });

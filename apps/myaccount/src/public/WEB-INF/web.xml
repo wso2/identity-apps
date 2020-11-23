@@ -17,22 +17,69 @@
  ~ limitations under the License.
  -->
 
-<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
-	      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	      xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-	      http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
-	      version="2.4">
- 
-  <display-name>myaccount</display-name>
- 
-  <error-page>
-    <error-code>404</error-code>
-    <location>/index.jsp</location>
-  </error-page>
+<web-app 
+    xmlns="http://java.sun.com/xml/ns/j2ee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" 
+    version="2.4"
+>
 
-  <servlet>
-    <servlet-name>/</servlet-name>
-    <jsp-file>/index.jsp</jsp-file>
-  </servlet>
-  
+    <display-name>console</display-name>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/index.jsp</location>
+    </error-page>
+
+    <servlet>
+        <servlet-name>/</servlet-name>
+        <jsp-file>/index.jsp</jsp-file>
+    </servlet>
+
+    <servlet>
+        <servlet-name>auth</servlet-name>
+        <jsp-file>/auth.jsp</jsp-file>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/libs/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/static/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/themes-less/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>auth</servlet-name>
+        <url-pattern>/auth</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/deployment.config.json</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/rpIFrame.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>/</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

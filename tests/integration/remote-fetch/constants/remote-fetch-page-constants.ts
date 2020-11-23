@@ -34,7 +34,7 @@ export class RemoteConfigurationPageConstants {
     public static readonly SAVE_CONFIG_DATA_ATTR: string = "remote-fetch-add-configuration";
     public static readonly CONFIG_FORM_DATA_ATTR: string = "remote-fetch-config-form";
     public static readonly REMOVE_CONFIG_DATA_ATTR: string = "remote-fetch-remove-configuration";
-    public static readonly REMOVE_CONFIG_MODAL_DATA_ATTR: string = "remote-fetch-confirmation-modal"
+    public static readonly REMOVE_CONFIG_MODAL_DATA_ATTR: string = "remote-fetch-confirmation-modal";
     public static readonly REMOVE_CONFIG_MODAL_ASSERT_INPUT_DATA_ATTR: string = "remote-fetch-confirmation-modal-" 
         +"assertion-input";
     public static readonly REMOVE_CONFIG_MODAL_CONFIRM_DATA_ATTR: string = "remote-fetch-confirmation-modal-confirm-"
