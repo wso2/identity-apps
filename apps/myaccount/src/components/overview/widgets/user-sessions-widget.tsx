@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -27,7 +28,6 @@ import { AlertLevels, UserSessions, emptyUserSessions } from "../../../models";
 import { addAlert } from "../../../store/actions";
 import { SettingsSection } from "../../shared";
 import { UserSessionsList } from "../../user-sessions";
-import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
  * User sessions widget.
@@ -134,6 +134,9 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
     );
 };
 
+/**
+ * Default props of {@link UserSessionsWidget}
+ */
 UserSessionsWidget.defaultProps = {
     "data-testid": "user-sessions-overview-widget"
-}
+};

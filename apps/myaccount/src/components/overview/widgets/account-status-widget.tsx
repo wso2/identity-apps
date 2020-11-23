@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -25,7 +26,6 @@ import * as UIConstants from "../../../constants/ui-constants";
 import { ProfileCompletion, ProfileCompletionStatus } from "../../../models";
 import { AppState } from "../../../store";
 import { ThemeIcon } from "../../shared";
-import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
  * Account status widget.
@@ -311,6 +311,9 @@ export const AccountStatusWidget: FunctionComponent<TestableComponentInterface> 
     );
 };
 
+/**
+ * Default properties of {@link AccountStatusWidget}
+ */
 AccountStatusWidget.defaultProps = {
     "data-testid": "account-status-overview-widget"
-}
+};

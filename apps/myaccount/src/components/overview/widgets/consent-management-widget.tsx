@@ -16,13 +16,13 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { WidgetIcons } from "../../../configs";
 import { AppConstants, CommonConstants } from "../../../constants";
 import { history } from "../../../helpers";
 import { SettingsSection } from "../../shared";
-import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
  * Consent management widget.
@@ -55,6 +55,9 @@ export const ConsentManagementWidget: FunctionComponent<TestableComponentInterfa
     );
 };
 
+/**
+ * Default props of {@link ConsentManagementWidget}
+ */
 ConsentManagementWidget.defaultProps = {
     "data-testid": "consent-management-overview-widget"
 };
