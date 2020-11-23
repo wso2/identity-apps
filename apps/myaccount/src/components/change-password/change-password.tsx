@@ -44,7 +44,7 @@ const CHANGE_PASSWORD_FORM_IDENTIFIER = "changePasswordForm";
 
 /**
  * Prop types for the change password component.
- * @see {@link ChangePassword.defaultProps}
+ * Also see {@link ChangePassword.defaultProps}
  */
 interface ChangePasswordProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -376,7 +376,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
 /**
  * Default props for the #ChangePassword component.
+ * See type definitions in {@link ChangePasswordProps}
  */
 ChangePassword.defaultProps = {
-    "data-testid": "change-password",
+    "data-testid": "change-password"
 };

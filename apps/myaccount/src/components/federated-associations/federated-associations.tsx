@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import React, {FunctionComponent, useEffect, useState} from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
@@ -27,10 +28,10 @@ import {
 } from "../../models";
 import { FederatedAssociation } from "../../models/federated-associations";
 import { SettingsSection, UserAvatar } from "../shared";
-import { TestableComponentInterface } from "@wso2is/core/models";
 
 /**
  * Prop types for `FederatedAssociations` component
+ * Also see {@link FederatedAssociations.defaultProps}
  */
 interface FederatedAssociationsPropsInterface extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
@@ -44,10 +45,10 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     props: FederatedAssociationsPropsInterface
 ): React.ReactElement => {
 
+    const { onAlertFired, ["data-testid"]: testId } = props;
+
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [id, setId] = useState(null);
-
-    const { onAlertFired, ['data-testid']: testId } = props;
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
 
@@ -240,6 +241,10 @@ export const FederatedAssociations: FunctionComponent<FederatedAssociationsProps
     );
 };
 
+/**
+ * Default properties of {@link FederatedAssociations}
+ * See type definitions in {@link FederatedAssociationsPropsInterface}
+ */
 FederatedAssociations.defaultProps = {
     "data-testid": "federated-associations"
 };

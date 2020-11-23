@@ -28,6 +28,7 @@ import { AppState } from "../../store";
 
 /**
  * Footer component prop types.
+ * Also see {@link AppFooter.defaultProps}
  */
 interface AppFooterProps extends TestableComponentInterface {
     fluid?: boolean;
@@ -86,9 +87,10 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFoo
 };
 
 /**
- * Default proptypes for the footer component.
+ * Default proptypes for the {@link AppFooter} component.
+ * See type definitions in {@link AppFooterProps}
  */
 AppFooter.defaultProps = {
-    fluid: true,
-    "data-testid": "app-footer"
+    "data-testid": "app-footer",
+    fluid: true
 };
