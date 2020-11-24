@@ -92,7 +92,9 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 9. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
 10. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
 
-## Running Unit Tests
+## Running Tests
+
+### Unit Tests
 
 Product Unit tests have been implemented using [Jest](https://jestjs.io/) along with [React Testing Library](https://testing-library.com/docs/react-testing-library/intro)
 and you can run the unit test suites using the following commands.
@@ -109,7 +111,7 @@ npm run test
 npx lerna run test --scope @wso2is/forms
 ```
 
-## Running Integration Tests
+### Integration Tests
 
 Product integration tests have been written using [Cypress Testing Framework](https://www.cypress.io/) and you can run the test suites using the following command.
 
@@ -132,6 +134,11 @@ npm run test:integration:smoke
 ```
 
 For more information regarding the test module, checkout the [README](./tests/README.md) in the `tests` module.
+
+## Configuration
+
+The portals i.e. Console & My Account are configurable using the `deployment.toml` when they are hosted inside the Identity Server.
+Read through our [configurations guidelines](./docs/CONFIGURATION.md) to learn about the configuration process.
 
 ## Deployment
 
