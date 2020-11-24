@@ -66,7 +66,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
 
     useEffect(() => {
         writeToIframe();
-    }, [ content ]);
+    }, [ updatedContent.current ]);
 
     useEffect(() => {
         if (isAddFlow && isSignature) {
@@ -84,7 +84,17 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
     const writeToIframe = (): void => {
         const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
         if (iframeDoc) {
-            iframeDoc.body.innerHTML = content;
+            /*
+             * Trigger a page load in order to update the content
+             * to the iframe document. This is a generic issue with firefox
+             * which doesn't update content when the initial content is null in 
+             * an iframe.
+             * 
+             * See also {@link https://stackoverflow.com/questions/7828502/cannot-set-document-body-innerhtml-of-iframe-in-firefox}
+             */
+            iframeDoc.open();
+            iframeDoc.close();
+            iframeDoc.body.innerHTML = updatedContent.current;
         }
     };
 
