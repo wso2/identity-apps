@@ -82,16 +82,16 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
      * Write content to iFrame.
      */
     const writeToIframe = (): void => {
-        // This interval will wait till the iframe is initialized to show content.
-        const inter = window.setInterval(function() {
-            const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
-
-            if(iframeDoc.readyState == "complete") {
-
-                window.clearInterval(inter);
-                iframeDoc.body.innerHTML = updatedContent.current;
-            }
-        },100);
+        const iframeDoc = iframe?.current?.contentDocument || iframe?.current?.contentWindow?.document;
+        if (iframeDoc) {
+            /*
+             * Trigger a page load in order to update the content
+             * to the iframe document.
+             */
+            iframeDoc.open();
+            iframeDoc.close();
+            iframeDoc.body.innerHTML = updatedContent.current;
+        }
     };
 
     return (
