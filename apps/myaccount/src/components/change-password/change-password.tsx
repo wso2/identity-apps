@@ -233,8 +233,10 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         handleSubmit();
                     } }
                     resetState={ reset }
+                    data-testid={ `${testId}-edit-section-form` }
                 >
                     <Field
+                        data-testid={ `${testId}-current-password-field` }
                         autoFocus={ true }
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
@@ -256,6 +258,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         width={ 9 }
                     />
                     <Field
+                        data-testid={ `${testId}-new-password-field` }
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
                             "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
@@ -277,7 +280,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                             setPassword(values.get("newPassword").toString());
                         } }
                     />
-                    <Form.Field width={ 9 } >
+                    <Form.Field width={ 9 } data-testid={ `${testId}-new-password-strength-meter-field` }>
                         <Suspense fallback={ null }>
                             <PasswordMeter
                                 password={ password }
@@ -296,6 +299,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         </Suspense>
                     </Form.Field>
                     <Field
+                        data-testid={ `${testId}-new-password-confirm-field` }
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
                             "userPortal:components.changePassword.forms.passwordResetForm.inputs"
@@ -330,7 +334,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         hidden={ true }
                         type="divider"
                     />
-                    <Form.Group>
+                    <Form.Group data-testid={ `${testId}-form-actions-group` }>
                         <Field
                             size="small"
                             type="submit"
