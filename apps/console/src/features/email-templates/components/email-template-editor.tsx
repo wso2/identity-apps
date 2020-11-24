@@ -86,7 +86,11 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
         if (iframeDoc) {
             /*
              * Trigger a page load in order to update the content
-             * to the iframe document.
+             * to the iframe document. This is a generic issue with firefox
+             * which doesn't update content when the initial content is null in 
+             * an iframe.
+             * 
+             * See also {@link https://stackoverflow.com/questions/7828502/cannot-set-document-body-innerhtml-of-iframe-in-firefox}
              */
             iframeDoc.open();
             iframeDoc.close();
