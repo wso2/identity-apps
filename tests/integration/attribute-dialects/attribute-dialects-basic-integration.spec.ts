@@ -56,6 +56,8 @@ describe("ITC-2.0.0 - [attribute dialects] - Attribute Dialect Management Integr
         });
 
         it("ITC-1.1.2 - [attribute dialects] - Properly renders the elements of the listing page.", () => {
+            cy.wait(1000);
+
             cy.checkIfAttributeDialectsListingRenders(false);
         });
     });

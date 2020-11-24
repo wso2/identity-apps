@@ -235,7 +235,7 @@ export const initializeAuthentication = () => (dispatch) => {
     };
 
     if (process.env.NODE_ENV === "production") {
-        axios.get(window["AppUtils"].getAppBase() + "/auth.jsp").then((response) => {
+        axios.get(window["AppUtils"].getAppBase() + "/auth").then((response) => {
             initialize(response);
         });
     } else {

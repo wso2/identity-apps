@@ -33,7 +33,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
 
 2. Add the following code to `repository/conf/deployment.toml` in `WSO2 Identity Server` distribution pack to allow CORS.
 
-    ```
+    ```toml
     [cors]
     allowed_origins = [
        "https://localhost:9000",
@@ -58,10 +58,16 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
      [fido.trusted]
      origins=["https://localhost:9000"]
     ```
-4. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
-5. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
+4. Currently, `Console` & `My Account` are considered as system applications hence they are readonly by default. So in order to configure the  `Callback Urls` as specified in **step 7**, you need to add the following config to the `deployment.toml` file to override the default behaviour.
+
+    ```toml
+    [system_applications]
+    read_only_apps = []
+    ```
+5. Execute `wso2server.sh` (For unix environment) or `wso2server.bat` (For windows environment) file from the `bin` directory to run WSO2 Identity Server.
+6. Navigate to `https://localhost:9443/carbon/` from the browser, and login to the system by entering an admin password.
 > **Hint!** Can find out the default password details here: [https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator](https://docs.wso2.com/display/ADMIN44x/Configuring+the+System+Administrator)
-6. In the system, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
+7. In the system, navigate to `Service Providers -> List` from left side panel. And then go to `Edit` option in the application that you want to configure in dev mode (ex: `MY_ACCOUNT`). Then click on `Inbound Authentication Configuration -> OAuth/OpenID Connect Configuration -> Edit`. And then update the `Callback Url` field with below corresponding values.
 
     **My Account**
 
@@ -75,7 +81,7 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
     regexp=(https://localhost:9443/console/login|https://localhost:9443/console/logout|https://localhost:9001/console/login|https://localhost:9001/console/logout)
     ```
 
-7. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
+8. Open cloned or downloaded Identity Apps repo and Run `npm run build` from the command line in the project root directory (where the `package.json` is located) to build all the packages with dependencies. _(Note:- Not necessary if you have already done above identity apps build steps)_
 
    > **_Note:-_** 
    >  
@@ -83,8 +89,8 @@ If you are building [product-is](https://github.com/wso2/product-is), the built 
    >
    > E.g. `npx lerna bootstrap --scope @wso2is/myaccount && npx lerna run --scope @wso2is/myaccount build`
 
-8. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
-9. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
+9. Start the apps in development mode, Execute `cd apps/<app> && npm start` command. E.g. `cd apps/myaccount && npm start`.
+10. Once the app is successfully started, you can access the via the URLs `https://localhost:9000/myaccount` or `https://localhost:9001/console`.
 
 ## Running Unit Tests
 
