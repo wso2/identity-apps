@@ -2,9 +2,9 @@
 
 End-user apps in WSO2 Identity Server
 
-|  Branch | Build Status |
-| :------------ |:-------------
-| master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) |
+|  Branch | Build Status | Travis CI Status |
+| :------------ |:------------- |:-------------
+| master      | [![Build Status](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/badge/icon)](https://wso2.org/jenkins/view/Dashboard/job/platform-builds/job/identity-apps/) | [![Build Status](https://travis-ci.org/wso2/identity-apps.svg?branch=master)](https://travis-ci.org/wso2/identity-apps) |
 
 ## Setup build environment
 
