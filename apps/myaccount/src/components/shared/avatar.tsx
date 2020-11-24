@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import * as React from "react";
 import { Image, Placeholder, SemanticSIZES } from "semantic-ui-react";
@@ -23,8 +24,9 @@ import { DefaultAppIcon, UserImage } from "../../configs";
 
 /**
  * Prop types for the Avatar component.
+ * Also see {@link Avatar.defaultProps}
  */
-export interface AvatarProps {
+export interface AvatarProps extends TestableComponentInterface {
     avatar?: boolean;
     avatarInitialsLimit?: 1 | 2;
     avatarType?: "user" | "app";
@@ -57,7 +59,7 @@ export type AvatarSizes = SemanticSIZES | "little";
  * @param {React.PropsWithChildren<AvatarProps>} props - Props passed in to the Avatar component.
  * @return {JSX.Element}
  */
-export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element => {
+export const Avatar: React.FunctionComponent<AvatarProps> = (props: AvatarProps): JSX.Element => {
     const {
         avatar,
         avatarInitialsLimit,
@@ -76,7 +78,8 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         size,
         spaced,
         style,
-        transparent
+        transparent,
+        ["data-testid"]: testId
     } = props;
     const relaxLevel = (relaxed && relaxed === true) ? "" : relaxed;
 
@@ -96,6 +99,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
     if (isLoading) {
         return (
             <Image
+                data-testid={ `${testId}-placeholder` }
                 className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
                 bordered={ bordered }
                 floated={ floated }
@@ -139,6 +143,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
         return (
             <>
                 <Image
+                    data-testid={ testId }
                     className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
                     bordered={ bordered }
                     floated={ floated }
@@ -171,6 +176,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
     if (avatar && name) {
         return (
             <Image
+                data-testid={ testId }
                 className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
                 bordered={ bordered }
                 floated={ floated }
@@ -189,6 +195,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
 
     return (
         <Image
+            data-testid={ testId }
             className={ `${ avatarType === "user" ? "user-image" : "app-image" } ${ classes }` }
             src={ avatarType === "user" ? UserImage : DefaultAppIcon }
             bordered={ bordered }
@@ -206,6 +213,7 @@ export const Avatar: React.FunctionComponent<AvatarProps> = (props): JSX.Element
 
 /**
  * Default prop types for the Avatar component.
+ * See type definitions in {@link AvatarProps}
  */
 Avatar.defaultProps = {
     avatar: false,
@@ -213,6 +221,7 @@ Avatar.defaultProps = {
     avatarType: "user",
     bordered: true,
     className: "",
+    ["data-testid"]: "avatar",
     inline: false,
     isLoading: false,
     label: null,

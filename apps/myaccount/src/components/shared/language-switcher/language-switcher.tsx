@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { I18n, SupportedLanguagesMeta } from "@wso2is/i18n";
 import React, { SyntheticEvent } from "react";
 import { useSelector } from "react-redux";
@@ -25,8 +26,9 @@ import { AppState } from "../../../store";
 
 /**
  * Proptypes for the language switcher component.
+ * Also see {@link LanguageSwitcher.defaultProps}
  */
-interface LanguageSwitcherProps {
+interface LanguageSwitcherProps extends TestableComponentInterface {
     className?: string;
     direction?: "left" | "right";
     upward?: boolean;
@@ -42,11 +44,16 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
     props: LanguageSwitcherProps
 ): JSX.Element => {
 
-    const { direction, className, upward } = props;
+    const {
+        direction,
+        className,
+        upward,
+        ["data-testid"]: testId
+    } = props;
 
     const supportedI18nLanguages: SupportedLanguagesMeta = useSelector(
-        (state: AppState) => state.global.supportedI18nLanguages);
-
+        (state: AppState) => state.global.supportedI18nLanguages
+    );
     const currentLang = I18n.instance.languages[0];
 
     /**
@@ -62,6 +69,7 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
 
     return (
         <LanguageSwitcherDropdown
+            data-testid={ `${testId}-dropdown` }
             className={ className }
             direction={ direction }
             upward={ upward }
@@ -70,12 +78,15 @@ export const LanguageSwitcher: React.FunctionComponent<LanguageSwitcherProps> = 
             supportedLanguages={ supportedI18nLanguages }
         />
     );
+
 };
 
 /**
  * Default proptypes for the language switcher component.
+ * See type definitions in {@link LanguageSwitcherProps}
  */
 LanguageSwitcher.defaultProps = {
+    "data-testid": "language-switcher",
     direction: "left",
     upward: true
 };

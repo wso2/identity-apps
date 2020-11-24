@@ -39,7 +39,9 @@ interface EmptyPlaceholderProps extends TestableComponentInterface {
  * @param {EmptyPlaceholderProps} props - Props injected in to the placeholder component.
  * @return {JSX.Element}
  */
-export const EmptyPlaceholder: FunctionComponent<EmptyPlaceholderProps> = (props: EmptyPlaceholderProps): JSX.Element => {
+export const EmptyPlaceholder: FunctionComponent<EmptyPlaceholderProps> = (
+    props: EmptyPlaceholderProps
+): JSX.Element => {
 
     const {
         action,

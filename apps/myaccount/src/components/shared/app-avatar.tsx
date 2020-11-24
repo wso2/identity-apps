@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { Avatar, AvatarProps } from "./avatar";
@@ -24,7 +25,7 @@ import { AppIconBackgrounds } from "../../configs";
 /**
  * Prop types for the App Avatar component.
  */
-export interface AppAvatarProps extends AvatarProps {
+export interface AppAvatarProps extends AvatarProps, TestableComponentInterface {
     onCard?: boolean;
 }
 
@@ -35,7 +36,14 @@ export interface AppAvatarProps extends AvatarProps {
  * @return {JSX.Element}
  */
 export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarProps): JSX.Element => {
-    const { image, className, name, onCard } = props;
+
+    const {
+        image,
+        className,
+        name,
+        onCard,
+        ["data-testid"]: testId
+    } = props;
 
     const appAvatarClassNames = classNames({
         ["bg-image"]: !onCard,
@@ -45,6 +53,7 @@ export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarPro
     if (image) {
         return (
             <Avatar
+                data-testid={ testId }
                 avatarType="app"
                 avatar
                 className="with-app-image"
@@ -57,6 +66,7 @@ export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarPro
 
     return (
         <Avatar
+            data-testid={ testId }
             avatarType="app"
             className={ appAvatarClassNames }
             style={ onCard ? {} : { backgroundImage: `url(${ AppIconBackgrounds.orange })` } }
@@ -70,8 +80,10 @@ export const AppAvatar: FunctionComponent<AppAvatarProps> = (props: AppAvatarPro
 
 /**
  * Default proptypes for the App avatar component.
+ * See type definitions in {@link AppAvatarProps}
  */
 AppAvatar.defaultProps = {
+    "data-testid": "app-avatar",
     image: null,
     name: null,
     onCard: false

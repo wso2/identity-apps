@@ -16,13 +16,15 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { SyntheticEvent } from "react";
 import { Dropdown, Flag, FlagNameValues } from "semantic-ui-react";
 
 /**
  * Proptypes for the language switcher dropdown component.
+ * Also see {@link LanguageSwitcherDropdown.defaultProps}
  */
-interface LanguageSwitcherDropdownProps {
+interface LanguageSwitcherDropdownProps extends TestableComponentInterface {
     changeLanguage: (event: SyntheticEvent, data: object) => void;
     className: string;
     direction: "left" | "right";
@@ -41,7 +43,16 @@ interface LanguageSwitcherDropdownProps {
 export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherDropdownProps> = (
     props: LanguageSwitcherDropdownProps
 ): JSX.Element => {
-    const { direction, className, language, changeLanguage, upward, supportedLanguages } = props;
+
+    const {
+        direction,
+        className,
+        language,
+        changeLanguage,
+        upward,
+        supportedLanguages,
+        ["data-testid"]: testId
+    } = props;
 
     const LanguageSwitcherTrigger = () => (
         <span className="dropdown-trigger link">{ supportedLanguages[language]?.name }</span>
@@ -49,6 +60,7 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
 
     return (
         <Dropdown
+            data-testid={ testId }
             item
             className={ className }
             upward={ upward }
@@ -56,7 +68,7 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
             direction={ direction }
             floating
         >
-            <Dropdown.Menu>
+            <Dropdown.Menu data-testid={ `${testId}-menu` }>
                 {
                     Object.keys(supportedLanguages).map((lang, index) => (
                         <Dropdown.Item key={ index } onClick={ changeLanguage } value={ lang }>
@@ -68,4 +80,12 @@ export const LanguageSwitcherDropdown: React.FunctionComponent<LanguageSwitcherD
             </Dropdown.Menu>
         </Dropdown>
     );
+};
+
+/**
+ * Default properties of {@link LanguageSwitcherDropdown}
+ * See type definitions in {@link LanguageSwitcherDropdownProps}
+ */
+LanguageSwitcherDropdown.defaultProps = {
+    "data-testid": "language-switcher-dropdown"
 };
