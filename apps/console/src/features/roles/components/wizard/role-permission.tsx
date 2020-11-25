@@ -112,7 +112,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                 setDefaultExpandKeys( [permissionTree[0].key.toString()] );
                 setIsPermissionsLoading(false);
             }
-        }).catch();
+        });
     };
 
     /**
@@ -178,17 +178,15 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
     /**
      * Util method to get a custom expander icon for 
      * the tree nodes.
-     * @param obj - event object
+     * @param eventObject - event object
      */
-    const switcherIcon = obj => {
-        if (obj.isLeaf) {
+    const switcherIcon = eventObject => {
+        if (eventObject.isLeaf) {
             return null;
         }
         return (
-            <div 
-                className="tree-arrow-wrap"
-            >
-                <span className={ `tree-arrow ${ !obj.expanded ? "active" : "" }` }>
+            <div className="tree-arrow-wrap">
+                <span className={ `tree-arrow ${ !eventObject.expanded ? "active" : "" }` }>
                     <span></span>
                     <span></span>
                 </span>
@@ -208,6 +206,7 @@ export const PermissionList: FunctionComponent<PermissionListProp> = (props: Per
                         <div className="treeview-container">
                             <Tree
                                 className={ "customIcon" }
+                                data-testid={ `${ testId }-tree` }
                                 disabled={ isReadOnly }
                                 defaultCheckedKeys={ previouslyCheckedKeys }
                                 defaultExpandedKeys={ defaultExpandedKeys }
