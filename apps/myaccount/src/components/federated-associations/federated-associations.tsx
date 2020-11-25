@@ -16,7 +16,8 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Modal, Popup } from "semantic-ui-react";
 import { deleteFederatedAssociation, getFederatedAssociations } from "../../api/federated-associations";
@@ -30,8 +31,9 @@ import { SettingsSection, UserAvatar } from "../shared";
 
 /**
  * Prop types for `FederatedAssociations` component
+ * Also see {@link FederatedAssociations.defaultProps}
  */
-interface FederatedAssociationsPropsInterface {
+interface FederatedAssociationsPropsInterface extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -39,12 +41,14 @@ interface FederatedAssociationsPropsInterface {
  * This renders the federated associations component
  * @param props
  */
-export const FederatedAssociations = (props: FederatedAssociationsPropsInterface): React.ReactElement => {
+export const FederatedAssociations: FunctionComponent<FederatedAssociationsPropsInterface> = (
+    props: FederatedAssociationsPropsInterface
+): React.ReactElement => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
 
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [id, setId] = useState(null);
-
-    const { onAlertFired } = props;
     const { t } = useTranslation();
     const [federatedAssociations, setFederatedAssociations] = useState<FederatedAssociation[]>([]);
 
@@ -116,15 +120,16 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
     const deleteConfirmation = (): React.ReactElement => {
         return (
             <Modal
+                data-testid={ `${testId}-delete-confirmation-modal` }
                 dimmer="blurring"
                 size="mini"
                 open={ confirmDelete }
                 onClose={ () => { setConfirmDelete(false); } }
             >
-                <Modal.Content>
+                <Modal.Content data-testid={ `${testId}-delete-confirmation-modal-content` }>
                     { t("userPortal:components.federatedAssociations.deleteConfirmation") }
                 </Modal.Content>
-                <Modal.Actions>
+                <Modal.Actions data-testid={ `${testId}-delete-confirmation-modal-actions` }>
                     <Button
                         className="link-button"
                         onClick={ () => {
@@ -156,7 +161,10 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
      */
     const federatedAssociationsList = (): React.ReactElement => {
         return (
-            <List divided verticalAlign="middle" className="main-content-inner">
+            <List divided verticalAlign="middle"
+                  className="main-content-inner"
+                  data-testid={ `${testId}-list` }
+            >
                 {
                     federatedAssociations && federatedAssociations.map(
                         (federatedAssociation: FederatedAssociation, index: number) => {
@@ -217,6 +225,7 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
 
     return (
         <SettingsSection
+            data-testid={ `${testId}-settings-section` }
             description={ t("userPortal:sections.federatedAssociations.description") }
             header={ t("userPortal:sections.federatedAssociations.heading") }
             icon={ SettingsSectionIcons.federatedAssociations }
@@ -230,4 +239,12 @@ export const FederatedAssociations = (props: FederatedAssociationsPropsInterface
             { federatedAssociationsList() }
         </SettingsSection>
     );
+};
+
+/**
+ * Default properties of {@link FederatedAssociations}
+ * See type definitions in {@link FederatedAssociationsPropsInterface}
+ */
+FederatedAssociations.defaultProps = {
+    "data-testid": "federated-associations"
 };

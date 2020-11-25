@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
@@ -27,8 +28,9 @@ import { ThemeIcon } from "../shared";
 
 /**
  * Proptypes for the application consents list component.
+ * Also see {@link AppConsentList.defaultProps}
  */
-interface ConsentsListProps {
+interface ConsentsListProps extends TestableComponentInterface {
     consentedApps: ConsentInterface[];
     consentListActiveIndexes?: number[];
     onAppConsentRevoke: (consent: ConsentInterface) => void;
@@ -55,7 +57,8 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
         onClaimUpdate,
         onClaimRevokeToggle,
         revokedClaimList,
-        onConsentDetailClick
+        onConsentDetailClick,
+        ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
 
@@ -73,7 +76,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
 
     return (
         <>
-            <List divided verticalAlign="middle" className="main-content-inner">
+            <List divided verticalAlign="middle" className="main-content-inner" data-testid={ testId }>
                 {
                     (consentedApps && consentedApps.length && consentedApps.length > 0)
                         ? consentedApps.map((consent: ConsentInterface, index) => {
@@ -171,6 +174,7 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                             consentListActiveIndexes && consentListActiveIndexes.includes(index)
                                                 ? (
                                                     <AppConsentEdit
+                                                        data-testid={ `${testId}-app-consent-edit` }
                                                         editingConsent={ consent }
                                                         onAppConsentRevoke={ onAppConsentRevoke }
                                                         onClaimUpdate={ onClaimUpdate }
@@ -188,4 +192,12 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
             </List>
         </>
     );
+};
+
+/**
+ * Default properties for the {@link AppConsentList}
+ * See type definitions in {@link ConsentsListProps}
+ */
+AppConsentList.defaultProps = {
+    "data-testid": "app-consent-list"
 };

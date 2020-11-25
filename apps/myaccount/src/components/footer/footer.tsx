@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { I18n, LanguageChangeException, SupportedLanguagesMeta } from "@wso2is/i18n";
 import { Footer, ThemeContext } from "@wso2is/react-components";
 import React, { ReactElement, useContext } from "react";
@@ -27,8 +28,9 @@ import { AppState } from "../../store";
 
 /**
  * Footer component prop types.
+ * Also see {@link AppFooter.defaultProps}
  */
-interface AppFooterProps {
+interface AppFooterProps extends TestableComponentInterface {
     fluid?: boolean;
 }
 
@@ -38,8 +40,9 @@ interface AppFooterProps {
  * @param {AppFooterProps} props - Props supplied to the footer component.
  * @return {ReactElement}
  */
-export const AppFooter: React.FunctionComponent<AppFooterProps> = (): ReactElement => {
+export const AppFooter: React.FunctionComponent<AppFooterProps> = (props: AppFooterProps): ReactElement => {
 
+    const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     const { state } = useContext(ThemeContext);
@@ -60,6 +63,7 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (): ReactEleme
 
     return (
         <Footer
+            data-testid={ testId }
             showLanguageSwitcher
             currentLanguage={ I18n.instance?.language }
             supportedLanguages={ supportedI18nLanguages }
@@ -83,8 +87,10 @@ export const AppFooter: React.FunctionComponent<AppFooterProps> = (): ReactEleme
 };
 
 /**
- * Default proptypes for the footer component.
+ * Default proptypes for the {@link AppFooter} component.
+ * See type definitions in {@link AppFooterProps}
  */
 AppFooter.defaultProps = {
+    "data-testid": "app-footer",
     fluid: true
 };

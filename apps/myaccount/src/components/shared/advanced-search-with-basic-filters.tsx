@@ -46,8 +46,8 @@ const FILTER_VALUES_FIELD_IDENTIFIER = "filterValues";
 /**
  * Prop types for the application search component.
  */
-export interface AdvancedSearchWithBasicFiltersPropsInterface
-  extends StrictAdvancedSearchWithBasicFiltersPropsInterface,
+export interface AdvancedSearchWithBasicFiltersPropsInterface extends
+    StrictAdvancedSearchWithBasicFiltersPropsInterface,
     TestableComponentInterface {
     
     [ key: string ]: any;
@@ -354,6 +354,7 @@ export const AdvancedSearchWithBasicFilters: FunctionComponent<AdvancedSearchWit
 
 /**
  * Default props for the component.
+ * See type definitions in {@link AdvancedSearchPropsInterface}
  */
 AdvancedSearchWithBasicFilters.defaultProps = {
     "data-testid": "advanced-search",

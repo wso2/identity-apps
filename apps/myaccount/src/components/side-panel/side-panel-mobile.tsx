@@ -39,9 +39,18 @@ interface SidePanelMobileProps extends SidePanelProps {
 export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
     props: SidePanelMobileProps
 ): JSX.Element => {
-    const { headerHeight, children, onPusherClick, visible, onSidePanelItemClick } = props;
+
+    const {
+        headerHeight,
+        children,
+        onPusherClick,
+        visible,
+        onSidePanelItemClick,
+        ["data-testid"]: testId
+    } = props;
+
     return (
-        <Sidebar.Pushable>
+        <Sidebar.Pushable data-testid={ `${testId}-pushable` }>
             <Sidebar
                 animation="push"
                 visible={ visible }
@@ -55,6 +64,7 @@ export const SidePanelMobile: React.FunctionComponent<SidePanelMobileProps> = (
             <Sidebar.Pusher
                 onClick={ onPusherClick }
                 className="side-panel-pusher"
+                data-testid={ `${testId}-pushable-side-bar` }
             >
                 { children }
             </Sidebar.Pusher>

@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { FunctionComponent } from "react";
 import { Card, Icon } from "semantic-ui-react";
@@ -24,8 +25,9 @@ import { AppAvatar } from "../shared";
 
 /**
  * Proptypes for the recent application card component.
+ * Also see {@link RecentApplicationCardProps.defaultProps}
  */
-interface RecentApplicationCardProps {
+interface RecentApplicationCardProps extends TestableComponentInterface {
     app: Application;
     onAppNavigate: (id: string, url: string) => void;
     showFavouriteIcon: boolean;
@@ -39,14 +41,21 @@ interface RecentApplicationCardProps {
 export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps> = (
     props: RecentApplicationCardProps
 ): JSX.Element => {
+
     const { app, onAppNavigate, showFavouriteIcon } = props;
+    const { ["data-testid"]: testId } = props;
 
     const appImageContainerClassNames = classNames({
         [ "default" ]: !app.image
     }, "application-image");
 
     return (
-        <Card className="application-card recent" onClick={ () => onAppNavigate(app.id, app.accessUrl) } link={ false }>
+        <Card
+            className="application-card recent"
+            onClick={ () => onAppNavigate(app.id, app.accessUrl) }
+            link={ false }
+            data-testid={ testId }
+        >
             <Card.Content className={ appImageContainerClassNames }>
                 <AppAvatar spaced="right" size="small" name={ app.name } image={ app.image } onCard/>
             </Card.Content>
@@ -99,4 +108,12 @@ export const RecentApplicationCard: FunctionComponent<RecentApplicationCardProps
             </Card.Content>
         </Card>
     );
+};
+
+/**
+ * Default properties of {@link RecentApplicationCard}
+ * See type definitions in {@link RecentApplicationCardProps}
+ */
+RecentApplicationCard.defaultProps = {
+    "data-testid": "recent-application-card"
 };

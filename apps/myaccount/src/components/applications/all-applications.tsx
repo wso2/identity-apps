@@ -16,14 +16,16 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { ApplicationList } from "./application-list";
 import { Application } from "../../models";
 
 /**
  * Proptypes for the all applications component.
+ * Also see {@link AllApplications.defaultProps}
  */
-interface AllApplicationsProps {
+interface AllApplicationsProps extends TestableComponentInterface {
     allApps: Application[];
     loading: boolean;
     onAppNavigate: (id: string, url: string) => void;
@@ -41,10 +43,20 @@ interface AllApplicationsProps {
 export const AllApplications: FunctionComponent<AllApplicationsProps> = (
     props: AllApplicationsProps
 ): JSX.Element => {
-    const { allApps, onAppNavigate, onListRefresh, onSearchQueryClear, loading, searchQuery, showFavourites } = props;
+    const {
+        allApps,
+        onAppNavigate,
+        onListRefresh,
+        onSearchQueryClear,
+        loading,
+        searchQuery,
+        showFavourites,
+        ["data-testid"]: testId
+    } = props;
 
     return (
         <ApplicationList
+            data-testid={ `${testId}-application-list` }
             apps={ allApps }
             showFavourites={ showFavourites }
             searchQuery={ searchQuery }
@@ -58,7 +70,9 @@ export const AllApplications: FunctionComponent<AllApplicationsProps> = (
 
 /**
  * All applications component default props.
+ * See type definitions in {@link AllApplicationsProps}
  */
 AllApplications.defaultProps = {
+    "data-testid": "all-applications",
     showFavourites: true
 };

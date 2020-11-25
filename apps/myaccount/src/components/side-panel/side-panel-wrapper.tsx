@@ -42,7 +42,14 @@ interface SidePanelWrapperProps {
 export const SidePanelWrapper: React.FunctionComponent<SidePanelWrapperProps> = (
     props: SidePanelWrapperProps
 ): JSX.Element => {
-    const { headerHeight, mobileSidePanelVisibility, children, onSidePanelPusherClick, onSidePanelItemClick } = props;
+
+    const {
+        headerHeight,
+        mobileSidePanelVisibility,
+        children,
+        onSidePanelPusherClick,
+        onSidePanelItemClick
+    } = props;
 
     const mobileContentStyle = {
         padding: `${ UIConstants.MOBILE_CONTENT_PADDING }`

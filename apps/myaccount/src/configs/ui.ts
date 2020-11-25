@@ -52,7 +52,6 @@ import {
 import { ReactComponent as SMSIcon } from "../themes/default/assets/images/icons/sms-icon.svg";
 import { ReactComponent as SuccessIcon } from "../themes/default/assets/images/icons/success-icon.svg";
 import { ReactComponent as TickCircleIcon } from "../themes/default/assets/images/icons/tick-circle-icon.svg";
-import { ReactComponent as ToolsIcon } from "../themes/default/assets/images/icons/tools-icon.svg";
 import { ReactComponent as UserIcon } from "../themes/default/assets/images/icons/user-icon.svg";
 import { ReactComponent as WarningIcon } from "../themes/default/assets/images/icons/warning-icon.svg";
 import {

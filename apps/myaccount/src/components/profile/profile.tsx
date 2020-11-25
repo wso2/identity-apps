@@ -19,7 +19,7 @@
 import { updateProfileImageURL } from "@wso2is/core/api";
 import { ProfileConstants } from "@wso2is/core/constants";
 import { isFeatureEnabled, resolveUserDisplayName, resolveUserEmails } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { ProfileUtils } from "@wso2is/core/utils";
 import { Field, Forms, Validation } from "@wso2is/forms";
 import { EditAvatarModal, LinkButton, PrimaryButton, UserAvatar } from "@wso2is/react-components";
@@ -40,8 +40,9 @@ import { MobileUpdateWizard } from "../shared/mobile-update-wizard";
 
 /**
  * Prop types for the basic details component.
+ * Also see {@link Profile.defaultProps}
  */
-interface ProfileProps extends SBACInterface<FeatureConfigInterface> {
+interface ProfileProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -53,7 +54,11 @@ interface ProfileProps extends SBACInterface<FeatureConfigInterface> {
  */
 export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): JSX.Element => {
 
-    const { onAlertFired, featureConfig } = props;
+    const {
+        onAlertFired,
+        featureConfig,
+        ["data-testid"]: testId
+    } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -215,7 +220,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
-                    }
+                    };
                 }
             } else {
                 let primaryValue = "";
@@ -257,7 +262,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         [ProfileConstants.SCIM2_ENT_USER_SCHEMA]: {
                             "verifyEmail": true
                         }
-                    }
+                    };
                 }
             }
         } else {
@@ -349,7 +354,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     AppConstants.FEATURE_DICTIONARY.get("PROFILEINFO_MOBILE_VERIFICATION")
                 ) && checkSchemaType(schema.name, "mobile")
                 ? (
-                    <EditSection>
+                    <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
                         <p>
                             { t("userPortal:components.profile.messages.mobileVerification.content") }
                         </p>
@@ -409,7 +414,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     </EditSection>
                 )
                 : (
-                    <EditSection>
+                    <EditSection data-testid={ `${testId}-schema-editing-section` }>
                         <Grid>
                             <Grid.Row columns={ 2 }>
                                 <Grid.Column width={ 4 }>{fieldName}</Grid.Column>
@@ -666,6 +671,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     const renderAvatar = () => (
         <>
             <UserAvatar
+                data-testid={ `${testId}-user-avatar` }
                 editable
                 showGravatarLabel
                 size="tiny"
@@ -683,6 +689,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             {
                 showEditAvatarModal && (
                     <EditAvatarModal
+                        data-testid={ `${testId}-edit-avatar-modal` }
                         open={ showEditAvatarModal }
                         name={ resolveUserDisplayName(profileDetails?.profileInfo as any) }
                         emails={ resolveUserEmails(profileDetails?.profileInfo?.emails) }
@@ -766,6 +773,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
 
     return (
         <SettingsSection
+            data-testid={ `${testId}-settings-section` }
             description={ t("userPortal:sections.profile.description") }
             header={ t("userPortal:sections.profile.heading") }
             icon={ renderAvatar() }
@@ -776,7 +784,9 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                     : null
             }
         >
-            <List divided={ true } verticalAlign="middle" className="main-content-inner">
+            <List divided={ true } verticalAlign="middle"
+                  className="main-content-inner"
+                  data-testid={ `${testId}-schema-list` }>
                 {
                     profileSchema && profileSchema.map((schema: ProfileSchema, index: number) => {
                         if (!(schema.name === ProfileConstants?.SCIM2_SCHEMA_DICTIONARY.get("ROLES_DEFAULT")
@@ -790,6 +800,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                         showMobileUpdateWizard && checkSchemaType(schema.name, "mobile")
                                             ? (
                                                 < MobileUpdateWizard
+                                                    data-testid={ `${testId}-mobile-update-wizard` }
                                                     onAlertFired={ onAlertFired }
                                                     closeWizard={ () =>
                                                         handleCloseMobileUpdateWizard()
@@ -801,7 +812,8 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             )
                                             : null
                                     }
-                                    <List.Item key={ index } className="inner-list-item">
+                                    <List.Item key={ index } className="inner-list-item"
+                                               data-testid={ `${testId}-schema-list-item` }>
                                         { generateSchemaForm(schema) }
                                     </List.Item>
                                 </>
@@ -812,4 +824,12 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             </List>
         </SettingsSection>
     );
+};
+
+/**
+ * Default properties for the {@link Profile} component.
+ * See type definitions in {@link ProfileProps}
+ */
+Profile.defaultProps = {
+    "data-testid": "profile"
 };

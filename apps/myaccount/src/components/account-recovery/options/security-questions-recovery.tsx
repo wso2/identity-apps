@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms } from "@wso2is/forms";
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -47,9 +48,10 @@ import { EditSection, ThemeIcon } from "../../shared";
 const QUESTION = "question-";
 
 /**
- * Prop types for SecurityQuestionsComponent
+ * Prop types for SecurityQuestionsComponent.
+ * Also see {@link SecurityQuestionsComponent.defaultProps}
  */
-interface SecurityQuestionsProps {
+interface SecurityQuestionsProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -62,14 +64,14 @@ interface SecurityQuestionsProps {
 export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestionsProps> = (
     props: SecurityQuestionsProps
 ) => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
     const [challengeQuestions, setChallengeQuestions] = useState<ChallengesQuestionsInterface[]>();
     const [challenges, setChallenges] = useState(createEmptyChallenge());
     const [isEdit, setIsEdit] = useState<number | string>(-1);
     const [isInit, setIsInit] = useState(false);
-    const { onAlertFired } = props;
 
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
-
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -312,7 +314,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
                 || isEdit === questionSet.questionSetId
                 && activeForm === CommonConstants.SECURITY + QUESTION + questionSet.questionSetId) {
                 formFields.push(
-                    <Grid.Row columns={ 2 } key={ index }>
+                    <Grid.Row columns={ 2 } key={ index } data-testid={ `${testId}-questions-set` }>
                         <Grid.Column width={ 4 }>
                             <div>
                                 { t("common:challengeQuestionNumber", { number: index + 1 }) }
@@ -403,7 +405,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
         if (challenges.questions && challenges.questions.length > 0
             && (isEdit === -1 || !activeForm?.startsWith(CommonConstants.SECURITY + QUESTION))) {
             return (
-                <Grid padded={ true }>
+                <Grid padded={ true } data-testid={ `${testId}-list-view` }>
                     <Grid.Row columns={ 2 }>
                         <Grid.Column width={ 11 } className="first-column">
                             <List.Content floated="left">
@@ -494,7 +496,7 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
             if (challenges.questions && challenges.questions.length > 0) {
                 const formFields = generateFormFields();
                 return (
-                    <EditSection>
+                    <EditSection data-testid={ `${testId}-edit-section` }>
                         <Grid>
                             <Grid.Row columns={ 1 }>
                                 <Grid.Column width={ 16 }>
@@ -515,4 +517,12 @@ export const SecurityQuestionsComponent: React.FunctionComponent<SecurityQuestio
     };
 
     return <>{ listItems() }</>;
+};
+
+/**
+ * Default props for {@link SecurityQuestionsComponent}.
+ * See type definitions in {@link SecurityQuestionsProps}
+ */
+SecurityQuestionsComponent.defaultProps = {
+  "data-testid": "security-questions-component"
 };

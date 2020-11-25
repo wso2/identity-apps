@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { Icon, Item, List } from "semantic-ui-react";
 import { Application } from "../../models";
@@ -23,8 +24,9 @@ import { AppAvatar } from "../shared";
 
 /**
  * Proptypes for the application list item component.
+ * Also see {@link ApplicationListItem.defaultProps}
  */
-interface ApplicationListItemProps {
+interface ApplicationListItemProps extends TestableComponentInterface {
     app: Application;
     onAppNavigate: (id: string, url: string) => void;
     showFavouriteIcon: boolean;
@@ -38,10 +40,16 @@ interface ApplicationListItemProps {
 export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = (
     props: ApplicationListItemProps
 ): JSX.Element => {
-    const { app, onAppNavigate, showFavouriteIcon } = props;
+
+    const {
+        app,
+        onAppNavigate,
+        showFavouriteIcon,
+        ["data-testid"]: testId
+    } = props;
 
     return (
-        <Item.Group unstackable onClick={ () => onAppNavigate(app.id, app.accessUrl) }>
+        <Item.Group unstackable onClick={ () => onAppNavigate(app.id, app.accessUrl) } data-testid={ testId }>
             <Item className="application-list-item">
                 <List.Content className="icon-container" floated="left">
                     <AppAvatar
@@ -92,4 +100,12 @@ export const ApplicationListItem: FunctionComponent<ApplicationListItemProps> = 
             </Item>
         </Item.Group>
     );
+};
+
+/**
+ * Default properties of {@link ApplicationListItem}
+ * See type definitions in {@link ApplicationListItemProps}
+ */
+ApplicationListItem.defaultProps = {
+    "data-testid": "application-list-item"
 };

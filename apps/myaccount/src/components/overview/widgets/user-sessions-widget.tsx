@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -33,8 +34,9 @@ import { UserSessionsList } from "../../user-sessions";
  *
  * @return {ReactElement}
  */
-export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
+export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> = (props): ReactElement => {
 
+    const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     const dispatch = useDispatch();
@@ -107,8 +109,9 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
     };
 
     return (
-        <div className="widget account-status">
+        <div className="widget account-status" data-testid={ testId }>
             <SettingsSection
+                data-testid={ `${testId}-settings-section` }
                 description={ t("userPortal:components.overview.widgets.accountActivity.description") }
                 header={ t("userPortal:components.overview.widgets.accountActivity.header") }
                 placeholder={
@@ -129,4 +132,11 @@ export const UserSessionsWidget: FunctionComponent<{}> = (): ReactElement => {
             </SettingsSection>
         </div>
     );
+};
+
+/**
+ * Default props of {@link UserSessionsWidget}
+ */
+UserSessionsWidget.defaultProps = {
+    "data-testid": "user-sessions-overview-widget"
 };

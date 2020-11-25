@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, useEffect, useRef } from "react";
 import NotificationSystem from "react-notification-system";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,8 +28,9 @@ import { initializeAlertSystem } from "../../store/actions";
 
 /**
  * Prop types for the Alert component.
+ * Also see {@link Alert.defaultProps}
  */
-export interface AlertProps {
+export interface AlertProps extends TestableComponentInterface {
     dismissInterval?: number;
     alertsPosition?: "tr" | "tl" | "tc" | "br" | "bl" | "bc";
 }
@@ -39,15 +41,18 @@ export interface AlertProps {
  * @param {AlertProps} props - Props injected in to the alert component.
  * @return {JSX.Element}
  */
-export const Alert: FunctionComponent<AlertProps> = (
-    props: AlertProps
-): JSX.Element => {
+export const Alert: FunctionComponent<AlertProps> = (props: AlertProps): JSX.Element => {
+
     const alertRef = useRef(null);
     const alert: AlertInterface = useSelector((state: AppState) => state.global.alert);
     const alertSystem: any = useSelector((state: AppState) => state.global.alertSystem);
     const dispatch = useDispatch();
 
-    const { alertsPosition, dismissInterval } = props;
+    const {
+        alertsPosition,
+        dismissInterval,
+        ["data-testid"]: testId
+    } = props;
 
     useEffect(() => {
         dispatch(initializeAlertSystem(alertRef.current));
@@ -111,7 +116,7 @@ export const Alert: FunctionComponent<AlertProps> = (
 
     return (
         <div className="alert-wrapper">
-            <NotificationSystem ref={ alertRef } style={ {
+            <NotificationSystem ref={ alertRef } data-testid={ testId } style={ {
                 NotificationItem: {
                     DefaultStyle: {
                         cursor: "unset"
@@ -124,8 +129,10 @@ export const Alert: FunctionComponent<AlertProps> = (
 
 /**
  * Prop types for the Alert component.
+ * See type definitions in {@link AlertProps}
  */
 Alert.defaultProps =  {
     alertsPosition: "br",
+    "data-testid": "alert",
     dismissInterval: 5
 };

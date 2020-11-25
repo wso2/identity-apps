@@ -16,21 +16,32 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, Forms, useTrigger } from "@wso2is/forms";
 import QRCode from "qrcode.react";
-import React, { useEffect, useState } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Button, Divider, Grid, Icon, List, Message, Modal, Popup, Segment } from "semantic-ui-react";
 import { initTOTPCode, refreshTOTPCode, validateTOTPCode } from "../../../api";
 import { EnterCode, MFAIcons, QRCodeScan } from "../../../configs";
-import { AlertLevels } from "../../../models";
+import { AlertInterface, AlertLevels } from "../../../models";
 import { AppState } from "../../../store";
 import { ThemeIcon } from "../../shared";
 
-export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Element => {
+/**
+ * Property types for the TOTP component.
+ * Also see {@link TOTPAuthenticator.defaultProps}
+ */
+interface TOTPProps extends TestableComponentInterface {
+    onAlertFired: (alert: AlertInterface) => void;
+}
 
-    const { onAlertFired } = props;
+export const TOTPAuthenticator: React.FunctionComponent<TOTPProps> = (
+    props: PropsWithChildren<TOTPProps>
+): JSX.Element => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
 
     const [openWizard, setOpenWizard] = useState(false);
     const [qrCode, setQrCode] = useState("");
@@ -154,12 +165,14 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
         return (
             <>
                 <Forms
+                    data-testid={ `${testId}-code-verification-form` }
                     onSubmit={ (values: Map<string, string>) => {
                         verifyCode(values.get("code"));
                     } }
                     submitState={ submit }
                 >
                     <Field
+                        data-testid={ `${testId}-code-verification-form-field` }
                         name="code"
                         label={ t(translateKey + "modals.verify.label") }
                         placeholder={ t(translateKey + "modals.verify.placeholder") }
@@ -173,7 +186,9 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                         ? (
 
                             <>
-                                <Message error>{t(translateKey + "modals.verify.error")}</Message>
+                                <Message error data-testid={ `${testId}-code-verification-form-field-error` }>
+                                    {t(translateKey + "modals.verify.error")}
+                                </Message>
                                 <p>{t(translateKey + "modals.verify.reScanQuestion") + " "}
                                     <p
                                         className="link"
@@ -305,6 +320,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
     const totpWizard = (): JSX.Element => {
         return (
             <Modal
+                data-testid={ `${testId}-modal` }
                 dimmer="blurring"
                 size="mini"
                 open={ openWizard }
@@ -320,12 +336,12 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
                         )
                         : null
                 }
-                <Modal.Content>
+                <Modal.Content data-testid={ `${testId}-modal-content` }>
                     <h3>{stepHeader(step)}</h3>
                     <Divider hidden />
                     {stepContent(step)}
                 </Modal.Content>
-                <Modal.Actions>
+                <Modal.Actions data-testid={ `${testId}-modal-actions` }>
                     {
                         step !== 3
                             ? (
@@ -347,7 +363,7 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
     return (
         <>
             {totpWizard()}
-            <Grid padded={ true }>
+            <Grid padded={ true } data-testid={ testId }>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 11 } className="first-column">
                         <List.Content floated="left">
@@ -394,4 +410,12 @@ export const TOTPAuthenticator: React.FunctionComponent<any> = (props): JSX.Elem
             </Grid>
         </>
     );
+};
+
+/**
+ * Default properties for {@link TOTPAuthenticator}
+ * See type definitions in {@link TOTPProps}
+ */
+TOTPAuthenticator.defaultProps = {
+    "data-testid": "totp-authenticator"
 };

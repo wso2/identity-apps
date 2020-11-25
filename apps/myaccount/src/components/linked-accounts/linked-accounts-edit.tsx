@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import { Field, FormValue, Forms } from "@wso2is/forms";
 import React, { FunctionComponent, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -35,8 +36,9 @@ interface UserAccountInterface {
 
 /**
  * Proptypes for the linked accounts edit component.
+ * Also see {@link LinkedAccountsEdit.defaultProps}
  */
-interface LinkedAccountsEditProps {
+interface LinkedAccountsEditProps extends TestableComponentInterface {
     onFormEditViewHide: (formName: string) => void;
     onFormSubmit: (values: UserAccountInterface, formName: string) => void;
 }
@@ -50,7 +52,12 @@ interface LinkedAccountsEditProps {
 export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
     props: LinkedAccountsEditProps
 ): JSX.Element => {
-    const { onFormEditViewHide, onFormSubmit } = props;
+
+    const {
+        onFormEditViewHide,
+        onFormSubmit,
+        ["data-testid"]: testId
+    } = props;
     const { t } = useTranslation();
 
     const tenantDomain: string = useSelector((state: AppState) => state.authenticationInformation.tenantDomain);
@@ -79,7 +86,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
     };
 
     return (
-        <EditSection>
+        <EditSection data-testid={ `${testId}-editing-section` }>
             <Grid>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>
@@ -88,8 +95,9 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                     <Grid.Column width={ 10 }>
                         <Forms
                             onSubmit={ (values) => getFormValues(values) }
+                            data-testid={ `${testId}-editing-section-form` }
                         >
-                            <Form.Field required>
+                            <Form.Field required data-testid={ `${testId}-editing-section-form-field-username` }>
                                 <label>
                                     { t(
                                     "userPortal:components.linkedAccounts.forms.addAccountForm" +
@@ -115,6 +123,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                                 />
                             </Form.Field>
                             <Field
+                                data-testid={ `${testId}-editing-section-form-field-password` }
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
                                     "userPortal:components.linkedAccounts.forms.addAccountForm." +
@@ -159,4 +168,12 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
             </Grid>
         </EditSection>
     );
+};
+
+/**
+ * Default properties of {@link LinkedAccountsEdit}
+ * See type definitions in {@link LinkedAccountsEditProps}
+ */
+LinkedAccountsEdit.defaultProps = {
+    "data-testid": "linked-account-edit"
 };

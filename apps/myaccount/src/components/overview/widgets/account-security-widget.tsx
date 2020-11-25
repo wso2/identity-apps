@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { WidgetIcons } from "../../../configs";
@@ -25,10 +26,13 @@ import { SettingsSection } from "../../shared";
 
 /**
  * Account security widget.
+ * Also see {@link AccountSecurityWidget.defaultProps}
  *
  * @return {JSX.Element}
  */
-export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
+export const AccountSecurityWidget: FunctionComponent<TestableComponentInterface> = (props): JSX.Element => {
+
+    const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     const navigate = () => {
@@ -36,8 +40,9 @@ export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
     };
 
     return (
-        <div className="widget account-security">
+        <div className="widget account-security" data-testid={ testId }>
             <SettingsSection
+                data-testid={ `${testId}-settings-section` }
                 header={ t("userPortal:components.overview.widgets.accountSecurity.header") }
                 description={ t("userPortal:components.overview.widgets.accountSecurity.description") }
                 primaryAction={ t("userPortal:components.overview.widgets.accountSecurity.actionTitles.update") }
@@ -49,4 +54,26 @@ export const AccountSecurityWidget: FunctionComponent<{}> = (): JSX.Element => {
             />
         </div>
     );
+};
+
+/**
+ * Default properties of {@link AccountSecurityWidget}
+ *
+ * {@link AccountSecurityWidget} has no component specific properties to
+ * be defined in a typed interface so instead it directly uses
+ * {@link TestableComponentInterface} as its prop type definition.
+ *
+ * Example to extend if {@link AccountSecurityWidget} has custom props: -
+ *
+ * ```
+ * interface AccountSecurityWidgetProps extends TestableComponentInterface { prop: type }
+ *
+ * // Wrap props interface with {@link React.PropsWithChildren} if has child widgets.
+ * export const AccountSecurityWidget: FunctionComponent<AccountSecurityWidgetProps> = (
+ *      props: AccountSecurityWidgetProps
+ * ): JSX.Element => { ... }
+ * ```
+ */
+AccountSecurityWidget.defaultProps = {
+    "data-testid": "account-security-overview-widget"
 };

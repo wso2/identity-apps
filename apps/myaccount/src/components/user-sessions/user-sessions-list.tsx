@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import moment from "moment";
 import React, { FunctionComponent, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
@@ -34,8 +35,9 @@ import { ThemeIcon } from "../shared";
 
 /**
  * Proptypes for the user sessions list component.
+ * Also see {@link UserSessionsList.defaultProps}
  */
-interface UserSessionsListProps {
+interface UserSessionsListProps extends TestableComponentInterface {
     onTerminateUserSessionClick?: (userSession: UserSession) => void;
     onUserSessionDetailClick?: (e: MouseEvent<HTMLButtonElement>, element: HTMLButtonElement) => void;
     userSessions: UserSession[];
@@ -52,11 +54,13 @@ const userAgentParser = new UserAgentParser();
 export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
     props: UserSessionsListProps
 ): JSX.Element => {
+
     const {
         onTerminateUserSessionClick,
         onUserSessionDetailClick,
         userSessions,
-        userSessionsListActiveIndexes
+        userSessionsListActiveIndexes,
+        ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
 
@@ -94,7 +98,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
     };
 
     return (
-        <List divided verticalAlign="middle" className="main-content-inner">
+        <List divided verticalAlign="middle" className="main-content-inner" data-testid={ testId }>
             {
                 userSessions
                 && userSessions.length
@@ -102,7 +106,8 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                     ? userSessions.map((userSession, index) => {
                         userAgentParser.uaString = userSession.userAgent;
                         return (
-                            <List.Item className="inner-list-item" key={ userSession.id }>
+                            <List.Item className="inner-list-item" key={ userSession.id }
+                                       data-testid={ `${testId}-item` }>
                                 <Grid padded>
                                     <Grid.Row columns={ 2 }>
                                         <Grid.Column
@@ -208,6 +213,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                         userSessionsListActiveIndexes && userSessionsListActiveIndexes.includes(index)
                                             ? (
                                                 <UserSessionsEdit
+                                                    data-testid={ `${testId}-edit` }
                                                     browser={ userAgentParser.browser }
                                                     device={ userAgentParser.device }
                                                     os={ userAgentParser.os }
@@ -228,8 +234,10 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
 
 /**
  * Default proptypes for the user sessions list component.
+ * See type definitions in {@link UserSessionsListProps}
  */
 UserSessionsList.defaultProps = {
+    "data-testid": "user-sessions-list",
     onTerminateUserSessionClick: () => null,
     onUserSessionDetailClick: () => null,
     userSessionsListActiveIndexes: null

@@ -17,7 +17,7 @@
  */
 
 import { hasRequiredScopes, isFeatureEnabled } from "@wso2is/core/helpers";
-import { SBACInterface } from "@wso2is/core/models";
+import { SBACInterface, TestableComponentInterface } from "@wso2is/core/models";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -30,8 +30,9 @@ import { SettingsSection } from "../shared";
 
 /**
  * Prop types for AccountRecoveryComponent component.
+ * Also see {@link AccountRecoveryComponent.defaultProps}
  */
-interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface> {
+interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface>, TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -44,13 +45,19 @@ interface AccountRecoveryProps extends SBACInterface<FeatureConfigInterface> {
 export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryProps> = (
     props: AccountRecoveryProps
 ): JSX.Element => {
-    const { t } = useTranslation();
-    const { onAlertFired, featureConfig } = props;
 
+    const {
+        onAlertFired,
+        featureConfig,
+        ["data-testid"]: testId
+    } = props;
+
+    const { t } = useTranslation();
     const allowedScopes: string = useSelector((state: AppState) => state?.authenticationInformation?.scope);
 
     return (
         <SettingsSection
+            data-testid={ `${testId}-settings-section` }
             description={ t("userPortal:sections.accountRecovery.description") }
             header={ t("userPortal:sections.accountRecovery.heading") }
         >
@@ -67,7 +74,10 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_CHALLENGE_QUESTIONS")
                         )
                         ? (
-                            <SecurityQuestionsComponent onAlertFired={ onAlertFired } />
+                            <SecurityQuestionsComponent
+                                onAlertFired={ onAlertFired }
+                                data-testid={ `${testId}-settings-section-security-questions-component` }
+                            />
                         )
                         : null
                     }
@@ -84,7 +94,10 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
                             AppConstants.FEATURE_DICTIONARY.get("SECURITY_ACCOUNT_RECOVERY_EMAIL_RECOVERY")
                         )
                         ? (
-                            <EmailRecovery onAlertFired={ onAlertFired } />
+                            <EmailRecovery
+                                onAlertFired={ onAlertFired }
+                                data-testid={ `${testId}-settings-section-email-recovery` }
+                            />
                         )
                         : null
                     }
@@ -92,4 +105,12 @@ export const AccountRecoveryComponent: React.FunctionComponent<AccountRecoveryPr
             </List>
         </SettingsSection>
     );
+};
+
+/**
+ * Default properties of {@link AccountRecoveryComponent}.
+ * Also see {@link AccountRecoveryProps}
+ */
+AccountRecoveryComponent.defaultProps = {
+    "data-testid": "account-recovery-component"
 };

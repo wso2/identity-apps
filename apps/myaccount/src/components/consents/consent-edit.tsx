@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
@@ -25,8 +26,9 @@ import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
 /**
  * Proptypes for the application consent edit component.
+ * Also see {@link AppConsentEdit.defaultProps}
  */
-interface EditConsentProps {
+interface EditConsentProps extends TestableComponentInterface {
     editingConsent: ConsentInterface;
     onAppConsentRevoke: (consent: ConsentInterface) => void;
     onClaimUpdate: (receiptId: string) => void;
@@ -49,7 +51,8 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
         onAppConsentRevoke,
         onClaimUpdate,
         onClaimRevokeToggle,
-        revokedClaimList
+        revokedClaimList,
+        ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
 
@@ -80,7 +83,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
     };
 
     return (
-        <EditSection>
+        <EditSection data-testid={ `${testId}-editing-section` }>
             <Grid padded>
                 <Grid.Row columns={ 1 }>
                     <Grid.Column width={ 16 }>
@@ -100,7 +103,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                         service.purposes &&
                         service.purposes.map((purpose) => {
                             return (
-                                <React.Fragment key={ purpose.purposeId }>
+                                <React.Fragment key={ purpose.purposeId } data-testid={ `${testId}-fragment` }>
                                     <Grid.Row columns={ 1 }>
                                         <Grid.Column width={ 16 }>
                                             <strong>{ toSentenceCase(purpose.purpose) }</strong>
@@ -191,4 +194,12 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
             </Grid>
         </EditSection>
     );
+};
+
+/**
+ * Default properties of {@link AppConsentEdit}
+ * Also see {@link EditConsentProps}
+ */
+AppConsentEdit.defaultProps = {
+    "data-testid": "app-consent-edit"
 };

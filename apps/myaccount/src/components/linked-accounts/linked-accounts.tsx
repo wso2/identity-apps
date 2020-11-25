@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import _ from "lodash";
 import React, { FunctionComponent, useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -41,8 +42,9 @@ import { SettingsSection } from "../shared";
 
 /**
  * Prop types for the liked accounts component.
+ * Also see {@link LinkedAccounts.defaultProps}
  */
-interface LinkedAccountsProps {
+interface LinkedAccountsProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -54,7 +56,7 @@ interface LinkedAccountsProps {
  */
 export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: LinkedAccountsProps): JSX.Element => {
 
-    const { onAlertFired } = props;
+    const { onAlertFired, ["data-testid"]: testId } = props;
     const linkedAccounts: LinkedAccountInterface[] = useSelector((state: AppState) => state.profile.linkedAccounts);
     const activeForm: string = useSelector((state: AppState) => state.global.activeForm);
     const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
@@ -212,6 +214,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
 
     return (
         <SettingsSection
+            data-testid={ `${testId}-settings-section` }
             description={ t("userPortal:sections.linkedAccounts.description") }
             header={ t("userPortal:sections.linkedAccounts.heading") }
             icon={ SettingsSectionIcons.associatedAccounts }
@@ -235,6 +238,7 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
                     } } onFormSubmit={ handleSubmit }/>
                     : (
                         <LinkedAccountsList
+                            data-testid={ `${testId}-list` }
                             linkedAccounts={ linkedAccounts }
                             onLinkedAccountRemove={ handleLinkedAccountRemove }
                             onLinkedAccountSwitch={ handleLinkedAccountSwitch }
@@ -243,4 +247,12 @@ export const LinkedAccounts: FunctionComponent<LinkedAccountsProps> = (props: Li
             }
         </SettingsSection>
     );
+};
+
+/**
+ * Default props of {@link LinkedAccounts}
+ * See type definitions in {@link LinkedAccountsProps}
+ */
+LinkedAccounts.defaultProps = {
+    "data-testid": "linked-accounts"
 };

@@ -16,15 +16,17 @@
  * under the License.
  */
 
-import React, { useEffect, useState } from "react";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import LoadingBar from "react-top-loading-bar";
 import { AppState } from "../../store";
 
 /**
  * Global loader component Prop types.
+ * Also see {@link GlobalLoader.defaultProps}
  */
-interface GlobalLoaderProps {
+interface GlobalLoaderProps extends TestableComponentInterface {
     height: number;
 }
 
@@ -34,8 +36,9 @@ interface GlobalLoaderProps {
  * @param {GlobalLoaderProps} props - Props injected to the global loader component.
  * @return {JSX.Element}
  */
-export const GlobalLoader = (props: GlobalLoaderProps): JSX.Element => {
-    const { height } = props;
+export const GlobalLoader: FunctionComponent<GlobalLoaderProps> = (props: GlobalLoaderProps): JSX.Element => {
+
+    const { height, ["data-testid"]: testId } = props;
     const visibility = useSelector((state: AppState) => state.global.isGlobalLoaderVisible);
     const [ loaderRef, setLoaderRef ] = useState(null);
 
@@ -52,9 +55,18 @@ export const GlobalLoader = (props: GlobalLoaderProps): JSX.Element => {
 
     return (
         <LoadingBar
+            data-testid={ testId }
             className="app-top-loading-bar"
             onRef={ (ref) => setLoaderRef(ref) }
             height={ height }
         />
     );
+};
+
+/**
+ * Default props of {@link GlobalLoader}
+ * See type definitions in {@link GlobalLoaderProps}
+ */
+GlobalLoader.defaultProps = {
+  "data-testid": "global-loader"
 };

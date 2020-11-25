@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { WidgetIcons } from "../../../configs";
@@ -28,8 +29,9 @@ import { SettingsSection } from "../../shared";
  *
  * @return {ReactElement}
  */
-export const ConsentManagementWidget: FunctionComponent<{}> = (): ReactElement => {
+export const ConsentManagementWidget: FunctionComponent<TestableComponentInterface> = (props): ReactElement => {
 
+    const { ["data-testid"]: testId } = props;
     const { t } = useTranslation();
 
     const navigate = () => {
@@ -37,8 +39,9 @@ export const ConsentManagementWidget: FunctionComponent<{}> = (): ReactElement =
     };
 
     return (
-        <div className="widget consent-management">
+        <div className="widget consent-management" data-testid={ testId }>
             <SettingsSection
+                data-testid={ `${testId}-settings-section` }
                 header={ t("userPortal:components.overview.widgets.consentManagement.header") }
                 description={ t("userPortal:components.overview.widgets.consentManagement.description") }
                 primaryAction={ t("userPortal:components.overview.widgets.consentManagement.actionTitles.manage") }
@@ -50,4 +53,11 @@ export const ConsentManagementWidget: FunctionComponent<{}> = (): ReactElement =
             />
         </div>
     );
+};
+
+/**
+ * Default props of {@link ConsentManagementWidget}
+ */
+ConsentManagementWidget.defaultProps = {
+    "data-testid": "consent-management-overview-widget"
 };
