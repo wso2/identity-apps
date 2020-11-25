@@ -100,6 +100,11 @@ export interface StrictSegmentedAccordionTitleActionInterface {
      * Text for the popover.
      */
     popoverText?: string;
+    /**
+     * Inactive status of this action element.
+     * Default value is always false {@link SegmentedAccordionTitle.defaultProps}
+     */
+    disabled?: boolean;
 }
 
 /**
@@ -169,6 +174,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
             onClick,
             popoverText,
             type,
+            disabled,
             ...actionsRest
         } = action;
 
@@ -178,9 +184,11 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                     <Checkbox
                         toggle
                         label={ label }
+                        disabled={ disabled }
                         onChange={
                             (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => handleActionOnClick(
-                                onChange, e, data, id)
+                                onChange, e, data, id
+                            )
                         }
                         data-testid={ `${ testId }-${ action.type }-action-${ index }` }
                         { ...actionsRest }
@@ -191,6 +199,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                 return (
                     <Checkbox
                         label={ label }
+                        disabled={ disabled }
                         onChange={
                             (e: FormEvent<HTMLInputElement>, data: CheckboxProps) => handleActionOnClick(
                                 onChange, e, data, id)
@@ -204,7 +213,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                 if (typeof icon === "string") {
                     return (
                         <Popup
-                            disabled={ !popoverText }
+                            disabled={ disabled || !popoverText }
                             trigger={ (
                                 <div>
                                     <GenericIcon
@@ -212,9 +221,16 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                         defaultIcon
                                         link
                                         inline
+                                        disabled={ disabled }
                                         transparent
                                         verticalAlign="middle"
-                                        icon={ <Icon name={ icon as SemanticICONS } color="grey"/> }
+                                        icon={
+                                            <Icon
+                                                name={ icon as SemanticICONS }
+                                                color="grey"
+                                                className={ classNames({"disabled": disabled}, "") }
+                                            />
+                                        }
                                         onClick={
                                             (e: MouseEvent<HTMLDivElement>) => handleActionOnClick(onClick, e, id)
                                         }
@@ -231,7 +247,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
 
                 return (
                     <Popup
-                        disabled={ !popoverText }
+                        disabled={ disabled || !popoverText }
                         trigger={ (
                             <div>
                                 <GenericIcon
@@ -239,6 +255,7 @@ export const SegmentedAccordionTitle: FunctionComponent<SegmentedAccordionTitleP
                                     defaultIcon
                                     link
                                     inline
+                                    disabled={ disabled }
                                     transparent
                                     verticalAlign="middle"
                                     onClick={ (e: MouseEvent<HTMLDivElement>) => handleActionOnClick(onClick, e, id) }
@@ -319,6 +336,7 @@ SegmentedAccordionTitle.defaultProps = {
     attached: true,
     clearing: false,
     "data-testid": "segmented-accordion-title",
+    disabled: false,
     hideChevron: false,
     useEmphasizedSegments: true
 };
