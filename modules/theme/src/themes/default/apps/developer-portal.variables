@@ -35,3 +35,9 @@
 --------------------------------*/
 
 @connectorSectionWithImageBgHeight: 120px;
+
+/*-------------------------------
+      Permissions Tree
+--------------------------------*/
+
+@treeArrowBackgroundColor: #bfbfbf;

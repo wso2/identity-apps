@@ -51,6 +51,5 @@ export * from "./tab";
 export * from "./table";
 export * from "./typography";
 export * from "./theme";
-export * from "./tree-view";
 export * from "./transfer";
 export * from "./redux-forms";

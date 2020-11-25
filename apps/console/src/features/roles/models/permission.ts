@@ -16,18 +16,15 @@
  * under the License.
  */
 
+import { DataNode } from "rc-tree/lib/interface";
+
 /**
- * Interface to capture permission tree node.
+ * Interface extending DataNode to capture tree node 
+ * data for permission tree.
  */
-export interface Permission {
-    label?: string;
-    name: string;
-    isExpanded: boolean;
-    children?: Permission[];
+export interface TreeNode extends DataNode {
     fullPath?: string;
-    isChecked: boolean;
-    isPartiallyChecked: boolean;
-    id: string;
+    name?: string;
 }
 
 /**

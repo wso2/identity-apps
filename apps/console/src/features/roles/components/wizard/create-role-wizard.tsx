@@ -35,7 +35,7 @@ import { CreateGroupMemberInterface, GroupsInterface } from "../../../groups/mod
 import { UserBasicInterface } from "../../../users";
 import { createRole } from "../../api";
 import { RolesWizardStepIcons } from "../../configs";
-import { CreateRoleInterface, CreateRoleMemberInterface } from "../../models";
+import { CreateRoleInterface, CreateRoleMemberInterface, TreeNode } from "../../models";
 
 /**
  * Interface which captures create role props.
@@ -166,8 +166,8 @@ export const CreateRoleWizard: FunctionComponent<CreateRoleProps> = (props: Crea
         }
 
         if (basicData?.PermissionList?.length > 0) {
-            basicData?.PermissionList?.forEach(permission => {
-                permissions?.push(permission?.fullPath);
+            basicData?.PermissionList?.forEach((permission: TreeNode) => {
+                permissions?.push(permission?.key.toString());
             });
         }
 

@@ -74,7 +74,8 @@
         "redux-thunk": "*",
         "style-loader": "*",
         "thread-loader": "*",
-        "ua-parser-js": "*"
+        "ua-parser-js": "*",
+        "rc-tree": "*"
     },
     "browserslist": [
         "> 0.2%"
