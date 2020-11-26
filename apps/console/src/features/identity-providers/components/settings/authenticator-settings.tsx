@@ -455,17 +455,14 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
     /**
      * A predicate that checks whether a give federated authenticator
      * is a default authenticator.
-     * @param auth
+     *
+     * @param {FederatedAuthenticatorWithMetaInterface} auth - Authenticator.
      * @returns true if {@code auth.data.isDefault} is truthy
      */
     const _isDefaultAuthenticatorPredicate = (
         auth: FederatedAuthenticatorWithMetaInterface
     ): boolean => {
-        if (auth.data == void 0) { // Safe unwrap
-            return false;
-        } else {
-            return auth.data.isDefault;
-        }
+        return auth.data?.isDefault;
     }
 
     /**
