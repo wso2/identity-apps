@@ -490,7 +490,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 && (
                     <PrimaryButton
                         data-testid="user-mgt-user-list-add-user-button"
-                        onClick={ handleAddNewUserWizardClick  }
+                        onClick={ () => handleAddNewUserWizardClick()  }
                     >
                         <Icon name="add"/>
                         { t("adminPortal:components.users.buttons.addNewUserBtn") }

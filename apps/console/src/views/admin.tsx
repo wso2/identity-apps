@@ -156,6 +156,11 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     useEffect(() => {
 
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
         if (!hasRequiredScopes(featureConfig?.generalConfigurations,
             featureConfig?.generalConfigurations?.scopes?.read,
             allowedScopes)) {

@@ -16,18 +16,18 @@
  * under the License.
  */
 
+import { hasRequiredScopes } from "@wso2is/core/helpers";
 import { AlertLevels, ReferableComponentInterface, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
 import { CommonUtils } from "@wso2is/core/utils";
 import { EmphasizedSegment, PageLayout } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid, Menu, Rail, Ref, Sticky } from "semantic-ui-react";
-import { UIConstants, history, useUIElementSizes } from "../../core";
+import { AppState, FeatureConfigInterface, UIConstants, history, useUIElementSizes } from "../../core";
 import { getConnectorCategory } from "../api";
 import { DynamicGovernanceConnector } from "../components";
-
 import { GovernanceConnectorCategoryInterface, GovernanceConnectorInterface } from "../models";
 
 /**
@@ -58,6 +58,9 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const { t } = useTranslation();
     const { headerHeight, footerHeight } = useUIElementSizes();
 
+    const featureConfig: FeatureConfigInterface = useSelector((state: AppState) => state.config.ui.features);
+    const allowedScopes: string = useSelector((state: AppState) => state?.auth?.scope);
+
     const [ connectorCategory, setConnectorCategory ] = useState<GovernanceConnectorCategoryInterface>({});
     const [ connectors, setConnectors ] = useState<GovernanceConnectorWithRef[]>([]);
     const [ selectedConnector, setSelectorConnector ] = useState<GovernanceConnectorWithRef>(null);
@@ -65,6 +68,15 @@ export const GovernanceConnectorsPage: FunctionComponent<GovernanceConnectorsPag
     const ScrollTopPosition = headerHeight + UIConstants.PAGE_SCROLL_TOP_PADDING;
 
     useEffect(() => {
+
+        // If Governance Connector read permission is not available, prevent from trying to load the connectors.
+        if (!hasRequiredScopes(featureConfig?.generalConfigurations,
+            featureConfig?.generalConfigurations?.scopes?.read,
+            allowedScopes)) {
+
+            return;
+        }
+
         loadCategoryConnectors();
     }, []);
 
