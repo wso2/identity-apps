@@ -459,7 +459,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param {FederatedAuthenticatorWithMetaInterface} auth - Authenticator.
      * @returns true if {@code auth.data.isDefault} is truthy
      */
-    const _isDefaultAuthenticatorPredicate = (
+    const isDefaultAuthenticatorPredicate = (
         auth: FederatedAuthenticatorWithMetaInterface
     ): boolean => {
         return auth.data?.isDefault;
@@ -474,10 +474,10 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
      * @param authenticator
      * @returns SegmentedAccordionTitleActionInterface
      */
-    const _createAccordionActions = (
+    const createAccordionActions = (
         authenticator: FederatedAuthenticatorWithMetaInterface
     ): SegmentedAccordionTitleActionInterface[] => {
-        const isDefaultAuthenticator = _isDefaultAuthenticatorPredicate(authenticator);
+        const isDefaultAuthenticator = isDefaultAuthenticatorPredicate(authenticator);
         return [
             // Checkbox which triggers the default state of authenticator.
             {
@@ -525,7 +525,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                         key={ index }
                                         globalActions={ [
                                             {
-                                                disabled: _isDefaultAuthenticatorPredicate(authenticator),
+                                                disabled: isDefaultAuthenticatorPredicate(authenticator),
                                                 icon: "trash alternate",
                                                 onClick: handleAuthenticatorDeleteOnClick,
                                                 popoverText: "Remove Authenticator",
@@ -535,7 +535,7 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                         authenticators={
                                             [
                                                 {
-                                                    actions: _createAccordionActions(authenticator),
+                                                    actions: createAccordionActions(authenticator),
                                                     content: authenticator && (
                                                         <AuthenticatorFormFactory
                                                             metadata={ authenticator.meta }
