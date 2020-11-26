@@ -18,7 +18,13 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, EmptyPlaceholder, PrimaryButton } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    EmptyPlaceholder,
+    PrimaryButton,
+    SegmentedAccordionTitleActionInterface
+} from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -446,6 +452,58 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
         );
     };
 
+    /**
+     * A predicate that checks whether a give federated authenticator
+     * is a default authenticator.
+     *
+     * @param {FederatedAuthenticatorWithMetaInterface} auth - Authenticator.
+     * @returns true if {@code auth.data.isDefault} is truthy
+     */
+    const isDefaultAuthenticatorPredicate = (
+        auth: FederatedAuthenticatorWithMetaInterface
+    ): boolean => {
+        return auth.data?.isDefault;
+    }
+
+    /**
+     * A helper function that generates {@link SegmentedAccordionTitleActionInterface}
+     * accordion actions foreach {@code availableAuthenticators} when rendering a
+     * {@link AuthenticatorAccordion}
+     *
+     * @see AuthenticatorAccordionItemInterface.actions
+     * @param authenticator
+     * @returns SegmentedAccordionTitleActionInterface
+     */
+    const createAccordionActions = (
+        authenticator: FederatedAuthenticatorWithMetaInterface
+    ): SegmentedAccordionTitleActionInterface[] => {
+        const isDefaultAuthenticator = isDefaultAuthenticatorPredicate(authenticator);
+        return [
+            // Checkbox which triggers the default state of authenticator.
+            {
+                defaultChecked: isDefaultAuthenticator,
+                disabled: authenticator.data?.isDefault || !authenticator.data?.isEnabled,
+                label: t(isDefaultAuthenticator ?
+                    "devPortal:components.idp.forms.authenticatorAccordion.default.0" :
+                    "devPortal:components.idp.forms.authenticatorAccordion.default.1"
+                ),
+                onChange: handleDefaultAuthenticatorChange,
+                type: "checkbox"
+            },
+            // Toggle Switch which enables/disables the authenticator state.
+            {
+                defaultChecked: authenticator.data?.isEnabled,
+                label: t(authenticator.data?.isEnabled ?
+                    "devPortal:components.idp.forms.authenticatorAccordion.enable.0" :
+                    "devPortal:components.idp.forms.authenticatorAccordion.enable.1"
+                ),
+                disabled: isDefaultAuthenticator,
+                onChange: handleAuthenticatorEnableToggle,
+                type: "toggle"
+            }
+        ];
+    };
+
     const showAuthenticatorList = (): ReactElement => {
         return (
             <Grid>
@@ -467,38 +525,17 @@ export const AuthenticatorSettings: FunctionComponent<IdentityProviderSettingsPr
                                         key={ index }
                                         globalActions={ [
                                             {
+                                                disabled: isDefaultAuthenticatorPredicate(authenticator),
                                                 icon: "trash alternate",
                                                 onClick: handleAuthenticatorDeleteOnClick,
-                                                type: "icon"
+                                                popoverText: "Remove Authenticator",
+                                                type: "icon",
                                             }
                                         ] }
                                         authenticators={
                                             [
                                                 {
-                                                    actions: [
-                                                        {
-                                                            defaultChecked: authenticator.data?.isDefault,
-                                                            disabled: (authenticator.data?.isDefault ||
-                                                                !authenticator.data?.isEnabled),
-                                                            label: (authenticator.data?.isDefault
-                                                                ? t("devPortal:components.idp.forms." +
-                                                                    "authenticatorAccordion.default.0")
-                                                                : t("devPortal:components.idp.forms." +
-                                                                    "authenticatorAccordion.default.1")),
-                                                            onChange: handleDefaultAuthenticatorChange,
-                                                            type: "checkbox"
-                                                        },
-                                                        {
-                                                            defaultChecked: authenticator.data?.isEnabled,
-                                                            label: (authenticator.data?.isEnabled
-                                                                ? t("devPortal:components.idp.forms." +
-                                                                    "authenticatorAccordion.enable.0")
-                                                                : t("devPortal:components.idp.forms." +
-                                                                    "authenticatorAccordion.enable.1")),
-                                                            onChange: handleAuthenticatorEnableToggle,
-                                                            type: "toggle"
-                                                        }
-                                                    ],
+                                                    actions: createAccordionActions(authenticator),
                                                     content: authenticator && (
                                                         <AuthenticatorFormFactory
                                                             metadata={ authenticator.meta }

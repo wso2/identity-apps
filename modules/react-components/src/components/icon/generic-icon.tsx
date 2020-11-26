@@ -19,7 +19,7 @@
 import { TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { PropsWithChildren, ReactElement } from "react";
-import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
+import { Icon, SemanticICONS, SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
  * Proptypes for the Generic Icon component.
@@ -45,6 +45,11 @@ export interface GenericIconProps extends TestableComponentInterface {
      * Should the icon appear default i.e grey.
      */
     defaultIcon?: boolean;
+    /**
+     * Inactive status of this icon element.
+     * The default value is always false. Refer {@link GenericIcon.defaultProps}
+     */
+    disabled?: boolean;
     /**
      * Icon fill color.
      */
@@ -162,6 +167,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         className,
         colored,
         defaultIcon,
+        disabled,
         fill,
         floated,
         hoverable,
@@ -191,6 +197,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         "bordered": bordered,
         "colored": colored,
         "default": defaultIcon,
+        "disabled": disabled,
         [ typeof fill === "boolean" ? "fill-default" : `fill-${ fill }` ]: fill,
         [`floated-${floated}`]: floated,
         hoverable,
@@ -211,54 +218,87 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     }, className);
 
     /**
-     * Constructs the icon.
-     * TODO: Add a default icon if the an error occurs rather than returning null.
+     * A default icon if the {@code icon:Icon} null
+     * or empty. For usage {@see constructContent}
+     */
+    const defaultIconPlaceholder = () => {
+        return <Icon
+            name={ "question" as SemanticICONS }
+            className={ classNames({ "disabled": disabled }, "") }
+            color="grey"
+        />;
+    };
+
+    /**
+     * The icon click action handler. It first checks whether the icon
+     * is disabled or not. And if disabled is {@code true} it will never
+     * fire the provided {@code onClick} handler.
+     *
+     * @param event React.MouseEvent<HTMLDivElement>
+     */
+    const onIconClickHandler = (event: React.MouseEvent<HTMLDivElement>): void => {
+        if (!disabled) {
+            onClick(event);
+        }
+        // No Operations
+    };
+
+    /**
+     * Constructs the icon. This function is a impure function which depends
+     * on {@code Icon} value above. The {@code Icon} can be one of type from below list: -
+     *
+     * 1. {@link SVGElement}
+     * 2. ReactComponent
+     * 3. {@link React.FunctionComponent}
+     * 4. {@link React.Component}
+     * 5. {@link string} URL or BASE-64 encoded.
      *
      * @return {HTMLElement | SVGElement | React.ReactElement}
      */
     const constructContent = (): HTMLElement | SVGElement | ReactElement | JSX.Element => {
-        if (!Icon) {
-            return null;
-        }
+
+        // If there's no icon passed to this via the parent
+        // then it will return a default icon.
+        if (!Icon) return defaultIconPlaceholder();
 
         try {
             // Check if the icon is an SVG element
             if (Icon instanceof SVGElement) {
                 return Icon;
             }
-
             // Check if the icon is a module and has `ReactComponent` property.
             // Important when used with SVG's imported with `@svgr/webpack`.
             if (Object.prototype.hasOwnProperty.call(Icon,"ReactComponent")
                 && typeof Icon.ReactComponent === "function") {
-
                 return <Icon.ReactComponent/>;
             }
-
             // Check is icon is a component.
             if (typeof Icon === "function") {
                 return <Icon />;
             }
-
             // Check is icon is a component.
             if (typeof Icon === "object") {
                 return Icon;
             }
-
             // Check if icon passed in is a string. Can be a URL or a base64 encoded.
             if (typeof Icon === "string") {
                 return <img src={ Icon } className="icon" alt="icon"/>;
             }
         } catch (e) {
-            return null;
+            return defaultIconPlaceholder();
         }
+
     };
 
     return (
-        <div className={ `theme-icon ${classes}` } style={ style } onClick={ onClick } data-testid={ testId }>
+        <div className={ `theme-icon ${classes}` }
+             style={ style }
+             onClick={ onIconClickHandler }
+             data-testid={ testId }>
             { constructContent() }
         </div>
     );
+
 };
 
 /**
@@ -269,6 +309,7 @@ GenericIcon.defaultProps = {
     bordered: false,
     className: "",
     "data-testid": "generic-icon",
+    disabled: false,
     defaultIcon: false,
     floated: null,
     hoverType: "rounded",
