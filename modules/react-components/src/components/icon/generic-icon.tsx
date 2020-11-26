@@ -221,7 +221,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      * A default icon if the {@code icon:Icon} null
      * or empty. For usage {@see constructContent}
      */
-    const _defaultIconPlaceholder = () => {
+    const defaultIconPlaceholder = () => {
         return <Icon
             name={ "question" as SemanticICONS }
             className={ classNames({ "disabled": disabled }, "") }
@@ -236,7 +236,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      *
      * @param event React.MouseEvent<HTMLDivElement>
      */
-    const _onIconClickHandler = (event: React.MouseEvent<HTMLDivElement>): void => {
+    const onIconClickHandler = (event: React.MouseEvent<HTMLDivElement>): void => {
         if (!disabled) {
             onClick(event);
         }
@@ -259,7 +259,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 
         // If there's no icon passed to this via the parent
         // then it will return a default icon.
-        if (!Icon) return _defaultIconPlaceholder();
+        if (!Icon) return defaultIconPlaceholder();
 
         try {
             // Check if the icon is an SVG element
@@ -285,7 +285,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
                 return <img src={ Icon } className="icon" alt="icon"/>;
             }
         } catch (e) {
-            return _defaultIconPlaceholder();
+            return defaultIconPlaceholder();
         }
 
     };
@@ -293,7 +293,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
     return (
         <div className={ `theme-icon ${classes}` }
              style={ style }
-             onClick={ _onIconClickHandler }
+             onClick={ onIconClickHandler }
              data-testid={ testId }>
             { constructContent() }
         </div>
