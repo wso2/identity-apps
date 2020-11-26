@@ -18,7 +18,13 @@
 
 import { AlertLevels, TestableComponentInterface } from "@wso2is/core/models";
 import { addAlert } from "@wso2is/core/store";
-import { ConfirmationModal, ContentLoader, EmptyPlaceholder, PrimaryButton, SegmentedAccordionTitleActionInterface } from "@wso2is/react-components";
+import {
+    ConfirmationModal,
+    ContentLoader,
+    EmptyPlaceholder,
+    PrimaryButton,
+    SegmentedAccordionTitleActionInterface
+} from "@wso2is/react-components";
 import _ from "lodash";
 import React, { FormEvent, FunctionComponent, MouseEvent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
