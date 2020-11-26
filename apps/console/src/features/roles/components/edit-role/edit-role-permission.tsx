@@ -21,8 +21,8 @@ import { addAlert } from "@wso2is/core/store";
 import React, { FunctionComponent, ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { updateRole, updateRolePermissions } from "../../api";
-import { Permission } from "../../models";
+import { updateRole } from "../../api";
+import { TreeNode } from "../../models";
 import { PermissionList } from "../wizard";
 
 /**
@@ -64,12 +64,12 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
         isGroup
     } = props;
 
-    const onPermissionUpdate = (updatedPerms: Permission[]) => {
+    const onPermissionUpdate = (updatedPerms: TreeNode[]) => {
         const roleData = {
             "Operations": [ {
                 "op": "replace",
                 "path": "permissions",
-                "value": updatedPerms.map(perm => perm.fullPath)
+                "value": updatedPerms.map((perm: TreeNode) => perm.key)
             } ],
             "schemas": [ "urn:ietf:params:scim:api:messages:2.0:PatchOp" ]
         };

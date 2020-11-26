@@ -16,39 +16,38 @@
  * under the License.
  */
 
-import { Permission, PermissionObject } from "../models";
+import { PermissionObject, TreeNode } from "../models";
 
-/**
- * A Util method to create an array of permission object with heirarchy.
- * 
- * @param permObj - Permission Object
- * @param pathcomponents - Permission path array
- * @param permissionTreeArray - Empty array to start with
- * 
- * @returns {Permission[]} - Permission arra with tree structure
- */
-export const addPath = (permObj: PermissionObject, pathcomponents: string[],
-        permissionTreeArray: Permission[]): Permission[] => {
+ /**
+  * A Util method to create an array of permission object with heirarchy.
+  * 
+  * @param permissioObject - Permission Object
+  * @param pathComponents - Permission Path Array
+  * @param permissionTreeArray - Permission Tree array for reference
+  * 
+  * @returns {TreeNode[]} - Permission array with tree structure
+  */
+export const generatePermissionTree = (permissioObject: PermissionObject, pathComponents: string[],
+    permissionTreeArray: TreeNode[]): TreeNode[] => {
 
-    const component = pathcomponents.shift();
-    let comp = permissionTreeArray.find(item => item.name === component);
+    const component = pathComponents.shift();
+    let permissionComponent = permissionTreeArray.find((permission: TreeNode) => {
+        return permission.name === component;
+    });
 
-    if (!comp) {
-        comp = {
-            fullPath: permObj.resourcePath,
-            id: permObj.resourcePath,
-            isChecked: false,
-            isExpanded: true,
-            isPartiallyChecked: false,
-            label: permObj.displayName,
-            name: component
+    if (!permissionComponent) {
+        permissionComponent = {
+            key: permissioObject.resourcePath,
+            name: component,
+            title: permissioObject.displayName
         };
-        permissionTreeArray.push(comp);
+        permissionTreeArray.push(permissionComponent);
     }
 
-    if (pathcomponents.length) {
-        addPath(permObj, pathcomponents, comp.children || (comp.children = []));
+    if (pathComponents.length) { 
+        generatePermissionTree(permissioObject, pathComponents, 
+            permissionComponent.children || (permissionComponent.children = []));
     }
-    
+
     return permissionTreeArray;
 };

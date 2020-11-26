@@ -547,6 +547,72 @@
     margin: 0 1em !important;
 }
 
+/*****************************************
+    Role Management View
+*****************************************/
+.tree-arrow-wrap {
+    cursor: pointer;
+    float: left;
+    margin-left: -3px;
+    margin-right: 5px;
+    
+    .tree-arrow {
+        cursor: pointer;
+        display: inline-block;
+        height: 18px;
+        position: relative;
+        top: 4px;
+        width: 18px;
+
+        span {
+            background-color: @treeArrowBackgroundColor;
+            display: inline-block;
+            height: 0.1rem;
+            position: absolute;
+            top: 0.5rem;
+            width: 0.75rem;
+
+            &:first-of-type {
+                -webkit-transform: rotate(45deg);
+                left: 0;
+                transform: rotate(45deg);
+            }
+
+            &:last-of-type {
+                -webkit-transform: rotate(-45deg);
+                right: 0;
+                transform: rotate(-45deg);
+            }
+        }
+    }
+
+    .tree-arrow.active {
+        span {
+
+            &:first-of-type {
+                -webkit-transform: rotate(45deg);
+                transform: rotate(45deg);
+                left: 2px;
+                top: 1px;
+            }
+
+            &:last-of-type {
+                -webkit-transform: rotate(135deg);
+                transform: rotate(135deg);
+                left: 3px;
+                top: 9px;
+            }
+        }
+    }
+
+}
+
+.rc-tree-switcher{
+    &.rc-tree-switcher_open, &.rc-tree-switcher_close {
+        background: none !important;
+    }
+}
+
 /*-------------------------------
       Connector Sections
 --------------------------------*/

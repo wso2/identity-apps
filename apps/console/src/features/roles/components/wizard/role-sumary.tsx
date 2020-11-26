@@ -21,6 +21,7 @@ import { UserAvatar } from "@wso2is/react-components";
 import React, { FunctionComponent, ReactElement, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Grid, Label } from "semantic-ui-react";
+import { TreeNode } from "../../models";
 
 interface AddUserWizardSummaryProps extends TestableComponentInterface {
     summary: any;
@@ -107,7 +108,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                 <Label.Group>
                                     {
                                         summary.PermissionList
-                                            .map((perm, index) => (
+                                            .map((perm: TreeNode, index) => (
                                                 <Label
                                                     data-testid={
                                                         `${ testId }-permissions-${ index }-label`
@@ -116,7 +117,7 @@ export const CreateRoleSummary: FunctionComponent<AddUserWizardSummaryProps> = (
                                                     basic
                                                     circular
                                                 >
-                                                    { perm.label }
+                                                    { perm.title }
                                                 </Label>
                                             ))
                                     }
