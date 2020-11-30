@@ -341,6 +341,36 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         setRevokedClaimList(list);
     };
 
+    const piiClaimToggleHandler = (piiCategoryId: number, purposeId: number, receiptId: string): void => {
+
+        const currentState = [ ...deniedPIIClaimList, ...acceptedPIIClaimList ];
+        let piiItem: PIICategoryClaimToggleItem;
+
+        for (const item of currentState) {
+            if (item.piiCategoryId === piiCategoryId &&
+                item.purposeId === purposeId &&
+                item.receiptId === receiptId) {
+                piiItem = item;
+            }
+        }
+
+        // If the toggled PII category item's status is "denied"
+        // then move it to the "accepted" list. @see PIICategoryStatus
+        if (piiItem.status === "denied") {
+            deniedPIIClaimList.delete(piiItem);
+            piiItem.status = "accepted";
+            setDeniedPIIClaimList(new Set(deniedPIIClaimList.values()));
+            setAcceptedPIIClaimList(new Set([ ...acceptedPIIClaimList.values(), piiItem ]));
+
+        } else {
+            acceptedPIIClaimList.delete(piiItem);
+            piiItem.status = "denied";
+            setAcceptedPIIClaimList(new Set(acceptedPIIClaimList.values()));
+            setDeniedPIIClaimList(new Set([ ...deniedPIIClaimList.values(), piiItem ]));
+        }
+
+    };
+
     /**
      * Handles the consent revoke button click. Sets the current consent object as
      * the editing consent and toggles the visibility of the consent revoke modal.
