@@ -17,7 +17,13 @@
  */
 
 import { IdentityClient } from "@asgardio/oidc-js";
-import { ConsentReceiptInterface, ConsentState, HttpMethods, UpdateReceiptInterface } from "../models";
+import {
+    ConsentInterface,
+    ConsentReceiptInterface,
+    ConsentState,
+    HttpMethods,
+    UpdateReceiptInterface
+} from "../models";
 import { store } from "../store";
 
 /**
@@ -32,7 +38,7 @@ const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.
  * @return {Promise<any>} A promise containing the response.
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const fetchConsentedApps = (state: ConsentState, username): Promise<any> => {
+export const fetchConsentedApps = async (state: ConsentState, username): Promise<ConsentInterface[]> => {
 
     const userName = username.split("@");
 
