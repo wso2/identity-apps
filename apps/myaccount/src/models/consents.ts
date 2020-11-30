@@ -117,6 +117,15 @@ export interface RevokedClaimInterface {
 }
 
 /**
+ * PII category mapping model in the UI.
+ */
+export interface PIICategoryClaimToggleItem {
+    piiCategoryId?: number;
+    purposeId?: number;
+    receiptId?: string;
+}
+
+/**
  * PIICategory Model
  */
 export interface PIICategory {
