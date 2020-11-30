@@ -123,6 +123,7 @@ export interface PIICategoryClaimToggleItem {
     piiCategoryId?: number;
     purposeId?: number;
     receiptId?: string;
+    status?: PIICategoryStatus;
 }
 
 /**
