@@ -102,7 +102,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
     const isUpdatable = (): boolean => {
 
         // This consent editing view's model {@link editingConsent}
-        const recordOnModelReceipt = _.chain(editingConsent.consentReceipt.services)
+        const recordOnModelReceipt = _.chain(editingConsent.consentReceipt?.services || [])
             .map((service: ServiceInterface) => service.purposes)
             .flatten()
             .map((purpose: PurposeInterface) => ( {
@@ -261,7 +261,8 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                 {
                     hasConsentDetails(editingConsent) ?
                         editingConsent.consentReceipt.services.map(
-                            (service) => hasPurposesInService(service) && service.purposes.map(eachPurposeToJSX)
+                            (service) => hasPurposesInService(service) &&
+                                service.purposes.map(eachPurposeToJSX)
                         )
                         : null
                 }
