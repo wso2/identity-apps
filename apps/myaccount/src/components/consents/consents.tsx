@@ -119,6 +119,19 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     }, []);
 
     /**
+     * Populates the PII claim list to state hooks.
+     *
+     * @param {ConsentInterface} app
+     * @param {ConsentReceiptInterface} receipt
+     */
+    const populatePIIClaimListStates = async (
+        app: ConsentInterface,
+        receipt: ConsentReceiptInterface
+    ): Promise<void> => {
+
+    };
+
+    /**
      * This method will fetch detailed purposes of every service listed in the
      * {@code receipt} model. See {@link fetchPurposesByIDs} to understand the
      * fetch call.
@@ -222,15 +235,23 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      */
     const getConsentReceipt = (receiptId): void => {
         fetchConsentReceipt(receiptId)
-            .then((response) => {
+            .then(async (response) => {
                 const apps = [ ...consentedApps ];
 
+                // Go fetch and attach purpose details to this {@code receipt}
+                await attachReceiptPurposeDetails(response);
+
+                // Now we need to find the consent that matches the {@code receiptId}
+                // and set the optional property {@link ConsentInterface.consentReceipt}
                 for (const app of apps) {
                     if (app.consentReceiptID === receiptId) {
                         app.consentReceipt = response;
+                        await populatePIIClaimListStates(app, response);
                     }
                 }
-
+                // Once we set the newly fetched receipt to the matching
+                // consented app instance. We set the consented apps again
+                // using the hook {@code setConsentedApps}
                 setConsentedApps(apps);
             })
             .catch((error) => {
