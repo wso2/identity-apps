@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
 import {
     ConsentInterface,
-    PIICategoryClaimToggleItem,
+    PIICategoryClaimToggleItem, PIICategoryWithStatus,
     PurposeInterface,
     RevokedClaimInterface,
     ServiceInterface
@@ -69,17 +69,29 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
     const { t } = useTranslation();
 
     /**
-     * Checks if the PII category is revoked.
+     * A predicate that checks if the PII category is revoked or denied.
+     * It iterates through the {@link deniedPIIClaimList} state hook to check
+     * whether there's any mapping category is present.
      *
-     * @param {number} claimId - claim id ie. piiCategoryId.
+     * Important Note: -
+     * We don't use a separate predicate function to check non-revoked
+     * or accepted PII categories. The functionality can be achieved via this
+     * function itself because if a {@code PIICategoryClaimToggleItem} is
+     * not available in {@link deniedPIIClaimList} it is guaranteed that
+     * it is available in {@link acceptedPIIClaimList} vice versa.
+     *
+     * @param {number} piiCategoryId - PII Claim ID {@code purposes.each(purpose.piiCategory.each(pii.id))}
+     * @param {number} purposeId - Purpose ID {@code services.each(purposes.each(purpose.purposeId))}
+     * @param {number} consentReceiptID - This Component's {@code editingConsent} Model
      */
-    const isRevoked = (claimId: number): boolean => {
-        for (const item of revokedClaimList) {
-            if (item.id === editingConsent.consentReceiptID) {
-                return !!item.revoked.includes(claimId);
-            }
+    const isRevoked = (piiCategoryId: number, purposeId: number, consentReceiptID: string): boolean => {
+        for (const deniedPIIItem of deniedPIIClaimList) {
+            if (piiCategoryId === deniedPIIItem.piiCategoryId &&
+                purposeId === deniedPIIItem.purposeId &&
+                consentReceiptID === deniedPIIItem.receiptId) return true;
         }
-    };
+        return false;
+    }
 
     /**
      * Checks if the consent is updatable.
