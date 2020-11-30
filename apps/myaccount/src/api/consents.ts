@@ -21,16 +21,18 @@ import {
     ConsentInterface,
     ConsentReceiptInterface,
     ConsentState,
-    HttpMethods,
+    HttpMethods, PurposeModel,
     UpdateReceiptInterface
 } from "../models";
 import { store } from "../store";
+import { AxiosRequestConfig, AxiosResponse } from "axios";
 
 /**
  * Initialize an axios Http client.
  * @type {AxiosHttpClientInstance}
  */
 const httpClient = IdentityClient.getInstance().httpRequest.bind(IdentityClient.getInstance());
+const httpClientAll = IdentityClient.getInstance().httpRequestAll.bind(IdentityClient.getInstance());
 
 /**
  * Fetches a list of consented applications of the currently authenticated user.
@@ -93,6 +95,64 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
         .catch((error) => {
             return Promise.reject(error);
         });
+};
+
+/**
+ * Fetches multiple {@link PurposeModel} by given a set of IDs. This function is useful
+ * when we need to get some detailed information about a consent receipts' purpose(s).
+ * This is because when the client use a method like {@link fetchConsentReceipt} it
+ * only gives the receipt with limited information.
+ *
+ * Context: -
+ * A consent can have many services, under services we have many purposes, and
+ * each purpose has many pii-category claims.
+ *
+ * Example: -
+ * Assume that we fetched a receipt {@link ConsentReceiptInterface} by its ID.
+ * Now we can easily access all of its properties. Let's say now you want to
+ * display all the piiCategories in each purpose regardless of whether the user
+ * granted or denied that claim.
+ *
+ * However, now you will run into a limitation where {@link ConsentReceiptInterface}
+ * only contains the granted claims in its: {@code receipt.services.each(purposes.
+ * each(purpose.piiCategory))} array. In this case you have to use this method to get
+ * detailed info about each of its purposes.
+ *
+ * Usage: -
+ * This service method will accept multiple {@code purposeIDs} and aggregate
+ * them to make concurrent requests for each ID. You can pass an {@code number[]}
+ * argument which contains only one purposeID as well.
+ *
+ * @param {Iterable[]} purposeIDs
+ * @return {PurposeModel | PurposeModel[]} response data
+ */
+export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<PurposeModel[]> => {
+
+    const requestConfigurations: AxiosRequestConfig[] = [];
+    const url = store.getState().config.endpoints.consentManagement.purpose.getPurpose;
+
+    for (const purposeID of purposeIDs) {
+        const requestConfiguration: AxiosRequestConfig = {
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
+            },
+            method: HttpMethods.GET,
+            /* Contains a additional path parameter :purposeId */
+            url: `${ url }/${ purposeID }`
+        };
+        requestConfigurations.push(requestConfiguration);
+    }
+
+    try {
+        const response: AxiosResponse[] = await httpClientAll(requestConfigurations);
+        const models = response.map(res => res.data as PurposeModel);
+        return Promise.resolve<PurposeModel[]>(models);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+
 };
 
 /**
