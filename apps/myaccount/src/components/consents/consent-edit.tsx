@@ -20,7 +20,13 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
-import { ConsentInterface, PIICategoryClaimToggleItem, RevokedClaimInterface } from "../../models";
+import {
+    ConsentInterface,
+    PIICategoryClaimToggleItem,
+    PurposeInterface,
+    RevokedClaimInterface,
+    ServiceInterface
+} from "../../models";
 import { toSentenceCase } from "../../utils";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
@@ -87,6 +93,48 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
             }
         }
     };
+
+    /**
+     * A predicate that checks whether we can show the consents'
+     * purposes. This check is needed because {@link ConsentInterface.consentReceipt}
+     * is optional and will only fetch asynchronously once the user click the detail view.
+     *
+     * {@link ConsentInterface} must: -
+     * 1. not be {@code null | undefined }
+     * 2. contain the {@link ConsentReceiptInterface}
+     * 3. contain a list of {@link ServiceInterface} in {@link ConsentReceiptInterface}
+     * 4. contain least 1 {@link ConsentReceiptInterface.services} entry
+     *
+     * @param {ConsentInterface} editingConsent
+     */
+    const hasConsentDetails = (editingConsent: ConsentInterface): boolean => {
+        return editingConsent &&
+            editingConsent.consentReceipt &&
+            editingConsent.consentReceipt.services &&
+            editingConsent.consentReceipt.services.length > 0;
+    }
+
+    /**
+     * A predicate that checks whether a particular service inside
+     * a {@link ConsentReceiptInterface} has purposes to show.
+     *
+     * @param {ServiceInterface} service
+     */
+    const hasPurposesInService = (service: ServiceInterface): boolean => {
+        return service &&
+            service.purposes &&
+            service.purposes.length > 0;
+    }
+
+    /**
+     * A predicate that checks whether a particular {@link PurposeInterface}
+     * has a list of {@link PIICategory[]} and is not empty.
+     *
+     * @param {PurposeInterface} purpose
+     */
+    const hasPIICategoriesInPurpose = (purpose: PurposeInterface): boolean => {
+        return purpose.piiCategory && purpose.piiCategory.length > 0;
+    }
 
     return (
         <EditSection data-testid={ `${testId}-editing-section` }>
