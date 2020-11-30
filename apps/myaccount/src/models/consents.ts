@@ -135,6 +135,12 @@ export interface PIICategory {
     validity: string;
 }
 
+export interface PIICategoryWithStatus extends PIICategory {
+    status: PIICategoryStatus;
+}
+
+export type PIICategoryStatus = "accepted" | "denied";
+
 /**
  * PIICategory Model
  */
