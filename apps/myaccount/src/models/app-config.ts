@@ -67,7 +67,6 @@ export interface ServiceResourceEndpointsInterface {
     authorize: string;
     challenges: string;
     challengeAnswers: string;
-    consents: string;
     federatedAssociations: string;
     fidoEnd: string;
     fidoMetaData: string;
@@ -79,7 +78,6 @@ export interface ServiceResourceEndpointsInterface {
     logout: string;
     me: string;
     profileSchemas: string;
-    receipts: string;
     sessions: string;
     smsOtpResend: string;
     smsOtpValidate: string;
@@ -89,6 +87,33 @@ export interface ServiceResourceEndpointsInterface {
     user: string;
     revoke: string;
     wellKnown: string;
+
+    /**
+     * Swagger Documentation {@link https://docs.wso2.com/display/IS511/apidocs/Consent-management-apis/}
+     *
+     * Below we declare the type definitions for resource routes in consent-management-api
+     * (CMA). There's multiple endpoints under our CMA but in here we only specify the
+     * routes which is used by this application.
+     */
+    consentManagement: {
+        consent: {
+            listAllConsents: string;
+            addConsent: string; // Also for updating
+            consentReceipt: string;
+        };
+        purpose: {
+            getPurpose: string;
+            list: string;
+        };
+    };
+
+    /**
+     * Documentation {@link https://is.docs.wso2.com/en/5.11.0/develop/configs-rest-api/#/Server%20Configs}
+     *
+     * Below {@code config} is the route that we use to fetch the server configurations.
+     * @see fetchServerConfiguration to see the usages.
+     */
+    config: string;
 }
 
 /**

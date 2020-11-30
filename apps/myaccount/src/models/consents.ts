@@ -54,9 +54,13 @@ export interface ServiceInterface {
 }
 
 /**
- * Purpose Model
+ * This is the Purpose Model nested in the {@link ServiceInterface}
+ * Don't get confused this with the {@link PurposeModel}
+ *
+ * @desc Structural Model
+ * @see ServiceInterface
  */
-interface PurposeInterface {
+export interface PurposeInterface {
     consentType: string;
     purpose: string;
     purposeId: number;
@@ -65,14 +69,77 @@ interface PurposeInterface {
     termination: string;
     thirdPartyDisclosure: boolean;
     thirdPartyName: string;
+    /**
+     * This property contains all the PII categories of
+     * this Purpose. {@link piiCategory} has the accepted
+     * PII claims. But this contains both accepted/denied
+     * claims.
+     */
+    allPIICategories?: PurposeModelPIICategory[];
+    /**
+     * This property contains the description value which
+     * is fetched via the Purpose detail endpoint.
+     *
+     * @see attachReceiptPurposeDetails function in {@link Consents}
+     */
+    description?: string;
 }
 
 /**
- * Model to map revoked claims.
+ * This interface describes the type definitions that gets
+ * from the API response.
+ *
+ * @see PurposeModelPIICategory
  */
-export interface RevokedClaimInterface {
-    id: string;
-    revoked: number[];
+export interface PurposeModel {
+    description: string;
+    group: string;
+    groupType: string;
+    piiCategories: PurposeModelPIICategory[];
+    purpose: string;
+    purposeId: number;
+}
+
+/**
+ * This is a structural model nested inside the {@link PurposeModel}
+ *
+ * @desc Structural Model
+ * @see PurposeModel
+ */
+export interface PurposeModelPIICategory {
+    description: string;
+    displayName: string;
+    mandatory: boolean;
+    piiCategory: string;
+    piiCategoryId: number;
+    sensitive: boolean;
+}
+
+/**
+ * This model is a partial structure which sent by our API
+ * The only difference of this and {@link PurposeModel} is
+ * that this does not contain the {@link PurposeModelPIICategory[]}
+ * list.
+ *
+ * @link /apidocs/Consent-management-apis/#!/operations#Purpose#consentsPurposesGet
+ * @see fetchAllPurposes for usages.
+ */
+export interface PurposeModelPartial {
+    description: string;
+    group: string;
+    groupType: string;
+    purpose: string;
+    purposeId: number;
+}
+
+/**
+ * PII category mapping model in the UI.
+ */
+export interface PIICategoryClaimToggleItem {
+    piiCategoryId?: number;
+    purposeId?: number;
+    receiptId?: string;
+    status?: PIICategoryStatus;
 }
 
 /**
@@ -84,6 +151,12 @@ export interface PIICategory {
     piiCategoryName: string;
     validity: string;
 }
+
+export interface PIICategoryWithStatus extends PIICategory {
+    status: PIICategoryStatus;
+}
+
+export type PIICategoryStatus = "accepted" | "denied";
 
 /**
  * PIICategory Model

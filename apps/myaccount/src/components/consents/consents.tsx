@@ -16,35 +16,47 @@
  * under the License.
  */
 
-import _ from "lodash";
+import { TestableComponentInterface } from "@wso2is/core/models";
+import { chain, cloneDeep } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
 import {
-    fetchConsentReceipt,
+    fetchAllPurposes,
     fetchConsentedApps,
+    fetchConsentReceipt,
+    fetchPurposesByIDs,
     revokeConsentedApp,
     updateConsentedClaims
 } from "../../api/consents";
-import { AppConstants } from "../../constants";
+import { AppConstants, ConsentConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
+    ConfigurationModel,
     ConsentInterface,
+    ConsentReceiptInterface,
     ConsentState,
-    RevokedClaimInterface,
+    PIICategory,
+    PIICategoryClaimToggleItem,
+    PIICategoryWithStatus,
+    PurposeInterface,
+    PurposeModel,
+    PurposeModelPartial,
     ServiceInterface
 } from "../../models";
 import { AppState } from "../../store";
 import { endUserSession } from "../../utils";
 import { ModalComponent, SettingsSection } from "../shared";
+import { fetchServerConfiguration } from "../../api";
 
 /**
  * Proptypes for the user sessions component.
+ * Also see {@link Consents.defaultProps}
  */
-interface ConsentComponentProps {
+interface ConsentComponentProps extends TestableComponentInterface {
     onAlertFired: (alert: AlertInterface) => void;
 }
 
@@ -54,42 +66,58 @@ interface ConsentComponentProps {
  * @return {JSX.Element}
  */
 export const Consents: FunctionComponent<ConsentComponentProps> = (props: ConsentComponentProps): JSX.Element => {
+
+    const { onAlertFired, ["data-testid"]: testId } = props;
+
     const [ consentedApps, setConsentedApps ] = useState<ConsentInterface[]>([]);
+    const [ purposeDetailModels, setPurposeDetailModels ] = useState<PurposeModel[]>([]);
     const [ revokingConsent, setRevokingConsent ] = useState<ConsentInterface>();
     const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
-    const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
-
+    const [ deniedPIIClaimList, setDeniedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
+    const [ acceptedPIIClaimList, setAcceptedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
     const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
-
-    const { onAlertFired } = props;
+    const tenantDomain: string = useSelector((state: AppState) => state?.authenticationInformation?.tenantDomain);
     const { t } = useTranslation();
 
     /**
-     * Retrieves the consented applications of the user.
+     * Retrieves the consented applications of the user. It will only
+     * fetch {@link ConsentState.ACTIVE} apps. Once fetched this function will
+     * set the consented apps state {@link setConsentedApps}.
+     *
+     * For example: -
+     * The IDP consent "My Account" will always be active and if theres
+     * any custom consents added it will be listed as "Resident IDP".
+     *
+     * @see fetchConsentedApps
      */
-    const getConsentedApps = (): void => {
-        fetchConsentedApps(ConsentState.ACTIVE, userName)
-            .then((response) => {
-                setConsentedApps(response);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.detail) {
-                    onAlertFired({
-                        description: t(
-                            "userPortal:components.consentManagement.notifications.consentedAppsFetch.error" +
-                            ".description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "userPortal:components.consentManagement.notifications.consentedAppsFetch.error.message"
-                        )
-                    });
+    const getConsentedApps = async (): Promise<void> => {
 
-                    return;
-                }
-
+        try {
+            const apps: ConsentInterface[] = await fetchConsentedApps(ConsentState.ACTIVE, userName);
+            // Now check whether we have the "Resident IDP" consent in the consented apps list.
+            const residentIDP = apps.find(({ spDisplayName }) =>
+                spDisplayName === ConsentConstants.SERVICE_DISPLAY_NAME);
+            if (!residentIDP) {
+                // Try to create an empty "Resident IDP" consent. And push the consent to the apps list.
+                apps.push(await createEmptyResidentIDPConsent());
+            }
+            // Finally set the value to the hook
+            setConsentedApps(apps);
+        } catch (error) {
+            if (error.response && error.response.data && error.response.detail) {
+                onAlertFired({
+                    description: t(
+                        "userPortal:components.consentManagement.notifications.consentedAppsFetch.error" +
+                        ".description",
+                        { description: error.response.data.detail }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "userPortal:components.consentManagement.notifications.consentedAppsFetch.error.message"
+                    )
+                });
+            } else {
                 onAlertFired({
                     description: t(
                         "userPortal:components.consentManagement.notifications.consentedAppsFetch.genericError" +
@@ -99,49 +127,344 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     message: t("userPortal:components.consentManagement.notifications.consentedAppsFetch" +
                         ".genericError.message")
                 });
-            });
+            }
+        }
+
     };
 
+    /**
+     * Creates an empty "Resident IDP" consent.
+     */
+    const createEmptyResidentIDPConsent = async (): Promise<ConsentInterface> => {
+
+        // Just try to fetch the server configuration. If there's any exceptions
+        // thrown it will be handled in @link getConsentedApps function
+        const config: ConfigurationModel = await fetchServerConfiguration();
+
+        // Recreate the piiPrincipalId from currently authenticated user's username.
+        const fragments = userName.split("@");
+        const piiPrincipalId = fragments.length ? fragments[0] : "";
+
+        const receipt: ConsentInterface = {
+            consentReceipt: {
+                version: "", // Server will set this value
+                collectionMethod: ConsentConstants.COLLECTION_METHOD,
+                jurisdiction: "", // Optional
+                language: "", // Optional
+                policyUrl: "", // Optional
+                services: [ {
+                    purposes: [], // Mandatory length can't be zero
+                    service: config.homeRealmIdentifiers[0], // Mandatory
+                    serviceDescription: ConsentConstants.SERVICE_DESCRIPTION, // Mandatory
+                    serviceDisplayName: ConsentConstants.SERVICE_DISPLAY_NAME, // Mandatory
+                    tenantDomain: tenantDomain // Mandatory
+                } ] // Mandatory
+            },
+            // Below {@code consentReceiptID} will get overridden by the server
+            // we use it here just for identifying this receipt
+            consentReceiptID: ConsentConstants.PLACEHOLDER_RECEIPT_ID,
+            language: "", // Optional
+            piiPrincipalId: piiPrincipalId, // Mandatory
+            spDescription: ConsentConstants.SERVICE_DESCRIPTION, // Mandatory
+            spDisplayName: ConsentConstants.SERVICE_DISPLAY_NAME, // Mandatory
+            state: ConsentState.ACTIVE, // Mandatory
+            tenantDomain: tenantDomain // Mandatory
+        };
+
+        return Promise.resolve(receipt);
+
+    };
+
+    /**
+     * We will use this function to pre-fetch the purpose models details.
+     *
+     * This function calls the {@link fetchAllPurposes} and fetches all the
+     * available purposes in this application (including "DEFAULT" & "SYSTEM").
+     * Also this function will cache those purposes in a state hook to reuse
+     * throughout the life cycle of this component.
+     *
+     * @see setPurposeModels
+     * @see purposeModels
+     */
+    const getAllPurposesDetails = async (): Promise<void> => {
+        // Go and fetch all the available purpose models.
+        const purposeModelPartials: PurposeModelPartial[] = await fetchAllPurposes();
+        // Now map out only their ids to get the detailed information.
+        const purposesIds = new Set(purposeModelPartials.map(({ purposeId }) => purposeId));
+        // Now go and fetch all the detailed purposes of every service.
+        const response: PurposeModel[] = await fetchPurposesByIDs(purposesIds);
+        // Set response value to the hook
+        setPurposeDetailModels(response);
+    }
+
+    /**
+     * Apply any component side-effects here.
+     */
     useEffect(() => {
-        getConsentedApps();
+        ( async function _execute() {
+            await getConsentedApps();
+            await getAllPurposesDetails();
+        }() );
     }, []);
+
+    /**
+     * Populates the PII claim list to state hooks.
+     *
+     * @param {ConsentInterface} app
+     * @param {ConsentReceiptInterface} receipt
+     */
+    const populatePIIClaimListStates = async (app: ConsentInterface, receipt: ConsentReceiptInterface): Promise<void> => {
+
+        const accepted: Set<PIICategoryClaimToggleItem> = new Set(acceptedPIIClaimList.values());
+        const denied: Set<PIICategoryClaimToggleItem> = new Set(deniedPIIClaimList.values());
+
+        const purposes = chain(receipt.services)
+            .map((service: ServiceInterface) => service.purposes)
+            .flatten()
+            .value();
+
+        purposes.forEach((purpose) => {
+            purpose.piiCategory.forEach((piiCat: PIICategoryWithStatus) => {
+                const toggleItem: PIICategoryClaimToggleItem = {
+                    piiCategoryId: piiCat.piiCategoryId,
+                    purposeId: purpose.purposeId,
+                    receiptId: app.consentReceiptID,
+                    status: piiCat.status
+                };
+                if (piiCat.status === "accepted") {
+                    accepted.add(toggleItem);
+                } else {
+                    denied.add(toggleItem);
+                }
+            });
+        });
+
+        setAcceptedPIIClaimList(accepted);
+        setDeniedPIIClaimList(denied);
+    };
+
+    const attachResidentIDPReceiptMissingPurposes = async (receipt: ConsentReceiptInterface): Promise<void> => {
+
+        // Filter out the non-default purposes from the cached {@link purposeModels}
+        const allPurposeModelsExceptDefault = purposeDetailModels.filter(
+            ({ purpose }) => purpose !== ConsentConstants.DEFAULT_CONSENT
+        );
+
+        const createEmptyPurposeObject = (partial: PurposeModelPartial) => {
+            return {
+                consentType: ConsentConstants.CONSENT_TYPE,
+                purpose: partial.purpose,
+                purposeId: partial.purposeId,
+                description: partial.description,
+                piiCategory: [],
+                primaryPurpose: true,
+                termination: ConsentConstants.TERMINATION,
+                thirdPartyDisclosure: true,
+                thirdPartyName: ConsentConstants.EMPTY_STRING,
+                allPIICategories: [],
+            };
+        };
+
+        /**
+         * In this step what we go through this {@code receipt} services and keep a
+         * reference of all of its purposes ids. Then we append the missing purposes
+         * to that service.
+         */
+        for (const service of receipt.services) {
+            const availablePurposes = new Set(service.purposes.map(({ purposeId }) => purposeId));
+            for (const purposeModel of allPurposeModelsExceptDefault) {
+                if (!availablePurposes.has(purposeModel.purposeId)) {
+                    service.purposes.push(createEmptyPurposeObject(purposeModel))
+                }
+            }
+        }
+
+    };
+
+    /**
+     * This method will fetch detailed purposes of every service listed in the
+     * {@code receipt} model. See {@link fetchPurposesByIDs} to understand the
+     * fetch call.
+     *
+     * Important Note: -
+     * This is a mutating function and therefore the argument {@code receipt}
+     * will get mutated after calling this function. If you want to prevent this
+     * from happening then deep clone the {@code receipt} via LodashCloneDeep
+     * and pass it to the function.
+     *
+     * @param {ConsentReceiptInterface} receipt
+     * @return {Promise<void>} void
+     */
+    const attachResidentIDPReceiptPurposes = async (receipt: ConsentReceiptInterface): Promise<void> => {
+
+        const purposeToServices: Map<number, number[]> = new Map<number, number[]>();
+
+        // In this step what we do is, going through this receipt services and
+        // remember which purpose falls in to which service. So, by doing this
+        // we can iterate through all the available purposes and along the way
+        // we can all the services by calling map.get(purposeId).
+        receipt.services.forEach((service: ServiceInterface, index: number) => {
+            service.purposes.forEach(({ purposeId }: PurposeInterface) => {
+                if (purposeToServices.has(purposeId)) {
+                    purposeToServices.get(purposeId).push(index);
+                } else {
+                    purposeToServices.set(purposeId, [ index ]);
+                }
+            });
+        });
+
+        const allPurposesExceptDefault = purposeDetailModels.filter(
+            ({ purpose }) => purpose !== ConsentConstants.DEFAULT_CONSENT
+        );
+
+        // Now iterate through each of the {@code PurposeModel[]}
+        allPurposesExceptDefault.forEach((detailedPurpose): void => {
+            // Now refer back to the services that rely on this purpose.
+            const matchingServices = purposeToServices.get(detailedPurpose.purposeId);
+            if (matchingServices && matchingServices.length) {
+                // Then find the correct purpose and attach the detailed info
+                // for that purpose.
+                matchingServices.forEach((serviceIndex): void => {
+                    const service = receipt.services[serviceIndex];
+                    const purpose = service.purposes.find(
+                        ({ purposeId }) => purposeId === detailedPurpose.purposeId
+                    );
+                    if (purpose) {
+                        // For each mapped out purpose set the full pii categories
+                        purpose.description = detailedPurpose.description;
+                        purpose.allPIICategories = detailedPurpose.piiCategories;
+                    }
+                });
+            }
+        });
+
+        bindPIICategoryStatus(receipt);
+
+    };
+
+    /**
+     * Now we need to figure out which piiCategory claim is denied and which is accepted.
+     * @param receipt
+     */
+    const bindPIICategoryStatus = (receipt: ConsentReceiptInterface): void => {
+
+        const purposes = chain(receipt.services)
+            .map(({ purposes }) => purposes)
+            .flatten()
+            .value();
+
+        for (const purpose of purposes) {
+            // Set the accepted PII categories.
+            const accepted = purpose.piiCategory.map((piiCat: PIICategory): PIICategoryWithStatus => {
+                return { status: "accepted", ...piiCat }
+            });
+            // Now keep a reference of these accepted PII categories.
+            const acceptedCategoryIDs: Set<number> = new Set<number>(
+                accepted.map((pii) => pii.piiCategoryId)
+            );
+            // Moving on to check if there any denied permissions.
+            let denied = [];
+            if (purpose.allPIICategories && purpose.allPIICategories.length) {
+                // Set the denied PII categories
+                denied = purpose.allPIICategories
+                    .filter((piiCat): boolean => !acceptedCategoryIDs.has(piiCat.piiCategoryId))
+                    .map((piiCat): PIICategoryWithStatus => {
+                        return {
+                            piiCategoryId: piiCat.piiCategoryId,
+                            piiCategoryName: piiCat.piiCategory,
+                            piiCategoryDisplayName: piiCat.displayName,
+                            validity: "DATE_UNTIL:INDEFINITE",
+                            status: "denied",
+                        } as PIICategoryWithStatus;
+                    });
+            }
+            /**
+             * Finally mutate the {@code piiCategory} property with piiCategories
+             * with the status attached to them. Note that we are down casting
+             * {@code piiCategory} property explicitly.
+             * @see PIICategoryWithStatus
+             */
+            purpose.piiCategory = [ ...accepted, ...denied ] as PIICategoryWithStatus[];
+        }
+
+    }
 
     /**
      * Fetches the consent receipt for the corresponding id.
      *
      * @param receiptId - Consent receipt id.
      */
-    const getConsentReceipt = (receiptId): void => {
-        fetchConsentReceipt(receiptId)
-            .then((response) => {
-                const apps = [ ...consentedApps ];
+    const getConsentReceipt = async (receiptId): Promise<void> => {
 
-                for (const app of apps) {
-                    if (app.consentReceiptID === receiptId) {
-                        app.consentReceipt = response;
-                    }
+        try {
+            // Get the apps that is previously fetched from the state.
+            const apps: ConsentInterface[] = [ ...consentedApps ];
+            /**
+             * Now we need to find the consent that matches the {@code receiptId}
+             * We will use this consent reference to set the {@code receipt}.
+             */
+            const consent: ConsentInterface = apps.find(
+                ({ consentReceiptID }) => consentReceiptID === receiptId
+            );
+            /**
+             * We check if the requesting receiptId matched the {@link ConsentConstants.PLACEHOLDER_RECEIPT_ID}
+             * and directly assign the receipt from the consent. If you inspect inside the method
+             * {@link createEmptyResidentIDPConsent} you can see that we are assigning a placeholder
+             * receipt to its consent object. Therefore we can safely assume {@link consent.consentReceipt}
+             * value is always truthy.
+             *
+             * Also, if the {@code receiptId} is not the placeholder then we know its a legit consent created by
+             * our server. And we just have to try and fetch its receipt by id.
+             */
+            let receipt: ConsentReceiptInterface;
+            if (receiptId === ConsentConstants.PLACEHOLDER_RECEIPT_ID) {
+                receipt = consent.consentReceipt;
+            } else {
+                receipt = await fetchConsentReceipt(receiptId);
+            }
+            /**
+             * If the requesting receipt is the "Resident IDP" receipt then apply any missing purpose
+             * models to it. Note that we only do this for service provider named "Resident IDP".
+             */
+            if (consent.spDisplayName === ConsentConstants.SERVICE_DISPLAY_NAME) {
+                await attachResidentIDPReceiptMissingPurposes(receipt);
+                await attachResidentIDPReceiptPurposes(receipt);
+            } else {
+                const defaultPurpose = purposeDetailModels.find(
+                    ({ purpose }) => purpose === ConsentConstants.DEFAULT_CONSENT
+                );
+                if (defaultPurpose) {
+                    receipt.services.forEach(({ purposes }) => purposes.forEach(
+                        (purpose) => purpose.description = defaultPurpose?.description ?? ""
+                    ));
                 }
+                bindPIICategoryStatus(receipt);
+            }
 
-                setConsentedApps(apps);
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.detail) {
-                    onAlertFired({
-                        description: t(
-                            "userPortal:components.consentManagement.notifications.consentReceiptFetch.error" +
-                            ".description",
-                            { description: error.response.data.detail }
-                        ),
-                        level: AlertLevels.ERROR,
-                        message: t(
-                            "userPortal:components.consentManagement.notifications.consentReceiptFetch.error" +
-                            ".message"
-                        )
-                    });
+            // Set the optional property {@link ConsentInterface.consentReceipt}
+            consent.consentReceipt = receipt;
+            await populatePIIClaimListStates(consent, receipt);
 
-                    return;
-                }
+            // Once we set the newly fetched receipt to the matching
+            // consented app instance. We set the consented apps again
+            // using the hook {@code setConsentedApps}
+            setConsentedApps([ ...apps ]);
 
+        } catch (error) {
+            if (error.response && error.response.data && error.response.detail) {
+                onAlertFired({
+                    description: t(
+                        "userPortal:components.consentManagement.notifications.consentReceiptFetch.error" +
+                        ".description",
+                        { description: error.response.data.detail }
+                    ),
+                    level: AlertLevels.ERROR,
+                    message: t(
+                        "userPortal:components.consentManagement.notifications.consentReceiptFetch.error" +
+                        ".message"
+                    )
+                });
+            } else {
                 onAlertFired({
                     description: t(
                         "userPortal:components.consentManagement.notifications.consentReceiptFetch" +
@@ -152,38 +475,39 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                         "userPortal:components.consentManagement.notifications.consentReceiptFetch" +
                         ".genericError.message")
                 });
-            });
+            }
+        }
     };
 
-    /**
-     * The following method handles the revoke claim checkbox toggle event.
-     *
-     * @param {string} receiptId - consent receipt id.
-     * @param {number} claimId - claim id ie. piiCategoryId.
-     */
-    const handleClaimRevokeToggle = (receiptId: string, claimId: number): void => {
-        const list = [ ...revokedClaimList ];
-        let found = false;
+    const piiClaimToggleHandler = (piiCategoryId: number, purposeId: number, receiptId: string): void => {
 
-        for (const item of list) {
-            if (item.id === receiptId) {
-                found = true;
-                if (item.revoked.includes(claimId)) {
-                    const removingIndex = item.revoked.indexOf(claimId);
-                    if (removingIndex !== -1) {
-                        item.revoked.splice(removingIndex, 1);
-                    }
-                    continue;
-                }
-                item.revoked.push(claimId);
+        const currentState = [ ...deniedPIIClaimList, ...acceptedPIIClaimList ];
+        let piiItem: PIICategoryClaimToggleItem;
+
+        for (const item of currentState) {
+            if (item.piiCategoryId === piiCategoryId &&
+                item.purposeId === purposeId &&
+                item.receiptId === receiptId) {
+                piiItem = item;
+                break;
             }
         }
 
-        if (!found) {
-            list.push({ id: receiptId, revoked: [ claimId ] });
+        // If the toggled PII category item's status is "denied"
+        // then move it to the "accepted" list. @see PIICategoryStatus
+        if (piiItem.status === "denied") {
+            deniedPIIClaimList.delete(piiItem);
+            piiItem.status = "accepted";
+            setDeniedPIIClaimList(new Set(deniedPIIClaimList.values()));
+            setAcceptedPIIClaimList(new Set([ ...acceptedPIIClaimList.values(), piiItem ]));
+
+        } else {
+            acceptedPIIClaimList.delete(piiItem);
+            piiItem.status = "denied";
+            setAcceptedPIIClaimList(new Set(acceptedPIIClaimList.values()));
+            setDeniedPIIClaimList(new Set([ ...deniedPIIClaimList.values(), piiItem ]));
         }
 
-        setRevokedClaimList(list);
     };
 
     /**
@@ -202,13 +526,13 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      *
      * @param {boolean} refetch - Flag to set the if re-fetch is enabled.
      */
-    const resetConsentedAppList = (refetch = true): void => {
+    const resetConsentedAppList = async (refetch = true): Promise<void> => {
         // Close all the opened drawers.
         setConsentListActiveIndexes([]);
 
         if (refetch) {
             // Re-fetch the consented apps list
-            getConsentedApps();
+            await getConsentedApps();
         }
     };
 
@@ -221,7 +545,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         const self: number = AppConstants.PORTAL_SP_DESCRIPTION.localeCompare(consent.spDisplayName);
 
         revokeConsentedApp(consent.consentReceiptID)
-            .then(() => {
+            .then(async () => {
                 onAlertFired({
                     description: t(
                         "userPortal:components.consentManagement.notifications.revokeConsentedApp.success" +
@@ -241,7 +565,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 }
 
                 // Reset the list
-                resetConsentedAppList(true);
+                await resetConsentedAppList(true);
 
                 setConsentRevokeModalVisibility(false);
             })
@@ -276,39 +600,71 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     };
 
     /**
-     * Handles the claims update button click action event. The revoked claims are taken
-     * out of the existing receipt object and are passed on to the `updateConsentedClaims`
-     * which executes the API request and updates the consented claims.
+     * Handles the claims update button click action event. In this function
+     * we will only be using the {@link acceptedPIIClaimList} to determine
+     * which pii category claims are currently accepted for a given consent
+     * receipt.
      *
      * @param {string} receiptId - consent receipt id.
      */
     const handleClaimUpdate = (receiptId: string): void => {
-        // clone deep is needed to avoid mutations.
-        const updatingConsent = _.cloneDeep(consentedApps).find((consent) => consent.consentReceiptID === receiptId);
-        const claimList = [ ...revokedClaimList ].find((item) => item.id === receiptId);
+        /**
+         * Find the matching {@link ConsentInterface} using {@code receiptId}
+         * clone deep is needed to avoid mutations.
+         */
+        const updatingConsent = cloneDeep(consentedApps)
+            .find((consent) => consent.consentReceiptID === receiptId);
 
-        let isPIIEmpty = false;
-
-        // If the `piiCategory` id is in the `revokedClaimIds`,
-        // then the category is removed from the list.
-        updatingConsent.consentReceipt.services.map((service: ServiceInterface) => {
-            service.purposes.map((purpose) => {
-                purpose.piiCategory = purpose.piiCategory.filter((category) => {
-                    if (!claimList.revoked.includes(category.piiCategoryId)) {
-                        return category;
+        // Now refer the {@link acceptedPIIClaimList} and filter out only
+        // items that matches {@code updatingConsent.consentReceiptID}
+        const acceptedClaimsOfThisReceipt = [ ...acceptedPIIClaimList ].filter(
+            (item: PIICategoryClaimToggleItem) => item.receiptId === updatingConsent.consentReceiptID
+        );
+        /**
+         * In below forEach call we will go through each service of this receipt
+         * and each purpose of the service to filter out the piiCategories that
+         * is not accepted. And preserve only the piiCategories that is accepted.
+         *
+         * Below operation will mutate the {@code updatingConsent.consentReceipt}
+         */
+        updatingConsent.consentReceipt.services.forEach((service) => {
+            service.purposes.forEach((purpose) => {
+                // Now go and find the categories of this purpose and filter
+                // out the ones that got revoked. And keep only accepted ones.
+                purpose.piiCategory = purpose.piiCategory.filter((piiCat) => {
+                    for (const accepted of acceptedClaimsOfThisReceipt) {
+                        if (accepted.purposeId === purpose.purposeId &&
+                            accepted.piiCategoryId === piiCat.piiCategoryId) {
+                            return true;
+                        }
                     }
+                    return false;
+                }).map((piiCat) => {
+                    delete piiCat['status'];
+                    return piiCat;
                 });
-                // If consent to all the pii categories are revoked
-                // the application will have to be revoked.
-                if (purpose.piiCategory.length === 0) {
-                    isPIIEmpty = true;
-                }
             });
         });
-
-        // If the PII category list is empty, show the consent revoke modal.
-        // Else, perform the usual consented claims updating process.
-        if (isPIIEmpty) {
+        // Now remove all the purposes that don't have any piiCategories.
+        // This is mandatory because the API won't allow to save a purpose
+        // without at least 1 piiCategory item.
+        updatingConsent.consentReceipt.services.forEach((s) => {
+            s.purposes = s.purposes.filter(p => p.piiCategory.length > 0);
+        });
+        // Now check whether all the piiCategories of this specific receipt
+        // is revoked. Essentially we are checking the sum of all the
+        // {@code receipt.services.purposes.piiCategories}
+        const isAllPIICategoriesRemovedFromThisReceipt: boolean = chain(updatingConsent.consentReceipt.services)
+            .map(value => value.purposes)
+            .flatten()
+            .map(v => v.piiCategory.length)
+            .sum()
+            .value() === 0;
+        // If consent to all the pii categories in every purpose are revoked
+        // then the application (receipt) will have to be revoked.
+        if (isAllPIICategoriesRemovedFromThisReceipt) {
+            // If the PII category list is empty, show the consent revoke modal.
+            // Else, perform the usual consented claims updating process.
             setRevokingConsent(updatingConsent);
             setConsentRevokeModalVisibility(true);
             return;
@@ -366,24 +722,18 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * @param {number} index - Index of the clicked item.
      * @param {string} receiptId - Consent receipt id.
      */
-    const handleConsentDetailClick = (index: number, receiptId: string): void => {
+    const handleConsentDetailClick = async (index: number, receiptId: string): Promise<void> => {
         const indexes = [ ...consentListActiveIndexes ];
 
         if (consentListActiveIndexes.includes(index)) {
-            const list = [ ...revokedClaimList ];
             const removingIndex = consentListActiveIndexes.indexOf(index);
-
             if (removingIndex !== -1) {
                 indexes.splice(removingIndex, 1);
             }
-
-            // Reset the revoked list.
-            setRevokedClaimList(list.filter((item) => item.id !== receiptId));
         } else {
             indexes.push(index);
-
             // Fetch the consent receipt.
-            getConsentReceipt(receiptId);
+            await getConsentReceipt(receiptId);
         }
 
         setConsentListActiveIndexes(indexes);
@@ -407,6 +757,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
         return (
             <ModalComponent
+                data-testid={ `${testId}-revoke-modal` }
                 primaryAction={ t("common:revoke") }
                 secondaryAction={ t("common:cancel") }
                 onSecondaryActionClick={ handleConsentRevokeModalClose }
@@ -420,7 +771,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 }
                 content={ t("userPortal:components.consentManagement.modals.consentRevokeModal.message") }
             >
-                <Modal.Content>
+                <Modal.Content data-testid={ `${testId}-revoke-modal-content` }>
                     {
                         (self === 0)
                             ? (
@@ -439,6 +790,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     return (
         <>
             <SettingsSection
+                data-testid={ `${testId}-settings-section` }
                 description={ t("userPortal:sections.consentManagement.description") }
                 header={ t("userPortal:sections.consentManagement.heading") }
                 placeholder={
@@ -449,16 +801,26 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }
             >
                 <AppConsentList
+                    data-testid={ `${testId}-list` }
                     consentedApps={ consentedApps }
                     onClaimUpdate={ handleClaimUpdate }
                     onAppConsentRevoke={ handleAppConsentRevoke }
-                    onClaimRevokeToggle={ handleClaimRevokeToggle }
-                    revokedClaimList={ revokedClaimList }
                     consentListActiveIndexes={ consentListActiveIndexes }
                     onConsentDetailClick={ handleConsentDetailClick }
+                    onPIIClaimToggle={ piiClaimToggleHandler }
+                    deniedPIIClaimList={ deniedPIIClaimList }
+                    acceptedPIIClaimList={ acceptedPIIClaimList }
                 />
                 { revokingConsent && consentRevokeModal() }
             </SettingsSection>
         </>
     );
+};
+
+/**
+ * Default properties of {@link Consents}
+ * See type definitions in {@link ConsentComponentProps}
+ */
+Consents.defaultProps = {
+    "data-testid": "consents"
 };
