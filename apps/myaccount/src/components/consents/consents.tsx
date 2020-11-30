@@ -27,14 +27,14 @@ import {
     fetchConsentReceipt,
     fetchConsentedApps,
     revokeConsentedApp,
-    updateConsentedClaims
+    updateConsentedClaims, fetchPurposesByIDs
 } from "../../api/consents";
 import { AppConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
-    ConsentInterface,
-    ConsentState, PIICategoryClaimToggleItem,
+    ConsentInterface, ConsentReceiptInterface,
+    ConsentState, PIICategory, PIICategoryClaimToggleItem, PIICategoryWithStatus, PurposeInterface, PurposeModel,
     RevokedClaimInterface,
     ServiceInterface
 } from "../../models";
@@ -117,6 +117,103 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     useEffect(() => {
         getConsentedApps();
     }, []);
+
+    /**
+     * This method will fetch detailed purposes of every service listed in the
+     * {@code receipt} model. See {@link fetchPurposesByIDs} to understand the
+     * fetch call.
+     *
+     * Important Note: -
+     * This is a mutating function and therefore the argument {@code receipt}
+     * will get mutated after calling this function. If you want to prevent this
+     * from happening then deep clone the {@code receipt} via LodashCloneDeep
+     * and pass it to the function.
+     *
+     * @param {ConsentReceiptInterface} receipt
+     * @return {Promise<void>} void
+     */
+    const attachReceiptPurposeDetails = async (receipt: ConsentReceiptInterface): Promise<void> => {
+
+        // First we need to get detailed information of this newly fetched receipt.
+        // We may have multiple services in {@code receipt.services} and each
+        // service will have multiple purposes.
+        //
+        // To solve this we use a dynamic programming approach where we store
+        // the required values in advance. Why? because if we try to fetch each
+        // purpose by its ID within the loop we will exhaust the server.
+
+        const purposeToServices: Map<number, number[]> = new Map<number, number[]>();
+
+        receipt.services.forEach((service: ServiceInterface, index: number) => {
+            service.purposes.forEach(({ purposeId }: PurposeInterface) => {
+                if (purposeToServices.has(purposeId)) {
+                    purposeToServices.get(purposeId).push(index);
+                } else {
+                    purposeToServices.set(purposeId, [ index ]);
+                }
+            });
+        });
+
+        // Now go and fetch all the detailed purposes of every service.
+        const response: PurposeModel[] = await fetchPurposesByIDs(
+            Array.from(purposeToServices.keys())
+        );
+
+        // Now iterate through each of the {@code PurposeModel[]}
+        response.forEach((detailedPurpose): void => {
+            // Now refer back to the services that rely on this purpose.
+            // Then find the correct purpose and attach the detailed info
+            // for that purpose.
+            purposeToServices.get(detailedPurpose.purposeId)
+                // Map out the matching Purpose
+                .map((serviceIndex): PurposeInterface => {
+                    return receipt.services[serviceIndex].purposes.find(
+                        ({ purposeId }) => purposeId === detailedPurpose.purposeId
+                    )
+                })
+                // For each mapped out purpose set the full pii categories
+                .forEach((purpose): void => {
+                    purpose.allPIICategories = detailedPurpose.piiCategories;
+                })
+        });
+
+        // Now we need to figure out which piiCategory claim
+        // is denied and which is accepted.
+        receipt.services.forEach((service): void => {
+            service.purposes.forEach((purpose): void => {
+
+                // Set the accepted PII categories.
+                const accepted = _.cloneDeep(purpose.piiCategory)
+                    .map((piiCat: PIICategory): PIICategoryWithStatus => {
+                        return { status: "accepted", ...piiCat }
+                    });
+                // Now keep a reference of these accepted PII categories.
+                const acceptedCategoryIDs: Set<number> = new Set<number>(
+                    accepted.map((pii) => pii.piiCategoryId)
+                );
+
+                // Set the denied PII categories
+                const denied = purpose.allPIICategories
+                    .filter((piiCat): boolean => !acceptedCategoryIDs.has(piiCat.piiCategoryId))
+                    .map((piiCat): PIICategoryWithStatus => {
+                        return {
+                            piiCategoryId: piiCat.piiCategoryId,
+                            piiCategoryName: piiCat.piiCategory,
+                            piiCategoryDisplayName: piiCat.displayName,
+                            validity: "DATE_UNTIL:INDEFINITE",
+                            status: "denied",
+                        } as PIICategoryWithStatus;
+                    });
+                // Finally mutate the {@code piiCategory} property with piiCategories
+                // with the status attached to them. Note that we are down casting
+                // {@code piiCategory} property explicitly.
+                //
+                // @see PIICategoryWithStatus
+                purpose.piiCategory = [ ...accepted, ...denied ] as PIICategoryWithStatus[];
+            });
+        });
+
+    };
 
     /**
      * Fetches the consent receipt for the corresponding id.
