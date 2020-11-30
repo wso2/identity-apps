@@ -55,6 +55,9 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
         onClaimUpdate,
         onClaimRevokeToggle,
         revokedClaimList,
+        acceptedPIIClaimList,
+        deniedPIIClaimList,
+        onPIIClaimToggle,
         ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
