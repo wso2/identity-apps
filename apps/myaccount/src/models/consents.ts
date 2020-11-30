@@ -60,7 +60,7 @@ export interface ServiceInterface {
  * @desc Structural Model
  * @see ServiceInterface
  */
-interface PurposeInterface {
+export interface PurposeInterface {
     consentType: string;
     purpose: string;
     purposeId: number;
