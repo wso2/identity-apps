@@ -65,6 +65,13 @@ interface PurposeInterface {
     termination: string;
     thirdPartyDisclosure: boolean;
     thirdPartyName: string;
+    /**
+     * This property contains all the PII categories of
+     * this Purpose. {@link piiCategory} has the accepted
+     * PII claims. But this contains both accepted/denied
+     * claims.
+     */
+    allPIICategories?: PurposeModelPIICategory[];
 }
 
 /**
