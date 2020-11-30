@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
-import { ConsentInterface, RevokedClaimInterface } from "../../models";
+import { ConsentInterface, PIICategoryClaimToggleItem, RevokedClaimInterface } from "../../models";
 import { toSentenceCase } from "../../utils";
 import { DangerZone, DangerZoneGroup, EditSection } from "../shared";
 
@@ -34,6 +34,9 @@ interface EditConsentProps extends TestableComponentInterface {
     onClaimUpdate: (receiptId: string) => void;
     onClaimRevokeToggle: (receiptId: string, claimId: number) => void;
     revokedClaimList: RevokedClaimInterface[];
+    acceptedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
+    deniedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
+    onPIIClaimToggle?: (piiCategoryId: number, purposeId: number, receiptId: string) => void;
 }
 
 /**

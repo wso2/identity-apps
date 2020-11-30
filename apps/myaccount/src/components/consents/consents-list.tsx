@@ -22,7 +22,7 @@ import { useTranslation } from "react-i18next";
 import { Button, Grid, Icon, List, Responsive } from "semantic-ui-react";
 import { AppConsentEdit } from "./consent-edit";
 import { ConsentedAppIcon } from "../../configs";
-import { ConsentInterface, ConsentState, RevokedClaimInterface } from "../../models";
+import { ConsentInterface, ConsentState, PIICategoryClaimToggleItem, RevokedClaimInterface } from "../../models";
 import { toSentenceCase } from "../../utils";
 import { ThemeIcon } from "../shared";
 
@@ -38,6 +38,9 @@ interface ConsentsListProps extends TestableComponentInterface {
     onClaimUpdate: (receiptId: string) => void;
     onClaimRevokeToggle: (receiptId: string, claimId: number) => void;
     revokedClaimList: RevokedClaimInterface[];
+    acceptedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
+    deniedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
+    onPIIClaimToggle?: (piiCategoryId: number, purposeId: number, receiptId: string) => void;
 }
 
 /**
