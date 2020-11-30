@@ -461,9 +461,10 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     };
 
     /**
-     * Handles the claims update button click action event. The revoked claims are taken
-     * out of the existing receipt object and are passed on to the `updateConsentedClaims`
-     * which executes the API request and updates the consented claims.
+     * Handles the claims update button click action event. In this function
+     * we will only be using the {@link acceptedPIIClaimList} to determine
+     * which pii category claims are currently accepted for a given consent
+     * receipt.
      *
      * @param {string} receiptId - consent receipt id.
      */
