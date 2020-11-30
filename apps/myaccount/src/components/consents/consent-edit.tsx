@@ -17,6 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
+import _ from "lodash";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
@@ -99,11 +100,39 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
      * @return {boolean}
      */
     const isUpdatable = (): boolean => {
-        for (const item of revokedClaimList) {
-            if (item.id === editingConsent.consentReceiptID) {
-                return item.revoked && item.revoked.length && item.revoked.length > 0;
+
+        // This consent editing view's model {@link editingConsent}
+        const recordOnModelReceipt = _.chain(editingConsent.consentReceipt.services)
+            .map((service: ServiceInterface) => service.purposes)
+            .flatten()
+            .map((purpose: PurposeInterface) => ( {
+                piiCategory: purpose.piiCategory as PIICategoryWithStatus[],
+                purposeId: purpose.purposeId
+            } ))
+            .flatten()
+            .value();
+
+        // Filter out the piiClaims of this receipt.
+        const recordOnUserInterface = _.chain([ ...deniedPIIClaimList, ...acceptedPIIClaimList ])
+            .filter((piiClaim) => piiClaim.receiptId === editingConsent.consentReceiptID)
+            .value();
+
+        // FIXME: solve in linear time
+        for (const uiRecord of recordOnUserInterface) {
+            for (const { purposeId, piiCategory } of recordOnModelReceipt) {
+                if (purposeId === uiRecord.purposeId) {
+                    for (const piiCategoryKey of piiCategory) {
+                        if (piiCategoryKey.piiCategoryId === uiRecord.piiCategoryId &&
+                            piiCategoryKey.status !== uiRecord.status
+                        ) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
+
+        return false;
     };
 
     /**
