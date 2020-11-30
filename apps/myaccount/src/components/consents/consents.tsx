@@ -34,7 +34,7 @@ import {
     AlertInterface,
     AlertLevels,
     ConsentInterface,
-    ConsentState,
+    ConsentState, PIICategoryClaimToggleItem,
     RevokedClaimInterface,
     ServiceInterface
 } from "../../models";
@@ -64,7 +64,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
     const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
-
+    const [ deniedPIIClaimList, setDeniedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
+    const [ acceptedPIIClaimList, setAcceptedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
     const userName: string = useSelector((state: AppState) => state?.authenticationInformation?.username);
     const { t } = useTranslation();
 
