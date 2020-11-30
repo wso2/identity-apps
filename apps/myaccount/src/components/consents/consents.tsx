@@ -128,7 +128,32 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         app: ConsentInterface,
         receipt: ConsentReceiptInterface
     ): Promise<void> => {
+        const accepted: Set<PIICategoryClaimToggleItem> = new Set(acceptedPIIClaimList.values());
+        const denied: Set<PIICategoryClaimToggleItem> = new Set(deniedPIIClaimList.values());
 
+        const purposes = _.chain(receipt.services)
+            .map((service: ServiceInterface) => service.purposes)
+            .flatten()
+            .value();
+
+        purposes.forEach((purpose) => {
+            purpose.piiCategory.forEach((piiCat: PIICategoryWithStatus) => {
+                const toggleItem: PIICategoryClaimToggleItem = {
+                    piiCategoryId: piiCat.piiCategoryId,
+                    purposeId: purpose.purposeId,
+                    receiptId: app.consentReceiptID,
+                    status: piiCat.status
+                };
+                if (piiCat.status === "accepted") {
+                    accepted.add(toggleItem);
+                } else {
+                    denied.add(toggleItem);
+                }
+            });
+        });
+
+        setAcceptedPIIClaimList(accepted);
+        setDeniedPIIClaimList(denied);
     };
 
     /**
