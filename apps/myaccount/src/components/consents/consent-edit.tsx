@@ -148,6 +148,77 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
         return purpose.piiCategory && purpose.piiCategory.length > 0;
     }
 
+    /**
+     * JSX Builder method. Invoked within the scope of {@link this}
+     *
+     * @param {PurposeInterface} purpose
+     */
+    const eachPurposeToJSX = (purpose: PurposeInterface) => {
+
+        /**
+         * JSX Builder method. Invoked within the scope of {@link eachPurposeToJSX}
+         * @param {PIICategoryWithStatus} piiCat
+         */
+        const eachPIICategoryItem = (piiCat: PIICategoryWithStatus) => {
+
+            return <List.Item key={ piiCat.piiCategoryId }>
+                <List.Content>
+                    <List.Header>
+                        <Checkbox
+                            className={ isRevoked(
+                                piiCat.piiCategoryId,
+                                purpose.purposeId,
+                                editingConsent.consentReceiptID
+                            ) ? "revoked" : "" }
+                            checked={ !isRevoked(
+                                piiCat.piiCategoryId,
+                                purpose.purposeId,
+                                editingConsent.consentReceiptID
+                            ) }
+                            label={ piiCat.piiCategoryDisplayName }
+                            onChange={ () => onPIIClaimToggle(
+                                piiCat.piiCategoryId,
+                                purpose.purposeId,
+                                editingConsent.consentReceiptID
+                            ) }
+                        />
+                        {
+                            isRevoked(piiCat.piiCategoryId, purpose.purposeId, editingConsent.consentReceiptID) ? (
+                                <Label className="revoked-label" horizontal>
+                                    { t("common:revoked") }
+                                </Label>
+                            ) : null
+                        }
+
+                    </List.Header>
+                </List.Content>
+            </List.Item>
+        };
+
+        return ( <React.Fragment key={ purpose.purposeId }>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <strong>{ toSentenceCase(purpose.purpose) }</strong>
+                </Grid.Column>
+            </Grid.Row>
+            <Grid.Row columns={ 1 }>
+                <Grid.Column width={ 16 }>
+                    <List
+                        key={ purpose.purposeId }
+                        className="claim-list"
+                        verticalAlign="middle"
+                        relaxed="very">
+                        {
+                            hasPIICategoriesInPurpose(purpose) && purpose.piiCategory.map((piiCat) => {
+                                return eachPIICategoryItem(piiCat as PIICategoryWithStatus);
+                            })
+                        }
+                    </List>
+                </Grid.Column>
+            </Grid.Row>
+        </React.Fragment> )
+    }
+
     return (
         <EditSection data-testid={ `${testId}-editing-section` }>
             <Grid padded>
