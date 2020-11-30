@@ -41,9 +41,7 @@ class Worker {
  */
 jest.mock("react-i18next", () => ({
     useTranslation: () => ({
-      t: (key) => ({
-        message: key
-      })
+        t: key => key
     })
 }));
 
