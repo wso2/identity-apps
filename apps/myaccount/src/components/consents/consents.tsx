@@ -644,6 +644,9 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     revokedClaimList={ revokedClaimList }
                     consentListActiveIndexes={ consentListActiveIndexes }
                     onConsentDetailClick={ handleConsentDetailClick }
+                    onPIIClaimToggle={ piiClaimToggleHandler }
+                    deniedPIIClaimList={ deniedPIIClaimList }
+                    acceptedPIIClaimList={ acceptedPIIClaimList }
                 />
                 { revokingConsent && consentRevokeModal() }
             </SettingsSection>
