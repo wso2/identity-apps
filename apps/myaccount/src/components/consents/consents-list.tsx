@@ -186,6 +186,9 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                         onClaimUpdate={ onClaimUpdate }
                                                         onClaimRevokeToggle={ onClaimRevokeToggle }
                                                         revokedClaimList={ revokedClaimList }
+                                                        onPIIClaimToggle={ onPIIClaimToggle }
+                                                        acceptedPIIClaimList={ acceptedPIIClaimList }
+                                                        deniedPIIClaimList={ deniedPIIClaimList }
                                                     />
                                                 ) : null
                                         }
