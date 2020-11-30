@@ -68,6 +68,36 @@ interface PurposeInterface {
 }
 
 /**
+ * This interface describes the type definitions that gets
+ * from the API response.
+ *
+ * @see PurposeModelPIICategory
+ */
+export interface PurposeModel {
+    description: string;
+    group: string;
+    groupType: string;
+    piiCategories: PurposeModelPIICategory[];
+    purpose: string;
+    purposeId: number;
+}
+
+/**
+ * This is a structural model nested inside the {@link PurposeModel}
+ *
+ * @desc Structural Model
+ * @see PurposeModel
+ */
+export interface PurposeModelPIICategory {
+    description: string;
+    displayName: string;
+    mandatory: boolean;
+    piiCategory: string;
+    piiCategoryId: number;
+    sensitive: boolean;
+}
+
+/**
  * Model to map revoked claims.
  */
 export interface RevokedClaimInterface {
