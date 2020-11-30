@@ -39,8 +39,6 @@ interface EditConsentProps extends TestableComponentInterface {
     editingConsent: ConsentInterface;
     onAppConsentRevoke: (consent: ConsentInterface) => void;
     onClaimUpdate: (receiptId: string) => void;
-    onClaimRevokeToggle: (receiptId: string, claimId: number) => void;
-    revokedClaimList: RevokedClaimInterface[];
     acceptedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
     deniedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
     onPIIClaimToggle?: (piiCategoryId: number, purposeId: number, receiptId: string) => void;
@@ -60,8 +58,6 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
         editingConsent,
         onAppConsentRevoke,
         onClaimUpdate,
-        onClaimRevokeToggle,
-        revokedClaimList,
         acceptedPIIClaimList,
         deniedPIIClaimList,
         onPIIClaimToggle,

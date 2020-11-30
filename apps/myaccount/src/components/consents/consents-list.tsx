@@ -36,8 +36,6 @@ interface ConsentsListProps extends TestableComponentInterface {
     onAppConsentRevoke: (consent: ConsentInterface) => void;
     onConsentDetailClick: (index: number, id: string) => void;
     onClaimUpdate: (receiptId: string) => void;
-    onClaimRevokeToggle: (receiptId: string, claimId: number) => void;
-    revokedClaimList: RevokedClaimInterface[];
     acceptedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
     deniedPIIClaimList?: Set<PIICategoryClaimToggleItem>;
     onPIIClaimToggle?: (piiCategoryId: number, purposeId: number, receiptId: string) => void;
@@ -58,8 +56,6 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
         consentListActiveIndexes,
         onAppConsentRevoke,
         onClaimUpdate,
-        onClaimRevokeToggle,
-        revokedClaimList,
         onConsentDetailClick,
         onPIIClaimToggle,
         acceptedPIIClaimList,
@@ -184,8 +180,6 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
                                                         editingConsent={ consent }
                                                         onAppConsentRevoke={ onAppConsentRevoke }
                                                         onClaimUpdate={ onClaimUpdate }
-                                                        onClaimRevokeToggle={ onClaimRevokeToggle }
-                                                        revokedClaimList={ revokedClaimList }
                                                         onPIIClaimToggle={ onPIIClaimToggle }
                                                         acceptedPIIClaimList={ acceptedPIIClaimList }
                                                         deniedPIIClaimList={ deniedPIIClaimList }

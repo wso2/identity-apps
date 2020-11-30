@@ -310,37 +310,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             });
     };
 
-    /**
-     * The following method handles the revoke claim checkbox toggle event.
-     *
-     * @param {string} receiptId - consent receipt id.
-     * @param {number} claimId - claim id ie. piiCategoryId.
-     */
-    const handleClaimRevokeToggle = (receiptId: string, claimId: number): void => {
-        const list = [ ...revokedClaimList ];
-        let found = false;
-
-        for (const item of list) {
-            if (item.id === receiptId) {
-                found = true;
-                if (item.revoked.includes(claimId)) {
-                    const removingIndex = item.revoked.indexOf(claimId);
-                    if (removingIndex !== -1) {
-                        item.revoked.splice(removingIndex, 1);
-                    }
-                    continue;
-                }
-                item.revoked.push(claimId);
-            }
-        }
-
-        if (!found) {
-            list.push({ id: receiptId, revoked: [ claimId ] });
-        }
-
-        setRevokedClaimList(list);
-    };
-
     const piiClaimToggleHandler = (piiCategoryId: number, purposeId: number, receiptId: string): void => {
 
         const currentState = [ ...deniedPIIClaimList, ...acceptedPIIClaimList ];
@@ -660,8 +629,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                     consentedApps={ consentedApps }
                     onClaimUpdate={ handleClaimUpdate }
                     onAppConsentRevoke={ handleAppConsentRevoke }
-                    onClaimRevokeToggle={ handleClaimRevokeToggle }
-                    revokedClaimList={ revokedClaimList }
                     consentListActiveIndexes={ consentListActiveIndexes }
                     onConsentDetailClick={ handleConsentDetailClick }
                     onPIIClaimToggle={ piiClaimToggleHandler }
