@@ -54,7 +54,11 @@ export interface ServiceInterface {
 }
 
 /**
- * Purpose Model
+ * This is the Purpose Model nested in the {@link ServiceInterface}
+ * Don't get confused this with the {@link PurposeModel}
+ *
+ * @desc Structural Model
+ * @see ServiceInterface
  */
 interface PurposeInterface {
     consentType: string;
