@@ -468,32 +468,51 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
      * @param {string} receiptId - consent receipt id.
      */
     const handleClaimUpdate = (receiptId: string): void => {
-        // clone deep is needed to avoid mutations.
-        const updatingConsent = _.cloneDeep(consentedApps).find((consent) => consent.consentReceiptID === receiptId);
-        const claimList = [ ...revokedClaimList ].find((item) => item.id === receiptId);
 
-        let isPIIEmpty = false;
+        /**
+         * Find the matching {@link ConsentInterface} using {@code receiptId}
+         * clone deep is needed to avoid mutations.
+         */
+        const updatingConsent = _.cloneDeep(consentedApps)
+            .find((consent) => consent.consentReceiptID === receiptId);
 
-        // If the `piiCategory` id is in the `revokedClaimIds`,
-        // then the category is removed from the list.
-        updatingConsent.consentReceipt.services.map((service: ServiceInterface) => {
-            service.purposes.map((purpose) => {
-                purpose.piiCategory = purpose.piiCategory.filter((category) => {
-                    if (!claimList.revoked.includes(category.piiCategoryId)) {
-                        return category;
+        // Now refer the {@link acceptedPIIClaimList} and filter out only
+        // items that matches {@code updatingConsent.consentReceiptID}
+        const acceptedClaimsOfThisReceipt = [ ...acceptedPIIClaimList ]
+            .filter((item: PIICategoryClaimToggleItem) => item.receiptId === updatingConsent.consentReceiptID);
+
+        let oneOfThePurposesPIICategoriesAreEmpty = false;
+
+        /**
+         * Below operation will mutate the {@code updatingConsent.consentReceipt}
+         */
+        updatingConsent.consentReceipt.services.forEach((service) => {
+            service.purposes.forEach((purpose) => {
+                // Now go and find the categories of this purpose and filter
+                // out the ones that got revoked. And keep only accepted ones.
+                purpose.piiCategory = purpose.piiCategory.filter((piiCat) => {
+                    for (const accepted of acceptedClaimsOfThisReceipt) {
+                        if (accepted.purposeId === purpose.purposeId &&
+                            accepted.piiCategoryId === piiCat.piiCategoryId) {
+                            return true;
+                        }
                     }
+                    return false;
+                }).map((piiCat) => {
+                    delete piiCat['status'];
+                    return piiCat;
                 });
-                // If consent to all the pii categories are revoked
-                // the application will have to be revoked.
+                // If consent to all the pii categories in a purpose are revoked
+                // then the application will have to be revoked.
                 if (purpose.piiCategory.length === 0) {
-                    isPIIEmpty = true;
+                    oneOfThePurposesPIICategoriesAreEmpty = true;
                 }
             });
         });
 
         // If the PII category list is empty, show the consent revoke modal.
         // Else, perform the usual consented claims updating process.
-        if (isPIIEmpty) {
+        if (oneOfThePurposesPIICategoriesAreEmpty) {
             setRevokingConsent(updatingConsent);
             setConsentRevokeModalVisibility(true);
             return;
