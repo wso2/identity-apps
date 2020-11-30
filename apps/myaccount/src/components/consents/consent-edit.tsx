@@ -230,75 +230,10 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                     </Grid.Column>
                 </Grid.Row>
                 {
-                    (editingConsent
-                        && editingConsent.consentReceipt
-                        && editingConsent.consentReceipt.services
-                        && editingConsent.consentReceipt.services.length
-                        && editingConsent.consentReceipt.services.length > 0)
-                        ? editingConsent.consentReceipt.services.map((service) =>
-                        service &&
-                        service.purposes &&
-                        service.purposes.map((purpose) => {
-                            return (
-                                <React.Fragment key={ purpose.purposeId } data-testid={ `${testId}-fragment` }>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column width={ 16 }>
-                                            <strong>{ toSentenceCase(purpose.purpose) }</strong>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                    <Grid.Row columns={ 1 }>
-                                        <Grid.Column width={ 16 }>
-                                            <List
-                                                key={ purpose.purposeId }
-                                                className="claim-list"
-                                                verticalAlign="middle"
-                                                relaxed="very"
-                                            >
-                                                {
-                                                    purpose.piiCategory && purpose.piiCategory.map((category) => (
-                                                        <List.Item key={ category.piiCategoryId }>
-                                                            <List.Content>
-                                                                <List.Header>
-                                                                    <Checkbox
-                                                                        className={
-                                                                            isRevoked(category.piiCategoryId)
-                                                                                ? "revoked"
-                                                                                : ""
-                                                                        }
-                                                                        checked={
-                                                                            !isRevoked(category.piiCategoryId)
-                                                                        }
-                                                                        label={ category.piiCategoryDisplayName }
-                                                                        onChange={
-                                                                            () => onClaimRevokeToggle(
-                                                                                editingConsent.consentReceiptID,
-                                                                                category.piiCategoryId)
-                                                                        }
-                                                                    />
-                                                                    {
-                                                                        isRevoked(category.piiCategoryId)
-                                                                            ? (
-                                                                                <Label
-                                                                                    className="revoked-label"
-                                                                                    horizontal
-                                                                                >
-                                                                                    { t("common:revoked") }
-                                                                                </Label>
-                                                                            )
-                                                                            : null
-                                                                    }
-
-                                                                </List.Header>
-                                                            </List.Content>
-                                                        </List.Item>
-                                                    ))
-                                                }
-                                            </List>
-                                        </Grid.Column>
-                                    </Grid.Row>
-                                </React.Fragment>
-                            );
-                        }))
+                    hasConsentDetails(editingConsent) ?
+                        editingConsent.consentReceipt.services.map(
+                            (service) => hasPurposesInService(service) && service.purposes.map(eachPurposeToJSX)
+                        )
                         : null
                 }
                 <Grid.Row columns={ 1 }>
