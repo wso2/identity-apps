@@ -70,7 +70,15 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const { t } = useTranslation();
 
     /**
-     * Retrieves the consented applications of the user.
+     * Retrieves the consented applications of the user. It will only
+     * fetch {@link ConsentState.ACTIVE} apps. Once fetched this function will
+     * set the consented apps state {@link setConsentedApps}.
+     *
+     * For example: -
+     * The IDP consent "My Account" will always be active and if theres
+     * any custom consents added it will be listed as "Resident IDP".
+     *
+     * @see fetchConsentedApps
      */
     const getConsentedApps = (): void => {
         fetchConsentedApps(ConsentState.ACTIVE, userName)
