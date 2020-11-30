@@ -61,6 +61,9 @@ export const AppConsentList: FunctionComponent<ConsentsListProps> = (
         onClaimRevokeToggle,
         revokedClaimList,
         onConsentDetailClick,
+        onPIIClaimToggle,
+        acceptedPIIClaimList,
+        deniedPIIClaimList,
         ["data-testid"]: testId
     } = props;
     const { t } = useTranslation();
