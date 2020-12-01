@@ -56,7 +56,7 @@ import {
     ApplicationListItemInterface,
     ApplicationTemplateListItemInterface
 } from "../models";
-import { ApplicationManagementUtils } from "../utils";
+import { ApplicationTemplateManagementUtils } from "../utils";
 
 /**
  *
@@ -160,7 +160,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
 
         setApplicationTemplateRequestLoadingStatus(true);
 
-        ApplicationManagementUtils.getApplicationTemplates()
+        ApplicationTemplateManagementUtils.getApplicationTemplates()
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });

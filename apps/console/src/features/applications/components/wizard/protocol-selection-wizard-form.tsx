@@ -24,7 +24,7 @@ import { useSelector } from "react-redux";
 import { AppState, EmptyPlaceholderIllustrations, TechnologyLogos } from "../../../core";
 import { ApplicationTemplateIllustrations, InboundProtocolLogos } from "../../configs";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../../models";
-import { ApplicationManagementUtils } from "../../utils";
+import { ApplicationManagementUtils, ApplicationTemplateManagementUtils } from "../../utils";
 import { InboundProtocolsMeta } from "../meta";
 
 /**
@@ -120,7 +120,7 @@ export const ProtocolSelectionWizardForm: FunctionComponent<ProtocolSelectionWiz
 
         setApplicationTemplateRequestLoadingStatus(true);
 
-        ApplicationManagementUtils.getApplicationTemplates()
+        ApplicationTemplateManagementUtils.getApplicationTemplates()
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });

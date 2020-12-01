@@ -29,7 +29,7 @@ import { CUSTOM_APPLICATION_TEMPLATE_ID, CustomApplicationTemplate, MinimalAppCr
 import { ApplicationTemplateIllustrations } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
-import { ApplicationManagementUtils } from "../utils";
+import { ApplicationTemplateManagementUtils } from "../utils";
 
 /**
  * Template filter types.
@@ -91,7 +91,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
 
         setApplicationTemplateRequestLoadingStatus(true);
 
-        ApplicationManagementUtils.getApplicationTemplates()
+        ApplicationTemplateManagementUtils.getApplicationTemplates()
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });
