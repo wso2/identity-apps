@@ -24,6 +24,7 @@ import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
 import {
+    fetchAllPurposes,
     fetchConsentedApps,
     fetchConsentReceipt,
     fetchPurposesByIDs,
@@ -41,7 +42,7 @@ import {
     PIICategoryClaimToggleItem,
     PIICategoryWithStatus,
     PurposeInterface,
-    PurposeModel,
+    PurposeModel, PurposeModelPartial,
     ServiceInterface
 } from "../../models";
 import { AppState } from "../../store";
@@ -66,6 +67,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const { onAlertFired, ["data-testid"]: testId } = props;
 
     const [ consentedApps, setConsentedApps ] = useState<ConsentInterface[]>([]);
+    const [ purposeModels, setPurposeModels ] = useState<PurposeModelPartial[]>([]);
     const [ revokingConsent, setRevokingConsent ] = useState<ConsentInterface>();
     const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
