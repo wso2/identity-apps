@@ -183,8 +183,8 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         // service will have multiple purposes.
         //
         // To solve this we use a dynamic programming approach where we store
-        // the required values in advance. Why? because if we try to fetch each
-        // purpose by its ID within the loop we will exhaust the server.
+        // the required values in advance. We try to avoid fetching each purpose
+        // by its ID within the loop.
 
         const purposeToServices: Map<number, number[]> = new Map<number, number[]>();
 
