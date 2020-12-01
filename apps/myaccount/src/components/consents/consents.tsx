@@ -24,18 +24,24 @@ import { useSelector } from "react-redux";
 import { Message, Modal } from "semantic-ui-react";
 import { AppConsentList } from "./consents-list";
 import {
-    fetchConsentReceipt,
     fetchConsentedApps,
+    fetchConsentReceipt,
+    fetchPurposesByIDs,
     revokeConsentedApp,
-    updateConsentedClaims, fetchPurposesByIDs
+    updateConsentedClaims
 } from "../../api/consents";
 import { AppConstants } from "../../constants";
 import {
     AlertInterface,
     AlertLevels,
-    ConsentInterface, ConsentReceiptInterface,
-    ConsentState, PIICategory, PIICategoryClaimToggleItem, PIICategoryWithStatus, PurposeInterface, PurposeModel,
-    RevokedClaimInterface,
+    ConsentInterface,
+    ConsentReceiptInterface,
+    ConsentState,
+    PIICategory,
+    PIICategoryClaimToggleItem,
+    PIICategoryWithStatus,
+    PurposeInterface,
+    PurposeModel,
     ServiceInterface
 } from "../../models";
 import { AppState } from "../../store";
@@ -62,7 +68,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ consentedApps, setConsentedApps ] = useState<ConsentInterface[]>([]);
     const [ revokingConsent, setRevokingConsent ] = useState<ConsentInterface>();
     const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
-    const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
+    //const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
     const [ deniedPIIClaimList, setDeniedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
     const [ acceptedPIIClaimList, setAcceptedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
@@ -544,18 +550,12 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         const indexes = [ ...consentListActiveIndexes ];
 
         if (consentListActiveIndexes.includes(index)) {
-            const list = [ ...revokedClaimList ];
             const removingIndex = consentListActiveIndexes.indexOf(index);
-
             if (removingIndex !== -1) {
                 indexes.splice(removingIndex, 1);
             }
-
-            // Reset the revoked list.
-            setRevokedClaimList(list.filter((item) => item.id !== receiptId));
         } else {
             indexes.push(index);
-
             // Fetch the consent receipt.
             getConsentReceipt(receiptId);
         }

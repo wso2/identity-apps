@@ -109,14 +109,6 @@ export interface PurposeModelPIICategory {
 }
 
 /**
- * Model to map revoked claims.
- */
-export interface RevokedClaimInterface {
-    id: string;
-    revoked: number[];
-}
-
-/**
  * PII category mapping model in the UI.
  */
 export interface PIICategoryClaimToggleItem {

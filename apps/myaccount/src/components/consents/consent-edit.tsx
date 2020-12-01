@@ -23,9 +23,9 @@ import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
 import {
     ConsentInterface,
-    PIICategoryClaimToggleItem, PIICategoryWithStatus,
+    PIICategoryClaimToggleItem,
+    PIICategoryWithStatus,
     PurposeInterface,
-    RevokedClaimInterface,
     ServiceInterface
 } from "../../models";
 import { toSentenceCase } from "../../utils";
