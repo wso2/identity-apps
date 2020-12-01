@@ -23,5 +23,5 @@ export const meta: LocaleMeta = {
     code: "pt-BR",
     flag: "br",
     name: "Português (Brazil)",
-    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE, I18nModuleConstants.USER_PORTAL_NAMESPACE ]
+    namespaces: [ I18nModuleConstants.COMMON_NAMESPACE, I18nModuleConstants.MYACCOUNT_NAMESPACE ]
 };

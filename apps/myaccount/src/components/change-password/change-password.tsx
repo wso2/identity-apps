@@ -102,12 +102,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
                     onAlertFired({
                         description: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations.submitSuccess." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations.submitSuccess." +
                             "description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "submitSuccess.message"
                         )
                     });
@@ -125,19 +125,19 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     setErrors({
                         ...errors,
                         currentPassword: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.inputs.currentPassword." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.inputs.currentPassword." +
                             "validations.invalid"
                         )
                     });
 
                     onAlertFired({
                         description: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "invalidCurrentPassword.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "invalidCurrentPassword.message"
                         )
                     });
@@ -149,13 +149,13 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
 
                     onAlertFired({
                         description: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "submitError.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "submitError.message"
                         )
                     });
@@ -168,12 +168,12 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                     // Generic error message
                     onAlertFired({
                         description: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.validations." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.validations." +
                             "genericError.message"
                         )
                     });
@@ -201,10 +201,10 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
         >
             <Modal.Content data-testid={ `${testId}-confirmation-modal-content` }>
                 <Container>
-                    <h3>{ t("userPortal:components.changePassword.modals.confirmationModal.heading") }</h3>
+                    <h3>{ t("myAccount:components.changePassword.modals.confirmationModal.heading") }</h3>
                 </Container>
                 <Divider hidden={ true } />
-                <p>{ t("userPortal:components.changePassword.modals.confirmationModal.message") }</p>
+                <p>{ t("myAccount:components.changePassword.modals.confirmationModal.message") }</p>
             </Modal.Content>
             <Modal.Actions data-testid={ `${testId}-confirmation-modal-actions` }>
                 <Button
@@ -240,17 +240,17 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         autoFocus={ true }
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.inputs"
+                            "myAccount:components.changePassword.forms.passwordResetForm.inputs"
                             + ".currentPassword.label"
                         ) }
                         name="currentPassword"
                         placeholder={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.inputs." +
                             "currentPassword.placeholder"
                         ) }
                         required={ true }
                         requiredErrorMessage={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm." +
+                            "myAccount:components.changePassword.forms.passwordResetForm." +
                             "inputs.currentPassword.validations.empty"
                         ) }
                         showPassword={ t("common:showPassword") }
@@ -261,16 +261,16 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         data-testid={ `${testId}-new-password-field` }
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
+                            "myAccount:components.changePassword.forms.passwordResetForm.inputs" + ".newPassword.label"
                         ) }
                         name="newPassword"
                         placeholder={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.inputs." +
                             "newPassword.placeholder"
                         ) }
                         required={ true }
                         requiredErrorMessage={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm." +
+                            "myAccount:components.changePassword.forms.passwordResetForm." +
                             "inputs.newPassword.validations.empty"
                         ) }
                         showPassword={ t("common:showPassword") }
@@ -302,17 +302,17 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                         data-testid={ `${testId}-new-password-confirm-field` }
                         hidePassword={ t("common:hidePassword") }
                         label={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.inputs"
+                            "myAccount:components.changePassword.forms.passwordResetForm.inputs"
                             + ".confirmPassword.label"
                         ) }
                         name="confirmPassword"
                         placeholder={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm.inputs." +
+                            "myAccount:components.changePassword.forms.passwordResetForm.inputs." +
                             "confirmPassword.placeholder"
                         ) }
                         required={ true }
                         requiredErrorMessage={ t(
-                            "userPortal:components.changePassword.forms.passwordResetForm." +
+                            "myAccount:components.changePassword.forms.passwordResetForm." +
                             "inputs.confirmPassword.validations.empty"
                         ) }
                         showPassword={ t("common:showPassword") }
@@ -322,7 +322,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
                                 validation.isValid = false;
                                 validation.errorMessages.push(
                                     t(
-                                        "userPortal:components.changePassword.forms.passwordResetForm.inputs" +
+                                        "myAccount:components.changePassword.forms.passwordResetForm.inputs" +
                                         ".confirmPassword.validations.mismatch"
                                     )
                                 );
@@ -358,8 +358,8 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("userPortal:sections.changePassword.description") }
-            header={ t("userPortal:sections.changePassword.heading") }
+            description={ t("myAccount:sections.changePassword.description") }
+            header={ t("myAccount:sections.changePassword.heading") }
             icon={ SettingsSectionIcons.changePassword }
             iconMini={ SettingsSectionIcons.changePasswordMini }
             iconSize="auto"
@@ -368,7 +368,7 @@ export const ChangePassword: FunctionComponent<ChangePasswordProps> = (props: Ch
             onPrimaryActionClick={
                 () => dispatch(setActiveForm(CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER))
             }
-            primaryAction={ t("userPortal:sections.changePassword.actionTitles.change") }
+            primaryAction={ t("myAccount:sections.changePassword.actionTitles.change") }
             primaryActionIcon="key"
             showActionBar={ activeForm !== CommonConstants.SECURITY + CHANGE_PASSWORD_FORM_IDENTIFIER }
         >

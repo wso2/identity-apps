@@ -91,8 +91,8 @@ const AccountSecurityPage = (props: RouteProps): ReactElement => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("userPortal:pages.security.title") }
-            pageDescription={ t("userPortal:pages.security.subTitle") }
+            pageTitle={ t("myAccount:pages.security.title") }
+            pageDescription={ t("myAccount:pages.security.subTitle") }
         >
             <Grid>
                 { !isReadOnlyUser &&

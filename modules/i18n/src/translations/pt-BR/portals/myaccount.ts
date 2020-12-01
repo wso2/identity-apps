@@ -16,9 +16,9 @@
  * under the License.
  */
 
-import { UserPortalNS } from "../../../models";
+import { MyAccountNS } from "../../../models";
 
-export const userPortal: UserPortalNS = {
+export const myAccount: MyAccountNS = {
     components: {
         accountRecovery: {
             codeRecovery: {

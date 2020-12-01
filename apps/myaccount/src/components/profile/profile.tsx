@@ -299,11 +299,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             if (response.status === 200) {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.profile.notifications.updateProfileInfo.success.description"
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.profile.notifications.updateProfileInfo.success.message"
+                        "myAccount:components.profile.notifications.updateProfileInfo.success.message"
                     )
                 });
 
@@ -313,11 +313,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         }).catch(error => {
             onAlertFired({
                 description: error?.detail ?? t(
-                    "userPortal:components.profile.notifications.updateProfileInfo.genericError.description"
+                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.description"
                 ),
                 level: AlertLevels.ERROR,
                 message: error?.message ?? t(
-                    "userPortal:components.profile.notifications.updateProfileInfo.genericError.message"
+                    "myAccount:components.profile.notifications.updateProfileInfo.genericError.message"
                 )
             });
         });
@@ -345,7 +345,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
      */
     const generateSchemaForm = (schema: ProfileSchema): JSX.Element => {
         if (activeForm === CommonConstants.PERSONAL_INFO+schema.name) {
-            const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
+            const fieldName = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
             return (
@@ -356,7 +356,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 ? (
                     <EditSection data-testid={ `${testId}-schema-mobile-editing-section` }>
                         <p>
-                            { t("userPortal:components.profile.messages.mobileVerification.content") }
+                            { t("myAccount:components.profile.messages.mobileVerification.content") }
                         </p>
                         <Grid padded={ true }>
                             <Grid.Row columns={ 2 }>
@@ -379,7 +379,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                                 setShowMobileUpdateWizard(true);
                                                             } }
                                                         >
-                                                            { t("userPortal:components.profile.forms.generic.inputs." +
+                                                            { t("myAccount:components.profile.forms.generic.inputs." +
                                                                 "placeholder", { fieldName }) }
                                                         </a>
                                                     )
@@ -428,13 +428,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                             autoFocus={ true }
                                             label=""
                                             name={ schema.name }
-                                            placeholder={ t("userPortal:components.profile.forms.generic.inputs." +
+                                            placeholder={ t("myAccount:components.profile.forms.generic.inputs." +
                                                 "placeholder", {
                                                 fieldName
                                             }) }
                                             required={ schema.required }
                                             requiredErrorMessage={ t(
-                                                "userPortal:components.profile.forms.generic.inputs.validations.empty",
+                                                "myAccount:components.profile.forms.generic.inputs.validations.empty",
                                                 {
                                                     fieldName
                                                 }
@@ -445,7 +445,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                     if (!FormValidation.email(value)) {
                                                         validation.errorMessages.push(
                                                             t(
-                                                                "userPortal:components.profile.forms." +
+                                                                "myAccount:components.profile.forms." +
                                                                 "generic.inputs.validations.invalidFormat",
                                                                 {
                                                                     fieldName
@@ -458,7 +458,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                 if (checkSchemaType(schema.name, "mobile")) {
                                                     if (!FormValidation.mobileNumber(value)) {
                                                         validation.errorMessages.push(t(
-                                                            "userPortal:components.profile.forms." +
+                                                            "myAccount:components.profile.forms." +
                                                             "generic.inputs.validations.invalidFormat",
                                                             {
                                                                 fieldName
@@ -499,7 +499,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 )
             );
         } else {
-            const fieldName = t("userPortal:components.profile.fields." + schema.name.replace(".", "_"),
+            const fieldName = t("myAccount:components.profile.fields." + schema.name.replace(".", "_"),
                 { defaultValue: schema.displayName }
             );
             return (
@@ -534,11 +534,11 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                                         />
                                                                     }
                                                                     content={
-                                                                        t("userPortal:components.profile.messages." +
+                                                                        t("myAccount:components.profile.messages." +
                                                                             "emailConfirmation.content")
                                                                     }
                                                                     header={
-                                                                        t("userPortal:components.profile.messages." +
+                                                                        t("myAccount:components.profile.messages." +
                                                                             "emailConfirmation.header")
                                                                     }
                                                                     inverted
@@ -559,7 +559,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                                                             );
                                                         } }
                                                 >
-                                                    {t("userPortal:components.profile.forms.generic.inputs.placeholder",
+                                                    {t("myAccount:components.profile.forms.generic.inputs.placeholder",
                                                         {
                                                             fieldName
                                                         })
@@ -631,10 +631,10 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
         updateProfileImageURL(url)
             .then(() => {
                 onAlertFired({
-                    description: t("userPortal:components.profile.notifications.updateProfileInfo.success" +
+                    description: t("myAccount:components.profile.notifications.updateProfileInfo.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("userPortal:components.profile.notifications.updateProfileInfo.success.message")
+                    message: t("myAccount:components.profile.notifications.updateProfileInfo.success.message")
                 });
 
                 // Re-fetch the profile information
@@ -643,19 +643,19 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
-                        description: t("userPortal:components.profile.notifications.updateProfileInfo.error" +
+                        description: t("myAccount:components.profile.notifications.updateProfileInfo.error" +
                             ".description",
                             { description: error.response.data.detail }),
                         level: AlertLevels.ERROR,
-                        message: t("userPortal:components.profile.notifications.updateProfileInfo.error.message")
+                        message: t("myAccount:components.profile.notifications.updateProfileInfo.error.message")
                     });
                 }
 
                 onAlertFired({
-                    description: t("userPortal:components.profile.notifications.updateProfileInfo.genericError" +
+                    description: t("myAccount:components.profile.notifications.updateProfileInfo.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("userPortal:components.profile.notifications.updateProfileInfo.genericError.message")
+                    message: t("myAccount:components.profile.notifications.updateProfileInfo.genericError.message")
                 });
             })
             .finally(() => {
@@ -678,7 +678,7 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                 onClick={ handleAvatarOnClick }
                 profileInfo={ profileDetails?.profileInfo as any }
                 gravatarInfoPopoverText={ (
-                    <Trans i18nKey="userPortal:components.userAvatar.infoPopover">
+                    <Trans i18nKey="myAccount:components.userAvatar.infoPopover">
                         This image has been retrieved from
                         <a href={ UIConstants.GRAVATAR_URL } target="_blank" rel="noopener noreferrer">
                             Gravatar
@@ -697,55 +697,55 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
                         onCancel={ () => setShowEditAvatarModal(false) }
                         onSubmit={ handleAvatarEditModalSubmit }
                         imageUrl={ profileDetails?.profileInfo?.profileUrl }
-                        heading={ t("userPortal:modals.editAvatarModal.heading") }
-                        submitButtonText={ t("userPortal:modals.editAvatarModal.primaryButton") }
-                        cancelButtonText={ t("userPortal:modals.editAvatarModal.secondaryButton") }
+                        heading={ t("myAccount:modals.editAvatarModal.heading") }
+                        submitButtonText={ t("myAccount:modals.editAvatarModal.primaryButton") }
+                        cancelButtonText={ t("myAccount:modals.editAvatarModal.secondaryButton") }
                         translations={ {
                             gravatar: {
                                 errors: {
                                     noAssociation: {
-                                        content: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
+                                        content: t("myAccount:modals.editAvatarModal.content.gravatar.errors" +
                                             ".noAssociation.content"),
-                                        header: t("userPortal:modals.editAvatarModal.content.gravatar.errors" +
+                                        header: t("myAccount:modals.editAvatarModal.content.gravatar.errors" +
                                             ".noAssociation.header")
                                     }
                                 },
-                                heading: t("userPortal:modals.editAvatarModal.content.gravatar.heading")
+                                heading: t("myAccount:modals.editAvatarModal.content.gravatar.heading")
                             },
                             hostedAvatar: {
-                                heading: t("userPortal:modals.editAvatarModal.content.hostedAvatar.heading"),
+                                heading: t("myAccount:modals.editAvatarModal.content.hostedAvatar.heading"),
                                 input: {
                                     errors: {
                                         http: {
-                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                            content: t("myAccount:modals.editAvatarModal.content." +
                                                 "hostedAvatar.input.errors.http.content"),
-                                            header: t("userPortal:modals.editAvatarModal.content." +
+                                            header: t("myAccount:modals.editAvatarModal.content." +
                                                 "hostedAvatar.input.errors.http.header")
                                         },
                                         invalid: {
-                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                            content: t("myAccount:modals.editAvatarModal.content." +
                                                 "hostedAvatar.input.errors.invalid.content"),
-                                            pointing: t("userPortal:modals.editAvatarModal.content." +
+                                            pointing: t("myAccount:modals.editAvatarModal.content." +
                                                 "hostedAvatar.input.errors.invalid.pointing")
                                         }
                                     },
-                                    hint: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input.hint"),
-                                    placeholder: t("userPortal:modals.editAvatarModal.content.hostedAvatar.input" +
+                                    hint: t("myAccount:modals.editAvatarModal.content.hostedAvatar.input.hint"),
+                                    placeholder: t("myAccount:modals.editAvatarModal.content.hostedAvatar.input" +
                                         ".placeholder"),
                                     warnings: {
                                         dataURL: {
-                                            content: t("userPortal:modals.editAvatarModal.content." +
+                                            content: t("myAccount:modals.editAvatarModal.content." +
                                                 "hostedAvatar.input.warnings.dataURL.content"),
-                                            header: t("userPortal:modals.editAvatarModal.content." +
+                                            header: t("myAccount:modals.editAvatarModal.content." +
                                                 "hostedAvatar.input.warnings.dataURL.header")
                                         }
                                     }
                                 }
                             },
                             systemGenAvatars: {
-                                heading: t("userPortal:modals.editAvatarModal.content.systemGenAvatars.heading"),
+                                heading: t("myAccount:modals.editAvatarModal.content.systemGenAvatars.heading"),
                                 types: {
-                                    initials: t("userPortal:modals.editAvatarModal.content.systemGenAvatars." +
+                                    initials: t("myAccount:modals.editAvatarModal.content.systemGenAvatars." +
                                         "types.initials")
                                 }
                             }
@@ -774,13 +774,13 @@ export const Profile: FunctionComponent<ProfileProps> = (props: ProfileProps): J
     return (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
-            description={ t("userPortal:sections.profile.description") }
-            header={ t("userPortal:sections.profile.heading") }
+            description={ t("myAccount:sections.profile.description") }
+            header={ t("myAccount:sections.profile.heading") }
             icon={ renderAvatar() }
             iconMini={ renderAvatar() }
             placeholder={
                 !isSCIMEnabled
-                    ? t("userPortal:components.profile.placeholders.SCIMDisabled.heading")
+                    ? t("myAccount:components.profile.placeholders.SCIMDisabled.heading")
                     : null
             }
         >

@@ -85,12 +85,12 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.applications.notifications.fetchApplications.error.description",
+                            "myAccount:components.applications.notifications.fetchApplications.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.applications.notifications.fetchApplications.error.message"
+                            "myAccount:components.applications.notifications.fetchApplications.error.message"
                         )
                     });
 
@@ -99,11 +99,11 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.applications.notifications.fetchApplications.genericError.description"
+                        "myAccount:components.applications.notifications.fetchApplications.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.applications.notifications.fetchApplications.genericError.message"
+                        "myAccount:components.applications.notifications.fetchApplications.genericError.message"
                     )
                 });
             });
@@ -277,18 +277,18 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("userPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
+                                t("myAccount:components.applications.advancedSearch.form.inputs.filterAttribute" +
                                     ".placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("userPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
+                                t("myAccount:components.applications.advancedSearch.form.inputs.filterCondition" +
                                     ".placeholder")
                             }
                             filterValuePlaceholder={
-                                t("userPortal:components.applications.advancedSearch.form.inputs.filterValue" +
+                                t("myAccount:components.applications.advancedSearch.form.inputs.filterValue" +
                                     ".placeholder")
                             }
-                            placeholder={ t("userPortal:components.applications.advancedSearch.placeholder") }
+                            placeholder={ t("myAccount:components.applications.advancedSearch.placeholder") }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
@@ -300,7 +300,7 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
             <div className="search-results-indicator">
                 {
                     searchQuery
-                        ? t("userPortal:components.advancedSearch.resultsIndicator", { query: searchQuery })
+                        ? t("myAccount:components.advancedSearch.resultsIndicator", { query: searchQuery })
                         : ""
                 }
             </div>
@@ -315,14 +315,14 @@ export const Applications: FunctionComponent<ApplicationsProps> = (
                     ? (
                         <>
                             <h3 className="section-header">
-                                {t("userPortal:components.applications.recent.heading")}
+                                {t("myAccount:components.applications.recent.heading")}
                             </h3>
                             <RecentApplications
                                 onAppNavigate={ handleAppNavigation }
                                 recentApps={ recentApplications }
                                 showFavourites={ false }
                             />
-                            <h3 className="section-header">{t("userPortal:components.applications.all.heading")}</h3>
+                            <h3 className="section-header">{t("myAccount:components.applications.all.heading")}</h3>
                         </>
                     )
                     : null

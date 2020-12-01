@@ -21,7 +21,7 @@ import { DangerZone, ModalInterface, Notification, NotificationItem, Page, Place
 /**
  * Model for the user portal portal namespace
  */
-export interface UserPortalNS {
+export interface MyAccountNS {
     components: {
         advancedSearch: {
             form: {

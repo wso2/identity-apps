@@ -20,4 +20,4 @@ export * from "./admin-portal";
 export * from "./dev-portal";
 export * from "./common";
 export * from "./console";
-export * from "./user-portal";
+export * from "./myaccount";

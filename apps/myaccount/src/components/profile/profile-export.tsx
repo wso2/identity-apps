@@ -68,22 +68,22 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                     // Sets a success notification.
                     onAlertFired({
                         description: t(
-                            "userPortal:components.profileExport.notifications.downloadProfileInfo.success.description"
+                            "myAccount:components.profileExport.notifications.downloadProfileInfo.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "userPortal:components.profileExport.notifications.downloadProfileInfo.success.message"
+                            "myAccount:components.profileExport.notifications.downloadProfileInfo.success.message"
                         )
                     });
                 } else {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.profileExport.notifications.downloadProfileInfo." +
+                            "myAccount:components.profileExport.notifications.downloadProfileInfo." +
                             "genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.message"
+                            "myAccount:components.profileExport.notifications.downloadProfileInfo.genericError.message"
                         )
                     });
                 }
@@ -92,12 +92,12 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.profileExport.notifications.downloadProfileInfo.error.description",
+                            "myAccount:components.profileExport.notifications.downloadProfileInfo.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.profileExport.notifications.downloadProfileInfo.error.message"
+                            "myAccount:components.profileExport.notifications.downloadProfileInfo.error.message"
                         )
                     });
 
@@ -106,11 +106,11 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.description"
+                        "myAccount:components.profileExport.notifications.downloadProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.profileExport.notifications.downloadProfileInfo.genericError.message"
+                        "myAccount:components.profileExport.notifications.downloadProfileInfo.genericError.message"
                     )
                 });
             });
@@ -120,15 +120,15 @@ export const ProfileExport: FunctionComponent<ProfileExportProps> = (
         <SettingsSection
             data-testid={ `${testId}-settings-section` }
             contentPadding={ false }
-            description={ t("userPortal:sections.profileExport.description") }
-            header={ t("userPortal:sections.profileExport.heading") }
+            description={ t("myAccount:sections.profileExport.description") }
+            header={ t("myAccount:sections.profileExport.heading") }
             icon={ SettingsSectionIcons.profileExport }
             iconMini={ SettingsSectionIcons.profileExportMini }
             iconSize="auto"
             iconStyle="colored"
             iconFloated="right"
             onPrimaryActionClick={ downloadUserProfile }
-            primaryAction={ t("userPortal:sections.profileExport.actionTitles.export") }
+            primaryAction={ t("myAccount:sections.profileExport.actionTitles.export") }
             primaryActionIcon="cloud download"
         />
     );

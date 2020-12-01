@@ -43,16 +43,16 @@ const AccessDeniedErrorPage = (): ReactElement => {
                         as={ Link }
                         to={ AppConstants.getAppHomePath() }
                     >
-                        { t("userPortal:placeholders.accessDeniedError.action") }
+                        { t("myAccount:placeholders.accessDeniedError.action") }
                     </Button>
                 ) }
                 image={ EmptyPlaceholderIllustrations.accessDeniedError }
                 imageSize="tiny"
                 subtitle={ [
-                    t("userPortal:placeholders.accessDeniedError.subtitles.0"),
-                    t("userPortal:placeholders.accessDeniedError.subtitles.1")
+                    t("myAccount:placeholders.accessDeniedError.subtitles.0"),
+                    t("myAccount:placeholders.accessDeniedError.subtitles.1")
                 ] }
-                title={ t("userPortal:placeholders.accessDeniedError.title") }
+                title={ t("myAccount:placeholders.accessDeniedError.title") }
             />
         </ErrorPageLayout>
     );
