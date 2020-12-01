@@ -68,7 +68,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const [ consentedApps, setConsentedApps ] = useState<ConsentInterface[]>([]);
     const [ revokingConsent, setRevokingConsent ] = useState<ConsentInterface>();
     const [ isConsentRevokeModalVisible, setConsentRevokeModalVisibility ] = useState(false);
-    //const [ revokedClaimList, setRevokedClaimList ] = useState<RevokedClaimInterface[]>([]);
     const [ consentListActiveIndexes, setConsentListActiveIndexes ] = useState([]);
     const [ deniedPIIClaimList, setDeniedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
     const [ acceptedPIIClaimList, setAcceptedPIIClaimList ] = useState<Set<PIICategoryClaimToggleItem>>(new Set());
