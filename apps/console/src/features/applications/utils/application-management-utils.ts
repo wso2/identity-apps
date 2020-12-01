@@ -62,7 +62,6 @@ export class ApplicationManagementUtils {
      *
      * @hideconstructor
      */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
@@ -156,68 +155,21 @@ export class ApplicationManagementUtils {
      * @return {Promise<void>}
      */
     public static getApplicationTemplates = (skipGrouping: boolean = false): Promise<void> => {
+
         return getApplicationTemplateList()
-            .then((response) => {
-                const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
+            .then((response: ApplicationTemplateListInterface) => {
 
-                // Sort templates based  on displayOrder.
-                applicationTemplates.sort(
-                    (a, b) =>
-                        (a.displayOrder > b.displayOrder) ? 1 : -1);
+                const templates: ApplicationTemplateListItemInterface[] = ApplicationManagementUtils
+                    .addCustomTemplates(response.templates, [ CustomApplicationTemplate ], true);
 
-                // Add on the custom application template to the application template list
-                applicationTemplates.unshift(CustomApplicationTemplate);
-
-                // Generate the technologies array.
-                // TODO: Enable if template icon should be resolved.
-                //applicationTemplates.forEach((template) => {
-                //    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
-                //});
-                
+                // Group the templates if `skipGrouping` flag is false.
                 if (!skipGrouping) {
-                    const groupedTemplates: ApplicationTemplateListItemInterface[] = [];
+                    store.dispatch(setApplicationTemplates(ApplicationManagementUtils.groupTemplates(templates), true));
 
-                    applicationTemplates.forEach((template: ApplicationTemplateListItemInterface) => {
-                        if (!template.templateGroup) {
-                            groupedTemplates.push(template);
-                            return;
-                        }
-
-                        const group = getDefaultTemplateGroups()
-                            .find((group) => group.id === template.templateGroup);
-
-                        if (!group) {
-                            groupedTemplates.push(template);
-                            return;
-                        }
-
-                        if (groupedTemplates.some((groupedTemplate) =>
-                            groupedTemplate.id === template.templateGroup)) {
-
-                            groupedTemplates.forEach((editingTemplate, index) => {
-                                if (editingTemplate.id === template.templateGroup) {
-                                    groupedTemplates[ index ] = {
-                                        ...group,
-                                        subTemplates: [ ...editingTemplate.subTemplates, template ]
-                                    };
-
-                                    return;
-                                }
-                            });
-
-                            return;
-                        }
-
-                        groupedTemplates.push({
-                            ...group,
-                            subTemplates: [ template ]
-                        });
-                    });
-
-                    store.dispatch(setApplicationTemplates(groupedTemplates, true));
+                    return;
                 }
 
-                store.dispatch(setApplicationTemplates(applicationTemplates));
+                store.dispatch(setApplicationTemplates(templates));
             })
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
@@ -239,6 +191,95 @@ export class ApplicationManagementUtils {
                         ".genericError.message")
                 }));
             });
+    };
+
+    /**
+     * Sort the application templates based on display order.
+     *
+     * @param {ApplicationTemplateListItemInterface[]} templates - App templates.
+     * @return {ApplicationTemplateListItemInterface[]}
+     */
+    private static sortApplicationTemplates(
+        templates: ApplicationTemplateListItemInterface[]): ApplicationTemplateListItemInterface[] {
+
+        const applicationTemplates = [ ...templates ];
+
+        // Sort templates based  on displayOrder.
+        applicationTemplates.sort(
+            (a, b) =>
+                (a.displayOrder > b.displayOrder) ? 1 : -1);
+
+        return applicationTemplates;
+    }
+
+    /**
+     * Append any custom templates to the existing templates list.
+     *
+     * @param {ApplicationTemplateListItemInterface[]} existingTemplates - Existing templates list.
+     * @param {ApplicationTemplateListItemInterface[]} customTemplates - Set of custom templates to add.
+     * @param {boolean} sort - Should the returning templates be sorted.
+     * @return {ApplicationTemplateListItemInterface[]}
+     */
+    private static addCustomTemplates(existingTemplates: ApplicationTemplateListItemInterface[],
+                                      customTemplates: ApplicationTemplateListItemInterface[],
+                                      sort: boolean = true) {
+
+        if (sort) {
+            return this.sortApplicationTemplates(existingTemplates.concat(customTemplates));
+        }
+
+        return existingTemplates.concat(customTemplates);
+    }
+
+    /**
+     * Group the application templates.
+     *
+     * @param {ApplicationTemplateListItemInterface[]} templates - Application templates.
+     * @return {ApplicationTemplateListItemInterface[]}
+     */
+    private static groupTemplates = (
+        templates: ApplicationTemplateListItemInterface[]): ApplicationTemplateListItemInterface[] => {
+
+        const groupedTemplates: ApplicationTemplateListItemInterface[] = [];
+
+        templates.forEach((template: ApplicationTemplateListItemInterface) => {
+            if (!template.templateGroup) {
+                groupedTemplates.push(template);
+                return;
+            }
+
+            const group = getDefaultTemplateGroups()
+                .find((group) => group.id === template.templateGroup);
+
+            if (!group) {
+                groupedTemplates.push(template);
+                return;
+            }
+
+            if (groupedTemplates.some((groupedTemplate) =>
+                groupedTemplate.id === template.templateGroup)) {
+
+                groupedTemplates.forEach((editingTemplate, index) => {
+                    if (editingTemplate.id === template.templateGroup) {
+                        groupedTemplates[ index ] = {
+                            ...group,
+                            subTemplates: [ ...editingTemplate.subTemplates, template ]
+                        };
+
+                        return;
+                    }
+                });
+
+                return;
+            }
+
+            groupedTemplates.push({
+                ...group,
+                subTemplates: [ template ]
+            });
+        });
+
+        return groupedTemplates;
     };
 
     /**
