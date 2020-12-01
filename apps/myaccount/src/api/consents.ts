@@ -21,7 +21,7 @@ import {
     ConsentInterface,
     ConsentReceiptInterface,
     ConsentState,
-    HttpMethods, PurposeModel,
+    HttpMethods, PurposeModel, PurposeModelPartial,
     UpdateReceiptInterface
 } from "../models";
 import { store } from "../store";
@@ -98,12 +98,22 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
 };
 
 /**
- * Fetches all the purposes available in the system.
+ * Fetches all the purposes available in the system. The response
+ * {@link PurposeModelPartial[]} will not contain the specific piiCategory information
+ * of each of the purposes. Instead it's only returns the basic/partial information of
+ * all the purpose in the system.
  *
- * @param {number} limit Number of search results
- * @param {number} offSet Start index of the search
+ * Note on arguments: -
+ * - {@link limit} will defaults to 0 if not provided. If limit is zero
+ * the API will send all the records at once.
+ * - {@link offset} will defaults to 0 if not provided. If the offset is zero
+ * server will start searching the records starting from zero.
+ *
+ * @param {number | 0} limit Number of search results (If not provided 0)
+ * @param {number | 0} offset Start index of the search (If not provided 0)
+ * @return {Promise<PurposeModelPartial[]>} response data
  */
-export const fetchAllPurposes = async (limit?: number, offSet?: number): Promise<any> => {
+export const fetchAllPurposes = async (limit: number = 0, offset: number = 0): Promise<PurposeModelPartial[]> => {
 
     const requestConfig: AxiosRequestConfig = {
         headers: {
@@ -111,12 +121,13 @@ export const fetchAllPurposes = async (limit?: number, offSet?: number): Promise
             "Content-Type": "application/json",
         },
         method: HttpMethods.GET,
+        params: { 'limit': limit, 'offset': offset },
         url: store.getState().config.endpoints.consentManagement.purpose.list
     };
 
     try {
         const response: AxiosResponse = await httpClient(requestConfig);
-        return Promise.resolve<any>(response as any);
+        return Promise.resolve<PurposeModelPartial[]>(response.data as PurposeModelPartial[]);
     } catch (error) {
         return Promise.reject(error);
     }
