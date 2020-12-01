@@ -59,7 +59,7 @@ export const fetchConsentedApps = async (state: ConsentState, username): Promise
             piiPrincipalId: userName.join("@"),
             state
         },
-        url: store.getState().config.endpoints.consents
+        url: store.getState().config.endpoints.consentManagement.consent.listAllConsents
     };
 
     return httpClient(requestConfig)
@@ -85,7 +85,7 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
             "Content-Type": "application/json"
         },
         method: HttpMethods.GET,
-        url: store.getState().config.endpoints.receipts + `/${receiptId}`
+        url: store.getState().config.endpoints.consentManagement.consent.consentReceipt + `/${receiptId}`
     };
 
     return httpClient(requestConfig)
@@ -167,7 +167,7 @@ export const revokeConsentedApp = (appId: string): Promise<any> => {
             Accept: "application/json"
         },
         method: HttpMethods.DELETE,
-        url: store.getState().config.endpoints.receipts + `/${appId}`
+        url: store.getState().config.endpoints.consentManagement.consent.consentReceipt + `/${appId}`
     };
 
     return httpClient(requestConfig)
@@ -221,7 +221,7 @@ export const updateConsentedClaims = (receipt: ConsentReceiptInterface): Promise
             "Content-Type": "application/json"
         },
         method: HttpMethods.POST,
-        url: store.getState().config.endpoints.consents
+        url: store.getState().config.endpoints.consentManagement.consent.addConsent
     };
 
     return httpClient(requestConfig)

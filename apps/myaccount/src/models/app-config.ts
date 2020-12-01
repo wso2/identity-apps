@@ -67,7 +67,6 @@ export interface ServiceResourceEndpointsInterface {
     authorize: string;
     challenges: string;
     challengeAnswers: string;
-    consents: string;
     federatedAssociations: string;
     fidoEnd: string;
     fidoMetaData: string;
@@ -79,7 +78,6 @@ export interface ServiceResourceEndpointsInterface {
     logout: string;
     me: string;
     profileSchemas: string;
-    receipts: string;
     sessions: string;
     smsOtpResend: string;
     smsOtpValidate: string;
