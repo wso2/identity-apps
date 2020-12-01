@@ -42,12 +42,30 @@ export class AppConstants {
     }
 
     /**
-     * Get the admin view base path.
+     * Get the admin view home path.
+     *
+     * @return {string}
+     */
+    public static getAdminViewHomePath(): string {
+        return window["AppUtils"].getConfig().adminApp.path;
+    }
+
+    /**
+     * Get the developer view base path.
      *
      * @return {string}
      */
     public static getDeveloperViewBasePath(): string {
         return window["AppUtils"].getConfig().developerApp.basePath;
+    }
+
+    /**
+     * Get the developer view home path.
+     *
+     * @return {string}
+     */
+    public static getDeveloperViewHomePath(): string {
+        return window["AppUtils"].getConfig().developerApp.path;
     }
 
     /**

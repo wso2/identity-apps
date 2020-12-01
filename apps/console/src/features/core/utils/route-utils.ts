@@ -52,13 +52,13 @@ export class RouteUtils {
         if (RouteUtils.isOnlyPageNotFoundPresent(routes)) {
             if (RouteUtils.isHomePath(view)) {
                 if (view === AppConstants.getDeveloperViewBasePath()) {
-                    history.push(AppConstants.getAdminViewBasePath());
+                    history.push(AppConstants.getAdminViewHomePath());
 
                     return;
                 }
 
                 if (view === AppConstants.getAdminViewBasePath()) {
-                    history.push(AppConstants.getDeveloperViewBasePath());
+                    history.push(AppConstants.getDeveloperViewHomePath());
 
                     return;
                 }

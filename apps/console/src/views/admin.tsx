@@ -134,6 +134,11 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
 
     useEffect(() => {
 
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
+
         // Filter the routes and get only the enabled routes defined in the app config.
         setFilteredRoutes(
             CommonRouteUtils.filterEnabledRoutes<FeatureConfigInterface>(
@@ -150,6 +155,11 @@ export const AdminView: FunctionComponent<AdminViewPropsInterface> = (
     }, [ allowedScopes, featureConfig, getAdminViewRoutes ]);
 
     useEffect(() => {
+
+        // Allowed scopes is never empty. Wait until it's defined to filter the routes.
+        if (isEmpty(allowedScopes)) {
+            return;
+        }
 
         if (!hasRequiredScopes(featureConfig?.generalConfigurations,
             featureConfig?.generalConfigurations?.scopes?.read,
