@@ -121,8 +121,25 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             });
     };
 
+    /**
+     * This function calls the {@link fetchAllPurposes} and fetches all the
+     * available purposes in this application (including "DEFAULT" & "SYSTEM").
+     * Also this function will cache those purposes in a state hook to reuse
+     * throughout the life cycle of this component.
+     *
+     * @see setPurposeModels
+     * @see purposeModels
+     */
+    const getAllPurposes = (): void => {
+        fetchAllPurposes().then((models: PurposeModelPartial[]) => {
+            setPurposeModels(models);
+            console.log('fetched models: ', models);
+        }).finally();
+    };
+
     useEffect(() => {
         getConsentedApps();
+        getAllPurposes();
     }, []);
 
     /**
