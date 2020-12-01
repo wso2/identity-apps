@@ -98,6 +98,32 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
 };
 
 /**
+ * Fetches all the purposes available in the system.
+ *
+ * @param {number} limit Number of search results
+ * @param {number} offSet Start index of the search
+ */
+export const fetchAllPurposes = async (limit?: number, offSet?: number): Promise<any> => {
+
+    const requestConfig: AxiosRequestConfig = {
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+        method: HttpMethods.GET,
+        url: store.getState().config.endpoints.consentManagement.purpose.list
+    };
+
+    try {
+        const response: AxiosResponse = await httpClient(requestConfig);
+        return Promise.resolve<any>(response as any);
+    } catch (error) {
+        return Promise.reject(error);
+    }
+
+};
+
+/**
  * Fetches multiple {@link PurposeModel} by given a set of IDs. This function is useful
  * when we need to get some detailed information about a consent receipts' purpose(s).
  * This is because when the client use a method like {@link fetchConsentReceipt} it
