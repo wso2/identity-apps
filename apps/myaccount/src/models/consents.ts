@@ -76,6 +76,12 @@ export interface PurposeInterface {
      * claims.
      */
     allPIICategories?: PurposeModelPIICategory[];
+    /**
+     * This property contains the description value which
+     * is fetched via the Purpose detail endpoint.
+     *
+     * @see attachReceiptPurposeDetails function in {@link Consents}
+     */
     description?: string;
 }
 
