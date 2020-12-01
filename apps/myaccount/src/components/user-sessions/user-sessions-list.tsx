@@ -142,7 +142,7 @@ export const UserSessionsList: FunctionComponent<UserSessionsListProps> = (
                                                 <List.Description>
                                                     <p style={ { fontSize: "11px" } }>
                                                         {
-                                                            t("userPortal:components.userSessions.lastAccessed",
+                                                            t("myAccount:components.userSessions.lastAccessed",
                                                                 {
                                                                     date: moment(
                                                                         parseInt(userSession.lastAccessTime, 10)

@@ -44,8 +44,8 @@ const ConsentManagementPage = (): ReactElement => {
 
     return (
         <InnerPageLayout
-            pageTitle={ t("userPortal:pages.consentManagement.title") }
-            pageDescription={ t("userPortal:pages.consentManagement.subTitle") }
+            pageTitle={ t("myAccount:pages.consentManagement.title") }
+            pageDescription={ t("myAccount:pages.consentManagement.subTitle") }
         >
             <Divider hidden />
             <Grid>

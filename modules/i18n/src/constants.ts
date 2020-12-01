@@ -68,7 +68,7 @@ export class I18nModuleConstants {
      * @type {string}
      * @default
      */
-    public static readonly USER_PORTAL_NAMESPACE: string = "userPortal";
+    public static readonly MYACCOUNT_NAMESPACE: string = "myAccount";
 
     /**
      * Console portal namespace.

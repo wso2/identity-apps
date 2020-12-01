@@ -70,12 +70,12 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
                     dispatch(
                         addAlert({
                             description: t(
-                                "userPortal:components.userSessions.notifications.fetchSessions.error.description",
+                                "myAccount:components.userSessions.notifications.fetchSessions.error.description",
                                 { description: error.response.data.detail }
                             ),
                             level: AlertLevels.ERROR,
                             message: t(
-                                "userPortal:components.userSessions.notifications.fetchSessions.error.message"
+                                "myAccount:components.userSessions.notifications.fetchSessions.error.message"
                             )
                         })
                     );
@@ -86,11 +86,11 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
                 dispatch(
                     addAlert({
                         description: t(
-                            "userPortal:components.userSessions.notifications.fetchSessions.genericError.description"
+                            "myAccount:components.userSessions.notifications.fetchSessions.genericError.description"
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.userSessions.notifications.fetchSessions.genericError.message"
+                            "myAccount:components.userSessions.notifications.fetchSessions.genericError.message"
                         )
                     })
                 );
@@ -112,14 +112,14 @@ export const UserSessionsWidget: FunctionComponent<TestableComponentInterface> =
         <div className="widget account-status" data-testid={ testId }>
             <SettingsSection
                 data-testid={ `${testId}-settings-section` }
-                description={ t("userPortal:components.overview.widgets.accountActivity.description") }
-                header={ t("userPortal:components.overview.widgets.accountActivity.header") }
+                description={ t("myAccount:components.overview.widgets.accountActivity.description") }
+                header={ t("myAccount:components.overview.widgets.accountActivity.header") }
                 placeholder={
                     !(userSessions && userSessions.sessions && (userSessions.sessions.length > 0))
-                        ? t("userPortal:sections.userSessions.actionTitles.empty")
+                        ? t("myAccount:sections.userSessions.actionTitles.empty")
                         : null
                 }
-                primaryAction={ t("userPortal:components.overview.widgets.accountActivity.actionTitles.update") }
+                primaryAction={ t("myAccount:components.overview.widgets.accountActivity.actionTitles.update") }
                 onPrimaryActionClick={ navigate }
             >
                 <UserSessionsList

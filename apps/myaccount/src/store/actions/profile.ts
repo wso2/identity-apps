@@ -63,13 +63,13 @@ export const getProfileLinkedAccounts = () => (dispatch): void => {
                 dispatch(
                     addAlert({
                         description: I18n.instance.t(
-                            "userPortal:components.linkedAccounts.notifications.getAssociations." +
+                            "myAccount:components.linkedAccounts.notifications.getAssociations." +
                             "error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: I18n.instance.t(
-                            "userPortal:components.linkedAccounts.notifications.getAssociations." +
+                            "myAccount:components.linkedAccounts.notifications.getAssociations." +
                             "error.message"
                         )
                     })
@@ -81,12 +81,12 @@ export const getProfileLinkedAccounts = () => (dispatch): void => {
             dispatch(
                 addAlert({
                     description: I18n.instance.t(
-                        "userPortal:components.linkedAccounts.notifications.getAssociations." +
+                        "myAccount:components.linkedAccounts.notifications.getAssociations." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: I18n.instance.t(
-                        "userPortal:components.linkedAccounts.notifications.getAssociations." +
+                        "myAccount:components.linkedAccounts.notifications.getAssociations." +
                         "genericError.message"
                     )
                 })

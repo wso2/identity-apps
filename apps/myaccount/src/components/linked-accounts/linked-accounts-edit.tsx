@@ -90,7 +90,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
             <Grid>
                 <Grid.Row columns={ 2 }>
                     <Grid.Column width={ 4 }>
-                        { t("userPortal:components.linkedAccounts.accountTypes.local.label") }
+                        { t("myAccount:components.linkedAccounts.accountTypes.local.label") }
                     </Grid.Column>
                     <Grid.Column width={ 10 }>
                         <Forms
@@ -100,7 +100,7 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                             <Form.Field required data-testid={ `${testId}-editing-section-form-field-username` }>
                                 <label>
                                     { t(
-                                    "userPortal:components.linkedAccounts.forms.addAccountForm" +
+                                    "myAccount:components.linkedAccounts.forms.addAccountForm" +
                                     ".inputs.username.label"
                                     ) }
                                 </label>
@@ -110,12 +110,12 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                                     labelPosition="right"
                                     name="username"
                                     placeholder={ t(
-                                        "userPortal:components.linkedAccounts.forms." +
+                                        "myAccount:components.linkedAccounts.forms." +
                                         "addAccountForm.inputs.username.placeholder"
                                     ) }
                                     required={ true }
                                     requiredErrorMessage={ t(
-                                        "userPortal:components.linkedAccounts.forms" +
+                                        "myAccount:components.linkedAccounts.forms" +
                                         ".addAccountForm.inputs.username.validations.empty"
                                     ) }
                                     type="text"
@@ -126,17 +126,17 @@ export const LinkedAccountsEdit: FunctionComponent<LinkedAccountsEditProps> = (
                                 data-testid={ `${testId}-editing-section-form-field-password` }
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
-                                    "userPortal:components.linkedAccounts.forms.addAccountForm." +
+                                    "myAccount:components.linkedAccounts.forms.addAccountForm." +
                                     "inputs.password.label"
                                 ) }
                                 name="password"
                                 placeholder={ t(
-                                    "userPortal:components.linkedAccounts.forms" +
+                                    "myAccount:components.linkedAccounts.forms" +
                                     ".addAccountForm.inputs.password.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "userPortal:components.linkedAccounts.forms" +
+                                    "myAccount:components.linkedAccounts.forms" +
                                     ".addAccountForm.inputs.password.validations.empty"
                                 ) }
                                 showPassword={ t("common:showPassword") }

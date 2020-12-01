@@ -108,23 +108,23 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.consentedAppsFetch.error" +
+                        "myAccount:components.consentManagement.notifications.consentedAppsFetch.error" +
                         ".description",
                         { description: error.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.consentManagement.notifications.consentedAppsFetch.error.message"
+                        "myAccount:components.consentManagement.notifications.consentedAppsFetch.error.message"
                     )
                 });
             } else {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.consentedAppsFetch.genericError" +
+                        "myAccount:components.consentManagement.notifications.consentedAppsFetch.genericError" +
                         ".description"
                     ),
                     level: AlertLevels.ERROR,
-                    message: t("userPortal:components.consentManagement.notifications.consentedAppsFetch" +
+                    message: t("myAccount:components.consentManagement.notifications.consentedAppsFetch" +
                         ".genericError.message")
                 });
             }
@@ -454,25 +454,25 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.consentReceiptFetch.error" +
+                        "myAccount:components.consentManagement.notifications.consentReceiptFetch.error" +
                         ".description",
                         { description: error.response.data.detail }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.consentManagement.notifications.consentReceiptFetch.error" +
+                        "myAccount:components.consentManagement.notifications.consentReceiptFetch.error" +
                         ".message"
                     )
                 });
             } else {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.consentReceiptFetch" +
+                        "myAccount:components.consentManagement.notifications.consentReceiptFetch" +
                         ".genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.consentManagement.notifications.consentReceiptFetch" +
+                        "myAccount:components.consentManagement.notifications.consentReceiptFetch" +
                         ".genericError.message")
                 });
             }
@@ -548,12 +548,12 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             .then(async () => {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.revokeConsentedApp.success" +
+                        "myAccount:components.consentManagement.notifications.revokeConsentedApp.success" +
                         ".description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.consentManagement.notifications.revokeConsentedApp" +
+                        "myAccount:components.consentManagement.notifications.revokeConsentedApp" +
                         ".success.message")
                 });
 
@@ -573,13 +573,13 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.consentManagement.notifications.revokeConsentedApp.error" +
+                            "myAccount:components.consentManagement.notifications.revokeConsentedApp.error" +
                             ".description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.consentManagement.notifications.revokeConsentedApp.error.message"
+                            "myAccount:components.consentManagement.notifications.revokeConsentedApp.error.message"
                         )
                     });
 
@@ -588,12 +588,12 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.revokeConsentedApp.genericError" +
+                        "myAccount:components.consentManagement.notifications.revokeConsentedApp.genericError" +
                         ".description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.consentManagement.notifications.revokeConsentedApp" +
+                        "myAccount:components.consentManagement.notifications.revokeConsentedApp" +
                         ".genericError.message")
                 });
             });
@@ -677,11 +677,11 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.updateConsentedClaims.success" +
+                        "myAccount:components.consentManagement.notifications.updateConsentedClaims.success" +
                         ".description"
                     ),
                     level: AlertLevels.SUCCESS,
-                    message: t("userPortal:components.consentManagement.notifications.updateConsentedClaims." +
+                    message: t("myAccount:components.consentManagement.notifications.updateConsentedClaims." +
                         "success.message")
                 });
             })
@@ -689,13 +689,13 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 if (error.response && error.response.data && error.response.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.consentManagement.notifications.updateConsentedClaims.error" +
+                            "myAccount:components.consentManagement.notifications.updateConsentedClaims.error" +
                             ".description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.consentManagement.notifications.updateConsentedClaims" +
+                            "myAccount:components.consentManagement.notifications.updateConsentedClaims" +
                             ".error.message"
                         )
                     });
@@ -705,12 +705,12 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.consentManagement.notifications.updateConsentedClaims.genericError" +
+                        "myAccount:components.consentManagement.notifications.updateConsentedClaims.genericError" +
                         ".description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.consentManagement.notifications.updateConsentedClaims." +
+                        "myAccount:components.consentManagement.notifications.updateConsentedClaims." +
                         "genericError.message")
                 });
             });
@@ -766,17 +766,17 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 onClose={ handleConsentRevokeModalClose }
                 type="negative"
                 header={
-                    t("userPortal:components.consentManagement.modals.consentRevokeModal.heading",
+                    t("myAccount:components.consentManagement.modals.consentRevokeModal.heading",
                         { appName: revokingConsent.spDisplayName })
                 }
-                content={ t("userPortal:components.consentManagement.modals.consentRevokeModal.message") }
+                content={ t("myAccount:components.consentManagement.modals.consentRevokeModal.message") }
             >
                 <Modal.Content data-testid={ `${testId}-revoke-modal-content` }>
                     {
                         (self === 0)
                             ? (
                                 <Message warning>
-                                    <p>{ t("userPortal:components.consentManagement.modals." +
+                                    <p>{ t("myAccount:components.consentManagement.modals." +
                                         "consentRevokeModal.warning") }</p>
                                 </Message>
                             )
@@ -791,11 +791,11 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         <>
             <SettingsSection
                 data-testid={ `${testId}-settings-section` }
-                description={ t("userPortal:sections.consentManagement.description") }
-                header={ t("userPortal:sections.consentManagement.heading") }
+                description={ t("myAccount:sections.consentManagement.description") }
+                header={ t("myAccount:sections.consentManagement.heading") }
                 placeholder={
                     !(consentedApps && consentedApps.length && consentedApps.length > 0)
-                        ? t("userPortal:sections.consentManagement.actionTitles.empty")
+                        ? t("myAccount:sections.consentManagement.actionTitles.empty")
                         : null
                 }
                 showActionBar={ !(consentedApps && consentedApps.length && consentedApps.length > 0) }

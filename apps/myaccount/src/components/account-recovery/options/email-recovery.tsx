@@ -125,12 +125,12 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "userPortal:components.accountRecovery.emailRecovery.notifications.updateEmail" +
+                        "myAccount:components.accountRecovery.emailRecovery.notifications.updateEmail" +
                         ".success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "userPortal:components.accountRecovery.emailRecovery.notifications.updateEmail.success.message"
+                        "myAccount:components.accountRecovery.emailRecovery.notifications.updateEmail.success.message"
                     )
                 });
 
@@ -141,13 +141,13 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                 if (error.response && error.response.data && error.response.data.detail) {
                     onAlertFired({
                         description: t(
-                            "userPortal:components.accountRecovery.emailRecovery." +
+                            "myAccount:components.accountRecovery.emailRecovery." +
                             "notifications.updateEmail.error.description",
                             { description: error.response.data.detail }
                         ),
                         level: AlertLevels.ERROR,
                         message: t(
-                            "userPortal:components.accountRecovery.emailRecovery." +
+                            "myAccount:components.accountRecovery.emailRecovery." +
                             "notifications.updateEmail.error.message"
                         )
                     });
@@ -157,12 +157,12 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
 
                 onAlertFired({
                     description: t(
-                        "userPortal:components.accountRecovery.emailRecovery." +
+                        "myAccount:components.accountRecovery.emailRecovery." +
                         "notifications.updateEmail.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "userPortal:components.accountRecovery.emailRecovery." +
+                        "myAccount:components.accountRecovery.emailRecovery." +
                         "notifications.updateEmail.genericError.message"
                     )
                 });
@@ -253,14 +253,14 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                             </List.Content>
                             <List.Content>
                                 <List.Header>{
-                                    t("userPortal:components.accountRecovery.emailRecovery.heading")
+                                    t("myAccount:components.accountRecovery.emailRecovery.heading")
                                 }</List.Header>
                                 <List.Description>
                                     {
                                         email || email !== ""
-                                        ? t("userPortal:components.accountRecovery.emailRecovery.descriptions.update",
+                                        ? t("myAccount:components.accountRecovery.emailRecovery.descriptions.update",
                                             { email: email ? maskEmail(email) : "" })
-                                        : t("userPortal:components.accountRecovery.emailRecovery.descriptions.add")
+                                        : t("myAccount:components.accountRecovery.emailRecovery.descriptions.add")
                                     }
                                     {
                                         (email || email !== "") && isEmailPending ? (
@@ -274,11 +274,11 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                     />
                                                 }
                                                 content={
-                                                    t("userPortal:components.profile.messages." +
+                                                    t("myAccount:components.profile.messages." +
                                                         "emailConfirmation.content")
                                                 }
                                                 header={
-                                                    t("userPortal:components.profile.messages." +
+                                                    t("myAccount:components.profile.messages." +
                                                         "emailConfirmation.header")
                                                 }
                                                 inverted
@@ -333,17 +333,17 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                 data-testid={ `${testId}-edit-section-form-email-field` }
                                                 autoFocus={ true }
                                                 label={ t(
-                                                    "userPortal:components.accountRecovery.emailRecovery.forms" +
+                                                    "myAccount:components.accountRecovery.emailRecovery.forms" +
                                                     ".emailResetForm.inputs.email.label"
                                                 ) }
                                                 name="email"
                                                 placeholder={ t(
-                                                    "userPortal:components.accountRecovery.emailRecovery.forms" +
+                                                    "myAccount:components.accountRecovery.emailRecovery.forms" +
                                                     ".emailResetForm.inputs.email.placeholder"
                                                 ) }
                                                 required={ true }
                                                 requiredErrorMessage={ t(
-                                                    "userPortal:components.accountRecovery.emailRecovery.forms" +
+                                                    "myAccount:components.accountRecovery.emailRecovery.forms" +
                                                     ".emailResetForm.inputs.email.validations.empty"
                                                 ) }
                                                 type="text"
@@ -352,7 +352,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                                         validation.isValid = false;
                                                         validation.errorMessages.push(
                                                             t(
-                                                                "userPortal:components.accountRecovery.emailRecovery" +
+                                                                "myAccount:components.accountRecovery.emailRecovery" +
                                                                 ".forms.emailResetForm.inputs.email." +
                                                                 "validations.invalidFormat"
                                                             ).toString()
@@ -366,7 +366,7 @@ export const EmailRecovery: React.FunctionComponent<EmailRecoveryProps> = (props
                                             <p style={ { fontSize: "12px" } }>
                                                 <Icon color="grey" floated="left" name="info circle" />
                                                 {t(
-                                                    "userPortal:components.profile.forms.emailChangeForm" +
+                                                    "myAccount:components.profile.forms.emailChangeForm" +
                                                     ".inputs.email.note"
                                                 )}
                                             </p>
