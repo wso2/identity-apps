@@ -116,6 +116,23 @@ export interface PurposeModelPIICategory {
 }
 
 /**
+ * This model is a partial structure which sent by our API
+ * The only difference of this and {@link PurposeModel} is
+ * that this does not contain the {@link PurposeModelPIICategory[]}
+ * list.
+ *
+ * @link /apidocs/Consent-management-apis/#!/operations#Purpose#consentsPurposesGet
+ * @see fetchAllPurposes for usages.
+ */
+export interface PurposeModelPartial {
+    description: string;
+    group: string;
+    groupType: string;
+    purpose: string;
+    purposeId: number;
+}
+
+/**
  * PII category mapping model in the UI.
  */
 export interface PIICategoryClaimToggleItem {
