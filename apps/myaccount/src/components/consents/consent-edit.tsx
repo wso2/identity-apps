@@ -185,7 +185,6 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
          * @param {PIICategoryWithStatus} piiCat
          */
         const eachPIICategoryItem = (piiCat: PIICategoryWithStatus) => {
-
             return <List.Item key={ piiCat.piiCategoryId }>
                 <List.Content>
                     <List.Header>
