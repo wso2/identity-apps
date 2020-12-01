@@ -325,6 +325,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 item.purposeId === purposeId &&
                 item.receiptId === receiptId) {
                 piiItem = item;
+                break;
             }
         }
 
