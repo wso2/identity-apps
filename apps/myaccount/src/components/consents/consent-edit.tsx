@@ -66,7 +66,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
     const { t } = useTranslation();
 
     /**
-     * A predicate that checks if the PII category is revoked or denied.
+     * A predicate that checks if the PII category is denied.
      * It iterates through the {@link deniedPIIClaimList} state hook to check
      * whether there's any mapping category is present.
      *

@@ -124,7 +124,7 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
  * argument which contains only one purposeID as well.
  *
  * @param {Iterable[]} purposeIDs
- * @return {PurposeModel | PurposeModel[]} response data
+ * @return {PurposeModel[]} response data
  */
 export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<PurposeModel[]> => {
 
