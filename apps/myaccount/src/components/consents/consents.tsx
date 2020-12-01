@@ -216,8 +216,9 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
                 })
                 // For each mapped out purpose set the full pii categories
                 .forEach((purpose): void => {
+                    purpose.description = detailedPurpose.description;
                     purpose.allPIICategories = detailedPurpose.piiCategories;
-                })
+                });
         });
 
         // Now we need to figure out which piiCategory claim

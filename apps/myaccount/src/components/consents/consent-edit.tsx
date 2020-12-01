@@ -221,9 +221,12 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
         };
 
         return ( <React.Fragment key={ purpose.purposeId }>
-            <Grid.Row columns={ 1 }>
+            <Grid.Row columns={ 2 }>
                 <Grid.Column width={ 16 }>
                     <strong>{ toSentenceCase(purpose.purpose) }</strong>
+                </Grid.Column>
+                <Grid.Column width={ 16 }>
+                    <em>{ toSentenceCase(purpose.description) }</em>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>

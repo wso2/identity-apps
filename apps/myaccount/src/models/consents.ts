@@ -76,6 +76,7 @@ export interface PurposeInterface {
      * claims.
      */
     allPIICategories?: PurposeModelPIICategory[];
+    description?: string;
 }
 
 /**
