@@ -109,8 +109,8 @@ export const fetchConsentReceipt = (receiptId: string): Promise<any> => {
  * - {@link offset} will defaults to 0 if not provided. If the offset is zero
  * server will start searching the records starting from zero.
  *
- * @param {number | 0} limit Number of search results (If not provided 0)
- * @param {number | 0} offset Start index of the search (If not provided 0)
+ * @param {number | 0} limit Number of search results
+ * @param {number | 0} offset Start index of the search
  * @return {Promise<PurposeModelPartial[]>} response data
  */
 export const fetchAllPurposes = async (limit: number = 0, offset: number = 0): Promise<PurposeModelPartial[]> => {
