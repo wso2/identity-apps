@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import { chain } from "lodash";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
 import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
@@ -98,7 +98,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
     const isUpdatable = (): boolean => {
 
         // This consent editing view's model {@link editingConsent}
-        const recordOnModelReceipt = _.chain(editingConsent.consentReceipt?.services || [])
+        const recordOnModelReceipt = chain(editingConsent.consentReceipt?.services || [])
             .map((service: ServiceInterface) => service.purposes)
             .flatten()
             .map((purpose: PurposeInterface) => ( {
@@ -109,7 +109,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
             .value();
 
         // Filter out the piiClaims of this receipt.
-        const recordOnUserInterface = _.chain([ ...deniedPIIClaimList, ...acceptedPIIClaimList ])
+        const recordOnUserInterface = chain([ ...deniedPIIClaimList, ...acceptedPIIClaimList ])
             .filter((piiClaim) => piiClaim.receiptId === editingConsent.consentReceiptID)
             .value();
 

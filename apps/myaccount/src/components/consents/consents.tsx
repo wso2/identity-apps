@@ -17,7 +17,7 @@
  */
 
 import { TestableComponentInterface } from "@wso2is/core/models";
-import _ from "lodash";
+import { chain, cloneDeep } from "lodash";
 import React, { FunctionComponent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -136,7 +136,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
         const accepted: Set<PIICategoryClaimToggleItem> = new Set(acceptedPIIClaimList.values());
         const denied: Set<PIICategoryClaimToggleItem> = new Set(deniedPIIClaimList.values());
 
-        const purposes = _.chain(receipt.services)
+        const purposes = chain(receipt.services)
             .map((service: ServiceInterface) => service.purposes)
             .flatten()
             .value();
@@ -227,7 +227,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             service.purposes.forEach((purpose): void => {
 
                 // Set the accepted PII categories.
-                const accepted = _.cloneDeep(purpose.piiCategory)
+                const accepted = cloneDeep(purpose.piiCategory)
                     .map((piiCat: PIICategory): PIICategoryWithStatus => {
                         return { status: "accepted", ...piiCat }
                     });
@@ -450,7 +450,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
          * Find the matching {@link ConsentInterface} using {@code receiptId}
          * clone deep is needed to avoid mutations.
          */
-        const updatingConsent = _.cloneDeep(consentedApps)
+        const updatingConsent = cloneDeep(consentedApps)
             .find((consent) => consent.consentReceiptID === receiptId);
 
         // Now refer the {@link acceptedPIIClaimList} and filter out only
