@@ -104,6 +104,7 @@ export interface ServiceResourceEndpointsInterface {
         };
         purpose: {
             getPurpose: string;
+            list: string;
         };
     };
 }
