@@ -91,10 +91,9 @@ export interface ServiceResourceEndpointsInterface {
     /**
      * Swagger Documentation {@link https://docs.wso2.com/display/IS511/apidocs/Consent-management-apis/}
      *
-     * Below we declare the type definitions for resource routes in
-     * consent-management-api (CMA). There's multiple endpoints under
-     * our CMA but in here we only specify the routes which is used by
-     * this application.
+     * Below we declare the type definitions for resource routes in consent-management-api
+     * (CMA). There's multiple endpoints under our CMA but in here we only specify the
+     * routes which is used by this application.
      */
     consentManagement: {
         consent: {
