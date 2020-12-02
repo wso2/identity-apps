@@ -18,3 +18,6 @@
 
 export * from "./common";
 export * from "./user-portal";
+export * from "./console";
+export * from "./admin-portal";
+export * from "./dev-portal";
