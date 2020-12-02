@@ -113,7 +113,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
             .filter((piiClaim) => piiClaim.receiptId === editingConsent.consentReceiptID)
             .value();
 
-        // FIXME: solve in linear time
+        // TODO: solve in linear time
         for (const uiRecord of recordOnUserInterface) {
             for (const { purposeId, piiCategory } of recordOnModelReceipt) {
                 if (purposeId === uiRecord.purposeId) {
