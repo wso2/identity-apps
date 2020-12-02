@@ -189,11 +189,6 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                 <List.Content>
                     <List.Header>
                         <Checkbox
-                            className={ isRevoked(
-                                piiCat.piiCategoryId,
-                                purpose.purposeId,
-                                editingConsent.consentReceiptID
-                            ) ? "revoked" : "" }
                             checked={ !isRevoked(
                                 piiCat.piiCategoryId,
                                 purpose.purposeId,
