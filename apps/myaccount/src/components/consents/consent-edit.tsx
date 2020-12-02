@@ -206,14 +206,6 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                                 editingConsent.consentReceiptID
                             ) }
                         />
-                        {
-                            isRevoked(piiCat.piiCategoryId, purpose.purposeId, editingConsent.consentReceiptID) ? (
-                                <Label className="revoked-label" horizontal>
-                                    { t("common:revoked") }
-                                </Label>
-                            ) : null
-                        }
-
                     </List.Header>
                 </List.Content>
             </List.Item>
