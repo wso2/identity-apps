@@ -212,7 +212,7 @@ export const AppConsentEdit: FunctionComponent<EditConsentProps> = (
                     <strong>{ toSentenceCase(purpose.purpose) }</strong>
                 </Grid.Column>
                 <Grid.Column width={ 16 }>
-                    <em>{ toSentenceCase(purpose.description) }</em>
+                    <em>{ toSentenceCase(purpose.description ?? "") }</em>
                 </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 1 }>
