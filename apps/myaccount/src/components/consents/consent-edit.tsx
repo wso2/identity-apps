@@ -20,7 +20,7 @@ import { TestableComponentInterface } from "@wso2is/core/models";
 import { chain } from "lodash";
 import React, { FunctionComponent } from "react";
 import { useTranslation } from "react-i18next";
-import { Button, Checkbox, Divider, Grid, Label, List } from "semantic-ui-react";
+import { Button, Checkbox, Divider, Grid, List } from "semantic-ui-react";
 import {
     ConsentInterface,
     PIICategoryClaimToggleItem,
