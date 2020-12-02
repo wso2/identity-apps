@@ -173,7 +173,6 @@ export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": store.getState().config.deployment.clientHost
             },
             method: HttpMethods.GET,
             /* Contains a additional path parameter :purposeId */
