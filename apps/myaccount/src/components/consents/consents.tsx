@@ -133,8 +133,7 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
     const getAllPurposes = (): void => {
         fetchAllPurposes().then((models: PurposeModelPartial[]) => {
             setPurposeModels(models);
-            console.log('fetched models: ', models);
-        }).finally();
+        });
     };
 
     useEffect(() => {
