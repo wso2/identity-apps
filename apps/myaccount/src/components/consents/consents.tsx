@@ -105,7 +105,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             // Finally set the value to the hook
             setConsentedApps(apps);
         } catch (error) {
-            console.log(error);
             if (error.response && error.response.data && error.response.detail) {
                 onAlertFired({
                     description: t(
@@ -171,8 +170,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
             state: ConsentState.ACTIVE, // Mandatory
             tenantDomain: tenantDomain // Mandatory
         };
-
-        console.log("DEBUG: created a dummy RIDP ConsentInterface", receipt);
 
         return Promise.resolve(receipt);
 
@@ -322,7 +319,6 @@ export const Consents: FunctionComponent<ConsentComponentProps> = (props: Consen
 
         // Now iterate through each of the {@code PurposeModel[]}
         allPurposesExceptDefault.forEach((detailedPurpose): void => {
-            console.log(detailedPurpose);
             // Now refer back to the services that rely on this purpose.
             const matchingServices = purposeToServices.get(detailedPurpose.purposeId);
             if (matchingServices && matchingServices.length) {
