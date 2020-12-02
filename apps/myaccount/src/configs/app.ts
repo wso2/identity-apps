@@ -105,7 +105,8 @@ export class Config {
                     getPurpose: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`,
                     list: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`
                 }
-            }
+            },
+            config: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs`
         };
     }
 
