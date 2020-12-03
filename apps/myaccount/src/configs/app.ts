@@ -71,7 +71,6 @@ export class Config {
             authorize: `${this.getDeploymentConfig().serverHost}/oauth2/authorize`,
             challengeAnswers: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenge-answers`,
             challenges: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/challenges`,
-            consents: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`,
             federatedAssociations: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/federated-associations`,
             fidoEnd: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn/finish-registration`,
             fidoMetaData: `${this.getDeploymentConfig().serverHost}/api/users/v2/me/webauthn`,
@@ -87,7 +86,6 @@ export class Config {
             logout: `${this.getDeploymentConfig().serverHost}/oidc/logout`,
             me: `${this.getDeploymentConfig().serverHost}/scim2/Me`,
             profileSchemas: `${this.getDeploymentConfig().serverHost}/scim2/Schemas`,
-            receipts: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
             revoke: `${this.getDeploymentConfig().serverHost}/oauth2/revoke`,
             sessions: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/sessions`,
             smsOtpResend: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me/resend-code`,
@@ -96,7 +94,19 @@ export class Config {
             totp: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp`,
             totpSecret: `${this.getDeploymentConfig().serverHost}/api/users/v1/me/totp/secret`,
             user: `${this.getDeploymentConfig().serverHost}/api/identity/user/v1.0/me`,
-            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`
+            wellKnown: `${this.getDeploymentConfig().serverHost}/oauth2/oidcdiscovery/.well-known/openid-configuration`,
+            consentManagement: {
+                consent: {
+                    addConsent: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`,
+                    consentReceipt: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/receipts`,
+                    listAllConsents: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents`
+                },
+                purpose: {
+                    getPurpose: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`,
+                    list: `${this.getDeploymentConfig().serverHost}/api/identity/consent-mgt/v1.0/consents/purposes`
+                }
+            },
+            config: `${this.getDeploymentConfig().serverHost}/api/server/v1/configs`
         };
     }
 
