@@ -260,6 +260,38 @@ export interface ApplicationTemplateListItemInterface {
     subTemplatesSectionTitle?: string;
 }
 
+export interface ApplicationTemplateGroupInterface {
+    /**
+     * Application template group category.
+     */
+    category?: string;
+    /**
+     * Group Description.
+     */
+    description?: string;
+    /**
+     * Group id.
+     */
+    id: string;
+    /**
+     * Group Image.
+     */
+    image?: string;
+    /**
+     * Template group name.
+     */
+    name: string;
+    /**
+     * List of Sub templates.
+     * ex: `OIDC Web Application` under `Web Application` template.
+     */
+    subTemplates?: ApplicationTemplateListItemInterface[];
+    /**
+     * Title for the sub template selection section inside the wizard.
+     */
+    subTemplatesSectionTitle?: string;
+}
+
 /**
  *  Application template list interface.
  */

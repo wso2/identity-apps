@@ -1,0 +1,9 @@
+{
+    "category": "DEFAULT_GROUP",
+    "description": "Applications developed to target native desktops.",
+    "enabled": true,
+    "id": "desktop",
+    "image": "windowsNative",
+    "name": "Desktop Application",
+    "subTemplatesSectionTitle": "Technology"
+}

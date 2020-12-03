@@ -26,15 +26,12 @@ import {
 } from "../api";
 import { CustomApplicationTemplate } from "../components";
 import {
-    ApplicationTemplateListInterface,
-    ApplicationTemplateListItemInterface
-} from "../models";
-import { setApplicationTemplates } from "../store";
-import {
-    ApplicationTemplatesConfigInterface,
-    getApplicationTemplateGroups,
+    ApplicationTemplateConfigInterface,
+    ApplicationTemplateGroupConfigInterface,
     getApplicationTemplatesConfig
-} from "../templates";
+} from "../data/application-templates";
+import { ApplicationTemplateListInterface, ApplicationTemplateListItemInterface } from "../models";
+import { setApplicationTemplates } from "../store";
 
 /**
  * Utility class for Application Templates related operations.
@@ -169,8 +166,10 @@ export class ApplicationTemplateManagementUtils {
                 return;
             }
 
-            const group = getApplicationTemplateGroups()
-                .find((group) => group.id === template.templateGroup);
+            const group = getApplicationTemplatesConfig().groups
+                .find((group: ApplicationTemplateGroupConfigInterface) => {
+                    return group.templateGroupObj.id === template.templateGroup;
+                })?.templateGroupObj;
 
             if (!group) {
                 groupedTemplates.push(template);
@@ -212,15 +211,15 @@ export class ApplicationTemplateManagementUtils {
 
         const templates: ApplicationTemplateListItemInterface[] = [];
 
-        getApplicationTemplatesConfig()
-            .filter((config: ApplicationTemplatesConfigInterface) => {
-                if (!config.enabled) {
+        getApplicationTemplatesConfig().templates
+            .filter((config: ApplicationTemplateConfigInterface) => {
+                if (!config?.meta?.enabled) {
                     return false;
                 }
 
-                templates.push(config.template);
+                templates.push(config?.templateObj);
             });
-        
+
         return templates;
     }
 }
