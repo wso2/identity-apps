@@ -21,7 +21,9 @@ import {
     ConsentInterface,
     ConsentReceiptInterface,
     ConsentState,
-    HttpMethods, PurposeModel, PurposeModelPartial,
+    HttpMethods,
+    PurposeModel,
+    PurposeModelPartial,
     UpdateReceiptInterface
 } from "../models";
 import { store } from "../store";
