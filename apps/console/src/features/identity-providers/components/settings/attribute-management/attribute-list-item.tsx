@@ -77,7 +77,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             <Label
                                 basic color='red'
                                 pointing='left'>
-                                { t("devPortal:components.idp.forms.attributeSettings." +
+                                { t("console:develop.features.idp.forms.attributeSettings." +
                                     "attributeListItem.validation.empty") }
                             </Label>
                         ) }

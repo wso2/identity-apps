@@ -147,19 +147,19 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     dispatch(addAlert({
-                        description: t("devPortal:components.idp.notifications.getIDP.error.description",
+                        description: t("console:develop.features.idp.notifications.getIDP.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.getIDP.error.message")
+                        message: t("console:develop.features.idp.notifications.getIDP.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.getIDP.genericError.description"),
+                    description: t("console:develop.features.idp.notifications.getIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.getIDP.genericError.message")
+                    message: t("console:develop.features.idp.notifications.getIDP.genericError.message")
                 }));
             })
             .finally(() => {
@@ -237,9 +237,9 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 close: HelpPanelActionIcons.close,
                 pin: HelpPanelActionIcons.pin
             } }
-            sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
-            pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
+            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
+            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
         >
             <PageLayout
                 isLoading={ isIdentityProviderRequestLoading }
@@ -266,7 +266,7 @@ const IdentityProviderEditPage: FunctionComponent<IDPEditPagePropsInterface> = (
                 backButton={ {
                     "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
-                    text: t("devPortal:pages.idpTemplate.backButton")
+                    text: t("console:develop.pages.idpTemplate.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

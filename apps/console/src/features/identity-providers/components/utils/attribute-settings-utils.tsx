@@ -157,29 +157,31 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
     updateClaimsConfigs(idpId, values)
         .then(() => {
             store.dispatch(addAlert({
-                description: I18n.instance.t("devPortal:components.idp.notifications." +
+                description: I18n.instance.t("console:develop.features.idp.notifications." +
                     "updateClaimsConfigs.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: I18n.instance.t("devPortal:components.idp.notifications.updateClaimsConfigs.success.message")
+                message: I18n.instance.t("console:develop.features.idp.notifications.updateClaimsConfigs." + 
+                    "success.message")
             }));
             onUpdate(idpId);
         })
         .catch((error) => {
             if (error.response && error.response.data && error.response.data.description) {
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("devPortal:components.idp.notifications." +
+                    description: I18n.instance.t("console:develop.features.idp.notifications." +
                         "updateClaimsConfigs.error.description",
                         { description: error.response.data.description }),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("devPortal:components.idp.notifications.updateClaimsConfigs.error.message")
+                    message: I18n.instance.t("console:develop.features.idp.notifications.updateClaimsConfigs." + 
+                        "error.message")
                 }));
             }
 
             store.dispatch(addAlert({
-                description: I18n.instance.t("devPortal:components.idp.notifications." +
+                description: I18n.instance.t("console:develop.features.idp.notifications." +
                     "updateClaimsConfigs.genericError.description"),
                 level: AlertLevels.ERROR,
-                message: I18n.instance.t("devPortal:components.idp.notifications." +
+                message: I18n.instance.t("console:develop.features.idp.notifications." +
                     "updateClaimsConfigs.genericError.message")
             }));
         });
@@ -191,10 +193,11 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
     ).then(() => {
         store.dispatch(addAlert(
             {
-                description: I18n.instance.t("devPortal:components.idp.notifications." +
+                description: I18n.instance.t("console:develop.features.idp.notifications." +
                     "updateIDPRoleMappings.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: I18n.instance.t("devPortal:components.idp.notifications.updateIDPRoleMappings.success.message")
+                message: I18n.instance.t("console:develop.features.idp.notifications.updateIDPRoleMappings" + 
+                    ".success.message")
             }
         ));
         onUpdate(idpId);
@@ -206,17 +209,18 @@ export const handleAttributeSettingsFormSubmit = (idpId: string, values: Identit
 export const handleGetAllLocalClaimsError = (error) => {
     if (error.response && error.response.data && error.response.data.description) {
         store.dispatch(addAlert({
-            description: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims.error.description",
+            description: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims." + 
+                "error.description",
                 { description: error.response.data.description }),
             level: AlertLevels.ERROR,
-            message: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims.error.message")
+            message: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims.error.message")
         }));
     }
 
     store.dispatch(addAlert({
-        description: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims." +
+        description: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims." +
             "genericError.description"),
         level: AlertLevels.ERROR,
-        message: I18n.instance.t("devPortal:components.idp.notifications.getAllLocalClaims.genericError.message")
+        message: I18n.instance.t("console:develop.features.idp.notifications.getAllLocalClaims.genericError.message")
     }));
 };

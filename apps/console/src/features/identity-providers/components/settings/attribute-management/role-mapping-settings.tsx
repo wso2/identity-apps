@@ -102,7 +102,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
         <>
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
-                    <Heading as="h4">{ t("devPortal:components.idp.forms.roleMapping.heading") }</Heading>
+                    <Heading as="h4">{ t("console:develop.features.idp.forms.roleMapping.heading") }</Heading>
                     <DynamicField
                         bottomMargin={ false }
                         data={
@@ -116,13 +116,13 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         }
                         keyType="dropdown"
                         keyData={ roleList ? getFilteredRoles() : [] }
-                        keyName={ t("devPortal:components.idp.forms.roleMapping.keyName") }
-                        valueName={ t("devPortal:components.idp.forms.roleMapping.valueName") }
-                        keyRequiredMessage={ t("devPortal:components.idp.forms.roleMapping." +
+                        keyName={ t("console:develop.features.idp.forms.roleMapping.keyName") }
+                        valueName={ t("console:develop.features.idp.forms.roleMapping.valueName") }
+                        keyRequiredMessage={ t("console:develop.features.idp.forms.roleMapping." +
                             "validation.keyRequiredMessage") }
-                        valueRequiredErrorMessage={ t("devPortal:components.idp.forms.roleMapping." +
+                        valueRequiredErrorMessage={ t("console:develop.features.idp.forms.roleMapping." +
                             "validation.valueRequiredErrorMessage") }
-                        duplicateKeyErrorMsg={ t("devPortal:components.idp.forms.roleMapping." +
+                        duplicateKeyErrorMsg={ t("console:develop.features.idp.forms.roleMapping." +
                             "validation.duplicateKeyErrorMsg") }
                         submit={ triggerSubmit }
                         update={ (data) => {
@@ -140,7 +140,7 @@ export const RoleMappingSettings: FunctionComponent<RoleMappingSettingsPropsInte
                         } }
                         data-testid={ testId }
                     />
-                    <Hint>{ t("devPortal:components.idp.forms.roleMapping.hint") }</Hint>
+                    <Hint>{ t("console:develop.features.idp.forms.roleMapping.hint") }</Hint>
                 </Grid.Column>
             </Grid.Row>
         </>

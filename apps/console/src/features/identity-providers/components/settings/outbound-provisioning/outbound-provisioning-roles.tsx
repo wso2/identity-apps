@@ -95,9 +95,10 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         ).then(() => {
             dispatch(addAlert(
                 {
-                    description: t("devPortal:components.idp.notifications.updateIDPRoleMappings.success.description"),
+                    description: t("console:develop.features.idp.notifications.updateIDPRoleMappings." + 
+                        "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateIDPRoleMappings.success.message")
+                    message: t("console:develop.features.idp.notifications.updateIDPRoleMappings.success.message")
                 }
             ));
         }).catch(error => {
@@ -109,7 +110,9 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
         <Grid>
             <Grid.Row>
                 <Grid.Column width={ 8 }>
-                    <Heading as="h5">{ t("devPortal:components.idp.forms.outboundProvisioningRoles.heading") }</Heading>
+                    <Heading as="h5">
+                        { t("console:develop.features.idp.forms.outboundProvisioningRoles" + ".heading") }
+                    </Heading>
                 </Grid.Column>
             </Grid.Row>
 
@@ -125,7 +128,8 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 } as DropdownItemProps;
                             }) }
                             value={ selectedRole }
-                            placeholder={ t("devPortal:components.idp.forms.outboundProvisioningRoles.placeHolder") }
+                            placeholder={ t("console:develop.features.idp.forms.outboundProvisioningRoles" + 
+                                ".placeHolder") }
                             onChange={
                                 (event, data) => {
                                     if (_.isEmpty(data?.value?.toString())) {
@@ -135,7 +139,7 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 }
                             }
                             search
-                            label={ t("devPortal:components.idp.forms.outboundProvisioningRoles.label") }
+                            label={ t("console:develop.features.idp.forms.outboundProvisioningRoles.label") }
                             data-testid={ `${ testId }-role-select-dropdown` }
                         />
                         <Popup
@@ -151,13 +155,13 @@ export const OutboundProvisioningRoles: FunctionComponent<OutboundProvisioningRo
                                 )
                             }
                             position="top center"
-                            content={ t("devPortal:components.idp.forms.outboundProvisioningRoles.popup.content") }
+                            content={ t("console:develop.features.idp.forms.outboundProvisioningRoles.popup.content") }
                             inverted
                             data-testid={ `${ testId }-add-button` }
                         />
                     </Form>
                     <Hint>
-                        { t("devPortal:components.idp.forms.outboundProvisioningRoles.hint") }
+                        { t("console:develop.features.idp.forms.outboundProvisioningRoles.hint") }
                     </Hint>
 
                     {
