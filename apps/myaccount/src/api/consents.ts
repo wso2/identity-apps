@@ -21,7 +21,9 @@ import {
     ConsentInterface,
     ConsentReceiptInterface,
     ConsentState,
-    HttpMethods, PurposeModel, PurposeModelPartial,
+    HttpMethods,
+    PurposeModel,
+    PurposeModelPartial,
     UpdateReceiptInterface
 } from "../models";
 import { store } from "../store";
@@ -131,7 +133,6 @@ export const fetchAllPurposes = async (limit: number = 0, offset: number = 0): P
     } catch (error) {
         return Promise.reject(error);
     }
-
 };
 
 /**
@@ -188,7 +189,6 @@ export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<
     } catch (error) {
         return Promise.reject(error);
     }
-
 };
 
 /**

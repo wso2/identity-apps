@@ -49,5 +49,4 @@ export const fetchServerConfiguration = async (): Promise<ConfigurationModel> =>
     } catch (error) {
         return Promise.reject(error);
     }
-
 };
