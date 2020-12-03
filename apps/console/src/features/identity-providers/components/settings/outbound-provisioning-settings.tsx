@@ -24,7 +24,8 @@ import {
     EmphasizedSegment,
     EmptyPlaceholder,
     Heading,
-    PrimaryButton
+    PrimaryButton,
+    SegmentedAccordionTitleActionInterface
 } from "@wso2is/react-components";
 import React, { FormEvent, FunctionComponent, ReactElement, useEffect, useState } from "react";
 import { Trans, useTranslation } from "react-i18next";
@@ -41,8 +42,8 @@ import {
 import {
     IdentityProviderInterface,
     OutboundProvisioningConnectorInterface,
-    OutboundProvisioningConnectorWithMetaInterface,
-    OutboundProvisioningConnectorsInterface
+    OutboundProvisioningConnectorsInterface,
+    OutboundProvisioningConnectorWithMetaInterface
 } from "../../models";
 import { OutboundProvisioningConnectorFormFactory } from "../forms";
 import {
