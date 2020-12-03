@@ -188,7 +188,6 @@ export const fetchPurposesByIDs = async (purposeIDs: Iterable<number>): Promise<
     } catch (error) {
         return Promise.reject(error);
     }
-
 };
 
 /**
