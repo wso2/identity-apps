@@ -31,6 +31,10 @@ import {
     ApplicationTemplateListItemInterface
 } from "../models";
 import { setApplicationTemplates } from "../store";
+import {
+    ApplicationTemplatesConfigInterface,
+    getApplicationTemplatesConfig
+} from "../templates";
 
 /**
  * Utility class for Application Templates related operations.
@@ -49,9 +53,28 @@ export class ApplicationTemplateManagementUtils {
      * Retrieve Application template list form the API and sets it in redux state.
      *
      * @param {boolean} skipGrouping - Skip grouping of templates.
+     * @param {boolean} useAPI - Flag to determine whether the usage of REST API is necessary.
      * @return {Promise<void>}
      */
-    public static getApplicationTemplates = (skipGrouping: boolean = false): Promise<void> => {
+    public static getApplicationTemplates = (skipGrouping: boolean = false,
+                                             useAPI: boolean = false): Promise<void> => {
+
+        if (!useAPI) {
+            const templates: ApplicationTemplateListItemInterface[] = ApplicationTemplateManagementUtils
+                .loadLocalFileBasedTemplates();
+
+            // Group the templates if `skipGrouping` flag is false.
+            if (!skipGrouping) {
+                store.dispatch(setApplicationTemplates(ApplicationTemplateManagementUtils.groupTemplates(templates),
+                    true));
+
+                return Promise.resolve();
+            }
+
+            store.dispatch(setApplicationTemplates(templates));
+
+            return Promise.resolve();
+        }
 
         return getApplicationTemplateList()
             .then((response: ApplicationTemplateListInterface) => {
@@ -146,7 +169,7 @@ export class ApplicationTemplateManagementUtils {
                 return;
             }
 
-            const group = getDefaultTemplateGroups()
+            const group = getApplicationTemplateGroups()
                 .find((group) => group.id === template.templateGroup);
 
             if (!group) {
@@ -179,4 +202,25 @@ export class ApplicationTemplateManagementUtils {
 
         return groupedTemplates;
     };
+
+    /**
+     * Loads local file based application templates.
+     *
+     * @return {ApplicationTemplateListItemInterface[]}
+     */
+    private static loadLocalFileBasedTemplates(): ApplicationTemplateListItemInterface[] {
+
+        const templates: ApplicationTemplateListItemInterface[] = [];
+
+        getApplicationTemplatesConfig()
+            .filter((config: ApplicationTemplatesConfigInterface) => {
+                if (!config.enabled) {
+                    return false;
+                }
+
+                templates.push(config.template);
+            });
+        
+        return templates;
+    }
 }

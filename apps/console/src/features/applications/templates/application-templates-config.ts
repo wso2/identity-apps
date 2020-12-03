@@ -22,11 +22,12 @@ import OIDCWebApplicationTemplate from "./oidc-web-application/oidc-web-applicat
 import SAMLWebApplicationTemplate from "./saml-web-application/saml-web-application.json";
 import SinglePageApplicationTemplate from "./single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate from "./windows-desktop-application/windows-desktop-application.json";
+import { ApplicationTemplateListItemInterface } from "../models";
 
 export interface ApplicationTemplatesConfigInterface {
     enabled: boolean;
     id: string;
-    template?: object;
+    template?: ApplicationTemplateListItemInterface;
 }
 
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface[] => {
