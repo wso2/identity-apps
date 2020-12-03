@@ -25,7 +25,6 @@ import {
     getApplicationTemplateList
 } from "../api";
 import { CustomApplicationTemplate } from "../components";
-import { getDefaultTemplateGroups } from "../meta";
 import {
     ApplicationTemplateListInterface,
     ApplicationTemplateListItemInterface
@@ -33,6 +32,7 @@ import {
 import { setApplicationTemplates } from "../store";
 import {
     ApplicationTemplatesConfigInterface,
+    getApplicationTemplateGroups,
     getApplicationTemplatesConfig
 } from "../templates";
 

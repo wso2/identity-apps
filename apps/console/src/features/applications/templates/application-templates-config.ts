@@ -22,7 +22,11 @@ import OIDCWebApplicationTemplate from "./oidc-web-application/oidc-web-applicat
 import SAMLWebApplicationTemplate from "./saml-web-application/saml-web-application.json";
 import SinglePageApplicationTemplate from "./single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate from "./windows-desktop-application/windows-desktop-application.json";
-import { ApplicationTemplateListItemInterface } from "../models";
+import {
+    ApplicationTemplateCategories,
+    ApplicationTemplateListItemInterface,
+    DefaultTemplateGroupIds
+} from "../models";
 
 export interface ApplicationTemplatesConfigInterface {
     enabled: boolean;
@@ -62,6 +66,36 @@ export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInter
             enabled: true,
             id: "custom-application",
             template: CustomApplicationTemplate
+        }
+    ];
+};
+
+export const getApplicationTemplateGroups = (): ApplicationTemplateListItemInterface[] => {
+
+    return [
+        {
+            category: ApplicationTemplateCategories.DEFAULT_GROUP,
+            description: "Regular web applications which use re-directions inside browsers.",
+            id: DefaultTemplateGroupIds.WEB_APPLICATION,
+            image: "oidcWebApp",
+            name: "Web Application",
+            subTemplatesSectionTitle: "Protocols"
+        },
+        {
+            category: ApplicationTemplateCategories.DEFAULT_GROUP,
+            description: "Applications developed to target native desktops.",
+            id: DefaultTemplateGroupIds.DESKTOP_APPLICATION,
+            image: "windowsNative",
+            name: "Desktop Application",
+            subTemplatesSectionTitle: "Technology"
+        },
+        {
+            category: ApplicationTemplateCategories.DEFAULT_GROUP,
+            description: "Applications developed to target mobiles devices.",
+            id: DefaultTemplateGroupIds.MOBILE_APPLICATION,
+            image: "oidcMobile",
+            name: "Mobile Application",
+            subTemplatesSectionTitle: "Technology"
         }
     ];
 };
