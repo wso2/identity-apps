@@ -240,16 +240,16 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
     return (
         <Modal open={ showAddModal } size="small" className="user-roles" data-testid={ testId }>
             <Modal.Header>
-                { t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.header") }
+                { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.header") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("devPortal:components.applications.edit.sections.attributes.selection.addWizard." +
+                    { t("console:develop.features.applications.edit.sections.attributes.selection.addWizard." +
                         "subHeading") }
                 </Heading>
             </Modal.Header>
             <Modal.Content image>
                 <TransferComponent
                     searchPlaceholder={
-                        t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
                             ".select.transfer.searchPlaceholders.attribute")
                     }
                     addItems={ addAttributes }
@@ -262,7 +262,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                         listType="unselected"
                         listHeaders={ [
-                            t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                            t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
                                 ".select.transfer.headers.attribute")
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
@@ -292,7 +292,7 @@ export const AttributeSelectionWizard: FunctionComponent<AttributeSelectionWizar
                         isListEmpty={ !(filterTempSelectedClaims.length > 0) }
                         listType="selected"
                         listHeaders={ [
-                            t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                            t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
                                 ".select.transfer.headers.attribute")
                         ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }

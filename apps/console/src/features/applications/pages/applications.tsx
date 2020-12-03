@@ -137,17 +137,17 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.fetchApplications.error.message")
+                        message: t("console:develop.features.applications.notifications.fetchApplications.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.fetchApplications" +
+                    description: t("console:develop.features.applications.notifications.fetchApplications" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchApplications.genericError.message")
+                    message: t("console:develop.features.applications.notifications.fetchApplications.genericError.message")
                 }));
             })
             .finally(() => {
@@ -247,12 +247,12 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                         data-testid={ `${ testId }-list-layout-add-button` }
                     >
                         <Icon name="add"/>
-                        { t("devPortal:components.applications.list.actions.add") }
+                        { t("console:develop.features.applications.list.actions.add") }
                     </PrimaryButton>
                 )
             }
-            title={ t("devPortal:pages.applications.title") }
-            description={ t("devPortal:pages.applications.subTitle") }
+            title={ t("console:develop.pages.applications.title") }
+            description={ t("console:develop.pages.applications.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             { renderRemoteFetchStatus() }
@@ -268,18 +268,18 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("devPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
+                            t("console:develop.features.applications.advancedSearch.form.inputs.filterAttribute" +
                                 ".placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("devPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
+                            t("console:develop.features.applications.advancedSearch.form.inputs.filterCondition" +
                                 ".placeholder")
                         }
                         filterValuePlaceholder={
-                            t("devPortal:components.applications.advancedSearch.form.inputs.filterValue" +
+                            t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("devPortal:components.applications.advancedSearch.placeholder") }
+                        placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
                         defaultSearchAttribute="name"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -311,18 +311,18 @@ const ApplicationsPage: FunctionComponent<ApplicationsPageInterface> = (
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("devPortal:components.applications.advancedSearch.form.inputs.filterAttribute" +
+                                t("console:develop.features.applications.advancedSearch.form.inputs.filterAttribute" +
                                     ".placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("devPortal:components.applications.advancedSearch.form.inputs.filterCondition" +
+                                t("console:develop.features.applications.advancedSearch.form.inputs.filterCondition" +
                                     ".placeholder")
                             }
                             filterValuePlaceholder={
-                                t("devPortal:components.applications.advancedSearch.form.inputs.filterValue" +
+                                t("console:develop.features.applications.advancedSearch.form.inputs.filterValue" +
                                     ".placeholder")
                             }
-                            placeholder={ t("devPortal:components.applications.advancedSearch.placeholder") }
+                            placeholder={ t("console:develop.features.applications.advancedSearch.placeholder") }
                             defaultSearchAttribute="name"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }

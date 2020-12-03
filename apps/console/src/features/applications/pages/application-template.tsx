@@ -279,15 +279,15 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                 {
                                     "data-testid": `${ testId }-quick-start-template-grid`,
                                     heading: "General Applications",
-                                    subHeading: t("devPortal:components.applications.templates.quickSetup.subHeading"),
+                                    subHeading: t("console:develop.features.applications.templates.quickSetup.subHeading"),
                                     tagsSectionTitle: t("common:technologies")
                                 },
                                 <EmptyPlaceholder
                                     image={ EmptyPlaceholderIllustrations.newList }
                                     imageSize="tiny"
-                                    title={ t("devPortal:components.templates.emptyPlaceholder." +
+                                    title={ t("console:develop.features.templates.emptyPlaceholder." +
                                         "title") }
-                                    subtitle={ [t("devPortal:components.templates." +
+                                    subtitle={ [t("console:develop.features.templates." +
                                         "emptyPlaceholder.subtitles")] }
                                     data-testid={
                                         `${ testId }-quick-start-template-grid-empty-placeholder`
@@ -314,9 +314,9 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                 <EmptyPlaceholder
                                     image={ EmptyPlaceholderIllustrations.newList }
                                     imageSize="tiny"
-                                    title={ t("devPortal:components.templates.emptyPlaceholder" +
+                                    title={ t("console:develop.features.templates.emptyPlaceholder" +
                                         ".title") }
-                                    subtitle={ [t("devPortal:components.templates." +
+                                    subtitle={ [t("console:develop.features.templates." +
                                         "emptyPlaceholder.subtitles")] }
                                     data-testid={ `${ testId }-custom-template-grid-empty-placeholder` }
                                 />
@@ -366,10 +366,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                                                     <EmptyPlaceholder
                                                         image={ EmptyPlaceholderIllustrations.newList }
                                                         imageSize="tiny"
-                                                        title={ t("devPortal:components.templates." +
+                                                        title={ t("console:develop.features.templates." +
                                                             "emptyPlaceholder." +
                                                             "title") }
-                                                        subtitle={ [t("devPortal:components.templates." +
+                                                        subtitle={ [t("console:develop.features.templates." +
                                                             "emptyPlaceholder.subtitles")] }
                                                         data-testid={ `${ testId }-quick-start-template-grid-
                                                                 empty-placeholder` }
@@ -393,13 +393,13 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
 
     return (
         <PageLayout
-            title={ t("devPortal:pages.applicationTemplate.title") }
+            title={ t("console:develop.pages.applicationTemplate.title") }
             contentTopMargin={ true }
-            description={ t("devPortal:pages.applicationTemplate.subTitle") }
+            description={ t("console:develop.pages.applicationTemplate.subTitle") }
             backButton={ {
                 "data-testid": `${ testId }-page-back-button`,
                 onClick: handleBackButtonClick,
-                text: t("devPortal:pages.applicationTemplate.backButton")
+                text: t("console:develop.pages.applicationTemplate.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }

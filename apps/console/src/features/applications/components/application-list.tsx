@@ -190,10 +190,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
         deleteApplication(appId)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.deleteApplication.success" +
+                    description: t("console:develop.features.applications.notifications.deleteApplication.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.applications.notifications.deleteApplication.success.message")
+                    message: t("console:develop.features.applications.notifications.deleteApplication.success.message")
                 }));
 
                 setShowDeleteConfirmationModal(false);
@@ -204,7 +204,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.deleteApplication.error" +
+                        message: t("console:develop.features.applications.notifications.deleteApplication.error" +
                             ".message")
                     }));
 
@@ -212,10 +212,10 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.deleteApplication" +
+                    description: t("console:develop.features.applications.notifications.deleteApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.deleteApplication.genericError" +
+                    message: t("console:develop.features.applications.notifications.deleteApplication.genericError" +
                         ".message")
                 }));
             });
@@ -292,7 +292,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         </Header>
                     );
                 },
-                title: t("devPortal:components.applications.list.columns.name")
+                title: t("console:develop.features.applications.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -300,7 +300,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("devPortal:components.applications.list.columns.actions")
+                title: t("console:develop.features.applications.list.columns.actions")
             }
         ];
     };
@@ -363,15 +363,15 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                 <EmptyPlaceholder
                     action={ (
                         <LinkButton onClick={ onSearchQueryClear }>
-                            { t("devPortal:placeholders.emptySearchResult.action") }
+                            { t("console:develop.placeholders.emptySearchResult.action") }
                         </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ t("devPortal:placeholders.emptySearchResult.title") }
+                    title={ t("console:develop.placeholders.emptySearchResult.title") }
                     subtitle={ [
-                        t("devPortal:placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
-                        t("devPortal:placeholders.emptySearchResult.subtitles.1")
+                        t("console:develop.placeholders.emptySearchResult.subtitles.0", { query: searchQuery }),
+                        t("console:develop.placeholders.emptySearchResult.subtitles.1")
                     ] }
                     data-testid={ `${ testId }-empty-search-placeholder` }
                 />
@@ -384,16 +384,16 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                     action={ onEmptyListPlaceholderActionClick && (
                         <PrimaryButton onClick={ onEmptyListPlaceholderActionClick }>
                             <Icon name="add"/>
-                            { t("devPortal:components.applications.placeholders.emptyList.action") }
+                            { t("console:develop.features.applications.placeholders.emptyList.action") }
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ t("devPortal:components.applications.placeholders.emptyList.title") }
+                    title={ t("console:develop.features.applications.placeholders.emptyList.title") }
                     subtitle={ [
-                        t("devPortal:components.applications.placeholders.emptyList.subtitles.0"),
-                        t("devPortal:components.applications.placeholders.emptyList.subtitles.1"),
-                        t("devPortal:components.applications.placeholders.emptyList.subtitles.2")
+                        t("console:develop.features.applications.placeholders.emptyList.subtitles.0"),
+                        t("console:develop.features.applications.placeholders.emptyList.subtitles.1"),
+                        t("console:develop.features.applications.placeholders.emptyList.subtitles.2")
                     ] }
                     data-testid={ `${ testId }-empty-placeholder` }
                 />
@@ -437,7 +437,7 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "devPortal:components.applications.confirmations.deleteApplication" +
+                                        "console:develop.features.applications.confirmations.deleteApplication" +
                                         ".assertionHint"
                                     }
                                     tOptions={ { name: deletingApplication.name } }
@@ -457,19 +457,19 @@ export const ApplicationList: FunctionComponent<ApplicationListPropsInterface> =
                         <ConfirmationModal.Header
                             data-testid={ `${ testId }-delete-confirmation-modal-header` }
                         >
-                            { t("devPortal:components.applications.confirmations.deleteApplication.header") }
+                            { t("console:develop.features.applications.confirmations.deleteApplication.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message
                             attached
                             warning
                             data-testid={ `${ testId }-delete-confirmation-modal-message` }
                         >
-                            { t("devPortal:components.applications.confirmations.deleteApplication.message") }
+                            { t("console:develop.features.applications.confirmations.deleteApplication.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content
                             data-testid={ `${ testId }-delete-confirmation-modal-content` }
                         >
-                            { t("devPortal:components.applications.confirmations.deleteApplication.content") }
+                            { t("console:develop.features.applications.confirmations.deleteApplication.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

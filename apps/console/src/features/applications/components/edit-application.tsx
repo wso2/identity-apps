@@ -165,7 +165,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins." +
+                        message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
                             "error.message")
                     }));
 
@@ -173,10 +173,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins" +
+                    description: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchAllowedCORSOrigins." +
+                    message: t("console:develop.features.applications.notifications.fetchAllowedCORSOrigins." +
                         "genericError.message")
                 }));
             });
@@ -298,7 +298,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                            message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
                                 ".error.message")
                         }));
 
@@ -306,10 +306,10 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                     }
 
                     dispatch(addAlert({
-                        description: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                        description: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.getInboundProtocolConfig" +
+                        message: t("console:develop.features.applications.notifications.getInboundProtocolConfig" +
                             ".genericError.message")
                     }));
                 })
@@ -462,7 +462,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_GENERAL_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: t("devPortal:components.applications.edit.sections.general.tabName"),
+                    menuItem: t("console:develop.features.applications.edit.sections.general.tabName"),
                     render: GeneralApplicationSettingsTabPane
                 });
             }
@@ -470,7 +470,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ACCESS_CONFIG"))) {
 
                 panes.push({
-                    menuItem: t("devPortal:components.applications.edit.sections.access.tabName"),
+                    menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
                     render: ApplicationSettingsTabPane
                 });
             }
@@ -478,7 +478,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ATTRIBUTE_MAPPING"))) {
 
                 panes.push({
-                    menuItem: t("devPortal:components.applications.edit.sections.attributes.tabName"),
+                    menuItem: t("console:develop.features.applications.edit.sections.attributes.tabName"),
                     render: AttributeSettingTabPane
                 });
             }
@@ -486,7 +486,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_SIGN_ON_METHOD_CONFIG"))) {
 
                 panes.push({
-                    menuItem: t("devPortal:components.applications.edit.sections.signOnMethod.tabName"),
+                    menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
                     render: SignOnMethodsTabPane
                 });
             }
@@ -494,7 +494,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_PROVISIONING_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: t("devPortal:components.applications.edit.sections.provisioning.tabName"),
+                    menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
                     render: ProvisioningSettingsTabPane
                 });
             }
@@ -502,7 +502,7 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
                 ApplicationManagementConstants.FEATURE_DICTIONARY.get("APPLICATION_EDIT_ADVANCED_SETTINGS"))) {
 
                 panes.push({
-                    menuItem: t("devPortal:components.applications.edit.sections.advanced.tabName"),
+                    menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
                     render: AdvancedSettingsTabPane
                 });
             }
@@ -512,27 +512,27 @@ export const EditApplication: FunctionComponent<EditApplicationPropsInterface> =
 
         return [
             {
-                menuItem: t("devPortal:components.applications.edit.sections.general.tabName"),
+                menuItem: t("console:develop.features.applications.edit.sections.general.tabName"),
                 render: GeneralApplicationSettingsTabPane
             },
             {
-                menuItem: t("devPortal:components.applications.edit.sections.access.tabName"),
+                menuItem: t("console:develop.features.applications.edit.sections.access.tabName"),
                 render: ApplicationSettingsTabPane
             },
             {
-                menuItem: t("devPortal:components.applications.edit.sections.attributes.tabName"),
+                menuItem: t("console:develop.features.applications.edit.sections.attributes.tabName"),
                 render: AttributeSettingTabPane
             },
             {
-                menuItem: t("devPortal:components.applications.edit.sections.signOnMethod.tabName"),
+                menuItem: t("console:develop.features.applications.edit.sections.signOnMethod.tabName"),
                 render: SignOnMethodsTabPane
             },
             {
-                menuItem: t("devPortal:components.applications.edit.sections.provisioning.tabName"),
+                menuItem: t("console:develop.features.applications.edit.sections.provisioning.tabName"),
                 render: ProvisioningSettingsTabPane
             },
             {
-                menuItem: t("devPortal:components.applications.edit.sections.advanced.tabName"),
+                menuItem: t("console:develop.features.applications.edit.sections.advanced.tabName"),
                 render: AdvancedSettingsTabPane
             }
         ];

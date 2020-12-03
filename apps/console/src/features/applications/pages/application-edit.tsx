@@ -345,7 +345,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         dispatch(addAlert({
                             description: error.response?.data?.description,
                             level: AlertLevels.ERROR,
-                            message: t("devPortal:components.applications.notifications.updateApplication" +
+                            message: t("console:develop.features.applications.notifications.updateApplication" +
                                 ".error.message")
                         }));
 
@@ -353,10 +353,10 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     }
 
                     dispatch(addAlert({
-                        description: t("devPortal:components.applications.notifications.updateApplication" +
+                        description: t("console:develop.features.applications.notifications.updateApplication" +
                             ".genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.updateApplication" +
+                        message: t("console:develop.features.applications.notifications.updateApplication" +
                             ".genericError.message")
                     }));
                 });
@@ -420,17 +420,17 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.fetchApplication.error.message")
+                        message: t("console:develop.features.applications.notifications.fetchApplication.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.fetchApplication" +
+                    description: t("console:develop.features.applications.notifications.fetchApplication" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.fetchApplication.genericError." +
+                    message: t("console:develop.features.applications.notifications.fetchApplication.genericError." +
                         "message")
                 }));
             })
@@ -507,7 +507,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     handleTabChange={ handleTabChange }
                 />
                 ),
-            //heading: t("devPortal:components.applications.helpPanel.tabs.start.heading"),
+            //heading: t("console:develop.features.applications.helpPanel.tabs.start.heading"),
             heading: "Server Endpoints",
             hidden: application?.inboundProtocols?.length <= 0,
             icon: {
@@ -525,7 +525,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 titleAs="h4"
                                 backButton={ samplesTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedProtocol(undefined),
-                                    text: t("devPortal:components.applications.helpPanel.tabs.samples." +
+                                    text: t("console:develop.features.applications.helpPanel.tabs.samples." +
                                         "content.sample.goBack")
                                 } }
                                 bottomMargin={ false }
@@ -549,11 +549,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     : (
                         <>
                             <Heading as="h4">
-                                { t("devPortal:components.applications.helpPanel.tabs.configs.content." +
+                                { t("console:develop.features.applications.helpPanel.tabs.configs.content." +
                                     "title") }
                             </Heading>
                             <Hint>
-                                { t("devPortal:components.applications.helpPanel.tabs.configs.content." +
+                                { t("console:develop.features.applications.helpPanel.tabs.configs.content." +
                                     "subTitle") }
                             </Hint>
                             <Divider hidden/>
@@ -580,7 +580,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                         </>
                     )
             ),
-            heading: t("devPortal:components.applications.helpPanel.tabs.configs.heading"),
+            heading: t("console:develop.features.applications.helpPanel.tabs.configs.heading"),
             hidden: !configs || (configs instanceof Array && configs.length < 1),
             icon: {
                 icon: HelpPanelIcons.tabs.guide
@@ -596,7 +596,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 titleAs="h1"
                                 backButton={ samplesTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedSample(undefined),
-                                    text: t("devPortal:components.applications.helpPanel.tabs.samples." +
+                                    text: t("console:develop.features.applications.helpPanel.tabs.samples." +
                                         "content.sample.goBack")
                                 } }
                                 bottomMargin={ false }
@@ -622,11 +622,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     : (
                         <>
                             <Heading as="h4">
-                                { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                     "sample.title") }
                             </Heading>
                             <Hint>
-                                { t("devPortal:components.applications.helpPanel.tabs.samples.content." +
+                                { t("console:develop.features.applications.helpPanel.tabs.samples.content." +
                                     "sample.subTitle") }
                             </Hint>
                             <Divider hidden/>
@@ -669,7 +669,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                                 titleAs="h4"
                                 backButton={ samplesTabBackButtonEnabled && {
                                     onClick: () => setHelpPanelSelectedSDK(undefined),
-                                    text: t("devPortal:components.applications.helpPanel.tabs.sdks." +
+                                    text: t("console:develop.features.applications.helpPanel.tabs.sdks." +
                                         "content.sdk.goBack")
                                 } }
                                 bottomMargin={ false }
@@ -693,11 +693,11 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                     : (
                         <>
                             <Heading as="h4">
-                                { t("devPortal:components.applications.helpPanel.tabs.sdks.content." +
+                                { t("console:develop.features.applications.helpPanel.tabs.sdks.content." +
                                     "sdk.title") }
                             </Heading>
                             <Hint>
-                                { t("devPortal:components.applications.helpPanel.tabs.sdks.content." +
+                                { t("console:develop.features.applications.helpPanel.tabs.sdks.content." +
                                     "sdk.subTitle") }
                             </Hint>
                             <Divider hidden/>
@@ -803,9 +803,9 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 close: HelpPanelActionIcons.close,
                 pin: HelpPanelActionIcons.pin
             } }
-            sidebarToggleTooltip={ t("devPortal:components.helpPanel.actions.open") }
-            pinButtonTooltip={ t("devPortal:components.helpPanel.actions.pin") }
-            unpinButtonTooltip={ t("devPortal:components.helpPanel.actions.unPin") }
+            sidebarToggleTooltip={ t("console:develop.features.helpPanel.actions.open") }
+            pinButtonTooltip={ t("console:develop.features.helpPanel.actions.pin") }
+            unpinButtonTooltip={ t("console:develop.features.helpPanel.actions.unPin") }
             onHelpPanelVisibilityChange={ (isVisible: boolean) => dispatch(toggleHelpPanelVisibility(isVisible)) }
             visible={ helpPanelVisibilityGlobalState }
         >
@@ -844,7 +844,7 @@ const ApplicationEditPage: FunctionComponent<ApplicationEditPageInterface> = (
                 backButton={ {
                     "data-testid": `${ testId }-page-back-button`,
                     onClick: handleBackButtonClick,
-                    text: t("devPortal:pages.applicationsEdit.backButton")
+                    text: t("console:develop.pages.applicationsEdit.backButton")
                 } }
                 titleTextAlign="left"
                 bottomMargin={ false }

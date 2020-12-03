@@ -72,7 +72,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 value={ initialValue?.value }
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("devPortal:components.applications.forms.inboundCustom.fields.dropdown" +
+                                    t("console:develop.features.applications.forms.inboundCustom.fields.dropdown" +
                                         ".validations.empty", { name: config?.displayName })
                                 }
                                 default={ config?.defaultValue }
@@ -94,12 +94,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 value={ initialValue?.value }
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("devPortal:components.applications.forms.inboundCustom.fields.password" +
+                                    t("console:develop.features.applications.forms.inboundCustom.fields.password" +
                                         ".validations.empty",
                                     { name: config?.displayName })
                                 }
                                 placeholder={
-                                    t("devPortal:components.applications.forms.inboundCustom.fields.password" +
+                                    t("console:develop.features.applications.forms.inboundCustom.fields.password" +
                                         ".placeholder",
                                         { name: config?.displayName })
                                 }
@@ -119,7 +119,7 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 label=""
                                 required={ config?.required }
                                 requiredErrorMessage={
-                                    t("devPortal:components.applications.forms.inboundCustom.fields.checkbox" +
+                                    t("console:develop.features.applications.forms.inboundCustom.fields.checkbox" +
                                         ".validations.empty",
                                         { user: config?.displayName })
                                 }
@@ -146,12 +146,12 @@ export const InboundCustomProtocolForm: FunctionComponent<InboundCustomFormProps
                                 required={ config?.required }
                                 value={ initialValue?.value }
                                 requiredErrorMessage={
-                                    t("devPortal:components.applications.forms.inboundCustom.fields.generic" +
+                                    t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
                                         ".validations.empty",
                                         { name: config?.displayName })
                                 }
                                 placeholder={
-                                    t("devPortal:components.applications.forms.inboundCustom.fields.generic" +
+                                    t("console:develop.features.applications.forms.inboundCustom.fields.generic" +
                                         ".placeholder",
                                         { name: config?.displayName })
                                 }

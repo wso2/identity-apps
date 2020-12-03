@@ -138,16 +138,16 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                             <Field
                                 name="audience"
                                 label={
-                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".audience.label")
                                 }
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("devPortal:components.applications.forms.inboundWSTrust" +
+                                    t("console:develop.features.applications.forms.inboundWSTrust" +
                                         ".fields.audience.validations.empty")
                                 }
                                 placeholder={
-                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".audience.placeholder")
                                 }
                                 type="text"
@@ -155,7 +155,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                     if (!FormValidation.url(value)) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                            t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                                 ".audience.validations.invalid")
                                         );
                                     }
@@ -164,7 +164,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                 data-testid={ `${ testId }-audience-input` }
                             />
                             <Hint>
-                                { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                     ".audience.hint") }
                             </Hint>
                         </Grid.Column>
@@ -173,14 +173,14 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                         <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                             <Field
                                 label={
-                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".certificateAlias.label")
                                 }
                                 name="certificateAlias"
                                 type="dropdown"
                                 required={ true }
                                 requiredErrorMessage={
-                                    t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                    t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                         ".certificateAlias.validations.empty")
                                 }
                                 default={ showWSTrustMetaData.certificateAlias.defaultValue }
@@ -192,7 +192,7 @@ export const WSTrustProtocolSettingsWizardForm: FunctionComponent<WSTrustSetting
                                 data-testid={ `${ testId }-certificate-alias-dropdown` }
                             />
                             <Hint>
-                                { t("devPortal:components.applications.forms.inboundWSTrust.fields" +
+                                { t("console:develop.features.applications.forms.inboundWSTrust.fields" +
                                     ".certificateAlias.hint") }
                             </Hint>
                         </Grid.Column>

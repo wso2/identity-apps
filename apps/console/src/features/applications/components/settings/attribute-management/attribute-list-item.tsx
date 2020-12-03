@@ -139,7 +139,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             <Table.Cell error={ errorInClaimMapping }>
                                 <Input
                                     placeholder={
-                                        t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                        t("console:develop.features.applications.edit.sections.attributes.selection" +
                                             ".mappingTable.listItem.fields.claim.placeholder",
                                             { name: displayName })
                                     }
@@ -154,7 +154,7 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                         basic color='red'
                                         pointing='left'
                                     >
-                                        { t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                        { t("console:develop.features.applications.edit.sections.attributes.selection" +
                                             ".mappingTable.listItem.fields.claim.label") }
                                     </Label>
                                 ) }
@@ -174,9 +174,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                                     position="top right"
                                     content={
                                         requested
-                                            ? t("devPortal:components.applications.edit.sections.attributes" +
+                                            ? t("console:develop.features.applications.edit.sections.attributes" +
                                             ".selection.mappingTable.listItem.actions.removeRequested")
-                                            : t("devPortal:components.applications.edit.sections.attributes" +
+                                            : t("console:develop.features.applications.edit.sections.attributes" +
                                             ".selection.mappingTable.listItem.actions.makeRequested")
                                     }
                                     inverted
@@ -200,9 +200,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             position="top right"
                             content={
                                 mandatory
-                                    ? t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    ? t("console:develop.features.applications.edit.sections.attributes.selection" +
                                     ".mappingTable.listItem.actions.removeMandatory")
-                                    : t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    : t("console:develop.features.applications.edit.sections.attributes.selection" +
                                     ".mappingTable.listItem.actions.makeMandatory")
                             }
                             inverted
@@ -236,9 +236,9 @@ export const AttributeListItem: FunctionComponent<AttributeListItemPropInterface
                             position="top right"
                             content={
                                 mandatory
-                                    ? t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    ? t("console:develop.features.applications.edit.sections.attributes.selection" +
                                     ".mappingTable.listItem.actions.removeMandatory")
-                                    : t("devPortal:components.applications.edit.sections.attributes.selection" +
+                                    : t("console:develop.features.applications.edit.sections.attributes.selection" +
                                     ".mappingTable.listItem.actions.makeMandatory")
                             }
                             disabled={ readOnly }

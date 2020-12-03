@@ -98,9 +98,9 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
             })
             .catch(() => {
                 dispatch(addAlert({
-                    description: t("adminPortal:components.roles.notifications.fetchRoles.genericError.description"),
+                    description: t("console:manage.features.roles.notifications.fetchRoles.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.roles.notifications.fetchRoles.genericError.message")
+                    message: t("console:manage.features.roles.notifications.fetchRoles.genericError.message")
                 }));
             });
     }, [initialMappings]);
@@ -110,7 +110,7 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
             <Grid.Row columns={ 2 }>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     <Heading as="h4">
-                        { t("devPortal:components.applications.edit.sections.attributes.roleMapping.heading") }
+                        { t("console:develop.features.applications.edit.sections.attributes.roleMapping.heading") }
                     </Heading>
                     <DynamicField
                         data={
@@ -125,23 +125,23 @@ export const RoleMapping: FunctionComponent<RoleMappingPropsInterface> = (
                         keyType="dropdown"
                         keyData={ roleList ? getFilteredRoles() : [] }
                         keyName={
-                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
                                 ".localRole.label")
                         }
                         valueName={
-                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
                                 ".applicationRole.label")
                         }
                         keyRequiredMessage={
-                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
                                 ".localRole.validations.empty")
                         }
                         valueRequiredErrorMessage={
-                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
                                 ".applicationRole.validations.empty")
                         }
                         duplicateKeyErrorMsg={
-                            t("devPortal:components.applications.edit.sections.attributes.forms.fields.dynamic" +
+                            t("console:develop.features.applications.edit.sections.attributes.forms.fields.dynamic" +
                                 ".applicationRole.validations.duplicate")
                         }
                         submit={ submitState }
