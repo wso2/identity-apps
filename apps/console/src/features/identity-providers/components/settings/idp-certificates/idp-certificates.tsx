@@ -83,10 +83,10 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
         updateIDPCertificate(editingIDP.id, data)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateIDPCertificate.success" +
+                    description: t("console:develop.features.idp.notifications.updateIDPCertificate.success" +
                         ".description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateIDPCertificate.success.message")
+                    message: t("console:develop.features.idp.notifications.updateIDPCertificate.success.message")
                 }));
                 onUpdate(editingIDP.id);
             })
@@ -95,17 +95,17 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.updateIDPCertificate.error.message")
+                        message: t("console:develop.features.idp.notifications.updateIDPCertificate.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateIDPCertificate.genericError" +
+                    description: t("console:develop.features.idp.notifications.updateIDPCertificate.genericError" +
                         ".description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.updateIDPCertificate.genericError.message")
+                    message: t("console:develop.features.idp.notifications.updateIDPCertificate.genericError.message")
                 }));
             });
     };
@@ -118,16 +118,16 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
     const handleCertificateTypeChange = (certType: string) => {
         if (certType === "PEM") {
             dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.changeCertType.pem.description"),
+                description: t("console:develop.features.idp.notifications.changeCertType.pem.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.idp.notifications.changeCertType.pem.message")
+                message: t("console:develop.features.idp.notifications.changeCertType.pem.message")
             }));
         } else {
             dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.changeCertType.jwks" +
+                description: t("console:develop.features.idp.notifications.changeCertType.jwks" +
                     ".description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.idp.notifications.changeCertType.jwks.message")
+                message: t("console:develop.features.idp.notifications.changeCertType.jwks.message")
             }));
         }
     };
@@ -138,7 +138,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 16 }>
                         <Field
-                            label={ t("devPortal:components.idp.forms.advancedConfigs.certificateType.label") }
+                            label={ t("console:develop.features.idp.forms.advancedConfigs.certificateType.label") }
                             name="type"
                             default={ "JWKS" }
                             listen={
@@ -151,12 +151,12 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                             type="radio"
                             children={ [
                                 {
-                                    label: t("devPortal:components.idp.forms.advancedConfigs.certificateType" +
+                                    label: t("console:develop.features.idp.forms.advancedConfigs.certificateType" +
                                         ".certificateJWKS.label"),
                                     value: "JWKS"
                                 },
                                 {
-                                    label: t("devPortal:components.idp.forms.advancedConfigs.certificateType" +
+                                    label: t("console:develop.features.idp.forms.advancedConfigs.certificateType" +
                                         ".certificatePEM.label"),
                                     value: "PEM"
                                 }
@@ -165,7 +165,7 @@ export const IdpCertificates: FunctionComponent<IdpCertificatesPropsInterface> =
                             data-testid={ `${ testId }-certificate-type-radio-group` }
                         />
                         <Hint>
-                            { t("devPortal:components.idp.forms.advancedConfigs.certificateType.hint") }
+                            { t("console:develop.features.idp.forms.advancedConfigs.certificateType.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

@@ -153,9 +153,9 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
         createIdentityProvider(identityProvider)
             .then((response) => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.addIDP.success.description"),
+                    description: t("console:develop.features.idp.notifications.addIDP.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.addIDP.success.message")
+                    message: t("console:develop.features.idp.notifications.addIDP.success.message")
                 }));
 
                 // The created resource's id is sent as a location header.
@@ -178,19 +178,19 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.description) {
                     setAlert({
-                        description: t("devPortal:components.idp.notifications.addIDP.error.description",
+                        description: t("console:develop.features.idp.notifications.addIDP.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.addIDP.error.message")
+                        message: t("console:develop.features.idp.notifications.addIDP.error.message")
                     });
 
                     return;
                 }
 
                 setAlert({
-                    description: t("devPortal:components.idp.notifications.addIDP.genericError.description"),
+                    description: t("console:develop.features.idp.notifications.addIDP.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.addIDP.genericError.message")
+                    message: t("console:develop.features.idp.notifications.addIDP.genericError.message")
                 });
             });
     };
@@ -527,7 +527,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 icon: IdentityProviderWizardStepIcons.general,
                 name: WizardSteps.GENERAL_DETAILS,
                 submitCallback: setSubmitGeneralSettings,
-                title: t("devPortal:components.idp.wizards.addIDP.steps.generalSettings.title")
+                title: t("console:develop.features.idp.wizards.addIDP.steps.generalSettings.title")
             }
         ];
 
@@ -538,7 +538,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: IdentityProviderWizardStepIcons.authenticatorSettings,
                     name: WizardSteps.AUTHENTICATOR_SETTINGS,
                     submitCallback: setSubmitAuthenticator,
-                    title: t("devPortal:components.idp.wizards.addIDP.steps.authenticatorConfiguration.title")
+                    title: t("console:develop.features.idp.wizards.addIDP.steps.authenticatorConfiguration.title")
                 }
             ];
         }
@@ -550,7 +550,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: IdentityProviderWizardStepIcons.outboundProvisioningSettings,
                     name: WizardSteps.OUTBOUND_PROVISIONING_SETTINGS,
                     submitCallback: setSubmitOutboundProvisioningSettings(),
-                    title: t("devPortal:components.idp.wizards.addIDP.steps.provisioningConfiguration.title")
+                    title: t("console:develop.features.idp.wizards.addIDP.steps.provisioningConfiguration.title")
                 }
             ];
         }
@@ -563,7 +563,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                     icon: IdentityProviderWizardStepIcons.summary,
                     name: WizardSteps.SUMMARY,
                     submitCallback: setFinishSubmit,
-                    title: t("devPortal:components.idp.wizards.addIDP.steps.summary.title")
+                    title: t("console:develop.features.idp.wizards.addIDP.steps.summary.title")
                 }
             ];
         }
@@ -670,7 +670,7 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                 { !isExpertMode() &&
                     (
                         <Modal.Content className="steps-container" data-testid={ `${ testId }-modal-content-1` }>
-                            <Steps.Group header={ t("devPortal:components.idp.wizards.addIDP.header") }
+                            <Steps.Group header={ t("console:develop.features.idp.wizards.addIDP.header") }
                                 current={ currentWizardStep }>
                                 { wizardSteps.map((step, index) => (
                                     <Steps.Step
@@ -700,21 +700,21 @@ export const IdentityProviderCreateWizard: FunctionComponent<IdentityProviderCre
                                 {currentWizardStep < wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-next-button` }>
-                                        { t("devPortal:components.idp.wizards.buttons.next") }
+                                        { t("console:develop.features.idp.wizards.buttons.next") }
                                         <Icon name="arrow right"/>
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep === wizardSteps.length - 1 && (
                                     <PrimaryButton floated="right" onClick={ navigateToNext }
                                                    data-testid={ `${ testId }-modal-finish-button` }>
-                                        { t("devPortal:components.idp.wizards.buttons.finish") }
+                                        { t("console:develop.features.idp.wizards.buttons.finish") }
                                     </PrimaryButton>
                                 )}
                                 {currentWizardStep > 0 && (
                                     <LinkButton floated="right" onClick={ navigateToPrevious }
                                                 data-testid={ `${ testId }-modal-previous-button` }>
                                         <Icon name="arrow left"/>
-                                        { t("devPortal:components.idp.wizards.buttons.previous") }
+                                        { t("console:develop.features.idp.wizards.buttons.previous") }
                                     </LinkButton>
                                 )}
                             </Grid.Column>

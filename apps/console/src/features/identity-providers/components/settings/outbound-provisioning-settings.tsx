@@ -141,11 +141,11 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 .catch(error => {
                     if (error.response && error.response.data && error.response.data.description) {
                         dispatch(addAlert({
-                            description: t("devPortal:components.idp.notifications." +
+                            description: t("console:develop.features.idp.notifications." +
                                 "getOutboundProvisioningConnector.error.description",
                                 { description: error.response.data.description } ),
                             level: AlertLevels.ERROR,
-                            message: t("devPortal:components.idp.notifications." +
+                            message: t("console:develop.features.idp.notifications." +
                                 "getOutboundProvisioningConnector.error.message")
                         }));
 
@@ -153,10 +153,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     }
 
                     dispatch(addAlert({
-                        description: t("devPortal:components.idp.notifications." +
+                        description: t("console:develop.features.idp.notifications." +
                             "getOutboundProvisioningConnector.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications." +
+                        message: t("console:develop.features.idp.notifications." +
                             "getOutboundProvisioningConnector.genericError.message")
                     }));
                 });
@@ -186,10 +186,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         updateOutboundProvisioningConnector(identityProvider.id, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                    description: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
                         "success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnector." +
+                    message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnector." +
                         "success.message")
                 }));
 
@@ -221,10 +221,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         updateOutboundProvisioningConnectors(data, identityProvider.id)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                    description: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                    message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
                         ".success.message")
                 }));
 
@@ -235,7 +235,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                        message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
                             ".error.message")
                     }));
 
@@ -243,10 +243,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                    description: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.idp.notifications.updateOutboundProvisioningConnectors" +
+                    message: t("console:develop.features.idp.notifications.updateOutboundProvisioningConnectors" +
                         ".genericError.message")
                 }));
             });
@@ -268,10 +268,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
         if (id == identityProvider.provisioning.outboundConnectors.defaultConnectorId) {
             dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.deleteDefaultConnector" +
+                description: t("console:develop.features.idp.notifications.deleteDefaultConnector" +
                     ".error.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.idp.notifications.deleteDefaultConnector" +
+                message: t("console:develop.features.idp.notifications.deleteDefaultConnector" +
                     ".error.message")
             }));
             return;
@@ -312,10 +312,10 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         // Validation
         if (connector.isDefault && !data.checked) {
             dispatch(addAlert({
-                description: t("devPortal:components.idp.notifications.disableOutboundProvisioningConnector." +
+                description: t("console:develop.features.idp.notifications.disableOutboundProvisioningConnector." +
                     "error.description"),
                 level: AlertLevels.WARNING,
-                message: t("devPortal:components.idp.notifications.disableOutboundProvisioningConnector." +
+                message: t("console:develop.features.idp.notifications.disableOutboundProvisioningConnector." +
                     "error.message")
             }));
             onUpdate(identityProvider.id);
@@ -347,7 +347,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                             data-testid={ `${ testId }-add-connector-button` }
                                         >
                                             <Icon name="add"/>
-                                            { t("devPortal:components.idp.buttons.addConnector") }
+                                            { t("console:develop.features.idp.buttons.addConnector") }
                                         </PrimaryButton>
                                     </Grid.Column>
                                 </Grid.Row>
@@ -373,7 +373,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                     actions: [
                                                                         {
                                                                             defaultChecked: connector.data?.isDefault,
-                                                                            label: t("devPortal:components.idp." +
+                                                                            label: t("console:develop.features.idp." +
                                                                                 "forms.outboundConnectorAccordion." +
                                                                                 "default"),
                                                                             onChange: handleDefaultConnectorChange,
@@ -381,7 +381,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                                         },
                                                                         {
                                                                             defaultChecked: connector?.data?.isEnabled,
-                                                                            label: t("devPortal:components.idp." +
+                                                                            label: t("console:develop.features.idp." +
                                                                                 "forms.outboundConnectorAccordion." +
                                                                                 "enable"),
                                                                             onChange: handleConnectorEnableToggle,
@@ -421,13 +421,13 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                 <Divider hidden />
                                 <Segment>
                                     <EmptyPlaceholder
-                                        title={ t("devPortal:components.idp.placeHolders.emptyConnectorList." +
+                                        title={ t("console:develop.features.idp.placeHolders.emptyConnectorList." +
                                             "title") }
                                         image={ EmptyPlaceholderIllustrations.emptyList }
                                         subtitle={ [
-                                            t("devPortal:components.idp.placeHolders.emptyConnectorList." +
+                                            t("console:develop.features.idp.placeHolders.emptyConnectorList." +
                                                 "subtitles.0"),
-                                            t("devPortal:components.idp.placeHolders.emptyConnectorList." +
+                                            t("console:develop.features.idp.placeHolders.emptyConnectorList." +
                                                 "subtitles.1")
                                         ] }
                                         imageSize="tiny"
@@ -435,7 +435,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                             <PrimaryButton onClick={ () => setShowWizard(true) }
                                                            data-testid={ `${ testId }-add-connector-button` }>
                                                 <Icon name="add"/>
-                                                { t("devPortal:components.idp.buttons.addConnector") }
+                                                { t("console:develop.features.idp.buttons.addConnector") }
                                             </PrimaryButton>
                                         ) }
                                         data-testid={ `${ testId }-empty-placeholder` }
@@ -457,7 +457,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         assertionHint={ (
                             <p>
                                 <Trans
-                                    i18nKey="devPortal:components.idp.confirmations.deleteConnector.assertionHint"
+                                    i18nKey="console:develop.features.idp.confirmations.deleteConnector.assertionHint"
                                     tOptions={ { name: deletingConnector?.meta.name } }
                                 >
                                     Please type <strong>{ deletingConnector?.meta.name }</strong> to confirm.
@@ -475,14 +475,14 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                         closeOnDimmerClick={ false }
                     >
                         <ConfirmationModal.Header data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("devPortal:components.idp.confirmations.deleteConnector.header") }
+                            { t("console:develop.features.idp.confirmations.deleteConnector.header") }
                         </ConfirmationModal.Header>
                         <ConfirmationModal.Message attached warning
                                                    data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("devPortal:components.idp.confirmations.deleteConnector.message") }
+                            { t("console:develop.features.idp.confirmations.deleteConnector.message") }
                         </ConfirmationModal.Message>
                         <ConfirmationModal.Content data-testid={ `${ testId }-authenticator-delete-confirmation` }>
-                            { t("devPortal:components.idp.confirmations.deleteConnector.content") }
+                            { t("console:develop.features.idp.confirmations.deleteConnector.content") }
                         </ConfirmationModal.Content>
                     </ConfirmationModal>
                 )

@@ -62,7 +62,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
             <Grid.Row>
                 <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                     <Heading as="h4">
-                        { t("devPortal:components.idp.forms.uriAttributeSettings.subject.heading") }
+                        { t("console:develop.features.idp.forms.uriAttributeSettings.subject.heading") }
                     </Heading>
                     <Divider hidden/>
                     <Form>
@@ -71,7 +71,8 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             fluid
                             options={ dropDownOptions }
                             value={ getValidatedInitialValue(initialSubjectUri) }
-                            placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.placeHolder") }
+                            placeholder={ t("console:develop.features.idp.forms.uriAttributeSettings.subject." + 
+                                "placeHolder") }
                             onChange={
                                 (event, data) => {
                                     updateSubject(data.value.toString());
@@ -79,17 +80,17 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                             }
                             search
                             fullTextSearch={ false }
-                            label={ t("devPortal:components.idp.forms.uriAttributeSettings.subject.label") }
+                            label={ t("console:develop.features.idp.forms.uriAttributeSettings.subject.label") }
                             data-testid={ `${ testId }-form-element-subject` }
                             error={ subjectError && {
-                                content: t("devPortal:components.idp.forms.uriAttributeSettings.subject." +
+                                content: t("console:develop.features.idp.forms.uriAttributeSettings.subject." +
                                     "validation.empty"),
                                 pointing: "above"
                             } }
                         />
                     </Form>
                     <Hint>
-                        { t("devPortal:components.idp.forms.uriAttributeSettings.subject.hint") }
+                        { t("console:develop.features.idp.forms.uriAttributeSettings.subject.hint") }
                     </Hint>
                 </Grid.Column>
             </Grid.Row>
@@ -98,7 +99,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                 <Grid.Row columns={ 2 }>
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Heading as="h4">
-                            { t("devPortal:components.idp.forms.uriAttributeSettings.role.heading") }
+                            { t("console:develop.features.idp.forms.uriAttributeSettings.role.heading") }
                         </Heading>
                         <Divider hidden/>
                         <Form>
@@ -107,7 +108,7 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 fluid
                                 options={ dropDownOptions }
                                 value={ getValidatedInitialValue(initialRoleUri) }
-                                placeholder={ t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                placeholder={ t("console:develop.features.idp.forms.uriAttributeSettings." +
                                     "role.placeHolder") }
                                 onChange={
                                     (event, data) => {
@@ -116,17 +117,17 @@ export const UriAttributesSettings: FunctionComponent<AdvanceAttributeSettingsPr
                                 }
                                 search
                                 fullTextSearch={ false }
-                                label={ t("devPortal:components.idp.forms.uriAttributeSettings.role.label") }
+                                label={ t("console:develop.features.idp.forms.uriAttributeSettings.role.label") }
                                 data-testid={ `${ testId }-form-element-role` }
                                 error={ roleError && {
-                                    content: t("devPortal:components.idp.forms.uriAttributeSettings." +
+                                    content: t("console:develop.features.idp.forms.uriAttributeSettings." +
                                         "role.validation.empty"),
                                     pointing: "above"
                                 } }
                             />
                         </Form>
                         <Hint>
-                            { t("devPortal:components.idp.forms.uriAttributeSettings.role.hint") }
+                            { t("console:develop.features.idp.forms.uriAttributeSettings.role.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
