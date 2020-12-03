@@ -24,6 +24,12 @@ module.exports = () => {
             components: {
                 "example": "./components/example.tsx"
             }
+        },
+        templateExtensions: {
+            applications: {
+                groups: [],
+                templates: []
+            }
         }
     };
 };

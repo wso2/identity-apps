@@ -16,6 +16,7 @@
  * under the License.
  */
 
+import merge from "lodash/merge";
 import DesktopApplicationTemplateGroup from "./groups/desktop-application-template-group.json";
 import MobileApplicationTemplateGroup from "./groups/mobile-application-template-group.json";
 import WebApplicationTemplateGroup from "./groups/web-application-template-group.json";
@@ -26,6 +27,7 @@ import SAMLWebApplicationTemplate from "./templates/saml-web-application/saml-we
 import SinglePageApplicationTemplate from "./templates/single-page-application/single-page-application.json";
 import WindowsDesktopApplicationTemplate
     from "./templates/windows-desktop-application/windows-desktop-application.json";
+import * as extensionsConfig from "../../../../extensions/config";
 import { ApplicationTemplateGroupInterface, ApplicationTemplateListItemInterface } from "../../models";
 
 export interface ApplicationTemplatesConfigInterface {
@@ -34,79 +36,68 @@ export interface ApplicationTemplatesConfigInterface {
 }
 
 export interface ApplicationTemplateConfigInterface {
-    meta: CommonTemplateConfigMetaInterface;
-    templateObj: ApplicationTemplateListItemInterface;
+    enabled: boolean;
+    id: string;
+    templateObj?: ApplicationTemplateListItemInterface;
 }
 
 export interface ApplicationTemplateGroupConfigInterface {
-    meta: CommonTemplateConfigMetaInterface;
-    templateGroupObj: ApplicationTemplateGroupInterface;
-}
-
-interface CommonTemplateConfigMetaInterface {
     enabled: boolean;
+    id: string;
+    templateGroupObj?: ApplicationTemplateGroupInterface;
 }
 
 export const getApplicationTemplatesConfig = (): ApplicationTemplatesConfigInterface => {
 
     return {
-        groups: [
+        groups: merge([
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: WebApplicationTemplateGroup.id,
                 templateGroupObj: WebApplicationTemplateGroup
             },
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: DesktopApplicationTemplateGroup.id,
                 templateGroupObj: DesktopApplicationTemplateGroup
             },
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: MobileApplicationTemplateGroup.id,
                 templateGroupObj: MobileApplicationTemplateGroup
             }
-        ],
-        templates: [
+        ], extensionsConfig()?.templateExtensions?.applications?.groups),
+        templates: merge([
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: AndroidMobileApplicationTemplate.id,
                 templateObj: AndroidMobileApplicationTemplate
             },
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: OIDCWebApplicationTemplate.id,
                 templateObj: OIDCWebApplicationTemplate
             },
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: SAMLWebApplicationTemplate.id,
                 templateObj: SAMLWebApplicationTemplate
             },
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: SinglePageApplicationTemplate.id,
                 templateObj: SinglePageApplicationTemplate
             },
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: WindowsDesktopApplicationTemplate.id,
                 templateObj: WindowsDesktopApplicationTemplate
             },
             {
-                meta: {
-                    enabled: true
-                },
+                enabled: true,
+                id: CustomApplicationTemplate.id,
                 templateObj: CustomApplicationTemplate
             }
-        ]
+        ], extensionsConfig()?.templateExtensions?.applications?.templates)
     };
 };

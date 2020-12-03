@@ -30,7 +30,11 @@ import {
     ApplicationTemplateGroupConfigInterface,
     getApplicationTemplatesConfig
 } from "../data/application-templates";
-import { ApplicationTemplateListInterface, ApplicationTemplateListItemInterface } from "../models";
+import {
+    ApplicationTemplateGroupInterface,
+    ApplicationTemplateListInterface,
+    ApplicationTemplateListItemInterface
+} from "../models";
 import { setApplicationTemplates } from "../store";
 
 /**
@@ -166,7 +170,7 @@ export class ApplicationTemplateManagementUtils {
                 return;
             }
 
-            const group = getApplicationTemplatesConfig().groups
+            const group: ApplicationTemplateGroupInterface = getApplicationTemplatesConfig().groups
                 .find((group: ApplicationTemplateGroupConfigInterface) => {
                     return group.templateGroupObj.id === template.templateGroup;
                 })?.templateGroupObj;
@@ -213,11 +217,11 @@ export class ApplicationTemplateManagementUtils {
 
         getApplicationTemplatesConfig().templates
             .filter((config: ApplicationTemplateConfigInterface) => {
-                if (!config?.meta?.enabled) {
+                if (!config.enabled) {
                     return false;
                 }
 
-                templates.push(config?.templateObj);
+                templates.push(config.templateObj);
             });
 
         return templates;
