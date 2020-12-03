@@ -87,7 +87,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
             showOnSidePanel: true
         },
         {
-            category: "devPortal:components.sidePanel.categories.identityProviders",
+            category: "console:develop.features.sidePanel.categories.identityProviders",
             children: [
                 {
                     component: lazy(() => import("../../identity-providers/pages/identity-provider-template")),
