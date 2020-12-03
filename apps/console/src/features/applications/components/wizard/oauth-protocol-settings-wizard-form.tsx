@@ -356,13 +356,13 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         <Field
                                             name="grant"
                                             label={
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields." +
+                                                t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                                     "grant.label")
                                             }
                                             type="checkbox"
                                             required={ true }
                                             requiredErrorMessage={
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields." +
+                                                t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                                     "grant.validations.empty")
                                             }
                                             children={ getAllowedGranTypeList(OIDCMeta?.allowedGrantTypes) }
@@ -372,7 +372,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         />
                                         <Hint>
                                             {
-                                                t("devPortal:components.applications.forms.inboundOIDC.fields." +
+                                                t("console:develop.features.applications.forms.inboundOIDC.fields." +
                                                     "grant.hint")
                                             }
                                         </Hint>
@@ -391,16 +391,16 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         urlState={ callBackUrls }
                                         setURLState={ setCallBackUrls }
                                         labelName={
-                                            t("devPortal:components.applications.forms.inboundOIDC." +
+                                            t("console:develop.features.applications.forms.inboundOIDC." +
                                                 "fields.callBackUrls.label")
                                         }
                                         placeholder={
-                                            t("devPortal:components.applications.forms.inboundOIDC." +
+                                            t("console:develop.features.applications.forms.inboundOIDC." +
                                                 "fields.callBackUrls" +
                                                 ".placeholder")
                                         }
                                         validationErrorMsg={
-                                            t("devPortal:components.applications.forms.inboundOIDC." +
+                                            t("console:develop.features.applications.forms.inboundOIDC." +
                                                 "fields.callBackUrls.validations.empty")
                                         }
                                         validation={ (value: string) => {
@@ -435,7 +435,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         setShowError={ setShowURLError }
                                         showError={ showURLError }
                                         hint={
-                                            !hideFieldHints && t("devPortal:components.applications.forms.inboundOIDC" +
+                                            !hideFieldHints && t("console:develop.features.applications.forms.inboundOIDC" +
                                                 ".fields.callBackUrls.hint")
                                         }
                                         addURLTooltip={ t("common:addURL") }
@@ -463,7 +463,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         value={ publicClient }
                                         children={ [
                                             {
-                                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                                     ".fields.public.label"),
                                                 value: "supportPublicClients"
                                             }
@@ -472,7 +472,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                     />
                                     { !hideFieldHints && (
                                         <Hint>
-                                            { t("devPortal:components.applications.forms.inboundOIDC.fields.public" +
+                                            { t("console:develop.features.applications.forms.inboundOIDC.fields.public" +
                                                 ".hint") }
                                         </Hint>
                                     ) }
@@ -487,14 +487,14 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                         label=""
                                         required={ false }
                                         requiredErrorMessage={
-                                            t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                                 ".refreshToken.fields.renew.validations.empty")
                                         }
                                         type="checkbox"
                                         value={ refreshToken }
                                         children={ [
                                             {
-                                                label: t("devPortal:components.applications.forms.inboundOIDC" +
+                                                label: t("console:develop.features.applications.forms.inboundOIDC" +
                                                     ".sections.refreshToken.fields.renew.label"),
                                                 value: "refreshToken"
                                             }
@@ -503,7 +503,7 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
                                     />
                                     { !hideFieldHints && (
                                         <Hint>
-                                            { t("devPortal:components.applications.forms.inboundOIDC.sections" +
+                                            { t("console:develop.features.applications.forms.inboundOIDC.sections" +
                                                 ".refreshToken.fields.renew.hint") }
                                         </Hint>
                                     ) }

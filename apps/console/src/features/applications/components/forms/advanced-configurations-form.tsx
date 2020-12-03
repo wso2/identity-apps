@@ -85,14 +85,14 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.advancedConfig.fields.saas" +
+                                t("console:develop.features.applications.forms.advancedConfig.fields.saas" +
                                     ".validations.empty")
                             }
                             value={ config?.saas ? [ "saas" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
                                         ".saas.label"),
                                     value: "saas"
                                 }
@@ -101,7 +101,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-sass-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.advancedConfig.fields.saas.hint") }
+                            { t("console:develop.features.applications.forms.advancedConfig.fields.saas.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -112,14 +112,14 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                t("console:develop.features.applications.forms.advancedConfig.fields" +
                                     ".skipConsentLogin.validations.empty")
                             }
                             value={ config?.skipLoginConsent ? [ "skipLoginConsent" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
                                         ".skipConsentLogin.label"),
                                     value: "skipLoginConsent"
                                 }
@@ -128,7 +128,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-skip-login-consent-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.advancedConfig.fields.skipConsentLogin" +
+                            { t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogin" +
                                 ".hint") }
                         </Hint>
                     </Grid.Column>
@@ -140,14 +140,14 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                t("console:develop.features.applications.forms.advancedConfig.fields" +
                                     ".skipConsentLogout.validations.empty")
                             }
                             value={ config?.skipLogoutConsent ? [ "skipLogoutConsent" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
                                         ".skipConsentLogout.label"),
                                     value: "skipLogoutConsent"
                                 }
@@ -156,7 +156,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-skip-logout-consent-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.advancedConfig.fields.skipConsentLogout" +
+                            { t("console:develop.features.applications.forms.advancedConfig.fields.skipConsentLogout" +
                                 ".hint") }
                         </Hint>
                     </Grid.Column>
@@ -168,14 +168,14 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                t("console:develop.features.applications.forms.advancedConfig.fields" +
                                     ".returnAuthenticatedIdpList.validations.empty")
                             }
                             value={ config?.returnAuthenticatedIdpList ? [ "returnAuthenticatedIdpList" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
                                         ".returnAuthenticatedIdpList.label"),
                                     value: "returnAuthenticatedIdpList"
                                 }
@@ -184,7 +184,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-return-authenticated-idp-list-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.advancedConfig.fields" +
+                            { t("console:develop.features.applications.forms.advancedConfig.fields" +
                                 ".returnAuthenticatedIdpList.hint") }
                         </Hint>
                     </Grid.Column>
@@ -196,14 +196,14 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             label=""
                             required={ false }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                t("console:develop.features.applications.forms.advancedConfig.fields" +
                                     ".enableAuthorization.validations.empty")
                             }
                             value={ config?.enableAuthorization ? [ "enableAuthorization" ] : [] }
                             type="checkbox"
                             children={ [
                                 {
-                                    label: t("devPortal:components.applications.forms.advancedConfig.fields" +
+                                    label: t("console:develop.features.applications.forms.advancedConfig.fields" +
                                         ".enableAuthorization.label"),
                                     value: "enableAuthorization"
                                 }
@@ -212,7 +212,7 @@ export const AdvancedConfigurationsForm: FunctionComponent<AdvancedConfiguration
                             data-testid={ `${ testId }-enable-authorization-checkbox` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.advancedConfig.fields" +
+                            { t("console:develop.features.applications.forms.advancedConfig.fields" +
                                 ".enableAuthorization.hint") }
                         </Hint>
                     </Grid.Column>

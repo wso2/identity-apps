@@ -186,10 +186,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
         updateAuthenticationSequence(appId, requestBody)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
                         ".success.message")
                 }));
 
@@ -200,7 +200,7 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                        message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
                             ".error.message")
                     }));
 
@@ -208,10 +208,10 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                    description: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.updateAuthenticationFlow" +
+                    message: t("console:develop.features.applications.notifications.updateAuthenticationFlow" +
                         ".genericError.message")
                 }));
             });
@@ -225,21 +225,21 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     dispatch(addAlert({
-                        description: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.description",
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.error.message")
                     }));
                 } else {
                     // Generic error message
                     dispatch(addAlert({
-                        description: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                        description: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError." +
                             "description"),
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                        message: t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                             "requestPathAuthenticators.notifications.getRequestPathAuthenticators.genericError.message")
                     }));
                 }
@@ -264,9 +264,9 @@ export const SignOnMethods: FunctionComponent<SignOnMethodsPropsInterface> = (
 
     const showRequestPathAuthenticators: ReactElement = (
         <>
-            <Heading as="h4">{ t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+            <Heading as="h4">{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                 "requestPathAuthenticators.title") }</Heading>
-            <Hint>{ t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+            <Hint>{ t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                 "requestPathAuthenticators.subTitle") }</Hint>
             <Forms>
                 <Grid>

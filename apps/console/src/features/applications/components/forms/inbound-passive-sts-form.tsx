@@ -84,15 +84,15 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                         <Field
                             name="realm"
                             label={
-                                t("devPortal:components.applications.forms.inboundSTS.fields.realm.label")
+                                t("console:develop.features.applications.forms.inboundSTS.fields.realm.label")
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.inboundSTS.fields.realm.validations" +
+                                t("console:develop.features.applications.forms.inboundSTS.fields.realm.validations" +
                                     ".empty")
                             }
                             placeholder={
-                                t("devPortal:components.applications.forms.inboundSTS.fields.realm.placeholder")
+                                t("console:develop.features.applications.forms.inboundSTS.fields.realm.placeholder")
                             }
                             type="text"
                             value={ initialValues?.realm }
@@ -100,7 +100,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             data-testid={ `${ testId }-realm-input` }
                         />
                         <Hint disabled={ !(_.isEmpty(initialValues?.realm)) }>
-                            { t("devPortal:components.applications.forms.inboundSTS.fields.realm.hint") }
+                            { t("console:develop.features.applications.forms.inboundSTS.fields.realm.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>
@@ -108,20 +108,20 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                     <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                         <Field
                             name="replyTo"
-                            label={ t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.label") }
+                            label={ t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.label") }
                             required={ true }
                             requiredErrorMessage={
-                                t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.validations" +
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.validations" +
                                     ".empty")
                             }
                             placeholder={
-                                t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.placeholder")
+                                t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.placeholder")
                             }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.url(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
-                                        t("devPortal:components.applications.forms.inboundSTS.fields.replyTo" +
+                                        t("console:develop.features.applications.forms.inboundSTS.fields.replyTo" +
                                             ".validations.invalid")
                                     );
                                 }
@@ -132,7 +132,7 @@ export const InboundPassiveStsForm: FunctionComponent<InboundPassiveStsFormProps
                             data-testid={ `${ testId }-reply-to-url-input` }
                         />
                         <Hint>
-                            { t("devPortal:components.applications.forms.inboundSTS.fields.replyTo.hint") }
+                            { t("console:develop.features.applications.forms.inboundSTS.fields.replyTo.hint") }
                         </Hint>
                     </Grid.Column>
                 </Grid.Row>

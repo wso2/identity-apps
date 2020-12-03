@@ -352,7 +352,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             <Form.Field>
                                                 <div className={ "required field" }>
                                                     <label>
-                                                        { t("devPortal:components.applications.forms.inboundSAML" +
+                                                        { t("console:develop.features.applications.forms.inboundSAML" +
                                                             ".fields.issuer.label") }
                                                     </label>
                                                 </div>
@@ -363,17 +363,17 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             <Field
                                                 name="issuer"
                                                 label={
-                                                    t("devPortal:components.applications.forms.inboundSAML" +
+                                                    t("console:develop.features.applications.forms.inboundSAML" +
                                                         ".fields.issuer.label")
                                                 }
                                                 required={ true }
                                                 requiredErrorMessage={
-                                                    t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                    t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                         ".issuer.validations.empty")
                                                 }
                                                 type="text"
                                                 placeholder={
-                                                    t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                                    t("console:develop.features.applications.forms.inboundSAML.fields" +
                                                         ".issuer.placeholder")
                                                 }
                                                 value={ initialValues?.issuer }
@@ -384,7 +384,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                         )
                                 }
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.fields.issuer.hint") }
+                                    { t("console:develop.features.applications.forms.inboundSAML.fields.issuer.hint") }
                                 </Hint>
                             </Grid.Column>
                         </Grid.Row>
@@ -394,17 +394,17 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ref={ applicationQualifier }
                                     name="applicationQualifier"
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
                                             ".label")
                                     }
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
                                             ".validations.empty")
                                     }
                                     type="text"
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields.qualifier" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields.qualifier" +
                                             ".placeholder")
                                     }
                                     value={ initialValues?.serviceProviderQualifier }
@@ -412,7 +412,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-application-qualifier-input` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.fields.qualifier." +
+                                    { t("console:develop.features.applications.forms.inboundSAML.fields.qualifier." +
                                         "hint") }
                                 </Hint>
                             </Grid.Column>
@@ -422,15 +422,15 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             urlState={ assertionConsumerUrls }
                             setURLState={ setAssertionConsumerUrls }
                             labelName={
-                                t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.label")
+                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs.label")
                             }
                             value={ initialValues?.assertionConsumerUrls.toString() }
                             placeholder={
-                                t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs" +
+                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs" +
                                     ".placeholder")
                             }
                             validationErrorMsg={
-                                t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs" +
+                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs" +
                                     ".validations.invalid")
                             }
                             validation={ (value: string) => {
@@ -465,7 +465,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             showError={ showAssertionConsumerUrlError }
                             setShowError={ setAssertionConsumerUrlError }
                             hint={
-                                t("devPortal:components.applications.forms.inboundSAML.fields.assertionURLs.hint")
+                                t("console:develop.features.applications.forms.inboundSAML.fields.assertionURLs.hint")
                             }
                             readOnly={ readOnly }
                             addURLTooltip={ t("common:addURL") }
@@ -479,14 +479,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ defaultAssertionConsumerUrl }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".defaultAssertionURL.label")
                                     }
                                     name="defaultAssertionConsumerUrl"
                                     type="dropdown"
                                     required={ true }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".defaultAssertionURL.validations.empty")
                                     }
                                     default={
@@ -499,7 +499,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     value={ initialValues?.defaultAssertionConsumerUrl }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.fields" +
                                         ".defaultAssertionURL.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -509,18 +509,18 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ idpEntityIdAlias }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".idpEntityIdAlias.label")
                                     }
                                     name="idpEntityIdAlias"
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".idpEntityIdAlias.placeholder")
                                     }
                                     type="text"
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                        t("console:develop.features.applications.forms.inboundSAML.fields" +
                                             ".idpEntityIdAlias.validations.empty")
                                     }
                                     value={ initialValues?.idpEntityIdAlias }
@@ -528,7 +528,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-idp-entity-id-alias-input` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.fields" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.fields" +
                                         ".idpEntityIdAlias.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -542,7 +542,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".requestValidation.heading") }
                                 </Heading>
                                 <Divider hidden/>
@@ -552,7 +552,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     label=""
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".requestValidation.fields.signatureValidation.validations.empty")
                                     }
                                     type="checkbox"
@@ -570,7 +570,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.requestValidation.fields.signatureValidation.label"),
                                             value: "enableSignatureValidation"
                                         }
@@ -579,7 +579,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-request-signature-validation-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".requestValidation.fields.signatureValidation.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -589,7 +589,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ signatureValidationCertAlias }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".requestValidation.fields.signatureValidationCertAlias.label")
                                     }
                                     name="signatureValidationCertAlias"
@@ -598,7 +598,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     disabled={ !isRequestSignatureValidationEnabled }
                                     value={ initialValues?.requestValidation.signatureValidationCertAlias }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".requestValidation.fields.signatureValidationCertAlias.validations.empty")
                                     }
                                     default={ metadata?.certificateAlias.defaultValue }
@@ -607,7 +607,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-request-validation-certificate-alias-dropdown` }
                                 />
                                 <Hint disabled={ !isRequestSignatureValidationEnabled }>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".requestValidation.fields.signatureValidationCertAlias.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -621,7 +621,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".responseSigning.heading") }
                                 </Heading>
                                 <Divider hidden/>
@@ -629,14 +629,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     <Field
                                         ref={ digestAlgorithm }
                                         label={
-                                            t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
                                                 ".responseSigning.fields.digestAlgorithm.label")
                                         }
                                         name="digestAlgorithm"
                                         type="dropdown"
                                         required={ false }
                                         requiredErrorMessage={
-                                            t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                            t("console:develop.features.applications.forms.inboundSAML.sections" +
                                                 ".responseSigning.fields.digestAlgorithm.validations.empty")
                                         }
                                         default={ metadata?.responseDigestAlgorithm.defaultValue }
@@ -653,7 +653,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ signingAlgorithm }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".responseSigning.fields.signingAlgorithm.label")
                                     }
                                     name="signingAlgorithm"
@@ -661,7 +661,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     required={ false }
                                     value={ initialValues?.responseSigning.signingAlgorithm }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".responseSigning.fields.signingAlgorithm.validations.empty")
                                     }
                                     default={ metadata?.responseSigningAlgorithm.defaultValue }
@@ -683,7 +683,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     value={ initialValues?.responseSigning.enabled ? ["enabled"] : [] }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.responseSigning.fields.responseSigning.label"),
                                             value: "enabled"
                                         }
@@ -692,7 +692,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-response-signing-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".responseSigning.fields.responseSigning.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -706,21 +706,21 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".ssoProfile.heading") }
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
                                     ref={ bindings }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".ssoProfile.fields.bindings.label")
                                     }
                                     name="bindings"
                                     type="checkbox"
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".ssoProfile.fields.bindings.validations.empty")
                                     }
                                     default={ ["HTTP_POST", "HTTP_REDIRECT"] }
@@ -742,7 +742,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-bindings-checkbox-group` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".ssoProfile.fields.bindings.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -762,7 +762,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                             ["enableSignatureValidationForArtifactBinding"] : [] }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.ssoProfile.fields.artifactBinding.label"),
                                             value: "enableSignatureValidationForArtifactBinding"
                                         }
@@ -771,7 +771,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-artifact-binding-signature-validation-checkbox` }
                                 />
                                 <Hint>
-                                   { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                   { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                            ".ssoProfile.fields.artifactBinding.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -784,7 +784,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     label=""
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".ssoProfile.fields.idpInitiatedSSO.validations.empty")
                                     }
                                     type="checkbox"
@@ -794,7 +794,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.ssoProfile.fields.idpInitiatedSSO.label"),
                                             value: "enableIdPInitiatedSSO"
                                         }
@@ -807,26 +807,26 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h6">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                         ".heading") }
                                 </Heading>
                                 <Divider hidden/>
                                 <Field
                                     ref={ nameIdFormat }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.nameIdFormat.label")
                                     }
                                     name="nameIdFormat"
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.nameIdFormat.placeholder")
                                     }
                                     type="text"
                                     default={ metadata?.certificateAlias }
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".assertion.fields.nameIdFormat.validations.empty")
                                     }
                                     value={ initialValues?.singleSignOnProfile.assertion.nameIdFormat }
@@ -834,7 +834,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-name-id-format-input` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                         ".fields.nameIdFormat.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -844,16 +844,16 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             urlState={ audiences }
                             setURLState={ setAudiences }
                             labelName={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.audience.label")
                             }
                             value={ initialValues?.singleSignOnProfile.assertion.audiences.toString() }
                             placeholder={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.audience.placeholder")
                             }
                             validationErrorMsg={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.audience.validations.invalid")
                             }
                             validation={ (value: string) => {
@@ -887,7 +887,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             showError={ showAudienceError }
                             setShowError={ setAudienceError }
                             hint={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.audience.hint")
                             }
                             readOnly={ readOnly }
@@ -902,16 +902,16 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             urlState={ recipients }
                             setURLState={ setRecipients }
                             labelName={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.recipients.label")
                             }
                             value={ initialValues?.singleSignOnProfile.assertion.recipients.toString() }
                             placeholder={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.recipients.placeholder")
                             }
                             validationErrorMsg={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.recipients.validations.invalid")
                             }
                             validation={ (value: string) => {
@@ -945,7 +945,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             showError={ showRecipientsError }
                             setShowError={ setRecipientsError }
                             hint={
-                                t("devPortal:components.applications.forms.inboundSAML.sections.assertion" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections.assertion" +
                                     ".fields.recipients.hint")
                             }
                             readOnly={ readOnly }
@@ -958,7 +958,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Heading as="h6">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".encryption.heading") }
                                 </Heading>
                                 <Divider hidden/>
@@ -968,7 +968,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     label=""
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.assertionEncryption.validations.empty")
                                     }
                                     value={
@@ -985,7 +985,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.encryption.fields.assertionEncryption.label"),
                                             value: "enableAssertionEncryption"
                                         }
@@ -1000,14 +1000,14 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ assertionEncryptionAlgorithm }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.assertionEncryptionAlgorithm.label")
                                     }
                                     name="assertionEncryptionAlgorithm"
                                     type="dropdown"
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.assertionEncryptionAlgorithm.validations.empty")
                                     }
                                     disabled={ !isAssertionEncryptionEnabled }
@@ -1027,7 +1027,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ keyEncryptionAlgorithm }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.keyEncryptionAlgorithm.label")
                                     }
                                     name="keyEncryptionAlgorithm"
@@ -1035,7 +1035,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     required={ false }
                                     disabled={ !isAssertionEncryptionEnabled }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".encryption.fields.keyEncryptionAlgorithm.validations.empty")
                                     }
                                     default={ metadata?.keyEncryptionAlgorithm.defaultValue }
@@ -1056,7 +1056,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".attributeProfile.heading") }
                                 </Heading>
                                 <Divider hidden/>
@@ -1080,7 +1080,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.attributeProfile.fields.enable.label"),
                                             value: "enabled"
                                         }
@@ -1089,7 +1089,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-attribute-profile-checkbox` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".attributeProfile.fields.enable.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -1110,7 +1110,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.attributeProfile.fields.includeAttributesInResponse.label"),
                                             value: "alwaysIncludeAttributesInResponse"
                                         }
@@ -1119,7 +1119,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-include-attribute-in-response-checkbox` }
                                 />
                                 <Hint disabled={ !isAttributeProfileEnabled }>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".attributeProfile.fields.includeAttributesInResponse.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -1129,19 +1129,19 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ attributeConsumingServiceIndex }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".attributeProfile.fields.serviceIndex.label")
                                     }
                                     name="attributeConsumingServiceIndex"
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".attributeProfile.fields.serviceIndex.placeholder")
                                     }
                                     type="text"
                                     required={ false }
                                     disabled={ !isAttributeProfileEnabled }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".attributeProfile.fields.serviceIndex.validations.empty")
                                     }
                                     value={ initialValues?.singleSignOnProfile.attributeConsumingServiceIndex }
@@ -1149,7 +1149,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-attribute-consuming-service-index-input` }
                                 />
                                 <Hint>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".attributeProfile.fields.serviceIndex.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -1163,7 +1163,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             </Grid.Column>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".sloProfile.heading") }
                                 </Heading>
                                 <Divider hidden/>
@@ -1173,7 +1173,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     label=""
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.enable.validations.empty")
                                     }
                                     type="checkbox"
@@ -1190,7 +1190,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.sloProfile.heading"),
                                             value: "enabled"
                                         }
@@ -1205,7 +1205,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                 <Field
                                     ref={ logoutMethod }
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.logoutMethod.label")
                                     }
                                     name="logoutMethod"
@@ -1213,7 +1213,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     required={ false }
                                     value={ initialValues?.singleLogoutProfile.logoutMethod }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.logoutMethod.validations.empty")
                                     }
                                     default={ LogoutMethods.BACK_CHANNEL }
@@ -1247,25 +1247,25 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ref={ singleLogoutResponseUrl }
                                     name="singleLogoutResponseUrl"
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.responseURL.label")
                                     }
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
-                                                t("devPortal:components.applications.forms.inboundSAML" +
+                                                t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".sections.sloProfile.fields.responseURL.validations.invalid")
                                             );
                                         }
                                     } }
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.responseURL.validations.empty")
                                     }
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.responseURL.placeholder")
                                     }
                                     disabled={ !isSingleLogoutProfileEnabled }
@@ -1282,25 +1282,25 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     ref={ singleLogoutRequestUrl }
                                     name="singleLogoutRequestUrl"
                                     label={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.requestURL.label")
                                     }
                                     validation={ (value: string, validation: Validation) => {
                                         if (!FormValidation.url(value)) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
-                                                t("devPortal:components.applications.forms.inboundSAML" +
+                                                t("console:develop.features.applications.forms.inboundSAML" +
                                                     ".sections.sloProfile.fields.requestURL.validations.invalid")
                                             );
                                         }
                                     } }
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.requestURL.validations.empty")
                                     }
                                     placeholder={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".sloProfile.fields.requestURL.placeholder")
                                     }
                                     disabled={ !isSingleLogoutProfileEnabled }
@@ -1314,7 +1314,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 8 }>
                                 <Heading as="h6" disabled={ !isSingleLogoutProfileEnabled }>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".idpInitiatedSLO.heading") }
                                 </Heading>
                                 <Divider hidden/>
@@ -1324,7 +1324,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     label=""
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".idpInitiatedSLO.fields.enable.validations.empty")
                                     }
                                     type="checkbox"
@@ -1342,7 +1342,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     }
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.idpInitiatedSLO.fields.enable.label"),
                                             value: "enabled"
                                         }
@@ -1351,7 +1351,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     data-testid={ `${ testId }-idp-initiated-single-logout-checkbox` }
                                 />
                                 <Hint disabled={ !isSingleLogoutProfileEnabled }>
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".idpInitiatedSLO.fields.enable.hint") }
                                 </Hint>
                             </Grid.Column>
@@ -1361,18 +1361,18 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                             urlState={ returnToURLS }
                             setURLState={ setReturnToURLS }
                             labelName={
-                                t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections" +
                                     ".idpInitiatedSLO.fields.returnToURLs.label")
                             }
                             value={
                                 initialValues?.singleLogoutProfile.idpInitiatedSingleLogout.returnToUrls.toString()
                             }
                             placeholder={
-                                t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections" +
                                     ".idpInitiatedSLO.fields.returnToURLs.placeholder")
                             }
                             validationErrorMsg={
-                                t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                t("console:develop.features.applications.forms.inboundSAML.sections" +
                                     ".idpInitiatedSLO.fields.returnToURLs.validations.invalid")
                             }
                             validation={ (value: string) => {
@@ -1423,7 +1423,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                         <Grid.Row columns={ 1 }>
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 10 }>
                                 <Heading as="h5">
-                                    { t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                    { t("console:develop.features.applications.forms.inboundSAML.sections" +
                                         ".requestProfile.heading") }
                                 </Heading>
                                 <Divider hidden/>
@@ -1433,7 +1433,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     label=""
                                     required={ false }
                                     requiredErrorMessage={
-                                        t("devPortal:components.applications.forms.inboundSAML.sections" +
+                                        t("console:develop.features.applications.forms.inboundSAML.sections" +
                                             ".requestProfile.fields.enable.validations.empty")
                                     }
                                     value={
@@ -1443,7 +1443,7 @@ export const InboundSAMLForm: FunctionComponent<InboundSAMLFormPropsInterface> =
                                     type="checkbox"
                                     children={ [
                                         {
-                                            label: t("devPortal:components.applications.forms.inboundSAML" +
+                                            label: t("console:develop.features.applications.forms.inboundSAML" +
                                                 ".sections.requestProfile.fields.enable.label"),
                                             value: "enableAssertionQueryProfile"
                                         }

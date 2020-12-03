@@ -80,7 +80,7 @@ export class ApplicationManagementUtils {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("devPortal:components.applications.notifications" +
+                        message: I18n.instance.t("console:develop.features.applications.notifications" +
                             ".fetchInboundProtocols.error.message")
                     }));
 
@@ -88,10 +88,10 @@ export class ApplicationManagementUtils {
                 }
 
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("devPortal:components.applications.notifications" +
+                    description: I18n.instance.t("console:develop.features.applications.notifications" +
                         ".fetchInboundProtocols.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("devPortal:components.applications.notifications" +
+                    message: I18n.instance.t("console:develop.features.applications.notifications" +
                         ".fetchInboundProtocols.genericError.message")
                 }));
             });
@@ -125,7 +125,7 @@ export class ApplicationManagementUtils {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("devPortal:components.applications.notifications" +
+                        message: I18n.instance.t("console:develop.features.applications.notifications" +
                             ".fetchCustomInboundProtocols.error.message")
                     }));
 
@@ -133,10 +133,10 @@ export class ApplicationManagementUtils {
                 }
 
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("devPortal:components.applications.notifications" +
+                    description: I18n.instance.t("console:develop.features.applications.notifications" +
                         ".fetchCustomInboundProtocols.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("devPortal:components.applications.notifications" +
+                    message: I18n.instance.t("console:develop.features.applications.notifications" +
                         ".fetchCustomInboundProtocols.genericError.message")
                 }));
             });
@@ -196,7 +196,7 @@ export class ApplicationManagementUtils {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("devPortal:components.applications.notifications." +
+                        message: I18n.instance.t("console:develop.features.applications.notifications." +
                             "fetchOIDCIDPConfigs.error.message")
                     }));
 
@@ -204,10 +204,10 @@ export class ApplicationManagementUtils {
                 }
 
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("devPortal:components.applications.notifications." +
+                    description: I18n.instance.t("console:develop.features.applications.notifications." +
                         "fetchOIDCIDPConfigs.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("devPortal:components.applications.notifications." +
+                    message: I18n.instance.t("console:develop.features.applications.notifications." +
                         "fetchOIDCIDPConfigs.genericError.message")
                 }));
             });
@@ -226,7 +226,7 @@ export class ApplicationManagementUtils {
                     store.dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("devPortal:components.applications.notifications." +
+                        message: I18n.instance.t("console:develop.features.applications.notifications." +
                             "fetchSAMLIDPConfigs.error.message")
                     }));
 
@@ -234,10 +234,10 @@ export class ApplicationManagementUtils {
                 }
 
                 store.dispatch(addAlert({
-                    description: I18n.instance.t("devPortal:components.applications.notifications." +
+                    description: I18n.instance.t("console:develop.features.applications.notifications." +
                         "fetchSAMLIDPConfigs.genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: I18n.instance.t("devPortal:components.applications.notifications." +
+                    message: I18n.instance.t("console:develop.features.applications.notifications." +
                         "fetchSAMLIDPConfigs.genericError.message")
                 }));
             });

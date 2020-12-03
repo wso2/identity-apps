@@ -47,7 +47,7 @@ export const getDeveloperViewRoutes = (): RouteInterface[] => {
     return [
         ...EXTENSION_ROUTES(),
         {
-            category: "devPortal:components.sidePanel.categories.application",
+            category: "console:develop.features.sidePanel.categories.application",
             children: [
                 {
                     component: lazy(() => import("../../applications/pages/application-template")),

@@ -65,7 +65,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
                     <h4>
                         {
-                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                 "templateDescription.description.prerequisites")
                         }
                     </h4>
@@ -82,7 +82,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
                     <h4>
                         {
-                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                 "templateDescription.description.parameters")
                         }
                     </h4>
@@ -91,7 +91,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
                             <Table.Row>
                                 <Table.HeaderCell />
                                 <Table.HeaderCell>{
-                                    t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                                    t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                         "templateDescription.description.description")
                                 }</Table.HeaderCell>
                             </Table.Row>
@@ -111,7 +111,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
                     <h4>
                         {
-                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                 "templateDescription.description.defaultSteps")
                         }
                     </h4>
@@ -131,7 +131,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
                     <h4>
                         {
-                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                 "templateDescription.description.helpReference")
                         }
                     </h4>
@@ -144,7 +144,7 @@ export const TemplateDescription: FunctionComponent<TemplateDescriptionPropsInte
 
                     <h4>
                         {
-                            t("devPortal:components.applications.edit.sections.signOnMethod.sections." +
+                            t("console:develop.features.applications.edit.sections.signOnMethod.sections." +
                                 "templateDescription.description.code")
                         }
                     </h4>

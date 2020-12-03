@@ -85,10 +85,10 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
         updateApplicationConfigurations(appId, values)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                    description: t("console:develop.features.applications.notifications.updateAdvancedConfig" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                    message: t("console:develop.features.applications.notifications.updateAdvancedConfig" +
                         ".success.message")
                 }));
 
@@ -99,17 +99,17 @@ export const AdvancedSettings: FunctionComponent<AdvancedSettingsPropsInterface>
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.applications.notifications.updateAdvancedConfig.error" +
+                        message: t("console:develop.features.applications.notifications.updateAdvancedConfig.error" +
                             ".message")
                     }));
 
                     return;
                 }
                 dispatch(addAlert({
-                    description: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                    description: t("console:develop.features.applications.notifications.updateAdvancedConfig" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.applications.notifications.updateAdvancedConfig" +
+                    message: t("console:develop.features.applications.notifications.updateAdvancedConfig" +
                         ".genericError.message")
                 }));
             });

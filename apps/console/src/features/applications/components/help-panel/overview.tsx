@@ -114,35 +114,35 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                                 <Grid.Column width={ 16 }>
                                     <Heading as="h5">
                                         <strong>
-                                            { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                            { t("console:develop.features.applications.helpPanel.tabs.start." +
                                                 "content.trySample.title") }
                                         </strong>
                                     </Heading>
                                     <Header.Subheader>
-                                        { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                        { t("console:develop.features.applications.helpPanel.tabs.start." +
                                             "content.trySample.subTitle") }
                                     </Header.Subheader>
                                     <Divider hidden/>
                                     <PrimaryButton onClick={ () => { handleTabChange(2) } }>
-                                        { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                        { t("console:develop.features.applications.helpPanel.tabs.start." +
                                             "content.trySample.btn") }
                                     </PrimaryButton>
                                     <Divider hidden/>
                                     <Divider horizontal>Or</Divider>
                                     <Heading ellipsis as="h5">
                                         <strong>
-                                            { t("devPortal:components.applications.helpPanel.tabs." +
+                                            { t("console:develop.features.applications.helpPanel.tabs." +
                                                 "start.content.useSDK.title") }
                                         </strong>
                                     </Heading>
                                     <Header.Subheader>
-                                        { t("devPortal:components.applications.helpPanel.tabs.start.content." +
+                                        { t("console:develop.features.applications.helpPanel.tabs.start.content." +
                                             "useSDK.subTitle") }
                                     </Header.Subheader>
                                     <Divider hidden/>
                                     <Button.Group>
                                         <SecondaryButton onClick={ () => { handleTabChange(3) } }>
-                                            { t("devPortal:components.applications.helpPanel.tabs.start." +
+                                            { t("console:develop.features.applications.helpPanel.tabs.start." +
                                                 "content.useSDK.btns.withSDK") }
                                         </SecondaryButton>
                                     </Button.Group>
@@ -155,12 +155,12 @@ export const HelpPanelOverview: FunctionComponent<HelpPanelOverviewPropsInterfac
                     <Grid.Column>
                         <Heading ellipsis as="h5">
                             <strong>
-                                { t("devPortal:components.applications.helpPanel.tabs.start.content.endpoints." +
+                                { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
                                 "title") }
                             </strong>
                         </Heading>
                         <Hint>
-                            { t("devPortal:components.applications.helpPanel.tabs.start.content.endpoints." +
+                            { t("console:develop.features.applications.helpPanel.tabs.start.content.endpoints." +
                                 "subTitle") }
                         </Hint>
                         <Divider hidden/>
