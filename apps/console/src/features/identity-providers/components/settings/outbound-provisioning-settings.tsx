@@ -380,6 +380,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                                                         globalActions = {
                                                             [
                                                                 {
+                                                                    disabled: connector.data?.isDefault,
                                                                     icon: "trash alternate",
                                                                     onClick: handleAuthenticatorDeleteOnClick,
                                                                     type: "icon"
