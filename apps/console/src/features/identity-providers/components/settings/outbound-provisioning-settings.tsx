@@ -325,6 +325,36 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
         }
     };
 
+    const createAccordionActions = (
+        connector: OutboundProvisioningConnectorWithMetaInterface
+    ): SegmentedAccordionTitleActionInterface[] => {
+        const isDefaultConnector = connector.data?.isDefault;
+        return [
+            // Checkbox which triggers the default state of connector.
+            {
+                defaultChecked: isDefaultConnector,
+                disabled: connector.data?.isDefault || !connector.data?.isEnabled,
+                label: t(isDefaultConnector ?
+                    "devPortal:components.idp.forms.outboundConnectorAccordion.default.0" :
+                    "devPortal:components.idp.forms.outboundConnectorAccordion.default.1"
+                ),
+                onChange: handleDefaultConnectorChange,
+                type: "checkbox"
+            },
+            // Toggle Switch which enables/disables the connector state.
+            {
+                defaultChecked: connector.data?.isEnabled,
+                label: t(connector.data?.isEnabled ?
+                    "devPortal:components.idp.forms.outboundConnectorAccordion.enable.0" :
+                    "devPortal:components.idp.forms.outboundConnectorAccordion.enable.1"
+                ),
+                disabled: isDefaultConnector,
+                onChange: handleConnectorEnableToggle,
+                type: "toggle"
+            }
+        ];
+    };
+
     return (
         <EmphasizedSegment>
             <Grid.Row>
