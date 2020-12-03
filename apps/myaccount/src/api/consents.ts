@@ -131,7 +131,6 @@ export const fetchAllPurposes = async (limit: number = 0, offset: number = 0): P
     } catch (error) {
         return Promise.reject(error);
     }
-
 };
 
 /**
