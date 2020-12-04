@@ -37,6 +37,7 @@ import { OauthProtocolSettingsWizardForm } from "./oauth-protocol-settings-wizar
 import { SAMLProtocolSettingsWizardForm } from "./saml-protocol-settings-wizard-form";
 import {
     ApplicationListInterface,
+    ApplicationTemplateLoadingStrategies,
     CUSTOM_APPLICATION_TEMPLATE_ID,
     CustomApplicationTemplate,
     getApplicationList
@@ -55,7 +56,6 @@ import { InboundProtocolLogos } from "../../configs";
 import { ApplicationManagementConstants } from "../../constants";
 import {
     ApplicationTemplateInterface,
-    ApplicationTemplateListItemInterface,
     MainApplicationInterface,
     SupportedAuthProtocolTypes
 } from "../../models";
@@ -66,11 +66,11 @@ import {
 interface MinimalApplicationCreateWizardPropsInterface extends TestableComponentInterface {
     title: string;
     closeWizard: () => void;
-    template?: ApplicationTemplateListItemInterface;
+    template?: ApplicationTemplateInterface;
     subTitle?: string;
     addProtocol: boolean;
     selectedProtocols?: string[];
-    subTemplates?: ApplicationTemplateListItemInterface[];
+    subTemplates?: ApplicationTemplateInterface[];
     subTemplatesSectionTitle?: string;
     appId?: string;
     /**
@@ -81,6 +81,10 @@ interface MinimalApplicationCreateWizardPropsInterface extends TestableComponent
      * Flag to show/hide help panel.
      */
     showHelpPanel?: boolean;
+    /**
+     * Application template loading strategy.
+     */
+    templateLoadingStrategy: ApplicationTemplateLoadingStrategies;
 }
 
 /**
@@ -100,6 +104,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         subTemplates,
         subTemplatesSectionTitle,
         subTitle,
+        templateLoadingStrategy,
         [ "data-testid" ]: testId
     } = props;
 
@@ -118,7 +123,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     const [ templateSettings, setTemplateSettings ] = useState<ApplicationTemplateInterface>(null);
     const [ protocolFormValues, setProtocolFormValues ] = useState<object>(undefined);
     const [ generalFormValues, setGeneralFormValues ] = useState<Map<string, FormValue>>(undefined);
-    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(template);
+    const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateInterface>(template);
     const [ allowedOrigins, setAllowedOrigins ] = useState([]);
 
     const [ alert, setAlert, notification ] = useWizardAlert();
@@ -152,12 +157,12 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
         }
 
         if (isEmpty(subTemplates) || !Array.isArray(subTemplates) || subTemplates.length < 1) {
-            loadTemplateDetails(template.id);
+            loadTemplateDetails(template.id, template);
             return;
         }
 
         setSelectedTemplate(subTemplates[0]);
-        loadTemplateDetails(subTemplates[0].id);
+        loadTemplateDetails(subTemplates[0].id, subTemplates[0]);
     }, [ subTemplates ]);
 
     /**
@@ -260,7 +265,15 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
     /**
      * Load application template data.
      */
-    const loadTemplateDetails = (id: string): void => {
+    const loadTemplateDetails = (id: string, template: ApplicationTemplateInterface): void => {
+
+        // If the loading strategy is `LOCAL`, stop making the GET request to fetch template details.
+        if (templateLoadingStrategy === ApplicationTemplateLoadingStrategies.LOCAL) {
+            setTemplateSettings(template);
+
+            return;
+        }
+
         getApplicationTemplateData(id)
             .then((response: ApplicationTemplateInterface) => {
                 setTemplateSettings(response);
@@ -413,7 +426,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                             <div>{ subTemplatesSectionTitle }</div>
                                             {
                                                 subTemplates.map((
-                                                    subTemplate: ApplicationTemplateListItemInterface, index: number
+                                                    subTemplate: ApplicationTemplateInterface, index: number
                                                 ) => (
                                                     <SelectionCard
                                                         inline
@@ -430,7 +443,7 @@ export const MinimalAppCreateWizard: FunctionComponent<MinimalApplicationCreateW
                                                         selected={ selectedTemplate.id === subTemplate.id }
                                                         onClick={ () => {
                                                             setSelectedTemplate(subTemplate);
-                                                            loadTemplateDetails(subTemplate.id);
+                                                            loadTemplateDetails(subTemplate.id, subTemplate);
                                                         } }
                                                         imageSize="mini"
                                                         contentTopBorder={ false }
