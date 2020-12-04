@@ -32,8 +32,8 @@ import {
 } from "../data/application-templates";
 import {
     ApplicationTemplateGroupInterface,
-    ApplicationTemplateListInterface,
-    ApplicationTemplateListItemInterface
+    ApplicationTemplateInterface,
+    ApplicationTemplateListInterface
 } from "../models";
 import { setApplicationTemplates } from "../store";
 
@@ -61,7 +61,7 @@ export class ApplicationTemplateManagementUtils {
                                              useAPI: boolean = false): Promise<void> => {
 
         if (!useAPI) {
-            const templates: ApplicationTemplateListItemInterface[] = ApplicationTemplateManagementUtils
+            const templates: ApplicationTemplateInterface[] = ApplicationTemplateManagementUtils
                 .loadLocalFileBasedTemplates();
 
             // Group the templates if `skipGrouping` flag is false.
@@ -83,7 +83,7 @@ export class ApplicationTemplateManagementUtils {
         return getApplicationTemplateList()
             .then((response: ApplicationTemplateListInterface) => {
 
-                const templates: ApplicationTemplateListItemInterface[] = ApplicationTemplateManagementUtils
+                const templates: ApplicationTemplateInterface[] = ApplicationTemplateManagementUtils
                     .addCustomTemplates(response.templates, [ CustomApplicationTemplate ], true);
 
                 // Group the templates if `skipGrouping` flag is false.
@@ -124,11 +124,11 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Sort the application templates based on display order.
      *
-     * @param {ApplicationTemplateListItemInterface[]} templates - App templates.
-     * @return {ApplicationTemplateListItemInterface[]}
+     * @param {ApplicationTemplateInterface[]} templates - App templates.
+     * @return {ApplicationTemplateInterface[]}
      */
     private static sortApplicationTemplates(
-        templates: ApplicationTemplateListItemInterface[]): ApplicationTemplateListItemInterface[] {
+        templates: ApplicationTemplateInterface[]): ApplicationTemplateInterface[] {
 
         const applicationTemplates = [ ...templates ];
 
@@ -143,13 +143,13 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Append any custom templates to the existing templates list.
      *
-     * @param {ApplicationTemplateListItemInterface[]} existingTemplates - Existing templates list.
-     * @param {ApplicationTemplateListItemInterface[]} customTemplates - Set of custom templates to add.
+     * @param {ApplicationTemplateInterface[]} existingTemplates - Existing templates list.
+     * @param {ApplicationTemplateInterface[]} customTemplates - Set of custom templates to add.
      * @param {boolean} sort - Should the returning templates be sorted.
-     * @return {ApplicationTemplateListItemInterface[]}
+     * @return {ApplicationTemplateInterface[]}
      */
-    private static addCustomTemplates(existingTemplates: ApplicationTemplateListItemInterface[],
-                                      customTemplates: ApplicationTemplateListItemInterface[],
+    private static addCustomTemplates(existingTemplates: ApplicationTemplateInterface[],
+                                      customTemplates: ApplicationTemplateInterface[],
                                       sort: boolean = true) {
 
         if (sort) {
@@ -162,15 +162,15 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Group the application templates.
      *
-     * @param {ApplicationTemplateListItemInterface[]} templates - Application templates.
-     * @return {ApplicationTemplateListItemInterface[]}
+     * @param {ApplicationTemplateInterface[]} templates - Application templates.
+     * @return {ApplicationTemplateInterface[]}
      */
     private static groupTemplates = (
-        templates: ApplicationTemplateListItemInterface[]): ApplicationTemplateListItemInterface[] => {
+        templates: ApplicationTemplateInterface[]): ApplicationTemplateInterface[] => {
 
-        const groupedTemplates: ApplicationTemplateListItemInterface[] = [];
+        const groupedTemplates: ApplicationTemplateInterface[] = [];
 
-        templates.forEach((template: ApplicationTemplateListItemInterface) => {
+        templates.forEach((template: ApplicationTemplateInterface) => {
             if (!template.templateGroup) {
                 groupedTemplates.push(template);
                 return;
@@ -215,11 +215,11 @@ export class ApplicationTemplateManagementUtils {
     /**
      * Loads local file based application templates.
      *
-     * @return {ApplicationTemplateListItemInterface[]}
+     * @return {ApplicationTemplateInterface[]}
      */
-    private static loadLocalFileBasedTemplates(): ApplicationTemplateListItemInterface[] {
+    private static loadLocalFileBasedTemplates(): ApplicationTemplateInterface[] {
 
-        const templates: ApplicationTemplateListItemInterface[] = [];
+        const templates: ApplicationTemplateInterface[] = [];
 
         getApplicationTemplatesConfig().templates
             .filter((config: ApplicationTemplateConfigInterface) => {

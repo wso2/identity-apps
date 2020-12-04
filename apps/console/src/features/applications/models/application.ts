@@ -296,14 +296,14 @@ export interface ApplicationTemplateGroupInterface {
  *  Application template list interface.
  */
 export interface ApplicationTemplateListInterface {
-    templates: ApplicationTemplateListItemInterface[];
+    templates: ApplicationTemplateInterface[];
 }
 
 /**
  *  Contains Application template data.
  */
 export interface ApplicationTemplateInterface extends ApplicationTemplateListItemInterface {
-    application: MainApplicationInterface;
+    application?: MainApplicationInterface;
 }
 
 /**
@@ -346,6 +346,25 @@ export enum ApplicationTemplateCategories {
      * @type {string}
      */
     MANUAL = "MANUAL"
+}
+
+/**
+ * Enum for application template loading strategies.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ApplicationTemplateLoadingStrategies {
+    /**
+     * App will resort to in app templates.
+     * @type {string}
+     */
+    LOCAL = "LOCAL",
+    /**
+     * App will fetch templates from the template management REST API.
+     * @type {string}
+     */
+    REMOTE = "REMOTE"
 }
 
 /**
