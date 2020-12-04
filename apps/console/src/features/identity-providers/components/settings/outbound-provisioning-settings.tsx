@@ -338,7 +338,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
                     "console:develop.features.idp.forms.outboundConnectorAccordion.enable.0" :
                     "console:develop.features.idp.forms.outboundConnectorAccordion.enable.1"
                 ),
-                disabled: isDefaultConnector,
                 onChange: handleConnectorEnableToggle,
                 type: "toggle"
             }
