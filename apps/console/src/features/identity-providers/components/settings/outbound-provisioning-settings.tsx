@@ -206,6 +206,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
      */
     const handleDeleteConnector = (deletingConnector: OutboundProvisioningConnectorWithMetaInterface): void => {
 
+        const EMPTY_STRING = "";
         const connectorList = [];
 
         availableConnectors.map((connector) => {
@@ -216,7 +217,7 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
 
         const data = {
             connectors: connectorList,
-            defaultConnectorId: identityProvider.provisioning.outboundConnectors.defaultConnectorId
+            defaultConnectorId: EMPTY_STRING
         };
 
         updateOutboundProvisioningConnectors(data, identityProvider.id)
