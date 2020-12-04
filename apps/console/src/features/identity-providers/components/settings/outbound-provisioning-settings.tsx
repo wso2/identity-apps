@@ -289,19 +289,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     };
 
     /**
-     * Handles default connector change event.
-     *
-     * @param {React.FormEvent<HTMLInputElement>} e - Event.
-     * @param {CheckboxProps} data - Checkbox data.
-     * @param {string} id - Id of the connector.
-     */
-    const handleDefaultConnectorChange = (e: FormEvent<HTMLInputElement>, data: CheckboxProps, id: string): void => {
-        const connector = availableConnectors.find(connector => (connector.id === id)).data;
-        connector.isDefault = data.checked;
-        handleConnectorConfigFormSubmit(connector);
-    };
-
-    /**
      * Handles connector enable toggle.
      *
      * @param {React.FormEvent<HTMLInputElement>} e - Event.
