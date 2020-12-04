@@ -19,7 +19,7 @@
 import { SVGRLoadedInterface, TestableComponentInterface } from "@wso2is/core/models";
 import classNames from "classnames";
 import React, { PropsWithChildren, ReactElement, useEffect, useState } from "react";
-import { Icon, SemanticICONS, SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
+import { SemanticVERTICALALIGNMENTS } from "semantic-ui-react";
 
 /**
  * Proptypes for the Generic Icon component.
@@ -204,7 +204,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
         "bordered": bordered,
         "colored": colored,
         "default": defaultIcon,
-        "disabled": disabled,
+        "disabled": disabled || Icon === null,
         [ typeof fill === "boolean" ? "fill-default" : `fill-${ fill }` ]: fill,
         [`floated-${floated}`]: floated,
         hoverable,
@@ -236,11 +236,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
      * or empty. For usage {@see constructContent}
      */
     const defaultIconPlaceholder = () => {
-        return <Icon
-            name={ "question" as SemanticICONS }
-            className={ classNames({ "disabled": disabled }, "") }
-            color="grey"
-        />;
+        return <React.Fragment>{ "" }</React.Fragment>;
     };
 
     /**
@@ -290,7 +286,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
                 return;
             }
 
-            setRenderedIcon(null);
+            setRenderedIcon(defaultIconPlaceholder());
         };
 
         try {
@@ -313,10 +309,10 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
                             return;
                         }
 
-                        setRenderedIcon(null);
+                        setRenderedIcon(defaultIconPlaceholder());
                     })
                     .catch(() => {
-                        setRenderedIcon(null);
+                        setRenderedIcon(defaultIconPlaceholder());
                     });
 
                 return;
@@ -376,7 +372,7 @@ export const GenericIcon: React.FunctionComponent<PropsWithChildren<GenericIconP
 
     return (
         <div
-            className={ `theme-icon ${classes}` }
+            className={ `theme-icon ${ classes }` }
             style={ style }
             onClick={ onIconClickHandler }
             data-testid={ testId }
