@@ -151,6 +151,7 @@ export class Config {
             announcements: window["AppUtils"].getConfig().ui.announcements,
             appCopyright: `${window["AppUtils"].getConfig().ui.appCopyright} \u00A9 ${ new Date().getFullYear() }`,
             appName: window["AppUtils"].getConfig().ui.appName,
+            applicationTemplateLoadingStrategy: window["AppUtils"].getConfig().ui.applicationTemplateLoadingStrategy,
             appTitle: window["AppUtils"].getConfig().ui.appTitle,
             features: window["AppUtils"].getConfig().ui.features,
             gravatarConfig: window["AppUtils"].getConfig().ui.gravatarConfig,

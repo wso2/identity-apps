@@ -24,7 +24,7 @@ import {
     FeatureAccessConfigInterface
 } from "@wso2is/core/models";
 import { I18nModuleOptionsInterface } from "@wso2is/i18n";
-import { ApplicationsResourceEndpointsInterface } from "../../applications";
+import { ApplicationTemplateLoadingStrategies, ApplicationsResourceEndpointsInterface } from "../../applications";
 import { CertificatesResourceEndpointsInterface } from "../../certificates";
 import { ClaimResourceEndpointsInterface } from "../../claims";
 import { GroupsResourceEndpointsInterface } from "../../groups";
@@ -141,6 +141,12 @@ interface ExternalAppConfigInterface {
  * Portal UI config interface inheriting the common configs from core module.
  */
 export interface UIConfigInterface extends CommonUIConfigInterface<FeatureConfigInterface> {
+    /**
+     * How should the application templates be loaded.
+     * If `LOCAL` is selected, app will resort to in app templates.
+     * `REMOTE` will fetch templates from the template management REST API.
+     */
+    applicationTemplateLoadingStrategy?: ApplicationTemplateLoadingStrategies;
     /**
      * Flag to check if the `OAuth.EnableClientSecretHash` is enabled in the `identity.xml`.
      */

@@ -56,6 +56,7 @@
         "appCopyright": "WSO2 Identity Server",
         "appTitle": "Console | WSO2 Identity Server",
         "appName": "Console",
+        "applicationTemplateLoadingStrategy": "LOCAL",
         "appLogoPath": "/assets/images/logo.svg",
         "features": {
             "applications": {
