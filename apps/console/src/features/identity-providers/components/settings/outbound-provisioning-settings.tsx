@@ -329,7 +329,6 @@ export const OutboundProvisioningSettings: FunctionComponent<ProvisioningSetting
     const createAccordionActions = (
         connector: OutboundProvisioningConnectorWithMetaInterface
     ): SegmentedAccordionTitleActionInterface[] => {
-        const isDefaultConnector = connector.data?.isDefault;
         return [
             // Toggle Switch which enables/disables the connector state.
             {
