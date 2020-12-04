@@ -17,7 +17,7 @@
  */
 
 import { DocumentationConstants } from "./documentation-constants";
-import { ApplicationTemplateCategories } from "../models";
+import { ApplicationTemplateCategories, ApplicationTemplateLoadingStrategies } from "../models";
 
 /**
  * Class containing application management constants.
@@ -111,6 +111,14 @@ export class ApplicationManagementConstants {
      * @type {string}
      */
     public static readonly APP_STATE_URL_SEARCH_PARAM_VALUE = "new";
+
+    /**
+     * Default application template loading strategy.
+     * @constant
+     * @type {ApplicationTemplateLoadingStrategies}
+     */
+    public static readonly DEFAULT_APP_TEMPLATE_LOADING_STRATEGY: ApplicationTemplateLoadingStrategies =
+        ApplicationTemplateLoadingStrategies.LOCAL;
 
     /**
      * Map to access the template ids.

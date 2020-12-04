@@ -24,12 +24,18 @@ import React, { FunctionComponent, ReactElement, SyntheticEvent, useEffect, useS
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Divider, Dropdown, DropdownItemProps, DropdownProps, Grid, Icon, Input } from "semantic-ui-react";
-import { AppConstants, AppState, EmptyPlaceholderIllustrations, history } from "../../core";
+import {
+    AppConstants,
+    AppState,
+    ConfigReducerStateInterface,
+    EmptyPlaceholderIllustrations,
+    history
+} from "../../core";
 import { CUSTOM_APPLICATION_TEMPLATE_ID, CustomApplicationTemplate, MinimalAppCreateWizard } from "../components";
 import { ApplicationTemplateIllustrations } from "../configs";
 import { ApplicationManagementConstants } from "../constants";
 import { ApplicationTemplateCategories, ApplicationTemplateListItemInterface } from "../models";
-import { ApplicationManagementUtils } from "../utils";
+import { ApplicationTemplateManagementUtils } from "../utils";
 
 /**
  * Template filter types.
@@ -67,6 +73,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
 
     const applicationTemplates: ApplicationTemplateListItemInterface[] = useSelector(
         (state: AppState) => state?.application?.groupedTemplates);
+    const config: ConfigReducerStateInterface = useSelector((state: AppState) => state.config);
 
     const [ showWizard, setShowWizard ] = useState<boolean>(false);
     const [ selectedTemplate, setSelectedTemplate ] = useState<ApplicationTemplateListItemInterface>(null);
@@ -91,7 +98,7 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
 
         setApplicationTemplateRequestLoadingStatus(true);
 
-        ApplicationManagementUtils.getApplicationTemplates()
+        ApplicationTemplateManagementUtils.getApplicationTemplates()
             .finally(() => {
                 setApplicationTemplateRequestLoadingStatus(false);
             });
@@ -451,6 +458,10 @@ const ApplicationTemplateSelectPage: FunctionComponent<ApplicationTemplateSelect
                     subTemplates={ selectedTemplate?.subTemplates }
                     subTemplatesSectionTitle={ selectedTemplate?.subTemplatesSectionTitle }
                     addProtocol={ false }
+                    templateLoadingStrategy={
+                        config.ui.applicationTemplateLoadingStrategy
+                            ?? ApplicationManagementConstants.DEFAULT_APP_TEMPLATE_LOADING_STRATEGY
+                    }
                 />
             ) }
         </PageLayout>

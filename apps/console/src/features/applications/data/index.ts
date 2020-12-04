@@ -16,20 +16,4 @@
  * under the License.
  */
 
-module.exports = () => {
-    return {
-        componentExtensions: [],
-        routes: [],
-        sections: {
-            components: {
-                "example": "./components/example.tsx"
-            }
-        },
-        templateExtensions: {
-            applications: {
-                groups: [],
-                templates: []
-            }
-        }
-    };
-};
+export * from "./application-templates";

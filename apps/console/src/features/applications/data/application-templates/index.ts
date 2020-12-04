@@ -16,4 +16,4 @@
  * under the License.
  */
 
-export * from "./templates";
+export * from "./application-templates-config";

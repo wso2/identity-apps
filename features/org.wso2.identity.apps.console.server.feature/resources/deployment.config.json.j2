@@ -114,6 +114,9 @@
         "appCopyright": "{{ console.ui.app_copyright }}",
         "appTitle": "{{ console.ui.app_title }}",
         "appName": "{{ console.ui.app_name }}",
+        {% if console.ui.application_template_loading_strategy is defined %}
+        "applicationTemplateLoadingStrategy": "{{ console.ui.application_template_loading_strategy }}",
+        {% endif %}
         "appLogoPath": "{{ console.ui.app_logo_path }}",
         "features": {
             "applications": {

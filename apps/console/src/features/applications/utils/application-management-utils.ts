@@ -27,24 +27,18 @@ import startCase from "lodash/startCase";
 import unionBy from "lodash/unionBy";
 import { DocPanelUICardInterface, TechnologyLogos, store } from "../../core";
 import {
-    getApplicationTemplateList,
     getAvailableInboundProtocols,
     getOIDCApplicationConfigurations,
     getSAMLApplicationConfigurations
 } from "../api";
-import { CustomApplicationTemplate } from "../components";
 import { ApplicationManagementConstants } from "../constants";
-import { getDefaultTemplateGroups } from "../meta";
 import {
-    ApplicationTemplateListInterface,
-    ApplicationTemplateListItemInterface,
     AuthProtocolMetaListItemInterface,
     SAMLApplicationConfigurationInterface,
     emptySAMLAppConfiguration
 } from "../models";
 import {
     checkAvailableCustomInboundAuthProtocolMeta,
-    setApplicationTemplates,
     setAvailableCustomInboundAuthProtocolMeta,
     setAvailableInboundAuthProtocolMeta,
     setOIDCApplicationConfigs,
@@ -62,7 +56,6 @@ export class ApplicationManagementUtils {
      *
      * @hideconstructor
      */
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
     private constructor() { }
 
     /**
@@ -148,98 +141,6 @@ export class ApplicationManagementUtils {
                 }));
             });
     }
-
-    /**
-     * Retrieve Application template list form the API and sets it in redux state.
-     *
-     * @param {boolean} skipGrouping - Skip grouping of templates.
-     * @return {Promise<void>}
-     */
-    public static getApplicationTemplates = (skipGrouping: boolean = false): Promise<void> => {
-        return getApplicationTemplateList()
-            .then((response) => {
-                const applicationTemplates = (response as ApplicationTemplateListInterface).templates;
-
-                // Sort templates based  on displayOrder.
-                applicationTemplates.sort(
-                    (a, b) =>
-                        (a.displayOrder > b.displayOrder) ? 1 : -1);
-
-                // Add on the custom application template to the application template list
-                applicationTemplates.unshift(CustomApplicationTemplate);
-
-                // Generate the technologies array.
-                // TODO: Enable if template icon should be resolved.
-                //applicationTemplates.forEach((template) => {
-                //    template.types = ApplicationManagementUtils.buildSupportedTechnologies(template.types);
-                //});
-                
-                if (!skipGrouping) {
-                    const groupedTemplates: ApplicationTemplateListItemInterface[] = [];
-
-                    applicationTemplates.forEach((template: ApplicationTemplateListItemInterface) => {
-                        if (!template.templateGroup) {
-                            groupedTemplates.push(template);
-                            return;
-                        }
-
-                        const group = getDefaultTemplateGroups()
-                            .find((group) => group.id === template.templateGroup);
-
-                        if (!group) {
-                            groupedTemplates.push(template);
-                            return;
-                        }
-
-                        if (groupedTemplates.some((groupedTemplate) =>
-                            groupedTemplate.id === template.templateGroup)) {
-
-                            groupedTemplates.forEach((editingTemplate, index) => {
-                                if (editingTemplate.id === template.templateGroup) {
-                                    groupedTemplates[ index ] = {
-                                        ...group,
-                                        subTemplates: [ ...editingTemplate.subTemplates, template ]
-                                    };
-
-                                    return;
-                                }
-                            });
-
-                            return;
-                        }
-
-                        groupedTemplates.push({
-                            ...group,
-                            subTemplates: [ template ]
-                        });
-                    });
-
-                    store.dispatch(setApplicationTemplates(groupedTemplates, true));
-                }
-
-                store.dispatch(setApplicationTemplates(applicationTemplates));
-            })
-            .catch((error) => {
-                if (error.response && error.response.data && error.response.data.description) {
-                    store.dispatch(addAlert({
-                        description: error.response.data.description,
-                        level: AlertLevels.ERROR,
-                        message: I18n.instance.t("devPortal:components.applications.notifications.fetchTemplates" +
-                            ".error.message")
-                    }));
-
-                    return;
-                }
-
-                store.dispatch(addAlert({
-                    description: I18n.instance.t("devPortal:components.applications.notifications.fetchTemplates" +
-                        ".genericError.description"),
-                    level: AlertLevels.ERROR,
-                    message: I18n.instance.t("devPortal:components.applications.notifications.fetchTemplates" +
-                        ".genericError.message")
-                }));
-            });
-    };
 
     /**
      * Build supported technologies list for UI from the given technology types.

@@ -260,18 +260,50 @@ export interface ApplicationTemplateListItemInterface {
     subTemplatesSectionTitle?: string;
 }
 
+export interface ApplicationTemplateGroupInterface {
+    /**
+     * Application template group category.
+     */
+    category?: string;
+    /**
+     * Group Description.
+     */
+    description?: string;
+    /**
+     * Group id.
+     */
+    id: string;
+    /**
+     * Group Image.
+     */
+    image?: string;
+    /**
+     * Template group name.
+     */
+    name: string;
+    /**
+     * List of Sub templates.
+     * ex: `OIDC Web Application` under `Web Application` template.
+     */
+    subTemplates?: ApplicationTemplateListItemInterface[];
+    /**
+     * Title for the sub template selection section inside the wizard.
+     */
+    subTemplatesSectionTitle?: string;
+}
+
 /**
  *  Application template list interface.
  */
 export interface ApplicationTemplateListInterface {
-    templates: ApplicationTemplateListItemInterface[];
+    templates: ApplicationTemplateInterface[];
 }
 
 /**
  *  Contains Application template data.
  */
 export interface ApplicationTemplateInterface extends ApplicationTemplateListItemInterface {
-    application: MainApplicationInterface;
+    application?: MainApplicationInterface;
 }
 
 /**
@@ -314,6 +346,25 @@ export enum ApplicationTemplateCategories {
      * @type {string}
      */
     MANUAL = "MANUAL"
+}
+
+/**
+ * Enum for application template loading strategies.
+ *
+ * @readonly
+ * @enum {string}
+ */
+export enum ApplicationTemplateLoadingStrategies {
+    /**
+     * App will resort to in app templates.
+     * @type {string}
+     */
+    LOCAL = "LOCAL",
+    /**
+     * App will fetch templates from the template management REST API.
+     * @type {string}
+     */
+    REMOTE = "REMOTE"
 }
 
 /**

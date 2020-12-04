@@ -163,11 +163,11 @@ export const OauthProtocolSettingsWizardForm: FunctionComponent<OAuthProtocolSet
     }, [ templateValues ]);
 
     useEffect(() => {
-        if (OIDCMeta !== undefined) {
+        if (OIDCMeta !== undefined || !selectedTemplate?.authenticationProtocol) {
             return;
         }
 
-        getAuthProtocolMetadata(selectedTemplate?.authenticationProtocol)
+        getAuthProtocolMetadata(selectedTemplate.authenticationProtocol)
             .then((response) => {
                 setOIDCMeta(response);
             });
