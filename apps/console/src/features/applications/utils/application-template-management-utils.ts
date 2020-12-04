@@ -66,6 +66,9 @@ export class ApplicationTemplateManagementUtils {
 
             // Group the templates if `skipGrouping` flag is false.
             if (!skipGrouping) {
+                // Set the templates without grouping. Used to quickly search through to get the template name.
+                store.dispatch(setApplicationTemplates(templates));
+                // Set the templates with grouping.
                 store.dispatch(setApplicationTemplates(ApplicationTemplateManagementUtils.groupTemplates(templates),
                     true));
 
@@ -85,6 +88,9 @@ export class ApplicationTemplateManagementUtils {
 
                 // Group the templates if `skipGrouping` flag is false.
                 if (!skipGrouping) {
+                    // Set the templates without grouping. Used to quickly search through to get the template name.
+                    store.dispatch(setApplicationTemplates(templates));
+                    // Set the templates with grouping.
                     store.dispatch(setApplicationTemplates(ApplicationTemplateManagementUtils.groupTemplates(templates),
                         true));
 
