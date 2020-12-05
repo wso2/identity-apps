@@ -81,11 +81,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
     const { t } = useTranslation();
 
     // Username input validation error messages.
-    const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("adminPortal:components.user.forms.addUserForm.inputs." +
+    const USER_ALREADY_EXIST_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm.inputs." +
         "username.validations.invalid");
-    const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("adminPortal:components.user.forms.addUserForm.inputs." +
+    const USERNAME_REGEX_VIOLATION_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm.inputs." +
         "username.validations.regExViolation");
-    const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("adminPortal:components.user.forms.addUserForm." +
+    const USERNAME_HAS_INVALID_CHARS_ERROR_MESSAGE: string = t("console:manage.features.user.forms.addUserForm." +
         "inputs.username.validations.invalidCharacters");
 
     /**
@@ -115,11 +115,11 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
     const passwordOptions = [
         {
-            label: t("adminPortal:components.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
+            label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.createPassword"),
             value: "createPw"
         },
         {
-            label: t("adminPortal:components.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
+            label: t("console:manage.features.user.forms.addUserForm.buttons.radioButton.options.askPassword"),
             value: "askPw"
         }
     ];
@@ -181,7 +181,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
         const storeOptions = [
                 {
                     key: -1,
-                    text: t("adminPortal:components.users.userstores.userstoreOptions.primary"),
+                    text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                     value: "primary"
                 }
             ];
@@ -238,16 +238,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 data-testid="user-mgt-add-user-form-newPassword-input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
-                                    "adminPortal:components.user.forms.addUserForm.inputs.newPassword.label"
+                                    "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
                                 ) }
                                 name="newPassword"
                                 placeholder={ t(
-                                    "adminPortal:components.user.forms.addUserForm.inputs." +
+                                    "console:manage.features.user.forms.addUserForm.inputs." +
                                     "newPassword.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "adminPortal:components.user.forms.addUserForm." +
+                                    "console:manage.features.user.forms.addUserForm." +
                                     "inputs.newPassword.validations.empty"
                                 ) }
                                 showPassword={ t("common:showPassword") }
@@ -267,7 +267,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
 
                                     if(!SharedUserStoreUtils.validateInputAgainstRegEx(value, passwordRegex)){
                                         validation.isValid = false;
-                                        validation.errorMessages.push( t("adminPortal:components.user.forms." +
+                                        validation.errorMessages.push( t("console:manage.features.user.forms." +
                                             "addUserForm.inputs.newPassword.validations.regExViolation") );
                                     }
                                 } }
@@ -308,16 +308,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                 data-testid="user-mgt-add-user-form-confirmPassword-input"
                                 hidePassword={ t("common:hidePassword") }
                                 label={ t(
-                                    "adminPortal:components.user.forms.addUserForm.inputs.confirmPassword.label"
+                                    "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
                                 ) }
                                 name="confirmPassword"
                                 placeholder={ t(
-                                    "adminPortal:components.user.forms.addUserForm.inputs." +
+                                    "console:manage.features.user.forms.addUserForm.inputs." +
                                     "confirmPassword.placeholder"
                                 ) }
                                 required={ true }
                                 requiredErrorMessage={ t(
-                                    "adminPortal:components.user.forms.addUserForm." +
+                                    "console:manage.features.user.forms.addUserForm." +
                                     "inputs.confirmPassword.validations.empty"
                                 ) }
                                 showPassword={ t("common:showPassword") }
@@ -327,7 +327,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                                     if (formValues.get("newPassword") !== value) {
                                         validation.isValid = false;
                                         validation.errorMessages.push(
-                                            t("adminPortal:components.user.forms.addUserForm.inputs" +
+                                            t("console:manage.features.user.forms.addUserForm.inputs" +
                                                 ".confirmPassword.validations.mismatch"));
                                     }
                                 } }
@@ -375,12 +375,12 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             data-testid="user-mgt-add-user-form-domain-dropdown"
                             type="dropdown"
                             label={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs.domain.label"
+                                "console:manage.features.user.forms.addUserForm.inputs.domain.label"
                             ) }
                             name="domain"
                             children={ userStoreOptions }
                             requiredErrorMessage={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs.domain.validations.empty"
+                                "console:manage.features.user.forms.addUserForm.inputs.domain.validations.empty"
                             ) }
                             required={ true }
                             value={ initialValues?.domain ? initialValues?.domain : userStoreOptions[0]?.value }
@@ -392,16 +392,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Field
                             data-testid="user-mgt-add-user-form-username-input"
                             label={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs.username.label"
+                                "console:manage.features.user.forms.addUserForm.inputs.username.label"
                             ) }
                             name="userName"
                             placeholder={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs." +
+                                "console:manage.features.user.forms.addUserForm.inputs." +
                                 "username.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "adminPortal:components.user.forms.addUserForm." +
+                                "console:manage.features.user.forms.addUserForm." +
                                 "inputs.username.validations.empty"
                             ) }
                             type="text"
@@ -442,16 +442,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Field
                             data-testid="user-mgt-add-user-form-firstName-input"
                             label={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs.firstName.label"
+                                "console:manage.features.user.forms.addUserForm.inputs.firstName.label"
                             ) }
                             name="firstName"
                             placeholder={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs." +
+                                "console:manage.features.user.forms.addUserForm.inputs." +
                                 "firstName.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "adminPortal:components.user.forms.addUserForm." +
+                                "console:manage.features.user.forms.addUserForm." +
                                 "inputs.firstName.validations.empty"
                             ) }
                             type="text"
@@ -464,16 +464,16 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Field
                             data-testid="user-mgt-add-user-form-lastName-input"
                             label={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs.lastName.label"
+                                "console:manage.features.user.forms.addUserForm.inputs.lastName.label"
                             ) }
                             name="lastName"
                             placeholder={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs." +
+                                "console:manage.features.user.forms.addUserForm.inputs." +
                                 "lastName.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "adminPortal:components.user.forms.addUserForm." +
+                                "console:manage.features.user.forms.addUserForm." +
                                 "inputs.lastName.validations.empty"
                             ) }
                             type="text"
@@ -488,23 +488,23 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                         <Field
                             data-testid="user-mgt-add-user-form-email-input"
                             label={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs.email.label"
+                                "console:manage.features.user.forms.addUserForm.inputs.email.label"
                             ) }
                             name="email"
                             placeholder={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs." +
+                                "console:manage.features.user.forms.addUserForm.inputs." +
                                 "email.placeholder"
                             ) }
                             required={ true }
                             requiredErrorMessage={ t(
-                                "adminPortal:components.user.forms.addUserForm.inputs.email.validations.empty"
+                                "console:manage.features.user.forms.addUserForm.inputs.email.validations.empty"
                             ) }
                             validation={ (value: string, validation: Validation) => {
                                 if (!FormValidation.email(value)) {
                                     validation.isValid = false;
                                     validation.errorMessages.push(
                                         t(
-                                            "adminPortal:components.user.forms.addUserForm.inputs.email." +
+                                            "console:manage.features.user.forms.addUserForm.inputs.email." +
                                             "validations.invalid"
                                         ).toString()
                                     );
@@ -524,7 +524,7 @@ export const AddUser: React.FunctionComponent<AddUserProps> = (props: AddUserPro
                             <Field
                                 data-testid="user-mgt-add-user-form-passwordOption-radio-button"
                                 type="radio"
-                                label={ t("adminPortal:components.user.forms.addUserForm.buttons.radioButton.label") }
+                                label={ t("console:manage.features.user.forms.addUserForm.buttons.radioButton.label") }
                                 name="passwordOption"
                                 default="createPw"
                                 listen={ (values) => { setPasswordOption(values.get("passwordOption").toString()); } }

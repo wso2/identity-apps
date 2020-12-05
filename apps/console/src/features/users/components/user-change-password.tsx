@@ -100,11 +100,11 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
         updateUserInfo(user.id, data).then(() => {
             onAlertFired({
                 description: t(
-                    "adminPortal:components.user.profile.notifications.changeUserPassword.success.description"
+                    "console:manage.features.user.profile.notifications.changeUserPassword.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "adminPortal:components.user.profile.notifications.changeUserPassword.success.message"
+                    "console:manage.features.user.profile.notifications.changeUserPassword.success.message"
                 )
             });
             handleCloseChangePasswordModal();
@@ -115,7 +115,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                 onAlertFired({
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.user.profile.notifications.changeUserPassword.error." +
+                    message: t("console:manage.features.user.profile.notifications.changeUserPassword.error." +
                         "message")
                 });
 
@@ -123,10 +123,10 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             }
 
             onAlertFired({
-                description: t("adminPortal:components.user.profile.notifications.changeUserPassword.genericError." +
+                description: t("console:manage.features.user.profile.notifications.changeUserPassword.genericError." +
                     "description"),
                 level: AlertLevels.ERROR,
-                message: t("adminPortal:components.user.profile.notifications.changeUserPassword.genericError." +
+                message: t("console:manage.features.user.profile.notifications.changeUserPassword.genericError." +
                     "message")
             });
         });
@@ -177,7 +177,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
             size="tiny"
         >
             <Modal.Header>
-                { t("adminPortal:components.user.modals.changePasswordModal.header") }
+                { t("console:manage.features.user.modals.changePasswordModal.header") }
             </Modal.Header>
             <Modal.Content>
                 <Forms
@@ -192,16 +192,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                     data-testid="user-mgt-edit-user-form-newPassword-input"
                                     hidePassword={ t("common:hidePassword") }
                                     label={ t(
-                                        "adminPortal:components.user.forms.addUserForm.inputs.newPassword.label"
+                                        "console:manage.features.user.forms.addUserForm.inputs.newPassword.label"
                                     ) }
                                     name="newPassword"
                                     placeholder={ t(
-                                        "adminPortal:components.user.forms.addUserForm.inputs." +
+                                        "console:manage.features.user.forms.addUserForm.inputs." +
                                         "newPassword.placeholder"
                                     ) }
                                     required={ true }
                                     requiredErrorMessage={ t(
-                                        "adminPortal:components.user.forms.addUserForm." +
+                                        "console:manage.features.user.forms.addUserForm." +
                                         "inputs.newPassword.validations.empty"
                                     ) }
                                     showPassword={ t("common:showPassword") }
@@ -212,7 +212,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                     validation={ (value: string, validation: Validation) => {
                                         if (!isPasswordPatternValid) {
                                             validation.isValid = false;
-                                            validation.errorMessages.push( t("adminPortal:components.user.forms." +
+                                            validation.errorMessages.push( t("console:manage.features.user.forms." +
                                                 "addUserFor1m.inputs.newPassword.validations.regExViolation") );
                                         }
                                     } }
@@ -228,16 +228,16 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                     data-testid="user-mgt-edit-user-form-confirmPassword-input"
                                     hidePassword={ t("common:hidePassword") }
                                     label={ t(
-                                        "adminPortal:components.user.forms.addUserForm.inputs.confirmPassword.label"
+                                        "console:manage.features.user.forms.addUserForm.inputs.confirmPassword.label"
                                     ) }
                                     name="confirmPassword"
                                     placeholder={ t(
-                                        "adminPortal:components.user.forms.addUserForm.inputs." +
+                                        "console:manage.features.user.forms.addUserForm.inputs." +
                                         "confirmPassword.placeholder"
                                     ) }
                                     required={ true }
                                     requiredErrorMessage={ t(
-                                        "adminPortal:components.user.forms.addUserForm." +
+                                        "console:manage.features.user.forms.addUserForm." +
                                         "inputs.confirmPassword.validations.empty"
                                     ) }
                                     showPassword={ t("common:showPassword") }
@@ -247,7 +247,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                                         if (formValues.get("newPassword") !== value) {
                                             validation.isValid = false;
                                             validation.errorMessages.push(
-                                                t("adminPortal:components.user.forms.addUserForm.inputs" +
+                                                t("console:manage.features.user.forms.addUserForm.inputs" +
                                                     ".confirmPassword.validations.mismatch"));
                                         }
                                     } }
@@ -258,7 +258,7 @@ export const ChangePasswordComponent: FunctionComponent<ChangePasswordPropsInter
                             <Grid.Column mobile={ 16 } tablet={ 16 } computer={ 14 }>
                                 <Message color='teal'>
                                     <Hint>
-                                        { t("adminPortal:components.user.modals.changePasswordModal.message") }
+                                        { t("console:manage.features.user.modals.changePasswordModal.message") }
                                     </Hint>
                                 </Message>
                             </Grid.Column>
