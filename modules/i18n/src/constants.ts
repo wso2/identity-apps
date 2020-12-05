@@ -47,22 +47,6 @@ export class I18nModuleConstants {
     public static readonly COMMON_NAMESPACE: string = "common";
 
     /**
-     * Dev portal namespace.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly DEV_PORTAL_NAMESPACE: string = "devPortal";
-
-    /**
-     * Admin portal namespace.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly ADMIN_PORTAL_NAMESPACE: string = "adminPortal";
-
-    /**
      * User portal namespace.
      * @constant
      * @type {string}

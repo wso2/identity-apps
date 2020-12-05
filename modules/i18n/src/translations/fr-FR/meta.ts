@@ -24,10 +24,8 @@ export const meta: LocaleMeta = {
     flag: "fr",
     name: "Français (France)",
     namespaces: [
-        I18nModuleConstants.ADMIN_PORTAL_NAMESPACE,
         I18nModuleConstants.COMMON_NAMESPACE,
         I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE,
-        I18nModuleConstants.DEV_PORTAL_NAMESPACE,
         I18nModuleConstants.MYACCOUNT_NAMESPACE
     ]
 };
