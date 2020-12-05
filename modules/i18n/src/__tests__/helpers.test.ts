@@ -91,7 +91,7 @@ describe("If default supported namespaces retrieval helper function", () => {
 
     const DEFAULT_SUPPORTED_NAMESPACES = [
         I18nModuleConstants.COMMON_NAMESPACE,
-        I18nModuleConstants.DEV_PORTAL_NAMESPACE
+        I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE
     ];
 
     test("Should return the default supported namespaces as an array", () => {
