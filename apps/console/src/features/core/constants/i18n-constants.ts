@@ -33,22 +33,6 @@ export class I18nConstants {
     private constructor() { }
 
     /**
-     * Namespace for the admin portal.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly ADMIN_PORTAL_NAMESPACE: string = I18nModuleConstants.ADMIN_PORTAL_NAMESPACE;
-
-    /**
-     * Namespace for the developer portal.
-     * @constant
-     * @type {string}
-     * @default
-     */
-    public static readonly DEV_PORTAL_NAMESPACE: string = I18nModuleConstants.DEV_PORTAL_NAMESPACE;
-
-    /**
      * Common namespace.
      * @constant
      * @type {string}
@@ -65,6 +49,14 @@ export class I18nConstants {
     public static readonly CONSOLE_PORTAL_NAMESPACE: string = I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE;
 
     /**
+     * Console portal namespace.
+     * @constant
+     * @type {string}
+     * @default
+     */
+    public static readonly MYACCOUNT_PORTAL_NAMESPACE: string = I18nModuleConstants.MYACCOUNT_NAMESPACE;
+
+    /**
      * Locations of the I18n namespaces.
      * @constant
      * @type {Map<string, string>}
@@ -73,8 +65,7 @@ export class I18nConstants {
     public static readonly BUNDLE_NAMESPACE_DIRECTORIES: Map<string, string> = new Map<string, string>([
         [ I18nConstants.COMMON_NAMESPACE, "portals" ],
         [ I18nConstants.CONSOLE_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.ADMIN_PORTAL_NAMESPACE, "portals" ],
-        [ I18nConstants.DEV_PORTAL_NAMESPACE, "portals" ]
+        [ I18nConstants.MYACCOUNT_PORTAL_NAMESPACE, "portals" ]
     ]);
 
     /**
@@ -109,8 +100,7 @@ export class I18nConstants {
         ns: [
             I18nConstants.COMMON_NAMESPACE,
             I18nConstants.CONSOLE_PORTAL_NAMESPACE,
-            I18nConstants.ADMIN_PORTAL_NAMESPACE,
-            I18nConstants.DEV_PORTAL_NAMESPACE
+            I18nConstants.MYACCOUNT_PORTAL_NAMESPACE
         ]
     };
 
