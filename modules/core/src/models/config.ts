@@ -297,6 +297,10 @@ export interface IdpConfigInterface<T = {}, S = {}> {
      */
     enablePKCE: boolean;
     /**
+     * Allowed leeway for id_tokens.
+     */
+    clockTolerance: number;
+    /**
      * Authorization code response mode.
      */
     responseMode: T;
