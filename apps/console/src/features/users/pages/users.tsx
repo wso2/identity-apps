@@ -142,20 +142,20 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                 if (error?.response?.data?.description) {
                     dispatch(addAlert({
                         description: error?.response?.data?.description ?? error?.response?.data?.detail
-                            ?? t("adminPortal:components.users.notifications.fetchUsers.error.description"),
+                            ?? t("console:manage.features.users.notifications.fetchUsers.error.description"),
                         level: AlertLevels.ERROR,
                         message: error?.response?.data?.message
-                            ?? t("adminPortal:components.users.notifications.fetchUsers.error.message")
+                            ?? t("console:manage.features.users.notifications.fetchUsers.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("adminPortal:components.users.notifications.fetchUsers.genericError." +
+                    description: t("console:manage.features.users.notifications.fetchUsers.genericError." +
                         "description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.users.notifications.fetchUsers.genericError.message")
+                    message: t("console:manage.features.users.notifications.fetchUsers.genericError.message")
                 }));
 
                 setUserStoreError(true);
@@ -248,12 +248,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
         const storeOptions = [
             {
                 key: -2,
-                text: t("adminPortal:components.users.userstores.userstoreOptions.all"),
+                text: t("console:manage.features.users.userstores.userstoreOptions.all"),
                 value: "all"
             },
             {
                 key: -1,
-                text: t("adminPortal:components.users.userstores.userstoreOptions.primary"),
+                text: t("console:manage.features.users.userstores.userstoreOptions.primary"),
                 value: "primary"
             }
         ];
@@ -441,11 +441,11 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             .then(() => {
                 handleAlerts({
                     description: t(
-                        "adminPortal:components.users.notifications.deleteUser.success.description"
+                        "console:manage.features.users.notifications.deleteUser.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "adminPortal:components.users.notifications.deleteUser.success.message"
+                        "console:manage.features.users.notifications.deleteUser.success.message"
                     )
                 });
                 setListUpdated(true);
@@ -471,12 +471,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             }).catch((error) => {
                 handleAlerts({
                     description: error?.response?.data?.description ?? t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "getConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message ?? t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "getConnector.genericError.message"
                     )
                 });
@@ -493,12 +493,12 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         onClick={ () => handleAddNewUserWizardClick()  }
                     >
                         <Icon name="add"/>
-                        { t("adminPortal:components.users.buttons.addNewUserBtn") }
+                        { t("console:manage.features.users.buttons.addNewUserBtn") }
                     </PrimaryButton>
                 )
             }
-            title={ t("adminPortal:pages.users.title") }
-            description={ t("adminPortal:pages.users.subTitle") }
+            title={ t("console:manage.pages.users.title") }
+            description={ t("console:manage.pages.users.subTitle") }
             data-testid={ `${ testId }-page-layout` }
         >
             <ListLayout
@@ -509,29 +509,29 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                         filterAttributeOptions={ [
                             {
                                 key: 0,
-                                text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.username"),
                                 value: "userName"
                             },
                             {
                                 key: 1,
-                                text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                text: t("console:manage.features.users.advancedSearch.form.dropdown." +
                                     "filterAttributeOptions.email"),
                                 value: "emails"
                             }
                         ] }
                         filterAttributePlaceholder={
-                            t("adminPortal:components.users.advancedSearch.form.inputs.filterAttribute.placeholder")
+                            t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute.placeholder")
                         }
                         filterConditionsPlaceholder={
-                            t("adminPortal:components.users.advancedSearch.form.inputs.filterCondition" +
+                            t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
                                 ".placeholder")
                         }
                         filterValuePlaceholder={
-                            t("adminPortal:components.users.advancedSearch.form.inputs.filterValue" +
+                            t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
                                 ".placeholder")
                         }
-                        placeholder={ t("adminPortal:components.users.advancedSearch.placeholder") }
+                        placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
                         defaultSearchAttribute="userName"
                         defaultSearchOperator="co"
                         triggerClearQuery={ triggerClearQuery }
@@ -566,7 +566,7 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                         basic
                                     >
                                         <Icon name="columns"/>
-                                        { t("adminPortal:components.users.buttons.metaColumnBtn") }
+                                        { t("console:manage.features.users.buttons.metaColumnBtn") }
                                     </Button>
                                 }
                             />
@@ -594,9 +594,9 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
             >
                 { userStoreError
                     ? <EmptyPlaceholder
-                        subtitle={ [ t("adminPortal:components.users.placeholders.userstoreError.subtitles.0"),
-                            t("adminPortal:components.users.placeholders.userstoreError.subtitles.1")     ] }
-                        title={ t("adminPortal:components.users.placeholders.userstoreError.title") }
+                        subtitle={ [ t("console:manage.features.users.placeholders.userstoreError.subtitles.0"),
+                            t("console:manage.features.users.placeholders.userstoreError.subtitles.1")     ] }
+                        title={ t("console:manage.features.users.placeholders.userstoreError.title") }
                         image={ EmptyPlaceholderIllustrations.genericError }
                         imageSize="tiny"
                     />
@@ -607,30 +607,30 @@ const UsersPage: FunctionComponent<UsersPageInterface> = (
                                 filterAttributeOptions={ [
                                     {
                                         key: 0,
-                                        text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                        text: t("console:manage.features.users.advancedSearch.form.dropdown." +
                                             "filterAttributeOptions.username"),
                                         value: "userName"
                                     },
                                     {
                                         key: 1,
-                                        text: t("adminPortal:components.users.advancedSearch.form.dropdown." +
+                                        text: t("console:manage.features.users.advancedSearch.form.dropdown." +
                                             "filterAttributeOptions.email"),
                                         value: "emails"
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterAttribute" +
+                                    t("console:manage.features.users.advancedSearch.form.inputs.filterAttribute" +
                                         ".placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterCondition" +
+                                    t("console:manage.features.users.advancedSearch.form.inputs.filterCondition" +
                                         ".placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("adminPortal:components.users.advancedSearch.form.inputs.filterValue" +
+                                    t("console:manage.features.users.advancedSearch.form.inputs.filterValue" +
                                         ".placeholder")
                                 }
-                                placeholder={ t("adminPortal:components.users.advancedSearch.placeholder") }
+                                placeholder={ t("console:manage.features.users.advancedSearch.placeholder") }
                                 defaultSearchAttribute="userName"
                                 defaultSearchOperator="co"
                                 triggerClearQuery={ triggerClearQuery }
