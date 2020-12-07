@@ -328,7 +328,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             return (
                 <LabelWithPopup
                     className="cors-details-popup"
-                    popupHeader={ t("devPortal:components.URLInput.withLabel.positive.header") }
+                    popupHeader={ t("console:develop.features.URLInput.withLabel.positive.header") }
                     popupSubHeader={
                         <>
                             <Icon name="building outline"/>
@@ -337,7 +337,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     }
                     popupContent={
                         <>
-                            { t("devPortal:components.URLInput.withLabel.positive.content") }
+                            { t("console:develop.features.URLInput.withLabel.positive.content") }
                             <a onClick={ () => setSuccessShowMore(!successShowMore) }>
                                 {
                                     successShowMore
@@ -349,11 +349,11 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 successShowMore && (
                                     <>
                                         <br/>
-                                        { t("devPortal:components.URLInput.withLabel.positive.detailedContent.0") }
+                                        { t("console:develop.features.URLInput.withLabel.positive.detailedContent.0") }
                                         <br/>
                                         <Trans
                                             i18nKey={
-                                                "devPortal:components.URLInput.withLabel.positive.detailedContent.1"
+                                                "console:develop.features.URLInput.withLabel.positive.detailedContent.1"
                                             }
                                             tOptions={ { tenantName: tenantDomain } }
                                         >
@@ -383,7 +383,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
             return (
                 <LabelWithPopup
                     className="cors-details-popup"
-                    popupHeader={ t("devPortal:components.URLInput.withLabel.negative.header") }
+                    popupHeader={ t("console:develop.features.URLInput.withLabel.negative.header") }
                     popupSubHeader={
                         <>
                             <Icon name="building outline"/>
@@ -392,7 +392,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                     }
                     popupContent={
                         <>
-                            { t("devPortal:components.URLInput.withLabel.negative.content") }
+                            { t("console:develop.features.URLInput.withLabel.negative.content") }
                             <a onClick={ () => setWarningShowMore(!warningShowMore) }>
                                 {
                                     warningShowMore
@@ -404,11 +404,11 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 warningShowMore && (
                                     <>
                                         <br/>
-                                        { t("devPortal:components.URLInput.withLabel.negative.detailedContent.0") }
+                                        { t("console:develop.features.URLInput.withLabel.negative.detailedContent.0") }
                                         <br/>
                                         <Trans
                                             i18nKey={
-                                                "devPortal:components.URLInput.withLabel.negative.detailedContent.1"
+                                                "console:develop.features.URLInput.withLabel.negative.detailedContent.1"
                                             }
                                             tOptions={ { tenantName: tenantDomain } }
                                         >
@@ -429,7 +429,7 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
                                 color="orange"
                                 floated="right"
                             >
-                                { t("devPortal:components.URLInput.withLabel.negative.leftAction") }
+                                { t("console:develop.features.URLInput.withLabel.negative.leftAction") }
                             </Button>
                         )
                     }

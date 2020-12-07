@@ -101,7 +101,7 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                             subtitle={ [
                                 emptyPlaceholderContent
                                     ? emptyPlaceholderContent
-                                    : t("devPortal:components.transferList.list.emptyPlaceholders.default")
+                                    : t("console:manage.features.transferList.list.emptyPlaceholders.default")
                             ] }
                             data-testid={ `${ testId }-placeholder` }
                         />
