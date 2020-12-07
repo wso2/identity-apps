@@ -146,11 +146,11 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 if (response.status === 201) {
                     dispatch(addAlert<AlertInterface>({
                         description: t(
-                            "adminPortal:components.emailTemplates.notifications.createTemplate.success.description"
+                            "console:manage.features.emailTemplates.notifications.createTemplate.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.emailTemplates.notifications.createTemplate.success.message"
+                            "console:manage.features.emailTemplates.notifications.createTemplate.success.message"
                         )
                     }));
 
@@ -163,7 +163,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.emailTemplates.notifications.createTemplate.genericError.message"
+                        "console:manage.features.emailTemplates.notifications.createTemplate.genericError.message"
                     )
                 }));
             });
@@ -189,11 +189,11 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                 if (response.status === 200) {
                     dispatch(addAlert<AlertInterface>({
                         description: t(
-                            "adminPortal:components.emailTemplates.notifications.updateTemplate.success.description"
+                            "console:manage.features.emailTemplates.notifications.updateTemplate.success.description"
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.emailTemplates.notifications.updateTemplate.success.message"
+                            "console:manage.features.emailTemplates.notifications.updateTemplate.success.message"
                         )
                     }));
                 }
@@ -203,7 +203,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     description: error.response.data.description,
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.emailTemplates.notifications.updateTemplate.genericError.message"
+                        "console:manage.features.emailTemplates.notifications.updateTemplate.genericError.message"
                     )
                 }));
             });
@@ -245,15 +245,15 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                                     <Field
                                         type="dropdown"
                                         placeholder={
-                                            t("adminPortal:components.emailLocale.forms.addLocale.fields.locale" +
+                                            t("console:manage.features.emailLocale.forms.addLocale.fields.locale" +
                                                 ".placeholder")
                                         }
                                         label={
-                                            t("adminPortal:components.emailLocale.forms.addLocale.fields.locale.label")
+                                            t("console:manage.features.emailLocale.forms.addLocale.fields.locale.label")
                                         }
                                         name="locale"
                                         requiredErrorMessage={
-                                            t("adminPortal:components.emailLocale.forms.addLocale.fields.locale" +
+                                            t("console:manage.features.emailLocale.forms.addLocale.fields.locale" +
                                                 ".validations.empty")
                                         }
                                         required={ true }
@@ -286,14 +286,14 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         <Field
                             name="emailSubject"
                             label={
-                                t("adminPortal:components.emailLocale.forms.addLocale.fields.subject.label")
+                                t("console:manage.features.emailLocale.forms.addLocale.fields.subject.label")
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("adminPortal:components.emailLocale.forms.addLocale.fields.subject.validations.empty")
+                                t("console:manage.features.emailLocale.forms.addLocale.fields.subject.validations.empty")
                             }
                             placeholder={
-                                t("adminPortal:components.emailLocale.forms.addLocale.fields.subject.placeholder")
+                                t("console:manage.features.emailLocale.forms.addLocale.fields.subject.placeholder")
                             }
                             type="text"
                             value={ subject }
@@ -305,7 +305,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
                         <Form.Field>
                             <label>
-                                { t("adminPortal:components.emailLocale.forms.addLocale.fields.bodyEditor.label") }
+                                { t("console:manage.features.emailLocale.forms.addLocale.fields.bodyEditor.label") }
                             </label>
                             <EmailTemplateEditor
                                 htmlContent={ htmlBodyContent }
@@ -321,7 +321,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             {
                                 isSubmitting && bodyError && (
                                     <Message attached error>
-                                        { t("adminPortal:components.emailLocale.forms.addLocale.fields." +
+                                        { t("console:manage.features.emailLocale.forms.addLocale.fields." +
                                             "bodyEditor.validations.empty") }
                                     </Message>
                                 )
@@ -333,7 +333,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                     <Grid.Column mobile={ 12 } tablet={ 12 } computer={ 12 }>
                         <Form.Field>
                             <label>
-                                { t("adminPortal:components.emailLocale.forms.addLocale.fields.signatureEditor" +
+                                { t("console:manage.features.emailLocale.forms.addLocale.fields.signatureEditor" +
                                     ".label") }
                             </label>
                             <EmailTemplateEditor
@@ -351,7 +351,7 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                             {
                                 isSubmitting && footerError && (
                                     <Message attached error>
-                                        { t("adminPortal:components.emailLocale.forms.addLocale.fields." +
+                                        { t("console:manage.features.emailLocale.forms.addLocale.fields." +
                                             "signatureEditor.validations.empty") }
                                     </Message>
                                 )
@@ -370,8 +370,8 @@ export const AddEmailTemplateForm: FunctionComponent<AddEmailTemplateFormPropsIn
                         >
                             {
                                 (templateId === "")
-                                    ? t("adminPortal:components.emailLocale.buttons.addLocaleTemplate")
-                                    : t("adminPortal:components.emailLocale.buttons.saveChanges")
+                                    ? t("console:manage.features.emailLocale.buttons.addLocaleTemplate")
+                                    : t("console:manage.features.emailLocale.buttons.saveChanges")
                             }
                         </Button>
                     </Grid.Column>
