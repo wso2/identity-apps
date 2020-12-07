@@ -143,8 +143,8 @@ export const ExternalClaims: FunctionComponent<ExternalClaimsPropsInterface> = (
                             )
                             : (
                                 <EmptyPlaceholder
-                                    title={ t("adminPortal:components.claims.external.placeholders.empty.title") }
-                                    subtitle={ [ t("adminPortal:components.claims.external." +
+                                    title={ t("console:manage.features.claims.external.placeholders.empty.title") }
+                                    subtitle={ [ t("console:manage.features.claims.external." +
                                         "placeholders.empty.subtitle") ] }
                                     image={ EmptyPlaceholderIllustrations.emptyList }
                                     imageSize="tiny"

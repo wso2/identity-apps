@@ -291,7 +291,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.claims
             },
             id: "attributeDialects",
-            name: "adminPortal:components.sidePanel.attributeDialects",
+            name: "console:manage.features.sidePanel.attributeDialects",
             order: 6,
             path: AppConstants.getPaths().get("CLAIM_DIALECTS"),
             protected: true,

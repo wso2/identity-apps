@@ -109,10 +109,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("adminPortal:components.claims.local.notifications.getClaims.genericError.description"),
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("adminPortal:components.claims.local.notifications.getClaims.genericError.message")
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
                 }
             ));
         });
@@ -167,10 +167,10 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     }).then(() => {
                         dispatch(addAlert(
                             {
-                                description: t("adminPortal:components.claims.external.notifications." +
+                                description: t("console:manage.features.claims.external.notifications." +
                                     "addExternalAttribute.success.description"),
                                 level: AlertLevels.SUCCESS,
-                                message: t("adminPortal:components.claims.external.notifications." +
+                                message: t("console:manage.features.claims.external.notifications." +
                                     "addExternalAttribute.success.message")
                             }
                         ));
@@ -181,11 +181,11 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                         dispatch(addAlert(
                             {
                                 description: error?.description
-                                    || t("adminPortal:components.claims.external.notifications." +
+                                    || t("console:manage.features.claims.external.notifications." +
                                     "addExternalAttribute.genericError.description"),
                                 level: AlertLevels.ERROR,
                                 message: error?.message
-                                    || t("adminPortal:components.claims.external.notifications." +
+                                    || t("console:manage.features.claims.external.notifications." +
                                         "addExternalAttribute.genericError.message")
                             }
                         ));
@@ -200,11 +200,11 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                     <Grid.Column width={ 7 }>
                         <Field
                             name="claimURI"
-                            label={ t("adminPortal:components.claims.external.forms.attributeURI.label") }
+                            label={ t("console:manage.features.claims.external.forms.attributeURI.label") }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.claims.external.forms." +
+                            requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
                                 "attributeURI.requiredErrorMessage") }
-                            placeholder={ t("adminPortal:components.claims.external.forms.attributeURI.placeholder") }
+                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
                             type="text"
                             data-testid={ `${ testId }-form-claim-uri-input` }
                         />
@@ -216,11 +216,11 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label={ t("adminPortal:components.claims.external.forms.localAttribute.label") }
+                            label={ t("console:manage.features.claims.external.forms.localAttribute.label") }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.claims.external.forms." +
+                            requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
                                 "attributeURI.requiredErrorMessage") }
-                            placeholder={ t("adminPortal:components.claims.external.forms.attributeURI.placeholder") }
+                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
                             search
                             children={
                                 filteredLocalClaims?.map((claim: Claim, index) => {
@@ -241,7 +241,7 @@ export const AddExternalClaims: FunctionComponent<AddExternalClaimsPropsInterfac
                         <Grid.Row columns={ 1 }>
                             <Grid.Column width={ 16 } textAlign="right" verticalAlign="top">
                             <PrimaryButton type="submit" data-testid={ `${ testId }-form-submit-button` }>
-                                    { t("adminPortal:components.claims.external.forms.submit") }
+                                    { t("console:manage.features.claims.external.forms.submit") }
                             </PrimaryButton>
                             </Grid.Column>
                         </Grid.Row>

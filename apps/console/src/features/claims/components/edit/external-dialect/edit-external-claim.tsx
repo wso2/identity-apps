@@ -108,10 +108,10 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
             dispatch(addAlert(
                 {
                     description: error?.response?.data?.description
-                        || t("adminPortal:components.claims.local.notifications.getClaims.genericError.description"),
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.description"),
                     level: AlertLevels.ERROR,
                     message: error?.response?.data?.message
-                        || t("adminPortal:components.claims.local.notifications.getClaims.genericError.message")
+                        || t("console:manage.features.claims.local.notifications.getClaims.genericError.message")
                 }
             ));
         });
@@ -123,11 +123,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                 dispatch(addAlert(
                     {
                         description: error?.description
-                            || t("adminPortal:components.claims.external.notifications." +
+                            || t("console:manage.features.claims.external.notifications." +
                                 "getExternalAttribute.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("adminPortal:components.claims.external.notifications." +
+                            || t("console:manage.features.claims.external.notifications." +
                                 "getExternalAttribute.genericError.message")
                     }
                 ));
@@ -188,10 +188,10 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                     }).then(() => {
                         dispatch(addAlert(
                             {
-                                description: t("adminPortal:components.claims.external.notifications." +
+                                description: t("console:manage.features.claims.external.notifications." +
                                     "updateExternalAttribute.success.description"),
                                 level: AlertLevels.SUCCESS,
-                                message: t("adminPortal:components.claims.external.notifications." +
+                                message: t("console:manage.features.claims.external.notifications." +
                                     "updateExternalAttribute.success.message")
                             }
                         ));
@@ -200,11 +200,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         dispatch(addAlert(
                             {
                                 description: error?.description
-                                    || t("adminPortal:components.claims.external.notifications." +
+                                    || t("console:manage.features.claims.external.notifications." +
                                         "updateExternalAttribute.genericError.description"),
                                 level: AlertLevels.ERROR,
                                 message: error?.message
-                                    || t("adminPortal:components.claims.external.notifications." +
+                                    || t("console:manage.features.claims.external.notifications." +
                                         "updateExternalAttribute.genericError.message")
                             }
                         ));
@@ -224,11 +224,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                             <Grid.Column width={ 8 }>
                                 <Field
                                     name="claimURI"
-                                    label={ t("adminPortal:components.claims.external.forms.attributeURI.label") }
+                                    label={ t("console:manage.features.claims.external.forms.attributeURI.label") }
                                     required={ true }
-                                    requiredErrorMessage={ t("adminPortal:components.claims.external.forms." +
+                                    requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
                                         "attributeURI.label") }
-                                    placeholder={ t("adminPortal:components.claims.external.forms.attributeURI.label") }
+                                    placeholder={ t("console:manage.features.claims.external.forms.attributeURI.label") }
                                     type="text"
                                     value={ addedClaim.claimURI }
                                     data-testid={ `${ testId }-form-claim-uri-input` }
@@ -240,11 +240,11 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                         <Field
                             type="dropdown"
                             name="localClaim"
-                            label={ t("adminPortal:components.claims.external.forms.localAttribute.label") }
+                            label={ t("console:manage.features.claims.external.forms.localAttribute.label") }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.claims.external.forms." +
+                            requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
                                 "localAttribute.requiredErrorMessage") }
-                            placeholder={ t("adminPortal:components.claims.external.forms.attributeURI.placeholder") }
+                            placeholder={ t("console:manage.features.claims.external.forms.attributeURI.placeholder") }
                             search
                             value={ wizard ? addedClaim.mappedLocalClaimURI : claim?.mappedLocalClaimURI }
                             children={
