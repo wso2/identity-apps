@@ -20,6 +20,48 @@ import { ConsoleNS } from "../../../models";
 
 export const console: ConsoleNS = {
     common: {
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "Filter attribute",
+                        placeholder: "E.g. Name, Description etc.",
+                        validations: {
+                            empty: "Filter attribute is a required field."
+                        }
+                    },
+                    filterCondition: {
+                        label: "Filter condition",
+                        placeholder: "E.g. Starts with etc.",
+                        validations: {
+                            empty: "Filter condition is a required field."
+                        }
+                    },
+                    filterValue: {
+                        label: "Filter value",
+                        placeholder: "E.g. admin, wso2 etc.",
+                        validations: {
+                            empty: "Filter value is a required field."
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Shift + Enter",
+                    label: "To search as a query"
+                }
+            },
+            options: {
+                header: "Advanced search"
+            },
+            placeholder: "Search by {{attribute}}",
+            popups: {
+                clear: "clear search",
+                dropdown: "Show options"
+            },
+            resultsIndicator: "Showing results for the query \"{{query}}\""
+        },
         modals: {
             editAvatarModal: {
                 content: {
@@ -113,13 +155,13 @@ export const console: ConsoleNS = {
             URLInput: {
                 withLabel: {
                     negative: {
-                        content: "The origin of the redirect URL {{url}} is not allowed to make CORS requests to WSO2 " +
-                            "Identity Server APIs.",
+                        content: "The origin of the redirect URL {{url}} is not allowed to make CORS requests" + 
+                            " to WSO2 Identity Server APIs.",
                         detailedContent: {
-                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also prevent " +
-                                "legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity Server APIs " +
-                                "from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
+                            0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also " + 
+                                "prevent legitimate requests from known",
+                            1: "Therefore enabling CORS for this origin will allow you to access Identity Server " + 
+                                "APIs from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
                         },
                         header: "CORS Not Allowed",
                         leftAction: "Allow"
@@ -130,54 +172,13 @@ export const console: ConsoleNS = {
                         detailedContent: {
                             0: "By default WSO2 Identity Server APIs blocks CORS requests. But this can also prevent " +
                                 "legitimate requests from known",
-                            1: "Therefore enabling CORS for this origin will allow you to access Identity Server APIs " +
-                                "from the applications registered in the <1>{{ tenantName }}</1> tenant domain."
+                            1: "Therefore enabling CORS for this origin will allow you to access Identity " + 
+                                "Server APIs from the applications registered in the <1>{{ tenantName }}</1> " + 
+                                "tenant domain."
                         },
                         header: "CORS is Allowed"
                     }
                 }
-            },
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            label: "Filter attribute",
-                            placeholder: "E.g. Name, Description etc.",
-                            validations: {
-                                empty: "Filter attribute is a required field."
-                            }
-                        },
-                        filterCondition: {
-                            label: "Filter condition",
-                            placeholder: "E.g. Starts with etc.",
-                            validations: {
-                                empty: "Filter condition is a required field."
-                            }
-                        },
-                        filterValue: {
-                            label: "Filter value",
-                            placeholder: "E.g. admin, wso2 etc.",
-                            validations: {
-                                empty: "Filter value is a required field."
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "To search as a query"
-                    }
-                },
-                options: {
-                    header: "Advanced search"
-                },
-                placeholder: "Search by {{attribute}}",
-                popups: {
-                    clear: "clear search",
-                    dropdown: "Show options"
-                },
-                resultsIndicator: "Showing results for the query \"{{query}}\""
             },
             applications: {
                 addWizard: {
@@ -4644,7 +4645,7 @@ export const console: ConsoleNS = {
                         action: "View all",
                         subtitles: {
                             0: "We couldn't find the scope you searched for.",
-                            1: "Please try a different name.",
+                            1: "Please try a different name."
                         },
                         title: "No results found"
                     }

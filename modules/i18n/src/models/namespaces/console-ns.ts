@@ -40,6 +40,48 @@ import {
  */
 export interface ConsoleNS {
     common: {
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    filterCondition: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                    filterValue: {
+                        label: string;
+                        placeholder: string;
+                        validations: {
+                            empty: string;
+                        };
+                    };
+                };
+            };
+            hints: {
+                querySearch: {
+                    actionKeys: string;
+                    label: string;
+                };
+            };
+            options: {
+                header: string;
+            };
+            placeholder: string;
+            popups: {
+                clear: string;
+                dropdown: string;
+            };
+            resultsIndicator: string;
+        };
         modals: {
             editAvatarModal: ModalInterface;
             sessionTimeoutModal: ModalInterface;
@@ -75,48 +117,7 @@ export interface ConsoleNS {
                     };
                 };
             };
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            label: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        filterCondition: {
-                            label: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        filterValue: {
-                            label: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                    };
-                };
-                hints: {
-                    querySearch: {
-                        actionKeys: string;
-                        label: string;
-                    };
-                };
-                options: {
-                    header: string;
-                };
-                placeholder: string;
-                popups: {
-                    clear: string;
-                    dropdown: string;
-                };
-                resultsIndicator: string;
-            };
+            
             applications: {
                 addWizard: {
                     steps: {
