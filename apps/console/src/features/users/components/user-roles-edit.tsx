@@ -352,12 +352,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             .then(() => {
                 onAlertFired({
                     description: t(
-                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
                         "success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
                         "success.message"
                     )
                 });
@@ -374,7 +374,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                         description: error.response?.data?.description,
                         level: AlertLevels.ERROR,
                         message: t(
-                            "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                            "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
                             "error.message"
                         )
                     });
@@ -384,12 +384,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
 
                 onAlertFired({
                     description: t(
-                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
                         "genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.user.updateUser.roles.notifications.removeUserRoles." +
+                        "console:manage.features.user.updateUser.roles.notifications.removeUserRoles." +
                         "genericError.message"
                     )
                 });
@@ -565,9 +565,9 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
             className="user-roles"
         >
             <Modal.Header>
-                { t("adminPortal:components.user.updateUser.roles.addRolesModal.heading") }
+                { t("console:manage.features.user.updateUser.roles.addRolesModal.heading") }
                 <Heading subHeading ellipsis as="h6">
-                    { t("adminPortal:components.user.updateUser.roles.addRolesModal.subHeading") }
+                    { t("console:manage.features.user.updateUser.roles.addRolesModal.subHeading") }
                 </Heading>
             </Modal.Header>
             {
@@ -586,7 +586,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                     ) : (
                         <Modal.Content image>
                             <TransferComponent
-                                searchPlaceholder={ t("adminPortal:components.transferList.searchPlaceholder",
+                                searchPlaceholder={ t("console:manage.features.transferList.searchPlaceholder",
                                     { type: "Roles" }) }
                                 addItems={ addRoles }
                                 removeItems={ removeRoles }
@@ -598,12 +598,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     isListEmpty={ !(roleList?.length > 0) }
                                     listType="unselected"
                                     listHeaders={ [
-                                        t("adminPortal:components.transferList.list.headers.0"),
-                                        t("adminPortal:components.transferList.list.headers.1"), ""
+                                        t("console:manage.features.transferList.list.headers.0"),
+                                        t("console:manage.features.transferList.list.headers.1"), ""
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
                                     isHeaderCheckboxChecked={ isSelectUnassignedRolesAllRolesChecked }
-                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.users.roles.unselected", { type: "roles" }) }
                                     data-testid="user-mgt-update-roles-modal-unselected-roles-select-all-checkbox"
                                 >
@@ -637,12 +637,12 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                     isListEmpty={ !(tempRoleList?.length > 0) }
                                     listType="selected"
                                     listHeaders={ [
-                                        t("adminPortal:components.transferList.list.headers.0"),
-                                        t("adminPortal:components.transferList.list.headers.1")
+                                        t("console:manage.features.transferList.list.headers.0"),
+                                        t("console:manage.features.transferList.list.headers.1")
                                     ] }
                                     handleHeaderCheckboxChange={ selectAllAssignedList }
                                     isHeaderCheckboxChecked={ isSelectAssignedAllRolesChecked }
-                                    emptyPlaceholderContent={ t("adminPortal:components.transferList.list." +
+                                    emptyPlaceholderContent={ t("console:manage.features.transferList.list." +
                                         "emptyPlaceholders.users.roles.selected", { type: "roles" }) }
                                     data-testid="user-mgt-update-roles-modal-selected-roles-select-all-checkbox"
                                 >
@@ -752,10 +752,10 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
     return (
         <>
             <Heading as="h4">
-                { t("adminPortal:components.user.updateUser.roles.editRoles.heading") }
+                { t("console:manage.features.user.updateUser.roles.editRoles.heading") }
             </Heading>
             <Heading subHeading ellipsis as="h6">
-                { t("adminPortal:components.user.updateUser.roles.editRoles.subHeading") }
+                { t("console:manage.features.user.updateUser.roles.editRoles.subHeading") }
             </Heading>
             <Divider hidden/>
             <Grid>
@@ -773,7 +773,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                 data-testid="user-mgt-roles-list-search-input"
                                                 icon={ <Icon name="search"/> }
                                                 onChange={ handleAssignedRoleListSearch }
-                                                placeholder={ t("adminPortal:components.user.updateUser.roles." +
+                                                placeholder={ t("console:manage.features.user.updateUser.roles." +
                                                     "editRoles.searchPlaceholder") }
                                                 floated="left"
                                                 size="small"
@@ -798,7 +798,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                     <Table.HeaderCell>
                                                         <strong>
                                                             {
-                                                                t("adminPortal:components.user.updateUser.roles." +
+                                                                t("console:manage.features.user.updateUser.roles." +
                                                                 "editRoles.roleList.headers.0")
                                                             }
                                                         </strong>
@@ -806,7 +806,7 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                                     <Table.HeaderCell>
                                                         <strong>
                                                             {
-                                                                t("adminPortal:components.user.updateUser.roles." +
+                                                                t("console:manage.features.user.updateUser.roles." +
                                                                 "editRoles.roleList.headers.1")
                                                             }
                                                         </strong>
@@ -875,14 +875,14 @@ export const UserRolesList: FunctionComponent<UserRolesPropsInterface> = (
                                 <EmphasizedSegment>
                                     <EmptyPlaceholder
                                         data-testid="user-mgt-user-empty-roles-list"
-                                        title={ t("adminPortal:components.user.updateUser.roles.editRoles." +
+                                        title={ t("console:manage.features.user.updateUser.roles.editRoles." +
                                             "roleList.emptyListPlaceholder.title") }
                                         subtitle={ [
-                                            t("adminPortal:components.user.updateUser.roles.editRoles." +
+                                            t("console:manage.features.user.updateUser.roles.editRoles." +
                                                 "roleList.emptyListPlaceholder.subTitle.0"),
-                                            t("adminPortal:components.user.updateUser.roles.editRoles." +
+                                            t("console:manage.features.user.updateUser.roles.editRoles." +
                                                 "roleList.emptyListPlaceholder.subTitle.1"),
-                                            t("adminPortal:components.user.updateUser.roles.editRoles." +
+                                            t("console:manage.features.user.updateUser.roles.editRoles." +
                                                 "roleList.emptyListPlaceholder.subTitle.2")
                                         ] }
                                         action={

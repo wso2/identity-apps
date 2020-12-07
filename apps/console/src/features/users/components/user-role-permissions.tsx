@@ -103,7 +103,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
             >
                 <Modal.Header>
                     {
-                        t("adminPortal:components.user.updateUser.roles.viewPermissionModal.heading",
+                        t("console:manage.features.user.updateUser.roles.viewPermissionModal.heading",
                             { role: role.displayName })
                     }
                 </Modal.Header>
@@ -137,7 +137,7 @@ export const UserRolePermissions: FunctionComponent<UserRolePermissionsInterface
                                     basic
                                     onClick={ () => handleEditPermissions() }
                                 >
-                                    { t("adminPortal:components.user.updateUser.roles.viewPermissionModal." +
+                                    { t("console:manage.features.user.updateUser.roles.viewPermissionModal." +
                                         "editButton") }
                                 </Button>
                             </Grid.Column>

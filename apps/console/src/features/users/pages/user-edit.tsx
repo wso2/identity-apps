@@ -165,11 +165,11 @@ const UserEditPage = (): ReactElement => {
             .then(() => {
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "adminPortal:components.user.profile.notifications.updateProfileInfo.success.description"
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "adminPortal:components.user.profile.notifications.updateProfileInfo.success.message"
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.success.message"
                     )
                 }));
 
@@ -184,7 +184,7 @@ const UserEditPage = (): ReactElement => {
                         description: error.response.data.description || error.response.data.detail,
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.user.profile.notifications.updateProfileInfo.error.message"
+                            "console:manage.features.user.profile.notifications.updateProfileInfo.error.message"
                         )
                     }));
 
@@ -193,11 +193,11 @@ const UserEditPage = (): ReactElement => {
 
                 dispatch(addAlert<AlertInterface>({
                     description: t(
-                        "adminPortal:components.user.profile.notifications.updateProfileInfo.genericError.description"
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.description"
                     ),
                     level: AlertLevels.SUCCESS,
                     message: t(
-                        "adminPortal:components.user.profile.notifications.updateProfileInfo.genericError.message"
+                        "console:manage.features.user.profile.notifications.updateProfileInfo.genericError.message"
                     )
                 }));
             })
@@ -238,7 +238,7 @@ const UserEditPage = (): ReactElement => {
             backButton={ {
                 "data-testid": "user-mgt-edit-user-back-button",
                 onClick: handleBackButtonClick,
-                text: t("adminPortal:pages.usersEdit.backButton")
+                text: t("console:manage.pages.usersEdit.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
