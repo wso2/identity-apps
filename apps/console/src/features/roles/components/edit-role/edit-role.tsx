@@ -86,7 +86,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
     const resolveResourcePanes = () => {
         const panes = [
             {
-                menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
+                menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicRoleDetails
@@ -99,7 +99,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                     </ResourceTab.Pane>
                 )
             },{
-                menuItem: t("adminPortal:components.roles.edit.menuItems.permissions"),
+                menuItem: t("console:manage.features.roles.edit.menuItems.permissions"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RolePermissionDetails
@@ -113,7 +113,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 )
             },
             {
-                menuItem: t("adminPortal:components.roles.edit.menuItems.groups"),
+                menuItem: t("console:manage.features.roles.edit.menuItems.groups"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleGroupsList
@@ -125,7 +125,7 @@ export const EditRole: FunctionComponent<EditRoleProps> = (props: EditRoleProps)
                 )
             },
             {
-                menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
+                menuItem: t("console:manage.features.roles.edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <RoleUserDetails

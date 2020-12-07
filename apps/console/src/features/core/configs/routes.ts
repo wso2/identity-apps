@@ -225,7 +225,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.roles
             },
             id: "roles",
-            name: "adminPortal:components.sidePanel.roles",
+            name: "console:manage.features.sidePanel.roles",
             order: 3,
             path: AppConstants.getPaths().get("ROLES"),
             protected: true,
