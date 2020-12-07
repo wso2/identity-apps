@@ -228,7 +228,9 @@ export const EditExternalClaim: FunctionComponent<EditExternalClaimsPropsInterfa
                                     required={ true }
                                     requiredErrorMessage={ t("console:manage.features.claims.external.forms." +
                                         "attributeURI.label") }
-                                    placeholder={ t("console:manage.features.claims.external.forms.attributeURI.label") }
+                                    placeholder={ 
+                                        t("console:manage.features.claims.external.forms.attributeURI.label") 
+                                    }
                                     type="text"
                                     value={ addedClaim.claimURI }
                                     data-testid={ `${ testId }-form-claim-uri-input` }

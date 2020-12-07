@@ -134,7 +134,8 @@ export const AddLocalClaims: FunctionComponent<AddLocalClaimsPropsInterface> = (
                                 "addLocalClaim.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("console:manage.features.claims.local.notifications.addLocalClaim.genericError.message")
+                            || t("console:manage.features.claims.local.notifications.addLocalClaim." + 
+                                "genericError.message")
                     }
                 );
             });
