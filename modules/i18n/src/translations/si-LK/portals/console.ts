@@ -20,6 +20,48 @@ import { ConsoleNS } from "../../../models";
 
 export const console: ConsoleNS = {
     common: {
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "පෙරහන් ගුණාංගය",
+                        placeholder: "උදා. නම, විස්තරය ආදිය.",
+                        validations: {
+                            empty: "පෙරහන් ගුණාංගය අවශ්‍ය ක්ෂේත්‍රයකි."
+                        }
+                    },
+                    filterCondition: {
+                        label: "පෙරහන් තත්වය",
+                        placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ.",
+                        validations: {
+                            empty: "පෙරහන් තත්ත්වය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
+                        }
+                    },
+                    filterValue: {
+                        label: "පෙරහන් අගය",
+                        placeholder: "උදා. පරිපාලක, wso2 ආදිය.",
+                        validations: {
+                            empty: "පෙරහන් අගය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Shift + Enter",
+                    label: "විමසුමක් ලෙස සෙවීමට"
+                }
+            },
+            options: {
+                header: "උසස් සෙවීම"
+            },
+            placeholder: "{{attribute}} මගින් සොයන්න",
+            popups: {
+                clear: "පැහැදිලි සෙවීම",
+                dropdown: "විකල්ප පෙන්වන්න"
+            },
+            resultsIndicator: "විමසුම සඳහා ප්‍රතිපල පෙන්වයි \"{{query}}\""
+        },
         modals: {
             editAvatarModal: {
                 content: {
@@ -136,48 +178,6 @@ export const console: ConsoleNS = {
                         header: "CORS සඳහා අවසර ඇත"
                     }
                 }
-            },
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            label: "පෙරහන් ගුණාංගය",
-                            placeholder: "උදා. නම, විස්තරය ආදිය.",
-                            validations: {
-                                empty: "පෙරහන් ගුණාංගය අවශ්‍ය ක්ෂේත්‍රයකි."
-                            }
-                        },
-                        filterCondition: {
-                            label: "පෙරහන් තත්වය",
-                            placeholder: "උදා. ආදිය සමඟ ආරම්භ වේ.",
-                            validations: {
-                                empty: "පෙරහන් තත්ත්වය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
-                            }
-                        },
-                        filterValue: {
-                            label: "පෙරහන් අගය",
-                            placeholder: "උදා. පරිපාලක, wso2 ආදිය.",
-                            validations: {
-                                empty: "පෙරහන් අගය අත්‍යවශ්‍ය ක්ෂේත්‍රයකි."
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Shift + Enter",
-                        label: "විමසුමක් ලෙස සෙවීමට"
-                    }
-                },
-                options: {
-                    header: "උසස් සෙවීම"
-                },
-                placeholder: "{{attribute}} මගින් සොයන්න",
-                popups: {
-                    clear: "පැහැදිලි සෙවීම",
-                    dropdown: "විකල්ප පෙන්වන්න"
-                },
-                resultsIndicator: "විමසුම සඳහා ප්‍රතිපල පෙන්වයි \"{{query}}\""
             },
             applications: {
                 addWizard: {

@@ -20,6 +20,48 @@ import { ConsoleNS } from "../../../models";
 
 export const console: ConsoleNS = {
     common: {
+        advancedSearch: {
+            form: {
+                inputs: {
+                    filterAttribute: {
+                        label: "Attribut de filtrage",
+                        placeholder: "Par exemple, nom, description, etc.",
+                        validations: {
+                            empty: "L'attribut de filtrage est un champ obligatoire."
+                        }
+                    },
+                    filterCondition: {
+                        label: "Condition de filtrage",
+                        placeholder: "Par exemple, commence par etc.",
+                        validations: {
+                            empty: "Condition de filtrage est un champ obligatoire."
+                        }
+                    },
+                    filterValue: {
+                        label: "Valeur de filtrage",
+                        placeholder: "Par exemple, admin, wso2 etc.",
+                        validations: {
+                            empty: "La valeur du filtre est un champ obligatoire."
+                        }
+                    }
+                }
+            },
+            hints: {
+                querySearch: {
+                    actionKeys: "Maj + Entrée",
+                    label: "Pour effectuer une recherche"
+                }
+            },
+            options: {
+                header: "Recherche avancée"
+            },
+            placeholder: "Recherche par {{attribute}}",
+            popups: {
+                clear: "effacer la requête",
+                dropdown: "Afficher les options"
+            },
+            resultsIndicator: "Afficher les résultats de la requête \"{{query}}\""
+        },
         modals: {
             editAvatarModal: {
                 content: {
@@ -136,48 +178,6 @@ export const console: ConsoleNS = {
                         header: "CORS autorisé"
                     }
                 }
-            },
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            label: "Attribut de filtrage",
-                            placeholder: "Par exemple, nom, description, etc.",
-                            validations: {
-                                empty: "L'attribut de filtrage est un champ obligatoire."
-                            }
-                        },
-                        filterCondition: {
-                            label: "Condition de filtrage",
-                            placeholder: "Par exemple, commence par etc.",
-                            validations: {
-                                empty: "Condition de filtrage est un champ obligatoire."
-                            }
-                        },
-                        filterValue: {
-                            label: "Valeur de filtrage",
-                            placeholder: "Par exemple, admin, wso2 etc.",
-                            validations: {
-                                empty: "La valeur du filtre est un champ obligatoire."
-                            }
-                        }
-                    }
-                },
-                hints: {
-                    querySearch: {
-                        actionKeys: "Maj + Entrée",
-                        label: "Pour effectuer une recherche"
-                    }
-                },
-                options: {
-                    header: "Recherche avancée"
-                },
-                placeholder: "Recherche par {{attribute}}",
-                popups: {
-                    clear: "effacer la requête",
-                    dropdown: "Afficher les options"
-                },
-                resultsIndicator: "Afficher les résultats de la requête \"{{query}}\""
             },
             applications: {
                 addWizard: {
