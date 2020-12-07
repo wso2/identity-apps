@@ -125,17 +125,17 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     setAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims.error" +
+                        message: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims.error" +
                             ".message")
                     });
 
                     return;
                 }
                 setAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims" +
+                    description: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.oidcScopes.notifications.fetchOIDClaims.genericError" +
+                    message: t("console:manage.features.oidcScopes.notifications.fetchOIDClaims.genericError" +
                         ".message")
                 });
             })
@@ -186,10 +186,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             .then(() => {
                 closeWizard();
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.addOIDCScope" +
+                    description: t("console:manage.features.oidcScopes.notifications.addOIDCScope" +
                         ".success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("devPortal:components.oidcScopes.notifications.addOIDCScope" +
+                    message: t("console:manage.features.oidcScopes.notifications.addOIDCScope" +
                         ".success.message")
                 }));
                 onUpdate();
@@ -200,7 +200,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.oidcScopes.notifications.addOIDCScope.error." +
+                        message: t("console:manage.features.oidcScopes.notifications.addOIDCScope.error." +
                             "message")
                     }));
 
@@ -208,10 +208,10 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.addOIDCScope" +
+                    description: t("console:manage.features.oidcScopes.notifications.addOIDCScope" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.oidcScopes.notifications.addOIDCScope.genericError." +
+                    message: t("console:manage.features.oidcScopes.notifications.addOIDCScope.genericError." +
                         "message")
                 }));
             })
@@ -231,7 +231,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                 />
             ),
             icon: OIDCScopeWizardStepIcons.general,
-            title: t("devPortal:components.oidcScopes.wizards.addScopeWizard.steps.basicDetails")
+            title: t("console:manage.features.oidcScopes.wizards.addScopeWizard.steps.basicDetails")
         },
         {
             content: (
@@ -247,7 +247,7 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
                 />
             ),
             icon: OIDCScopeWizardStepIcons.claimConfig,
-            title: t("devPortal:components.oidcScopes.wizards.addScopeWizard.steps.claims")
+            title: t("console:manage.features.oidcScopes.wizards.addScopeWizard.steps.claims")
         }
     ];
 
@@ -263,9 +263,9 @@ export const OIDCScopeCreateWizard: FunctionComponent<OIDCScopeCreateWizardProps
             closeOnEscape
         >
             <Modal.Header className="wizard-header">
-                { t("devPortal:components.oidcScopes.wizards.addScopeWizard.title") }
+                { t("console:manage.features.oidcScopes.wizards.addScopeWizard.title") }
                 <Heading as="h6">
-                    { t("devPortal:components.oidcScopes.wizards.addScopeWizard.subTitle") }
+                    { t("console:manage.features.oidcScopes.wizards.addScopeWizard.subTitle") }
                 </Heading>
             </Modal.Header>
             <Modal.Content className="steps-container">

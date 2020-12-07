@@ -81,17 +81,17 @@ const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
                     dispatch(addAlert({
                         description: error.response.data.description,
                         level: AlertLevels.ERROR,
-                        message: t("devPortal:components.oidcScopes.notifications.fetchOIDCScope.error.message")
+                        message: t("console:manage.features.oidcScopes.notifications.fetchOIDCScope.error.message")
                     }));
 
                     return;
                 }
 
                 dispatch(addAlert({
-                    description: t("devPortal:components.oidcScopes.notifications.fetchOIDCScope" +
+                    description: t("console:manage.features.oidcScopes.notifications.fetchOIDCScope" +
                         ".genericError.description"),
                     level: AlertLevels.ERROR,
-                    message: t("devPortal:components.oidcScopes.notifications.fetchOIDCScope.genericError." +
+                    message: t("console:manage.features.oidcScopes.notifications.fetchOIDCScope.genericError." +
                         "message")
                 }));
             })
@@ -111,9 +111,9 @@ const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
     return (
         <PageLayout
             isLoading={ isScopeRequestLoading }
-            title={ t("devPortal:pages.oidcScopesEdit.title", { name: scope.name }) }
+            title={ t("console:manage.pages.oidcScopesEdit.title", { name: scope.name }) }
             contentTopMargin={ true }
-            description={ t("devPortal:pages.oidcScopesEdit.subTitle") }
+            description={ t("console:manage.pages.oidcScopesEdit.subTitle") }
             image={
                 <AnimatedAvatar
                     name={ scope.name }
@@ -123,7 +123,7 @@ const OIDCScopesEditPage: FunctionComponent<OIDCScopesEditPageInterface> = (
             }
             backButton={ {
                 onClick: handleBackButtonClick,
-                text: t("devPortal:pages.oidcScopesEdit.backButton")
+                text: t("console:manage.pages.oidcScopesEdit.backButton")
             } }
             titleTextAlign="left"
             bottomMargin={ false }
