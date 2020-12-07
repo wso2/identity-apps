@@ -228,7 +228,7 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
         >
             <TransferComponent
                 searchPlaceholder={
-                    t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                    t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
                         ".select.transfer.searchPlaceholders.attribute")
                 }
                 addItems={ addAttributes }
@@ -241,7 +241,7 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
                     isListEmpty={ !(filterTempAvailableClaims.length > 0) }
                     listType="unselected"
                     listHeaders={ [
-                        t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
                             ".select.transfer.headers.attribute")
                     ] }
                     handleHeaderCheckboxChange={ selectAllUnAssignedList }
@@ -271,7 +271,7 @@ export const OIDCScopeAttributesList: FunctionComponent<OIDCScopeAttributesListP
                     isListEmpty={ !(filterTempSelectedClaims.length > 0) }
                     listType="selected"
                     listHeaders={ [
-                        t("devPortal:components.applications.edit.sections.attributes.selection.addWizard.steps" +
+                        t("console:develop.features.applications.edit.sections.attributes.selection.addWizard.steps" +
                             ".select.transfer.headers.attribute")
                     ] }
                     handleHeaderCheckboxChange={ selectAllAssignedList }
