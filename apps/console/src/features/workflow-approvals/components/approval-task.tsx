@@ -260,7 +260,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
             <Modal.Header>
                 <Header as="h4" image data-testid={ `${ testId }-item-heading` }>
                     <Header.Content>
-                        { t("adminPortal:components.approvals.modals.taskDetails.header") }
+                        { t("console:manage.features.approvals.modals.taskDetails.header") }
                         <Header.Subheader>
                             <Label
                                 circular
@@ -308,7 +308,7 @@ export const ApprovalTaskComponent: FunctionComponent<ApprovalTaskComponentProps
                                             {
                                                 approval?.description
                                                 ? approval?.description
-                                                : t("adminPortal:components.approvals.modals.taskDetails.description")
+                                                : t("console:manage.features.approvals.modals.taskDetails.description")
                                             }
                                         </List.Description>
                                     </Grid.Column>
