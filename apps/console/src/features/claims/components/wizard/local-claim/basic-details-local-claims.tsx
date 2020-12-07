@@ -145,17 +145,17 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             } }
                             type="text"
                             name="name"
-                            label={ t("adminPortal:components.claims.local.forms.name.label") }
+                            label={ t("console:manage.features.claims.local.forms.name.label") }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.claims.local.forms." +
+                            requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
                                 "name.requiredErrorMessage") }
-                            placeholder={ t("adminPortal:components.claims.local.forms.name.placeholder") }
+                            placeholder={ t("console:manage.features.claims.local.forms.name.placeholder") }
                             value={ values?.get("name")?.toString() }
                             ref={ nameField }
                             data-testid={ `${ testId }-form-name-input` }
                         />
                         <Popup
-                            content={ t("adminPortal:components.claims.local.forms.nameHint") }
+                            content={ t("console:manage.features.claims.local.forms.nameHint") }
                             inverted
                             open={ isShowNameHint }
                             trigger={ <span></span> }
@@ -170,11 +170,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="claimURI"
-                            label={ t("adminPortal:components.claims.local.forms.attributeID.label") }
+                            label={ t("console:manage.features.claims.local.forms.attributeID.label") }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.claims.local.forms." +
+                            requiredErrorMessage={ t("console:manage.features.claims.local.forms." +
                                 "attributeID.requiredErrorMessage") }
-                            placeholder={ t("adminPortal:components.claims.local.forms.attributeID.placeholder") }
+                            placeholder={ t("console:manage.features.claims.local.forms.attributeID.placeholder") }
                             value={ values?.get("claimURI")?.toString() }
                             listen={ (values: Map<string, FormValue>) => {
                                 setClaimID(values.get("claimURI").toString());
@@ -189,7 +189,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             data-testid={ `${ testId }-form-claim-uri-input` }
                         />
                         <Popup
-                            content={ t("adminPortal:components.claims.local.forms.attributeHint") }
+                            content={ t("console:manage.features.claims.local.forms.attributeHint") }
                             inverted
                             open={ isShowClaimIDHint }
                             trigger={ <p></p> }
@@ -214,11 +214,11 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="description"
-                            label={ t("adminPortal:components.claims.local.forms.description.label") }
+                            label={ t("console:manage.features.claims.local.forms.description.label") }
                             required={ true }
-                            requiredErrorMessage={ t("adminPortal:components.claims.local.forms.description." +
+                            requiredErrorMessage={ t("console:manage.features.claims.local.forms.description." +
                                 "requiredErrorMessage") }
-                            placeholder={ t("adminPortal:components.claims.local.forms.description.placeholder") }
+                            placeholder={ t("console:manage.features.claims.local.forms.description.placeholder") }
                             value={ values?.get("description")?.toString() }
                             data-testid={ `${ testId }-form-description-input` }
                         />
@@ -227,10 +227,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                         <Field
                             type="text"
                             name="regularExpression"
-                            label={ t("adminPortal:components.claims.local.forms.regEx.label") }
+                            label={ t("console:manage.features.claims.local.forms.regEx.label") }
                             required={ false }
                             requiredErrorMessage=""
-                            placeholder={ t("adminPortal:components.claims.local.forms.regEx.placeholder") }
+                            placeholder={ t("console:manage.features.claims.local.forms.regEx.placeholder") }
                             value={ values?.get("regularExpression")?.toString() }
                             onMouseOver={ () => {
                                 delayPopup(setIsShowRegExHint, regExTimer);
@@ -242,7 +242,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             data-testid={ `${ testId }-form-regex-input` }
                         />
                         <Popup
-                            content={ t("adminPortal:components.claims.local.forms.regExHint") }
+                            content={ t("console:manage.features.claims.local.forms.regExHint") }
                             inverted
                             open={ isShowRegExHint }
                             trigger={ <span></span> }
@@ -263,7 +263,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             requiredErrorMessage=""
                             children={ [
                                 {
-                                    label: t("adminPortal:components.claims.local.forms.supportedByDefault.label"),
+                                    label: t("console:manage.features.claims.local.forms.supportedByDefault.label"),
                                     value: "Support"
                                 } ] }
                             value={ values?.get("supportedByDefault") as string[] }
@@ -282,10 +282,10 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                     type="number"
                                     min="0"
                                     name="displayOrder"
-                                    label={ t("adminPortal:components.claims.local.forms.displayOrder.label") }
+                                    label={ t("console:manage.features.claims.local.forms.displayOrder.label") }
                                     required={ false }
                                     requiredErrorMessage=""
-                                    placeholder={ t("adminPortal:components.claims.local.forms." +
+                                    placeholder={ t("console:manage.features.claims.local.forms." +
                                         "displayOrder.placeholder") }
                                     value={ values?.get("displayOrder")?.toString() ?? "0" }
                                     onMouseOver={ () => {
@@ -299,7 +299,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                                 />
                                 <Popup
                                     content={
-                                        t("adminPortal:components.claims.local.forms.displayOrderHint")
+                                        t("console:manage.features.claims.local.forms.displayOrderHint")
                                     }
                                     inverted
                                     open={ isShowDisplayOrderHint }
@@ -322,7 +322,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: t("adminPortal:components.claims.local.forms.required.label"),
+                                label: t("console:manage.features.claims.local.forms.required.label"),
                                 value: "Required"
                             } ] }
                             value={ values?.get("required") as string[] }
@@ -338,7 +338,7 @@ export const BasicDetailsLocalClaims = (props: BasicDetailsLocalClaimsPropsInter
                             required={ false }
                             requiredErrorMessage=""
                             children={ [ {
-                                label: t("adminPortal:components.claims.local.forms.readOnly.label"),
+                                label: t("console:manage.features.claims.local.forms.readOnly.label"),
                                 value: "ReadOnly"
                             } ] }
                             value={ values?.get("readOnly") as string[] }

@@ -90,7 +90,7 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                 <Grid.Row columns={ 1 }>
                     <Grid.Column tablet={ 16 } computer={ 12 } largeScreen={ 9 } widescreen={ 6 } mobile={ 16 }>
                         <p>
-                            { t("adminPortal:components.claims.local.mappedAttributes.hint") }
+                            { t("console:manage.features.claims.local.mappedAttributes.hint") }
                         </p>
                         <Divider hidden />
                         <Forms
@@ -112,10 +112,10 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                 updateAClaim(claim.id, submitData).then(() => {
                                     dispatch(addAlert(
                                         {
-                                            description: t("adminPortal:components.claims.local.notifications." +
+                                            description: t("console:manage.features.claims.local.notifications." +
                                                 "updateClaim.success.description"),
                                             level: AlertLevels.SUCCESS,
-                                            message: t("adminPortal:components.claims.local.notifications." +
+                                            message: t("console:manage.features.claims.local.notifications." +
                                                 "updateClaim.success.message")
                                         }
                                     ));
@@ -124,11 +124,11 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                     dispatch(addAlert(
                                         {
                                             description: error?.description
-                                                || t("adminPortal:components.claims.local.notifications." +
+                                                || t("console:manage.features.claims.local.notifications." +
                                                     "updateClaim.genericError.description"),
                                             level: AlertLevels.ERROR,
                                             message: error?.message
-                                                || t("adminPortal:components.claims.local.notifications." +
+                                                || t("console:manage.features.claims.local.notifications." +
                                                     "updateClaim.genericError.message")
                                         }
                                     ));
@@ -146,11 +146,11 @@ export const EditMappedAttributesLocalClaims: FunctionComponent<EditMappedAttrib
                                                 <Field
                                                     type="text"
                                                     name={ store.name }
-                                                    placeholder={ t("adminPortal:components.claims.local.forms." +
+                                                    placeholder={ t("console:manage.features.claims.local.forms." +
                                                         "attribute.placeholder") }
                                                     required={ true }
                                                     requiredErrorMessage={
-                                                        t("adminPortal:components.claims.local.forms." +
+                                                        t("console:manage.features.claims.local.forms." +
                                                         "attribute.requiredErrorMessage")
                                                     }
                                                     value={ claim?.attributeMapping?.find((attribute) => {
