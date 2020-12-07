@@ -84,10 +84,10 @@ export class HelpPanelUtils {
         AppUtils.setUserPreferences(newPref);
 
         store.dispatch(addAlert({
-            description: I18n.instance.t("devPortal:components.helpPanel.notifications.pin.success.description",
+            description: I18n.instance.t("console:develop.features.helpPanel.notifications.pin.success.description",
                 { state: isPinned ? I18n.instance.t("common:unpinned") : I18n.instance.t("common:pinned") }),
             level: AlertLevels.INFO,
-            message: I18n.instance.t("devPortal:components.helpPanel.notifications.pin.success.message",
+            message: I18n.instance.t("console:develop.features.helpPanel.notifications.pin.success.message",
                 { state: isPinned ? I18n.instance.t("common:unpinned") : I18n.instance.t("common:pinned") })
         }));
     }

@@ -45,16 +45,16 @@ const PageNotFound: FunctionComponent<{}> = (): ReactElement => {
                     as={ Link }
                     to={ config.deployment.appHomePath }
                 >
-                    { t("adminPortal:placeholders.404.action") }
+                    { t("console:common.placeholders.404.action") }
                 </Button>
             ) }
             image={ EmptyPlaceholderIllustrations.pageNotFound }
             imageSize="tiny"
             subtitle={ [
-                t("adminPortal:placeholders.404.subtitles.0"),
-                t("adminPortal:placeholders.404.subtitles.1")
+                t("console:common.placeholders.404.subtitles.0"),
+                t("console:common.placeholders.404.subtitles.1")
             ] }
-            title={ t("adminPortal:placeholders.404.title") }
+            title={ t("console:common.placeholders.404.title") }
         />
     );
 };

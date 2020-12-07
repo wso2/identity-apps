@@ -668,7 +668,7 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                         (
                             <p>
                                 <Trans
-                                    i18nKey={ "devPortal:components:remoteConfig.list.confirmations.deleteItem." +
+                                    i18nKey={ "console:manage.features.remoteConfig.list.confirmations.deleteItem." +
                                     "assertionHint" }
                                     tOptions={ { roleName: remoteRepoConfigDetail?.remoteFetchName } }
                                 >
@@ -687,13 +687,13 @@ const RemoteRepoConfig: FunctionComponent<RemoteConfigDetailsPropsInterface> = (
                     } }
                 >
                     <ConfirmationModal.Header>
-                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.header") }
+                        { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.message") }
+                        { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.message") }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("devPortal:components:remoteConfig.list.confirmations.deleteConfig.content") }
+                        { t("console:manage.features.remoteConfig.list.confirmations.deleteConfig.content") }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
             }

@@ -49,26 +49,26 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
         if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
             return (
                 <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
-                    { t("adminPortal:placeholders.loginError.action") }
+                    { t("console:common.placeholders.loginError.action") }
                 </LinkButton>
             );
         } else if (error === AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")) {
             return (
                 <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
-                    { t("adminPortal:placeholders.accessDenied.action") }
+                    { t("console:common.placeholders.accessDenied.action") }
                 </LinkButton>
             );
         } else if (error === AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")) {
             return (
                 <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
-                    { t("adminPortal:placeholders.consentDenied.action") }
+                    { t("console:common.placeholders.consentDenied.action") }
                 </LinkButton>
             );
         }
 
         return (
             <LinkButton as={ Link } to={ window[ "AppUtils" ].getConfig().routes.logout }>
-                { t("adminPortal:placeholders.unauthorized.action") }
+                { t("console:common.placeholders.unauthorized.action") }
             </LinkButton>
         );
     };
@@ -81,14 +81,14 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
      */
     const resolveTitle = (error: string): string => {
         if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
-            return t("adminPortal:placeholders.loginError.title");
+            return t("console:common.placeholders.loginError.title");
         } else if (error === AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")) {
-            return t("adminPortal:placeholders.accessDenied.title");
+            return t("console:common.placeholders.accessDenied.title");
         } else if (error === AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")) {
-            return t("adminPortal:placeholders.consentDenied.title");
+            return t("console:common.placeholders.consentDenied.title");
         }
 
-        return t("adminPortal:placeholders.unauthorized.title");
+        return t("console:common.placeholders.unauthorized.title");
     };
 
     /**
@@ -100,24 +100,24 @@ const UnauthorizedErrorPage: FunctionComponent<RouteComponentProps> = (
     const resolveSubTitles = (error: string): string | string[] => {
         if (error === AppConstants.LOGIN_ERRORS.get("NO_LOGIN_PERMISSION")) {
             return [
-                t("adminPortal:placeholders.loginError.subtitles.0"),
-                t("adminPortal:placeholders.loginError.subtitles.1")
+                t("console:common.placeholders.loginError.subtitles.0"),
+                t("console:common.placeholders.loginError.subtitles.1")
             ];
         } else if (error === AppConstants.LOGIN_ERRORS.get("ACCESS_DENIED")) {
             return [
-                t("adminPortal:placeholders.accessDenied.subtitles.0"),
-                t("adminPortal:placeholders.accessDenied.subtitles.1")
+                t("console:common.placeholders.accessDenied.subtitles.0"),
+                t("console:common.placeholders.accessDenied.subtitles.1")
             ];
         } else if (error === AppConstants.LOGIN_ERRORS.get("USER_DENIED_CONSENT")) {
             return [
-                t("adminPortal:placeholders.consentDenied.subtitles.0"),
-                t("adminPortal:placeholders.consentDenied.subtitles.1")
+                t("console:common.placeholders.consentDenied.subtitles.0"),
+                t("console:common.placeholders.consentDenied.subtitles.1")
             ];
         }
 
         return [
-            t("adminPortal:placeholders.unauthorized.subtitles.0"),
-            t("adminPortal:placeholders.unauthorized.subtitles.1")
+            t("console:common.placeholders.unauthorized.subtitles.0"),
+            t("console:common.placeholders.unauthorized.subtitles.1")
         ];
     };
 
