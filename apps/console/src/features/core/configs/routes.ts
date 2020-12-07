@@ -396,7 +396,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                         icon: SidePanelIcons.childIcon
                     },
                     id: "emailTemplates",
-                    name: "adminPortal:components.sidePanel.emailTemplates",
+                    name: "console:manage.features.sidePanel.emailTemplates",
                     path: AppConstants.getPaths().get("EMAIL_TEMPLATES"),
                     protected: true,
                     showOnSidePanel: false
@@ -432,7 +432,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.emailTemplates
             },
             id: "emailTemplates",
-            name: "adminPortal:components.sidePanel.emailTemplates",
+            name: "console:manage.features.sidePanel.emailTemplates",
             order: 9,
             path: AppConstants.getPaths().get("EMAIL_TEMPLATE_TYPES"),
             protected: true,

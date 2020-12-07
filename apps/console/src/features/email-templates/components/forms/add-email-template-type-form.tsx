@@ -73,15 +73,15 @@ export const AddEmailTemplateTypeForm: FunctionComponent<AddEmailTemplateTypeFor
                             type="text"
                             name="templatetype"
                             label={
-                                t("adminPortal:components.emailTemplateTypes.forms.addTemplateType.fields.type.label")
+                                t("console:manage.features.emailTemplateTypes.forms.addTemplateType.fields.type.label")
                             }
                             placeholder={
-                                t("adminPortal:components.emailTemplateTypes.forms.addTemplateType.fields.type" +
+                                t("console:manage.features.emailTemplateTypes.forms.addTemplateType.fields.type" +
                                     ".placeholder")
                             }
                             required={ true }
                             requiredErrorMessage={
-                                t("adminPortal:components.emailTemplateTypes.forms.addTemplateType.fields.type" +
+                                t("console:manage.features.emailTemplateTypes.forms.addTemplateType.fields.type" +
                                     ".validations.empty")
                             }
                             data-testid={ `${ testId }-type-input` }

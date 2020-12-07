@@ -108,7 +108,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                             iframe.current && writeToIframe();
                         } }>
                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                { t("adminPortal:components.emailTemplates.notifications.iframeUnsupported" +
+                                { t("console:manage.features.emailTemplates.notifications.iframeUnsupported" +
                                     ".genericError.description") }
                             </p>
                         </iframe>
@@ -123,7 +123,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                         defaultActiveTab={ isAddFlow ? 1 : 0 }
                         panes={ [
                             {
-                                menuItem: t("adminPortal:components.emailTemplates.editor.tabs.preview.tabName"),
+                                menuItem: t("console:manage.features.emailTemplates.editor.tabs.preview.tabName"),
                                 render: () => (
                                     <ResourceTab.Pane
                                         className="render-view"
@@ -135,7 +135,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                             iframe.current && writeToIframe();
                                         } }>
                                             <p data-testid={ `${ testId }-iframe-unsupported-error` }>
-                                                { t("adminPortal:components.emailTemplates.notifications" +
+                                                { t("console:manage.features.emailTemplates.notifications" +
                                                     ".iframeUnsupported.genericError.description") }
                                             </p>
                                         </iframe>
@@ -143,7 +143,7 @@ export const EmailTemplateEditor: FunctionComponent<EmailTemplateEditorPropsInte
                                 )
                             },
                             {
-                                menuItem: t("adminPortal:components.emailTemplates.editor.tabs.code.tabName"),
+                                menuItem: t("console:manage.features.emailTemplates.editor.tabs.code.tabName"),
                                 render: () => (
                                     <ResourceTab.Pane
                                         attached={ false }
