@@ -58,20 +58,20 @@ export class GovernanceConnectorUtils {
             .catch((error) => {
                 if (error.response && error.response.data && error.response.data.detail) {
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("adminPortal:components.governanceConnectors.notifications." +
+                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConnectorCategories.error.description", 
                             { description: error.response.data.description }),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:components.governanceConnectors.notifications." +
+                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConfigurations.error.message")
                     }));
                 } else {
                     // Generic error message
                     store.dispatch(addAlert({
-                        description: I18n.instance.t("adminPortal:components.governanceConnectors.notifications." +
+                        description: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConfigurations.genericError.description"),
                         level: AlertLevels.ERROR,
-                        message: I18n.instance.t("adminPortal:components.governanceConnectors.notifications." +
+                        message: I18n.instance.t("console:manage.features.governanceConnectors.notifications." +
                             "getConfigurations.genericError.message")
                     }));
                 }

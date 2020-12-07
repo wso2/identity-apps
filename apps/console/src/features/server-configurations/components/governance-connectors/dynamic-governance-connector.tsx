@@ -59,13 +59,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             dispatch(
                 addAlert({
                     description: t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "updateConnector.error.description",
                         { description: error.response.data.description }
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.governanceConnectors.notifications." + "updateConnector.error.message"
+                        "console:manage.features.governanceConnectors.notifications." + "updateConnector.error.message"
                     )
                 })
             );
@@ -74,12 +74,12 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
             dispatch(
                 addAlert({
                     description: t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "updateConnector.genericError.description"
                     ),
                     level: AlertLevels.ERROR,
                     message: t(
-                        "adminPortal:components.governanceConnectors.notifications." +
+                        "console:manage.features.governanceConnectors.notifications." +
                         "updateConnector.genericError.message"
                     )
                 })
@@ -103,13 +103,13 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                 dispatch(
                     addAlert({
                         description: t(
-                            "adminPortal:components.governanceConnectors.notifications." +
+                            "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.description",
                             { name: connector.friendlyName }
                         ),
                         level: AlertLevels.SUCCESS,
                         message: t(
-                            "adminPortal:components.governanceConnectors.notifications." +
+                            "console:manage.features.governanceConnectors.notifications." +
                             "updateConnector.success.message"
                         )
                     })
@@ -179,7 +179,7 @@ export const DynamicGovernanceConnector: FunctionComponent<DynamicGovernanceConn
                                     <Header>
                                         { connector?.friendlyName }
                                         <Header.Subheader>
-                                            { t("adminPortal:components.governanceConnectors.connectorSubHeading", {
+                                            { t("console:manage.features.governanceConnectors.connectorSubHeading", {
                                                 name: connector?.friendlyName
                                             }) }
                                         </Header.Subheader>
