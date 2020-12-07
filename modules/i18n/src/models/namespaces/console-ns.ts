@@ -87,12 +87,174 @@ export interface ConsoleNS {
             sessionTimeoutModal: ModalInterface;
         };
         placeholders: {
+            404: Placeholder;
+            accessDenied: Placeholder;
             brokenPage: Placeholder;
+            consentDenied: Placeholder;
+            genericError: Placeholder;
+            loginError: Placeholder;
+            sessionStorageDisabled: Placeholder;
+            unauthorized: Placeholder;
+        };
+        privacy: {
+            about: {
+                description: string;
+                heading: string;
+            };
+            privacyPolicy: {
+                collectionOfPersonalInfo: {
+                    description: {
+                        list1: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                        para1: string;
+                    };
+                    heading: string;
+                    trackingTechnologies: {
+                        description: {
+                            list1: {
+                                0: string;
+                                1: string;
+                                2: string;
+                                3: string;
+                            };
+                            para1: string;
+                        };
+                        heading: string;
+                    };
+                };
+                description: {
+                    para1: string;
+                    para2: string;
+                    para3: string;
+                };
+                disclaimer: {
+                    description: {
+                        list1: {
+                            0: string;
+                            1: string;
+                        };
+                    };
+                    heading: string;
+                };
+                disclosureOfPersonalInfo: {
+                    description: string;
+                    heading: string;
+                    legalProcess: {
+                        description: string;
+                        heading: string;
+                    };
+                };
+                heading: string;
+                moreInfo: {
+                    changesToPolicy: {
+                        description: {
+                            para1: string;
+                            para2: string;
+                        };
+                        heading: string;
+                    };
+                    contactUs: {
+                        description: {
+                            para1: string;
+                        };
+                        heading: string;
+                    };
+                    heading: string;
+                    yourChoices: {
+                        description: {
+                            para1: string;
+                            para2: string;
+                        };
+                        heading: string;
+                    };
+                };
+                storageOfPersonalInfo: {
+                    heading: string;
+                    howLong: {
+                        description: {
+                            list1: {
+                                0: string;
+                                1: string;
+                            };
+                            para1: string;
+                            para2: string;
+                        };
+                        heading: string;
+                    };
+                    requestRemoval: {
+                        description: {
+                            para1: string;
+                            para2: string;
+                        };
+                        heading: string;
+                    };
+                    where: {
+                        description: {
+                            para1: string;
+                            para2: string;
+                        };
+                        heading: string;
+                    };
+                };
+                useOfPersonalInfo: {
+                    description: {
+                        list1: {
+                            0: string;
+                            1: string;
+                            2: string;
+                        };
+                        para1: string;
+                        para2: string;
+                        subList1: {
+                            heading: string;
+                            list: {
+                                0: string;
+                                1: string;
+                                2: string;
+                            };
+                        };
+                        subList2: {
+                            heading: string;
+                            list: {
+                                0: string;
+                                1: string;
+                            };
+                        };
+                    };
+                    heading: string;
+                };
+                whatIsPersonalInfo: {
+                    description: {
+                        list1: {
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
+                        };
+                        list2: {
+                            0: string;
+                            1: string;
+                            2: string;
+                            3: string;
+                        };
+                        para1: string;
+                        para2: string;
+                    };
+                    heading: string;
+                };
+            };
         };
         validations: {
             inSecureURL: ValidationInterface;
             unrecognizedURL: ValidationInterface;
         };
+        sidePanel: {
+            privacy: string;
+        };
+
     };
     develop: {
         features: {
@@ -117,7 +279,6 @@ export interface ConsoleNS {
                     };
                 };
             };
-            
             applications: {
                 addWizard: {
                     steps: {
@@ -1024,157 +1185,6 @@ export interface ConsoleNS {
                     };
                 };
             };
-            privacy: {
-                about: {
-                    description: string;
-                    heading: string;
-                };
-                privacyPolicy: {
-                    collectionOfPersonalInfo: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                            };
-                            para1: string;
-                        };
-                        heading: string;
-                        trackingTechnologies: {
-                            description: {
-                                list1: {
-                                    0: string;
-                                    1: string;
-                                    2: string;
-                                    3: string;
-                                };
-                                para1: string;
-                            };
-                            heading: string;
-                        };
-                    };
-                    description: {
-                        para1: string;
-                        para2: string;
-                        para3: string;
-                    };
-                    disclaimer: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                            };
-                        };
-                        heading: string;
-                    };
-                    disclosureOfPersonalInfo: {
-                        description: string;
-                        heading: string;
-                        legalProcess: {
-                            description: string;
-                            heading: string;
-                        };
-                    };
-                    heading: string;
-                    moreInfo: {
-                        changesToPolicy: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                        contactUs: {
-                            description: {
-                                para1: string;
-                            };
-                            heading: string;
-                        };
-                        heading: string;
-                        yourChoices: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                    };
-                    storageOfPersonalInfo: {
-                        heading: string;
-                        howLong: {
-                            description: {
-                                list1: {
-                                    0: string;
-                                    1: string;
-                                };
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                        requestRemoval: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                        where: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                    };
-                    useOfPersonalInfo: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                            };
-                            para1: string;
-                            para2: string;
-                            subList1: {
-                                heading: string;
-                                list: {
-                                    0: string;
-                                    1: string;
-                                    2: string;
-                                };
-                            };
-                            subList2: {
-                                heading: string;
-                                list: {
-                                    0: string;
-                                    1: string;
-                                };
-                            };
-                        };
-                        heading: string;
-                    };
-                    whatIsPersonalInfo: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                                3: string;
-                            };
-                            list2: {
-                                0: string;
-                                1: string;
-                                2: string;
-                                3: string;
-                            };
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                };
-            };
             sidePanel: {
                 applicationEdit: string;
                 applicationTemplates: string;
@@ -1192,7 +1202,6 @@ export interface ConsoleNS {
                 oidcScopes: string;
                 oidcScopesEdit: string;
                 overview: string;
-                privacy: string;
                 remoteRepo: string;
                 remoteRepoEdit: string;
             };
@@ -1219,8 +1228,6 @@ export interface ConsoleNS {
                     provisioningDisplayName: string;
                 };
             };
-            oidcScopes: Page;
-            oidcScopesEdit: EditPage;
             overview: Page;
         };
         componentExtensions: {
@@ -1233,13 +1240,7 @@ export interface ConsoleNS {
             };
         };
         placeholders: {
-            404: Placeholder;
-            accessDenied: Placeholder;
-            consentDenied: Placeholder;
             emptySearchResult: Placeholder;
-            genericError: Placeholder;
-            loginError: Placeholder;
-            unauthorized: Placeholder;
             underConstruction: Placeholder;
         };
         technologies: {
@@ -1391,48 +1392,6 @@ export interface ConsoleNS {
                         primary: string;
                     };
                 };
-            };
-            advancedSearch: {
-                form: {
-                    inputs: {
-                        filterAttribute: {
-                            label: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        filterCondition: {
-                            label: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                        filterValue: {
-                            label: string;
-                            placeholder: string;
-                            validations: {
-                                empty: string;
-                            };
-                        };
-                    };
-                };
-                hints: {
-                    querySearch: {
-                        actionKeys: string;
-                        label: string;
-                    };
-                };
-                options: {
-                    header: string;
-                };
-                placeholder: string;
-                popups: {
-                    clear: string;
-                    dropdown: string;
-                };
-                resultsIndicator: string;
             };
             approvals: {
                 list: {
@@ -2189,157 +2148,6 @@ export interface ConsoleNS {
                     };
                 };
             };
-            privacy: {
-                about: {
-                    description: string;
-                    heading: string;
-                };
-                privacyPolicy: {
-                    collectionOfPersonalInfo: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                            };
-                            para1: string;
-                        };
-                        heading: string;
-                        trackingTechnologies: {
-                            description: {
-                                list1: {
-                                    0: string;
-                                    1: string;
-                                    2: string;
-                                    3: string;
-                                };
-                                para1: string;
-                            };
-                            heading: string;
-                        };
-                    };
-                    description: {
-                        para1: string;
-                        para2: string;
-                        para3: string;
-                    };
-                    disclaimer: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                            };
-                        };
-                        heading: string;
-                    };
-                    disclosureOfPersonalInfo: {
-                        description: string;
-                        heading: string;
-                        legalProcess: {
-                            description: string;
-                            heading: string;
-                        };
-                    };
-                    heading: string;
-                    moreInfo: {
-                        changesToPolicy: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                        contactUs: {
-                            description: {
-                                para1: string;
-                            };
-                            heading: string;
-                        };
-                        heading: string;
-                        yourChoices: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                    };
-                    storageOfPersonalInfo: {
-                        heading: string;
-                        howLong: {
-                            description: {
-                                list1: {
-                                    0: string;
-                                    1: string;
-                                };
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                        requestRemoval: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                        where: {
-                            description: {
-                                para1: string;
-                                para2: string;
-                            };
-                            heading: string;
-                        };
-                    };
-                    useOfPersonalInfo: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                            };
-                            para1: string;
-                            para2: string;
-                            subList1: {
-                                heading: string;
-                                list: {
-                                    0: string;
-                                    1: string;
-                                    2: string;
-                                };
-                            };
-                            subList2: {
-                                heading: string;
-                                list: {
-                                    0: string;
-                                    1: string;
-                                };
-                            };
-                        };
-                        heading: string;
-                    };
-                    whatIsPersonalInfo: {
-                        description: {
-                            list1: {
-                                0: string;
-                                1: string;
-                                2: string;
-                                3: string;
-                            };
-                            list2: {
-                                0: string;
-                                1: string;
-                                2: string;
-                                3: string;
-                            };
-                            para1: string;
-                            para2: string;
-                        };
-                        heading: string;
-                    };
-                };
-            };
             remoteFetch: {
                 components: {
                     status: {
@@ -2591,7 +2399,6 @@ export interface ConsoleNS {
                 groups: string;
                 localDialect: string;
                 overview: string;
-                privacy: string;
                 roles: string;
                 users: string;
                 userstoreTemplates: string;
@@ -3063,6 +2870,8 @@ export interface ConsoleNS {
             emailTemplatesWithDisplayName: EditPage;
             groups: Page;
             overview: Page;
+            oidcScopes: Page;
+            oidcScopesEdit: EditPage;
             roles: Page;
             rolesEdit: EditPage;
             serverConfigurations: Page;
@@ -3070,15 +2879,8 @@ export interface ConsoleNS {
             usersEdit: EditPage;
         };
         placeholders: {
-            404: Placeholder;
-            accessDenied: Placeholder;
-            consentDenied: Placeholder;
             emptySearchResult: Placeholder;
-            genericError: Placeholder;
-            loginError: Placeholder;
-            unauthorized: Placeholder;
             underConstruction: Placeholder;
-            sessionStorageDisabled: Placeholder;
         };
     };
 }
