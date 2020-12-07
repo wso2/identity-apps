@@ -278,16 +278,16 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         updateGroupDetails(group.id, groupData)
             .then(() => {
                 dispatch(addAlert({
-                    description: t("adminPortal:components.groups.notifications.updateGroup.success.description"),
+                    description: t("console:manage.features.groups.notifications.updateGroup.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.groups.notifications.updateGroup.success.message")
+                    message: t("console:manage.features.groups.notifications.updateGroup.success.message")
                 }));
                 onGroupUpdate(group.id);
             }).catch(() => {
                 setAlert({
-                    description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
+                    description: t("console:manage.features.groups.notifications.updateGroup.error.description"),
                     level: AlertLevels.ERROR,
-                    message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
+                    message: t("console:manage.features.groups.notifications.updateGroup.error.message")
                 });
             });
     };
@@ -302,12 +302,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
         >
             <Modal.Header>
                 {
-                    t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.heading",
+                    t("console:manage.features.roles.addRoleWizard.users.assignUserModal.heading",
                         { type: "Group" })
                 }
                 <Heading subHeading ellipsis as="h6">
                     {
-                        t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.subHeading",
+                        t("console:manage.features.roles.addRoleWizard.users.assignUserModal.subHeading",
                             { type: "group" })
                     }
                 </Heading>
@@ -316,7 +316,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                 { alert && alertComponent }
                 <TransferComponent
                     data-testid={ `${ testId }-user-list-transfer` }
-                    searchPlaceholder={ t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list." +
+                    searchPlaceholder={ t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list." +
                         "searchPlaceholder") }
                     addItems={ addUser }
                     removeItems={ removeUser }
@@ -328,12 +328,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         isListEmpty={ !(usersList?.length > 0) }
                         listType="unselected"
                         listHeaders={ [
-                            t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllUnAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllUnAssignedUsers }
                         data-testid={ `${ testId }-unselected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders." +
+                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
                     >
                         {
@@ -359,12 +359,12 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                         isListEmpty={ !(tempUserList?.length > 0) }
                         listType="selected"
                         listHeaders={ [
-                            t("adminPortal:components.roles.addRoleWizard.users.assignUserModal.list.listHeader")
+                            t("console:manage.features.roles.addRoleWizard.users.assignUserModal.list.listHeader")
                         ] }
                         handleHeaderCheckboxChange={ selectAllAssignedList }
                         isHeaderCheckboxChecked={ isSelectAllAssignedUsers }
                         data-testid={ `${ testId }-selected-users-select-all-checkbox` }
-                        emptyPlaceholderContent={ t("adminPortal:components.transferList.list.emptyPlaceholders." +
+                        emptyPlaceholderContent={ t("console:manage.features.transferList.list.emptyPlaceholders." +
                             "roles.selected", { type: "users" }) }
                     >
                         {
@@ -431,7 +431,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                 data-testid={ `${ testId }-users-list-search-input` }
                                                 icon={ <Icon name="search" /> }
                                                 onChange={ handleAssignedUserListSearch }
-                                                placeholder={ t("adminPortal:components.roles.addRoleWizard." +
+                                                placeholder={ t("console:manage.features.roles.addRoleWizard." +
                                                     "users.assignUserModal.list.searchPlaceholder") }
                                                 floated="left"
                                                 size="small"
@@ -455,7 +455,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                 <Table.Row>
                                                     <Table.HeaderCell />
                                                     <Table.HeaderCell>
-                                                        { t("adminPortal:components.roles.edit.users.list." +
+                                                        { t("console:manage.features.roles.edit.users.list." +
                                                             "header") }
                                                     </Table.HeaderCell>
                                                 </Table.Row>
@@ -489,10 +489,10 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                             ) : (
                                 <EmphasizedSegment>
                                     <EmptyPlaceholder
-                                        title={ t("adminPortal:components.roles.edit.users.list." +
+                                        title={ t("console:manage.features.roles.edit.users.list." +
                                             "emptyPlaceholder.title") }
                                         subtitle={ [
-                                            t("adminPortal:components.roles.edit.users.list." +
+                                            t("console:manage.features.roles.edit.users.list." +
                                                 "emptyPlaceholder.subtitles", { type: "group" })
                                         ] }
                                         action={
@@ -503,7 +503,7 @@ export const GroupUsersList: FunctionComponent<GroupUsersListProps> = (props: Gr
                                                     onClick={ handleOpenAddNewGroupModal }
                                                 >
                                                     <Icon name="plus" />
-                                                    { t("adminPortal:components.roles.edit.users.list." +
+                                                    { t("console:manage.features.roles.edit.users.list." +
                                                         "emptyPlaceholder.action") }
                                                 </PrimaryButton>
                                             )

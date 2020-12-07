@@ -149,9 +149,9 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
     const handleOnDelete = (id: string): void => {
         deleteGroupById(id).then(() => {
             handleAlerts({
-                description: t("adminPortal:components.groups.notifications.deleteGroup.success.description"),
+                description: t("console:manage.features.groups.notifications.deleteGroup.success.description"),
                 level: AlertLevels.SUCCESS,
-                message: t("adminPortal:components.groups.notifications.deleteGroup.success.message")
+                message: t("console:manage.features.groups.notifications.deleteGroup.success.message")
             });
             if (isGroup) {
                 history.push(AppConstants.getPaths().get("GROUPS"));
@@ -181,15 +181,15 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
             .then(() => {
                 onGroupUpdate();
                 handleAlerts({
-                    description: t("adminPortal:components.groups.notifications.updateGroup.success.description"),
+                    description: t("console:manage.features.groups.notifications.updateGroup.success.description"),
                     level: AlertLevels.SUCCESS,
-                    message: t("adminPortal:components.groups.notifications.updateGroup.success.message")
+                    message: t("console:manage.features.groups.notifications.updateGroup.success.message")
                 });
             }).catch(() => {
             handleAlerts({
-                description: t("adminPortal:components.groups.notifications.updateGroup.error.description"),
+                description: t("console:manage.features.groups.notifications.updateGroup.error.description"),
                 level: AlertLevels.ERROR,
-                message: t("adminPortal:components.groups.notifications.updateGroup.error.message")
+                message: t("console:manage.features.groups.notifications.updateGroup.error.message")
             });
         });
     };
@@ -217,8 +217,8 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                     >
                                         {
                                             isGroup
-                                                ? t("adminPortal:components.groups.edit.basics.fields.groupName.name")
-                                                : t("adminPortal:components.roles.edit.basics.fields.groupName.name")
+                                                ? t("console:manage.features.groups.edit.basics.fields.groupName.name")
+                                                : t("console:manage.features.roles.edit.basics.fields.groupName.name")
                                         }
                                     </label>
                                     <Field
@@ -227,16 +227,16 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                         label={ labelText !== "" ? labelText + " /" : null }
                                         requiredErrorMessage={
                                             isGroup
-                                                ? t("adminPortal:components.groups.edit.basics.fields.groupName" +
+                                                ? t("console:manage.features.groups.edit.basics.fields.groupName" +
                                                 ".required")
-                                                : t("adminPortal:components.roles.edit.basics.fields.groupName" +
+                                                : t("console:manage.features.roles.edit.basics.fields.groupName" +
                                                 ".required")
                                         }
                                         placeholder={
                                             isGroup
-                                                ? t("adminPortal:components.groups.edit.basics.fields.groupName." +
+                                                ? t("console:manage.features.groups.edit.basics.fields.groupName." +
                                                 "placeholder")
-                                                : t("adminPortal:components.roles.edit.basics.fields.groupName." +
+                                                : t("console:manage.features.roles.edit.basics.fields.groupName." +
                                                 "placeholder")
                                         }
                                         value={ nameValue }
@@ -253,7 +253,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                     {
                                         !isGroupNamePatternValid && (
                                             <Label basic color="red" pointing>
-                                                { t("adminPortal:components.roles.addRoleWizard.forms." +
+                                                { t("console:manage.features.roles.addRoleWizard.forms." +
                                                     "roleBasicDetails.groupName.validations.invalid",
                                                     { type: "group" }) }
                                             </Label>
@@ -278,7 +278,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                                             }
                                             disabled={ !isGroupNamePatternValid && !isRegExLoading }
                                         >
-                                            { t("adminPortal:components.roles.edit.basics.buttons.update") }
+                                            { t("console:manage.features.roles.edit.basics.buttons.update") }
                                         </Button>
                                     )
                                 }
@@ -294,23 +294,23 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                         <DangerZone
                             actionTitle={
                                 isGroup
-                                    ? t("adminPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                                    ? t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
                                     { type: "Group" })
-                                    : t("adminPortal:components.roles.edit.basics.dangerZone.actionTitle",
+                                    : t("console:manage.features.roles.edit.basics.dangerZone.actionTitle",
                                     { type: "Role" })
                             }
                             header={
                                 isGroup
-                                    ? t("adminPortal:components.roles.edit.basics.dangerZone.header",
+                                    ? t("console:manage.features.roles.edit.basics.dangerZone.header",
                                     { type: "group" })
-                                    : t("adminPortal:components.roles.edit.basics.dangerZone.header",
+                                    : t("console:manage.features.roles.edit.basics.dangerZone.header",
                                     { type: "role" })
                             }
                             subheader={
                                 isGroup
-                                    ? t("adminPortal:components.roles.edit.basics.dangerZone.subheader",
+                                    ? t("console:manage.features.roles.edit.basics.dangerZone.subheader",
                                     { type: "group" })
-                                    : t("adminPortal:components.roles.edit.basics.dangerZone.subheader",
+                                    : t("console:manage.features.roles.edit.basics.dangerZone.subheader",
                                     { type: "role" })
                             }
                             onActionClick={ () => setShowDeleteConfirmationModal(!showGroupDeleteConfirmation) }
@@ -335,7 +335,7 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                             <p>
                                 <Trans
                                     i18nKey={
-                                        "adminPortal:components.roles.edit.basics.confirmation.assertionHint"
+                                        "console:manage.features.roles.edit.basics.confirmation.assertionHint"
                                     }
                                     tOptions={ { roleName: groupObject.displayName } }
                                 >
@@ -356,14 +356,14 @@ export const BasicGroupDetails: FunctionComponent<BasicGroupProps> = (props: Bas
                     }
                 >
                     <ConfirmationModal.Header>
-                        { t("adminPortal:components.roles.edit.basics.confirmation.header") }
+                        { t("console:manage.features.roles.edit.basics.confirmation.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("adminPortal:components.roles.edit.basics.confirmation.message",
+                        { t("console:manage.features.roles.edit.basics.confirmation.message",
                             { type: isGroup ? "group." : "role." }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("adminPortal:components.groups.edit.basics.confirmation.content",
+                        { t("console:manage.features.groups.edit.basics.confirmation.content",
                             { type: isGroup ? "group." : "role." }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>

@@ -197,7 +197,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.groups
             },
             id: "groups",
-            name: "adminPortal:components.sidePanel.groups",
+            name: "console:manage.features.sidePanel.groups",
             order: 2,
             path: AppConstants.getPaths().get("GROUPS"),
             protected: true,

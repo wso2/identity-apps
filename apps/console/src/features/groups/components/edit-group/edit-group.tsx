@@ -93,7 +93,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
     const resolveResourcePanes = () => {
         const panes = [
             {
-                menuItem: t("adminPortal:components.roles.edit.menuItems.basic"),
+                menuItem: t("console:manage.features.roles.edit.menuItems.basic"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <BasicGroupDetails
@@ -106,7 +106,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },{
-                menuItem: t("adminPortal:components.roles.edit.menuItems.users"),
+                menuItem: t("console:manage.features.roles.edit.menuItems.users"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <GroupUsersList
@@ -119,7 +119,7 @@ export const EditGroup: FunctionComponent<EditGroupProps> = (props: EditGroupPro
                     </ResourceTab.Pane>
                 )
             },{
-                menuItem: t("adminPortal:components.roles.edit.menuItems.roles"),
+                menuItem: t("console:manage.features.roles.edit.menuItems.roles"),
                 render: () => (
                     <ResourceTab.Pane controlledSegmentation attached={ false }>
                         <GroupRolesList

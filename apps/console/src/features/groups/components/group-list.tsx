@@ -188,16 +188,16 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                             data-testid={ `${ testId }-search-empty-placeholder-clear-button` }
                             onClick={ onSearchQueryClear }
                         >
-                            { t("adminPortal:components.roles.list.emptyPlaceholders.search.action") }
+                            { t("console:manage.features.roles.list.emptyPlaceholders.search.action") }
                         </LinkButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.emptySearch }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.roles.list.emptyPlaceholders.search.title") }
+                    title={ t("console:manage.features.roles.list.emptyPlaceholders.search.title") }
                     subtitle={ [
-                        t("adminPortal:components.roles.list.emptyPlaceholders.search.subtitles.0",
+                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.0",
                             { searchQuery: searchQuery }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.search.subtitles.1")
+                        t("console:manage.features.roles.list.emptyPlaceholders.search.subtitles.1")
                     ] }
                 />
             );
@@ -213,20 +213,20 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                             onClick={ onEmptyListPlaceholderActionClick }
                         >
                             <Icon name="add"/>
-                            { t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.action",
+                            { t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.action",
                                 { type: "Group" })}
                         </PrimaryButton>
                     ) }
                     image={ EmptyPlaceholderIllustrations.newList }
                     imageSize="tiny"
-                    title={ t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.title",
+                    title={ t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.title",
                         { type: "group" }) }
                     subtitle={ [
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
+                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.0",
                             { type: "groups" }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
+                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.1",
                             { type: "group" }),
-                        t("adminPortal:components.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
+                        t("console:manage.features.roles.list.emptyPlaceholders.emptyRoleList.subtitles.2",
                             { type: "group" })
                     ] }
                 />
@@ -272,7 +272,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         </Header.Content>
                     </Header>
                 ),
-                title: t("adminPortal:components.groups.list.columns.name")
+                title: t("console:manage.features.groups.list.columns.name")
             },
             {
                 allowToggleVisibility: false,
@@ -281,7 +281,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 id: "lastModified",
                 key: "lastModified",
                 render: (group: GroupsInterface): ReactNode => CommonUtils.humanizeDateDifference(group.meta.created),
-                title: t("adminPortal:components.groups.list.columns.lastModified")
+                title: t("console:manage.features.groups.list.columns.lastModified")
             },
             {
                 allowToggleVisibility: false,
@@ -289,7 +289,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 id: "actions",
                 key: "actions",
                 textAlign: "right",
-                title: t("adminPortal:components.groups.list.columns.actions")
+                title: t("console:manage.features.groups.list.columns.actions")
             }
         ];
     };
@@ -350,7 +350,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                 setCurrentDeletedGroup(group);
                 setShowDeleteConfirmationModal(!showGroupDeleteConfirmation);
             },
-            popupText: (): string => t("adminPortal:components.roles.list.popups.delete", { type: "Group" }),
+            popupText: (): string => t("console:manage.features.roles.list.popups.delete", { type: "Group" }),
             renderer: "semantic-icon"
         });
 
@@ -394,7 +394,7 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                         (
                             <p>
                                 <Trans
-                                    i18nKey={ "adminPortal:components.roles.list.confirmations.deleteItem." +
+                                    i18nKey={ "console:manage.features.roles.list.confirmations.deleteItem." +
                                     "assertionHint" }
                                     tOptions={ { roleName: currentDeletedGroup.displayName } }
                                 >
@@ -414,14 +414,14 @@ export const GroupList: React.FunctionComponent<GroupListProps> = (props: GroupL
                     closeOnDimmerClick={ false }
                 >
                     <ConfirmationModal.Header>
-                        { t("adminPortal:components.roles.list.confirmations.deleteItem.header") }
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.header") }
                     </ConfirmationModal.Header>
                     <ConfirmationModal.Message attached warning>
-                        { t("adminPortal:components.roles.list.confirmations.deleteItem.message",
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.message",
                             { type: "group" }) }
                     </ConfirmationModal.Message>
                     <ConfirmationModal.Content>
-                        { t("adminPortal:components.roles.list.confirmations.deleteItem.content",
+                        { t("console:manage.features.roles.list.confirmations.deleteItem.content",
                             { type: "group" }) }
                     </ConfirmationModal.Content>
                 </ConfirmationModal>
