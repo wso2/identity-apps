@@ -380,7 +380,7 @@ export const getAdminViewRoutes = (): RouteInterface[] => {
                 icon: SidePanelIcons.certificate
             },
             id: "certificates",
-            name: "adminPortal:components.sidePanel.certificates",
+            name: "console:manage.features.sidePanel.certificates",
             order: 8,
             path: AppConstants.getPaths().get("CERTIFICATES"),
             protected: true,

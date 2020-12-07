@@ -64,7 +64,7 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
     const SORT_BY = [
         {
             key: 0,
-            text: t("adminPortal:components.certificates.keystore.attributes.alias"),
+            text: t("console:manage.features.certificates.keystore.attributes.alias"),
             value: "alias"
         }
     ];
@@ -112,11 +112,11 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                 dispatch(addAlert(
                     {
                         description: error?.description
-                            || t("adminPortal:components.certificates.keystore.notifications." +
+                            || t("console:manage.features.certificates.keystore.notifications." +
                                 "getCertificates.genericError.description"),
                         level: AlertLevels.ERROR,
                         message: error?.message
-                            || t("adminPortal:components.certificates.keystore.notifications." +
+                            || t("console:manage.features.certificates.keystore.notifications." +
                                 "getCertificates.genericError.message")
                     }
                 ));
@@ -235,13 +235,13 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                             data-testid={ `${ testId }-list-layout-upload-button` }
                         >
                             <Icon name="cloud upload" />
-                            { t("adminPortal:components.certificates.keystore.pageLayout.primaryAction") }
+                            { t("console:manage.features.certificates.keystore.pageLayout.primaryAction") }
                         </PrimaryButton>
                     )
                 }
                 isLoading={ isLoading }
-                title={ t("adminPortal:components.certificates.keystore.pageLayout.title") }
-                description={ t("adminPortal:components.certificates.keystore.pageLayout.description") }
+                title={ t("console:manage.features.certificates.keystore.pageLayout.title") }
+                description={ t("console:manage.features.certificates.keystore.pageLayout.description") }
                 data-testid={ `${ testId }-page-layout` }
             >
                 <ListLayout
@@ -256,19 +256,19 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
                                     ".filterAttribute.placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
                                     ".filterCondition.placeholder")
                             }
                             filterValuePlaceholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
                                     ".filterValue.placeholder")
                             }
                             placeholder={
-                                t("adminPortal:components.certificates.keystore.advancedSearch.placeholder")
+                                t("console:manage.features.certificates.keystore.advancedSearch.placeholder")
                             }
                             defaultSearchAttribute="alias"
                             defaultSearchOperator="co"
@@ -304,19 +304,19 @@ const CertificatesKeystore: FunctionComponent<CertificatesKeystorePageInterface>
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                    t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
                                         ".filterAttribute.placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                    t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
                                         ".filterCondition.placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("adminPortal:components.certificates.keystore.advancedSearch.form.inputs" +
+                                    t("console:manage.features.certificates.keystore.advancedSearch.form.inputs" +
                                         ".filterValue.placeholder")
                                 }
                                 placeholder={
-                                    t("adminPortal:components.certificates.keystore.advancedSearch.placeholder")
+                                    t("console:manage.features.certificates.keystore.advancedSearch.placeholder")
                                 }
                                 defaultSearchAttribute="alias"
                                 defaultSearchOperator="co"
