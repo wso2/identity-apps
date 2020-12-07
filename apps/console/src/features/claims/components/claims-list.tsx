@@ -300,7 +300,8 @@ export const ClaimsList: FunctionComponent<ClaimsListPropsInterface> = (
             closeDeleteConfirm();
             dispatch(addAlert(
                 {
-                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success.description"),
+                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success."+
+                        "description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
                 }

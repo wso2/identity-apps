@@ -138,7 +138,8 @@ export const EditBasicDetailsLocalClaims: FunctionComponent<EditBasicDetailsLoca
             history.push(AppConstants.getPaths().get("LOCAL_CLAIMS"));
             dispatch(addAlert(
                 {
-                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success.description"),
+                    description: t("console:manage.features.claims.local.notifications.deleteClaim.success." + 
+                        "description"),
                     level: AlertLevels.SUCCESS,
                     message: t("console:manage.features.claims.local.notifications.deleteClaim.success.message")
                 }
