@@ -324,6 +324,11 @@ export const URLInput: FunctionComponent<URLInputPropsInterface> = (
         const splitURL = url.split("/");
         const origin = splitURL[0] + "//" + splitURL[2];
 
+        /**
+         * TODO : React Components should not depend on the product 
+         * locale bundles.
+         * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
+         */
         if (allowedOrigins?.includes(origin) || allowOrigin) {
             return (
                 <LabelWithPopup

@@ -96,6 +96,11 @@ export const TransferList: FunctionComponent<TransferListPropsInterface> = (
                         </Table.Body>
                 </Table>
                 ) : (
+                    /**
+                     * TODO : React Components should not depend on the product 
+                     * locale bundles.
+                     * Issue to track. {@link https://github.com/wso2/product-is/issues/10693}
+                     */
                     <div className={ "empty-placeholder-center" }>
                         <EmptyPlaceholder
                             subtitle={ [

@@ -54,7 +54,7 @@ export class I18nConstants {
      * @type {string}
      * @default
      */
-    public static readonly MYACCOUNT_PORTAL_NAMESPACE: string = I18nModuleConstants.MYACCOUNT_NAMESPACE;
+    public static readonly MYACCOUNT_PORTAL_NAMESPACE: string = I18nModuleConstants.MY_ACCOUNT_NAMESPACE;
 
     /**
      * Locations of the I18n namespaces.

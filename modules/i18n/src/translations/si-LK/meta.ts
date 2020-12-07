@@ -25,7 +25,7 @@ export const meta: LocaleMeta = {
     name: "සිංහල (Sri Lanka)",
     namespaces: [
         I18nModuleConstants.COMMON_NAMESPACE,
-        I18nModuleConstants.MYACCOUNT_NAMESPACE,
+        I18nModuleConstants.MY_ACCOUNT_NAMESPACE,
         I18nModuleConstants.CONSOLE_PORTAL_NAMESPACE
     ]
 };
