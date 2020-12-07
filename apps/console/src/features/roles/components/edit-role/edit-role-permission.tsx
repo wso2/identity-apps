@@ -78,12 +78,12 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                 dispatch(
                     addAlert({
                         description: isGroup
-                            ? t("adminPortal:components.groups.notifications.updateGroup.success.description")
-                            : t("adminPortal:components.roles.notifications.updateRole.success.description"),
+                            ? t("console:manage.features.groups.notifications.updateGroup.success.description")
+                            : t("console:manage.features.roles.notifications.updateRole.success.description"),
                         level: AlertLevels.SUCCESS,
                         message: isGroup
-                            ? t("adminPortal:components.groups.notifications.updateGroup.success.message")
-                            : t("adminPortal:components.roles.notifications.updateRole.success.message")
+                            ? t("console:manage.features.groups.notifications.updateGroup.success.message")
+                            : t("console:manage.features.roles.notifications.updateRole.success.message")
                     })
                 );
                 onRoleUpdate();
@@ -93,41 +93,41 @@ export const RolePermissionDetails: FunctionComponent<RolePermissionDetailProps>
                     dispatch(
                         addAlert({
                             description: isGroup
-                                ? t("adminPortal:components.groups.notifications.createPermission.error.description")
-                                : t("adminPortal:components.roles.notifications.createPermission.error.description"),
+                                ? t("console:manage.features.groups.notifications.createPermission.error.description")
+                                : t("console:manage.features.roles.notifications.createPermission.error.description"),
                             level: AlertLevels.ERROR,
                             message: isGroup
-                                ? t("adminPortal:components.groups.notifications.createPermission.error.message")
-                                : t("adminPortal:components.roles.notifications.createPermission.error.message")
+                                ? t("console:manage.features.groups.notifications.createPermission.error.message")
+                                : t("console:manage.features.roles.notifications.createPermission.error.message")
                         })
                     );
                 } else if (error.response && error.response.data.detail) {
                     dispatch(
                         addAlert({
                             description: isGroup
-                                ? t("adminPortal:components.groups.notifications.createPermission.error.description",
+                                ? t("console:manage.features.groups.notifications.createPermission.error.description",
                                 { description: error.response.data.detail })
-                                : t("adminPortal:components.roles.notifications.createPermission.error.description",
+                                : t("console:manage.features.roles.notifications.createPermission.error.description",
                                 { description: error.response.data.detail }),
                             level: AlertLevels.ERROR,
                             message: isGroup
-                                ? t("adminPortal:components.groups.notifications.createPermission.error.message")
-                                : t("adminPortal:components.roles.notifications.createPermission.error.message")
+                                ? t("console:manage.features.groups.notifications.createPermission.error.message")
+                                : t("console:manage.features.roles.notifications.createPermission.error.message")
                         })
                     );
                 } else {
                     dispatch(
                         addAlert({
                             description: isGroup
-                                ? t("adminPortal:components.groups.notifications.createPermission.genericError."+
+                                ? t("console:manage.features.groups.notifications.createPermission.genericError."+
                                 "description")
-                                : t("adminPortal:components.roles.notifications.createPermission.genericError."+
+                                : t("console:manage.features.roles.notifications.createPermission.genericError."+
                                 "description"),
                             level: AlertLevels.ERROR,
                             message: isGroup
-                                ? t("adminPortal:components.groups.notifications.createPermission.genericError."+
+                                ? t("console:manage.features.groups.notifications.createPermission.genericError."+
                                 "message")
-                                : t("adminPortal:components.roles.notifications.createPermission.genericError."+
+                                : t("console:manage.features.roles.notifications.createPermission.genericError."+
                                 "message")
                         })
                     );

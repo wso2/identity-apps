@@ -280,11 +280,11 @@ const RolesPage = (): ReactElement => {
         deleteRoleById(role.id).then(() => {
             handleAlerts({
                 description: t(
-                    "adminPortal:components.roles.notifications.deleteRole.success.description"
+                    "console:manage.features.roles.notifications.deleteRole.success.description"
                 ),
                 level: AlertLevels.SUCCESS,
                 message: t(
-                    "adminPortal:components.roles.notifications.deleteRole.success.message"
+                    "console:manage.features.roles.notifications.deleteRole.success.message"
                 )
             });
             setListUpdated(true);
@@ -328,12 +328,12 @@ const RolesPage = (): ReactElement => {
                             data-testid="role-mgt-roles-list-add-button-icon"
                             name="add"
                         />
-                        { t("adminPortal:components.roles.list.buttons.addButton", { type: "Role" }) }
+                        { t("console:manage.features.roles.list.buttons.addButton", { type: "Role" }) }
                     </PrimaryButton>
                 )
             }
-            title={ t("adminPortal:pages.roles.title") }
-            description={ t("adminPortal:pages.roles.subTitle") }
+            title={ t("console:manage.pages.roles.title") }
+            description={ t("console:manage.pages.roles.subTitle") }
         >
             {
                 !isEmptyResults &&
@@ -350,18 +350,18 @@ const RolesPage = (): ReactElement => {
                                 }
                             ] }
                             filterAttributePlaceholder={
-                                t("adminPortal:components.roles.advancedSearch.form.inputs.filterAttribute." +
+                                t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
                                     "placeholder")
                             }
                             filterConditionsPlaceholder={
-                                t("adminPortal:components.roles.advancedSearch.form.inputs.filterCondition" +
+                                t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
                                     ".placeholder")
                             }
                             filterValuePlaceholder={
-                                t("adminPortal:components.roles.advancedSearch.form.inputs.filterValue" +
+                                t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
                                     ".placeholder")
                             }
-                            placeholder={ t("adminPortal:components.roles.advancedSearch.placeholder") }
+                            placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
                             defaultSearchAttribute="displayName"
                             defaultSearchOperator="co"
                             triggerClearQuery={ triggerClearQuery }
@@ -379,7 +379,7 @@ const RolesPage = (): ReactElement => {
                                 data-testid="role-mgt-roles-list-filters-dropdown"
                                 selection
                                 options={ filterOptions }
-                                placeholder= { t("adminPortal:components.roles.list.buttons.filterDropdown") }
+                                placeholder= { t("console:manage.features.roles.list.buttons.filterDropdown") }
                                 onChange={ handleFilterChange }
                             />
                         )
@@ -404,18 +404,18 @@ const RolesPage = (): ReactElement => {
                                     }
                                 ] }
                                 filterAttributePlaceholder={
-                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterAttribute." +
+                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterAttribute." +
                                         "placeholder")
                                 }
                                 filterConditionsPlaceholder={
-                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterCondition" +
+                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterCondition" +
                                         ".placeholder")
                                 }
                                 filterValuePlaceholder={
-                                    t("adminPortal:components.roles.advancedSearch.form.inputs.filterValue" +
+                                    t("console:manage.features.roles.advancedSearch.form.inputs.filterValue" +
                                         ".placeholder")
                                 }
-                                placeholder={ t("adminPortal:components.roles.advancedSearch.placeholder") }
+                                placeholder={ t("console:manage.features.roles.advancedSearch.placeholder") }
                                 defaultSearchAttribute="displayName"
                                 defaultSearchOperator="sw"
                                 triggerClearQuery={ triggerClearQuery }
